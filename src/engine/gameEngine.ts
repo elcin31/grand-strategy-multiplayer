@@ -116,8 +116,8 @@ function runAi(state: GameState) {
     if (!owned.length) continue;
     const nation = state.countries[id];
     if (state.tick % 3 === 0 && nation.treasury >= 80 && nation.manpower >= 4_000) {
-      const province = [...owned].sort((a, b) => b.income - a.income)[0];
-      recruit(state, id, province, 4_000, `ai-${id}-${state.tick}`);
+      const richest = [...owned].sort((a, b) => b.income - a.income)[0];
+      if (richest) recruit(state, id, richest, 4_000, `ai-${id}-${state.tick}`);
     }
     if (state.tick % 2 !== 0) continue;
     const army = state.armies.filter((candidate) => candidate.ownerId === id && candidate.troops >= 12_000).sort((a, b) => b.troops - a.troops)[0];
@@ -127,7 +127,7 @@ function runAi(state: GameState) {
     const targets = origin.neighbors.map((neighborId) => provinceById(state, neighborId)).filter((province): province is Province => Boolean(province && province.ownerId !== id));
     if (!targets.length) continue;
     const target = [...targets].sort((a, b) => totalTroops(armiesIn(state, a.id, a.ownerId)) - totalTroops(armiesIn(state, b.id, b.ownerId)))[0];
-    resolveMovement(state, id, army.id, target.id);
+    if (target) resolveMovement(state, id, army.id, target.id);
   }
 }
 
