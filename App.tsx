@@ -4,12 +4,12 @@ import { CountryPanel } from './src/components/CountryPanel';
 import { EntryPanel, LobbyPanel } from './src/components/LobbyPanel';
 import { WorldMap } from './src/components/WorldMap';
 import { HttpTransport } from './src/multiplayer/httpTransport';
-import { LocalTransport } from './src/multiplayer/localTransport';
 import type { MultiplayerTransport, TransportSession } from './src/multiplayer/transport';
 import { CountryId, GameState } from './src/types/game';
 
-const remoteUrl = process.env.EXPO_PUBLIC_MULTIPLAYER_URL?.trim();
-const transport: MultiplayerTransport = remoteUrl ? new HttpTransport(remoteUrl) : new LocalTransport();
+const productionMultiplayerUrl = 'https://dfjsnjxnyjspwugjguhq.supabase.co/functions/v1';
+const remoteUrl = process.env.EXPO_PUBLIC_MULTIPLAYER_URL?.trim() || productionMultiplayerUrl;
+const transport: MultiplayerTransport = new HttpTransport(remoteUrl);
 
 export default function App() {
   const [state, setState] = useState<GameState | null>(null);
@@ -57,7 +57,7 @@ export default function App() {
   }, [state?.id, state?.phase, state?.speed, playerId]);
 
   if (!state) {
-    return <SafeAreaView style={styles.safe}><StatusBar barStyle="light-content" /><View style={styles.entryWrap}><Text style={styles.brand}>DOMINION</Text><EntryPanel onCreate={createRoom} onJoin={joinRoom} /><Text style={styles.footer}>{remoteUrl ? 'REMOTE SERVER · HTTP SYNC' : 'LOCAL DEV MODE'}</Text></View></SafeAreaView>;
+    return <SafeAreaView style={styles.safe}><StatusBar barStyle="light-content" /><View style={styles.entryWrap}><Text style={styles.brand}>DOMINION</Text><EntryPanel onCreate={createRoom} onJoin={joinRoom} /><Text style={styles.footer}>REMOTE SERVER · SUPABASE</Text></View></SafeAreaView>;
   }
 
   return (
