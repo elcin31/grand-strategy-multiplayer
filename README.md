@@ -2,17 +2,44 @@
 
 Android-first multiplayer grand-strategy game built as an original project with original code and data.
 
-## Phase 1 status
+## Current status
 
 - Expo SDK 57 / React Native 0.86 / TypeScript
 - Android-first responsive UI
 - Interactive prototype map with selectable countries and provinces
-- Deterministic game state + command reducer
+- Deterministic game state + authoritative server command reducer
 - Lobby, room code, country selection, ready state, host start
 - Running game clock with speed controls and monthly economy ticks
 - Multiplayer transport interface separated from game logic
-- Local transport implementation for development
+- Supabase backend deployed in a dedicated project
+- Edge Functions `game-room` and `game-command` deployed
+- RLS enabled; `anon` and `authenticated` have no direct table privileges
+- Random player bearer tokens stored server-side only as SHA-256 hashes
+- Optimistic version checks prevent simultaneous commands from silently overwriting each other
+- Android client points to the deployed multiplayer backend by default
 - EAS configuration for APK preview builds
+
+## Production multiplayer backend
+
+Project ref:
+
+```text
+dfjsnjxnyjspwugjguhq
+```
+
+Functions base URL:
+
+```text
+https://dfjsnjxnyjspwugjguhq.supabase.co/functions/v1
+```
+
+You can override the endpoint for development with:
+
+```text
+EXPO_PUBLIC_MULTIPLAYER_URL=https://<project-ref>.supabase.co/functions/v1
+```
+
+No service-role or secret key is stored in the mobile app or repository.
 
 ## Run
 
@@ -41,34 +68,32 @@ npx eas build --platform android --profile preview
 ```text
 UI (React Native)
       ↓ commands
-Game Engine (pure deterministic reducer)
+Game Engine / command model
       ↓
-MultiplayerTransport
-      ├── LocalTransport
-      └── HttpTransport → Supabase Edge Functions → PostgreSQL
+HttpTransport
+      ↓
+Supabase Edge Functions
+      ↓
+Authoritative PostgreSQL state
 ```
 
-The server is authoritative: clients send commands, the server validates and applies them, then clients pull the canonical state.
+Mobile clients never write game tables directly. `game-room` handles room creation, joining and authenticated state reads. `game-command` validates the player's room token and applies commands on the server.
 
-## Phase 2 backend scaffold
-
-The repository contains:
+## Backend files
 
 - `supabase/migrations/0001_multiplayer_core.sql`
-- `supabase/functions/game-room`
-- `supabase/functions/game-command`
+- `supabase/functions/_shared/game.ts`
+- `supabase/functions/_shared/security.ts`
+- `supabase/functions/game-room/index.ts`
+- `supabase/functions/game-command/index.ts`
 - `src/multiplayer/httpTransport.ts`
-
-The database tables are RLS-protected and revoked from `anon`/`authenticated`. Mobile clients only call Edge Functions. Each player receives a random bearer token; only its SHA-256 hash is stored server-side. Game commands use optimistic version checks to prevent simultaneous writes from silently overwriting each other.
-
-Set `EXPO_PUBLIC_MULTIPLAYER_URL=https://<project-ref>.supabase.co/functions/v1` to switch the app from `LocalTransport` to the remote transport.
 
 ## Next phase
 
-1. Deploy the Supabase backend to a dedicated project.
-2. Test two physical Android clients in one room.
-3. Add reconnect persistence and session restoration.
-4. Add province adjacency, army movement and combat.
-5. Move state delivery from polling to Supabase Realtime Broadcast.
-6. Add diplomacy and treaties.
-7. Persist long-running campaigns.
+1. Test two physical Android clients in one room.
+2. Persist sessions locally and reconnect after app restarts/network loss.
+3. Add province adjacency, legal movement paths and combat resolution.
+4. Move state delivery from polling to Supabase Realtime Broadcast.
+5. Add diplomacy, wars, peace treaties and alliances.
+6. Persist long-running campaigns and player return state.
+7. Add server-side rate limiting / abuse protection for public room creation.
