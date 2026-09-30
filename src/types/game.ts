@@ -1,4 +1,5 @@
 export type CountryId = 'germany' | 'france' | 'italy' | 'poland' | 'spain' | 'uk' | 'turkey' | 'russia';
+export type GameSpeed = 0 | 1 | 2 | 3 | 4;
 
 export interface Country {
   id: CountryId;
@@ -24,6 +25,7 @@ export interface Province {
   height: number;
   population: number;
   income: number;
+  neighbors: string[];
 }
 
 export interface Army {
@@ -41,6 +43,19 @@ export interface Player {
   ready: boolean;
 }
 
+export interface BattleEvent {
+  id: string;
+  tick: number;
+  provinceId: string;
+  attackerId: CountryId;
+  defenderId: CountryId;
+  attackerLosses: number;
+  defenderLosses: number;
+  winnerId: CountryId;
+  captured: boolean;
+  message: string;
+}
+
 export interface GameState {
   id: string;
   roomCode: string;
@@ -48,19 +63,20 @@ export interface GameState {
   tick: number;
   year: number;
   month: number;
-  speed: 0 | 1 | 2 | 3 | 4;
+  speed: GameSpeed;
   countries: Record<CountryId, Country>;
   provinces: Province[];
   armies: Army[];
   players: Player[];
   selectedCountryId: CountryId | null;
+  battleLog: BattleEvent[];
 }
 
 export type GameCommand =
   | { type: 'SELECT_COUNTRY'; playerId: string; countryId: CountryId }
   | { type: 'SET_READY'; playerId: string; ready: boolean }
   | { type: 'START_GAME'; playerId: string }
-  | { type: 'SET_SPEED'; playerId: string; speed: 0 | 1 | 2 | 3 | 4 }
+  | { type: 'SET_SPEED'; playerId: string; speed: GameSpeed }
   | { type: 'RECRUIT'; playerId: string; provinceId: string; troops: number }
   | { type: 'MOVE_ARMY'; playerId: string; armyId: string; provinceId: string }
   | { type: 'ADVANCE_TICK' };
