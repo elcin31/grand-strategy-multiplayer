@@ -1,0 +1,7 @@
+project_id = "grand-strategy-multiplayer"
+
+[functions.game-room]
+verify_jwt = false
+
+[functions.game-command]
+verify_jwt = false
