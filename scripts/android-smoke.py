@@ -47,8 +47,8 @@ def click_scrolling(text):
 def province_army_text(root):
     texts = [n.get('text','') for n in root.iter('node') if n.get('text')]
     assert not any('Действие отклонено' in text for text in texts), 'Recruitment was rejected: '+str(texts)
-    assert 'GER' in texts, 'Province army row is missing: '+str(texts)
-    owner = texts.index('GER')
+    assert 'DEU' in texts, 'Province army row is missing: '+str(texts)
+    owner = texts.index('DEU')
     return next(t for t in texts[owner+1:] if re.fullmatch(r'\d+K',t))
 adb('install','-r',sys.argv[1])
 adb('logcat','-c')
@@ -65,12 +65,19 @@ rotation = adb('shell','dumpsys','input')
 bounds = [int(n) for n in re.findall(r'\d+', root[0].get('bounds',''))]
 assert bounds[2]-bounds[0] > bounds[3]-bounds[1], 'App is not landscape'
 click_text(root,'ОДИНОЧНАЯ ИГРА')
-time.sleep(8)
+time.sleep(15)
 root = hierarchy('02-map'); screenshot('02-map')
 assert any('Политическая' in n.get('text','') for n in root.iter('node')), 'GPU map screen did not mount'
 # Exercise real offline commands in the release bundle, not only a mounted canvas.
-# Fixed screen is 1280x720; this is the initial west-Germany counter position.
-adb('shell','input','tap','475','357'); time.sleep(1)
+# Select through the real searchable picker; no dependency on synthetic demo geometry.
+click_text(root,'СТРАНЫ · 195')
+root = hierarchy('country-picker'); screenshot('country-picker')
+node = next(n for n in root.iter('node') if n.get('content-desc') == 'Поиск государства')
+nums = [int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
+adb('shell','input','tap',str((nums[0]+nums[2])//2),str((nums[1]+nums[3])//2))
+adb('shell','input','text','Germany'); time.sleep(1)
+root = hierarchy('country-search'); click_text(root,'Германия'); time.sleep(2)
+
 click_scrolling('ИГРАТЬ ЗА ЭТУ СТРАНУ')
 click_scrolling('Я ГОТОВ')
 click_scrolling('НАЧАТЬ ИГРУ')
@@ -78,11 +85,12 @@ root = hierarchy('02-running')
 click_text(root,'УПРАВЛЕНИЕ')
 click_scrolling('Ⅱ')
 root = hierarchy('02-paused'); click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
-adb('shell','input','tap','475','357'); time.sleep(1)
+# Country preview centers the camera on Berlin; city/counter hit testing selects its real province.
+adb('shell','input','tap','640','370'); time.sleep(1)
 # Scroll the command card into view and capture the actual army size before recruitment.
 for _ in range(5):
     root = hierarchy('02-command')
-    if any(n.get('text') == 'GER' for n in root.iter('node')): break
+    if any(n.get('text') == 'DEU' for n in root.iter('node')): break
     adb('shell','input','swipe','1080','570','1080','220','450')
 before = province_army_text(root)
 click_scrolling('+25K · $500M')
@@ -126,4 +134,4 @@ assert any(n.get('text')=='DOMINION' for n in root.iter('node')), 'Restart faile
 logs = adb('logcat','-d'); (OUT/'logcat.txt').write_text(logs)
 assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs, 'Native crash detected'
 assert 'Unable to load script' not in logs, 'Standalone JS load failed'
-print('PASS: network-disabled cold launch, landscape, offline country selection/start/pause/recruitment, 4 presets, 6 modes, camera inputs, 4 layouts, restart, no fatal logs')
+print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, 4 presets, 6 modes, camera inputs, 4 layouts, restart, no fatal logs')

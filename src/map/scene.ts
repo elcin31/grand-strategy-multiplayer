@@ -1,4 +1,4 @@
-import type { GameState } from '../types/game';
+import { countryFor, type GameState } from '../types/game';
 import geography from './geography.json';
 import { Bounds, contains, MapFeature, Point, SpatialIndex } from './geometry';
 import { GraphicsPreset, GRAPHICS, MapMode } from './settings';
@@ -22,10 +22,10 @@ export function buildEdges(data: readonly MapFeature[]): Edge[] {
   return [...edges.values()];
 }
 export const edges = buildEdges(features);
-export function borderPaths(state: GameState, visibleIds: Set<string>): { outer: string; inner: string } {
+export function borderPaths(state: GameState, visibleIds: Set<string>, data: readonly Edge[] = edges): { outer: string; inner: string } {
   const owners = new Map(state.provinces.map(p => [p.id, p.ownerId]));
   let outer = '', inner = '';
-  for (const edge of edges) {
+  for (const edge of data) {
     if (!edge.provinces.some(id => visibleIds.has(id))) continue;
     const line = `M${edge.a.x},${edge.a.y}L${edge.b.x},${edge.b.y}`;
     if (edge.provinces.length === 1 || new Set(edge.provinces.map(id => owners.get(id))).size > 1) outer += line;
@@ -40,8 +40,8 @@ export function troopsByProvince(state: GameState): Map<string, number> {
 }
 /** Linear preprocessing, then O(1) lookup. Never scan the full world per visible polygon. */
 export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map<string, number>): Map<string, string> {
-  if (mode === 'Political' || mode === 'Terrain') return new Map(state.provinces.map(p => [p.id, mode === 'Political' ? state.countries[p.ownerId].color : '#637364']));
-  const values = new Map(state.provinces.map(p => [p.id, mode === 'Economy' ? p.income : mode === 'Population' ? p.population : mode === 'Military' ? troops.get(p.id) ?? 0 : state.countries[p.ownerId].stability]));
+  if (mode === 'Political' || mode === 'Terrain') return new Map(state.provinces.map(p => [p.id, mode === 'Political' ? countryFor(state, p.ownerId).color : '#637364']));
+  const values = new Map(state.provinces.map(p => [p.id, mode === 'Economy' ? p.income : mode === 'Population' ? p.population : mode === 'Military' ? troops.get(p.id) ?? 0 : countryFor(state, p.ownerId).stability]));
   const all = [...values.values()], max = Math.max(1, ...all), min = Math.min(...all);
   const low = [66, 77, 91], high = [197, 161, 89];
   return new Map([...values.entries()].map(([id, value]) => {
@@ -89,7 +89,7 @@ function labelWidth(land: readonly MapFeature[], anchor: Point): number {
   return anchor.x >= left && anchor.x <= right ? Math.max(0, Math.min(anchor.x - left, right - anchor.x) * 1.9) : 0;
 }
 /** Bounded candidates and cached spatial geometry keep full-world labels off the frame loop. */
-export function countryLabels(data: readonly MapFeature[], owners: ReadonlyMap<string, string>, blockers: readonly LabelBlocker[] = [], layout: LabelLayout = { height: 4 }): CountryLabel[] {
+export function countryLabels(data: readonly MapFeature[], owners: ReadonlyMap<string, string>, blockers: readonly LabelBlocker[] = [], layout: LabelLayout = { height: 4 }, visibleCountries?: ReadonlySet<string>): CountryLabel[] {
   let geometry = labelGeometry.get(data);
   if (!geometry) {
     geometry = { index: new SpatialIndex(data), areas: new Map(data.map(f => [f.id, f.polygons.reduce((sum, rings) => sum + polygonArea(rings[0]!) - rings.slice(1).reduce((holes, ring) => holes + polygonArea(ring), 0), 0)])) };
@@ -98,7 +98,7 @@ export function countryLabels(data: readonly MapFeature[], owners: ReadonlyMap<s
   const groups = new Map<string, MapFeature[]>();
   for (const f of data) {
     const owner = f.provinceId && owners.get(f.provinceId);
-    if (owner) { const group = groups.get(owner) ?? []; group.push(f); groups.set(owner, group); }
+    if (owner && (!visibleCountries || visibleCountries.has(owner))) { const group = groups.get(owner) ?? []; group.push(f); groups.set(owner, group); }
   }
   const { index, areas } = geometry;
   return [...groups].map(([countryId, land]) => {

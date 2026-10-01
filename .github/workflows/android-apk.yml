@@ -34,6 +34,8 @@ jobs:
         run: python -m unittest discover -s tests -p '*_test.py'
       - name: Map geometry benchmark
         run: npm run benchmark:map
+      - name: Full-world data benchmark
+        run: npm run benchmark:world
       - name: Generate Android project
         run: npx expo prebuild --platform android --clean
       - name: Verify native landscape configuration

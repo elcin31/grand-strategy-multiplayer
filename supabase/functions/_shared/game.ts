@@ -1,59 +1,21 @@
-import { assertGameCommand } from './commandValidation.ts';
-export type CountryId = 'germany' | 'france' | 'italy' | 'poland' | 'spain' | 'uk' | 'turkey' | 'russia';
-export type Speed = 0 | 1 | 2 | 3 | 4;
-export interface Country { id: CountryId; name: string; shortName: string; color: string; treasury: number; income: number; population: number; manpower: number; army: number; technology: number; stability: number; }
-export interface Province { id: string; name: string; ownerId: CountryId; x: number; y: number; width: number; height: number; population: number; income: number; neighbors: string[]; }
-export interface Army { id: string; ownerId: CountryId; provinceId: string; troops: number; }
-export interface Player { id: string; displayName: string; countryId: CountryId | null; isHost: boolean; ready: boolean; }
-export interface BattleEvent { id: string; tick: number; provinceId: string; attackerId: CountryId; defenderId: CountryId; attackerLosses: number; defenderLosses: number; winnerId: CountryId; captured: boolean; message: string; }
-export interface GameState { id: string; roomCode: string; phase: 'lobby'|'running'|'paused'|'finished'; tick: number; year: number; month: number; speed: Speed; countries: Record<CountryId,Country>; provinces: Province[]; armies: Army[]; players: Player[]; selectedCountryId: CountryId|null; battleLog: BattleEvent[]; }
-export type GameCommand = {type:'SELECT_COUNTRY';playerId:string;countryId:CountryId}|{type:'SET_READY';playerId:string;ready:boolean}|{type:'START_GAME';playerId:string}|{type:'SET_SPEED';playerId:string;speed:Speed}|{type:'RECRUIT';playerId:string;provinceId:string;troops:number}|{type:'MOVE_ARMY';playerId:string;armyId:string;provinceId:string}|{type:'ADVANCE_TICK'};
+import { createInitialGame } from './legacyWorld.ts';
+import { applyCommand } from './gameEngine.ts';
+import type { GameCommand, GameState } from './gameTypes.ts';
+export * from './gameTypes.ts';
+export type { GameSpeed as Speed } from './gameTypes.ts';
 
-const country=(id:CountryId,name:string,shortName:string,color:string,treasury:number,income:number,population:number,manpower:number,army:number,technology:number,stability:number):Country=>({id,name,shortName,color,treasury,income,population,manpower,army,technology,stability});
-const baseCountries=():Record<CountryId,Country>=>({
-  germany:country('germany','Германия','GER','#586E75',6800,520,84700000,1200000,210000,78,82),
-  france:country('france','Франция','FRA','#355C9A',6100,480,68400000,980000,185000,76,79),
-  italy:country('italy','Италия','ITA','#4F7C64',4400,360,58900000,760000,150000,70,72),
-  poland:country('poland','Польша','POL','#A95D67',3100,280,37600000,640000,170000,68,77),
-  spain:country('spain','Испания','ESP','#B38B49',3900,320,48600000,620000,135000,69,75),
-  uk:country('uk','Великобритания','GBR','#574E8C',6300,490,69200000,900000,175000,80,80),
-  turkey:country('turkey','Турция','TUR','#A34A4A',3500,300,86000000,1350000,260000,64,68),
-  russia:country('russia','Россия','RUS','#486A7A',7200,530,146000000,2100000,420000,71,65),
-});
-const baseProvinces=():Province[]=>[
-  {id:'uk-1',name:'Британия',ownerId:'uk',x:70,y:68,width:54,height:75,population:69200000,income:490,neighbors:['fr-1']},
-  {id:'fr-1',name:'Северная Франция',ownerId:'france',x:142,y:120,width:68,height:55,population:39000000,income:300,neighbors:['uk-1','fr-2','de-1']},
-  {id:'fr-2',name:'Южная Франция',ownerId:'france',x:150,y:177,width:66,height:48,population:29400000,income:180,neighbors:['fr-1','es-1','it-1']},
-  {id:'de-1',name:'Западная Германия',ownerId:'germany',x:215,y:105,width:56,height:58,population:42000000,income:270,neighbors:['fr-1','de-2','it-1']},
-  {id:'de-2',name:'Восточная Германия',ownerId:'germany',x:273,y:108,width:52,height:58,population:42700000,income:250,neighbors:['de-1','pl-1','it-1','ru-1']},
-  {id:'pl-1',name:'Польша',ownerId:'poland',x:330,y:104,width:62,height:62,population:37600000,income:280,neighbors:['de-2','ru-1']},
-  {id:'it-1',name:'Северная Италия',ownerId:'italy',x:245,y:179,width:48,height:48,population:31000000,income:210,neighbors:['fr-2','de-1','de-2','it-2']},
-  {id:'it-2',name:'Южная Италия',ownerId:'italy',x:272,y:221,width:42,height:64,population:27900000,income:150,neighbors:['it-1','tr-1']},
-  {id:'es-1',name:'Испания',ownerId:'spain',x:84,y:220,width:88,height:68,population:48600000,income:320,neighbors:['fr-2']},
-  {id:'tr-1',name:'Анатолия',ownerId:'turkey',x:363,y:230,width:102,height:58,population:86000000,income:300,neighbors:['it-2','ru-1']},
-  {id:'ru-1',name:'Западная Россия',ownerId:'russia',x:402,y:62,width:118,height:115,population:86000000,income:350,neighbors:['de-2','pl-1','tr-1','ru-2']},
-  {id:'ru-2',name:'Восточная Россия',ownerId:'russia',x:522,y:55,width:150,height:122,population:60000000,income:180,neighbors:['ru-1']},
-];
-const baseArmies=():Army[]=>[
-  {id:'army-uk-1',ownerId:'uk',provinceId:'uk-1',troops:175000},{id:'army-fr-1',ownerId:'france',provinceId:'fr-1',troops:100000},{id:'army-fr-2',ownerId:'france',provinceId:'fr-2',troops:85000},
-  {id:'army-de-1',ownerId:'germany',provinceId:'de-1',troops:110000},{id:'army-de-2',ownerId:'germany',provinceId:'de-2',troops:100000},{id:'army-pl-1',ownerId:'poland',provinceId:'pl-1',troops:170000},
-  {id:'army-it-1',ownerId:'italy',provinceId:'it-1',troops:90000},{id:'army-it-2',ownerId:'italy',provinceId:'it-2',troops:60000},{id:'army-es-1',ownerId:'spain',provinceId:'es-1',troops:135000},
-  {id:'army-tr-1',ownerId:'turkey',provinceId:'tr-1',troops:260000},{id:'army-ru-1',ownerId:'russia',provinceId:'ru-1',troops:250000},{id:'army-ru-2',ownerId:'russia',provinceId:'ru-2',troops:170000},
-];
-
-export function createInitialState(gameId:string,roomCode:string,hostId:string,displayName:string):GameState{return{id:gameId,roomCode,phase:'lobby',tick:0,year:2026,month:1,speed:1,countries:baseCountries(),provinces:baseProvinces(),armies:baseArmies(),players:[{id:hostId,displayName,countryId:null,isHost:true,ready:false}],selectedCountryId:null,battleLog:[]};}
-
-const player=(state:GameState,playerId:string)=>{const found=state.players.find((item)=>item.id===playerId);if(!found)throw new Error('Игрок не найден');return found;};
-const ids=(state:GameState)=>Object.keys(state.countries) as CountryId[];
-const province=(state:GameState,id:string)=>state.provinces.find((item)=>item.id===id);
-const armiesIn=(state:GameState,provinceId:string,ownerId?:CountryId)=>state.armies.filter((army)=>army.provinceId===provinceId&&(!ownerId||army.ownerId===ownerId));
-const troopSum=(armies:Army[])=>armies.reduce((sum,army)=>sum+army.troops,0);
-function recalc(state:GameState){for(const id of ids(state)){const nation=state.countries[id];nation.income=state.provinces.filter((p)=>p.ownerId===id).reduce((sum,p)=>sum+p.income,0);nation.army=state.armies.filter((a)=>a.ownerId===id).reduce((sum,a)=>sum+a.troops,0);}}
-function logBattle(state:GameState,event:Omit<BattleEvent,'id'|'tick'>){state.battleLog.unshift({...event,id:crypto.randomUUID(),tick:state.tick});state.battleLog=state.battleLog.slice(0,20);}
-function damage(state:GameState,defenders:Army[],losses:number){let remaining=losses;for(const unit of [...defenders].sort((a,b)=>b.troops-a.troops)){if(remaining<=0)break;const hit=Math.min(unit.troops,remaining);unit.troops-=hit;remaining-=hit;}state.armies=state.armies.filter((army)=>army.troops>0);}
-function move(state:GameState,ownerId:CountryId,armyId:string,destinationId:string){const army=state.armies.find((a)=>a.id===armyId);if(!army||army.ownerId!==ownerId)throw new Error('Армия не найдена');const origin=province(state,army.provinceId);const target=province(state,destinationId);if(!origin||!target)throw new Error('Провинция не найдена');if(!origin.neighbors.includes(target.id))throw new Error('Провинции не соседствуют');if(target.ownerId===ownerId){army.provinceId=target.id;return;}const defenderId=target.ownerId;const defenders=armiesIn(state,target.id,defenderId);const defending=troopSum(defenders);const attacker=state.countries[ownerId];const defender=state.countries[defenderId];const attackPower=army.troops*(1+attacker.technology/200)*(0.75+attacker.stability/200);const defensePower=(defending+2500)*(1+defender.technology/180)*(0.85+defender.stability/250)*1.12;const ratio=attackPower/Math.max(1,defensePower);if(ratio>=1){const attackerLosses=Math.min(army.troops-1000,Math.max(1000,Math.round((defending+2500)*(0.42+0.18/ratio))));const defenderLosses=defending;army.troops=Math.max(1000,army.troops-attackerLosses);state.armies=state.armies.filter((candidate)=>!defenders.some((item)=>item.id===candidate.id));target.ownerId=ownerId;army.provinceId=target.id;logBattle(state,{provinceId:target.id,attackerId:ownerId,defenderId,attackerLosses,defenderLosses,winnerId:ownerId,captured:true,message:`${attacker.name} захватывает ${target.name}`});}else{const attackerLosses=Math.min(army.troops,Math.max(1000,Math.round(army.troops*Math.min(0.78,0.42+(1-ratio)*0.28))));const defenderLosses=Math.min(defending,Math.max(0,Math.round(army.troops*Math.max(0.12,ratio*0.36))));army.troops-=attackerLosses;damage(state,defenders,defenderLosses);state.armies=state.armies.filter((candidate)=>candidate.troops>0);logBattle(state,{provinceId:target.id,attackerId:ownerId,defenderId,attackerLosses,defenderLosses,winnerId:defenderId,captured:false,message:`${defender.name} удерживает ${target.name}`});}recalc(state);}
-function recruit(state:GameState,ownerId:CountryId,target:Province,troops:number){if(target.ownerId!==ownerId)throw new Error('Чужая провинция');if(!Number.isInteger(troops)||troops<1000||troops>100000)throw new Error('Недопустимый размер набора');const nation=state.countries[ownerId];const cost=Math.ceil(troops/1000)*20;if(nation.treasury<cost||nation.manpower<troops)throw new Error('Недостаточно ресурсов');nation.treasury-=cost;nation.manpower-=troops;const existing=state.armies.find((army)=>army.ownerId===ownerId&&army.provinceId===target.id);if(existing)existing.troops+=troops;else state.armies.push({id:crypto.randomUUID(),ownerId,provinceId:target.id,troops});recalc(state);}
-function runAi(state:GameState){const human=new Set(state.players.map((p)=>p.countryId).filter(Boolean) as CountryId[]);for(const id of ids(state)){if(human.has(id))continue;const owned=state.provinces.filter((p)=>p.ownerId===id);if(!owned.length)continue;const nation=state.countries[id];if(state.tick%3===0&&nation.treasury>=80&&nation.manpower>=4000){const richest=[...owned].sort((a,b)=>b.income-a.income)[0];if(richest)recruit(state,id,richest,4000);}if(state.tick%2!==0)continue;const army=state.armies.filter((a)=>a.ownerId===id&&a.troops>=12000).sort((a,b)=>b.troops-a.troops)[0];if(!army)continue;const origin=province(state,army.provinceId);if(!origin)continue;const targets=origin.neighbors.map((neighbor)=>province(state,neighbor)).filter((p):p is Province=>Boolean(p&&p.ownerId!==id));if(!targets.length)continue;const target=[...targets].sort((a,b)=>troopSum(armiesIn(state,a.id,a.ownerId))-troopSum(armiesIn(state,b.id,b.ownerId)))[0];if(target)move(state,id,army.id,target.id);}}
-function winner(state:GameState){if(new Set(state.provinces.map((p)=>p.ownerId)).size===1)state.phase='finished';}
-
-export function applyServerCommand(state:GameState,command:GameCommand,actorId:string):GameState{assertGameCommand(command,Object.keys(state.countries));const next=structuredClone(state);const actor=player(next,actorId);if('playerId'in command&&command.playerId!==actorId)throw new Error('Подмена игрока отклонена');switch(command.type){case'SELECT_COUNTRY':if(next.phase!=='lobby')throw new Error('Страну можно выбрать только в лобби');if(next.players.some((p)=>p.id!==actorId&&p.countryId===command.countryId))throw new Error('Страна уже занята');actor.countryId=command.countryId;actor.ready=false;next.selectedCountryId=command.countryId;return next;case'SET_READY':if(next.phase!=='lobby')throw new Error('Готовность меняется только в лобби');if(command.ready&&!actor.countryId)throw new Error('Сначала выберите страну');actor.ready=command.ready;return next;case'START_GAME':if(next.phase!=='lobby')throw new Error('Кампания уже запущена');if(!actor.isHost)throw new Error('Только хост может начать игру');if(next.players.some((p)=>!p.countryId||!p.ready))throw new Error('Не все игроки готовы');next.phase='running';return next;case'SET_SPEED':if(next.phase!=='running'&&next.phase!=='paused')throw new Error('Сначала начните кампанию');if(!actor.isHost)throw new Error('Скорость меняет хост');next.speed=command.speed;next.phase=command.speed===0?'paused':'running';return next;case'RECRUIT':{if((next.phase!=='running'&&next.phase!=='paused')||!actor.countryId)throw new Error('Набор сейчас недоступен');const target=province(next,command.provinceId);if(!target)throw new Error('Провинция не найдена');recruit(next,actor.countryId,target,command.troops);return next;}case'MOVE_ARMY':if((next.phase!=='running'&&next.phase!=='paused')||!actor.countryId)throw new Error('Перемещение сейчас недоступно');move(next,actor.countryId,command.armyId,command.provinceId);winner(next);return next;case'ADVANCE_TICK':if(!actor.isHost)throw new Error('Только хост двигает игровой clock');if(next.phase!=='running'||next.speed===0)return next;next.tick+=1;next.month+=1;if(next.month>12){next.month=1;next.year+=1;}recalc(next);for(const id of ids(next)){const nation=next.countries[id];nation.treasury+=nation.income;nation.manpower+=Math.max(500,Math.round(nation.population*0.00004));}runAi(next);recalc(next);winner(next);return next;}}
+/** Retained for legacy fixtures; production world creation uses worldState.ts. */
+export function createInitialState(gameId: string, roomCode: string, playerId: string, displayName: string): GameState {
+  const state = createInitialGame(roomCode);
+  state.id = gameId;
+  state.players[0]!.id = playerId;
+  state.players[0]!.displayName = displayName;
+  return state;
+}
+export function applyServerCommand(state: GameState, command: GameCommand, actorId: string): GameState {
+  const actor = state.players.find(p => p.id === actorId);
+  if (!actor) throw new Error('Игрок не найден');
+  if (command && typeof command === 'object' && 'playerId' in command && command.playerId !== actorId) throw new Error('Подмена игрока отклонена');
+  if (command?.type === 'ADVANCE_TICK' && !actor.isHost) throw new Error('Только хост двигает игровой clock');
+  return applyCommand(state, command);
+}

@@ -21,12 +21,18 @@ This is a running report, not the final Phase 20 QA acceptance.
 | HIGH | Camera movement repeatedly rebuilt scene batches | Movement/zoom thresholds reduce JS culling updates; physical-device profiling still pending |
 | LOW | Entry copy incorrectly claimed local transport for online rooms | Corrected copy; offline entry is now a separate real transport |
 
+| HIGH | Duplicate client/server reducers could drift during world migration | One shared reducer/types; 39 tests include authenticated/local world-country selection parity |
+| HIGH | Bounded logs and deleted armies could reuse IDs in the same paused tick | Monotonic persisted entity sequence; 60 same-tick battles keep unique IDs after truncation |
+| HIGH | Room join retries could admit a ninth player or join a started campaign | Fresh CAS admission guard, immutable rejection tests and failed-membership cleanup |
+| HIGH | Unchanged full-world snapshots would be retransmitted every 900 ms | Version-aware polling; live/native verification pending |
+| LOW | Six unused TSX imports | Removed; noUnusedLocals/noUnusedParameters enabled and passed |
+
 ## Open release gates
 
 | Severity | Gate | Status |
 |---|---|---|
-| BLOCKER | Complete global world-update acceptance criteria | Not implemented yet; existing scenario remains 8 countries / 12 provinces |
-| LOW | Six unused imports in existing TSX files | Additional noUnusedLocals/noUnusedParameters audit; cleanup pending |
+| BLOCKER | Complete global world-update acceptance criteria | Not implemented yet; world data wired into new campaigns, further gameplay/release criteria pending |
+| BLOCKER | Standalone Android and live-backend gates for modern-world migration | Pending; previous checkpoint passed, not proof for this migration |
 | HIGH | Physical-device map FPS and gesture profiling | Pending; CPU query benchmark is not proof of 30/60 FPS |
 | HIGH | Save/reconnect/host migration and multiplayer chaos testing | Scheduled Phase 17/20; not claimed working |
 | HIGH | Remaining map modes backed by authoritative schemas | Scheduled later phases; unavailable modes are not mock buttons |

@@ -1,5 +1,6 @@
-import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { SvgXml } from 'react-native-svg';
+import { getWorldFlag } from '../world/catalog';
 import { Country, Province } from '../types/game';
 
 interface CountryPanelProps { country: Country | null; provinces: Province[]; locked: boolean; onChoose: () => void; }
@@ -7,9 +8,10 @@ const compact = (value: number) => new Intl.NumberFormat('ru-RU', { notation: 'c
 
 export function CountryPanel({ country, provinces, locked, onChoose }: CountryPanelProps) {
   if (!country) return <View style={styles.card}><Text style={styles.title}>Государство не выбрано</Text><Text style={styles.muted}>Нажмите на страну на карте.</Text></View>;
+  const flag = country.flag ? getWorldFlag(country.id) : null;
   return (
     <View style={styles.card}>
-      <View style={styles.row}><View style={[styles.flag, { backgroundColor: country.color }]} /><View style={styles.grow}><Text style={styles.title}>{country.name}</Text><Text style={styles.muted}>{provinces.length} пров. · Tech {country.technology}</Text></View><Text style={styles.stability}>{country.stability}%</Text></View>
+      <View style={styles.row}><View style={[styles.flag, { backgroundColor: country.color }]}>{flag && <SvgXml xml={flag} width={42} height={32} />}</View><View style={styles.grow}><Text style={styles.title}>{country.name}</Text><Text style={styles.muted}>{provinces.length} пров. · Tech {country.technology}</Text></View><Text style={styles.stability}>{country.stability}%</Text></View>
       <View style={styles.metrics}>
         <Metric label="Казна" value={`$${compact(country.treasury)}M`} /><Metric label="Доход" value={`+$${compact(country.income)}M`} /><Metric label="Население" value={compact(country.population)} /><Metric label="Армия" value={compact(country.army)} />
       </View>

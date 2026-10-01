@@ -9,7 +9,8 @@
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/*.test.ts",
-    "benchmark:map": "node --import tsx scripts/benchmark-map.ts"
+    "benchmark:map": "node --import tsx scripts/benchmark-map.ts",
+    "benchmark:world": "node --import tsx scripts/benchmark-world.ts"
   },
   "dependencies": {
     "@shopify/react-native-skia": "2.6.2",

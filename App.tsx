@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Alert, BackHandler, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { CountryPicker } from './src/components/CountryPicker';
 import { CountryPanel } from './src/components/CountryPanel';
 import { GamePanel } from './src/components/GamePanel';
 import { EntryPanel, LobbyPanel } from './src/components/LobbyPanel';
@@ -25,6 +26,7 @@ function GameApp() {
   const [previewCountryId, setPreviewCountryId] = useState<CountryId | null>(null);
   const [selectedProvinceId, setSelectedProvinceId] = useState<string | null>(null);
   const [playerId, setPlayerId] = useState<string | null>(null);
+  const [focusCountryId, setFocusCountryId] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState(true);
   const unsubscribeRef = useRef<null | (() => void)>(null);
 
@@ -36,12 +38,14 @@ function GameApp() {
     setPlayerId(session.playerId);
     setState(session.state);
     setSelectedProvinceId(null);
+    setPreviewCountryId(null);
+    setFocusCountryId(null);
     setPanelOpen(true);
     unsubscribeRef.current = source.subscribe(session.state.id, setState);
   };
 
   const selectedCountryId = previewCountryId ?? state?.selectedCountryId ?? null;
-  const selectedCountry = state && selectedCountryId ? state.countries[selectedCountryId] : null;
+  const selectedCountry = state && selectedCountryId ? state.countries[selectedCountryId] ?? null : null;
   const selectedProvinces = state && selectedCountryId ? state.provinces.filter((province) => province.ownerId === selectedCountryId) : [];
 
   const safeAction = async (action: () => Promise<void>) => {
@@ -114,6 +118,7 @@ function GameApp() {
             <Text style={styles.brand}>DOMINION</Text>
             <Text style={styles.subbrand}>{gameStarted ? `Ход ${state.tick} · ${state.phase === 'finished' ? 'КАМПАНИЯ ЗАВЕРШЕНА' : 'КАМПАНИЯ'}` : `Комната ${state.roomCode}`}</Text>
           </View>
+          {!gameStarted && <CountryPicker state={state} onPreview={id => { setPreviewCountryId(id); setFocusCountryId(id); setPanelOpen(true); }} />}
           <Pressable style={styles.exitButton} onPress={() => setPanelOpen(!panelOpen)}><Text style={styles.exitText}>{panelOpen ? "ЗАКРЫТЬ ПАНЕЛЬ" : "УПРАВЛЕНИЕ"}</Text></Pressable>
           <Pressable style={styles.exitButton} onPress={() => {
             transport.leave(state.id).catch(() => undefined);
@@ -129,6 +134,7 @@ function GameApp() {
 
         <View style={styles.mapArea}><WorldMap
           state={state}
+          focusCountryId={focusCountryId}
           selectedCountryId={selectedCountryId}
           selectedProvinceId={selectedProvinceId}
           onSelectProvince={selectProvince}

@@ -36,9 +36,9 @@ for (const mode of ['local', 'server'] as const) {
     state = apply({ type: 'SET_SPEED', playerId: 'local-player', speed: 0 });
     assert.equal(state.phase, 'paused');
     state = apply({ type: 'SET_SPEED', playerId: 'local-player', speed: 1 });
-    const funds = state.countries.germany.treasury;
+    const funds = state.countries.germany!.treasury;
     state = apply({ type: 'RECRUIT', playerId: 'local-player', provinceId: 'de-1', troops: 10000 });
-    assert.equal(state.countries.germany.treasury, funds - 200);
+    assert.equal(state.countries.germany!.treasury, funds - 200);
   });
 }
 for (const mode of ['local', 'server'] as const) {
@@ -54,9 +54,9 @@ for (const mode of ['local', 'server'] as const) {
     state = apply({ type: 'ADVANCE_TICK' });
     assert.deepEqual(state, before);
     state = apply({ type: 'RECRUIT', playerId: 'local-player', provinceId: 'de-1', troops: 25000 });
-    assert.equal(state.countries.germany.treasury, before.countries.germany.treasury - 500);
-    assert.equal(state.countries.germany.manpower, before.countries.germany.manpower - 25000);
-    assert.equal(state.countries.germany.army, before.countries.germany.army + 25000);
+    assert.equal(state.countries.germany!.treasury, before.countries.germany!.treasury - 500);
+    assert.equal(state.countries.germany!.manpower, before.countries.germany!.manpower - 25000);
+    assert.equal(state.countries.germany!.army, before.countries.germany!.army + 25000);
     assert.throws(() => apply({ type: 'RECRUIT', playerId: 'local-player', provinceId: 'fr-1', troops: 10000 }));
     assert.throws(() => apply({ type: 'MOVE_ARMY', playerId: 'local-player', armyId: 'army-fr-1', provinceId: 'de-1' }));
     state = apply({ type: 'MOVE_ARMY', playerId: 'local-player', armyId: 'army-de-1', provinceId: 'de-2' });

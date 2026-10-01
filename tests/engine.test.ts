@@ -11,8 +11,8 @@ function running() {
 test('recruitment pays treasury and manpower without mutating prior state', () => {
   const state = running(), before = structuredClone(state);
   const result = applyCommand(state, { type: 'RECRUIT', playerId: 'local-player', provinceId: 'fr-1', troops: 10000 });
-  assert.equal(result.countries.france.treasury, state.countries.france.treasury - 200);
-  assert.equal(result.countries.france.manpower, state.countries.france.manpower - 10000);
+  assert.equal(result.countries.france!.treasury, state.countries.france!.treasury - 200);
+  assert.equal(result.countries.france!.manpower, state.countries.france!.manpower - 10000);
   assert.deepEqual(state, before);
 });
 test('invalid movement and recruitment commands are rejected', () => {

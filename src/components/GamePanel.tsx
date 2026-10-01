@@ -1,6 +1,5 @@
-import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { CountryId, GameCommand, GameState } from '../types/game';
+import { countryFor, GameCommand, GameState } from '../types/game';
 
 interface GamePanelProps {
   state: GameState;
@@ -15,7 +14,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
   const me = state.players.find((player) => player.id === playerId);
   const countryId = me?.countryId ?? null;
   if (!countryId) return null;
-  const nation = state.countries[countryId];
+  const nation = countryFor(state, countryId);
   const selected = state.provinces.find((province) => province.id === selectedProvinceId) ?? null;
   const ownArmies = selected ? state.armies.filter((army) => army.provinceId === selected.id && army.ownerId === countryId).sort((a, b) => b.troops - a.troops) : [];
   const primaryArmy = ownArmies[0] ?? null;
@@ -57,9 +56,9 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
             <View style={styles.provinceTitleRow}>
               <View>
                 <Text style={styles.title}>{selected.name}</Text>
-                <Text style={styles.owner}>{state.countries[selected.ownerId].name} · доход ${selected.income}M</Text>
+                <Text style={styles.owner}>{countryFor(state, selected.ownerId).name} · доход ${selected.income}M</Text>
               </View>
-              <View style={[styles.ownerDot, { backgroundColor: state.countries[selected.ownerId].color }]} />
+              <View style={[styles.ownerDot, { backgroundColor: countryFor(state, selected.ownerId).color }]} />
             </View>
 
             {isOwnProvince && (
@@ -76,7 +75,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
             <Text style={styles.sectionTitle}>Армии в провинции</Text>
             {state.armies.filter((army) => army.provinceId === selected.id).length === 0 ? <Text style={styles.muted}>Нет армий</Text> : state.armies.filter((army) => army.provinceId === selected.id).map((army) => (
               <View key={army.id} style={styles.armyRow}>
-                <Text style={styles.armyOwner}>{state.countries[army.ownerId].shortName}</Text>
+                <Text style={styles.armyOwner}>{countryFor(state, army.ownerId).shortName}</Text>
                 <Text style={styles.armyTroops}>{compact(army.troops)}</Text>
               </View>
             ))}
@@ -112,7 +111,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         {state.battleLog.length === 0 ? <Text style={styles.hint}>Боёв пока не было.</Text> : state.battleLog.slice(0, 6).map((battle) => (
           <View key={battle.id} style={styles.logRow}>
             <View style={styles.logTop}><Text style={styles.logMessage}>{battle.message}</Text><Text style={styles.logTick}>#{battle.tick}</Text></View>
-            <Text style={styles.logLoss}>Потери: {state.countries[battle.attackerId].shortName} −{compact(battle.attackerLosses)} · {state.countries[battle.defenderId].shortName} −{compact(battle.defenderLosses)}</Text>
+            <Text style={styles.logLoss}>Потери: {countryFor(state, battle.attackerId).shortName} −{compact(battle.attackerLosses)} · {countryFor(state, battle.defenderId).shortName} −{compact(battle.defenderLosses)}</Text>
           </View>
         ))}
       </View>

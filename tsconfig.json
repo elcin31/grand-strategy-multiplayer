@@ -9,7 +9,9 @@
         "src/*"
       ]
     },
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "exclude": [
     "supabase/**",

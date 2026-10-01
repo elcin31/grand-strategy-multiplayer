@@ -1,4 +1,4 @@
-import { createInitialGame } from '../data/world';
+import { createWorldState } from '../../supabase/functions/_shared/worldState';
 import { applyCommand } from '../engine/gameEngine';
 import { GameCommand, GameState } from '../types/game';
 import { MultiplayerTransport, TransportSession, Unsubscribe } from './transport';
@@ -13,7 +13,7 @@ export class LocalTransport implements MultiplayerTransport {
 
   async createRoom(displayName: string): Promise<TransportSession> {
     const roomCode = randomCode();
-    const state = createInitialGame(roomCode);
+    const state = createWorldState('game-'+roomCode.toLowerCase(), roomCode, 'local-player', displayName.trim() || 'Игрок 1');
     state.players[0]!.displayName = displayName.trim() || 'Игрок 1';
     rooms.set(state.id, state);
     this.playerIds.set(state.id, 'local-player');

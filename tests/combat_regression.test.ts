@@ -11,7 +11,7 @@ for (const mode of ['local', 'server'] as const) {
       state.players[0]!.countryId = 'germany';
       state.phase = 'paused'; state.speed = 0;
       state.armies.find(a => a.id === 'army-de-1')!.troops = troops;
-      state.countries.germany.army = state.armies.filter(a => a.ownerId === 'germany').reduce((sum, a) => sum + a.troops, 0);
+      state.countries.germany!.army = state.armies.filter(a => a.ownerId === 'germany').reduce((sum, a) => sum + a.troops, 0);
       const before = structuredClone(state);
       const command = { type: 'MOVE_ARMY', playerId: 'local-player', armyId: 'army-de-1', provinceId: 'fr-1' } as const;
       const next = mode === 'local' ? applyCommand(state, command) : applyServerCommand(state, command, 'local-player');

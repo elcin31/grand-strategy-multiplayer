@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BackHandler, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Canvas, Circle, Fill, Group, LinearGradient, Path, Rect, Text as MapText, Skia, matchFont, vec } from '@shopify/react-native-skia';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { cancelAnimation, runOnJS, useAnimatedReaction, useDerivedValue, useSharedValue, withDecay, withRepeat, withTiming } from 'react-native-reanimated';
-import type { CountryId, GameState, Province } from '../types/game';
+import { countryFor, type CountryId, type GameState, type Province } from '../types/game';
 import { boundedCamera, Camera, clamp, TILT, visibleBounds, zoomAt } from '../map/camera';
 import { featurePath, Point } from '../map/geometry';
-import { mapCities } from '../map/cities';
-import { borderPaths, buildProvinceColors, countryLabels, features, provinceGeometry, spatialIndex, troopsByProvince, visibleCities } from '../map/scene';
+import { mapSceneFor, type MapScene } from '../map/worldScene';
+import { borderPaths, buildProvinceColors, countryLabels, troopsByProvince, visibleCities } from '../map/scene';
 import { AVAILABLE_MODES, GRAPHICS, GraphicsPreset, MapMode, MODE_LABELS } from '../map/settings';
 import { lakes, rivers, terrainPatches } from '../map/terrain';
 
@@ -16,11 +16,18 @@ interface WorldMapProps {
   selectedCountryId: CountryId | null;
   selectedProvinceId: string | null;
   onSelectProvince: (province: Province) => void;
+  focusCountryId?: string | null;
   onLongPressProvince?: (province: Province) => void;
 }
-const paths = new Map(features.map(f => [f.id, Skia.Path.MakeFromSVGString(featurePath(f))!]));
-const contextPath = Skia.Path.Make();
-features.filter(f => !f.provinceId).forEach(f => contextPath.addPath(paths.get(f.id)!));
+const nativeScenes = new WeakMap<MapScene, { paths: Map<string, ReturnType<typeof Skia.Path.Make>>; contextPath: ReturnType<typeof Skia.Path.Make> }>();
+function nativeScene(scene: MapScene) {
+  const cached = nativeScenes.get(scene);
+  if (cached) return cached;
+  const paths = new Map(scene.features.map(f => [f.id, Skia.Path.MakeFromSVGString(featurePath(f))!]));
+  const contextPath = Skia.Path.Make();
+  scene.features.filter(f => !f.provinceId).forEach(f => contextPath.addPath(paths.get(f.id)!));
+  const result = { paths, contextPath }; nativeScenes.set(scene, result); return result;
+}
 const linePath = (points: Point[]) => points.map((p, i) => `${i ? 'L' : 'M'}${p.x},${p.y}`).join('');
 const riverPath = rivers.map(linePath).join('');
 const mountainPath = terrainPatches.filter(t => t.type === 'mountain').flatMap(t => t.points.map(p => `M${p.x - 1.8},${p.y + 1.1}L${p.x},${p.y - 1.8}L${p.x + 1.8},${p.y + 1.1}Z`)).join('');
@@ -29,7 +36,10 @@ const desertPath = terrainPatches.filter(t => t.type === 'desert').map(t => line
 const compact = (v: number) => v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : `${Math.round(v / 1e3)}K`;
 const defaults: Camera = { x: 800, y: 160, zoom: 3.5 };
 
-export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince }: WorldMapProps) {
+export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince, focusCountryId }: WorldMapProps) {
+  const scene = useMemo(() => mapSceneFor(state), [state.dataset]);
+  const { features, spatialIndex, provinceGeometry, cities: mapCities } = scene;
+  const { paths, contextPath } = useMemo(() => nativeScene(scene), [scene]);
   const [viewport, setViewport] = useState({ width: 1, height: 1 });
   const [snapshot, setSnapshot] = useState<Camera>(defaults);
   const [preset, setPreset] = useState<GraphicsPreset>('Medium');
@@ -61,7 +71,7 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
   const bounds = useMemo(() => visibleBounds(snapshot, viewport, 300), [snapshot, viewport]);
   const visible = useMemo(() => spatialIndex.query(bounds).filter(f => f.provinceId), [bounds]);
   const visibleIds = useMemo(() => new Set(visible.map(f => f.provinceId!)), [visible]);
-  const borders = useMemo(() => borderPaths(state, visibleIds), [state.provinces, visibleIds]);
+  const borders = useMemo(() => borderPaths(state, visibleIds, scene.edges), [state.provinces, visibleIds, scene]);
   const troops = useMemo(() => troopsByProvince(state), [state.armies]);
   const provinceColors = useMemo(() => buildProvinceColors(state, mode, troops), [state.countries, state.provinces, mode, troops]);
   const provinces = useMemo(() => new Map(state.provinces.map(p => [p.id, p])), [state.provinces]);
@@ -76,7 +86,7 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
     const hit = nearby?.g ?? (cityHit ? provinceGeometry.get(cityHit.provinceId) : null) ?? spatialIndex.hit(world);
     const province = hit?.provinceId ? provinces.get(hit.provinceId) : null;
     if (province) (long ? onLongPressProvince ?? onSelectProvince : onSelectProvince)(province);
-  }, [viewport, provinces, state.armies, onSelectProvince, onLongPressProvince, preset]);
+  }, [viewport, provinces, state.armies, onSelectProvince, onLongPressProvince, preset, scene]);
 
   const gestures = useMemo(() => {
     const pan = Gesture.Pan().minDistance(5).maxPointers(1).onStart(() => { cancelAnimation(x); cancelAnimation(y); startX.value = x.value; startY.value = y.value; })
@@ -109,8 +119,8 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
     const batch = new Map<string, ReturnType<typeof Skia.Path.Make>>();
     for (const f of visible) { const color = provinceColors.get(f.provinceId!) ?? '#37423f'; const path = batch.get(color) ?? Skia.Path.Make(); path.addPath(paths.get(f.id)!); batch.set(color, path); }
     return [...batch.entries()];
-  }, [visible, provinceColors]);
-  const selectedPath = useMemo(() => { const path = Skia.Path.Make(); visible.filter(f => selectedProvinceId ? f.provinceId === selectedProvinceId : provinces.get(f.provinceId!)?.ownerId === selectedCountryId).forEach(f => path.addPath(paths.get(f.id)!)); return path; }, [visible, selectedProvinceId, selectedCountryId, provinces]);
+  }, [visible, provinceColors, paths]);
+  const selectedPath = useMemo(() => { const path = Skia.Path.Make(); visible.filter(f => selectedProvinceId ? f.provinceId === selectedProvinceId : provinces.get(f.provinceId!)?.ownerId === selectedCountryId).forEach(f => path.addPath(paths.get(f.id)!)); return path; }, [visible, selectedProvinceId, selectedCountryId, provinces, paths]);
   const shadowPath = useMemo(() => { const path = Skia.Path.Make(); colors.forEach(c => path.addPath(c[1])); return path; }, [colors]);
   const labelZoom = Math.exp(Math.round(Math.log(snapshot.zoom) * 4) / 4);
   const labels = useMemo(() => {
@@ -124,8 +134,17 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
     }
     return countryLabels(features, new Map(state.provinces.map(p => [p.id, p.ownerId])), blockers, {
       height: 22 / (labelZoom * TILT), widths: new Map(Object.values(state.countries).map(c => [c.id, (nationFont.measureText(c.name).width + 12) * 1.7 / labelZoom])),
-    });
-  }, [state.provinces, state.armies, state.countries, cities, font, nationFont, labelZoom]);
+    }, new Set(visible.map(f => provinces.get(f.provinceId!)?.ownerId).filter((id): id is string => Boolean(id))));
+  }, [state.provinces, state.armies, state.countries, cities, font, nationFont, labelZoom, scene, visible, provinces]);
+  useEffect(() => {
+    if (!focusCountryId || viewport.width <= 1) return;
+    const capitalId = state.countries[focusCountryId]?.capitalCityId;
+    const capital = mapCities.find(c => c.id === capitalId);
+    if (!capital) return;
+    const target = { x: capital.point.x, y: capital.point.y, zoom: 5 };
+    x.value = withTiming(target.x, { duration: 260 }); y.value = withTiming(target.y, { duration: 260 });
+    zoom.value = withTiming(target.zoom, { duration: 260 }, done => { if (done) runOnJS(setSnapshot)(target); });
+  }, [focusCountryId, scene, viewport.width, x, y, zoom]);
   const terrain = GRAPHICS[preset].terrain;
 
   return <View style={styles.frame} onLayout={e => setViewport({ width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height })}>
@@ -151,7 +170,7 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
           {!selectedPath.isEmpty() && <Path path={selectedPath} style="stroke" color="#f0db9e" strokeWidth={selectionScale} opacity={pulse} />}
           {snapshot.zoom < 8 && labels.filter(label => label.anchor.x >= bounds.left && label.anchor.x <= bounds.right && label.anchor.y >= bounds.top && label.anchor.y <= bounds.bottom).map(label => {
             if (label.blocked) return null;
-            const country = state.countries[label.countryId as CountryId];
+            const country = countryFor(state, label.countryId as CountryId);
             const fullWidth = nationFont.measureText(country.name).width;
             const name = label.width * snapshot.zoom / (fullWidth + 12) < 0.8 ? country.shortName : country.name;
             const width = nationFont.measureText(name).width;
@@ -193,7 +212,7 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
       <Text style={styles.heading}>РЕЖИМ КАРТЫ</Text><View style={styles.options}>{AVAILABLE_MODES.map(m => <Pressable key={m} style={[styles.option, mode === m && styles.active]} onPress={() => { setMode(m); setSettingsOpen(false); }}><Text style={styles.text}>{MODE_LABELS[m]}</Text></Pressable>)}</View>
       <Text style={styles.heading}>КАЧЕСТВО ГРАФИКИ</Text><View style={styles.options}>{(Object.keys(GRAPHICS) as GraphicsPreset[]).map(p => <Pressable key={p} style={[styles.option, preset === p && styles.active]} onPress={() => setPreset(p)}><Text style={styles.text}>{p}</Text></Pressable>)}</View>
     </View>}
-    <View pointerEvents="none" style={styles.legend}><Text style={styles.note}>{mode === 'Political' ? 'Провинции кампании · нейтральная суша вне сценария' : mode === 'Terrain' ? 'Стилизованный рельеф' : `${MODE_LABELS[mode]} · от меньшего (серый) к большему (золотой)`}</Text></View>
+    <View pointerEvents="none" style={styles.legend}><Text style={styles.note}>{mode === 'Political' ? (state.dataset ? 'Современный мир · границы Natural Earth' : 'Провинции кампании · нейтральная суша вне сценария') : mode === 'Terrain' ? 'Стилизованный рельеф' : `${MODE_LABELS[mode]} · от меньшего (серый) к большему (золотой)`}</Text></View>
   </View>;
 }
 const styles = StyleSheet.create({

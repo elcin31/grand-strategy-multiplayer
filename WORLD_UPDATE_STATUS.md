@@ -4,7 +4,7 @@
 
 Implemented: native Skia GPU canvas, real public-domain geographic contours, original terrain bands/rivers/lakes, camera tilt, pan/inertia, pinch and focal-point zoom, double tap, animated selection and battle markers, city/capital markers, military counters, cached native paths, color-batched province rendering, spatial index, city LOD, Low/Medium/High/Ultra presets, landscape and safe-area layout, offline scenario entry.
 
-Playable-state schema is deliberately still compatible with the existing server: 8 countries, 12 provinces. Global geography outside this scenario is background context. It is not 195 playable states yet. Provinces use synthetic geographic cuts, not real administrative subdivisions.
+The legacy 8-country / 12-province scenario remains available to existing campaigns and regression fixtures. New offline campaigns and the updated server factory use `modern-world-v1`: 195 selectable countries, 4,386 real administrative provinces and 7,214 populated places. Native and live-backend gates for this migration are pending; it is not a completed global strategy release.
 
 6 functional map modes use existing authoritative state: Political, Economy, Population, Military, Terrain, Stability. The remaining 6 modes require later government/religion/diplomacy/resource/development schemas. They are not presented as working features.
 
@@ -48,7 +48,7 @@ Only `elcin31/grand-strategy-multiplayer` is modified. Online transport continue
 
 Preparation audit produced 195 country records, 4,386 real administrative provinces, 7,214 populated places and 10,527 symmetric land-adjacency edges. It checks unique IDs, valid geometry, every country capital and all city/province links. Explicit capital/seat exceptions cover Bolivia, South Africa, Côte d’Ivoire, Palestine, South Sudan and Nauru. Nauru's government-seat district uses its mapped district anchor; the source has no populated-place entry. Baykonur's assignment across a leased-area gap is recorded for review. Source population estimates retain their historical year.
 
-These prepared records are not yet loaded into campaigns. Runtime remains the existing scenario until schema/engine/server migration passes the next gates.
+The prepared records are now packaged by `scripts/package-world.py` and loaded by the shared world factory. Mutable campaign state contains no polygons, coordinates or flag SVG strings. Geometry/city points remain cached renderer definitions. Province populations are allocated from historical country estimates using city weights and land area; city counts are normalized within province totals. These are deterministic game estimates, not census claims.
 
 Profiling the prepared 4,386-province dataset found country-label generation took ~7.8 seconds on this machine. Cached geometry, bounded candidates and exact horizontal land intervals reduced it to ~102 ms. The repeatable synthetic 5,000-feature CI benchmark now reports label time too. This is CPU preparation, not native navigation FPS.
 
@@ -65,3 +65,14 @@ The expanded Android smoke test on `87601a2` caught a real regression: recruitme
 The immutable country catalogue has been committed as preparation: 195 definitions, linked capital records, original adjectives and contrasting neighbor-aware colors, Russian/English/ISO search, and offline flag-icons 7.5.0 vectors with the complete MIT notice. It does not change the playable campaign roster yet. No final release acceptance is claimed.
 
 Latest native gate: `0e05df5` passed assembleRelease, embedded 2,983,712-byte bundle verification, Skia/Hermes checks, real paused recruitment, all four presets/six modes, four landscape layouts and network-disabled restart. Later commits change only tests/reports and the opt-in backend smoke script; application/runtime files are identical. Remaining phase acceptance and final APK gates above stay open.
+
+## World campaign migration — native/live gates pending
+
+- Shared `gameTypes.ts`, `gameEngine.ts` and `worldState.ts` replace duplicated client/server reducer logic. Country IDs are strings; roster size is data-driven. Unknown country links fail explicitly. Legacy campaign geometry is selected independently by dataset version.
+- New campaigns load all countries, province adjacency and linked cities, with capital armies and a persisted deterministic campaign seed. Flags render from the licensed offline SVG catalogue. A virtualized modal picker searches Russian/English names and ISO codes, including microstates, then focuses their capital marker.
+- The GPU renderer caches both scenario geometry sets, batches visible polygons, uses the real shared-boundary graph and limits label preparation to visible countries. Data does not create one React Native View per province.
+- Global stat aggregation is linear in provinces/armies. Recruitment updates only the recruiting country's army total. Captures synchronize owner/controller/city ownership and country province/population totals.
+- A monotonic campaign entity sequence prevents repeated army/battle IDs after casualties or bounded battle-log truncation.
+- Room admission now rechecks phase, duplicate player IDs and the eight-player limit on each fresh CAS snapshot; failed joins clean up their new membership. Version-aware polling avoids transferring an unchanged 2.8 MB world state every 900 ms. This does not yet implement delta sync, command idempotency, reconnect or host migration.
+- 39 JS tests and 3 Python tests passed locally, with `noUnusedLocals` and `noUnusedParameters` now enabled. Full-world data/CPU benchmark passed 100 ticks; physical FPS and complete Phase 20 stress/chaos acceptance remain unverified.
+- Android smoke now uses actual searchable country selection and a real capital province instead of the synthetic demo coordinates. Repeat standalone build/native smoke and isolated live-backend verification are required before accepting this migration.

@@ -1,8 +1,8 @@
 import { GameCommand, GameState } from '../types/game';
 import { MultiplayerTransport, TransportSession, Unsubscribe } from './transport';
 
-interface RemoteSession { gameId: string; playerId: string; token: string; }
-interface RoomResponse { state: GameState; playerId: string; token?: string; }
+interface RemoteSession { gameId: string; playerId: string; token: string; version?: number; }
+interface RoomResponse { state: GameState; playerId: string; token?: string; version?: number; }
 const normalizeBaseUrl = (value: string) => value.replace(/\/+$/, '');
 
 export class HttpTransport implements MultiplayerTransport {
@@ -25,14 +25,14 @@ export class HttpTransport implements MultiplayerTransport {
   async createRoom(displayName: string): Promise<TransportSession> {
     const result = await this.request<RoomResponse>('game-room', { action: 'create', displayName });
     if (!result.token) throw new Error('Сервер не вернул токен игрока');
-    this.sessions.set(result.state.id, { gameId: result.state.id, playerId: result.playerId, token: result.token });
+    this.sessions.set(result.state.id, { gameId: result.state.id, playerId: result.playerId, token: result.token, version: result.version });
     return { state: result.state, playerId: result.playerId };
   }
 
   async joinRoom(roomCode: string, displayName: string): Promise<TransportSession> {
     const result = await this.request<RoomResponse>('game-room', { action: 'join', roomCode, displayName });
     if (!result.token) throw new Error('Сервер не вернул токен игрока');
-    this.sessions.set(result.state.id, { gameId: result.state.id, playerId: result.playerId, token: result.token });
+    this.sessions.set(result.state.id, { gameId: result.state.id, playerId: result.playerId, token: result.token, version: result.version });
     return { state: result.state, playerId: result.playerId };
   }
 
@@ -51,8 +51,10 @@ export class HttpTransport implements MultiplayerTransport {
       if (!session) return;
       inFlight = true;
       try {
-        const result = await this.request<RoomResponse>('game-room', { action: 'state', gameId, playerId: session.playerId, token: session.token });
-        if (!stopped) onState(result.state);
+        const result = await this.request<RoomResponse & { unchanged?: boolean }>('game-room', { action: 'state', gameId, playerId: session.playerId, token: session.token, version: session.version });
+        if (stopped) return;
+        if (result.version !== undefined) session.version = result.version;
+        if (!result.unchanged) onState(result.state);
       } catch {
         // A transient network miss must not destroy an active campaign.
       } finally {

@@ -56,7 +56,7 @@ for (const mode of ['local', 'server'] as const) {
     for (let i = 0; i < 1000; i++) {
       const troops = 1000 * (1 + Math.floor(rng() * 100));
       const provinceId = rng() < .8 ? 'de-1' : 'fr-1';
-      const canRecruit = provinceId === 'de-1' && state.countries.germany.treasury >= troops / 1000 * 20 && state.countries.germany.manpower >= troops;
+      const canRecruit = provinceId === 'de-1' && state.countries.germany!.treasury >= troops / 1000 * 20 && state.countries.germany!.manpower >= troops;
       const command = { type: 'RECRUIT', playerId: 'local-player', provinceId, troops };
       if (canRecruit) { state = apply(command); paid += troops / 1000 * 20; recruited += troops; }
       else { const before = structuredClone(state); assert.throws(() => apply(command)); assert.deepEqual(state, before); }
@@ -64,9 +64,9 @@ for (const mode of ['local', 'server'] as const) {
       assert.equal(state.phase, 'paused');
       assert.equal(state.tick, start.tick);
       assert.equal(state.month, start.month);
-      assert.equal(state.countries.germany.treasury, start.countries.germany.treasury - paid);
-      assert.equal(state.countries.germany.manpower, start.countries.germany.manpower - recruited);
-      assert.equal(state.countries.germany.army, start.countries.germany.army + recruited);
+      assert.equal(state.countries.germany!.treasury, start.countries.germany!.treasury - paid);
+      assert.equal(state.countries.germany!.manpower, start.countries.germany!.manpower - recruited);
+      assert.equal(state.countries.germany!.army, start.countries.germany!.army + recruited);
       assert.equal(new Set(state.armies.map(a => a.id)).size, state.armies.length);
       for (const army of state.armies) assert.ok(Number.isSafeInteger(army.troops) && army.troops > 0 && state.provinces.some(p => p.id === army.provinceId));
     }
