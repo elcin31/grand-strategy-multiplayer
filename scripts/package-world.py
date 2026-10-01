@@ -45,14 +45,20 @@ export interface CityDefinition { id: string; name: string; countryId: string; p
 """
 minimal=[{key:c[key] for key in ['id','name','shortName','color','adjective','flag','capitalCityId','provinceIds','populationEstimate']} for c in countries]
 compact=lambda data:json.dumps(data,ensure_ascii=False,separators=(',',':'))
-text=header
+world_data_dir=root/'supabase/functions/_shared/worldData'
+world_data_dir.mkdir(parents=True,exist_ok=True)
+imports=[]
+exports=[]
 for name,kind,data in [('countryDefinitions','CountryDefinition',minimal),('provinceDefinitions','ProvinceDefinition',rows),('cityDefinitions','CityDefinition',city_rows)]:
  batches=[]
- for i in range(0,len(data),300):
-  batch=name+'Batch'+str(i//300);batches.append(batch)
-  text+='const '+batch+': '+kind+'[] = '+compact(data[i:i+300])+';\n'
- text+='export const '+name+': readonly '+kind+'[] = ['+','.join('...'+b for b in batches)+'];\n'
-(root/'supabase/functions/_shared/worldDefinitions.ts').write_text(text)
+ chunk_size=100 if kind!='CityDefinition' else 200
+ for i in range(0,len(data),chunk_size):
+  batch=name+'Batch'+str(i//chunk_size);batches.append(batch)
+  filename=f'{name}-{i//chunk_size:02d}.ts'
+  (world_data_dir/filename).write_text(f'import type {{ {kind} }} from "../worldDefinitions.ts";\nexport const data: {kind}[] = '+compact(data[i:i+chunk_size])+';\n')
+  imports.append(f'import {{ data as {batch} }} from "./worldData/{filename}";')
+ exports.append(f'export const {name}: readonly {kind}[] = ['+','.join('...'+b for b in batches)+'];')
+(root/'supabase/functions/_shared/worldDefinitions.ts').write_text(header+'\n'.join(imports)+'\n'+'\n'.join(exports)+'\n')
 (root/'src/world/data/geometry.json').write_text(compact(geometry)+'\n')
 (root/'src/world/data/city-points.json').write_text(compact([{'id':c['id'],'point':c['point']} for c in cities])+'\n')
 print(f'Packaged {len(countries)} countries / {len(rows)} provinces / {len(city_rows)} cities')
