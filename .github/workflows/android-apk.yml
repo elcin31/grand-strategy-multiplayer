@@ -8,6 +8,10 @@ on:
 permissions:
   contents: read
 
+env:
+  CI: '1'
+  NODE_ENV: production
+
 jobs:
   build-apk:
     runs-on: ubuntu-latest
@@ -34,18 +38,18 @@ jobs:
         run: npm run typecheck
 
       - name: Generate Android project
-        run: npx expo prebuild --platform android --non-interactive
+        run: npx expo prebuild --platform android --clean
 
-      - name: Build debug APK
+      - name: Build standalone release APK
         run: |
           chmod +x android/gradlew
           cd android
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleRelease --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: dominion-android-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: dominion-android-release
+          path: android/app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
           retention-days: 14
