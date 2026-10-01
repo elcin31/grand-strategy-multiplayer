@@ -3,6 +3,7 @@
 Verifies cold launch, landscape, offline campaign map, restart, and fatal logs.
 Evidence is uploaded by CI. This is not a physical-device FPS claim.
 """
+import atexit
 import re
 import subprocess
 import sys
@@ -12,6 +13,10 @@ from pathlib import Path
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 OUT = Path('android-smoke'); OUT.mkdir(exist_ok=True)
 def adb(*args): return subprocess.check_output(['adb', *args], text=True)
+def save_logs():
+    try: (OUT/'logcat.txt').write_text(adb('logcat','-d'))
+    except (OSError, subprocess.CalledProcessError): pass
+atexit.register(save_logs)
 def hierarchy(name):
     adb('shell','uiautomator','dump','/sdcard/window.xml')
     xml = adb('shell','cat','/sdcard/window.xml')
@@ -41,6 +46,8 @@ def click_scrolling(text):
     raise AssertionError('Missing usable control: '+text)
 def province_army_text(root):
     texts = [n.get('text','') for n in root.iter('node') if n.get('text')]
+    assert not any('Действие отклонено' in text for text in texts), 'Recruitment was rejected: '+str(texts)
+    assert 'GER' in texts, 'Province army row is missing: '+str(texts)
     owner = texts.index('GER')
     return next(t for t in texts[owner+1:] if re.fullmatch(r'\d+K',t))
 adb('install','-r',sys.argv[1])

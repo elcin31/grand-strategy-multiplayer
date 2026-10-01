@@ -174,7 +174,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       return next;
     }
     case 'RECRUIT': {
-      if (next.phase !== 'running') throw new Error('Игра не запущена');
+      if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId);
       if (!player.countryId) throw new Error('Страна не выбрана');
       const province = provinceById(next, command.provinceId);
@@ -183,7 +183,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       return next;
     }
     case 'MOVE_ARMY': {
-      if (next.phase !== 'running') throw new Error('Игра не запущена');
+      if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId);
       if (!player.countryId) throw new Error('Страна не выбрана');
       resolveMovement(next, player.countryId, command.armyId, command.provinceId);

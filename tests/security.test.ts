@@ -41,6 +41,32 @@ for (const mode of ['local', 'server'] as const) {
     assert.equal(state.countries.germany.treasury, funds - 200);
   });
 }
+for (const mode of ['local', 'server'] as const) {
+  test(`${mode} permits paid recruitment and legal movement while the clock is paused`, () => {
+    let state = mode === 'local' ? createInitialGame() : createInitialState('game', 'SECURE', 'local-player', 'Test');
+    const apply = (command: unknown) => mode === 'local' ? applyCommand(state, command as never) : applyServerCommand(state, command as never, 'local-player');
+    assert.throws(() => apply({ type: 'RECRUIT', playerId: 'local-player', provinceId: 'de-1', troops: 10000 }));
+    state = apply({ type: 'SELECT_COUNTRY', playerId: 'local-player', countryId: 'germany' });
+    state = apply({ type: 'SET_READY', playerId: 'local-player', ready: true });
+    state = apply({ type: 'START_GAME', playerId: 'local-player' });
+    state = apply({ type: 'SET_SPEED', playerId: 'local-player', speed: 0 });
+    const before = structuredClone(state);
+    state = apply({ type: 'ADVANCE_TICK' });
+    assert.deepEqual(state, before);
+    state = apply({ type: 'RECRUIT', playerId: 'local-player', provinceId: 'de-1', troops: 25000 });
+    assert.equal(state.countries.germany.treasury, before.countries.germany.treasury - 500);
+    assert.equal(state.countries.germany.manpower, before.countries.germany.manpower - 25000);
+    assert.equal(state.countries.germany.army, before.countries.germany.army + 25000);
+    assert.throws(() => apply({ type: 'RECRUIT', playerId: 'local-player', provinceId: 'fr-1', troops: 10000 }));
+    assert.throws(() => apply({ type: 'MOVE_ARMY', playerId: 'local-player', armyId: 'army-fr-1', provinceId: 'de-1' }));
+    state = apply({ type: 'MOVE_ARMY', playerId: 'local-player', armyId: 'army-de-1', provinceId: 'de-2' });
+    assert.equal(state.armies.find(a => a.id === 'army-de-1')?.provinceId, 'de-2');
+    assert.equal(state.phase, 'paused');
+    assert.equal(state.tick, before.tick);
+    assert.equal(state.month, before.month);
+    assert.equal(state.year, before.year);
+  });
+}
 test('server rejects actor spoofing and a non-host advancing the clock', () => {
   const state = createInitialState('game', 'SECURE', 'host', 'Host');
   state.players.push({ id: 'guest', displayName: 'Guest', countryId: null, ready: false, isHost: false });
