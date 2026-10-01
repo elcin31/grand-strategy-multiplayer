@@ -1,55 +1,75 @@
 name: Android APK
-
 on:
   push:
-    branches: [main]
+    branches: [main, world-update]
   workflow_dispatch:
-
 permissions:
   contents: read
-
 env:
   CI: '1'
-  NODE_ENV: production
-
 jobs:
   build-apk:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
+          cache: npm
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
-
+        run: npm ci --include=dev --no-audit --no-fund
       - name: Typecheck
         run: npm run typecheck
-
+      - name: Regression tests
+        run: npm test
+      - name: Map geometry benchmark
+        run: npm run benchmark:map
       - name: Generate Android project
         run: npx expo prebuild --platform android --clean
-
       - name: Build standalone release APK
         run: |
           chmod +x android/gradlew
           cd android
-          ./gradlew assembleRelease --no-daemon
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+          NODE_ENV=production ./gradlew assembleRelease --no-daemon
+      - name: Verify bundled JavaScript and native libraries
+        run: python scripts/verify-apk.py android/app/build/outputs/apk/release/app-release.apk
+      - name: Package phase artifact
+        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-map-phase1-release.apk
+      - uses: actions/upload-artifact@v4
         with:
-          name: dominion-android-release
-          path: android/app/build/outputs/apk/release/app-release.apk
+          name: dominion-map-phase1-release
+          path: Dominion-map-phase1-release.apk
           if-no-files-found: error
+          retention-days: 14
+  android-smoke:
+    needs: build-apk
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion-map-phase1-release
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_2
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: python scripts/android-smoke.py Dominion-map-phase1-release.apk
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: android-smoke-evidence
+          path: android-smoke/
           retention-days: 14

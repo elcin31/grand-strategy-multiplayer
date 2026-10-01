@@ -2,13 +2,15 @@
   "expo": {
     "name": "Grand Strategy Multiplayer",
     "slug": "grand-strategy-multiplayer",
-    "version": "0.1.0",
-    "orientation": "default",
+    "version": "0.2.0",
+    "orientation": "landscape",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "android": {
       "package": "com.elcin31.grandstrategymultiplayer",
-      "adaptiveIcon": { "backgroundColor": "#0B1020" }
+      "adaptiveIcon": {
+        "backgroundColor": "#0B1020"
+      }
     }
   }
 }
