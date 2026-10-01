@@ -1,4 +1,5 @@
 import { assertGameCommand } from './commandValidation.ts';
+import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, POLITICAL_POWER_MONTHLY, governmentIncome, governmentModifiers, initializeGovernments } from './governmentSystem.ts';
 import { Army, BattleEvent, CountryId, GameCommand, GameState, Player, Province, countryFor } from './gameTypes.ts';
 
 const clone = (state: GameState): GameState => structuredClone(state);
@@ -19,6 +20,7 @@ function recalcCountryStats(state: GameState) {
     nation.income += province.income;
     if (state.dataset) { nation.population += province.population; nation.provinceIds!.push(province.id); }
   }
+  if (state.dataset) for (const nation of Object.values(state.countries)) nation.income = governmentIncome(nation.income, nation.governmentType);
   for (const army of state.armies) countryFor(state, army.ownerId).army += army.troops;
 }
 
@@ -152,6 +154,7 @@ function checkWinner(state: GameState) {
 export function applyCommand(state: GameState, command: GameCommand): GameState {
   assertGameCommand(command, Object.keys(state.countries));
   const next = clone(state);
+  initializeGovernments(next);
   switch (command.type) {
     case 'SELECT_COUNTRY': {
       if (next.phase !== 'lobby') throw new Error('Страну можно выбрать только в лобби');
@@ -202,6 +205,24 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       checkWinner(next);
       return next;
     }
+    case 'CHANGE_GOVERNMENT': {
+      if (!next.dataset) throw new Error('Смена правительства доступна в кампании современного мира');
+      if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
+      const player = getPlayer(next, command.playerId);
+      if (!player.countryId) throw new Error('Страна не выбрана');
+      const nation = countryFor(next, player.countryId);
+      if (nation.governmentType === command.governmentType) throw new Error('Эта форма правления уже действует');
+      if (next.tick < nation.governmentCooldownUntilTick!) throw new Error(`Смена правительства доступна через ${nation.governmentCooldownUntilTick! - next.tick} мес.`);
+      if (nation.politicalPower! < GOVERNMENT_CHANGE_COST) throw new Error('Недостаточно политической силы');
+      const previous = governmentModifiers(nation.governmentType);
+      nation.politicalPower! -= GOVERNMENT_CHANGE_COST;
+      nation.governmentType = command.governmentType;
+      nation.governmentCooldownUntilTick = next.tick + GOVERNMENT_COOLDOWN_TICKS;
+      nation.stability = Math.max(0, nation.stability - GOVERNMENT_STABILITY_COST);
+      nation.diplomaticReputation = Math.min(100, Math.max(0, nation.diplomaticReputation! + governmentModifiers(command.governmentType).diplomacy - previous.diplomacy));
+      recalcCountryStats(next);
+      return next;
+    }
     case 'ADVANCE_TICK': {
       if (next.phase !== 'running' || next.speed === 0) return next;
       next.tick += 1;
@@ -211,7 +232,14 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       for (const id of countryIds(next)) {
         const nation = countryFor(next, id);
         nation.treasury += nation.income;
-        nation.manpower += Math.max(500, Math.round(nation.population * 0.00004));
+        const modifiers = next.dataset ? governmentModifiers(nation.governmentType) : undefined;
+        nation.manpower += Math.max(500, Math.round(nation.population * 0.00004 * (1 + (modifiers?.manpowerPercent ?? 0) / 100)));
+        if (modifiers) {
+          nation.politicalPower = Math.min(500, nation.politicalPower! + POLITICAL_POWER_MONTHLY);
+          nation.technology = Math.min(100, nation.technology + .025 * (1 + modifiers.researchPercent / 100));
+          nation.stability = Math.min(100, Math.max(0, nation.stability + modifiers.stabilityPerYear / 12));
+          nation.unrest = Math.min(100, Math.max(0, nation.unrest! + modifiers.unrestPerYear / 12));
+        }
       }
       runAi(next);
       recalcCountryStats(next);

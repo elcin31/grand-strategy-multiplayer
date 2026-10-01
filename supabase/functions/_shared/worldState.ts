@@ -1,6 +1,7 @@
 import { countryDefinitions, provinceDefinitions, cityDefinitions } from './worldDefinitions.ts';
 import type { GameState, Country } from './gameTypes.ts';
 import { generateLeader } from './leaderGeneration.ts';
+import { governmentIncome, initializeGovernment } from './governmentSystem.ts';
 
 function seedForCampaign(id: string): number {
   let seed = 2166136261;
@@ -27,6 +28,9 @@ export function createWorldState(gameId: string, roomCode: string, playerId: str
     const ruler = generateLeader(definition.id, campaignSeed, definition.region);
     leaders[ruler.id] = ruler;
     countries[definition.id] = { ...definition, rulerId: ruler.id, provinceIds: [...definition.provinceIds], income: monthly, population: definition.populationEstimate, treasury: monthly * 12 + 400, manpower: Math.max(0, Math.floor(definition.populationEstimate * .012) - troops), army: troops, technology: 60, stability: 75 };
+    const country = countries[definition.id]!;
+    initializeGovernment(country);
+    country.income = governmentIncome(monthly, country.governmentType);
     if (troops) armies.push({ id: 'army-capital-'+definition.id, ownerId: definition.id, provinceId: capital.provinceId, troops });
   }
   return { dataset: 'modern-world-v1', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, leaders, armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };

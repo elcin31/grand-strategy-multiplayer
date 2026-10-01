@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { countryFor, GameCommand, GameState } from '../types/game';
+import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, GOVERNMENT_TYPES, governmentModifiers } from '../../supabase/functions/_shared/governmentSystem';
 
 interface GamePanelProps {
   state: GameState;
@@ -11,6 +13,7 @@ interface GamePanelProps {
 const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).toFixed(1)}M` : value >= 1_000 ? `${Math.round(value / 1_000)}K` : String(value);
 
 export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: GamePanelProps) {
+  const [governmentOpen, setGovernmentOpen] = useState(false);
   const me = state.players.find((player) => player.id === playerId);
   const countryId = me?.countryId ?? null;
   if (!countryId) return null;
@@ -21,6 +24,9 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
   const primaryArmy = ownArmies[0] ?? null;
   const neighbors = selected ? selected.neighbors.map((id) => state.provinces.find((province) => province.id === id)).filter(Boolean) : [];
   const isOwnProvince = selected?.ownerId === countryId;
+  const cooldown = Math.max(0, (nation.governmentCooldownUntilTick ?? 0) - state.tick);
+  const politicalPower = nation.politicalPower ?? 0;
+  const signed = (value: number) => `${value >= 0 ? '+' : ''}${value}`;
 
   return (
     <View style={styles.wrap}>
@@ -48,6 +54,28 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
           ))}
         </View>
       </View>
+
+      {state.dataset && <Pressable accessibilityRole="button" onPress={() => setGovernmentOpen(!governmentOpen)} style={styles.secondaryButton}><Text style={styles.secondaryText}>Правительство {governmentOpen ? '▴' : '▾'}</Text></Pressable>}
+      {governmentOpen && state.dataset && <View style={styles.card}>
+        <Text style={styles.eyebrow}>ФОРМА ПРАВЛЕНИЯ · {Math.floor(politicalPower)} PP</Text>
+        <Text style={styles.govCurrent}>{nation.governmentType}</Text>
+        <Text style={styles.hint}>Смена: {GOVERNMENT_CHANGE_COST} PP, −{GOVERNMENT_STABILITY_COST} стабильности; cooldown {GOVERNMENT_COOLDOWN_TICKS} мес.</Text>
+        {cooldown > 0 && <Text style={styles.hint}>Следующая смена через {cooldown} мес.</Text>}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.routes}>
+          {GOVERNMENT_TYPES.map(governmentType => {
+            const modifiers = governmentModifiers(governmentType);
+            const active = governmentType === nation.governmentType;
+            const disabled = active || cooldown > 0 || politicalPower < GOVERNMENT_CHANGE_COST;
+            return <Pressable accessibilityRole="button" accessibilityState={{ disabled, selected: active }} key={governmentType} disabled={disabled} style={[styles.govOption, disabled && styles.disabled, active && styles.govSelected]} onPress={() => onCommand({ type: 'CHANGE_GOVERNMENT', playerId, governmentType })}>
+              <Text style={styles.govName}>{governmentType}</Text>
+              <Text style={styles.govDetails}>Налоги {signed(modifiers.taxationPercent)}% · Manpower {signed(modifiers.manpowerPercent)}%</Text>
+              <Text style={styles.govDetails}>Research {signed(modifiers.researchPercent)}% · Дипломатия {signed(modifiers.diplomacy)}</Text>
+              <Text style={styles.govDetails}>Стабильность {signed(modifiers.stabilityPerYear)}/год · Unrest {signed(modifiers.unrestPerYear)}/год</Text>
+            </Pressable>;
+          })}
+        </ScrollView>
+        <Text style={styles.hint}>Репутация: {nation.diplomaticReputation?.toFixed(0)} · стабильность {nation.stability.toFixed(1)} · unrest {nation.unrest?.toFixed(1)}</Text>
+      </View>}
 
       <View style={styles.card}>
         <Text style={styles.eyebrow}>КОМАНДОВАНИЕ</Text>
@@ -127,6 +155,11 @@ function Metric({ label, value }: { label: string; value: string }) {
 
 const styles = StyleSheet.create({
   wrap: { gap: 12 },
+  govCurrent: { color: '#E5ECF7', fontSize: 14, fontWeight: '800' },
+  govOption: { width: 210, backgroundColor: '#152136', borderRadius: 12, padding: 12, gap: 7, borderWidth: 1, borderColor: '#263650' },
+  govSelected: { borderColor: '#91B8DE' },
+  govName: { color: '#E5ECF7', fontSize: 12, fontWeight: '800' },
+  govDetails: { color: '#90A0B8', fontSize: 10, lineHeight: 15 },
   card: { backgroundColor: '#111A2A', borderRadius: 22, padding: 16, borderWidth: 1, borderColor: '#202C40', gap: 13 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   rulerRow: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: '#0C1422', borderRadius: 12, padding: 10 },

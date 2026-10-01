@@ -27,7 +27,7 @@ This is a running report, not the final Phase 20 QA acceptance.
 | HIGH | Unchanged full-world snapshots would be retransmitted every 900 ms | Version-aware polling; deployed room v3 is ACTIVE, create/join endpoint smoke remains pending |
 | HIGH | The full world catalogue exceeded the Edge bundler per-module source limit | Generator now emits 83 bounded modules; dedicated `game-room` v3 bundles all modules and is ACTIVE |
 | LOW | Six unused TSX imports | Removed; noUnusedLocals/noUnusedParameters enabled and passed |
-| MEDIUM | New countries had no ruler identity or campaign portrait seed | Added a deterministic fictional leader to each of 195 modern-world states; deterministic/variation and stat-bound tests pass; release build and server v4 deployment pending |
+| MEDIUM | New countries had no ruler identity or campaign portrait seed | Added a deterministic fictional leader to each of 195 modern-world states; deterministic/variation and stat-bound tests pass; dedicated room v4 ACTIVE; standalone release and emulator gates passed on deaf659 (CI 36883315047) |
 
 ## Open release gates
 
@@ -39,4 +39,8 @@ This is a running report, not the final Phase 20 QA acceptance.
 | HIGH | Save/reconnect/host migration and multiplayer chaos testing | Scheduled Phase 17/20; not claimed working |
 | HIGH | Remaining map modes backed by authoritative schemas | Scheduled later phases; unavailable modes are not mock buttons |
 
-The current dedicated backend deployments are game-command v5 and game-room v3 (both ACTIVE). Their world-specific HTTP create/join/gameplay/cleanup flow still needs a live smoke test. Android checkpoint run `36877387395` passed standalone APK verification and offline emulator gameplay. The final world-update APK must not be released while BLOCKER/CRITICAL gates remain open.
+The current dedicated backend deployments are game-command v5 and game-room v4 (both ACTIVE). Government phase deployments and its Android gates remain pending. Their world-specific HTTP create/join/gameplay/cleanup flow still needs a live smoke test. Android checkpoint run `36877387395` passed standalone APK verification and offline emulator gameplay. The final world-update APK must not be released while BLOCKER/CRITICAL gates remain open.
+
+## Government phase checkpoint
+
+Ten policy types, authoritative costs/cooldown, monthly effects, categorical map colors and older-world initialization are implemented. Strict typecheck, 46 JS tests and 3 Python tests pass. The government suite verifies policy tradeoffs, malformed payloads, actor spoofing, immutable rejection, payment/cooldown boundaries, migration, legacy isolation and map updates. Standalone Android build/emulator and deployed endpoint verification are still open for this phase.

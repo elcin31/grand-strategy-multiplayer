@@ -8,6 +8,7 @@ import { mapSceneFor } from '../src/map/worldScene';
 import { contains } from '../src/map/geometry';
 import { countryLabels, visibleCities } from '../src/map/scene';
 import { LocalTransport } from '../src/multiplayer/localTransport';
+import { governmentIncome } from '../supabase/functions/_shared/governmentSystem';
 
 const world = () => createWorldState('world-qa', 'WORLD1', 'host', 'Test', 987654);
 test('new campaigns contain every country, real provinces/cities and exact population totals', () => {
@@ -18,7 +19,7 @@ test('new campaigns contain every country, real provinces/cities and exact popul
   for (const country of Object.values(state.countries)) {
     const owned = state.provinces.filter(p => p.ownerId === country.id);
     assert.ok(owned.length > 0); assert.equal(country.population, owned.reduce((n,p) => n+p.population,0));
-    assert.equal(country.income, owned.reduce((n,p) => n+p.income,0));
+    assert.equal(country.income, governmentIncome(owned.reduce((n,p) => n+p.income,0), country.governmentType));
     assert.equal(country.army,state.armies.filter(a => a.ownerId===country.id).reduce((n,a) => n+a.troops,0));
     assert.ok(owned.some(p => p.id === cities.get(country.capitalCityId!)!.provinceId));
     assert.ok(country.adjective && country.flag);

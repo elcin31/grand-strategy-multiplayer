@@ -1,3 +1,5 @@
+import { GOVERNMENT_TYPES } from './governmentSystem.ts';
+import type { GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state or economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
   SELECT_COUNTRY: ['type', 'playerId', 'countryId'],
@@ -7,6 +9,7 @@ const fields: Record<string, readonly string[]> = {
   RECRUIT: ['type', 'playerId', 'provinceId', 'troops'],
   MOVE_ARMY: ['type', 'playerId', 'armyId', 'provinceId'],
   ADVANCE_TICK: ['type'],
+  CHANGE_GOVERNMENT: ['type', 'playerId', 'governmentType'],
 };
 export function assertGameCommand(input: unknown, countryIds: readonly string[]): void {
   if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('Invalid command payload');
@@ -19,6 +22,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
     if (allowed.includes(key) && (typeof command[key] !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(command[key] as string))) throw new Error('Invalid command identifier');
   }
   if (type === 'SELECT_COUNTRY' && (typeof command.countryId !== 'string' || !countryIds.includes(command.countryId))) throw new Error('Unknown country');
+  if (type === 'CHANGE_GOVERNMENT' && (typeof command.governmentType !== 'string' || !GOVERNMENT_TYPES.includes(command.governmentType as GovernmentType))) throw new Error('Invalid government type');
   if (type === 'SET_READY' && typeof command.ready !== 'boolean') throw new Error('Invalid ready value');
   if (type === 'SET_SPEED' && (typeof command.speed !== 'number' || !Number.isInteger(command.speed) || command.speed < 0 || command.speed > 4)) throw new Error('Invalid game speed');
   if (type === 'RECRUIT' && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');

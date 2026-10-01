@@ -2,6 +2,7 @@ import { countryFor, type GameState } from '../types/game';
 import geography from './geography.json';
 import { Bounds, contains, MapFeature, Point, SpatialIndex } from './geometry';
 import { GraphicsPreset, GRAPHICS, MapMode } from './settings';
+import { GOVERNMENT_TYPES } from '../../supabase/functions/_shared/governmentSystem';
 export const features: MapFeature[] = geography;
 export const spatialIndex = new SpatialIndex(features);
 export const provinceGeometry = new Map(features.filter(f => f.provinceId).map(f => [f.provinceId!, f]));
@@ -40,6 +41,11 @@ export function troopsByProvince(state: GameState): Map<string, number> {
 }
 /** Linear preprocessing, then O(1) lookup. Never scan the full world per visible polygon. */
 export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map<string, number>): Map<string, string> {
+  if (mode === 'Government') {
+    const palette = ['#718F8A', '#6F83A0', '#8887A8', '#A88E63', '#9B705E', '#956862', '#778D74', '#8C7185', '#688D97', '#8E875E'];
+    const colors = new Map(Object.values(state.countries).map(c => [c.id, palette[GOVERNMENT_TYPES.indexOf(c.governmentType ?? 'Parliamentary Republic')] ?? palette[0]!]));
+    return new Map(state.provinces.map(p => [p.id, colors.get(p.ownerId) ?? palette[0]!]));
+  }
   if (mode === 'Political' || mode === 'Terrain') return new Map(state.provinces.map(p => [p.id, mode === 'Political' ? countryFor(state, p.ownerId).color : '#637364']));
   const values = new Map(state.provinces.map(p => [p.id, mode === 'Economy' ? p.income : mode === 'Population' ? p.population : mode === 'Military' ? troops.get(p.id) ?? 0 : countryFor(state, p.ownerId).stability]));
   const all = [...values.values()], max = Math.max(1, ...all), min = Math.min(...all);

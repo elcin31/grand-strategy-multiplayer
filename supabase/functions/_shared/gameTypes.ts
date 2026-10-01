@@ -1,5 +1,6 @@
 export type CountryId = string;
 export type GameSpeed = 0 | 1 | 2 | 3 | 4;
+export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' | 'Semi-Presidential Republic' | 'Constitutional Monarchy' | 'Absolute Monarchy' | 'Military Junta' | 'Theocracy' | 'One-Party State' | 'Federation' | 'Tribal Government';
 
 export interface Country {
   id: CountryId;
@@ -10,6 +11,11 @@ export interface Country {
   flag?: string;
   capitalCityId?: string;
   rulerId?: string;
+  governmentType?: GovernmentType;
+  politicalPower?: number;
+  governmentCooldownUntilTick?: number;
+  diplomaticReputation?: number;
+  unrest?: number;
   provinceIds?: string[];
   treasury: number;
   income: number;
@@ -118,6 +124,7 @@ export type GameCommand =
   | { type: 'SET_SPEED'; playerId: string; speed: GameSpeed }
   | { type: 'RECRUIT'; playerId: string; provinceId: string; troops: number }
   | { type: 'MOVE_ARMY'; playerId: string; armyId: string; provinceId: string }
+  | { type: 'CHANGE_GOVERNMENT'; playerId: string; governmentType: GovernmentType }
   | { type: 'ADVANCE_TICK' };
 
 /** Campaign country IDs are extensible; lookups fail explicitly on corrupted links. */

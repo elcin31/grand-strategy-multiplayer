@@ -97,6 +97,21 @@ click_scrolling('+25K · $500M')
 root = hierarchy('02-recruited'); screenshot('02-recruited')
 assert province_army_text(root) == str(int(before[:-1])+25)+'K', 'Recruitment command did not update the army'
 click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
+# Government is a real paid command, with a frozen 24-month cooldown on pause.
+root = hierarchy('government-open'); click_text(root,'УПРАВЛЕНИЕ')
+for _ in range(5): adb('shell','input','swipe','1080','220','1080','570','350')
+click_scrolling('Правительство ▾')
+root = hierarchy('government-before')
+header = next(n.get('text') for n in root.iter('node') if 'ФОРМА ПРАВЛЕНИЯ · ' in n.get('text',''))
+power_before = int(re.search(r'(\d+) PP',header).group(1))
+click_scrolling('Parliamentary Republic')
+root = hierarchy('government-after'); screenshot('government-after')
+texts = [n.get('text','') for n in root.iter('node')]
+assert not any('Действие отклонено' in t for t in texts), 'Government command was rejected'
+header = next(t for t in texts if 'ФОРМА ПРАВЛЕНИЯ · ' in t)
+assert int(re.search(r'(\d+) PP',header).group(1)) == power_before - 80, 'Government did not spend 80 PP'
+assert 'Следующая смена через 24 мес.' in texts, 'Government cooldown missing'
+click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
 root = hierarchy('map-controls')
 click_text(root, 'Политическая · Medium ▾')
 for quality in ['Low','Medium','High','Ultra']:
@@ -106,14 +121,14 @@ for quality in ['Low','Medium','High','Ultra']:
     screenshot('graphics-'+quality)
 root = hierarchy('graphics-close')
 click_text(root, 'Политическая · Ultra ▾')
-for label in ['Экономика','Население','Армии','Рельеф','Стабильность','Политическая']:
+for label in ['Правительство','Экономика','Население','Армии','Рельеф','Стабильность','Политическая']:
     root = hierarchy('mode-open')
     current = next(n.get('text') for n in root.iter('node') if ' · Ultra ▾' in n.get('text',''))
     click_text(root,current)
     root = hierarchy('mode-select')
     click_text(root,label)
     time.sleep(1)
-    screenshot('mode-'+str(['Экономика','Население','Армии','Рельеф','Стабильность','Политическая'].index(label)))
+    screenshot('mode-'+str(['Правительство','Экономика','Население','Армии','Рельеф','Стабильность','Политическая'].index(label)))
 # Exercise camera before taking evidence. Animation is on the native UI thread.
 adb('shell','dumpsys','gfxinfo',PACKAGE,'reset')
 for _ in range(4):
@@ -134,4 +149,4 @@ assert any(n.get('text')=='DOMINION' for n in root.iter('node')), 'Restart faile
 logs = adb('logcat','-d'); (OUT/'logcat.txt').write_text(logs)
 assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs, 'Native crash detected'
 assert 'Unable to load script' not in logs, 'Standalone JS load failed'
-print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, 4 presets, 6 modes, camera inputs, 4 layouts, restart, no fatal logs')
+print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, government cost/cooldown, 4 presets, 7 modes, camera inputs, 4 layouts, restart, no fatal logs')
