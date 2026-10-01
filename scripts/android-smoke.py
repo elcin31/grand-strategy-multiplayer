@@ -33,6 +33,8 @@ adb('install','-r',sys.argv[1])
 adb('logcat','-c')
 adb('shell','wm','size','720x1280')
 adb('shell','wm','density','160')
+adb('shell','svc','wifi','disable')
+adb('shell','svc','data','disable')
 launch()
 root = hierarchy('01-entry'); screenshot('01-entry')
 assert any(n.get('text')=='DOMINION' for n in root.iter('node')), 'Standalone app did not mount'
@@ -46,6 +48,23 @@ time.sleep(8)
 root = hierarchy('02-map'); screenshot('02-map')
 assert any('Политическая' in n.get('text','') for n in root.iter('node')), 'GPU map screen did not mount'
 click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
+root = hierarchy('map-controls')
+click_text(root, 'Политическая · Medium ▾')
+for quality in ['Low','Medium','High','Ultra']:
+    root = hierarchy('graphics-'+quality)
+    click_text(root, quality)
+    time.sleep(1)
+    screenshot('graphics-'+quality)
+root = hierarchy('graphics-close')
+click_text(root, 'Политическая · Ultra ▾')
+for label in ['Экономика','Население','Армии','Рельеф','Стабильность','Политическая']:
+    root = hierarchy('mode-open')
+    current = next(n.get('text') for n in root.iter('node') if ' · Ultra ▾' in n.get('text',''))
+    click_text(root,current)
+    root = hierarchy('mode-select')
+    click_text(root,label)
+    time.sleep(1)
+    screenshot('mode-'+str(['Экономика','Население','Армии','Рельеф','Стабильность','Политическая'].index(label)))
 # Exercise camera before taking evidence. Animation is on the native UI thread.
 adb('shell','dumpsys','gfxinfo',PACKAGE,'reset')
 for _ in range(4):
@@ -66,4 +85,4 @@ assert any(n.get('text')=='DOMINION' for n in root.iter('node')), 'Restart faile
 logs = adb('logcat','-d'); (OUT/'logcat.txt').write_text(logs)
 assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs, 'Native crash detected'
 assert 'Unable to load script' not in logs, 'Standalone JS load failed'
-print('PASS: cold launch, landscape, offline map, camera inputs, 4 layouts, restart, no fatal logs')
+print('PASS: network-disabled cold launch, landscape, offline map, 4 presets, 6 modes, camera inputs, 4 layouts, restart, no fatal logs')

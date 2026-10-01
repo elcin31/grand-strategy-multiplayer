@@ -11,6 +11,7 @@ This is a running report, not the final Phase 20 QA acceptance.
 | MEDIUM | No camera bounds or zoom invariants | Finite-value clamps and focal-point round-trip tests |
 | MEDIUM | Coastal city taps could miss generalized land | Marker hit testing uses assigned province; coordinates checked within coastline tolerance |
 | MEDIUM | No native build or embedded-bundle test gate | CI release archive validation and Android cold-launch smoke job |
+| MEDIUM | APK verifier assumed the old Hermes library filename | Accepts installed Hermes native library variants, prints actual names; repeat CI |
 | LOW | Entry copy incorrectly claimed local transport for online rooms | Corrected copy; offline entry is now a separate real transport |
 
 ## Open release gates
