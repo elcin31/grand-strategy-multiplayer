@@ -1,6 +1,6 @@
 # World update — work in progress
 
-Latest verified source: `deaf659`, Android workflow `36883315047` passed standalone release verification and offline emulator smoke. Government phase source now passes strict typecheck, 46 JS tests and all 3 Python tests. Its separate Android release/emulator and dedicated function deployment gates remain pending. No final-release acceptance is claimed.
+Latest verified source: `deaf659`, Android workflow `36883315047` passed standalone release verification and offline emulator smoke. Government phase source now passes strict typecheck, 46 JS tests and all 3 Python tests. Dedicated game-command v6 and game-room v5 are ACTIVE and passed the full-world live HTTP smoke on 2026-10-01; the isolated QA room and memberships were removed. Its separate Android release/emulator gate remains pending (run 36893464515). No final-release acceptance is claimed.
 
 Government policies use small tradeoffs; regression checks prove no policy dominates all other modifiers. Changes spend 80 political power, reduce stability by 8, adjust diplomatic reputation and block another change for 24 monthly ticks. Taxes, manpower recovery, research, stability and unrest use the selected policy. The game panel opens actual government actions on demand. Older modern-world snapshots initialize the new fields once on the authoritative clone; legacy scenarios preserve their monthly rules. The 100-tick CPU benchmark remained finite (195 countries, 4,386 provinces, 7,214 cities, 355 final armies, p95 tick 99.63 ms). This is not physical-device FPS.
 
@@ -8,7 +8,7 @@ Government policies use small tradeoffs; regression checks prove no policy domin
 
 Implemented: native Skia GPU canvas, real public-domain geographic contours, original terrain bands/rivers/lakes, camera tilt, pan/inertia, pinch and focal-point zoom, double tap, animated selection and battle markers, city/capital markers, military counters, cached native paths, color-batched province rendering, spatial index, city LOD, Low/Medium/High/Ultra presets, landscape and safe-area layout, offline scenario entry.
 
-The legacy 8-country / 12-province scenario remains available to existing campaigns and regression fixtures. New offline campaigns and the updated server factory use `modern-world-v1`: 195 selectable countries, 4,386 real administrative provinces and 7,214 populated places. The offline Android checkpoint passed for this migration; a live-room endpoint smoke remains pending, so this is not a completed global strategy release.
+The legacy 8-country / 12-province scenario remains available to existing campaigns and regression fixtures. New offline campaigns and the updated server factory use `modern-world-v1`: 195 selectable countries, 4,386 real administrative provinces and 7,214 populated places. The offline Android checkpoint passed for this migration; the live-room endpoint smoke now passes, but later requested systems remain incomplete, so this is not a completed global strategy release.
 
 7 of 12 requested functional map modes in the current source use existing campaign state: Political, Government, Economy, Population, Military, Terrain, Stability. The other modes require later government/religion/diplomacy/resource/development schemas. They are not presented as working features.
 
@@ -30,9 +30,9 @@ Verification gates:
 
 ## Sequential phases
 
-2–4. Implemented as a playable modern-world campaign dataset: 195 states, 4,386 provinces, 10,527 symmetric land-adjacency edges, and 7,214 linked cities. Typecheck/regression and source audits pass. Standalone APK verification and offline emulator gameplay smoke pass on `95f7fee` (CI run `36877387395`). Live-room endpoint smoke remains pending, so these phases are not fully release-accepted.
+2–4. Implemented as a playable modern-world campaign dataset: 195 states, 4,386 provinces, 10,527 symmetric land-adjacency edges, and 7,214 linked cities. Typecheck/regression and source audits pass. Standalone APK verification and offline emulator gameplay smoke pass on `95f7fee` (CI run `36877387395`). Live-room create/join/authentication/selection/start/recruitment/movement/government/sync smoke passed on 2026-10-01. Physical-device and final-release acceptance remain open.
 5. Deterministic fictional rulers: implemented, dedicated room v4 is ACTIVE, and standalone APK/emulator gates passed on `deaf659` (CI `36883315047`). Every state has a seeded fictional leader.
-6. Government implementation is ready for Android/deployment gates: ten policies, server-authenticated paid changes, stability cost, diplomacy effects, 24-month cooldown, monthly modifiers, migration of older world snapshots, and Government map mode.
+6. Government implementation and dedicated endpoint verification pass; its Android release/emulator gate remains pending: ten policies, server-authenticated paid changes, stability cost, diplomacy effects, 24-month cooldown, monthly modifiers, migration of older world snapshots, and Government map mode.
 7. Religion gameplay remains upcoming.
 8–12. Population, economy, resources, buildings and technology.
 13–16. Unit composition, generals, diplomacy/war/peace, unrest and strategic AI.
@@ -83,3 +83,7 @@ Latest native gate: `0e05df5` passed assembleRelease, embedded 2,983,712-byte bu
 - Dedicated backend `game-command` v5 and `game-room` v3 are deployed ACTIVE. The room bundle contains all 83 generated world-data modules. The new endpoint version has not yet passed a live create/join/action/cleanup smoke test. Phase 5 changes its room factory and require a v4 deployment and build verification.
 - 40 JS tests and 3 Python tests passed locally, with `noUnusedLocals` and `noUnusedParameters` now enabled. Full-world data/CPU benchmark passed 100 ticks with fictional leaders in state (snapshot 2.86 MB; tick p95 84.57 ms on this host); physical FPS and complete Phase 20 stress/chaos acceptance remain unverified.
 - Android smoke now uses actual searchable country selection and a real capital province instead of synthetic demo coordinates. Standalone build and offline emulator smoke passed on `95f7fee`; isolated live-backend endpoint verification remains open.
+
+## Live full-world government regression — 2026-10-01
+
+The opt-in `scripts/backend-world-smoke.py` passed against only `dfjsnjxnyjspwugjguhq` (game-command v6 / game-room v5). It verifies 195 countries, 4,386 provinces, 7,214 cities and 195 leaders; two-player identical snapshots; malformed payload, actor/token spoofing and lobby guards; actual country selection/start/pause; version-aware polling; paid recruitment and legal movement; government payment/stability/cooldown; and a frozen paused clock. The isolated room `86703597-01a0-4d1c-b6a1-a230bbf05243` was deleted with a matching QA display-name guard. Subsequent exact-ID queries returned zero rooms and zero memberships. Player tokens were not logged. This does not substitute for Phase 17/20 reconnect, chaos or replay testing.

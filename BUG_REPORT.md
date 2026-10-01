@@ -34,13 +34,13 @@ This is a running report, not the final Phase 20 QA acceptance.
 | Severity | Gate | Status |
 |---|---|---|
 | BLOCKER | Complete global world-update acceptance criteria | Not implemented yet; world data wired into new campaigns, further gameplay/release criteria pending |
-| BLOCKER | Live endpoint smoke and full global world-update acceptance | Android release verifier/offline gameplay smoke passed on `95f7fee` (CI `36877387395`); dedicated production room create/join/gameplay/cleanup flow and remaining requested gameplay systems still need verification/implementation |
+| BLOCKER | Live endpoint smoke and full global world-update acceptance | Android release verifier/offline gameplay smoke passed on `deaf659` (CI `36883315047`); dedicated production full-world two-player create/join/gameplay/government/sync/cleanup flow passed on 2026-10-01; remaining requested gameplay systems are incomplete |
 | HIGH | Physical-device map FPS and gesture profiling | Pending; CPU query benchmark is not proof of 30/60 FPS |
 | HIGH | Save/reconnect/host migration and multiplayer chaos testing | Scheduled Phase 17/20; not claimed working |
 | HIGH | Remaining map modes backed by authoritative schemas | Scheduled later phases; unavailable modes are not mock buttons |
 
-The current dedicated backend deployments are game-command v5 and game-room v4 (both ACTIVE). Government phase deployments and its Android gates remain pending. Their world-specific HTTP create/join/gameplay/cleanup flow still needs a live smoke test. Android checkpoint run `36877387395` passed standalone APK verification and offline emulator gameplay. The final world-update APK must not be released while BLOCKER/CRITICAL gates remain open.
+The current dedicated backend deployments are game-command v6 and game-room v5 (both ACTIVE). Their world-specific HTTP create/join/gameplay/government/sync/cleanup smoke passed. The government Android gate remains pending. Android checkpoint run `36877387395` passed standalone APK verification and offline emulator gameplay. The final world-update APK must not be released while BLOCKER/CRITICAL gates remain open.
 
 ## Government phase checkpoint
 
-Ten policy types, authoritative costs/cooldown, monthly effects, categorical map colors and older-world initialization are implemented. Strict typecheck, 46 JS tests and 3 Python tests pass. The government suite verifies policy tradeoffs, malformed payloads, actor spoofing, immutable rejection, payment/cooldown boundaries, migration, legacy isolation and map updates. Standalone Android build/emulator and deployed endpoint verification are still open for this phase.
+Ten policy types, authoritative costs/cooldown, monthly effects, categorical map colors and older-world initialization are implemented. Strict typecheck, 46 JS tests and 3 Python tests pass. The government suite verifies policy tradeoffs, malformed payloads, actor spoofing, immutable rejection, payment/cooldown boundaries, migration, legacy isolation and map updates. Deployed endpoint verification passed; the isolated room and memberships were removed and zero remaining records verified. Standalone Android build/emulator remains open for this phase. A categorical Government legend was corrected to avoid describing it as a numerical gray-to-gold scale.
