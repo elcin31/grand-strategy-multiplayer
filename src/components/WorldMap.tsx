@@ -7,7 +7,7 @@ import type { CountryId, GameState, Province } from '../types/game';
 import { boundedCamera, Camera, clamp, TILT, visibleBounds, zoomAt } from '../map/camera';
 import { featurePath, Point } from '../map/geometry';
 import { mapCities } from '../map/cities';
-import { borderPaths, buildProvinceColors, features, provinceGeometry, spatialIndex, troopsByProvince, visibleCities } from '../map/scene';
+import { borderPaths, buildProvinceColors, countryLabels, features, provinceGeometry, spatialIndex, troopsByProvince, visibleCities } from '../map/scene';
 import { AVAILABLE_MODES, GRAPHICS, GraphicsPreset, MapMode, MODE_LABELS } from '../map/settings';
 import { lakes, rivers, terrainPatches } from '../map/terrain';
 
@@ -39,14 +39,19 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
   const x = useSharedValue(defaults.x), y = useSharedValue(defaults.y), zoom = useSharedValue(defaults.zoom);
   const startX = useSharedValue(0), startY = useSharedValue(0), startZoom = useSharedValue(1);
   const pinchX = useSharedValue(0), pinchY = useSharedValue(0), pinching = useSharedValue(false);
-  const lastCull = useSharedValue(0), pulse = useSharedValue(0.6);
+  const lastCull = useSharedValue(0), cullX = useSharedValue(defaults.x), cullY = useSharedValue(defaults.y), cullZoom = useSharedValue(defaults.zoom), pulse = useSharedValue(0.6);
   useEffect(() => {
     pulse.value = withRepeat(withTiming(1, { duration: 900 }), -1, true);
     return () => { cancelAnimation(pulse); cancelAnimation(x); cancelAnimation(y); cancelAnimation(zoom); };
   }, [pulse, x, y, zoom]);
   useAnimatedReaction(() => ({ x: x.value, y: y.value, zoom: zoom.value }), camera => {
     const now = Date.now();
-    if (now - lastCull.value > 120) { lastCull.value = now; runOnJS(setSnapshot)(camera); }
+    const moved = Math.hypot(camera.x - cullX.value, camera.y - cullY.value) * camera.zoom > 96;
+    const scaled = Math.abs(Math.log(camera.zoom / cullZoom.value)) > 0.1;
+    if ((moved || scaled) && now - lastCull.value > 100) {
+      lastCull.value = now; cullX.value = camera.x; cullY.value = camera.y; cullZoom.value = camera.zoom;
+      runOnJS(setSnapshot)(camera);
+    }
   });
   const transform = useDerivedValue(() => [{ translateX: viewport.width / 2 }, { translateY: viewport.height / 2 }, { scaleX: zoom.value }, { scaleY: zoom.value * TILT }, { translateX: -x.value }, { translateY: -y.value }]);
   const inverseScale = useDerivedValue(() => [{ scaleX: 1 / zoom.value }, { scaleY: 1 / (zoom.value * TILT) }]);
@@ -107,11 +112,9 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
   }, [visible, provinceColors]);
   const selectedPath = useMemo(() => { const path = Skia.Path.Make(); visible.filter(f => selectedProvinceId ? f.provinceId === selectedProvinceId : provinces.get(f.provinceId!)?.ownerId === selectedCountryId).forEach(f => path.addPath(paths.get(f.id)!)); return path; }, [visible, selectedProvinceId, selectedCountryId, provinces]);
   const shadowPath = useMemo(() => { const path = Skia.Path.Make(); colors.forEach(c => path.addPath(c[1])); return path; }, [colors]);
-  const labels = useMemo(() => {
-    const owners = new Map<string, typeof features[number]>();
-    for (const f of visible) { const owner = provinces.get(f.provinceId!)?.ownerId; if (owner && !owners.has(owner)) owners.set(owner, f); }
-    return [...owners.entries()];
-  }, [visible, provinces]);
+  const labels = useMemo(() => countryLabels(features, new Map(state.provinces.map(p => [p.id, p.ownerId])), [
+    ...mapCities.map(c => c.point), ...state.armies.flatMap(a => { const f = provinceGeometry.get(a.provinceId); return f ? [f.anchor] : []; }),
+  ]), [state.provinces, state.armies]);
   const terrain = GRAPHICS[preset].terrain;
 
   return <View style={styles.frame} onLayout={e => setViewport({ width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height })}>
@@ -135,7 +138,13 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
           <Path path={borders.inner} style="stroke" color="#273638" strokeWidth={borderScale} opacity={0.65} />
           <Path path={borders.outer} style="stroke" color="#131f24" strokeWidth={outerScale} />
           {!selectedPath.isEmpty() && <Path path={selectedPath} style="stroke" color="#f0db9e" strokeWidth={selectionScale} opacity={pulse} />}
-          {snapshot.zoom < 8 && labels.map(([id, f]) => <Group key={id} transform={[{ translateX: f.anchor.x }, { translateY: f.anchor.y - 5 }]}><Group transform={inverseScale}><Group transform={[{ scale: Math.max(0.75, Math.min(1.7, (f.bounds.right - f.bounds.left) * snapshot.zoom / (nationFont.measureText(state.countries[id as CountryId].name).width + 20))) }]}><MapText x={-nationFont.measureText(state.countries[id as CountryId].name).width / 2} y={-20} text={state.countries[id as CountryId].name} font={nationFont} color="#e4e6dc" /></Group></Group></Group>)}
+          {snapshot.zoom < 8 && labels.filter(label => label.anchor.x >= bounds.left && label.anchor.x <= bounds.right && label.anchor.y >= bounds.top && label.anchor.y <= bounds.bottom).map(label => {
+            const name = state.countries[label.countryId as CountryId].name;
+            const width = nationFont.measureText(name).width;
+            const scale = Math.min(1.7, label.width * snapshot.zoom / (width + 12));
+            if (scale < 0.55) return null;
+            return <Group key={label.countryId} transform={[{ translateX: label.anchor.x }, { translateY: label.anchor.y }]}><Group transform={inverseScale}><Group transform={[{ scale }]}><MapText x={-width / 2} y={4} text={name} font={nationFont} color="#e4e6dc" /></Group></Group></Group>;
+          })}
           {cities.map(city => <Group key={city.id} transform={[{ translateX: city.point.x }, { translateY: city.point.y }]}><Group transform={inverseScale}>
             {GRAPHICS[preset].shadows && city.capital && <Circle cx={0} cy={0} r={7} color="#ebd6a1" opacity={0.16} />}
             <Circle cx={0} cy={0} r={city.capital ? 3.2 : 2} color={city.capital ? '#f1dca8' : '#c7cec1'} />

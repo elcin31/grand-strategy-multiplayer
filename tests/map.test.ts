@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { boundedCamera, screenToWorld, worldToScreen, visibleBounds, zoomAt } from '../src/map/camera';
 import { boundsOf, contains, distanceToFeature, featurePath, MapFeature, project, SpatialIndex, tileKeys } from '../src/map/geometry';
-import { borderPaths, buildEdges, buildProvinceColors, features, provinceGeometry, spatialIndex, troopsByProvince, visibleCities } from '../src/map/scene';
+import { borderPaths, buildEdges, buildProvinceColors, countryLabels, features, provinceGeometry, spatialIndex, troopsByProvince, visibleCities } from '../src/map/scene';
 import { createInitialGame, provinces } from '../src/data/world';
 import { mapCities } from '../src/map/cities';
 import { AVAILABLE_MODES, GRAPHICS } from '../src/map/settings';
@@ -96,4 +96,20 @@ test('every available mode is derived from campaign values, with no mutation or 
   assert.notEqual(buildProvinceColors(state, 'Economy', troopsByProvince(state)).get('fr-1'), before);
   state.provinces = [];
   assert.equal(buildProvinceColors(state, 'Economy', new Map()).size, 0);
+});
+
+test('country labels remain on owned land after captures and avoid occupied anchor points', () => {
+  const state = createInitialGame('labels');
+  for (const captured of [false, true]) {
+    if (captured) state.provinces.find(p => p.id === 'fr-1')!.ownerId = 'germany';
+    const owners = new Map(state.provinces.map(p => [p.id, p.ownerId]));
+    const labels = countryLabels(features, owners, mapCities.map(c => c.point));
+    assert.equal(new Set(labels.map(l => l.countryId)).size, labels.length);
+    for (const label of labels) {
+      const land = features.filter(f => f.provinceId && owners.get(f.provinceId) === label.countryId);
+      assert.ok(land.some(f => contains(f, label.anchor)), label.countryId);
+      assert.ok(Number.isFinite(label.width) && label.width > 0, label.countryId);
+      for (const sign of [-1, 1]) assert.ok(land.some(f => contains(f, { x: label.anchor.x + sign * label.width / 2, y: label.anchor.y })), label.countryId);
+    }
+  }
 });

@@ -11,12 +11,14 @@ Playable-state schema is deliberately still compatible with the existing server:
 Verification gates:
 
 - `npm run typecheck`: passed locally.
-- `npm test`: 13 tests passed locally, including map topology, camera, city positions, recruitment/movement, and engine regression.
+- `npm test`: 14 tests passed locally, including map topology, camera, city positions, recruitment/movement, and engine regression.
 - `npm run benchmark:map`: 5,000 features / 10,000 queries, p95 ~0.026 ms on this build machine. **CPU index benchmark, not Android FPS.**
 - Expo Android prebuild: passed locally.
 - Production Hermes bundle export: passed locally, ~3.6 MB.
-- `assembleRelease`: must pass CI for the current commit.
-- Native cold-launch / renderer / restart smoke: must pass CI for the current commit.
+- `assembleRelease`: passed for `6cb3c1f`; repeat required for the label/camera update.
+- Native cold-launch / renderer / offline launch without networking / restart smoke: passed for `6cb3c1f` on API 35. Repeat required for the label/camera update.
+- Emulator evidence covers 1280×720, 1600×720, 1920×1080 and 1280×800 layouts, four graphics presets and six map modes.
+- Swiftshader emulator camera benchmark was slow (median frame 77 ms, p95 200 ms); this does not establish physical-device performance. Camera culling updates are now triggered by movement/zoom thresholds instead of every small camera change.
 - Physical-device FPS, gestures and sustained GPU profiling: pending.
 
 **Phase 1 is not fully accepted while its remaining map modes and physical-device profiling are outstanding. No later gameplay phase is declared complete.**

@@ -1,6 +1,6 @@
 import type { GameState } from '../types/game';
 import geography from './geography.json';
-import { Bounds, MapFeature, Point, SpatialIndex } from './geometry';
+import { Bounds, contains, MapFeature, Point, SpatialIndex } from './geometry';
 import { GraphicsPreset, GRAPHICS, MapMode } from './settings';
 export const features: MapFeature[] = geography;
 export const spatialIndex = new SpatialIndex(features);
@@ -52,4 +52,35 @@ export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map
 export function visibleCities<T extends { capital: boolean; population: number; point: Point }>(cities: readonly T[], bounds: Bounds, zoom: number, preset: GraphicsPreset): T[] {
   return cities.filter(c => (c.capital || zoom >= 5) && c.point.x >= bounds.left && c.point.x <= bounds.right && c.point.y >= bounds.top && c.point.y <= bounds.bottom)
     .sort((a, b) => Number(b.capital) - Number(a.capital) || b.population - a.population).slice(0, GRAPHICS[preset].cityBudget);
+}
+
+export interface CountryLabel { countryId: string; anchor: Point; width: number }
+/** Labels use owned land, including occupations, instead of an arbitrary visible province. */
+export function countryLabels(data: readonly MapFeature[], owners: ReadonlyMap<string, string>, blockers: readonly Point[] = []): CountryLabel[] {
+  const groups = new Map<string, MapFeature[]>();
+  for (const f of data) {
+    const owner = f.provinceId && owners.get(f.provinceId);
+    if (owner) { const group = groups.get(owner) ?? []; group.push(f); groups.set(owner, group); }
+  }
+  return [...groups].map(([countryId, land]) => {
+    const inside = (p: Point) => land.some(f => contains(f, p));
+    let best = { anchor: land[0]!.anchor, width: 0, score: -Infinity };
+    for (const f of land) {
+      const candidates = [f.anchor];
+      for (let iy = 1; iy < 10; iy++) for (let ix = 1; ix < 10; ix++) candidates.push({ x: f.bounds.left + (f.bounds.right - f.bounds.left) * ix / 10, y: f.bounds.top + (f.bounds.bottom - f.bounds.top) * iy / 10 });
+      for (const anchor of candidates) {
+        if (!inside(anchor)) continue;
+        // Symmetric horizontal fit keeps the entire label over land at its baseline.
+        let radius = 0;
+        for (let r = 0.5; r <= 80; r += 0.5) {
+          if (!inside({ x: anchor.x - r, y: anchor.y }) || !inside({ x: anchor.x + r, y: anchor.y })) break;
+          radius = r;
+        }
+        const clearance = blockers.reduce((min, p) => Math.min(min, Math.hypot(anchor.x - p.x, anchor.y - p.y)), Infinity);
+        const score = radius - Math.max(0, 7 - clearance) * 3;
+        if (score > best.score) best = { anchor, width: radius * 2, score };
+      }
+    }
+    return { countryId, anchor: best.anchor, width: best.width };
+  });
 }

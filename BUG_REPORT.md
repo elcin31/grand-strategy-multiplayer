@@ -12,6 +12,8 @@ This is a running report, not the final Phase 20 QA acceptance.
 | MEDIUM | Coastal city taps could miss generalized land | Marker hit testing uses assigned province; coordinates checked within coastline tolerance |
 | MEDIUM | No native build or embedded-bundle test gate | CI release archive validation and Android cold-launch smoke job |
 | MEDIUM | APK verifier assumed the old Hermes library filename | Accepts installed Hermes native library variants, prints actual names; repeat CI |
+| MEDIUM | Country labels shifted outside France and Italy | Interior land placement, horizontal fit and ownership-change regression test; native screenshot recheck pending |
+| HIGH | Camera movement repeatedly rebuilt scene batches | Movement/zoom thresholds reduce JS culling updates; physical-device profiling still pending |
 | LOW | Entry copy incorrectly claimed local transport for online rooms | Corrected copy; offline entry is now a separate real transport |
 
 ## Open release gates
