@@ -11,12 +11,12 @@ Playable-state schema is deliberately still compatible with the existing server:
 Verification gates:
 
 - `npm run typecheck`: passed locally.
-- `npm test`: 21 tests passed locally, including map topology, camera, city positions, recruitment/movement, and engine regression.
+- `npm test`: 29 tests passed locally, including map topology, camera, city positions, recruitment/movement, and engine regression.
 - `npm run benchmark:map`: 5,000 features / 10,000 queries, p95 ~0.026 ms on this build machine. **CPU index benchmark, not Android FPS.**
 - Expo Android prebuild: passed locally.
 - Production Hermes bundle export: passed locally, ~3.6 MB.
-- `assembleRelease`: passed for `6cb3c1f`; passed again for `e84ccae`; repeat required for rectangle collision placement.
-- Native cold-launch / renderer / offline launch without networking / restart smoke: passed for `6cb3c1f` on API 35. Passed again for `e84ccae`; repeat required for rectangle collision placement.
+- `assembleRelease`: passed for `6cb3c1f`; passed again for `e84ccae`; rectangle collision release and emulator smoke passed for `d870789`; paused-order fix native recheck pending.
+- Native cold-launch / renderer / offline launch without networking / restart smoke: passed for `6cb3c1f` on API 35. Passed again for `e84ccae`; rectangle collision release and emulator smoke passed for `d870789`; paused-order fix native recheck pending.
 - Emulator evidence covers 1280×720, 1600×720, 1920×1080 and 1280×800 layouts, four graphics presets and six map modes.
 - Swiftshader emulator camera benchmark was slow (median frame 77 ms, p95 200 ms); this does not establish physical-device performance. Camera culling updates are now triggered by movement/zoom thresholds instead of every small camera change.
 - Physical-device FPS, gestures and sustained GPU profiling: pending.
@@ -52,10 +52,14 @@ These prepared records are not yet loaded into campaigns. Runtime remains the ex
 
 Profiling the prepared 4,386-province dataset found country-label generation took ~7.8 seconds on this machine. Cached geometry, bounded candidates and exact horizontal land intervals reduced it to ~102 ms. The repeatable synthetic 5,000-feature CI benchmark now reports label time too. This is CPU preparation, not native navigation FPS.
 
-Native CI for `e84ccae` passed release archive validation, offline cold-launch, all presets/modes, layout checks and restart. Collision-aware label placement has 16 passing JS tests; its native recheck is pending.
+Native CI for `e84ccae` passed release archive validation, offline cold-launch, all presets/modes, layout checks and restart. Collision-aware label placement passed the Android release/emulator gate on `d870789`.
 
 ## Command-boundary regression fix
 
 The previous server cast JSON to a TypeScript command without runtime validation. It accepted unknown countries, invalid ready/speed fields and allowed lobby startup through SET_SPEED. A shared pure validator now checks exact fields, identifiers, country membership, boolean ready, integer speed and recruitment bounds. Both engines enforce lobby/start/pause/resume transitions. Tests import the actual server reducer, so its core is now covered by strict client typecheck as well as runtime tests. TypeScript permits Deno's .ts import paths under noEmit.
 
-21 JavaScript tests and 3 Python tests pass locally. The dedicated backend game-command function was updated to v3; isolated live verification is in progress. The Android smoke flow now exercises actual selection/start/pause/recruitment, with its gate pending. No final release acceptance is claimed.
+29 JavaScript tests and 3 Python tests pass locally. Dedicated game-command v3 passed live malformed-command, authentication, actor-spoof and paid-recruitment checks; the isolated QA room and its memberships were removed.
+
+The expanded Android smoke test on `87601a2` caught a real regression: recruitment controls stayed available while paused, but both reducers rejected orders. Both now accept validated recruitment and movement during running/paused campaigns, while ADVANCE_TICK remains a no-op on pause. Tests cover payment, manpower, ownership, adjacency, immutable rejection and frozen dates. Fuzz checks exercise 5,000 hostile payloads and 1,000 paused recruitment attempts in each actual reducer. The dedicated game-command function is now v4; live paused-order verification passed (paid recruitment, legal movement, frozen clock); the new native release/emulator gate is pending. Failed emulator runs now retain logcat and report rejection dialogs explicitly.
+
+The immutable country catalogue has been committed as preparation: 195 definitions, linked capital records, original adjectives and contrasting neighbor-aware colors, Russian/English/ISO search, and offline flag-icons 7.5.0 vectors with the complete MIT notice. It does not change the playable campaign roster yet. No final release acceptance is claimed.

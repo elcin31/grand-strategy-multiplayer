@@ -46,7 +46,10 @@ for session,country in [(host,'germany'),(guest,'france')]:
 command(host,{'type':'START_GAME','playerId':host['playerId']})
 command(host,{'type':'START_GAME','playerId':host['playerId']},400)
 command(guest,{'type':'ADVANCE_TICK'},400)
+command(host,{'type':'SET_SPEED','playerId':host['playerId'],'speed':0})
 before=state()
+command(host,{'type':'ADVANCE_TICK'})
+assert state()==before,'Paused clock advanced'
 command(guest,{'type':'RECRUIT','playerId':guest['playerId'],'provinceId':'de-1','troops':10000},400)
 command(host,{'type':'RECRUIT','playerId':host['playerId'],'provinceId':'de-1','troops':-1000},400)
 command(host,{'type':'MOVE_ARMY','playerId':host['playerId'],'armyId':'army-de-1','provinceId':'missing'},400)
@@ -55,4 +58,8 @@ command(host,{'type':'RECRUIT','playerId':host['playerId'],'provinceId':'de-1','
 after=state()
 assert after['countries']['germany']['treasury']==before['countries']['germany']['treasury']-200
 assert sum(a['troops'] for a in after['armies'] if a['ownerId']=='germany')==sum(a['troops'] for a in before['armies'] if a['ownerId']=='germany')+10000
-print('PASS: malformed JSON/fields/countries, actor spoof, stolen token, lobby bypass, non-host tick, illegal recruitment/movement, paid recruitment',flush=True)
+command(host,{'type':'MOVE_ARMY','playerId':host['playerId'],'armyId':'army-de-1','provinceId':'de-2'})
+moved=state()
+assert next(a for a in moved['armies'] if a['id']=='army-de-1')['provinceId']=='de-2'
+assert moved['phase']=='paused' and moved['tick']==before['tick'] and moved['month']==before['month']
+print('PASS: paused paid recruitment/legal movement/frozen clock, malformed JSON/fields/countries, actor spoof, stolen token, lobby bypass, non-host tick, illegal recruitment/movement, paid recruitment',flush=True)
