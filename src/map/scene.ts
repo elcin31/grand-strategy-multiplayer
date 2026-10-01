@@ -62,6 +62,29 @@ export function visibleCities<T extends { capital: boolean; population: number; 
 
 export interface CountryLabel { countryId: string; anchor: Point; width: number; blocked: boolean }
 export interface LabelBlocker extends Point { halfWidth?: number; halfHeight?: number }
+export interface CityLabelPlacement { dx: number; dy: number; box: LabelBlocker }
+/** Screen-sized text is placed once per culled camera update, never in the frame loop. */
+export function cityLabelPlacements<T extends { id: string; name: string; capital: boolean; population: number; point: Point }>(
+  cities: readonly T[], zoom: number, tilt: number, measureWidth: (name: string) => number,
+  blockers: readonly LabelBlocker[] = [], bounds?: Bounds,
+): Map<string, CityLabelPlacement> {
+  const result = new Map<string, CityLabelPlacement>();
+  if (!Number.isFinite(zoom) || zoom < 4 || !Number.isFinite(tilt) || tilt <= 0) return result;
+  const overlaps = (a: LabelBlocker, b: LabelBlocker) => Math.abs(a.x - b.x) < (a.halfWidth ?? 1.5) + (b.halfWidth ?? 1.5) && Math.abs(a.y - b.y) < (a.halfHeight ?? 1.5) + (b.halfHeight ?? 1.5);
+  const markers = cities.map(c => ({ id: c.id, ...c.point, halfWidth: (c.capital ? 7 : 4) / zoom, halfHeight: (c.capital ? 7 : 4) / (zoom * tilt) }));
+  const occupied = [...blockers];
+  for (const city of [...cities].sort((a, b) => Number(b.capital) - Number(a.capital) || b.population - a.population || a.id.localeCompare(b.id))) {
+    const width = measureWidth(city.name);
+    if (!Number.isFinite(width) || width <= 0) continue;
+    for (const [dx, dy] of [[8, 4], [-8 - width, 4], [-width / 2, -10], [-width / 2, 18], [32, 4], [-32 - width, 4], [-width / 2, -24], [-width / 2, 28]]) {
+      const box = { x: city.point.x + (dx! + width / 2) / zoom, y: city.point.y + (dy! - 4) / (zoom * tilt), halfWidth: (width / 2 + 3) / zoom, halfHeight: 8 / (zoom * tilt) };
+      if (bounds && (box.x - box.halfWidth < bounds.left || box.x + box.halfWidth > bounds.right || box.y - box.halfHeight < bounds.top || box.y + box.halfHeight > bounds.bottom)) continue;
+      if (occupied.some(b => overlaps(box, b)) || markers.some(b => b.id !== city.id && overlaps(box, b))) continue;
+      result.set(city.id, { dx: dx!, dy: dy!, box }); occupied.push(box); break;
+    }
+  }
+  return result;
+}
 export interface LabelLayout { height: number; widths?: ReadonlyMap<string, number> }
 const labelGeometry = new WeakMap<readonly MapFeature[], { index: SpatialIndex; areas: Map<string, number> }>();
 function polygonArea(ring: readonly Point[]): number {

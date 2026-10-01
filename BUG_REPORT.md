@@ -39,8 +39,16 @@ This is a running report, not the final Phase 20 QA acceptance.
 | HIGH | Save/reconnect/host migration and multiplayer chaos testing | Scheduled Phase 17/20; not claimed working |
 | HIGH | Remaining map modes backed by authoritative schemas | Scheduled later phases; unavailable modes are not mock buttons |
 
-The current dedicated backend deployments are game-command v6 and game-room v5 (both ACTIVE). Their world-specific HTTP create/join/gameplay/government/sync/cleanup smoke passed. The government Android gate remains pending. Android checkpoint run `36877387395` passed standalone APK verification and offline emulator gameplay. The final world-update APK must not be released while BLOCKER/CRITICAL gates remain open.
+The current dedicated backend deployments are game-command v6 and game-room v5 (both ACTIVE). Their world-specific HTTP create/join/gameplay/government/sync/cleanup smoke passed. The government Android gate passed on `06e71d8`; the legend follow-up `3a43965` also passed (run `36895304619`). Android checkpoint run `36877387395` passed standalone APK verification and offline emulator gameplay. The final world-update APK must not be released while BLOCKER/CRITICAL gates remain open.
 
 ## Government phase checkpoint
 
-Ten policy types, authoritative costs/cooldown, monthly effects, categorical map colors and older-world initialization are implemented. Strict typecheck, 46 JS tests and 3 Python tests pass. The government suite verifies policy tradeoffs, malformed payloads, actor spoofing, immutable rejection, payment/cooldown boundaries, migration, legacy isolation and map updates. Deployed endpoint verification passed; the isolated room and memberships were removed and zero remaining records verified. Standalone Android build/emulator remains open for this phase. A categorical Government legend was corrected to avoid describing it as a numerical gray-to-gold scale.
+Ten policy types, authoritative costs/cooldown, monthly effects, categorical map colors and older-world initialization are implemented. Strict typecheck, 48 JS tests and 3 Python tests pass. The government suite verifies policy tradeoffs, malformed payloads, actor spoofing, immutable rejection, payment/cooldown boundaries, migration, legacy isolation and map updates. Deployed endpoint verification passed; the isolated room and memberships were removed and zero remaining records verified. Standalone Android build/emulator passed on government source `06e71d8` (run `36893464515`); legend follow-up `3a43965` also passed its native gate (run `36895304619`). A categorical Government legend was corrected to avoid describing it as a numerical gray-to-gold scale.
+
+The existing full-world reducer stress harness completed 10,000 ticks without triggering its finite/nonnegative-balance, positive integer troop, unique army-ID, advancing-clock or bounded-battle-log checks. Final snapshot 2,964,771 bytes, 1,079 armies. This is a partial Phase 20 checkpoint; chaos/security, explicit war states and physical-device memory/FPS verification remain open.
+
+## Screenshot-driven regression fix awaiting native verification
+
+| Severity | Issue | Fix / verification |
+|---|---|---|
+| HIGH | High/Ultra regional city labels overlapped each other and army counters in dense European regions | Bounded, deterministic label placement with capital/population priority, alternate positions, viewport bounds and collision rejection. City markers and hit testing remain available. Two dense/real-world layout regressions pass; 48 JS tests pass. Native follow-up and screenshot review pending. |

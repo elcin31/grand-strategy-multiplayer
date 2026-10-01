@@ -7,7 +7,7 @@ import { countryFor, type CountryId, type GameState, type Province } from '../ty
 import { boundedCamera, Camera, clamp, TILT, visibleBounds, zoomAt } from '../map/camera';
 import { featurePath, Point } from '../map/geometry';
 import { mapSceneFor, type MapScene } from '../map/worldScene';
-import { borderPaths, buildProvinceColors, countryLabels, troopsByProvince, visibleCities } from '../map/scene';
+import { borderPaths, buildProvinceColors, cityLabelPlacements, countryLabels, troopsByProvince, visibleCities } from '../map/scene';
 import { AVAILABLE_MODES, GRAPHICS, GraphicsPreset, MapMode, MODE_LABELS } from '../map/settings';
 import { lakes, rivers, terrainPatches } from '../map/terrain';
 
@@ -75,10 +75,15 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
   const troops = useMemo(() => troopsByProvince(state), [state.armies]);
   const provinceColors = useMemo(() => buildProvinceColors(state, mode, troops), [state.countries, state.provinces, mode, troops]);
   const provinces = useMemo(() => new Map(state.provinces.map(p => [p.id, p])), [state.provinces]);
-  const cities = useMemo(() => visibleCities(mapCities, bounds, snapshot.zoom, preset), [bounds, snapshot.zoom, preset]);
+  const cities = useMemo(() => visibleCities(mapCities, bounds, snapshot.zoom, preset), [mapCities, bounds, snapshot.zoom, preset]);
   const font = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 11, fontWeight: '600' }), []);
   const counterFont = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 10, fontWeight: 'bold' }), []);
   const nationFont = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 13, fontWeight: 'bold' }), []);
+  const armyLabelBlockers = useMemo(() => snapshot.zoom < 1.5 ? [] : [...troops.keys()].filter(id => visibleIds.has(id)).flatMap(id => {
+    const feature = provinceGeometry.get(id);
+    return feature ? [{ ...feature.anchor, halfWidth: 27 / snapshot.zoom, halfHeight: 12 / (snapshot.zoom * TILT) }] : [];
+  }), [troops, provinceGeometry, visibleIds, snapshot.zoom]);
+  const cityLabels = useMemo(() => cityLabelPlacements(cities, snapshot.zoom, TILT, name => font.measureText(name).width, armyLabelBlockers, visibleBounds(snapshot, viewport, 0)), [cities, snapshot, viewport, font, armyLabelBlockers]);
   const selectAt = useCallback((px: number, py: number, cx: number, cy: number, z: number, long: boolean) => {
     const world = { x: (px - viewport.width / 2) / z + cx, y: (py - viewport.height / 2) / (z * TILT) + cy };
     const cityHit = visibleCities(mapCities, visibleBounds({ x: cx, y: cy, zoom: z }, viewport, 0), z, preset).find(c => Math.hypot((c.point.x - world.x) * z, (c.point.y - world.y) * z * TILT) < 12);
@@ -124,18 +129,15 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
   const shadowPath = useMemo(() => { const path = Skia.Path.Make(); colors.forEach(c => path.addPath(c[1])); return path; }, [colors]);
   const labelZoom = Math.exp(Math.round(Math.log(snapshot.zoom) * 4) / 4);
   const labels = useMemo(() => {
-    const blockers = cities.flatMap(c => [
-      { ...c.point, halfWidth: 7 / labelZoom, halfHeight: 7 / (labelZoom * TILT) },
-      ...(labelZoom >= 4 ? [{ x: c.point.x + (8 + font.measureText(c.name).width / 2) / labelZoom, y: c.point.y, halfWidth: (font.measureText(c.name).width / 2 + 3) / labelZoom, halfHeight: 8 / (labelZoom * TILT) }] : []),
-    ]);
-    if (labelZoom >= 1.5) for (const army of state.armies) {
-      const f = provinceGeometry.get(army.provinceId);
-      if (f) blockers.push({ ...f.anchor, halfWidth: 27 / labelZoom, halfHeight: 12 / (labelZoom * TILT) });
-    }
+    const blockers = [
+      ...cities.map(c => ({ ...c.point, halfWidth: 7 / labelZoom, halfHeight: 7 / (labelZoom * TILT) })),
+      ...[...cityLabels.values()].map(label => label.box),
+      ...armyLabelBlockers,
+    ];
     return countryLabels(features, new Map(state.provinces.map(p => [p.id, p.ownerId])), blockers, {
       height: 22 / (labelZoom * TILT), widths: new Map(Object.values(state.countries).map(c => [c.id, (nationFont.measureText(c.name).width + 12) * 1.7 / labelZoom])),
     }, new Set(visible.map(f => provinces.get(f.provinceId!)?.ownerId).filter((id): id is string => Boolean(id))));
-  }, [state.provinces, state.armies, state.countries, cities, font, nationFont, labelZoom, scene, visible, provinces]);
+  }, [state.provinces, state.armies, state.countries, cities, cityLabels, armyLabelBlockers, nationFont, labelZoom, scene, visible, provinces]);
   useEffect(() => {
     if (!focusCountryId || viewport.width <= 1) return;
     const capitalId = state.countries[focusCountryId]?.capitalCityId;
@@ -182,7 +184,7 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
             {GRAPHICS[preset].shadows && city.capital && <Circle cx={0} cy={0} r={7} color="#ebd6a1" opacity={0.16} />}
             <Circle cx={0} cy={0} r={city.capital ? 3.2 : 2} color={city.capital ? '#f1dca8' : '#c7cec1'} />
             {city.capital && <Circle cx={0} cy={0} r={5} style="stroke" strokeWidth={1} color="#f1dca8" />}
-            {snapshot.zoom >= 4 && <MapText x={8} y={4} text={city.name} font={font} color="#eee9d8" />}
+            {cityLabels.has(city.id) && <MapText x={cityLabels.get(city.id)!.dx} y={cityLabels.get(city.id)!.dy} text={city.name} font={font} color="#eee9d8" />}
           </Group></Group>)}
           {[...troops.entries()].filter(([id]) => snapshot.zoom >= 1.5 && visibleIds.has(id)).map(([id, count]) => {
             const f = provinceGeometry.get(id)!;
