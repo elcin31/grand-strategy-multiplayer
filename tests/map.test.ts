@@ -126,3 +126,12 @@ test('country label fit merges adjacent owned provinces and respects a lake hole
   assert.ok(contains(island, lakeLabel.anchor));
   for (let i = -10; i <= 10; i++) assert.ok(contains(island, { x: lakeLabel.anchor.x + lakeLabel.width * i / 20, y: lakeLabel.anchor.y }));
 });
+
+test('label placement avoids military counter rectangles rather than just their centers', () => {
+  const blocker = { x: 10, y: 10, halfWidth: 8, halfHeight: 2 };
+  const label = countryLabels([square], new Map([['test', 'nation']]), [blocker], { height: 2 })[0]!;
+  assert.equal(label.blocked, false);
+  assert.ok(Math.abs(label.anchor.y - blocker.y) >= 3 || Math.abs(label.anchor.x - blocker.x) >= label.width / 2 + 8);
+  const covered = countryLabels([square], new Map([['test', 'nation']]), [{ x: 10, y: 10, halfWidth: 100, halfHeight: 100 }])[0]!;
+  assert.equal(covered.blocked, true);
+});

@@ -11,12 +11,12 @@ Playable-state schema is deliberately still compatible with the existing server:
 Verification gates:
 
 - `npm run typecheck`: passed locally.
-- `npm test`: 15 tests passed locally, including map topology, camera, city positions, recruitment/movement, and engine regression.
+- `npm test`: 16 tests passed locally, including map topology, camera, city positions, recruitment/movement, and engine regression.
 - `npm run benchmark:map`: 5,000 features / 10,000 queries, p95 ~0.026 ms on this build machine. **CPU index benchmark, not Android FPS.**
 - Expo Android prebuild: passed locally.
 - Production Hermes bundle export: passed locally, ~3.6 MB.
-- `assembleRelease`: passed for `6cb3c1f`; repeat required for the label/camera update.
-- Native cold-launch / renderer / offline launch without networking / restart smoke: passed for `6cb3c1f` on API 35. Repeat required for the label/camera update.
+- `assembleRelease`: passed for `6cb3c1f`; passed again for `e84ccae`; repeat required for rectangle collision placement.
+- Native cold-launch / renderer / offline launch without networking / restart smoke: passed for `6cb3c1f` on API 35. Passed again for `e84ccae`; repeat required for rectangle collision placement.
 - Emulator evidence covers 1280×720, 1600×720, 1920×1080 and 1280×800 layouts, four graphics presets and six map modes.
 - Swiftshader emulator camera benchmark was slow (median frame 77 ms, p95 200 ms); this does not establish physical-device performance. Camera culling updates are now triggered by movement/zoom thresholds instead of every small camera change.
 - Physical-device FPS, gestures and sustained GPU profiling: pending.
@@ -51,3 +51,5 @@ Preparation audit produced 195 country records, 4,386 real administrative provin
 These prepared records are not yet loaded into campaigns. Runtime remains the existing scenario until schema/engine/server migration passes the next gates.
 
 Profiling the prepared 4,386-province dataset found country-label generation took ~7.8 seconds on this machine. Cached geometry, bounded candidates and exact horizontal land intervals reduced it to ~102 ms. The repeatable synthetic 5,000-feature CI benchmark now reports label time too. This is CPU preparation, not native navigation FPS.
+
+Native CI for `e84ccae` passed release archive validation, offline cold-launch, all presets/modes, layout checks and restart. Collision-aware label placement has 16 passing JS tests; its native recheck is pending.

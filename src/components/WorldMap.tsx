@@ -112,9 +112,20 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
   }, [visible, provinceColors]);
   const selectedPath = useMemo(() => { const path = Skia.Path.Make(); visible.filter(f => selectedProvinceId ? f.provinceId === selectedProvinceId : provinces.get(f.provinceId!)?.ownerId === selectedCountryId).forEach(f => path.addPath(paths.get(f.id)!)); return path; }, [visible, selectedProvinceId, selectedCountryId, provinces]);
   const shadowPath = useMemo(() => { const path = Skia.Path.Make(); colors.forEach(c => path.addPath(c[1])); return path; }, [colors]);
-  const labels = useMemo(() => countryLabels(features, new Map(state.provinces.map(p => [p.id, p.ownerId])), [
-    ...mapCities.map(c => c.point), ...state.armies.flatMap(a => { const f = provinceGeometry.get(a.provinceId); return f ? [f.anchor] : []; }),
-  ]), [state.provinces, state.armies]);
+  const labelZoom = Math.exp(Math.round(Math.log(snapshot.zoom) * 4) / 4);
+  const labels = useMemo(() => {
+    const blockers = cities.flatMap(c => [
+      { ...c.point, halfWidth: 7 / labelZoom, halfHeight: 7 / (labelZoom * TILT) },
+      ...(labelZoom >= 4 ? [{ x: c.point.x + (8 + font.measureText(c.name).width / 2) / labelZoom, y: c.point.y, halfWidth: (font.measureText(c.name).width / 2 + 3) / labelZoom, halfHeight: 8 / (labelZoom * TILT) }] : []),
+    ]);
+    if (labelZoom >= 1.5) for (const army of state.armies) {
+      const f = provinceGeometry.get(army.provinceId);
+      if (f) blockers.push({ ...f.anchor, halfWidth: 27 / labelZoom, halfHeight: 12 / (labelZoom * TILT) });
+    }
+    return countryLabels(features, new Map(state.provinces.map(p => [p.id, p.ownerId])), blockers, {
+      height: 22 / (labelZoom * TILT), widths: new Map(Object.values(state.countries).map(c => [c.id, (nationFont.measureText(c.name).width + 12) * 1.7 / labelZoom])),
+    });
+  }, [state.provinces, state.armies, state.countries, cities, font, nationFont, labelZoom]);
   const terrain = GRAPHICS[preset].terrain;
 
   return <View style={styles.frame} onLayout={e => setViewport({ width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height })}>
@@ -139,7 +150,10 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
           <Path path={borders.outer} style="stroke" color="#131f24" strokeWidth={outerScale} />
           {!selectedPath.isEmpty() && <Path path={selectedPath} style="stroke" color="#f0db9e" strokeWidth={selectionScale} opacity={pulse} />}
           {snapshot.zoom < 8 && labels.filter(label => label.anchor.x >= bounds.left && label.anchor.x <= bounds.right && label.anchor.y >= bounds.top && label.anchor.y <= bounds.bottom).map(label => {
-            const name = state.countries[label.countryId as CountryId].name;
+            if (label.blocked) return null;
+            const country = state.countries[label.countryId as CountryId];
+            const fullWidth = nationFont.measureText(country.name).width;
+            const name = label.width * snapshot.zoom / (fullWidth + 12) < 0.8 ? country.shortName : country.name;
             const width = nationFont.measureText(name).width;
             const scale = Math.min(1.7, label.width * snapshot.zoom / (width + 12));
             if (scale < 0.55) return null;

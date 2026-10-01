@@ -54,7 +54,9 @@ export function visibleCities<T extends { capital: boolean; population: number; 
     .sort((a, b) => Number(b.capital) - Number(a.capital) || b.population - a.population).slice(0, GRAPHICS[preset].cityBudget);
 }
 
-export interface CountryLabel { countryId: string; anchor: Point; width: number }
+export interface CountryLabel { countryId: string; anchor: Point; width: number; blocked: boolean }
+export interface LabelBlocker extends Point { halfWidth?: number; halfHeight?: number }
+export interface LabelLayout { height: number; widths?: ReadonlyMap<string, number> }
 const labelGeometry = new WeakMap<readonly MapFeature[], { index: SpatialIndex; areas: Map<string, number> }>();
 function polygonArea(ring: readonly Point[]): number {
   let area = 0;
@@ -87,7 +89,7 @@ function labelWidth(land: readonly MapFeature[], anchor: Point): number {
   return anchor.x >= left && anchor.x <= right ? Math.max(0, Math.min(anchor.x - left, right - anchor.x) * 1.9) : 0;
 }
 /** Bounded candidates and cached spatial geometry keep full-world labels off the frame loop. */
-export function countryLabels(data: readonly MapFeature[], owners: ReadonlyMap<string, string>, blockers: readonly Point[] = []): CountryLabel[] {
+export function countryLabels(data: readonly MapFeature[], owners: ReadonlyMap<string, string>, blockers: readonly LabelBlocker[] = [], layout: LabelLayout = { height: 4 }): CountryLabel[] {
   let geometry = labelGeometry.get(data);
   if (!geometry) {
     geometry = { index: new SpatialIndex(data), areas: new Map(data.map(f => [f.id, f.polygons.reduce((sum, rings) => sum + polygonArea(rings[0]!) - rings.slice(1).reduce((holes, ring) => holes + polygonArea(ring), 0), 0)])) };
@@ -106,14 +108,21 @@ export function countryLabels(data: readonly MapFeature[], owners: ReadonlyMap<s
     const center = land.reduce((p, f) => ({ x: p.x + f.anchor.x * areas.get(f.id)! / totalArea, y: p.y + f.anchor.y * areas.get(f.id)! / totalArea }), { x: 0, y: 0 });
     const candidates = [center, ...largest.map(f => f.anchor)];
     for (const f of largest) for (let iy = 1; iy < 6; iy++) for (let ix = 1; ix < 6; ix++) candidates.push({ x: f.bounds.left + (f.bounds.right - f.bounds.left) * ix / 6, y: f.bounds.top + (f.bounds.bottom - f.bounds.top) * iy / 6 });
-    let best = { anchor: largest[0]!.anchor, width: 0, score: -Infinity };
+    // Counter edges supply placements between armies that the coarse grid can miss.
+    for (const blocker of blockers) {
+      if (!largest.some(f => blocker.x >= f.bounds.left && blocker.x <= f.bounds.right && blocker.y >= f.bounds.top && blocker.y <= f.bounds.bottom)) continue;
+      const offset = (blocker.halfHeight ?? 1.5) + layout.height / 2 + 0.5;
+      for (const candidateX of [blocker.x, center.x]) for (const sign of [-1, 1]) candidates.push({ x: candidateX, y: blocker.y + offset * sign });
+    }
+    let best = { anchor: largest[0]!.anchor, width: 0, score: -Infinity, blocked: true };
     for (const anchor of candidates) {
       if (!inside(anchor)) continue;
       const width = labelWidth(land, anchor);
-      const clearance = blockers.reduce((min, p) => Math.min(min, Math.hypot(anchor.x - p.x, anchor.y - p.y)), Infinity);
-      const score = width / 2 - Math.max(0, 7 - clearance) * 3;
-      if (score > best.score) best = { anchor, width, score };
+      const halfWidth = Math.min(width, layout.widths?.get(countryId) ?? width) / 2;
+      const collisions = blockers.filter(p => Math.abs(anchor.x - p.x) < halfWidth + (p.halfWidth ?? 1.5) && Math.abs(anchor.y - p.y) < layout.height / 2 + (p.halfHeight ?? 1.5)).length;
+      const score = width / 2 - collisions * 10000;
+      if (score > best.score) best = { anchor, width, score, blocked: collisions > 0 };
     }
-    return { countryId, anchor: best.anchor, width: best.width };
+    return { countryId, anchor: best.anchor, width: best.width, blocked: best.blocked };
   });
 }
