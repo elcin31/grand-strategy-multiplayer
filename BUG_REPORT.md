@@ -24,7 +24,8 @@ This is a running report, not the final Phase 20 QA acceptance.
 | HIGH | Duplicate client/server reducers could drift during world migration | One shared reducer/types; 39 tests include authenticated/local world-country selection parity |
 | HIGH | Bounded logs and deleted armies could reuse IDs in the same paused tick | Monotonic persisted entity sequence; 60 same-tick battles keep unique IDs after truncation |
 | HIGH | Room join retries could admit a ninth player or join a started campaign | Fresh CAS admission guard, immutable rejection tests and failed-membership cleanup |
-| HIGH | Unchanged full-world snapshots would be retransmitted every 900 ms | Version-aware polling; live/native verification pending |
+| HIGH | Unchanged full-world snapshots would be retransmitted every 900 ms | Version-aware polling; deployed room v3 is ACTIVE, create/join endpoint smoke remains pending |
+| HIGH | The full world catalogue exceeded the Edge bundler per-module source limit | Generator now emits 83 bounded modules; dedicated `game-room` v3 bundles all modules and is ACTIVE |
 | LOW | Six unused TSX imports | Removed; noUnusedLocals/noUnusedParameters enabled and passed |
 
 ## Open release gates
@@ -32,9 +33,9 @@ This is a running report, not the final Phase 20 QA acceptance.
 | Severity | Gate | Status |
 |---|---|---|
 | BLOCKER | Complete global world-update acceptance criteria | Not implemented yet; world data wired into new campaigns, further gameplay/release criteria pending |
-| BLOCKER | Standalone Android and live-backend gates for modern-world migration | Pending; previous checkpoint passed, not proof for this migration |
+| BLOCKER | Standalone Android build, emulator gameplay smoke and live endpoint smoke for modern-world migration | Pending; Expo prebuild/config and backend deployment pass, previous APK checkpoint is not proof for this migration |
 | HIGH | Physical-device map FPS and gesture profiling | Pending; CPU query benchmark is not proof of 30/60 FPS |
 | HIGH | Save/reconnect/host migration and multiplayer chaos testing | Scheduled Phase 17/20; not claimed working |
 | HIGH | Remaining map modes backed by authoritative schemas | Scheduled later phases; unavailable modes are not mock buttons |
 
-The final world-update APK must not be released while BLOCKER/CRITICAL gates remain open. The renderer checkpoint may be built for verification only.
+The current dedicated backend deployments are game-command v5 and game-room v3 (both ACTIVE). Their world-specific HTTP create/join/gameplay/cleanup flow still needs a live smoke test. The final world-update APK must not be released while BLOCKER/CRITICAL gates remain open. The renderer checkpoint may be built for verification only.
