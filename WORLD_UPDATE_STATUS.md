@@ -11,7 +11,7 @@ Playable-state schema is deliberately still compatible with the existing server:
 Verification gates:
 
 - `npm run typecheck`: passed locally.
-- `npm test`: 29 tests passed locally, including map topology, camera, city positions, recruitment/movement, and engine regression.
+- `npm test`: 31 tests passed locally, including map topology, camera, city positions, recruitment/movement, and engine regression.
 - `npm run benchmark:map`: 5,000 features / 10,000 queries, p95 ~0.026 ms on this build machine. **CPU index benchmark, not Android FPS.**
 - Expo Android prebuild: passed locally.
 - Production Hermes bundle export: passed locally, ~3.6 MB.
@@ -58,8 +58,8 @@ Native CI for `e84ccae` passed release archive validation, offline cold-launch, 
 
 The previous server cast JSON to a TypeScript command without runtime validation. It accepted unknown countries, invalid ready/speed fields and allowed lobby startup through SET_SPEED. A shared pure validator now checks exact fields, identifiers, country membership, boolean ready, integer speed and recruitment bounds. Both engines enforce lobby/start/pause/resume transitions. Tests import the actual server reducer, so its core is now covered by strict client typecheck as well as runtime tests. TypeScript permits Deno's .ts import paths under noEmit.
 
-29 JavaScript tests and 3 Python tests pass locally. Dedicated game-command v3 passed live malformed-command, authentication, actor-spoof and paid-recruitment checks; the isolated QA room and its memberships were removed.
+31 JavaScript tests and 3 Python tests pass locally. Dedicated game-command v3 passed live malformed-command, authentication, actor-spoof and paid-recruitment checks; the isolated QA room and its memberships were removed.
 
-The expanded Android smoke test on `87601a2` caught a real regression: recruitment controls stayed available while paused, but both reducers rejected orders. Both now accept validated recruitment and movement during running/paused campaigns, while ADVANCE_TICK remains a no-op on pause. Tests cover payment, manpower, ownership, adjacency, immutable rejection and frozen dates. Fuzz checks exercise 5,000 hostile payloads and 1,000 paused recruitment attempts in each actual reducer. The dedicated game-command function is now v4; live paused-order verification passed (paid recruitment, legal movement, frozen clock); the new native release/emulator gate is pending. Failed emulator runs now retain logcat and report rejection dialogs explicitly.
+The expanded Android smoke test on `87601a2` caught a real regression: recruitment controls stayed available while paused, but both reducers rejected orders. Both now accept validated recruitment and movement during running/paused campaigns, while ADVANCE_TICK remains a no-op on pause. Tests cover payment, manpower, ownership, adjacency, immutable rejection and frozen dates. Winning/losing battle tests also verify casualty conservation, unique ownership and immutable input in both reducers. Fuzz checks exercise 5,000 hostile payloads and 1,000 paused recruitment attempts in each actual reducer. The dedicated game-command function is now v4; live paused-order verification passed (paid recruitment, legal movement, frozen clock); the new native release/emulator gate is pending. Failed emulator runs now retain logcat and report rejection dialogs explicitly.
 
 The immutable country catalogue has been committed as preparation: 195 definitions, linked capital records, original adjectives and contrasting neighbor-aware colors, Russian/English/ISO search, and offline flag-icons 7.5.0 vectors with the complete MIT notice. It does not change the playable campaign roster yet. No final release acceptance is claimed.

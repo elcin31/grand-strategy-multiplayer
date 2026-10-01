@@ -13,10 +13,27 @@ test('5,000 hostile payloads cannot mutate either authoritative campaign', () =>
   const values: unknown[] = [null, true, false, 0, -1, 1e300, '1000', {}, [], ['host'], '__proto__'];
   const local = createInitialGame(), server = createInitialState('game', 'SECURE', 'local-player', 'Test');
   const originals = [JSON.stringify(local), JSON.stringify(server)];
-  const types = ['SELECT_COUNTRY', 'SET_READY', 'SET_SPEED', 'RECRUIT', 'MOVE_ARMY', 'ADVANCE_TICK'];
+  const bases: Record<string, unknown>[] = [
+    { type: 'SELECT_COUNTRY', playerId: 'local-player', countryId: 'germany' },
+    { type: 'SET_READY', playerId: 'local-player', ready: false },
+    { type: 'SET_SPEED', playerId: 'local-player', speed: 1 },
+    { type: 'RECRUIT', playerId: 'local-player', provinceId: 'de-1', troops: 10000 },
+    { type: 'MOVE_ARMY', playerId: 'local-player', armyId: 'army-de-1', provinceId: 'de-2' },
+    { type: 'ADVANCE_TICK' },
+  ];
   for (let i = 0; i < 5000; i++) {
     const pick = () => values[Math.floor(rng() * values.length)];
-    const command = { type: types[Math.floor(rng() * types.length)], playerId: pick(), countryId: pick(), provinceId: pick(), armyId: pick(), ready: pick(), speed: pick(), troops: pick(), treasury: 1e300 };
+    const command = { ...bases[Math.floor(rng() * bases.length)] };
+    const fields = Object.keys(command);
+    const field = fields[Math.floor(rng() * fields.length)]!;
+    const variant = i % 4;
+    if (variant === 0) delete command[field];
+    else if (variant === 1) command[field] = pick();
+    else if (variant === 2) command.treasury = 1e300;
+    else command.type = '__proto__';
+    // A correctly typed ready/speed replacement can be legal JSON; ensure these
+    // generated cases still exercise an invalid actor rather than a valid order.
+    if (variant === 1 && (field === 'ready' || field === 'speed')) command.playerId = 'missing-player';
     assert.throws(() => applyCommand(local, command as never));
     assert.throws(() => applyServerCommand(server, command as never, 'local-player'));
     assert.equal(JSON.stringify(local), originals[0]);
