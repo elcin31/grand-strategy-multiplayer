@@ -9,6 +9,7 @@ export interface Country {
   adjective?: string;
   flag?: string;
   capitalCityId?: string;
+  rulerId?: string;
   provinceIds?: string[];
   treasury: number;
   income: number;
@@ -75,11 +76,26 @@ export interface City {
   isRegionalCapital: boolean;
 }
 
+export interface Leader {
+  id: string;
+  name: string;
+  countryId: CountryId;
+  age: number;
+  portraitSeed: number;
+  ideology: string;
+  traits: string[];
+  militarySkill: number;
+  diplomaticSkill: number;
+  economicSkill: number;
+  popularity: number;
+}
+
 export interface GameState {
   nextEntityId?: number;
   dataset?: 'modern-world-v1';
   campaignSeed?: number;
   cities?: City[];
+  leaders?: Record<string, Leader>;
   id: string;
   roomCode: string;
   phase: 'lobby' | 'running' | 'paused' | 'finished';

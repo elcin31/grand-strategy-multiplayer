@@ -15,6 +15,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
   const countryId = me?.countryId ?? null;
   if (!countryId) return null;
   const nation = countryFor(state, countryId);
+  const ruler = nation.rulerId ? state.leaders?.[nation.rulerId] : undefined;
   const selected = state.provinces.find((province) => province.id === selectedProvinceId) ?? null;
   const ownArmies = selected ? state.armies.filter((army) => army.provinceId === selected.id && army.ownerId === countryId).sort((a, b) => b.troops - a.troops) : [];
   const primaryArmy = ownArmies[0] ?? null;
@@ -31,6 +32,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
           </View>
           <View style={styles.dateBadge}><Text style={styles.dateText}>{String(state.month).padStart(2, '0')}/{state.year}</Text></View>
         </View>
+        {ruler && <View style={styles.rulerRow}><View style={[styles.rulerPortrait,{backgroundColor:['#526E75','#765F70','#6E7455','#756448','#516481','#7A6252'][ruler.portraitSeed%6]}]}><Text style={styles.rulerInitials}>{ruler.name.split(/\s+/).map(part=>part[0]).slice(0,2).join('')}</Text></View><View><Text style={styles.rulerLabel}>ВЫМЫШЛЕННЫЙ ПРАВИТЕЛЬ · {ruler.age}</Text><Text style={styles.rulerName}>{ruler.name}</Text><Text style={styles.rulerDetails}>{ruler.ideology} · дипломатия {ruler.diplomaticSkill}</Text></View></View>}
         <View style={styles.metrics}>
           <Metric label="Казна" value={`$${compact(nation.treasury)}M`} />
           <Metric label="Доход" value={`+$${compact(nation.income)}M`} />
@@ -127,6 +129,12 @@ const styles = StyleSheet.create({
   wrap: { gap: 12 },
   card: { backgroundColor: '#111A2A', borderRadius: 22, padding: 16, borderWidth: 1, borderColor: '#202C40', gap: 13 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  rulerRow: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: '#0C1422', borderRadius: 12, padding: 10 },
+  rulerPortrait: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
+  rulerInitials: { color: '#F7F9FC', fontSize: 13, fontWeight: '900' },
+  rulerLabel: { color: '#8290A8', fontSize: 8, fontWeight: '900', letterSpacing: 0.4 },
+  rulerName: { color: '#F7F9FC', fontSize: 13, fontWeight: '800', marginTop: 2 },
+  rulerDetails: { color: '#8290A8', fontSize: 9, marginTop: 2 },
   eyebrow: { color: '#7E8DA7', fontSize: 10, letterSpacing: 1.1, fontWeight: '900' },
   title: { color: '#F7F9FC', fontSize: 20, fontWeight: '900', marginTop: 4 },
   dateBadge: { backgroundColor: '#18243A', paddingHorizontal: 11, paddingVertical: 8, borderRadius: 12 },

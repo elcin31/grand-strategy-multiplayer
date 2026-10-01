@@ -146,6 +146,7 @@ function GameApp() {
         {!gameStarted && (
           <CountryPanel
             country={selectedCountry}
+            leader={selectedCountry?.rulerId ? state.leaders?.[selectedCountry.rulerId] ?? null : null}
             provinces={selectedProvinces}
             locked={Boolean(selectedCountryId && myCountryId === selectedCountryId)}
             onChoose={chooseCountry}

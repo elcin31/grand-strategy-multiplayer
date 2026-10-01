@@ -34,6 +34,22 @@ test('new campaigns contain every country, real provinces/cities and exact popul
   assert.doesNotMatch(JSON.stringify(state), /"polygons"|"point"|<svg/);
   assert.deepEqual(world(),state);
 });
+test('all countries receive campaign-seeded fictional rulers with a procedural portrait identity', () => {
+  const first=world(), repeat=createWorldState('world-other-room','OTHER','host','Elsewhere',987654), changed=createWorldState('world-qa','WORLD1','host','Test',987655);
+  assert.equal(Object.keys(first.leaders!).length,195);
+  assert.deepEqual(first.leaders,repeat.leaders);
+  assert.notDeepEqual(first.leaders,changed.leaders);
+  for(const country of Object.values(first.countries)) {
+    const leader=first.leaders![country.rulerId!]!;
+    assert.equal(leader.countryId,country.id);assert.match(leader.name,/\S+\s+\S+/);
+    assert.ok(leader.age>=35&&leader.age<=78);assert.ok(Number.isSafeInteger(leader.portraitSeed)&&leader.portraitSeed>=0);
+    assert.ok(leader.militarySkill>=20&&leader.militarySkill<=80);assert.ok(leader.diplomaticSkill>=20&&leader.diplomaticSkill<=80);
+    assert.ok(leader.economicSkill>=20&&leader.economicSkill<=80);assert.ok(leader.popularity>=25&&leader.popularity<=90);
+    assert.ok(leader.traits.length>=2&&leader.traits.length<=3);assert.equal(new Set(leader.traits).size,leader.traits.length);
+    assert.equal(leader.id,`leader-${country.id}-987654`);
+  }
+  assert.deepEqual(first,world());
+});
 test('campaign mutation cannot modify any future campaign or shared definitions', () => {
   const before=world(), changed=world();
   changed.provinces[0]!.neighbors.length=0;changed.cities![0]!.population=1;changed.countries.usa!.treasury=1;

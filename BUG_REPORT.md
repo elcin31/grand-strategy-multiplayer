@@ -21,12 +21,13 @@ This is a running report, not the final Phase 20 QA acceptance.
 | HIGH | Camera movement repeatedly rebuilt scene batches | Movement/zoom thresholds reduce JS culling updates; physical-device profiling still pending |
 | LOW | Entry copy incorrectly claimed local transport for online rooms | Corrected copy; offline entry is now a separate real transport |
 
-| HIGH | Duplicate client/server reducers could drift during world migration | One shared reducer/types; 39 tests include authenticated/local world-country selection parity |
+| HIGH | Duplicate client/server reducers could drift during world migration | One shared reducer/types; 40 tests include authenticated/local world-country selection parity and seeded leader generation |
 | HIGH | Bounded logs and deleted armies could reuse IDs in the same paused tick | Monotonic persisted entity sequence; 60 same-tick battles keep unique IDs after truncation |
 | HIGH | Room join retries could admit a ninth player or join a started campaign | Fresh CAS admission guard, immutable rejection tests and failed-membership cleanup |
 | HIGH | Unchanged full-world snapshots would be retransmitted every 900 ms | Version-aware polling; deployed room v3 is ACTIVE, create/join endpoint smoke remains pending |
 | HIGH | The full world catalogue exceeded the Edge bundler per-module source limit | Generator now emits 83 bounded modules; dedicated `game-room` v3 bundles all modules and is ACTIVE |
 | LOW | Six unused TSX imports | Removed; noUnusedLocals/noUnusedParameters enabled and passed |
+| MEDIUM | New countries had no ruler identity or campaign portrait seed | Added a deterministic fictional leader to each of 195 modern-world states; deterministic/variation and stat-bound tests pass; release build and server v4 deployment pending |
 
 ## Open release gates
 

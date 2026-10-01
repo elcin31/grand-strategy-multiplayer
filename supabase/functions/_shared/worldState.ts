@@ -1,5 +1,6 @@
 import { countryDefinitions, provinceDefinitions, cityDefinitions } from './worldDefinitions.ts';
 import type { GameState, Country } from './gameTypes.ts';
+import { generateLeader } from './leaderGeneration.ts';
 
 function seedForCampaign(id: string): number {
   let seed = 2166136261;
@@ -17,13 +18,16 @@ export function createWorldState(gameId: string, roomCode: string, playerId: str
   for (const p of provinces) income.set(p.countryId, (income.get(p.countryId) ?? 0) + p.income);
   const capitals = new Map(cities.filter(c => c.isCapital).map(c => [c.countryId, c]));
   const armies: GameState['armies'] = [];
+  const leaders: NonNullable<GameState['leaders']> = {};
   for (const definition of countryDefinitions) {
     const capital = capitals.get(definition.id);
     if (!capital || capital.id !== definition.capitalCityId) throw new Error('Invalid capital definition');
     const monthly = income.get(definition.id) ?? 0;
     const troops = definition.populationEstimate >= 100000 ? Math.min(120000, Math.max(1000, Math.floor(definition.populationEstimate * .003 / 1000) * 1000)) : 0;
-    countries[definition.id] = { ...definition, provinceIds: [...definition.provinceIds], income: monthly, population: definition.populationEstimate, treasury: monthly * 12 + 400, manpower: Math.max(0, Math.floor(definition.populationEstimate * .012) - troops), army: troops, technology: 60, stability: 75 };
+    const ruler = generateLeader(definition.id, campaignSeed, definition.region);
+    leaders[ruler.id] = ruler;
+    countries[definition.id] = { ...definition, rulerId: ruler.id, provinceIds: [...definition.provinceIds], income: monthly, population: definition.populationEstimate, treasury: monthly * 12 + 400, manpower: Math.max(0, Math.floor(definition.populationEstimate * .012) - troops), army: troops, technology: 60, stability: 75 };
     if (troops) armies.push({ id: 'army-capital-'+definition.id, ownerId: definition.id, provinceId: capital.provinceId, troops });
   }
-  return { dataset: 'modern-world-v1', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };
+  return { dataset: 'modern-world-v1', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, leaders, armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };
 }
