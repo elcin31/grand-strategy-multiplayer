@@ -38,18 +38,16 @@ export function troopsByProvince(state: GameState): Map<string, number> {
   for (const army of state.armies) result.set(army.provinceId, (result.get(army.provinceId) ?? 0) + army.troops);
   return result;
 }
-export function provinceColor(id: string, state: GameState, mode: MapMode, troops: Map<string, number>): string {
-  const p = state.provinces.find(p => p.id === id);
-  if (!p) return '#37423f';
-  const c = state.countries[p.ownerId];
-  if (mode === 'Political') return c.color;
-  if (mode === 'Terrain') return '#637364';
-  const metric = (id: string) => { const p = state.provinces.find(p => p.id === id)!; return mode === 'Economy' ? p.income : mode === 'Population' ? p.population : mode === 'Military' ? troops.get(p.id) ?? 0 : state.countries[p.ownerId].stability; };
-  const values = state.provinces.map(p => metric(p.id)), value = metric(id);
-  const max = Math.max(1, ...values), min = Math.min(...values);
-  const t = max === min ? 0.5 : Math.max(0, Math.min(1, (value - min) / (max - min)));
+/** Linear preprocessing, then O(1) lookup. Never scan the full world per visible polygon. */
+export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map<string, number>): Map<string, string> {
+  if (mode === 'Political' || mode === 'Terrain') return new Map(state.provinces.map(p => [p.id, mode === 'Political' ? state.countries[p.ownerId].color : '#637364']));
+  const values = new Map(state.provinces.map(p => [p.id, mode === 'Economy' ? p.income : mode === 'Population' ? p.population : mode === 'Military' ? troops.get(p.id) ?? 0 : state.countries[p.ownerId].stability]));
+  const all = [...values.values()], max = Math.max(1, ...all), min = Math.min(...all);
   const low = [66, 77, 91], high = [197, 161, 89];
-  return `rgb(${low.map((v, i) => Math.round(v + (high[i]! - v) * t)).join(',')})`;
+  return new Map([...values.entries()].map(([id, value]) => {
+    const t = max === min ? 0.5 : Math.max(0, Math.min(1, (value - min) / (max - min)));
+    return [id, `rgb(${low.map((v, i) => Math.round(v + (high[i]! - v) * t)).join(',')})`];
+  }));
 }
 export function visibleCities<T extends { capital: boolean; population: number; point: Point }>(cities: readonly T[], bounds: Bounds, zoom: number, preset: GraphicsPreset): T[] {
   return cities.filter(c => (c.capital || zoom >= 5) && c.point.x >= bounds.left && c.point.x <= bounds.right && c.point.y >= bounds.top && c.point.y <= bounds.bottom)

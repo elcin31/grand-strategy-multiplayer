@@ -11,7 +11,7 @@ Playable-state schema is deliberately still compatible with the existing server:
 Verification gates:
 
 - `npm run typecheck`: passed locally.
-- `npm test`: 12 tests passed locally, including map topology, camera, city positions, recruitment/movement, and engine regression.
+- `npm test`: 13 tests passed locally, including map topology, camera, city positions, recruitment/movement, and engine regression.
 - `npm run benchmark:map`: 5,000 features / 10,000 queries, p95 ~0.026 ms on this build machine. **CPU index benchmark, not Android FPS.**
 - Expo Android prebuild: passed locally.
 - Production Hermes bundle export: passed locally, ~3.6 MB.

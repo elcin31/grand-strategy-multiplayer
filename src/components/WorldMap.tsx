@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { BackHandler, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Canvas, Circle, Fill, Group, LinearGradient, Path, Rect, Text as MapText, Skia, matchFont, vec } from '@shopify/react-native-skia';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { cancelAnimation, runOnJS, useAnimatedReaction, useDerivedValue, useSharedValue, withDecay, withRepeat, withTiming } from 'react-native-reanimated';
@@ -7,7 +7,7 @@ import type { CountryId, GameState, Province } from '../types/game';
 import { boundedCamera, Camera, clamp, TILT, visibleBounds, zoomAt } from '../map/camera';
 import { featurePath, Point } from '../map/geometry';
 import { mapCities } from '../map/cities';
-import { borderPaths, features, provinceColor, provinceGeometry, spatialIndex, troopsByProvince, visibleCities } from '../map/scene';
+import { borderPaths, buildProvinceColors, features, provinceGeometry, spatialIndex, troopsByProvince, visibleCities } from '../map/scene';
 import { AVAILABLE_MODES, GRAPHICS, GraphicsPreset, MapMode, MODE_LABELS } from '../map/settings';
 import { lakes, rivers, terrainPatches } from '../map/terrain';
 
@@ -35,6 +35,7 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
   const [preset, setPreset] = useState<GraphicsPreset>('Medium');
   const [mode, setMode] = useState<MapMode>('Political');
   const [settingsOpen, setSettingsOpen] = useState(false);
+  useEffect(() => { if (!settingsOpen) return; const handler = BackHandler.addEventListener('hardwareBackPress', () => { setSettingsOpen(false); return true; }); return () => handler.remove(); }, [settingsOpen]);
   const x = useSharedValue(defaults.x), y = useSharedValue(defaults.y), zoom = useSharedValue(defaults.zoom);
   const startX = useSharedValue(0), startY = useSharedValue(0), startZoom = useSharedValue(1);
   const pinchX = useSharedValue(0), pinchY = useSharedValue(0), pinching = useSharedValue(false);
@@ -57,6 +58,7 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
   const visibleIds = useMemo(() => new Set(visible.map(f => f.provinceId!)), [visible]);
   const borders = useMemo(() => borderPaths(state, visibleIds), [state.provinces, visibleIds]);
   const troops = useMemo(() => troopsByProvince(state), [state.armies]);
+  const provinceColors = useMemo(() => buildProvinceColors(state, mode, troops), [state.countries, state.provinces, mode, troops]);
   const provinces = useMemo(() => new Map(state.provinces.map(p => [p.id, p])), [state.provinces]);
   const cities = useMemo(() => visibleCities(mapCities, bounds, snapshot.zoom, preset), [bounds, snapshot.zoom, preset]);
   const font = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 11, fontWeight: '600' }), []);
@@ -83,11 +85,11 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
       zoom.value = clamp(startZoom.value * e.scale, 0.5, 18);
       x.value = clamp(pinchX.value - (e.focalX - viewport.width / 2) / zoom.value, 0, 1440);
       y.value = clamp(pinchY.value - (e.focalY - viewport.height / 2) / (zoom.value * TILT), 0, 720);
-    }).onFinalize(() => { pinching.value = false; });
+    }).onFinalize(() => { pinching.value = false; runOnJS(setSnapshot)({ x: x.value, y: y.value, zoom: zoom.value }); });
     const doubleTap = Gesture.Tap().numberOfTaps(2).maxDelay(260).onEnd((e, ok) => {
       if (!ok) return;
       const target = zoomAt({ x: x.value, y: y.value, zoom: zoom.value }, 1.7, { x: e.x, y: e.y }, viewport);
-      x.value = withTiming(target.x, { duration: 240 }); y.value = withTiming(target.y, { duration: 240 }); zoom.value = withTiming(target.zoom, { duration: 240 });
+      x.value = withTiming(target.x, { duration: 240 }); y.value = withTiming(target.y, { duration: 240 }); zoom.value = withTiming(target.zoom, { duration: 240 }, done => { if (done) runOnJS(setSnapshot)(target); });
     });
     const tap = Gesture.Tap().onEnd((e, ok) => { if (ok) runOnJS(selectAt)(e.x, e.y, x.value, y.value, zoom.value, false); });
     const long = Gesture.LongPress().minDuration(500).onStart(e => runOnJS(selectAt)(e.x, e.y, x.value, y.value, zoom.value, true));
@@ -96,13 +98,13 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
 
   const animateCamera = (camera: Camera) => {
     const c = boundedCamera(camera);
-    x.value = withTiming(c.x, { duration: 260 }); y.value = withTiming(c.y, { duration: 260 }); zoom.value = withTiming(c.zoom, { duration: 260 });
+    x.value = withTiming(c.x, { duration: 260 }); y.value = withTiming(c.y, { duration: 260 }); zoom.value = withTiming(c.zoom, { duration: 260 }, done => { if (done) runOnJS(setSnapshot)(c); });
   };
   const colors = useMemo(() => {
     const batch = new Map<string, ReturnType<typeof Skia.Path.Make>>();
-    for (const f of visible) { const color = provinceColor(f.provinceId!, state, mode, troops); const path = batch.get(color) ?? Skia.Path.Make(); path.addPath(paths.get(f.id)!); batch.set(color, path); }
+    for (const f of visible) { const color = provinceColors.get(f.provinceId!) ?? '#37423f'; const path = batch.get(color) ?? Skia.Path.Make(); path.addPath(paths.get(f.id)!); batch.set(color, path); }
     return [...batch.entries()];
-  }, [visible, state, mode, troops]);
+  }, [visible, provinceColors]);
   const selectedPath = useMemo(() => { const path = Skia.Path.Make(); visible.filter(f => selectedProvinceId ? f.provinceId === selectedProvinceId : provinces.get(f.provinceId!)?.ownerId === selectedCountryId).forEach(f => path.addPath(paths.get(f.id)!)); return path; }, [visible, selectedProvinceId, selectedCountryId, provinces]);
   const shadowPath = useMemo(() => { const path = Skia.Path.Make(); colors.forEach(c => path.addPath(c[1])); return path; }, [colors]);
   const labels = useMemo(() => {
@@ -133,7 +135,7 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
           <Path path={borders.inner} style="stroke" color="#273638" strokeWidth={borderScale} opacity={0.65} />
           <Path path={borders.outer} style="stroke" color="#131f24" strokeWidth={outerScale} />
           {!selectedPath.isEmpty() && <Path path={selectedPath} style="stroke" color="#f0db9e" strokeWidth={selectionScale} opacity={pulse} />}
-          {snapshot.zoom < 8 && labels.map(([id, f]) => <Group key={id} transform={[{ translateX: f.anchor.x }, { translateY: f.anchor.y - 5 }]}><Group transform={inverseScale}><MapText x={-nationFont.measureText(state.countries[id as CountryId].name).width / 2} y={-20} text={state.countries[id as CountryId].name} font={nationFont} color="#e4e6dc" /></Group></Group>)}
+          {snapshot.zoom < 8 && labels.map(([id, f]) => <Group key={id} transform={[{ translateX: f.anchor.x }, { translateY: f.anchor.y - 5 }]}><Group transform={inverseScale}><Group transform={[{ scale: Math.max(0.75, Math.min(1.7, (f.bounds.right - f.bounds.left) * snapshot.zoom / (nationFont.measureText(state.countries[id as CountryId].name).width + 20))) }]}><MapText x={-nationFont.measureText(state.countries[id as CountryId].name).width / 2} y={-20} text={state.countries[id as CountryId].name} font={nationFont} color="#e4e6dc" /></Group></Group></Group>)}
           {cities.map(city => <Group key={city.id} transform={[{ translateX: city.point.x }, { translateY: city.point.y }]}><Group transform={inverseScale}>
             {GRAPHICS[preset].shadows && city.capital && <Circle cx={0} cy={0} r={7} color="#ebd6a1" opacity={0.16} />}
             <Circle cx={0} cy={0} r={city.capital ? 3.2 : 2} color={city.capital ? '#f1dca8' : '#c7cec1'} />

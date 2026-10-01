@@ -2,10 +2,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { boundedCamera, screenToWorld, worldToScreen, visibleBounds, zoomAt } from '../src/map/camera';
 import { boundsOf, contains, distanceToFeature, featurePath, MapFeature, project, SpatialIndex, tileKeys } from '../src/map/geometry';
-import { borderPaths, buildEdges, features, provinceGeometry, spatialIndex, troopsByProvince, visibleCities } from '../src/map/scene';
+import { borderPaths, buildEdges, buildProvinceColors, features, provinceGeometry, spatialIndex, troopsByProvince, visibleCities } from '../src/map/scene';
 import { createInitialGame, provinces } from '../src/data/world';
 import { mapCities } from '../src/map/cities';
-import { GRAPHICS } from '../src/map/settings';
+import { AVAILABLE_MODES, GRAPHICS } from '../src/map/settings';
 const viewport = { width: 1280, height: 720 };
 const ring = [{ x: 0, y: 0 }, { x: 20, y: 0 }, { x: 20, y: 20 }, { x: 0, y: 20 }, { x: 0, y: 0 }];
 const square: MapFeature = { id: 'test', name: 'Test', countryId: 'test', provinceId: 'test', polygons: [[ring]], bounds: boundsOf(ring), anchor: { x: 5, y: 5 } };
@@ -82,4 +82,18 @@ test('city LOD budget and graphic presets do not mutate campaign state', () => {
 test('scenario city coordinates belong to the assigned province or its generalized coast', () => {
   // 110m coastline generalization may place coastal city points just offshore.
   for (const c of mapCities) assert.ok(distanceToFeature(provinceGeometry.get(c.provinceId)!, c.point) < 1.2, c.name);
+});
+test('every available mode is derived from campaign values, with no mutation or invalid colors', () => {
+  const state = createInitialGame(), original = structuredClone(state);
+  for (const mode of AVAILABLE_MODES) {
+    const colors = buildProvinceColors(state, mode, troopsByProvince(state));
+    assert.equal(colors.size, state.provinces.length);
+    assert.ok([...colors.values()].every(c => !c.includes('NaN') && !c.includes('Infinity')));
+  }
+  assert.deepEqual(state, original);
+  const before = buildProvinceColors(state, 'Economy', troopsByProvince(state)).get('fr-1');
+  state.provinces.find(p => p.id === 'fr-1')!.income = 2000;
+  assert.notEqual(buildProvinceColors(state, 'Economy', troopsByProvince(state)).get('fr-1'), before);
+  state.provinces = [];
+  assert.equal(buildProvinceColors(state, 'Economy', new Map()).size, 0);
 });

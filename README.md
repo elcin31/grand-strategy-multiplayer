@@ -97,3 +97,36 @@ Mobile clients never write game tables directly. `game-room` handles room creati
 5. Add diplomacy, wars, peace treaties and alliances.
 6. Persist long-running campaigns and player return state.
 7. Add server-side rate limiting / abuse protection for public room creation.
+
+## World update checkpoint (branch `world-update`)
+
+The map now uses a native Skia GPU canvas rather than a grid of SVG rectangles.
+Geographic contours come from public-domain Natural Earth; terrain bands and visual
+styling are original. Pan/inertia, pinch and double-tap zoom run through native
+shared-value camera transforms. Geometry is cached and batched by color; spatial
+queries and city detail budgets control visible content. Low/Medium/High/Ultra
+settings change rendering only.
+
+The landscape screen uses safe-area insets and a collapsible overlay panel.
+`ОДИНОЧНАЯ ИГРА` starts the existing scenario offline without connecting to the
+server. Offline campaign persistence is not implemented yet.
+
+This checkpoint is **not** the completed world update: it still has 8 playable
+countries and 12 provinces. See `WORLD_UPDATE_STATUS.md`, `BUG_REPORT.md` and
+`THIRD_PARTY_NOTICES.md` for exact scope, gates and source provenance.
+
+```bash
+npm ci --include=dev
+npm run typecheck
+npm test
+npm run benchmark:map
+npx expo prebuild --platform android --clean
+python scripts/verify-native-config.py
+cd android
+./gradlew assembleRelease --no-daemon
+```
+
+CI checks the embedded `assets/index.android.bundle`, Skia/Hermes libraries, native
+landscape configuration, and emulator cold launch / map / layout / restart. It
+builds a clearly labelled renderer checkpoint APK; the final
+`Dominion-world-update-release.apk` is reserved for full acceptance.

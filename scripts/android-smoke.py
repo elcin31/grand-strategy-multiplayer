@@ -47,7 +47,11 @@ root = hierarchy('02-map'); screenshot('02-map')
 assert any('Политическая' in n.get('text','') for n in root.iter('node')), 'GPU map screen did not mount'
 click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
 # Exercise camera before taking evidence. Animation is on the native UI thread.
-adb('shell','input','swipe','350','340','680','340','600')
+adb('shell','dumpsys','gfxinfo',PACKAGE,'reset')
+for _ in range(4):
+    adb('shell','input','swipe','350','340','680','340','600')
+    adb('shell','input','swipe','680','340','350','340','600')
+(OUT/'gfxinfo.txt').write_text(adb('shell','dumpsys','gfxinfo',PACKAGE,'framestats'))
 time.sleep(1)
 adb('shell','input','tap','500','320'); adb('shell','input','tap','500','320')
 time.sleep(1)
