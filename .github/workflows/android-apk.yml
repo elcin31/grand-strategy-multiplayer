@@ -47,12 +47,12 @@ jobs:
           NODE_ENV=production ./gradlew assembleRelease --no-daemon
       - name: Verify bundled JavaScript and native libraries
         run: python scripts/verify-apk.py android/app/build/outputs/apk/release/app-release.apk
-      - name: Package phase artifact
-        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-map-phase1-release.apk
+      - name: Package world-update checkpoint
+        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-world-checkpoint.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: dominion-map-phase1-release
-          path: Dominion-map-phase1-release.apk
+          name: dominion-world-checkpoint
+          path: Dominion-world-checkpoint.apk
           if-no-files-found: error
           retention-days: 14
   android-smoke:
@@ -63,7 +63,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: dominion-map-phase1-release
+          name: dominion-world-checkpoint
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -75,7 +75,7 @@ jobs:
           arch: x86_64
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: python scripts/android-smoke.py Dominion-map-phase1-release.apk
+          script: python scripts/android-smoke.py Dominion-world-checkpoint.apk
       - uses: actions/upload-artifact@v4
         if: always()
         with:
