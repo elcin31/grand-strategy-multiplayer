@@ -13,6 +13,7 @@ This is a running report, not the final Phase 20 QA acceptance.
 | MEDIUM | No native build or embedded-bundle test gate | CI release archive validation and Android cold-launch smoke job |
 | MEDIUM | APK verifier assumed the old Hermes library filename | Accepts installed Hermes native library variants, prints actual names; repeat CI |
 | MEDIUM | Country labels shifted outside France and Italy | Interior land placement, horizontal fit and ownership-change regression test; native screenshot recheck pending |
+| HIGH | Full-world label preparation scanned too many province candidates (~7.8 seconds) | Cached spatial lookup, bounded candidates and scanline fit reduce measured CPU time to ~102 ms for 4,386 real provinces; CI benchmark includes labels |
 | HIGH | Camera movement repeatedly rebuilt scene batches | Movement/zoom thresholds reduce JS culling updates; physical-device profiling still pending |
 | LOW | Entry copy incorrectly claimed local transport for online rooms | Corrected copy; offline entry is now a separate real transport |
 

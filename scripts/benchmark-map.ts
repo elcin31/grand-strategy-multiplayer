@@ -1,5 +1,6 @@
 import { performance } from 'node:perf_hooks';
 import { SpatialIndex, MapFeature, boundsOf } from '../src/map/geometry';
+import { countryLabels } from '../src/map/scene';
 import { visibleBounds } from '../src/map/camera';
 const features: MapFeature[] = Array.from({ length: 5000 }, (_, i) => {
   const x = i % 100 * 14, y = Math.floor(i / 100) * 14;
@@ -14,4 +15,7 @@ for (let i = 0; i < 10000; i++) {
   maxVisible = Math.max(maxVisible, found.length); durations.push(performance.now() - before);
 }
 durations.sort((a,b) => a-b);
-console.log(JSON.stringify({ features: features.length, queries: durations.length, buildMs: +(built-start).toFixed(2), queryP95Ms: +durations[9500]!.toFixed(3), maxVisible, note: 'CPU spatial index only; not device FPS or native rendering measurement' }, null, 2));
+const labelStart = performance.now();
+const labels = countryLabels(features, new Map(features.map(f => [f.provinceId!, f.countryId!])));
+const labelMs = performance.now() - labelStart;
+console.log(JSON.stringify({ features: features.length, queries: durations.length, buildMs: +(built-start).toFixed(2), queryP95Ms: +durations[9500]!.toFixed(3), maxVisible, labels: labels.length, labelMs: +labelMs.toFixed(2), note: 'CPU spatial index only; not device FPS or native rendering measurement' }, null, 2));

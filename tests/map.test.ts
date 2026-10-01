@@ -113,3 +113,16 @@ test('country labels remain on owned land after captures and avoid occupied anch
     }
   }
 });
+
+test('country label fit merges adjacent owned provinces and respects a lake hole', () => {
+  const left = { ...square, id: 'left', provinceId: 'left' };
+  const rightRing = ring.map(p => ({ x: p.x + 20, y: p.y }));
+  const right = { ...square, id: 'right', provinceId: 'right', polygons: [[rightRing]], bounds: boundsOf(rightRing), anchor: { x: 25, y: 5 } };
+  const labels = countryLabels([left, right], new Map([['left', 'nation'], ['right', 'nation']]));
+  assert.ok(labels[0]!.width > 20, 'Label should span the shared provincial border');
+  const hole = ring.map(p => ({ x: p.x / 2 + 5, y: p.y / 2 + 5 }));
+  const island = { ...square, polygons: [[ring, hole]] };
+  const lakeLabel = countryLabels([island], new Map([['test', 'nation']]))[0]!;
+  assert.ok(contains(island, lakeLabel.anchor));
+  for (let i = -10; i <= 10; i++) assert.ok(contains(island, { x: lakeLabel.anchor.x + lakeLabel.width * i / 20, y: lakeLabel.anchor.y }));
+});

@@ -55,31 +55,64 @@ export function visibleCities<T extends { capital: boolean; population: number; 
 }
 
 export interface CountryLabel { countryId: string; anchor: Point; width: number }
-/** Labels use owned land, including occupations, instead of an arbitrary visible province. */
+const labelGeometry = new WeakMap<readonly MapFeature[], { index: SpatialIndex; areas: Map<string, number> }>();
+function polygonArea(ring: readonly Point[]): number {
+  let area = 0;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) area += ring[j]!.x * ring[i]!.y - ring[i]!.x * ring[j]!.y;
+  return Math.abs(area) / 2;
+}
+/** Union horizontal land intervals, including holes and borders between owned provinces. */
+function labelWidth(land: readonly MapFeature[], anchor: Point): number {
+  const intervals: [number, number][] = [];
+  for (const f of land) {
+    if (anchor.y < f.bounds.top || anchor.y > f.bounds.bottom) continue;
+    for (const rings of f.polygons) {
+      const crossings: number[] = [];
+      for (const ring of rings) for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const a = ring[j]!, b = ring[i]!;
+        if ((a.y > anchor.y) !== (b.y > anchor.y)) crossings.push(a.x + (anchor.y - a.y) * (b.x - a.x) / (b.y - a.y));
+      }
+      crossings.sort((a, b) => a - b);
+      for (let i = 0; i + 1 < crossings.length; i += 2) intervals.push([crossings[i]!, crossings[i + 1]!]);
+    }
+  }
+  intervals.sort((a, b) => a[0] - b[0]);
+  let left = Infinity, right = -Infinity;
+  for (const interval of intervals) {
+    if (interval[0] > right + 1e-6) {
+      if (anchor.x >= left && anchor.x <= right) break;
+      [left, right] = interval;
+    } else right = Math.max(right, interval[1]);
+  }
+  return anchor.x >= left && anchor.x <= right ? Math.max(0, Math.min(anchor.x - left, right - anchor.x) * 1.9) : 0;
+}
+/** Bounded candidates and cached spatial geometry keep full-world labels off the frame loop. */
 export function countryLabels(data: readonly MapFeature[], owners: ReadonlyMap<string, string>, blockers: readonly Point[] = []): CountryLabel[] {
+  let geometry = labelGeometry.get(data);
+  if (!geometry) {
+    geometry = { index: new SpatialIndex(data), areas: new Map(data.map(f => [f.id, f.polygons.reduce((sum, rings) => sum + polygonArea(rings[0]!) - rings.slice(1).reduce((holes, ring) => holes + polygonArea(ring), 0), 0)])) };
+    labelGeometry.set(data, geometry);
+  }
   const groups = new Map<string, MapFeature[]>();
   for (const f of data) {
     const owner = f.provinceId && owners.get(f.provinceId);
     if (owner) { const group = groups.get(owner) ?? []; group.push(f); groups.set(owner, group); }
   }
+  const { index, areas } = geometry;
   return [...groups].map(([countryId, land]) => {
-    const inside = (p: Point) => land.some(f => contains(f, p));
-    let best = { anchor: land[0]!.anchor, width: 0, score: -Infinity };
-    for (const f of land) {
-      const candidates = [f.anchor];
-      for (let iy = 1; iy < 10; iy++) for (let ix = 1; ix < 10; ix++) candidates.push({ x: f.bounds.left + (f.bounds.right - f.bounds.left) * ix / 10, y: f.bounds.top + (f.bounds.bottom - f.bounds.top) * iy / 10 });
-      for (const anchor of candidates) {
-        if (!inside(anchor)) continue;
-        // Symmetric horizontal fit keeps the entire label over land at its baseline.
-        let radius = 0;
-        for (let r = 0.5; r <= 80; r += 0.5) {
-          if (!inside({ x: anchor.x - r, y: anchor.y }) || !inside({ x: anchor.x + r, y: anchor.y })) break;
-          radius = r;
-        }
-        const clearance = blockers.reduce((min, p) => Math.min(min, Math.hypot(anchor.x - p.x, anchor.y - p.y)), Infinity);
-        const score = radius - Math.max(0, 7 - clearance) * 3;
-        if (score > best.score) best = { anchor, width: radius * 2, score };
-      }
+    const inside = (point: Point) => index.query({ left: point.x, right: point.x, top: point.y, bottom: point.y }).some(f => f.provinceId && owners.get(f.provinceId) === countryId && contains(f, point));
+    const largest = [...land].sort((a, b) => areas.get(b.id)! - areas.get(a.id)!).slice(0, 3);
+    const totalArea = land.reduce((sum, f) => sum + areas.get(f.id)!, 0);
+    const center = land.reduce((p, f) => ({ x: p.x + f.anchor.x * areas.get(f.id)! / totalArea, y: p.y + f.anchor.y * areas.get(f.id)! / totalArea }), { x: 0, y: 0 });
+    const candidates = [center, ...largest.map(f => f.anchor)];
+    for (const f of largest) for (let iy = 1; iy < 6; iy++) for (let ix = 1; ix < 6; ix++) candidates.push({ x: f.bounds.left + (f.bounds.right - f.bounds.left) * ix / 6, y: f.bounds.top + (f.bounds.bottom - f.bounds.top) * iy / 6 });
+    let best = { anchor: largest[0]!.anchor, width: 0, score: -Infinity };
+    for (const anchor of candidates) {
+      if (!inside(anchor)) continue;
+      const width = labelWidth(land, anchor);
+      const clearance = blockers.reduce((min, p) => Math.min(min, Math.hypot(anchor.x - p.x, anchor.y - p.y)), Infinity);
+      const score = width / 2 - Math.max(0, 7 - clearance) * 3;
+      if (score > best.score) best = { anchor, width, score };
     }
     return { countryId, anchor: best.anchor, width: best.width };
   });
