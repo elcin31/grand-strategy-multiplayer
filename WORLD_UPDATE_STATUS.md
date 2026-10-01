@@ -11,7 +11,7 @@ Playable-state schema is deliberately still compatible with the existing server:
 Verification gates:
 
 - `npm run typecheck`: passed locally.
-- `npm test`: 16 tests passed locally, including map topology, camera, city positions, recruitment/movement, and engine regression.
+- `npm test`: 21 tests passed locally, including map topology, camera, city positions, recruitment/movement, and engine regression.
 - `npm run benchmark:map`: 5,000 features / 10,000 queries, p95 ~0.026 ms on this build machine. **CPU index benchmark, not Android FPS.**
 - Expo Android prebuild: passed locally.
 - Production Hermes bundle export: passed locally, ~3.6 MB.
@@ -53,3 +53,9 @@ These prepared records are not yet loaded into campaigns. Runtime remains the ex
 Profiling the prepared 4,386-province dataset found country-label generation took ~7.8 seconds on this machine. Cached geometry, bounded candidates and exact horizontal land intervals reduced it to ~102 ms. The repeatable synthetic 5,000-feature CI benchmark now reports label time too. This is CPU preparation, not native navigation FPS.
 
 Native CI for `e84ccae` passed release archive validation, offline cold-launch, all presets/modes, layout checks and restart. Collision-aware label placement has 16 passing JS tests; its native recheck is pending.
+
+## Command-boundary regression fix
+
+The previous server cast JSON to a TypeScript command without runtime validation. It accepted unknown countries, invalid ready/speed fields and allowed lobby startup through SET_SPEED. A shared pure validator now checks exact fields, identifiers, country membership, boolean ready, integer speed and recruitment bounds. Both engines enforce lobby/start/pause/resume transitions. Tests import the actual server reducer, so its core is now covered by strict client typecheck as well as runtime tests. TypeScript permits Deno's .ts import paths under noEmit.
+
+21 JavaScript tests and 3 Python tests pass locally. The dedicated backend game-command function was updated to v3; isolated live verification is in progress. The Android smoke flow now exercises actual selection/start/pause/recruitment, with its gate pending. No final release acceptance is claimed.

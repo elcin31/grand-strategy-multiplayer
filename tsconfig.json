@@ -4,7 +4,17 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
-    "paths": { "@/*": ["src/*"] }
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "allowImportingTsExtensions": true
   },
-  "exclude": ["supabase/**", "node_modules", "android", "ios"]
+  "exclude": [
+    "supabase/**",
+    "node_modules",
+    "android",
+    "ios"
+  ]
 }

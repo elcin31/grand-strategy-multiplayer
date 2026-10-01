@@ -29,6 +29,20 @@ def click_text(root, text):
     nums = [int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
     assert len(nums)==4
     adb('shell','input','tap',str((nums[0]+nums[2])//2),str((nums[1]+nums[3])//2))
+def click_scrolling(text):
+    for attempt in range(8):
+        root = hierarchy('flow-'+str(attempt))
+        node = next((n for n in root.iter('node') if n.get('text') == text), None)
+        if node is not None:
+            nums = [int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
+            if len(nums) == 4 and nums[2] > nums[0] and 70 <= nums[1] < nums[3] <= 660:
+                click_text(root,text); time.sleep(1); return
+        adb('shell','input','swipe','1080','570','1080','180','450')
+    raise AssertionError('Missing usable control: '+text)
+def province_army_text(root):
+    texts = [n.get('text','') for n in root.iter('node') if n.get('text')]
+    owner = texts.index('GER')
+    return next(t for t in texts[owner+1:] if re.fullmatch(r'\d+K',t))
 adb('install','-r',sys.argv[1])
 adb('logcat','-c')
 adb('shell','wm','size','720x1280')
@@ -47,6 +61,26 @@ click_text(root,'ОДИНОЧНАЯ ИГРА')
 time.sleep(8)
 root = hierarchy('02-map'); screenshot('02-map')
 assert any('Политическая' in n.get('text','') for n in root.iter('node')), 'GPU map screen did not mount'
+# Exercise real offline commands in the release bundle, not only a mounted canvas.
+# Fixed screen is 1280x720; this is the initial west-Germany counter position.
+adb('shell','input','tap','475','357'); time.sleep(1)
+click_scrolling('ИГРАТЬ ЗА ЭТУ СТРАНУ')
+click_scrolling('Я ГОТОВ')
+click_scrolling('НАЧАТЬ ИГРУ')
+root = hierarchy('02-running')
+click_text(root,'УПРАВЛЕНИЕ')
+click_scrolling('Ⅱ')
+root = hierarchy('02-paused'); click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
+adb('shell','input','tap','475','357'); time.sleep(1)
+# Scroll the command card into view and capture the actual army size before recruitment.
+for _ in range(5):
+    root = hierarchy('02-command')
+    if any(n.get('text') == 'GER' for n in root.iter('node')): break
+    adb('shell','input','swipe','1080','570','1080','220','450')
+before = province_army_text(root)
+click_scrolling('+25K · $500M')
+root = hierarchy('02-recruited'); screenshot('02-recruited')
+assert province_army_text(root) == str(int(before[:-1])+25)+'K', 'Recruitment command did not update the army'
 click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
 root = hierarchy('map-controls')
 click_text(root, 'Политическая · Medium ▾')
@@ -85,4 +119,4 @@ assert any(n.get('text')=='DOMINION' for n in root.iter('node')), 'Restart faile
 logs = adb('logcat','-d'); (OUT/'logcat.txt').write_text(logs)
 assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs, 'Native crash detected'
 assert 'Unable to load script' not in logs, 'Standalone JS load failed'
-print('PASS: network-disabled cold launch, landscape, offline map, 4 presets, 6 modes, camera inputs, 4 layouts, restart, no fatal logs')
+print('PASS: network-disabled cold launch, landscape, offline country selection/start/pause/recruitment, 4 presets, 6 modes, camera inputs, 4 layouts, restart, no fatal logs')

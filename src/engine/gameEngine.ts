@@ -1,3 +1,4 @@
+import { assertGameCommand } from '../../supabase/functions/_shared/commandValidation';
 import { Army, BattleEvent, CountryId, GameCommand, GameState, Player, Province } from '../types/game';
 
 const clone = (state: GameState): GameState => structuredClone(state);
@@ -137,6 +138,7 @@ function checkWinner(state: GameState) {
 }
 
 export function applyCommand(state: GameState, command: GameCommand): GameState {
+  assertGameCommand(command, Object.keys(state.countries));
   const next = clone(state);
   switch (command.type) {
     case 'SELECT_COUNTRY': {
@@ -149,12 +151,14 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       return next;
     }
     case 'SET_READY': {
+      if (next.phase !== 'lobby') throw new Error('Готовность меняется только в лобби');
       const player = getPlayer(next, command.playerId);
       if (!player.countryId && command.ready) throw new Error('Сначала выберите страну');
       player.ready = command.ready;
       return next;
     }
     case 'START_GAME': {
+      if (next.phase !== 'lobby') throw new Error('Кампания уже запущена');
       const player = getPlayer(next, command.playerId);
       if (!player.isHost) throw new Error('Только хост может начать игру');
       if (next.players.some((candidate) => !candidate.countryId || !candidate.ready)) throw new Error('Все игроки должны выбрать страну и подтвердить готовность');
@@ -162,6 +166,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       return next;
     }
     case 'SET_SPEED': {
+      if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId);
       if (!player.isHost) throw new Error('Скорость меняет хост');
       next.speed = command.speed;

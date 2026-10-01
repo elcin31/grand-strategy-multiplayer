@@ -6,6 +6,8 @@ This is a running report, not the final Phase 20 QA acceptance.
 
 | Severity | Issue | Fix / verification |
 |---|---|---|
+| CRITICAL | Server accepted unknown countries and untyped command fields | Shared JSON schema guard; client/server rejection and actor-spoof tests passed; deployed to dedicated backend as game-command v3, live verification pending |
+| CRITICAL | Host could bypass ready checks by setting speed in lobby | Lobby/start/pause transitions enforced on both engines; live verification pending |
 | HIGH | Rectangular grid could not identify geographic territories | Geographic polygons, holes/islands and interior-anchor tests |
 | HIGH | Scroll layout competed with map gestures and left little map space | Dedicated landscape canvas and collapsible overlay panel |
 | MEDIUM | No camera bounds or zoom invariants | Finite-value clamps and focal-point round-trip tests |
