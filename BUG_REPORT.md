@@ -8,7 +8,7 @@ This is a running report, not the final Phase 20 QA acceptance.
 |---|---|---|
 | CRITICAL | Server accepted unknown countries and untyped command fields | Shared JSON schema guard; client/server rejection and actor-spoof tests passed; deployed to dedicated backend as game-command v3, live malformed-command/security smoke passed; isolated QA room removed |
 | CRITICAL | Host could bypass ready checks by setting speed in lobby | Lobby/start/pause transitions enforced on both engines; live malformed-command/security smoke passed; isolated QA room removed |
-| HIGH | Recruitment and movement controls on pause were rejected by both reducers | Permit validated orders in running/paused campaigns; paid recruitment, ownership, adjacency and frozen-clock regression/fuzz tests and dedicated live-backend smoke passed; native recheck pending |
+| HIGH | Recruitment and movement controls on pause were rejected by both reducers | Permit validated orders in running/paused campaigns; paid recruitment, ownership, adjacency and frozen-clock regression/fuzz tests and dedicated live-backend smoke passed; standalone release and Android gameplay smoke passed on 0e05df5 |
 | HIGH | Rectangular grid could not identify geographic territories | Geographic polygons, holes/islands and interior-anchor tests |
 | HIGH | Scroll layout competed with map gestures and left little map space | Dedicated landscape canvas and collapsible overlay panel |
 | MEDIUM | No camera bounds or zoom invariants | Finite-value clamps and focal-point round-trip tests |
@@ -26,7 +26,7 @@ This is a running report, not the final Phase 20 QA acceptance.
 | Severity | Gate | Status |
 |---|---|---|
 | BLOCKER | Complete global world-update acceptance criteria | Not implemented yet; existing scenario remains 8 countries / 12 provinces |
-| BLOCKER | Native release build and cold-launch for current change | Pending CI |
+| LOW | Six unused imports in existing TSX files | Additional noUnusedLocals/noUnusedParameters audit; cleanup pending |
 | HIGH | Physical-device map FPS and gesture profiling | Pending; CPU query benchmark is not proof of 30/60 FPS |
 | HIGH | Save/reconnect/host migration and multiplayer chaos testing | Scheduled Phase 17/20; not claimed working |
 | HIGH | Remaining map modes backed by authoritative schemas | Scheduled later phases; unavailable modes are not mock buttons |
