@@ -111,6 +111,25 @@ assert not any('Действие отклонено' in t for t in texts), 'Gove
 header = next(t for t in texts if 'ФОРМА ПРАВЛЕНИЯ · ' in t)
 assert int(re.search(r'(\d+) PP',header).group(1)) == power_before - 80, 'Government did not spend 80 PP'
 assert 'Следующая смена через 24 мес.' in texts, 'Government cooldown missing'
+# Accumulate political power through the actual running campaign, then pause before payment assertions.
+for _ in range(5): adb('shell','input','swipe','1080','220','1080','570','350')
+click_scrolling('4×'); time.sleep(16)
+click_scrolling('Ⅱ')
+click_scrolling('Правительство ▴')
+click_scrolling('Религия ▾')
+root = hierarchy('religion-before')
+header = next(n.get('text') for n in root.iter('node') if 'ГОСУДАРСТВЕННАЯ РЕЛИГИЯ · ' in n.get('text',''))
+religion_power = int(re.search(r'(\d+) PP',header).group(1))
+assert religion_power >= 120, 'Campaign did not accumulate enough political power'
+# Germany's original scenario starts Protestant; choose the visible Catholic option.
+click_scrolling('Католицизм')
+root = hierarchy('religion-after'); screenshot('religion-after')
+texts = [n.get('text','') for n in root.iter('node')]
+assert not any('Действие отклонено' in t for t in texts), 'Religion command was rejected'
+header = next(t for t in texts if 'ГОСУДАРСТВЕННАЯ РЕЛИГИЯ · ' in t)
+assert int(re.search(r'(\d+) PP',header).group(1)) == religion_power - 120, 'Religion did not spend 120 PP'
+assert 'Следующая смена религии через 36 мес.' in texts, 'Religion cooldown missing'
+assert any('Religious Unity:' in t for t in texts), 'Religious Unity is missing'
 click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
 root = hierarchy('map-controls')
 click_text(root, 'Политическая · Medium ▾')
@@ -121,14 +140,14 @@ for quality in ['Low','Medium','High','Ultra']:
     screenshot('graphics-'+quality)
 root = hierarchy('graphics-close')
 click_text(root, 'Политическая · Ultra ▾')
-for label in ['Правительство','Экономика','Население','Армии','Рельеф','Стабильность','Политическая']:
+for label in ['Правительство','Религия','Экономика','Население','Армии','Рельеф','Стабильность','Политическая']:
     root = hierarchy('mode-open')
     current = next(n.get('text') for n in root.iter('node') if ' · Ultra ▾' in n.get('text',''))
     click_text(root,current)
     root = hierarchy('mode-select')
     click_text(root,label)
     time.sleep(1)
-    screenshot('mode-'+str(['Правительство','Экономика','Население','Армии','Рельеф','Стабильность','Политическая'].index(label)))
+    screenshot('mode-'+str(['Правительство','Религия','Экономика','Население','Армии','Рельеф','Стабильность','Политическая'].index(label)))
 # Exercise camera before taking evidence. Animation is on the native UI thread.
 adb('shell','dumpsys','gfxinfo',PACKAGE,'reset')
 for _ in range(4):
@@ -149,4 +168,4 @@ assert any(n.get('text')=='DOMINION' for n in root.iter('node')), 'Restart faile
 logs = adb('logcat','-d'); (OUT/'logcat.txt').write_text(logs)
 assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs, 'Native crash detected'
 assert 'Unable to load script' not in logs, 'Standalone JS load failed'
-print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, government cost/cooldown, 4 presets, 7 modes, camera inputs, 4 layouts, restart, no fatal logs')
+print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, government/religion cost/cooldown and Unity, 4 presets, 8 modes, camera inputs, 4 layouts, restart, no fatal logs')

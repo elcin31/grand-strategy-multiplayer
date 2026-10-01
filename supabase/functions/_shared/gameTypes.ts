@@ -11,6 +11,10 @@ export interface Country {
   flag?: string;
   capitalCityId?: string;
   rulerId?: string;
+  region?: string;
+  religion?: string;
+  religiousUnity?: number;
+  religionCooldownUntilTick?: number;
   governmentType?: GovernmentType;
   politicalPower?: number;
   governmentCooldownUntilTick?: number;
@@ -27,6 +31,8 @@ export interface Country {
 }
 
 export interface Province {
+  religion?: string;
+  unrest?: number;
   id: string;
   name: string;
   ownerId: CountryId;
@@ -124,6 +130,7 @@ export type GameCommand =
   | { type: 'SET_SPEED'; playerId: string; speed: GameSpeed }
   | { type: 'RECRUIT'; playerId: string; provinceId: string; troops: number }
   | { type: 'MOVE_ARMY'; playerId: string; armyId: string; provinceId: string }
+  | { type: 'CHANGE_RELIGION'; playerId: string; religionId: string }
   | { type: 'CHANGE_GOVERNMENT'; playerId: string; governmentType: GovernmentType }
   | { type: 'ADVANCE_TICK' };
 

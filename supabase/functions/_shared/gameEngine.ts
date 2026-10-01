@@ -1,3 +1,4 @@
+import { initializeReligions, recalcReligiousUnity, monthlyReligionEffects, RELIGION_CHANGE_COST, RELIGION_STABILITY_COST, RELIGION_COOLDOWN_TICKS } from './religionSystem.ts';
 import { assertGameCommand } from './commandValidation.ts';
 import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, POLITICAL_POWER_MONTHLY, governmentIncome, governmentModifiers, initializeGovernments } from './governmentSystem.ts';
 import { Army, BattleEvent, CountryId, GameCommand, GameState, Player, Province, countryFor } from './gameTypes.ts';
@@ -106,6 +107,7 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
     });
   }
   recalcCountryStats(state);
+  recalcReligiousUnity(state);
 }
 
 function recruit(state: GameState, ownerId: CountryId, province: Province, troops: number) {
@@ -155,6 +157,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
   assertGameCommand(command, Object.keys(state.countries));
   const next = clone(state);
   initializeGovernments(next);
+  initializeReligions(next);
   switch (command.type) {
     case 'SELECT_COUNTRY': {
       if (next.phase !== 'lobby') throw new Error('Страну можно выбрать только в лобби');
@@ -205,6 +208,24 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       checkWinner(next);
       return next;
     }
+    case 'CHANGE_RELIGION': {
+      if (!next.dataset) throw new Error('Смена религии доступна в кампании современного мира');
+      if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
+      const player = getPlayer(next, command.playerId);
+      if (!player.countryId) throw new Error('Страна не выбрана');
+      const nation = countryFor(next, player.countryId);
+      if (nation.religion === command.religionId) throw new Error('Эта религия уже действует');
+      if (next.tick < nation.religionCooldownUntilTick!) throw new Error('Смена религии на cooldown');
+      if (nation.politicalPower! < RELIGION_CHANGE_COST) throw new Error('Недостаточно политической силы');
+      nation.politicalPower! -= RELIGION_CHANGE_COST;
+      nation.stability = Math.max(0, nation.stability - RELIGION_STABILITY_COST);
+      nation.unrest = Math.min(100, nation.unrest! + 8);
+      nation.religion = command.religionId;
+      nation.religionCooldownUntilTick = next.tick + RELIGION_COOLDOWN_TICKS;
+      for (const p of next.provinces) if (p.ownerId === nation.id && p.religion !== nation.religion) p.unrest = Math.min(100, p.unrest! + 10);
+      recalcReligiousUnity(next);
+      return next;
+    }
     case 'CHANGE_GOVERNMENT': {
       if (!next.dataset) throw new Error('Смена правительства доступна в кампании современного мира');
       if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
@@ -241,6 +262,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + modifiers.unrestPerYear / 12));
         }
       }
+      monthlyReligionEffects(next);
       runAi(next);
       recalcCountryStats(next);
       checkWinner(next);

@@ -1,3 +1,4 @@
+import { RELIGIONS } from '../supabase/functions/_shared/religionSystem';
 import { performance } from 'node:perf_hooks';
 import { createWorldState } from '../supabase/functions/_shared/worldState';
 import { applyServerCommand } from '../supabase/functions/_shared/game';
@@ -14,6 +15,10 @@ for(let i=0;i<ticks;i++){
  const before=performance.now();state=applyServerCommand(state,{type:'ADVANCE_TICK'},'host');durations.push(performance.now()-before);
  if(state.tick!==i+1)throw Error('Clock stopped');
  for(const c of Object.values(state.countries))for(const n of [c.treasury,c.income,c.population,c.manpower,c.army])if(!Number.isFinite(n)||n<0)throw Error('Invalid country value');
+ for(const c of Object.values(state.countries))for(const n of [c.technology,c.stability,c.unrest,c.religiousUnity])if(!Number.isFinite(n)||n!<0||n!>100)throw Error('Invalid capped country value');
+ for(const c of Object.values(state.countries))if(!Number.isFinite(c.politicalPower)||c.politicalPower!<0||c.politicalPower!>500)throw Error('Invalid political power');
+ if(new Set(state.provinces.map(p=>p.id)).size!==state.provinces.length)throw Error('Duplicate provinces');
+ for(const p of state.provinces)if(!Object.hasOwn(RELIGIONS,p.religion!)||!Number.isFinite(p.unrest)||p.unrest!<0||p.unrest!>100||!state.countries[p.ownerId])throw Error('Invalid religious province');
  if(new Set(state.armies.map(a=>a.id)).size!==state.armies.length||state.armies.some(a=>!Number.isSafeInteger(a.troops)||a.troops<=0))throw Error('Invalid armies');
  if(state.battleLog.length>20)throw Error('Unbounded battle history');
 }

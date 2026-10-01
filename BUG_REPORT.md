@@ -51,4 +51,8 @@ The existing full-world reducer stress harness completed 10,000 ticks without tr
 
 | Severity | Issue | Fix / verification |
 |---|---|---|
-| HIGH | High/Ultra regional city labels overlapped each other and army counters in dense European regions | Bounded, deterministic label placement with capital/population priority, alternate positions, viewport bounds and collision rejection. City markers and hit testing remain available. Two dense/real-world layout regressions pass; 48 JS tests pass. Native follow-up and screenshot review pending. |
+| HIGH | High/Ultra regional city labels overlapped each other and army counters in dense European regions | Bounded, deterministic label placement with capital/population priority, alternate positions, viewport bounds and collision rejection. City markers and hit testing remain available. Two dense/real-world layout regressions pass; 48 JS tests pass. Native follow-up passed on 1a35361 (CI 36898715472); 1600×720 evidence reviewed. |
+
+## Phase 7 gates
+
+Religion source uses authenticated commands, exact payload validation, population-weighted derived unity, neutral monthly mechanics and paid changes with cooldown. Strict typecheck and 55 JS tests pass. Native standalone/emulator and dedicated backend deployment/live checks are pending; no Phase 7 acceptance is claimed. Scenario religion assignments are original design assumptions, not real census data. Full requested final-release gates remain open.

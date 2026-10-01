@@ -10,7 +10,7 @@ import urllib.request
 from pathlib import Path
 
 BASE = 'https://dfjsnjxnyjspwugjguhq.supabase.co/functions/v1'
-ROOM_FILE = Path('/tmp/dominion-world-government-room-id')
+ROOM_FILE = Path('/tmp/dominion-world-religion-room-id')
 
 def request(path, body, expected=200):
     req = urllib.request.Request(BASE+'/'+path, data=json.dumps(body, allow_nan=False).encode(), headers={'Content-Type': 'application/json'}, method='POST')
@@ -22,7 +22,7 @@ def request(path, body, expected=200):
     assert status == expected, (path, status, expected)
     return payload
 
-host = request('game-room', {'action': 'create', 'displayName': 'WORLD GOVERNMENT QA'})
+host = request('game-room', {'action': 'create', 'displayName': 'WORLD RELIGION QA'})
 game_id = host['state']['id']
 assert re.fullmatch(r'[0-9a-f-]{36}', game_id)
 ROOM_FILE.write_text(game_id)
@@ -32,7 +32,7 @@ assert len(host['state']['provinces']) == 4386
 assert len(host['state']['cities']) == 7214
 assert len(host['state']['leaders']) == 195
 assert all(c.get('governmentType') and c.get('politicalPower') == 100 for c in host['state']['countries'].values())
-guest = request('game-room', {'action': 'join', 'roomCode': host['state']['roomCode'], 'displayName': 'WORLD GOVERNMENT QA GUEST'})
+guest = request('game-room', {'action': 'join', 'roomCode': host['state']['roomCode'], 'displayName': 'WORLD RELIGION QA GUEST'})
 
 def snapshot(session=host, version=None):
     body = {'action': 'state', 'gameId': game_id, 'playerId': session['playerId'], 'token': session['token']}
@@ -90,3 +90,33 @@ assert next(a for a in after['armies'] if a['id'] == army['id'])['provinceId'] =
 assert after['tick'] == before['tick'] and after['month'] == before['month']
 assert snapshot(guest)['state'] == after
 print('PASS: paid recruitment, legal movement, frozen clock, government payment/stability/cooldown, guest sync, unchanged-version polling', flush=True)
+
+# Faith is authoritative; caller-supplied Unity or country fields must be rejected.
+religion_command = {'type': 'CHANGE_RELIGION', 'playerId': host['playerId'], 'religionId': 'christian-catholic'}
+command(host, {**religion_command, 'religiousUnity': 100}, 400)
+command(guest, {**religion_command, 'playerId': host['playerId']}, 400)
+command(host, religion_command, 400)  # government payment left insufficient PP
+command(host, {'type': 'SET_SPEED', 'playerId': host['playerId'], 'speed': 1})
+for _ in range(20):
+    command(host, {'type': 'ADVANCE_TICK'})
+command(host, {'type': 'SET_SPEED', 'playerId': host['playerId'], 'speed': 0})
+religion_before = snapshot()['state']
+command(host, religion_command)
+command(host, {**religion_command, 'religionId': 'secular'}, 400)
+religion_after = snapshot()['state']; nation = religion_after['countries']['germany']; old = religion_before['countries']['germany']
+assert nation['politicalPower'] == old['politicalPower'] - 120
+assert nation['stability'] == max(0, old['stability'] - 12)
+assert nation['unrest'] == min(100, old['unrest'] + 8)
+assert nation['religion'] == 'christian-catholic'
+assert nation['religionCooldownUntilTick'] == religion_after['tick'] + 36
+assert religion_after['tick'] == religion_before['tick']
+for before_province, after_province in zip(religion_before['provinces'], religion_after['provinces']):
+    assert after_province['religion'] == before_province['religion']
+    expected = min(100, before_province['unrest'] + 10) if after_province['ownerId'] == 'germany' and after_province['religion'] != nation['religion'] else before_province['unrest']
+    assert after_province['unrest'] == expected
+owned = [p for p in religion_after['provinces'] if p['ownerId'] == 'germany']
+total = sum(p['population'] for p in owned)
+unity = sum(p['population'] for p in owned if p['religion'] == nation['religion']) / total * 100 if total else 100
+assert abs(nation['religiousUnity'] - unity) < 1e-8
+assert snapshot(guest)['state'] == religion_after
+print('PASS: religion authentication/payload/payment/cooldown, unchanged provincial faiths, population-weighted Unity, unrest and guest sync', flush=True)

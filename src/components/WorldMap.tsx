@@ -214,7 +214,7 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
       <Text style={styles.heading}>РЕЖИМ КАРТЫ</Text><View style={styles.options}>{AVAILABLE_MODES.map(m => <Pressable key={m} style={[styles.option, mode === m && styles.active]} onPress={() => { setMode(m); setSettingsOpen(false); }}><Text style={styles.text}>{MODE_LABELS[m]}</Text></Pressable>)}</View>
       <Text style={styles.heading}>КАЧЕСТВО ГРАФИКИ</Text><View style={styles.options}>{(Object.keys(GRAPHICS) as GraphicsPreset[]).map(p => <Pressable key={p} style={[styles.option, preset === p && styles.active]} onPress={() => setPreset(p)}><Text style={styles.text}>{p}</Text></Pressable>)}</View>
     </View>}
-    <View pointerEvents="none" style={styles.legend}><Text style={styles.note}>{mode === 'Political' ? (state.dataset ? 'Современный мир · границы Natural Earth' : 'Провинции кампании · нейтральная суша вне сценария') : mode === 'Terrain' ? 'Стилизованный рельеф' : mode === 'Government' ? 'Формы правления · отдельный цвет для каждой политики' : `${MODE_LABELS[mode]} · от меньшего (серый) к большему (золотой)`}</Text></View>
+    <View pointerEvents="none" style={styles.legend}><Text style={styles.note}>{mode === 'Political' ? (state.dataset ? 'Современный мир · границы Natural Earth' : 'Провинции кампании · нейтральная суша вне сценария') : mode === 'Terrain' ? 'Стилизованный рельеф' : mode === 'Religion' ? 'Религия провинций · цвета конфессий и категорий' : mode === 'Government' ? 'Формы правления · отдельный цвет для каждой политики' : `${MODE_LABELS[mode]} · от меньшего (серый) к большему (золотой)`}</Text></View>
   </View>;
 }
 const styles = StyleSheet.create({

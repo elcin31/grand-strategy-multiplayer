@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { countryFor, GameCommand, GameState } from '../types/game';
+import { RELIGIONS, RELIGION_IDS, RELIGION_CHANGE_COST, RELIGION_STABILITY_COST, RELIGION_COOLDOWN_TICKS } from '../../supabase/functions/_shared/religionSystem';
 import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, GOVERNMENT_TYPES, governmentModifiers } from '../../supabase/functions/_shared/governmentSystem';
 
 interface GamePanelProps {
@@ -13,6 +14,7 @@ interface GamePanelProps {
 const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).toFixed(1)}M` : value >= 1_000 ? `${Math.round(value / 1_000)}K` : String(value);
 
 export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: GamePanelProps) {
+  const [religionOpen, setReligionOpen] = useState(false);
   const [governmentOpen, setGovernmentOpen] = useState(false);
   const me = state.players.find((player) => player.id === playerId);
   const countryId = me?.countryId ?? null;
@@ -25,6 +27,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
   const neighbors = selected ? selected.neighbors.map((id) => state.provinces.find((province) => province.id === id)).filter(Boolean) : [];
   const isOwnProvince = selected?.ownerId === countryId;
   const cooldown = Math.max(0, (nation.governmentCooldownUntilTick ?? 0) - state.tick);
+  const religionCooldown = Math.max(0, (nation.religionCooldownUntilTick ?? 0) - state.tick);
   const politicalPower = nation.politicalPower ?? 0;
   const signed = (value: number) => `${value >= 0 ? '+' : ''}${value}`;
 
@@ -55,7 +58,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         </View>
       </View>
 
-      {state.dataset && <Pressable accessibilityRole="button" onPress={() => setGovernmentOpen(!governmentOpen)} style={styles.secondaryButton}><Text style={styles.secondaryText}>Правительство {governmentOpen ? '▴' : '▾'}</Text></Pressable>}
+      {state.dataset && <Pressable accessibilityRole="button" onPress={() => { setGovernmentOpen(!governmentOpen); setReligionOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Правительство {governmentOpen ? '▴' : '▾'}</Text></Pressable>}
       {governmentOpen && state.dataset && <View style={styles.card}>
         <Text style={styles.eyebrow}>ФОРМА ПРАВЛЕНИЯ · {Math.floor(politicalPower)} PP</Text>
         <Text style={styles.govCurrent}>{nation.governmentType}</Text>
@@ -77,6 +80,27 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         <Text style={styles.hint}>Репутация: {nation.diplomaticReputation?.toFixed(0)} · стабильность {nation.stability.toFixed(1)} · unrest {nation.unrest?.toFixed(1)}</Text>
       </View>}
 
+      {state.dataset && <Pressable accessibilityRole="button" onPress={() => { setReligionOpen(!religionOpen); setGovernmentOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Религия {religionOpen ? '▴' : '▾'}</Text></Pressable>}
+      {religionOpen && state.dataset && <View style={styles.card}>
+        <Text style={styles.eyebrow}>ГОСУДАРСТВЕННАЯ РЕЛИГИЯ · {Math.floor(politicalPower)} PP</Text>
+        <Text style={styles.govCurrent}>{RELIGIONS[nation.religion ?? 'secular']?.name}</Text>
+        <Text style={styles.hint}>Religious Unity: {nation.religiousUnity?.toFixed(1)}% · unrest {nation.unrest?.toFixed(1)}</Text>
+        <Text style={styles.hint}>Смена: {RELIGION_CHANGE_COST} PP, −{RELIGION_STABILITY_COST} стабильности, unrest в провинциях другой веры; cooldown {RELIGION_COOLDOWN_TICKS} мес.</Text>
+        {religionCooldown > 0 && <Text style={styles.hint}>Следующая смена религии через {religionCooldown} мес.</Text>}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.routes}>
+          {RELIGION_IDS.map(religionId => {
+            const active = religionId === nation.religion;
+            const disabled = active || religionCooldown > 0 || politicalPower < RELIGION_CHANGE_COST;
+            return <Pressable accessibilityRole="button" accessibilityState={{ disabled, selected: active }} key={religionId} disabled={disabled} style={[styles.govOption, disabled && styles.disabled, active && styles.govSelected]} onPress={() => onCommand({ type: 'CHANGE_RELIGION', playerId, religionId })}>
+              <Text style={styles.govName}>{RELIGIONS[religionId]!.name}</Text>
+              <Text style={styles.govDetails}>{RELIGIONS[religionId]!.group}</Text>
+              <Text style={styles.govDetails}>{active ? 'Действует' : 'Принять · 120 PP'}</Text>
+            </Pressable>;
+          })}
+        </ScrollView>
+        <Text style={styles.hint}>Все религии используют одинаковые правила. Низкое единство повышает unrest; смена не обращает население автоматически.</Text>
+      </View>}
+
       <View style={styles.card}>
         <Text style={styles.eyebrow}>КОМАНДОВАНИЕ</Text>
         {!selected ? (
@@ -87,6 +111,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
               <View>
                 <Text style={styles.title}>{selected.name}</Text>
                 <Text style={styles.owner}>{countryFor(state, selected.ownerId).name} · доход ${selected.income}M</Text>
+                {selected.religion && <Text style={styles.owner}>{RELIGIONS[selected.religion]?.name} · unrest {selected.unrest?.toFixed(1)}</Text>}
               </View>
               <View style={[styles.ownerDot, { backgroundColor: countryFor(state, selected.ownerId).color }]} />
             </View>
