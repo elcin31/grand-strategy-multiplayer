@@ -16,8 +16,8 @@ Verification gates:
 - `npm run benchmark:map`: 5,000 features / 10,000 queries, p95 ~0.026 ms on this build machine. **CPU index benchmark, not Android FPS.**
 - Expo Android prebuild: passed locally.
 - Production Hermes bundle export: passed locally, ~3.6 MB.
-- Current migration `assembleRelease` and emulator smoke: pending GitHub Actions. This workspace cannot reach Gradle's distribution host. Earlier scenario-only releases remain evidence for those older commits, not this world migration.
-- Native cold-launch / renderer / offline launch without networking / restart smoke: passed for `6cb3c1f` on API 35. Passed again for `e84ccae`; rectangle collision release and emulator smoke passed for `d870789`; paused-order release and Android gameplay smoke passed for `0e05df5`.
+- Current migration `assembleRelease`, APK verifier, and emulator gameplay smoke: passed on `95f7fee` (CI run `36877387395`). This workspace cannot reach Gradle's distribution host, so the successful native build ran in GitHub Actions.
+- Native cold-launch / renderer / offline launch without networking / restart smoke: passed on API 35 for `95f7fee` (CI run `36877387395`), including 195-country search/select/start, paused paid recruitment, four presets, six available modes, landscape resizes and restart. Earlier scenario-only gates are recorded below.
 - Emulator evidence covers 1280×720, 1600×720, 1920×1080 and 1280×800 layouts, four graphics presets and six map modes.
 - Swiftshader emulator camera benchmark was slow (median frame 77 ms, p95 200 ms); this does not establish physical-device performance. Camera culling updates are now triggered by movement/zoom thresholds instead of every small camera change.
 - Physical-device FPS, gestures and sustained GPU profiling: pending.
@@ -26,7 +26,7 @@ Verification gates:
 
 ## Sequential phases
 
-2–4. Implemented as a playable modern-world campaign dataset: 195 states, 4,386 provinces, 10,527 symmetric land-adjacency edges, and 7,214 linked cities. Typecheck/regression and source audits pass. Native APK and live-room endpoint smoke are still pending; these phases are not release-accepted.
+2–4. Implemented as a playable modern-world campaign dataset: 195 states, 4,386 provinces, 10,527 symmetric land-adjacency edges, and 7,214 linked cities. Typecheck/regression and source audits pass. Standalone APK verification and offline emulator gameplay smoke pass on `95f7fee` (CI run `36877387395`). Live-room endpoint smoke remains pending, so these phases are not fully release-accepted.
 5–7. Deterministic fictional rulers, governments and religions.
 8–12. Population, economy, resources, buildings and technology.
 13–16. Unit composition, generals, diplomacy/war/peace, unrest and strategic AI.
@@ -75,4 +75,4 @@ Latest native gate: `0e05df5` passed assembleRelease, embedded 2,983,712-byte bu
 - Room admission now rechecks phase, duplicate player IDs and the eight-player limit on each fresh CAS snapshot; failed joins clean up their new membership. Version-aware polling avoids transferring an unchanged 2.8 MB world state every 900 ms. This does not yet implement delta sync, command idempotency, reconnect or host migration.
 - Dedicated backend `game-command` v5 and `game-room` v3 are deployed ACTIVE. The room bundle contains all 83 generated world-data modules. The new endpoint version has not yet passed a live create/join/action/cleanup smoke test.
 - 39 JS tests and 3 Python tests passed locally, with `noUnusedLocals` and `noUnusedParameters` now enabled. Full-world data/CPU benchmark passed 100 ticks; physical FPS and complete Phase 20 stress/chaos acceptance remain unverified.
-- Android smoke now uses actual searchable country selection and a real capital province instead of the synthetic demo coordinates. Repeat standalone build/native smoke and isolated live-backend verification are required before accepting this migration.
+- Android smoke now uses actual searchable country selection and a real capital province instead of synthetic demo coordinates. Standalone build and offline emulator smoke passed on `95f7fee`; isolated live-backend endpoint verification remains open.

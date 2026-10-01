@@ -33,9 +33,9 @@ This is a running report, not the final Phase 20 QA acceptance.
 | Severity | Gate | Status |
 |---|---|---|
 | BLOCKER | Complete global world-update acceptance criteria | Not implemented yet; world data wired into new campaigns, further gameplay/release criteria pending |
-| BLOCKER | Standalone Android build, emulator gameplay smoke and live endpoint smoke for modern-world migration | Pending; Expo prebuild/config and backend deployment pass, previous APK checkpoint is not proof for this migration |
+| BLOCKER | Live endpoint smoke and full global world-update acceptance | Android release verifier/offline gameplay smoke passed on `95f7fee` (CI `36877387395`); dedicated production room create/join/gameplay/cleanup flow and remaining requested gameplay systems still need verification/implementation |
 | HIGH | Physical-device map FPS and gesture profiling | Pending; CPU query benchmark is not proof of 30/60 FPS |
 | HIGH | Save/reconnect/host migration and multiplayer chaos testing | Scheduled Phase 17/20; not claimed working |
 | HIGH | Remaining map modes backed by authoritative schemas | Scheduled later phases; unavailable modes are not mock buttons |
 
-The current dedicated backend deployments are game-command v5 and game-room v3 (both ACTIVE). Their world-specific HTTP create/join/gameplay/cleanup flow still needs a live smoke test. The final world-update APK must not be released while BLOCKER/CRITICAL gates remain open. The renderer checkpoint may be built for verification only.
+The current dedicated backend deployments are game-command v5 and game-room v3 (both ACTIVE). Their world-specific HTTP create/join/gameplay/cleanup flow still needs a live smoke test. Android checkpoint run `36877387395` passed standalone APK verification and offline emulator gameplay. The final world-update APK must not be released while BLOCKER/CRITICAL gates remain open.
