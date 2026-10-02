@@ -2,6 +2,8 @@
 
 This is a running report, not the final Phase 20 QA acceptance.
 
+Latest gate status (2026-10-02): Phase 8 population passed strict typecheck, 60 JS tests, 3 Python tests, 10,000 ticks, complete dedicated-backend live QA 36969317388 and standalone/offline Android 36968778110 on runtime source 2f67b35. Population/religion screenshots were reviewed and the QA room/memberships removed. The phase-specific scroll/pause regression is verified fixed. Open final-release items below remain unresolved; earlier deployment/gate notes are historical.
+
 ## Fixed during renderer work
 
 | Severity | Issue | Fix / verification |
