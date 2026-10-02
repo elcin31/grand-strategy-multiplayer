@@ -1,0 +1,33 @@
+name: World backend QA
+on:
+  push:
+    branches: [world-update]
+    paths:
+      - '.github/workflows/backend-world-qa.yml'
+      - 'scripts/backend-world-smoke.py'
+      - 'supabase/functions/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: grand-strategy-live-world-qa
+  cancel-in-progress: false
+jobs:
+  live-world:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify dedicated backend with an isolated campaign
+        run: python -u scripts/backend-world-smoke.py
+      # Contains ONLY an isolated QA room UUID, never player tokens or snapshots.
+      # The maintainer removes this exact room through guarded project SQL and
+      # verifies both rooms and memberships are gone before accepting the gate.
+      - name: Preserve scoped cleanup identifier
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-backend-qa-room-id
+          path: /tmp/dominion-world-population-room-id
+          if-no-files-found: warn
+          retention-days: 2

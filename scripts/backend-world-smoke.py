@@ -1,7 +1,8 @@
 """Opt-in HTTP integration against the dedicated Grand Strategy backend only.
 
 Creates one isolated QA room, records its ID for scoped SQL cleanup, never logs tokens.
-Run separately from general CI. Clean up the recorded room after success or failure.
+Run locally or through the dedicated World backend QA workflow, separately from
+offline build tests. Clean up the recorded room after success or failure.
 """
 import json
 import re
@@ -104,10 +105,22 @@ religion_before = snapshot()['state']
 assert religion_before['countries']['germany']['population'] > after['countries']['germany']['population']
 assert sum(p['population'] for p in religion_before['provinces']) > sum(p['population'] for p in after['provinces'])
 city_totals = {}
+old_cities = {city['id']: city for city in after['cities']}
+assert len(old_cities) == len(after['cities'])
+assert len({city['id'] for city in religion_before['cities']}) == len(religion_before['cities'])
+assert sum(city['population'] for city in religion_before['cities']) > sum(city['population'] for city in after['cities'])
 for city in religion_before['cities']:
+    assert type(city['population']) is int and 0 <= city['population'] <= 2**53-1
+    assert city['population'] >= old_cities[city['id']]['population']
+    assert 0 <= city['populationGrowthCarry'] < 1
     city_totals[city['provinceId']] = city_totals.get(city['provinceId'], 0) + city['population']
+province_ids = {p['id'] for p in religion_before['provinces']}
+assert len(province_ids) == len(religion_before['provinces'])
 for province in religion_before['provinces']:
+    assert type(province['population']) is int and 0 <= province['population'] <= 2**53-1
+    assert 0 <= province['populationGrowthCarry'] < 1
     assert city_totals.get(province['id'], 0) <= province['population']
+assert all(province_id in province_ids for province_id in city_totals)
 for country in religion_before['countries'].values():
     owned = [p for p in religion_before['provinces'] if p['ownerId'] == country['id']]
     assert country['population'] == sum(p['population'] for p in owned)
