@@ -6,6 +6,8 @@ Latest gate status (2026-10-02): Phase 8 population passed strict typecheck, 60 
 
 Phase 9 budget source is undergoing verification: strict typecheck, 68 JS tests, 3 Python tests and a 100-tick financial-invariant benchmark pass. Native/live/full stress gates remain open. Resource/building income and costs await their actual later systems; economy 2.0/final release is not declared complete.
 
+Phase 9 native/live follow-up on f631efa passed: Android 36975556052, live 36975555995, 68 JS tests and 3 Python tests. Economy screenshots were reviewed. Tax/loan/repayment, exact cash/debt, interest/upkeep/commerce and two-player sync passed alongside prior regressions. QA room 49725814-676a-4fca-a5d2-ebfcd61b7b17 and its memberships were removed; zero records verified. No known failing native/live budget regression remains. The new 10,000-tick financial stress repeat is pending and now has a persistent CI workflow. Final-release blockers and later requested gameplay remain open.
+
 | Severity | Phase 9 issue | Fix / verification |
 |---|---|---|
 | HIGH | Running armies had no ongoing cost; AI could recruit without considering future upkeep | Actual monthly maintenance, debt/interest/default and a budget/reserve recruitment guard. Ledger/insolvency/regression tests pass; native/live gates pending. |

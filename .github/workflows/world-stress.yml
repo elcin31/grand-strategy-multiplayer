@@ -1,0 +1,35 @@
+name: Full world stress
+on:
+  push:
+    branches: [world-update]
+    paths:
+      - '.github/workflows/world-stress.yml'
+      - 'scripts/benchmark-world.ts'
+      - 'supabase/functions/_shared/**'
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  simulation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --include=dev --no-audit --no-fund
+      - name: Run 10000 authoritative full-world ticks
+        run: npm run benchmark:world -- 10000 > world-stress-report.txt
+      - name: Preserve simulation result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-world-stress-report
+          path: world-stress-report.txt
+          if-no-files-found: warn
+          retention-days: 14
