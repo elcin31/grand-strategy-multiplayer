@@ -79,3 +79,17 @@ test('old population saves initialize once, ownership recomputes totals, corrupt
   initializePopulation(legacy); monthlyPopulationGrowth(legacy); assert.deepEqual(legacy,original);
   assert.throws(()=>annualPopulationGrowth(100,NaN)); assert.throws(()=>annualPopulationGrowth(-1,50));
 });
+
+test('authoritative save validation rejects duplicate geography, orphan cities and urban overpopulation immutably', () => {
+  for (const corrupt of [
+    (s: GameState) => { s.provinces.push(structuredClone(s.provinces[0]!)); },
+    (s: GameState) => { s.cities!.push(structuredClone(s.cities![0]!)); },
+    (s: GameState) => { s.cities![0]!.provinceId = 'missing-province'; },
+    (s: GameState) => { const city = s.cities![0]!; city.population = s.provinces.find(p=>p.id===city.provinceId)!.population + 1; },
+  ]) {
+    const state = campaign(); corrupt(state); const before = structuredClone(state);
+    assert.throws(() => applyServerCommand(state, { type: 'ADVANCE_TICK' }, 'host'));
+    assert.throws(() => applyCommand(state, { type: 'ADVANCE_TICK' }));
+    assert.deepEqual(state, before);
+  }
+});

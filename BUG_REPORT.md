@@ -60,3 +60,10 @@ Religion source uses authenticated commands, exact payload validation, populatio
 ## Phase 7 verification closed; Phase 8 verification open
 
 Religion d69c3ce passed Android release/offline smoke (36914710819), 55 JS tests, all 3 Python tests, dedicated v7/v6 two-player live smoke and a 10,000-tick full-world stress repeat including religion/Unity/unrest/PP guards. Both scoped QA rooms were removed; zero remaining records verified. Population growth source adds safe integer/carry, urban conservation, ownership-derived totals and paused/migration/legacy guards. Phase 8 native and dedicated endpoint gates remain pending. Full world-update acceptance, including economy, military/diplomacy/AI/saves/performance/chaos, remains blocked.
+
+## Phase 8 follow-up — 2026-10-02
+
+| Severity | Issue | Fix / verification |
+|---|---|---|
+| HIGH | Duplicate province/city IDs in a corrupted modern save could duplicate population or silently collapse geographic lookup entries | Authoritative population initialization now rejects duplicate IDs. A reducer regression verifies immutable local/server rejection of duplicate provinces, duplicate cities, orphan cities and urban overpopulation. Strict typecheck and all 60 JS tests pass. |
+| MEDIUM | Android smoke attempt failed before app execution because SDK manager downloaded an invalid emulator ZIP | Native release build and bundled-JS verification passed on e4220fe (36961616362). Only the failed emulator job was retried; no gameplay result is inferred from the infrastructure failure. Retry and follow-up source native gates remain pending. |

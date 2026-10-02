@@ -27,6 +27,8 @@ export function recalcPopulationTotals(state: GameState): void {
 export function initializePopulation(state: GameState): void {
   if (!state.dataset) return;
   const provinces = new Map(state.provinces.map(p => [p.id, p]));
+  if (provinces.size !== state.provinces.length) throw new Error('Duplicate population province');
+  const cityIds = new Set<string>();
   const cityTotals = new Map<string, number>();
   for (const p of state.provinces) {
     p.populationGrowthCarry ??= 0; p.monthlyPopulationGrowth ??= 0;
@@ -34,6 +36,8 @@ export function initializePopulation(state: GameState): void {
     annualPopulationGrowth(p.development ?? 40, state.countries[p.ownerId]?.stability ?? NaN);
   }
   for (const city of state.cities ?? []) {
+    if (cityIds.has(city.id)) throw new Error('Duplicate population city');
+    cityIds.add(city.id);
     city.populationGrowthCarry ??= 0; integer(city.population, 'city'); carry(city.populationGrowthCarry);
     if (!provinces.has(city.provinceId)) throw new Error('Unknown city population province');
     const sum = (cityTotals.get(city.provinceId) ?? 0) + city.population;
