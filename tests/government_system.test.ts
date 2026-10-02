@@ -1,4 +1,5 @@
 import { test } from 'node:test';
+import { money } from '../supabase/functions/_shared/economySystem';
 import assert from 'node:assert/strict';
 import { applyServerCommand, createInitialState } from '../supabase/functions/_shared/game';
 import { createWorldState } from '../supabase/functions/_shared/worldState';
@@ -77,7 +78,7 @@ test('modern monthly policies affect income, manpower, research, unrest and poin
   state = applyServerCommand(state, { type: 'ADVANCE_TICK' }, 'host');
   const nation = state.countries.nru!;
   const raw = before.provinces.filter(p => p.ownerId === 'nru').reduce((sum, p) => sum + p.income, 0);
-  assert.equal(nation.treasury, old.treasury + governmentIncome(raw, 'Federation'));
+  assert.equal(nation.treasury, money(old.treasury + old.economy!.monthlyBalance));
   assert.equal(nation.income, governmentIncome(raw, 'Federation'));
   assert.equal(nation.manpower, old.manpower + Math.max(500, Math.round(old.population * .00004 * .99)));
   assert.equal(nation.politicalPower, 500);

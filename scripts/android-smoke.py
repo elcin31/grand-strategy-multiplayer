@@ -49,6 +49,17 @@ def click_scrolling(text):
         else:
             adb('shell','input','swipe','1080','530','1080','320','350')
     raise AssertionError('Missing usable control: '+text)
+def read_scrolling(prefix):
+    for _ in range(5): adb('shell','input','swipe','1080','220','1080','570','350')
+    for attempt in range(14):
+        root = hierarchy('read-'+str(attempt))
+        for node in root.iter('node'):
+            if node.get('text','').startswith(prefix):
+                bounds = [int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
+                if len(bounds) == 4 and 70 <= bounds[1] < bounds[3] <= 660:
+                    return node.get('text')
+        adb('shell','input','swipe','1080','530','1080','320','350')
+    raise AssertionError('Missing readable state: '+prefix)
 def set_speed(speed):
     label = 'Пауза' if speed == 0 else f'Скорость {speed}×'
     for attempt in range(4):
@@ -124,6 +135,20 @@ assert province_army_text(root) == str(int(before[:-1])+25)+'K', 'Recruitment co
 click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
 # Government is a real paid command, with a frozen 24-month cooldown on pause.
 root = hierarchy('government-open'); click_text(root,'УПРАВЛЕНИЕ')
+click_scrolling('Экономика ▾')
+root = hierarchy('economy-before'); screenshot('economy-before')
+assert read_scrolling('Налоги: ').startswith('Налоги: 30%'), 'Initial tax policy missing'
+click_scrolling('Налоги +5%')
+root = hierarchy('economy-tax')
+assert read_scrolling('Налоги: ').startswith('Налоги: 35%'), 'Tax command did not apply'
+click_scrolling('Кредит $100M')
+root = hierarchy('economy-loan'); screenshot('economy-loan')
+assert read_scrolling('Долг: ').startswith('Долг: $100M'), 'Loan command did not create debt'
+click_scrolling('Погасить $100M')
+root = hierarchy('economy-repaid')
+assert read_scrolling('Долг: ').startswith('Долг: $0M'), 'Repayment did not clear debt'
+click_scrolling('Налоги −5%')
+click_scrolling('Экономика ▴')
 for _ in range(5): adb('shell','input','swipe','1080','220','1080','570','350')
 click_scrolling('Правительство ▾')
 root = hierarchy('government-before')

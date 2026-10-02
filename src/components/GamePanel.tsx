@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MIN_TAX_RATE, MAX_TAX_RATE, money } from '../../supabase/functions/_shared/economySystem';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { countryFor, GameCommand, GameState } from '../types/game';
 import { RELIGIONS, RELIGION_IDS, RELIGION_CHANGE_COST, RELIGION_STABILITY_COST, RELIGION_COOLDOWN_TICKS } from '../../supabase/functions/_shared/religionSystem';
@@ -12,10 +13,12 @@ interface GamePanelProps {
 }
 
 const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).toFixed(1)}M` : value >= 1_000 ? `${Math.round(value / 1_000)}K` : String(value);
+const currency = (value: number) => `${value < 0 ? '−' : ''}$${Math.abs(value) >= 1000 ? (Math.abs(value)/1000).toFixed(1)+'B' : Math.abs(value).toFixed(3).replace(/\.?0+$/, '')+'M'}`;
 
 export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: GamePanelProps) {
   const [religionOpen, setReligionOpen] = useState(false);
   const [governmentOpen, setGovernmentOpen] = useState(false);
+  const [economyOpen, setEconomyOpen] = useState(false);
   const me = state.players.find((player) => player.id === playerId);
   const countryId = me?.countryId ?? null;
   if (!countryId) return null;
@@ -31,6 +34,12 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
   const religionCooldown = Math.max(0, (nation.religionCooldownUntilTick ?? 0) - state.tick);
   const politicalPower = nation.politicalPower ?? 0;
   const signed = (value: number) => `${value >= 0 ? '+' : ''}${value}`;
+  const budget = nation.economy;
+  const availableCredit = budget ? money(Math.max(0, budget.creditLimit - (nation.debt ?? 0))) : 0;
+  const loanQuote = money(Math.min(100, availableCredit));
+  const repayQuote = money(Math.min(100, nation.debt ?? 0, nation.treasury));
+  const bankruptcyMonths = Math.max(0, (nation.bankruptcyUntilTick ?? 0) - state.tick);
+  const economicActionsEnabled = state.phase === 'running' || state.phase === 'paused';
 
   return (
     <View style={styles.wrap}>
@@ -44,8 +53,8 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         </View>
         {ruler && <View style={styles.rulerRow}><View style={[styles.rulerPortrait,{backgroundColor:['#526E75','#765F70','#6E7455','#756448','#516481','#7A6252'][ruler.portraitSeed%6]}]}><Text style={styles.rulerInitials}>{ruler.name.split(/\s+/).map(part=>part[0]).slice(0,2).join('')}</Text></View><View><Text style={styles.rulerLabel}>ВЫМЫШЛЕННЫЙ ПРАВИТЕЛЬ · {ruler.age}</Text><Text style={styles.rulerName}>{ruler.name}</Text><Text style={styles.rulerDetails}>{ruler.ideology} · дипломатия {ruler.diplomaticSkill}</Text></View></View>}
         <View style={styles.metrics}>
-          <Metric label="Казна" value={`$${compact(nation.treasury)}M`} />
-          <Metric label="Доход" value={`+$${compact(nation.income)}M`} />
+          <Metric label="Казна" value={state.dataset ? currency(nation.treasury) : `$${compact(nation.treasury)}M`} />
+          <Metric label={budget ? 'Баланс / мес.' : 'Доход'} value={budget ? (budget.monthlyBalance >= 0 ? '+' : '')+currency(budget.monthlyBalance) : `+$${compact(nation.income)}M`} />
           <Metric label="Армия" value={compact(nation.army)} />
           <Metric label="Manpower" value={compact(nation.manpower)} />
         </View>
@@ -60,7 +69,29 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         </View>
       </View>
 
-      {state.dataset && <Pressable accessibilityRole="button" onPress={() => { setGovernmentOpen(!governmentOpen); setReligionOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Правительство {governmentOpen ? '▴' : '▾'}</Text></Pressable>}
+      {budget && <Pressable accessibilityRole="button" onPress={() => { setEconomyOpen(!economyOpen); setGovernmentOpen(false); setReligionOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Экономика {economyOpen ? '▴' : '▾'}</Text></Pressable>}
+      {economyOpen && budget && <View style={styles.card}>
+        <Text style={styles.eyebrow}>МЕСЯЧНЫЙ БЮДЖЕТ</Text>
+        <Text style={styles.hint}>Налоги: {nation.taxRate}% · {currency(budget.taxIncome)}</Text>
+        <Text style={styles.hint}>Торговля: {currency(budget.tradeIncome)}</Text>
+        <Text style={styles.hint}>Содержание армии: {currency(budget.armyMaintenance)}</Text>
+        <Text style={styles.hint}>Проценты: {currency(budget.interest)} · 0.5% долга / мес.</Text>
+        <Text style={styles.hint}>Баланс: {currency(budget.monthlyBalance)} / мес.</Text>
+        <View style={styles.recruitRow}>
+          {[Math.max(MIN_TAX_RATE, (nation.taxRate ?? 30)-5), Math.min(MAX_TAX_RATE, (nation.taxRate ?? 30)+5)].map((rate,i)=><Pressable accessibilityRole="button" key={i} disabled={!economicActionsEnabled || rate===nation.taxRate} style={[styles.secondaryButton, rate===nation.taxRate && styles.disabled]} onPress={()=>onCommand({type:'SET_TAX_RATE',playerId,taxRate:rate})}><Text style={styles.secondaryText}>Налоги {i===0?'−5':'+5'}%</Text></Pressable>)}
+        </View>
+        <Text style={styles.hint}>Высокие налоги снижают стабильность и повышают unrest ежемесячно.</Text>
+        <Text style={styles.hint}>Долг: {currency(nation.debt ?? 0)} · лимит {currency(budget.creditLimit)}</Text>
+        <Text style={styles.hint}>Свободный кредит: {currency(availableCredit)}</Text>
+        {bankruptcyMonths>0 && <Text style={styles.hint}>После банкротства: кредит и набор заблокированы ещё {bankruptcyMonths} мес.</Text>}
+        <View style={styles.recruitRow}>
+          <Pressable accessibilityRole="button" disabled={!economicActionsEnabled || loanQuote<=0 || bankruptcyMonths>0} style={[styles.secondaryButton,(loanQuote<=0 || bankruptcyMonths>0) && styles.disabled]} onPress={()=>onCommand({type:'BORROW',playerId,amount:loanQuote})}><Text style={styles.secondaryText}>Кредит {currency(loanQuote)}</Text></Pressable>
+          <Pressable accessibilityRole="button" disabled={!economicActionsEnabled || repayQuote<=0} style={[styles.secondaryButton,repayQuote<=0 && styles.disabled]} onPress={()=>onCommand({type:'REPAY_DEBT',playerId,amount:repayQuote})}><Text style={styles.secondaryText}>Погасить {currency(repayQuote)}</Text></Pressable>
+        </View>
+        <Text style={styles.hint}>Дефицит использует кредитный лимит. Неплатёжеспособность списывает долг, снижает стабильность и репутацию, вызывает unrest и сокращает армию до доступного бюджета.</Text>
+      </View>}
+
+      {state.dataset && <Pressable accessibilityRole="button" onPress={() => { setGovernmentOpen(!governmentOpen); setReligionOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Правительство {governmentOpen ? '▴' : '▾'}</Text></Pressable>}
       {governmentOpen && state.dataset && <View style={styles.card}>
         <Text style={styles.eyebrow}>ФОРМА ПРАВЛЕНИЯ · {Math.floor(politicalPower)} PP</Text>
         <Text style={styles.govCurrent}>{nation.governmentType}</Text>
@@ -82,7 +113,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         <Text style={styles.hint}>Репутация: {nation.diplomaticReputation?.toFixed(0)} · стабильность {nation.stability.toFixed(1)} · unrest {nation.unrest?.toFixed(1)}</Text>
       </View>}
 
-      {state.dataset && <Pressable accessibilityRole="button" onPress={() => { setReligionOpen(!religionOpen); setGovernmentOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Религия {religionOpen ? '▴' : '▾'}</Text></Pressable>}
+      {state.dataset && <Pressable accessibilityRole="button" onPress={() => { setReligionOpen(!religionOpen); setGovernmentOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Религия {religionOpen ? '▴' : '▾'}</Text></Pressable>}
       {religionOpen && state.dataset && <View style={styles.card}>
         <Text style={styles.eyebrow}>ГОСУДАРСТВЕННАЯ РЕЛИГИЯ · {Math.floor(politicalPower)} PP</Text>
         <Text style={styles.govCurrent}>{RELIGIONS[nation.religion ?? 'secular']?.name}</Text>

@@ -1,4 +1,5 @@
 import { initializePopulation, monthlyPopulationGrowth, recalcPopulationTotals } from './populationSystem.ts';
+import { initializeEconomy, recalcEconomy, monthlyEconomy, borrow, repay, refreshArmyBudget, money } from './economySystem.ts';
 import { initializeReligions, recalcReligiousUnity, monthlyReligionEffects, RELIGION_CHANGE_COST, RELIGION_STABILITY_COST, RELIGION_COOLDOWN_TICKS } from './religionSystem.ts';
 import { assertGameCommand } from './commandValidation.ts';
 import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, POLITICAL_POWER_MONTHLY, governmentIncome, governmentModifiers, initializeGovernments } from './governmentSystem.ts';
@@ -24,6 +25,7 @@ function recalcCountryStats(state: GameState) {
   }
   if (state.dataset) for (const nation of Object.values(state.countries)) nation.income = governmentIncome(nation.income, nation.governmentType);
   for (const army of state.armies) countryFor(state, army.ownerId).army += army.troops;
+  recalcEconomy(state);
 }
 
 function entityId(state: GameState, kind: string): string {
@@ -116,15 +118,17 @@ function recruit(state: GameState, ownerId: CountryId, province: Province, troop
   if (province.ownerId !== ownerId) throw new Error('Нельзя нанимать войска в чужой провинции');
   if (!Number.isInteger(troops) || troops < 1_000 || troops > 100_000) throw new Error('Недопустимый размер набора');
   const nation = countryFor(state, ownerId);
+  if (state.dataset && state.tick < nation.bankruptcyUntilTick!) throw new Error('Набор недоступен после банкротства');
   const cost = Math.ceil(troops / 1_000) * 20;
   if (nation.treasury < cost) throw new Error('Недостаточно средств');
   if (nation.manpower < troops) throw new Error('Недостаточно людских ресурсов');
-  nation.treasury -= cost;
+  nation.treasury = state.dataset ? money(nation.treasury - cost) : nation.treasury - cost;
   nation.manpower -= troops;
   const existing = state.armies.find((army) => army.ownerId === ownerId && army.provinceId === province.id);
   if (existing) existing.troops += troops;
   else state.armies.push({ id: entityId(state, 'army'), ownerId, provinceId: province.id, troops });
   nation.army += troops;
+  if (state.dataset) refreshArmyBudget(nation);
 }
 
 function runAi(state: GameState) {
@@ -134,7 +138,8 @@ function runAi(state: GameState) {
     const owned = state.provinces.filter((province) => province.ownerId === id);
     if (!owned.length) continue;
     const nation = countryFor(state, id);
-    if (state.tick % 3 === 0 && nation.treasury >= 80 && nation.manpower >= 4_000) {
+    const budgetAllowsRecruitment = !state.dataset || (state.tick >= nation.bankruptcyUntilTick! && nation.economy!.monthlyBalance >= 5 && nation.treasury >= 80 + (nation.economy!.armyMaintenance + 5) * 3);
+    if (state.tick % 3 === 0 && nation.treasury >= 80 && nation.manpower >= 4_000 && budgetAllowsRecruitment) {
       const richest = [...owned].sort((a, b) => b.income - a.income)[0];
       if (richest) recruit(state, id, richest, 4_000);
     }
@@ -161,7 +166,21 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
   initializeGovernments(next);
   initializePopulation(next);
   initializeReligions(next);
+  initializeEconomy(next);
   switch (command.type) {
+    case 'SET_TAX_RATE':
+    case 'BORROW':
+    case 'REPAY_DEBT': {
+      if (!next.dataset) throw new Error('Бюджет доступен в кампании современного мира');
+      if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
+      const player = getPlayer(next, command.playerId);
+      if (!player.countryId) throw new Error('Страна не выбрана');
+      const nation = countryFor(next, player.countryId);
+      if (command.type === 'SET_TAX_RATE') { nation.taxRate = command.taxRate; recalcEconomy(next); }
+      else if (command.type === 'BORROW') borrow(next, nation, command.amount);
+      else repay(next, nation, command.amount);
+      return next;
+    }
     case 'SELECT_COUNTRY': {
       if (next.phase !== 'lobby') throw new Error('Страну можно выбрать только в лобби');
       const player = getPlayer(next, command.playerId);
@@ -256,7 +275,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       recalcCountryStats(next);
       for (const id of countryIds(next)) {
         const nation = countryFor(next, id);
-        nation.treasury += nation.income;
+        if (!next.dataset) nation.treasury += nation.income;
         const modifiers = next.dataset ? governmentModifiers(nation.governmentType) : undefined;
         nation.manpower += Math.max(500, Math.round(nation.population * 0.00004 * (1 + (modifiers?.manpowerPercent ?? 0) / 100)));
         if (modifiers) {
@@ -267,6 +286,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
         }
       }
       monthlyReligionEffects(next);
+      monthlyEconomy(next);
       runAi(next);
       recalcCountryStats(next);
       checkWinner(next);

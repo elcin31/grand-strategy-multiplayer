@@ -11,7 +11,7 @@ import urllib.request
 from pathlib import Path
 
 BASE = 'https://dfjsnjxnyjspwugjguhq.supabase.co/functions/v1'
-ROOM_FILE = Path('/tmp/dominion-world-population-room-id')
+ROOM_FILE = Path('/tmp/dominion-world-qa-room-id')
 
 def request(path, body, expected=200):
     req = urllib.request.Request(BASE+'/'+path, data=json.dumps(body, allow_nan=False).encode(), headers={'Content-Type': 'application/json'}, method='POST')
@@ -23,7 +23,7 @@ def request(path, body, expected=200):
     assert status == expected, (path, status, expected)
     return payload
 
-host = request('game-room', {'action': 'create', 'displayName': 'WORLD POPULATION QA'})
+host = request('game-room', {'action': 'create', 'displayName': 'WORLD ECONOMY QA'})
 game_id = host['state']['id']
 assert re.fullmatch(r'[0-9a-f-]{36}', game_id)
 ROOM_FILE.write_text(game_id)
@@ -33,7 +33,7 @@ assert len(host['state']['provinces']) == 4386
 assert len(host['state']['cities']) == 7214
 assert len(host['state']['leaders']) == 195
 assert all(c.get('governmentType') and c.get('politicalPower') == 100 for c in host['state']['countries'].values())
-guest = request('game-room', {'action': 'join', 'roomCode': host['state']['roomCode'], 'displayName': 'WORLD POPULATION QA GUEST'})
+guest = request('game-room', {'action': 'join', 'roomCode': host['state']['roomCode'], 'displayName': 'WORLD ECONOMY QA GUEST'})
 
 def snapshot(session=host, version=None):
     body = {'action': 'state', 'gameId': game_id, 'playerId': session['playerId'], 'token': session['token']}
@@ -91,6 +91,23 @@ assert next(a for a in after['armies'] if a['id'] == army['id'])['provinceId'] =
 assert after['tick'] == before['tick'] and after['month'] == before['month']
 assert snapshot(guest)['state'] == after
 print('PASS: paid recruitment, legal movement, frozen clock, government payment/stability/cooldown, guest sync, unchanged-version polling', flush=True)
+
+# Budget is computed by the server; loans never mint net assets.
+cash = nation['treasury']
+command(host, {'type':'SET_TAX_RATE','playerId':host['playerId'],'taxRate':35})
+command(host, {'type':'BORROW','playerId':host['playerId'],'amount':100,'debt':0}, 400)
+command(host, {'type':'BORROW','playerId':host['playerId'],'amount':100})
+loan = snapshot()['state']['countries']['germany']
+assert loan['debt'] == 100 and loan['treasury'] == cash + 100
+assert loan['taxRate'] == 35 and loan['economy']['interest'] == .5
+command(host, {'type':'REPAY_DEBT','playerId':host['playerId'],'amount':100})
+command(host, {'type':'SET_TAX_RATE','playerId':host['playerId'],'taxRate':30})
+paid = snapshot()['state']['countries']['germany']
+assert paid['debt'] == 0 and paid['treasury'] == cash
+assert paid['economy']['armyMaintenance'] == paid['army'] / 1000 * 1.25
+assert paid['economy']['tradeIncome'] > 0
+assert snapshot(guest)['state'] == snapshot()['state']
+print('PASS: authoritative tax/loan/repayment, exact cash/debt, upkeep/interest/commerce and guest sync', flush=True)
 
 # Faith is authoritative; caller-supplied Unity or country fields must be rejected.
 religion_command = {'type': 'CHANGE_RELIGION', 'playerId': host['playerId'], 'religionId': 'christian-catholic'}

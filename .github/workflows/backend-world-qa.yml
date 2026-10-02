@@ -28,6 +28,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: world-backend-qa-room-id
-          path: /tmp/dominion-world-population-room-id
+          path: /tmp/dominion-world-qa-room-id
           if-no-files-found: warn
           retention-days: 2

@@ -15,6 +15,12 @@ for(let i=0;i<ticks;i++){
  const before=performance.now();state=applyServerCommand(state,{type:'ADVANCE_TICK'},'host');durations.push(performance.now()-before);
  if(state.tick!==i+1)throw Error('Clock stopped');
  for(const c of Object.values(state.countries))for(const n of [c.treasury,c.income,c.population,c.manpower,c.army])if(!Number.isFinite(n)||n<0)throw Error('Invalid country value');
+ for(const c of Object.values(state.countries)){
+  for(const n of [c.debt,c.bankruptcyCount,c.bankruptcyUntilTick])if(!Number.isFinite(n)||n!<0)throw Error('Invalid financial state');
+  const b=c.economy!;for(const n of Object.values(b))if(!Number.isFinite(n))throw Error('Invalid financial budget');
+  if(b.monthlyIncome!==Math.round((b.taxIncome+b.tradeIncome+b.resourceIncome)*1000)/1000||b.monthlyBalance!==Math.round((b.monthlyIncome-b.armyMaintenance-b.buildingMaintenance-b.interest)*1000)/1000)throw Error('Inconsistent financial budget');
+  if(b.armyMaintenance!==Math.round(c.army/1000*1.25*1000)/1000)throw Error('Inconsistent army upkeep');
+ }
  for(const c of Object.values(state.countries))for(const n of [c.technology,c.stability,c.unrest,c.religiousUnity])if(!Number.isFinite(n)||n!<0||n!>100)throw Error('Invalid capped country value');
  for(const c of Object.values(state.countries))if(!Number.isFinite(c.politicalPower)||c.politicalPower!<0||c.politicalPower!>500)throw Error('Invalid political power');
  if(new Set(state.provinces.map(p=>p.id)).size!==state.provinces.length)throw Error('Duplicate provinces');

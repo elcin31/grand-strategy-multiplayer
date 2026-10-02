@@ -4,6 +4,14 @@ This is a running report, not the final Phase 20 QA acceptance.
 
 Latest gate status (2026-10-02): Phase 8 population passed strict typecheck, 60 JS tests, 3 Python tests, 10,000 ticks, complete dedicated-backend live QA 36969317388 and standalone/offline Android 36968778110 on runtime source 2f67b35. Population/religion screenshots were reviewed and the QA room/memberships removed. The phase-specific scroll/pause regression is verified fixed. Open final-release items below remain unresolved; earlier deployment/gate notes are historical.
 
+Phase 9 budget source is undergoing verification: strict typecheck, 68 JS tests, 3 Python tests and a 100-tick financial-invariant benchmark pass. Native/live/full stress gates remain open. Resource/building income and costs await their actual later systems; economy 2.0/final release is not declared complete.
+
+| Severity | Phase 9 issue | Fix / verification |
+|---|---|---|
+| HIGH | Running armies had no ongoing cost; AI could recruit without considering future upkeep | Actual monthly maintenance, debt/interest/default and a budget/reserve recruitment guard. Ledger/insolvency/regression tests pass; native/live gates pending. |
+| HIGH | Subtracting recruitment costs from fractional treasury could leave floating precision drift | Fixed $1,000 precision arithmetic. Fractional recruitment plus a subsequent authenticated loan is tested; 1,000 fractional loan/repayment cycles preserve net assets. |
+| MEDIUM | Treasury used unreadable units such as $13KM | Million/billion formatting and net monthly balance in the HUD; native visual check pending. |
+
 ## Fixed during renderer work
 
 | Severity | Issue | Fix / verification |
