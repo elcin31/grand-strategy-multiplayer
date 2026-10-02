@@ -56,3 +56,7 @@ The existing full-world reducer stress harness completed 10,000 ticks without tr
 ## Phase 7 gates
 
 Religion source uses authenticated commands, exact payload validation, population-weighted derived unity, neutral monthly mechanics and paid changes with cooldown. Strict typecheck and 55 JS tests pass. Native standalone/emulator and dedicated backend deployment/live checks are pending; no Phase 7 acceptance is claimed. Scenario religion assignments are original design assumptions, not real census data. Full requested final-release gates remain open.
+
+## Phase 7 verification closed; Phase 8 verification open
+
+Religion d69c3ce passed Android release/offline smoke (36914710819), 55 JS tests, all 3 Python tests, dedicated v7/v6 two-player live smoke and a 10,000-tick full-world stress repeat including religion/Unity/unrest/PP guards. Both scoped QA rooms were removed; zero remaining records verified. Population growth source adds safe integer/carry, urban conservation, ownership-derived totals and paused/migration/legacy guards. Phase 8 native and dedicated endpoint gates remain pending. Full world-update acceptance, including economy, military/diplomacy/AI/saves/performance/chaos, remains blocked.

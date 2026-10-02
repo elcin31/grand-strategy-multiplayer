@@ -10,7 +10,7 @@ import urllib.request
 from pathlib import Path
 
 BASE = 'https://dfjsnjxnyjspwugjguhq.supabase.co/functions/v1'
-ROOM_FILE = Path('/tmp/dominion-world-religion-room-id')
+ROOM_FILE = Path('/tmp/dominion-world-population-room-id')
 
 def request(path, body, expected=200):
     req = urllib.request.Request(BASE+'/'+path, data=json.dumps(body, allow_nan=False).encode(), headers={'Content-Type': 'application/json'}, method='POST')
@@ -22,7 +22,7 @@ def request(path, body, expected=200):
     assert status == expected, (path, status, expected)
     return payload
 
-host = request('game-room', {'action': 'create', 'displayName': 'WORLD RELIGION QA'})
+host = request('game-room', {'action': 'create', 'displayName': 'WORLD POPULATION QA'})
 game_id = host['state']['id']
 assert re.fullmatch(r'[0-9a-f-]{36}', game_id)
 ROOM_FILE.write_text(game_id)
@@ -32,7 +32,7 @@ assert len(host['state']['provinces']) == 4386
 assert len(host['state']['cities']) == 7214
 assert len(host['state']['leaders']) == 195
 assert all(c.get('governmentType') and c.get('politicalPower') == 100 for c in host['state']['countries'].values())
-guest = request('game-room', {'action': 'join', 'roomCode': host['state']['roomCode'], 'displayName': 'WORLD RELIGION QA GUEST'})
+guest = request('game-room', {'action': 'join', 'roomCode': host['state']['roomCode'], 'displayName': 'WORLD POPULATION QA GUEST'})
 
 def snapshot(session=host, version=None):
     body = {'action': 'state', 'gameId': game_id, 'playerId': session['playerId'], 'token': session['token']}
@@ -101,6 +101,18 @@ for _ in range(20):
     command(host, {'type': 'ADVANCE_TICK'})
 command(host, {'type': 'SET_SPEED', 'playerId': host['playerId'], 'speed': 0})
 religion_before = snapshot()['state']
+assert religion_before['countries']['germany']['population'] > after['countries']['germany']['population']
+assert sum(p['population'] for p in religion_before['provinces']) > sum(p['population'] for p in after['provinces'])
+city_totals = {}
+for city in religion_before['cities']:
+    city_totals[city['provinceId']] = city_totals.get(city['provinceId'], 0) + city['population']
+for province in religion_before['provinces']:
+    assert city_totals.get(province['id'], 0) <= province['population']
+for country in religion_before['countries'].values():
+    owned = [p for p in religion_before['provinces'] if p['ownerId'] == country['id']]
+    assert country['population'] == sum(p['population'] for p in owned)
+    assert country['monthlyPopulationGrowth'] == sum(p['monthlyPopulationGrowth'] for p in owned)
+print('PASS: actual monthly provincial/city growth, integer counts, urban conservation and exact country totals', flush=True)
 command(host, religion_command)
 command(host, {**religion_command, 'religionId': 'secular'}, 400)
 religion_after = snapshot()['state']; nation = religion_after['countries']['germany']; old = religion_before['countries']['germany']

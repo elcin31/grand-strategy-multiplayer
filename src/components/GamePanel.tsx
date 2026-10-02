@@ -25,6 +25,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
   const ownArmies = selected ? state.armies.filter((army) => army.provinceId === selected.id && army.ownerId === countryId).sort((a, b) => b.troops - a.troops) : [];
   const primaryArmy = ownArmies[0] ?? null;
   const neighbors = selected ? selected.neighbors.map((id) => state.provinces.find((province) => province.id === id)).filter(Boolean) : [];
+  const selectedCities = selected ? (state.cities ?? []).filter(c => c.provinceId === selected.id).sort((a,b) => Number(b.isCapital)-Number(a.isCapital) || b.population-a.population).slice(0,3) : [];
   const isOwnProvince = selected?.ownerId === countryId;
   const cooldown = Math.max(0, (nation.governmentCooldownUntilTick ?? 0) - state.tick);
   const religionCooldown = Math.max(0, (nation.religionCooldownUntilTick ?? 0) - state.tick);
@@ -48,6 +49,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
           <Metric label="Армия" value={compact(nation.army)} />
           <Metric label="Manpower" value={compact(nation.manpower)} />
         </View>
+        {state.dataset && <Text style={styles.hint}>Население: {compact(nation.population)} · рост за месяц +{compact(nation.monthlyPopulationGrowth ?? 0)}</Text>}
         <View style={styles.speedRow}>
           <Text style={styles.speedLabel}>{me?.isHost ? 'СКОРОСТЬ' : `СКОРОСТЬ · ${state.speed}×`}</Text>
           {me?.isHost && [0, 1, 2, 3, 4].map((speed) => (
@@ -115,6 +117,9 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
               </View>
               <View style={[styles.ownerDot, { backgroundColor: countryFor(state, selected.ownerId).color }]} />
             </View>
+
+            <Text style={styles.hint}>Население провинции: {compact(selected.population)} · рост +{compact(selected.monthlyPopulationGrowth ?? 0)}/мес.</Text>
+            {selectedCities.map(city => <Text key={city.id} style={styles.owner}>{city.isCapital ? '★ ' : ''}{city.name} · {compact(city.population)}</Text>)}
 
             {isOwnProvince && (
               <View style={styles.recruitRow}>

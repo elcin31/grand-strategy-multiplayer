@@ -1,3 +1,4 @@
+import { initializePopulation, monthlyPopulationGrowth, recalcPopulationTotals } from './populationSystem.ts';
 import { initializeReligions, recalcReligiousUnity, monthlyReligionEffects, RELIGION_CHANGE_COST, RELIGION_STABILITY_COST, RELIGION_COOLDOWN_TICKS } from './religionSystem.ts';
 import { assertGameCommand } from './commandValidation.ts';
 import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, POLITICAL_POWER_MONTHLY, governmentIncome, governmentModifiers, initializeGovernments } from './governmentSystem.ts';
@@ -107,6 +108,7 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
     });
   }
   recalcCountryStats(state);
+  recalcPopulationTotals(state);
   recalcReligiousUnity(state);
 }
 
@@ -157,6 +159,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
   assertGameCommand(command, Object.keys(state.countries));
   const next = clone(state);
   initializeGovernments(next);
+  initializePopulation(next);
   initializeReligions(next);
   switch (command.type) {
     case 'SELECT_COUNTRY': {
@@ -249,6 +252,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       next.tick += 1;
       next.month += 1;
       if (next.month > 12) { next.month = 1; next.year += 1; }
+      monthlyPopulationGrowth(next);
       recalcCountryStats(next);
       for (const id of countryIds(next)) {
         const nation = countryFor(next, id);

@@ -75,7 +75,11 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
   const troops = useMemo(() => troopsByProvince(state), [state.armies]);
   const provinceColors = useMemo(() => buildProvinceColors(state, mode, troops), [state.countries, state.provinces, mode, troops]);
   const provinces = useMemo(() => new Map(state.provinces.map(p => [p.id, p])), [state.provinces]);
-  const cities = useMemo(() => visibleCities(mapCities, bounds, snapshot.zoom, preset), [mapCities, bounds, snapshot.zoom, preset]);
+  const currentMapCities = useMemo(() => {
+    const populations = new Map((state.cities ?? []).map(c => [c.id, c.population]));
+    return mapCities.map(c => ({ ...c, population: populations.get(c.id) ?? c.population }));
+  }, [mapCities, state.cities]);
+  const cities = useMemo(() => visibleCities(currentMapCities, bounds, snapshot.zoom, preset), [currentMapCities, bounds, snapshot.zoom, preset]);
   const font = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 11, fontWeight: '600' }), []);
   const counterFont = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 10, fontWeight: 'bold' }), []);
   const nationFont = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 13, fontWeight: 'bold' }), []);
@@ -86,12 +90,12 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
   const cityLabels = useMemo(() => cityLabelPlacements(cities, snapshot.zoom, TILT, name => font.measureText(name).width, armyLabelBlockers, visibleBounds(snapshot, viewport, 0)), [cities, snapshot, viewport, font, armyLabelBlockers]);
   const selectAt = useCallback((px: number, py: number, cx: number, cy: number, z: number, long: boolean) => {
     const world = { x: (px - viewport.width / 2) / z + cx, y: (py - viewport.height / 2) / (z * TILT) + cy };
-    const cityHit = visibleCities(mapCities, visibleBounds({ x: cx, y: cy, zoom: z }, viewport, 0), z, preset).find(c => Math.hypot((c.point.x - world.x) * z, (c.point.y - world.y) * z * TILT) < 12);
+    const cityHit = visibleCities(currentMapCities, visibleBounds({ x: cx, y: cy, zoom: z }, viewport, 0), z, preset).find(c => Math.hypot((c.point.x - world.x) * z, (c.point.y - world.y) * z * TILT) < 12);
     const nearby = z >= 1.5 ? state.armies.map(a => ({ a, g: provinceGeometry.get(a.provinceId) })).find(({ g }) => g && Math.abs((g.anchor.x - world.x) * z) < 25 && Math.abs((g.anchor.y - world.y) * z * TILT) < 20) : null;
     const hit = nearby?.g ?? (cityHit ? provinceGeometry.get(cityHit.provinceId) : null) ?? spatialIndex.hit(world);
     const province = hit?.provinceId ? provinces.get(hit.provinceId) : null;
     if (province) (long ? onLongPressProvince ?? onSelectProvince : onSelectProvince)(province);
-  }, [viewport, provinces, state.armies, onSelectProvince, onLongPressProvince, preset, scene]);
+  }, [viewport, provinces, state.armies, onSelectProvince, onLongPressProvince, preset, scene, currentMapCities]);
 
   const gestures = useMemo(() => {
     const pan = Gesture.Pan().minDistance(5).maxPointers(1).onStart(() => { cancelAnimation(x); cancelAnimation(y); startX.value = x.value; startY.value = y.value; })

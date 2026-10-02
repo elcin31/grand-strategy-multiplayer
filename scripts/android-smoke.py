@@ -113,8 +113,13 @@ assert int(re.search(r'(\d+) PP',header).group(1)) == power_before - 80, 'Govern
 assert 'Следующая смена через 24 мес.' in texts, 'Government cooldown missing'
 # Accumulate political power through the actual running campaign, then pause before payment assertions.
 for _ in range(5): adb('shell','input','swipe','1080','220','1080','570','350')
+population_root = hierarchy('population-before')
+population_before = next(n.get('text') for n in population_root.iter('node') if n.get('text','').startswith('Население: ')).split(' · ')[0]
 click_scrolling('4×'); time.sleep(16)
 click_scrolling('Ⅱ')
+population_root = hierarchy('population-after'); screenshot('population-after')
+population_after = next(n.get('text') for n in population_root.iter('node') if n.get('text','').startswith('Население: ')).split(' · ')[0]
+assert population_after != population_before, 'Actual campaign population did not grow'
 click_scrolling('Правительство ▴')
 click_scrolling('Религия ▾')
 root = hierarchy('religion-before')
@@ -168,4 +173,4 @@ assert any(n.get('text')=='DOMINION' for n in root.iter('node')), 'Restart faile
 logs = adb('logcat','-d'); (OUT/'logcat.txt').write_text(logs)
 assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs, 'Native crash detected'
 assert 'Unable to load script' not in logs, 'Standalone JS load failed'
-print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, government/religion cost/cooldown and Unity, 4 presets, 8 modes, camera inputs, 4 layouts, restart, no fatal logs')
+print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, population growth, government/religion cost/cooldown and Unity, 4 presets, 8 modes, camera inputs, 4 layouts, restart, no fatal logs')

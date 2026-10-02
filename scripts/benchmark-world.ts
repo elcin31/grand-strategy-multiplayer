@@ -19,6 +19,11 @@ for(let i=0;i<ticks;i++){
  for(const c of Object.values(state.countries))if(!Number.isFinite(c.politicalPower)||c.politicalPower!<0||c.politicalPower!>500)throw Error('Invalid political power');
  if(new Set(state.provinces.map(p=>p.id)).size!==state.provinces.length)throw Error('Duplicate provinces');
  for(const p of state.provinces)if(!Object.hasOwn(RELIGIONS,p.religion!)||!Number.isFinite(p.unrest)||p.unrest!<0||p.unrest!>100||!state.countries[p.ownerId])throw Error('Invalid religious province');
+ const provinceById=new Map(state.provinces.map(p=>[p.id,p]));const urban=new Map<string,number>();const population=new Map<string,number>();const births=new Map<string,number>();
+ for(const p of state.provinces){if(!Number.isSafeInteger(p.population)||p.population<0||!Number.isFinite(p.populationGrowthCarry)||p.populationGrowthCarry!<0||p.populationGrowthCarry!>=1)throw Error('Invalid province population');population.set(p.ownerId,(population.get(p.ownerId)??0)+p.population);births.set(p.ownerId,(births.get(p.ownerId)??0)+p.monthlyPopulationGrowth!);}
+ for(const c of state.cities!){if(!Number.isSafeInteger(c.population)||c.population<0||!Number.isFinite(c.populationGrowthCarry)||c.populationGrowthCarry!<0||c.populationGrowthCarry!>=1||!provinceById.has(c.provinceId))throw Error('Invalid city population');urban.set(c.provinceId,(urban.get(c.provinceId)??0)+c.population);}
+ for(const [id,count]of urban)if(count>provinceById.get(id)!.population)throw Error('Urban population exceeds province');
+ for(const c of Object.values(state.countries))if(c.population!==(population.get(c.id)??0)||c.monthlyPopulationGrowth!==(births.get(c.id)??0))throw Error('Inconsistent country population');
  if(new Set(state.armies.map(a=>a.id)).size!==state.armies.length||state.armies.some(a=>!Number.isSafeInteger(a.troops)||a.troops<=0))throw Error('Invalid armies');
  if(state.battleLog.length>20)throw Error('Unbounded battle history');
 }

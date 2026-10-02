@@ -11,6 +11,7 @@ export interface Country {
   flag?: string;
   capitalCityId?: string;
   rulerId?: string;
+  monthlyPopulationGrowth?: number;
   region?: string;
   religion?: string;
   religiousUnity?: number;
@@ -31,6 +32,8 @@ export interface Country {
 }
 
 export interface Province {
+  populationGrowthCarry?: number;
+  monthlyPopulationGrowth?: number;
   religion?: string;
   unrest?: number;
   id: string;
@@ -78,6 +81,7 @@ export interface BattleEvent {
 }
 
 export interface City {
+  populationGrowthCarry?: number;
   id: string;
   name: string;
   countryId: CountryId;
