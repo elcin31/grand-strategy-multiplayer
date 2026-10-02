@@ -53,7 +53,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         <View style={styles.speedRow}>
           <Text style={styles.speedLabel}>{me?.isHost ? 'СКОРОСТЬ' : `СКОРОСТЬ · ${state.speed}×`}</Text>
           {me?.isHost && [0, 1, 2, 3, 4].map((speed) => (
-            <Pressable key={speed} style={[styles.speedButton, state.speed === speed && styles.speedActive]} onPress={() => onCommand({ type: 'SET_SPEED', playerId, speed: speed as 0 | 1 | 2 | 3 | 4 })}>
+            <Pressable key={speed} accessibilityRole="button" accessibilityLabel={speed === 0 ? 'Пауза' : `Скорость ${speed}×`} accessibilityState={{ selected: state.speed === speed }} style={[styles.speedButton, state.speed === speed && styles.speedActive]} onPress={() => onCommand({ type: 'SET_SPEED', playerId, speed: speed as 0 | 1 | 2 | 3 | 4 })}>
               <Text style={[styles.speedText, state.speed === speed && styles.speedTextActive]}>{speed === 0 ? 'Ⅱ' : `${speed}×`}</Text>
             </Pressable>
           ))}

@@ -35,15 +35,40 @@ def click_text(root, text):
     assert len(nums)==4
     adb('shell','input','tap',str((nums[0]+nums[2])//2),str((nums[1]+nums[3])//2))
 def click_scrolling(text):
-    for attempt in range(8):
+    for attempt in range(14):
         root = hierarchy('flow-'+str(attempt))
-        node = next((n for n in root.iter('node') if n.get('text') == text), None)
+        node = next((n for n in root.iter('node') if n.get('text') == text or n.get('content-desc') == text), None)
         if node is not None:
             nums = [int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
             if len(nums) == 4 and nums[2] > nums[0] and 70 <= nums[1] < nums[3] <= 660:
                 click_text(root,text); time.sleep(1); return
-        adb('shell','input','swipe','1080','570','1080','180','450')
+        # Collapsing a policy card can leave its next control ABOVE the viewport.
+        # Start a missing-control search at the top, then advance in small steps.
+        if attempt == 0:
+            for _ in range(5): adb('shell','input','swipe','1080','220','1080','570','350')
+        else:
+            adb('shell','input','swipe','1080','530','1080','320','350')
     raise AssertionError('Missing usable control: '+text)
+def set_speed(speed):
+    label = 'Пауза' if speed == 0 else f'Скорость {speed}×'
+    for attempt in range(4):
+        click_scrolling(label)
+        root = hierarchy(f'speed-{speed}-{attempt}')
+        if any(n.get('content-desc') == label and n.get('selected') == 'true' for n in root.iter('node')):
+            return root
+    raise AssertionError('Speed command did not become active: '+label)
+def advance_campaign_months(months):
+    root = set_speed(4)
+    def tick(tree):
+        text = next(n.get('text') for n in tree.iter('node') if n.get('text','').startswith('Ход '))
+        return int(re.match(r'Ход (\d+)', text).group(1))
+    target = tick(root) + months
+    deadline = time.monotonic() + 180
+    while time.monotonic() < deadline:
+        time.sleep(2)
+        if tick(hierarchy('population-growing')) >= target:
+            set_speed(0); return
+    raise AssertionError('Campaign clock did not advance enough months')
 def province_army_text(root):
     texts = [n.get('text','') for n in root.iter('node') if n.get('text')]
     assert not any('Действие отклонено' in text for text in texts), 'Recruitment was rejected: '+str(texts)
@@ -83,7 +108,7 @@ click_scrolling('Я ГОТОВ')
 click_scrolling('НАЧАТЬ ИГРУ')
 root = hierarchy('02-running')
 click_text(root,'УПРАВЛЕНИЕ')
-click_scrolling('Ⅱ')
+set_speed(0)
 root = hierarchy('02-paused'); click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
 # Country preview centers the camera on Berlin; city/counter hit testing selects its real province.
 adb('shell','input','tap','640','370'); time.sleep(1)
@@ -115,8 +140,7 @@ assert 'Следующая смена через 24 мес.' in texts, 'Governme
 for _ in range(5): adb('shell','input','swipe','1080','220','1080','570','350')
 population_root = hierarchy('population-before')
 population_before = next(n.get('text') for n in population_root.iter('node') if n.get('text','').startswith('Население: ')).split(' · ')[0]
-click_scrolling('4×'); time.sleep(16)
-click_scrolling('Ⅱ')
+advance_campaign_months(20)
 population_root = hierarchy('population-after'); screenshot('population-after')
 population_after = next(n.get('text') for n in population_root.iter('node') if n.get('text','').startswith('Население: ')).split(' · ')[0]
 assert population_after != population_before, 'Actual campaign population did not grow'
