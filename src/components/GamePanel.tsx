@@ -1,3 +1,4 @@
+import { BUILDINGS, BUILDING_TYPES, buildingQuote } from '../../supabase/functions/_shared/buildingSystem';
 import { RESOURCES, provinceProduction, resourceReport } from '../../supabase/functions/_shared/resourceSystem';
 import { useState } from 'react';
 import { MIN_TAX_RATE, MAX_TAX_RATE, money } from '../../supabase/functions/_shared/economySystem';
@@ -30,6 +31,8 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
   const primaryArmy = ownArmies[0] ?? null;
   const neighbors = selected ? selected.neighbors.map((id) => state.provinces.find((province) => province.id === id)).filter(Boolean) : [];
   const selectedCities = selected ? (state.cities ?? []).filter(c => c.provinceId === selected.id).sort((a,b) => Number(b.isCapital)-Number(a.isCapital) || b.population-a.population).slice(0,3) : [];
+  const selectedConstruction = selected ? state.constructions?.find(item => item.provinceId === selected.id) ?? null : null;
+  const completedBuildings = selected ? BUILDING_TYPES.filter(type => (selected.buildings?.[type] ?? 0) > 0) : [];
   const isOwnProvince = selected?.ownerId === countryId;
   const cooldown = Math.max(0, (nation.governmentCooldownUntilTick ?? 0) - state.tick);
   const religionCooldown = Math.max(0, (nation.religionCooldownUntilTick ?? 0) - state.tick);
@@ -83,6 +86,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
           <Text style={styles.hint}>Игровые месторождения. Выпуск автоматически продаётся по фиксированным игровым ценам; это не реальные запасы или рыночные котировки.</Text>
         </>}
         <Text style={styles.hint}>Содержание армии: {currency(budget.armyMaintenance)}</Text>
+        <Text style={styles.hint}>Содержание зданий: {currency(budget.buildingMaintenance)}</Text>
         <Text style={styles.hint}>Проценты: {currency(budget.interest)} · 0.5% долга / мес.</Text>
         <Text style={styles.hint}>Баланс: {currency(budget.monthlyBalance)} / мес.</Text>
         <View style={styles.recruitRow}>
@@ -145,7 +149,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
       <View style={styles.card}>
         <Text style={styles.eyebrow}>КОМАНДОВАНИЕ</Text>
         {!selected ? (
-          <Text style={styles.hint}>Нажми на провинцию на карте. Там будут армия, набор и доступные направления движения.</Text>
+          <Text style={styles.hint}>Нажми на провинцию на карте. Там будут армия, строительство, набор и доступные направления движения.</Text>
         ) : (
           <>
             <View style={styles.provinceTitleRow}>
@@ -160,6 +164,34 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
             <Text style={styles.hint}>Население провинции: {compact(selected.population)} · рост +{compact(selected.monthlyPopulationGrowth ?? 0)}/мес.</Text>
             {selected.resourceDeposit && production && <Text style={styles.hint}>{RESOURCES[selected.resourceDeposit.type].name} · богатство {selected.resourceDeposit.richness}/100 · выпуск {production.units.toFixed(1)} ед./мес. · {currency(production.revenue)}/мес.</Text>}
             {selectedCities.map(city => <Text key={city.id} style={styles.owner}>{city.isCapital ? '★ ' : ''}{city.name} · {compact(city.population)}</Text>)}
+
+            {state.dataset && <>
+              <Text style={styles.sectionTitle}>ЗДАНИЯ</Text>
+              {completedBuildings.length === 0 ? <Text style={styles.muted}>Построенных зданий нет</Text> : <View style={styles.buildingList}>{completedBuildings.map(type => <View key={type} style={styles.buildingPill}><Text style={styles.buildingPillText}>{BUILDINGS[type].name} · ур. {selected.buildings?.[type]}</Text></View>)}</View>}
+              {selectedConstruction && <Text style={styles.hint}>Строится: {BUILDINGS[selectedConstruction.buildingType].name} ур. {selectedConstruction.targetLevel} · осталось {Math.max(0, selectedConstruction.completeTick-state.tick)} мес.</Text>}
+              {isOwnProvince && <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.routes}>
+                {BUILDING_TYPES.map(type => {
+                  const definition = BUILDINGS[type];
+                  const currentLevel = selected.buildings?.[type] ?? 0;
+                  const quote = currentLevel < definition.maxLevel ? buildingQuote(selected, type) : null;
+                  const disabled = !economicActionsEnabled || Boolean(selectedConstruction) || !quote || nation.treasury < quote.cost;
+                  return <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel={`Построить ${definition.name}`}
+                    accessibilityState={{ disabled }}
+                    key={type}
+                    disabled={disabled}
+                    style={[styles.buildOption, disabled && styles.disabled]}
+                    onPress={() => onCommand({ type: 'BUILD', playerId, provinceId: selected.id, buildingType: type })}
+                  >
+                    <Text style={styles.govName}>{definition.name}</Text>
+                    <Text style={styles.govDetails}>Уровень {currentLevel}/{definition.maxLevel}</Text>
+                    <Text style={styles.govDetails}>Содержание {currency(definition.maintenance)}/мес.</Text>
+                    <Text style={styles.routeAction}>{quote ? `${currency(quote.cost)} · ${quote.buildTime} мес.` : 'МАКСИМУМ'}</Text>
+                  </Pressable>;
+                })}
+              </ScrollView>}
+            </>}
 
             {isOwnProvince && (
               <View style={styles.recruitRow}>
@@ -263,6 +295,10 @@ const styles = StyleSheet.create({
   secondaryText: { color: '#C2D0E6', fontWeight: '900', fontSize: 11 },
   sectionTitle: { color: '#687991', fontSize: 9, fontWeight: '900', letterSpacing: 0.8, marginTop: 2 },
   muted: { color: '#65758B', fontSize: 12 },
+  buildingList: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  buildingPill: { backgroundColor: '#142237', borderRadius: 10, paddingHorizontal: 9, paddingVertical: 6, borderWidth: 1, borderColor: '#263650' },
+  buildingPillText: { color: '#B9C9E1', fontSize: 10, fontWeight: '800' },
+  buildOption: { width: 150, backgroundColor: '#152136', borderRadius: 13, padding: 11, borderWidth: 1, borderColor: '#263650', gap: 4 },
   armyRow: { backgroundColor: '#0C1422', borderRadius: 12, padding: 11, flexDirection: 'row', justifyContent: 'space-between' },
   armyOwner: { color: '#A9BAD2', fontSize: 11, fontWeight: '900' },
   armyTroops: { color: '#F7F9FC', fontWeight: '900' },
