@@ -1,7 +1,7 @@
 name: World backend QA
 on:
   push:
-    branches: [world-update]
+    branches: [main, world-update]
     paths:
       - '.github/workflows/backend-world-qa.yml'
       - 'scripts/backend-world-smoke.py'
