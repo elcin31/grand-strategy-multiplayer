@@ -23,13 +23,19 @@ function base64ToBytes(value: string): Uint8Array {
   return bytes;
 }
 
+function ownedBuffer(bytes: Uint8Array): ArrayBuffer {
+  const buffer = new ArrayBuffer(bytes.byteLength);
+  new Uint8Array(buffer).set(bytes);
+  return buffer;
+}
+
 async function gzip(text: string): Promise<Uint8Array> {
   const stream = new Blob([text]).stream().pipeThrough(new CompressionStream('gzip'));
   return new Uint8Array(await new Response(stream).arrayBuffer());
 }
 
 async function gunzip(bytes: Uint8Array): Promise<string> {
-  const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+  const stream = new Blob([ownedBuffer(bytes)]).stream().pipeThrough(new DecompressionStream('gzip'));
   return new Response(stream).text();
 }
 
