@@ -90,3 +90,5 @@ The dedicated World backend QA workflow 36969317388 subsequently passed the comp
 - HIGH: previous world-update work existed only on its unmerged branch; main retained the prototype. Resolved by preserving the exact history via fast-forward to 392ab36.
 - MEDIUM: changing religion lowered stability but returned a stale commerce/credit budget until another command. Fixed by recalculating derived economy after policy payment; immutable reducer regression added.
 - Phase 9 10,000-tick gate is verified successful in CI 36985831373. Final release blockers and physical-device gates remain open; see RECOVERY_AUDIT.md for current phase status instead of historical notes above.
+
+Phase 10 verification remains open: resource source/local regressions pass, but final acceptance requires the new standalone Android smoke, dedicated endpoint smoke and long stress result. No final-release APK is claimed.

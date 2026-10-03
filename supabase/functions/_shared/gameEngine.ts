@@ -1,3 +1,4 @@
+import { initializeResources } from './resourceSystem.ts';
 import { initializePopulation, monthlyPopulationGrowth, recalcPopulationTotals } from './populationSystem.ts';
 import { initializeEconomy, recalcEconomy, monthlyEconomy, borrow, repay, refreshArmyBudget, money } from './economySystem.ts';
 import { initializeReligions, recalcReligiousUnity, monthlyReligionEffects, RELIGION_CHANGE_COST, RELIGION_STABILITY_COST, RELIGION_COOLDOWN_TICKS } from './religionSystem.ts';
@@ -166,6 +167,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
   initializeGovernments(next);
   initializePopulation(next);
   initializeReligions(next);
+  initializeResources(next);
   initializeEconomy(next);
   switch (command.type) {
     case 'SET_TAX_RATE':

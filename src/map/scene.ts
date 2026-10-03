@@ -1,3 +1,4 @@
+import { RESOURCES } from '../../supabase/functions/_shared/resourceSystem';
 import { countryFor, type GameState } from '../types/game';
 import geography from './geography.json';
 import { Bounds, contains, MapFeature, Point, SpatialIndex } from './geometry';
@@ -42,6 +43,7 @@ export function troopsByProvince(state: GameState): Map<string, number> {
 }
 /** Linear preprocessing, then O(1) lookup. Never scan the full world per visible polygon. */
 export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map<string, number>): Map<string, string> {
+  if (mode === 'Resources') return new Map(state.provinces.map(p => [p.id, p.resourceDeposit ? RESOURCES[p.resourceDeposit.type].color : '#657080']));
   if (mode === 'Religion') return new Map(state.provinces.map(p => [p.id, RELIGIONS[p.religion ?? 'secular']?.color ?? RELIGIONS.secular!.color]));
   if (mode === 'Government') {
     const palette = ['#718F8A', '#6F83A0', '#8887A8', '#A88E63', '#9B705E', '#956862', '#778D74', '#8C7185', '#688D97', '#8E875E'];

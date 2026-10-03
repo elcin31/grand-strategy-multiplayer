@@ -7,5 +7,5 @@ export const GRAPHICS = {
 } as const;
 export type MapMode = 'Political' | 'Diplomatic' | 'Relations' | 'Economy' | 'Population' | 'Religion' | 'Government' | 'Military' | 'Resources' | 'Terrain' | 'Stability' | 'Development';
 // Only modes backed by the current server schema are selectable in this phase.
-export const AVAILABLE_MODES: MapMode[] = ['Political', 'Government', 'Religion', 'Economy', 'Population', 'Military', 'Terrain', 'Stability'];
+export const AVAILABLE_MODES: MapMode[] = ['Political', 'Government', 'Religion', 'Economy', 'Population', 'Military', 'Resources', 'Terrain', 'Stability'];
 export const MODE_LABELS: Record<MapMode, string> = { Political: 'Политическая', Diplomatic: 'Дипломатия', Relations: 'Отношения', Economy: 'Экономика', Population: 'Население', Religion: 'Религия', Government: 'Правительство', Military: 'Армии', Resources: 'Ресурсы', Terrain: 'Рельеф', Stability: 'Стабильность', Development: 'Развитие' };

@@ -1,3 +1,4 @@
+import { assertDeposit } from '../supabase/functions/_shared/resourceSystem';
 import { RELIGIONS } from '../supabase/functions/_shared/religionSystem';
 import { performance } from 'node:perf_hooks';
 import { createWorldState } from '../supabase/functions/_shared/worldState';
@@ -23,6 +24,7 @@ for(let i=0;i<ticks;i++){
  }
  for(const c of Object.values(state.countries))for(const n of [c.technology,c.stability,c.unrest,c.religiousUnity])if(!Number.isFinite(n)||n!<0||n!>100)throw Error('Invalid capped country value');
  for(const c of Object.values(state.countries))if(!Number.isFinite(c.politicalPower)||c.politicalPower!<0||c.politicalPower!>500)throw Error('Invalid political power');
+ for(const p of state.provinces)assertDeposit(p.resourceDeposit);
  if(new Set(state.provinces.map(p=>p.id)).size!==state.provinces.length)throw Error('Duplicate provinces');
  for(const p of state.provinces)if(!Object.hasOwn(RELIGIONS,p.religion!)||!Number.isFinite(p.unrest)||p.unrest!<0||p.unrest!>100||!state.countries[p.ownerId])throw Error('Invalid religious province');
  const provinceById=new Map(state.provinces.map(p=>[p.id,p]));const urban=new Map<string,number>();const population=new Map<string,number>();const births=new Map<string,number>();

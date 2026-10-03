@@ -1,3 +1,4 @@
+import { RESOURCES, provinceProduction, resourceReport } from '../../supabase/functions/_shared/resourceSystem';
 import { useState } from 'react';
 import { MIN_TAX_RATE, MAX_TAX_RATE, money } from '../../supabase/functions/_shared/economySystem';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -35,6 +36,8 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
   const politicalPower = nation.politicalPower ?? 0;
   const signed = (value: number) => `${value >= 0 ? '+' : ''}${value}`;
   const budget = nation.economy;
+  const resources = economyOpen && state.dataset ? resourceReport(state, countryId) : [];
+  const production = selected?.resourceDeposit ? provinceProduction(selected, countryFor(state, selected.ownerId)) : null;
   const availableCredit = budget ? money(Math.max(0, budget.creditLimit - (nation.debt ?? 0))) : 0;
   const loanQuote = money(Math.min(100, availableCredit));
   const repayQuote = money(Math.min(100, nation.debt ?? 0, nation.treasury));
@@ -74,6 +77,11 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         <Text style={styles.eyebrow}>МЕСЯЧНЫЙ БЮДЖЕТ</Text>
         <Text style={styles.hint}>Налоги: {nation.taxRate}% · {currency(budget.taxIncome)}</Text>
         <Text style={styles.hint}>Торговля: {currency(budget.tradeIncome)}</Text>
+        {state.provinces.some(p => p.resourceDeposit) && <>
+          <Text style={styles.hint}>Ресурсы: {currency(budget.resourceIncome)} / мес.</Text>
+          {resources.filter(r => r.units > 0).map(r => <Text key={r.type} style={styles.owner}>{RESOURCES[r.type].name}: {r.units.toFixed(1)} ед. · {currency(r.revenue)}/мес.</Text>)}
+          <Text style={styles.hint}>Игровые месторождения. Выпуск автоматически продаётся по фиксированным игровым ценам; это не реальные запасы или рыночные котировки.</Text>
+        </>}
         <Text style={styles.hint}>Содержание армии: {currency(budget.armyMaintenance)}</Text>
         <Text style={styles.hint}>Проценты: {currency(budget.interest)} · 0.5% долга / мес.</Text>
         <Text style={styles.hint}>Баланс: {currency(budget.monthlyBalance)} / мес.</Text>
@@ -150,6 +158,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
             </View>
 
             <Text style={styles.hint}>Население провинции: {compact(selected.population)} · рост +{compact(selected.monthlyPopulationGrowth ?? 0)}/мес.</Text>
+            {selected.resourceDeposit && production && <Text style={styles.hint}>{RESOURCES[selected.resourceDeposit.type].name} · богатство {selected.resourceDeposit.richness}/100 · выпуск {production.units.toFixed(1)} ед./мес. · {currency(production.revenue)}/мес.</Text>}
             {selectedCities.map(city => <Text key={city.id} style={styles.owner}>{city.isCapital ? '★ ' : ''}{city.name} · {compact(city.population)}</Text>)}
 
             {isOwnProvince && (

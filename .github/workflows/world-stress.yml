@@ -1,7 +1,7 @@
 name: Full world stress
 on:
   push:
-    branches: [world-update]
+    branches: [main, world-update]
     paths:
       - '.github/workflows/world-stress.yml'
       - 'scripts/benchmark-world.ts'

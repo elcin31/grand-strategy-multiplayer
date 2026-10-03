@@ -1,3 +1,4 @@
+import type { ResourceDeposit } from './resourceSystem.ts';
 export type CountryId = string;
 export type GameSpeed = 0 | 1 | 2 | 3 | 4;
 export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' | 'Semi-Presidential Republic' | 'Constitutional Monarchy' | 'Absolute Monarchy' | 'Military Junta' | 'Theocracy' | 'One-Party State' | 'Federation' | 'Tribal Government';
@@ -50,6 +51,7 @@ export interface EconomyBudget {
 }
 
 export interface Province {
+  resourceDeposit?: ResourceDeposit;
   populationGrowthCarry?: number;
   monthlyPopulationGrowth?: number;
   religion?: string;

@@ -162,3 +162,12 @@ unity = sum(p['population'] for p in owned if p['religion'] == nation['religion'
 assert abs(nation['religiousUnity'] - unity) < 1e-8
 assert snapshot(guest)['state'] == religion_after
 print('PASS: religion authentication/payload/payment/cooldown, unchanged provincial faiths, population-weighted Unity, unrest and guest sync', flush=True)
+
+# Resource amounts come from the same authenticated server snapshot as the budget.
+resource_types = {'food','iron','coal','oil','gas','gold','copper','uranium','timber','rare_materials'}
+assert {p['resourceDeposit']['type'] for p in religion_after['provinces']} == resource_types
+for p in religion_after['provinces']:
+    assert 1 <= p['resourceDeposit']['richness'] <= 100
+assert religion_after['countries']['germany']['economy']['resourceIncome'] > 0
+assert all(p['resourceDeposit'] == q['resourceDeposit'] for p,q in zip(religion_before['provinces'],religion_after['provinces']))
+print('PASS: all resource types, bounded deposits, real resource income and immutable deposits across policy change', flush=True)

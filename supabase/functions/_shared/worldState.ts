@@ -1,3 +1,4 @@
+import { initializeResources } from './resourceSystem.ts';
 import { countryDefinitions, provinceDefinitions, cityDefinitions } from './worldDefinitions.ts';
 import type { GameState, Country } from './gameTypes.ts';
 import { generateLeader } from './leaderGeneration.ts';
@@ -39,6 +40,7 @@ export function createWorldState(gameId: string, roomCode: string, playerId: str
   const state: GameState = { dataset: 'modern-world-v1', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, leaders, armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };
   initializePopulation(state);
   initializeReligions(state);
+  initializeResources(state);
   initializeEconomy(state);
   return state;
 }

@@ -16,7 +16,7 @@ test('monthly income pays substantial actual army upkeep and commerce is derived
   const state=world(), c=state.countries.germany!, budget=structuredClone(c.economy!), cash=c.treasury;
   assert.equal(budget.armyMaintenance,c.army/1000*1.25);
   assert.ok(budget.armyMaintenance>0 && budget.tradeIncome>0);
-  assert.equal(budget.monthlyBalance,money(budget.taxIncome+budget.tradeIncome-budget.armyMaintenance));
+  assert.equal(budget.monthlyBalance,money(budget.taxIncome+budget.tradeIncome+budget.resourceIncome-budget.armyMaintenance));
   monthlyEconomy(state); assert.equal(c.treasury,money(cash+budget.monthlyBalance)); assert.equal(c.debt,0);
   const province=state.provinces.find(p=>p.ownerId==='germany')!, old=c.economy!.tradeIncome;
   province.development=100; recalcEconomy(state); assert.ok(c.economy!.tradeIncome>=old);

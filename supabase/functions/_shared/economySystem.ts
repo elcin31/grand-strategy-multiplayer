@@ -1,3 +1,4 @@
+import { provinceProduction } from './resourceSystem.ts';
 import type { Country, GameState } from './gameTypes.ts';
 import { governmentIncome } from './governmentSystem.ts';
 
@@ -28,10 +29,12 @@ export function assertTaxRate(value: unknown): asserts value is number {
 /** Derived from current owners/armies every time; client budget fields are never accepted. */
 export function recalcEconomy(state: GameState): void {
   if (!state.dataset) return;
+  const resources = new Map<string, number>();
   const base = new Map<string, number>(), development = new Map<string, number>(), population = new Map<string, number>(), troops = new Map<string, number>();
   for (const p of state.provinces) {
     if (!Object.hasOwn(state.countries, p.ownerId)) throw new Error('Unknown economic province owner');
     validMoney(p.income);
+    resources.set(p.ownerId, money((resources.get(p.ownerId) ?? 0) + provinceProduction(p, state.countries[p.ownerId]!).revenue));
     base.set(p.ownerId, money((base.get(p.ownerId) ?? 0) + p.income));
     development.set(p.ownerId, (development.get(p.ownerId) ?? 0) + p.population * (p.development ?? 40));
     population.set(p.ownerId, (population.get(p.ownerId) ?? 0) + p.population);
@@ -48,9 +51,9 @@ export function recalcEconomy(state: GameState): void {
     const people = population.get(c.id) ?? 0;
     const meanDevelopment = people > 0 ? (development.get(c.id) ?? 0) / people : 0;
     // Original commerce model: local production/development and stable institutions.
-    // Commodity resources and actual buildings are introduced in their later phases.
+    // Building maintenance is added when construction is implemented.
     const tradeIncome = money(raw * .1 * meanDevelopment / 100 * (.5 + c.stability / 200));
-    const resourceIncome = 0, buildingMaintenance = 0;
+    const resourceIncome = resources.get(c.id) ?? 0, buildingMaintenance = 0;
     const monthlyIncome = money(taxIncome + tradeIncome + resourceIncome);
     const armyMaintenance = money((troops.get(c.id) ?? 0) / 1000 * ARMY_MAINTENANCE_PER_THOUSAND);
     const interest = money(c.debt! * MONTHLY_INTEREST);
