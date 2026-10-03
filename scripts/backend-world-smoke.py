@@ -20,7 +20,7 @@ def request(path, body, expected=200):
             status, payload = response.status, json.load(response)
     except urllib.error.HTTPError as error:
         status, payload = error.code, json.loads(error.read())
-    assert status == expected, (path, status, expected)
+    assert status == expected, (path, status, expected, payload)
     return payload
 
 host = request('game-room', {'action': 'create', 'displayName': 'WORLD ECONOMY QA'})
@@ -109,11 +109,42 @@ assert paid['economy']['tradeIncome'] > 0
 assert snapshot(guest)['state'] == snapshot()['state']
 print('PASS: authoritative tax/loan/repayment, exact cash/debt, upkeep/interest/commerce and guest sync', flush=True)
 
+# Phase 11: client sends only intent. Price, duration, ownership and completion are authoritative.
+build_before = snapshot()['state']
+build_cash = build_before['countries']['germany']['treasury']
+command(host, {'type':'BUILD','playerId':host['playerId'],'provinceId':province['id'],'buildingType':'Farm','cost':1}, 400)
+command(guest, {'type':'BUILD','playerId':guest['playerId'],'provinceId':province['id'],'buildingType':'Farm'}, 400)
+command(host, {'type':'BUILD','playerId':host['playerId'],'provinceId':province['id'],'buildingType':'Farm'})
+build_queued = snapshot()['state']
+assert build_queued['stateVersion'] == 2
+assert build_queued['countries']['germany']['treasury'] == build_cash - 120
+assert len(build_queued['constructions']) == 1
+construction = build_queued['constructions'][0]
+assert construction['provinceId'] == province['id']
+assert construction['ownerId'] == 'germany'
+assert construction['buildingType'] == 'Farm'
+assert construction['targetLevel'] == 1
+assert construction['cost'] == 120
+assert construction['completeTick'] == build_queued['tick'] + 6
+assert not next(p for p in build_queued['provinces'] if p['id'] == province['id']).get('buildings')
+command(host, {'type':'BUILD','playerId':host['playerId'],'provinceId':province['id'],'buildingType':'Mine'}, 400)
+command(host, {'type':'SET_SPEED','playerId':host['playerId'],'speed':1})
+for _ in range(6):
+    command(host, {'type':'ADVANCE_TICK'})
+command(host, {'type':'SET_SPEED','playerId':host['playerId'],'speed':0})
+build_done = snapshot()['state']
+built_province = next(p for p in build_done['provinces'] if p['id'] == province['id'])
+assert built_province['buildings']['Farm'] == 1
+assert not any(c['provinceId'] == province['id'] for c in build_done['constructions'])
+assert build_done['countries']['germany']['economy']['buildingMaintenance'] >= 2
+assert snapshot(guest)['state'] == build_done
+print('PASS: authoritative building price/ownership/queue/state migration, timed completion, maintenance and guest sync', flush=True)
+
 # Faith is authoritative; caller-supplied Unity or country fields must be rejected.
 religion_command = {'type': 'CHANGE_RELIGION', 'playerId': host['playerId'], 'religionId': 'christian-catholic'}
 command(host, {**religion_command, 'religiousUnity': 100}, 400)
 command(guest, {**religion_command, 'playerId': host['playerId']}, 400)
-command(host, religion_command, 400)  # government payment left insufficient PP
+command(host, religion_command, 400)  # government payment plus construction window still leaves insufficient PP
 command(host, {'type': 'SET_SPEED', 'playerId': host['playerId'], 'speed': 1})
 for _ in range(20):
     command(host, {'type': 'ADVANCE_TICK'})
@@ -133,10 +164,10 @@ for city in religion_before['cities']:
     city_totals[city['provinceId']] = city_totals.get(city['provinceId'], 0) + city['population']
 province_ids = {p['id'] for p in religion_before['provinces']}
 assert len(province_ids) == len(religion_before['provinces'])
-for province in religion_before['provinces']:
-    assert type(province['population']) is int and 0 <= province['population'] <= 2**53-1
-    assert 0 <= province['populationGrowthCarry'] < 1
-    assert city_totals.get(province['id'], 0) <= province['population']
+for p in religion_before['provinces']:
+    assert type(p['population']) is int and 0 <= p['population'] <= 2**53-1
+    assert 0 <= p['populationGrowthCarry'] < 1
+    assert city_totals.get(p['id'], 0) <= p['population']
 assert all(province_id in province_ids for province_id in city_totals)
 for country in religion_before['countries'].values():
     owned = [p for p in religion_before['provinces'] if p['ownerId'] == country['id']]
