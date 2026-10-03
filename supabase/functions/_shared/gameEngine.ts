@@ -246,6 +246,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       nation.religionCooldownUntilTick = next.tick + RELIGION_COOLDOWN_TICKS;
       for (const p of next.provinces) if (p.ownerId === nation.id && p.religion !== nation.religion) p.unrest = Math.min(100, p.unrest! + 10);
       recalcReligiousUnity(next);
+      recalcEconomy(next);
       return next;
     }
     case 'CHANGE_GOVERNMENT': {

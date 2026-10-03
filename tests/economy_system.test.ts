@@ -90,3 +90,14 @@ test('paid recruitment after fractional income preserves precision and immediate
   assert.equal(country.treasury,1034.001); assert.equal(country.economy!.armyMaintenance,c.economy!.armyMaintenance+12.5);
   assert.doesNotThrow(()=>applyServerCommand(next,{type:'BORROW',playerId:'host',amount:.001},'host'));
 });
+
+
+test('religion stability payment immediately refreshes trade revenue and credit forecasts',()=>{
+  const state=campaign(); state.countries.germany!.politicalPower=500;
+  const before=structuredClone(state);
+  const next=applyServerCommand(state,{type:'CHANGE_RELIGION',playerId:'host',religionId:'christian-catholic'},'host');
+  const budget=structuredClone(next.countries.germany!.economy);
+  assert.ok(budget!.tradeIncome<state.countries.germany!.economy!.tradeIncome);
+  recalcEconomy(next); assert.deepEqual(next.countries.germany!.economy,budget);
+  assert.deepEqual(state,before);
+});

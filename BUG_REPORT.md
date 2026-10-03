@@ -84,3 +84,9 @@ Religion d69c3ce passed Android release/offline smoke (36914710819), 55 JS tests
 Population stress completed 10,000 full-world ticks with per-tick country/province/city integer, fractional-carry, urban conservation, ownership-total, religion/unrest, army-ID and bounded-log guards. Final 1,124 armies; snapshot 3,510,268 to 3,872,944 bytes; host tick p95 115.61 ms. This is CPU/state validation, not physical FPS or a memory-leak proof. Live HTTP regression passed lobby/authentication checks but was interrupted by a network-policy denial before demographic assertions. Its exact QA room was removed; zero rooms and memberships verified. Server population acceptance stays open.
 
 The dedicated World backend QA workflow 36969317388 subsequently passed the complete two-player population/government/religion suite against v9/v8, including 20 authoritative months, safe counts/carries, urban conservation, unique geography, exact ownership-derived national totals and identical guest sync. Isolated room 18ddbaf4-bb51-4a94-92d9-8e50a2eaaf4e was deleted using ID/QA-name guards; zero rooms/memberships verified. The live population gate is now satisfied. Phase 8 native follow-up remains open.
+
+## Recovery audit — 2026-10-03
+
+- HIGH: previous world-update work existed only on its unmerged branch; main retained the prototype. Resolved by preserving the exact history via fast-forward to 392ab36.
+- MEDIUM: changing religion lowered stability but returned a stale commerce/credit budget until another command. Fixed by recalculating derived economy after policy payment; immutable reducer regression added.
+- Phase 9 10,000-tick gate is verified successful in CI 36985831373. Final release blockers and physical-device gates remain open; see RECOVERY_AUDIT.md for current phase status instead of historical notes above.
