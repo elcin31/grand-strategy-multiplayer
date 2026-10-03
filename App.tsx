@@ -88,10 +88,26 @@ function GameApp() {
     if (!state || !playerId || state.phase !== 'running' || state.speed === 0) return;
     const me = state.players.find((player) => player.id === playerId);
     if (!me?.isHost) return;
-    const interval = setInterval(() => {
-      transport.sendCommand(state.id, { type: 'ADVANCE_TICK' }).catch(() => undefined);
-    }, Math.max(650, 2600 / state.speed));
-    return () => clearInterval(interval);
+
+    let disposed = false;
+    let inFlight = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const delay = Math.max(650, 2600 / state.speed);
+    const advance = async () => {
+      if (disposed || inFlight) return;
+      inFlight = true;
+      try { await transport.sendCommand(state.id, { type: 'ADVANCE_TICK' }); }
+      catch { /* A transient authoritative conflict must not create a request pile-up. */ }
+      finally {
+        inFlight = false;
+        if (!disposed) timer = setTimeout(() => { void advance(); }, delay);
+      }
+    };
+    timer = setTimeout(() => { void advance(); }, delay);
+    return () => {
+      disposed = true;
+      if (timer) clearTimeout(timer);
+    };
   }, [state?.id, state?.phase, state?.speed, playerId, transport]);
 
   if (!state) {
