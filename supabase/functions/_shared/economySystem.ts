@@ -1,3 +1,4 @@
+import { provinceBuildingMaintenance, provinceBuildingModifiers } from './buildingSystem.ts';
 import { provinceProduction } from './resourceSystem.ts';
 import type { Country, GameState } from './gameTypes.ts';
 import { governmentIncome } from './governmentSystem.ts';
@@ -26,16 +27,19 @@ export function assertTaxRate(value: unknown): asserts value is number {
   if (typeof value !== 'number' || !Number.isInteger(value) || value < MIN_TAX_RATE || value > MAX_TAX_RATE) throw new Error('Invalid tax rate');
 }
 
-/** Derived from current owners/armies every time; client budget fields are never accepted. */
+/** Derived from current owners/armies/buildings every time; client budget fields are never accepted. */
 export function recalcEconomy(state: GameState): void {
   if (!state.dataset) return;
-  const resources = new Map<string, number>();
-  const base = new Map<string, number>(), development = new Map<string, number>(), population = new Map<string, number>(), troops = new Map<string, number>();
+  const resources = new Map<string, number>(), buildingCosts = new Map<string, number>();
+  const taxBase = new Map<string, number>(), tradeBase = new Map<string, number>(), development = new Map<string, number>(), population = new Map<string, number>(), troops = new Map<string, number>();
   for (const p of state.provinces) {
     if (!Object.hasOwn(state.countries, p.ownerId)) throw new Error('Unknown economic province owner');
     validMoney(p.income);
-    resources.set(p.ownerId, money((resources.get(p.ownerId) ?? 0) + provinceProduction(p, state.countries[p.ownerId]!).revenue));
-    base.set(p.ownerId, money((base.get(p.ownerId) ?? 0) + p.income));
+    const modifiers = provinceBuildingModifiers(p), country = state.countries[p.ownerId]!;
+    resources.set(p.ownerId, money((resources.get(p.ownerId) ?? 0) + provinceProduction(p, country).revenue * (1 + modifiers.resourcePercent / 100)));
+    taxBase.set(p.ownerId, money((taxBase.get(p.ownerId) ?? 0) + p.income * (1 + modifiers.taxPercent / 100)));
+    tradeBase.set(p.ownerId, money((tradeBase.get(p.ownerId) ?? 0) + p.income * (1 + modifiers.tradePercent / 100)));
+    buildingCosts.set(p.ownerId, money((buildingCosts.get(p.ownerId) ?? 0) + provinceBuildingMaintenance(p)));
     development.set(p.ownerId, (development.get(p.ownerId) ?? 0) + p.population * (p.development ?? 40));
     population.set(p.ownerId, (population.get(p.ownerId) ?? 0) + p.population);
   }
@@ -46,14 +50,12 @@ export function recalcEconomy(state: GameState): void {
     troops.set(a.ownerId, sum);
   }
   for (const c of Object.values(state.countries)) {
-    const raw = base.get(c.id) ?? 0;
-    const taxIncome = money(governmentIncome(raw, c.governmentType) * c.taxRate! / DEFAULT_TAX_RATE);
+    const rawTax = taxBase.get(c.id) ?? 0, rawTrade = tradeBase.get(c.id) ?? 0;
+    const taxIncome = money(governmentIncome(rawTax, c.governmentType) * c.taxRate! / DEFAULT_TAX_RATE);
     const people = population.get(c.id) ?? 0;
     const meanDevelopment = people > 0 ? (development.get(c.id) ?? 0) / people : 0;
-    // Original commerce model: local production/development and stable institutions.
-    // Building maintenance is added when construction is implemented.
-    const tradeIncome = money(raw * .1 * meanDevelopment / 100 * (.5 + c.stability / 200));
-    const resourceIncome = resources.get(c.id) ?? 0, buildingMaintenance = 0;
+    const tradeIncome = money(rawTrade * .1 * meanDevelopment / 100 * (.5 + c.stability / 200));
+    const resourceIncome = resources.get(c.id) ?? 0, buildingMaintenance = buildingCosts.get(c.id) ?? 0;
     const monthlyIncome = money(taxIncome + tradeIncome + resourceIncome);
     const armyMaintenance = money((troops.get(c.id) ?? 0) / 1000 * ARMY_MAINTENANCE_PER_THOUSAND);
     const interest = money(c.debt! * MONTHLY_INTEREST);
@@ -108,7 +110,6 @@ function bankruptcy(state: GameState, c: Country): void {
     for (const p of state.provinces) if (p.ownerId === c.id) p.unrest = Math.min(100, p.unrest! + 5);
   }
   c.treasury = 0; c.debt = 0;
-  // Liquidate unaffordable forces, including at least half on default. No unpaid army survives forever.
   const ratio = c.economy!.armyMaintenance > 0 ? Math.max(0, Math.min(.5, c.economy!.monthlyIncome * .8 / c.economy!.armyMaintenance)) : 0;
   for (const a of state.armies) if (a.ownerId === c.id) a.troops = Math.floor(a.troops * ratio / 1000) * 1000;
   state.armies = state.armies.filter(a => a.troops > 0);
@@ -126,7 +127,6 @@ export function monthlyEconomy(state: GameState): void {
       if (debt <= c.economy!.creditLimit) { c.debt = debt; c.treasury = 0; }
       else bankruptcy(state, c);
     }
-    // Taxation tradeoff applies monthly, not when the player repeatedly presses a button.
     const pressure = Math.max(0, c.taxRate! - DEFAULT_TAX_RATE) / 300;
     c.stability = Math.max(0, Math.min(100, c.stability - pressure));
     c.unrest = Math.max(0, Math.min(100, c.unrest! + pressure));

@@ -1,3 +1,4 @@
+import { provinceBuildingModifiers } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
 function integer(value: number, name: string): void {
@@ -6,7 +7,7 @@ function integer(value: number, name: string): void {
 function carry(value: number): void {
   if (!Number.isFinite(value) || value < 0 || value >= 1) throw new Error('Invalid population carry');
 }
-/** Original demographic game model, not a real-world forecast: 0.4–1% annually. */
+/** Original demographic game model, not a real-world forecast: 0.4–1% annually before building modifiers. */
 export function annualPopulationGrowth(development: number, stability: number): number {
   if (![development, stability].every(v => Number.isFinite(v) && v >= 0 && v <= 100)) throw new Error('Invalid demographic modifiers');
   return .004 + .002 * development / 100 + .004 * stability / 100;
@@ -52,12 +53,12 @@ export function monthlyPopulationGrowth(state: GameState): void {
   const growth = new Map<string, { population: number; births: number }>();
   for (const p of state.provinces) {
     const old = p.population;
-    const rate = annualPopulationGrowth(p.development ?? 40, state.countries[p.ownerId]!.stability);
+    const buildingGrowth = provinceBuildingModifiers(p).populationGrowthPercent;
+    const rate = annualPopulationGrowth(p.development ?? 40, state.countries[p.ownerId]!.stability) * (1 + buildingGrowth / 100);
     const exact = old * rate / 12 + p.populationGrowthCarry!;
     const births = Math.floor(exact);
     integer(old + births, 'overflow');
     p.population += births; p.populationGrowthCarry = exact - births; p.monthlyPopulationGrowth = births;
-    // Same population/development formula as the original world-data factory, now responsive to growth.
     p.income = Math.max(1, Math.round(p.population / 300000 * (.5 + (p.development ?? 40) / 100)));
     growth.set(p.id, { population: old, births });
   }

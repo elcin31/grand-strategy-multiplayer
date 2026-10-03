@@ -1,3 +1,4 @@
+import { initializeBuildings } from './buildingSystem.ts';
 import { initializeResources } from './resourceSystem.ts';
 import { countryDefinitions, provinceDefinitions, cityDefinitions } from './worldDefinitions.ts';
 import type { GameState, Country } from './gameTypes.ts';
@@ -6,13 +7,13 @@ import { initializePopulation } from './populationSystem.ts';
 import { initializeEconomy } from './economySystem.ts';
 import { initializeReligions } from './religionSystem.ts';
 import { governmentIncome, initializeGovernment } from './governmentSystem.ts';
+import { CURRENT_STATE_VERSION } from './stateMigrations.ts';
 
 function seedForCampaign(id: string): number {
   let seed = 2166136261;
   for (let i = 0; i < id.length; i++) seed = Math.imul(seed ^ id.charCodeAt(i), 16777619);
   return seed >>> 0;
 }
-
 /** All mutable state is newly allocated. Geometry/flag assets stay out of snapshots. */
 export function createWorldState(gameId: string, roomCode: string, playerId: string, displayName: string, campaignSeed = seedForCampaign(gameId)): GameState {
   if (!Number.isSafeInteger(campaignSeed) || campaignSeed < 0) throw new Error('Invalid campaign seed');
@@ -37,10 +38,11 @@ export function createWorldState(gameId: string, roomCode: string, playerId: str
     country.income = governmentIncome(monthly, country.governmentType);
     if (troops) armies.push({ id: 'army-capital-'+definition.id, ownerId: definition.id, provinceId: capital.provinceId, troops });
   }
-  const state: GameState = { dataset: 'modern-world-v1', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, leaders, armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };
+  const state: GameState = { stateVersion: CURRENT_STATE_VERSION, dataset: 'modern-world-v1', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, leaders, constructions: [], armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };
   initializePopulation(state);
   initializeReligions(state);
   initializeResources(state);
+  initializeBuildings(state);
   initializeEconomy(state);
   return state;
 }

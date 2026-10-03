@@ -2,6 +2,7 @@ import type { ResourceDeposit } from './resourceSystem.ts';
 export type CountryId = string;
 export type GameSpeed = 0 | 1 | 2 | 3 | 4;
 export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' | 'Semi-Presidential Republic' | 'Constitutional Monarchy' | 'Absolute Monarchy' | 'Military Junta' | 'Theocracy' | 'One-Party State' | 'Federation' | 'Tribal Government';
+export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital';
 
 export interface Country {
   taxRate?: number;
@@ -51,6 +52,7 @@ export interface EconomyBudget {
 }
 
 export interface Province {
+  buildings?: Partial<Record<BuildingType, number>>;
   resourceDeposit?: ResourceDeposit;
   populationGrowthCarry?: number;
   monthlyPopulationGrowth?: number;
@@ -70,6 +72,17 @@ export interface Province {
   controllerId?: CountryId;
   cityIds?: string[];
   development?: number;
+}
+
+export interface Construction {
+  id: string;
+  provinceId: string;
+  ownerId: CountryId;
+  buildingType: BuildingType;
+  targetLevel: number;
+  startedTick: number;
+  completeTick: number;
+  cost: number;
 }
 
 export interface Army {
@@ -127,11 +140,13 @@ export interface Leader {
 }
 
 export interface GameState {
+  stateVersion?: number;
   nextEntityId?: number;
   dataset?: 'modern-world-v1';
   campaignSeed?: number;
   cities?: City[];
   leaders?: Record<string, Leader>;
+  constructions?: Construction[];
   id: string;
   roomCode: string;
   phase: 'lobby' | 'running' | 'paused' | 'finished';
@@ -151,6 +166,7 @@ export type GameCommand =
   | { type: 'SET_TAX_RATE'; playerId: string; taxRate: number }
   | { type: 'BORROW'; playerId: string; amount: number }
   | { type: 'REPAY_DEBT'; playerId: string; amount: number }
+  | { type: 'BUILD'; playerId: string; provinceId: string; buildingType: BuildingType }
   | { type: 'SELECT_COUNTRY'; playerId: string; countryId: CountryId }
   | { type: 'SET_READY'; playerId: string; ready: boolean }
   | { type: 'START_GAME'; playerId: string }
