@@ -68,7 +68,7 @@ test('conquest preserves completed buildings but cancels the defeated owner cons
   const defenderId=target.ownerId; target.buildings={Fort:1}; state.countries[defenderId]!.treasury=1_000_000;
   startConstruction(state,defenderId,target,'Farm');
   const army=state.armies.find(a=>a.ownerId==='germany')!; army.provinceId=origin.id; army.troops=5_000_000;
-  state.armies=state.armies.filter(a=>a.ownerId!===defenderId||a.provinceId!==target.id);
+  state.armies=state.armies.filter(a=>a.ownerId!==defenderId||a.provinceId!==target.id);
   const next=applyServerCommand(state,{type:'MOVE_ARMY',playerId:'host',armyId:army.id,provinceId:target.id},'host');
   const captured=next.provinces.find(p=>p.id===target.id)!;
   assert.equal(captured.ownerId,'germany'); assert.equal(captured.buildings?.Fort,1); assert.ok(!next.constructions!.some(c=>c.provinceId===target.id));
