@@ -1,0 +1,20 @@
+{
+  "sourceCommit": "23bfacb39b91cfe81ba6da33f215053f97158e7b",
+  "workflowRun": 37216306932,
+  "artifactId": 11308404825,
+  "result": {
+    "countries": 195,
+    "provinces": 4386,
+    "cities": 7214,
+    "armies": 242,
+    "ticks": 10000,
+    "createMs": 54.17,
+    "sceneMs": 350.8,
+    "visibleCountryLabels": 10,
+    "labelMs": 49.62,
+    "tickP95Ms": 120.94,
+    "snapshotBytes": 4193233,
+    "finalSnapshotBytes": 4516565,
+    "note": "CPU/data simulation only; no native FPS, networking chaos, or completed AI 2.0 claim"
+  }
+}

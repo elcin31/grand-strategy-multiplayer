@@ -6,7 +6,7 @@ Only `elcin31/grand-strategy-multiplayer` and dedicated backend `dfjsnjxnyjspwug
 
 Recovered main `d9a5fb3`: Phases 1–11 implemented, including real resources/buildings. Historical README/status/audit lagged behind commits; there was no handoff. Exact baseline Actions: Android 37112386818, live QA 37112386742, stress 37112386730 succeeded. Local baseline: strict TypeScript + 83 tests. See RECOVERY_AUDIT.md for all 26 phase statuses. Physical FPS remains Phase 22, not a repeated renderer implementation.
 
-Chosen and implemented **exactly five phases: 12, 13, 14, 15, 16**. Do not start Phase 17 in this session. Final verification is in progress at this checkpoint; the CI section must be updated from actual results before claiming full acceptance.
+Chosen and implemented **exactly five phases: 12, 13, 14, 15, 16**. Stopped after Phase 16. All final automated gates passed on source commit 23bfacb; no Phase 17 implementation was started.
 
 ## COMPLETED THIS SESSION
 
@@ -38,13 +38,13 @@ Files: `_shared/warSystem.ts`, diplomacy/reducer/types/migrations/economy/buildi
 
 Before: tax/government/religion unrest only. Added combined war/exhaustion/occupation/bankruptcy/government pressure, bounded national/local unrest, persistent rebellions at unrest >=85 (population >=2000), actual rebel strength and monthly garrison battles with losses, bounded event history, 24-month post-suppression cooldown, paid pacification. Rebellions stop province income, recruitment and construction. No free repeated suppression within the same tick.
 
-Files: `_shared/stabilitySystem.ts`, reducer/types/migrations/economy/resources/buildings; `StabilityPanel.tsx`, `GamePanel.tsx`; `stability_system.test.ts`. Commands: PACIFY_PROVINCE, SUPPRESS_REBELLION. State version 7. Typecheck + 100 tests passed. Two later coalition/occupation regressions bring current total to 102.
+Files: `_shared/stabilitySystem.ts`, reducer/types/migrations/economy/resources/buildings; `StabilityPanel.tsx`, `GamePanel.tsx`; `stability_system.test.ts`. Commands: PACIFY_PROVINCE, SUPPRESS_REBELLION. State version 7. Typecheck + 100 tests passed. Later coalition/occupation/truce regressions bring current total to 103.
 
 ## CURRENT PROJECT STATUS
 
-Latest implemented phase: **16**. Runtime source checkpoint: `b3cefb05a866d67136e5730dd1ed882c9f6584c0`. Pure shared reducer remains the single local/server rule implementation. Edge `applyServerCommand` authenticates actor intent; prices, military, state changes and outcomes are never client-supplied. Versioned normalization upgrades modern snapshots 1–7; rejects future versions; legacy prototype rules remain isolated. Compressed persistence retains legacy JSONB fallback. New systems are integrated, not mock/UI-only.
+Latest implemented phase: **16**. Runtime source checkpoint: `23bfacb39b91cfe81ba6da33f215053f97158e7b`. Pure shared reducer remains the single local/server rule implementation. Edge `applyServerCommand` authenticates actor intent; prices, military, state changes and outcomes are never client-supplied. Versioned normalization upgrades modern snapshots 1–7; rejects future versions; legacy prototype rules remain isolated. Compressed persistence retains legacy JSONB fallback. New systems are integrated, not mock/UI-only.
 
-Five-phase acceptance requires the pending native/live verification below. Do not confuse final roadmap completion or final release with this checkpoint.
+Five-phase automated acceptance passed. This is a standalone checkpoint, not completion of the entire roadmap or Phase 26 release acceptance.
 
 ## NEXT PHASE
 
@@ -62,21 +62,23 @@ Phase 22 physical-device performance and Phases 23–26 full QA/release remain l
 
 ## BUGS
 
-See BUG_REPORT.md for current severity and limitations. Critical recovered deployment mismatch: command endpoint wrote compressed snapshots while older room endpoint returned null. Both endpoints were redeployed from the same source: game-command v14, game-room v11, ACTIVE. Live recovery verification remains pending at this checkpoint. No known unpatched BLOCKER/CRITICAL/HIGH in the five-phase source; do not close the deployment bug before live smoke succeeds.
+See BUG_REPORT.md for current severity and limitations. Critical recovered deployment mismatch: command endpoint wrote compressed snapshots while older room endpoint returned null. Both endpoints were redeployed from the same source: game-command v15, game-room v12, ACTIVE. Complete live two-player CI verification passed in run 37197530326, including compressed snapshot recovery. Final hardening also rejects empty diplomatic cancellations: ending a rival/guarantee cannot fabricate a truce; only ending an actual bilateral treaty does. A guarantor must cancel the guarantee before attacking its beneficiary. Unit and live regression cases were added. No known unpatched BLOCKER/CRITICAL/HIGH in the five-phase source; the deployment CRITICAL is closed by the successful live smoke.
 
-## CI / verification checkpoint — awaiting final results
+## CI / final verification — PASS
 
-- Strict TypeScript: PASS locally and native CI build steps on b3cefb0.
-- JavaScript regression: **102/102 PASS**, local and CI build step; phase-specific tests cover payment/ownership/actor spoof/payload injection/migration/pause/corruption/consent/control/peace/rebellions.
+- Strict TypeScript: PASS locally and native CI build steps on final 23bfacb.
+- JavaScript regression: **103/103 PASS** locally and in final native CI build on 23bfacb; phase-specific tests cover payment/ownership/actor spoof/payload injection/migration/pause/corruption/consent/control/peace/rebellions.
 - Python: **3/3 PASS** locally with pinned shapely 2.1.2; CI build step PASS.
 - Map CPU benchmark: 5,000 features, 10,000 queries, p95 0.021ms locally. Not native FPS.
 - Prior Phase 12–14 stress: 10,000 ticks PASS, run 37180648927. This is not the final five-phase stress gate.
-- Current full-world stress: run **37197530316**, pending.
-- Current standalone Android build/offline UI smoke: run **37197530313**, pending. Uses assembleRelease, embedded assets/index.android.bundle + Hermes/Skia checks, actual offline commands, four landscape sizes and restart without Metro. Never distribute a debug build.
-- Current live two-player backend QA: run **37197530326**, pending. Tests new research, units/commanders, treaty consent/truce/war/white peace, pacification, compressed snapshots and guest sync in addition to all older gates.
-- Initial Phase 12–14 native build passed; its smoke failed because army-row selection checkmark changed the test string. UI compatibility and smoke have been corrected in b3cefb0; no unobserved native pass is claimed.
+- Current full-world stress: run **37216306932**, **PASS: 10,000 ticks**, 195 countries/4,386 provinces/7,214 cities, 242 final armies. Host CPU p95 120.94ms; snapshot 4,193,233 → 4,516,565 bytes. Report persisted in `docs/qa/phase12-16-world-stress.json`. This is not physical FPS or a memory-leak proof.
+- Current standalone Android: **assembleRelease and APK bundle/Hermes/Skia checks PASS** on final run **37216306934**; offline UI smoke **PASS** (also passed previous run 37197530313). Final checkpoint artifact **11309142115**. Uses assembleRelease, embedded assets/index.android.bundle + Hermes/Skia checks, actual offline commands, four landscape sizes and restart without Metro. Never distribute a debug build.
+- Current live two-player backend QA: run **37216306929**, **PASS**. Tests new research, units/commanders, treaty consent/truce/war/white peace, pacification, compressed snapshots and guest sync in addition to all older gates.
+- Initial Phase 12–14 native build passed; its smoke failed because army-row selection checkmark changed the test string. UI compatibility and smoke have been corrected in b3cefb0; full native smoke run 37197530313 PASS. Research completion, accepted treaty and pacification screenshots from both successful runs were visually reviewed; the prior 1600×720 overview was also reviewed.
 - Isolated failed CI room 189ccc53-3907-4fb7-a40d-172e021b44cd deleted with exact-ID + host-QA-name guard; zero rooms/memberships verified.
-- Local ongoing QA room **006cdd85-795c-4533-87a6-8f2f254c8488** must be cleaned with exact-ID/name guard after completion or interruption. Latest CI room ID must be read from its log/artifact and cleaned similarly. Never delete arbitrary rooms.
+- Redundant local partial QA room **006cdd85-795c-4533-87a6-8f2f254c8488** and successful CI room **1243138f-d58c-436e-b3bd-b5e76c1c1141** were removed with exact-ID + host-QA-name guards after the full CI live pass. Exact-ID follow-up verified zero rooms and zero memberships. Never delete arbitrary rooms.
+
+Final code 23bfacb CI rerun: **live backend 37216306929 PASS**, including empty cancellation rejection and Rival → Cancel leaving zero truce. Backend v15/v12 ACTIVE. Full-world stress 37216306932 PASS. Android 37216306934 **PASS**, including offline smoke; evidence artifact 11308703238. Final isolated QA room 959a49fb-f12b-499c-adc2-328a2b6c8bcb removed using exact-ID + host-QA-name guard; zero rooms/memberships verified.
 
 ## LAST COMMITS (remote main)
 
@@ -86,5 +88,17 @@ See BUG_REPORT.md for current severity and limitations. Critical recovered deplo
 - 57bfa83 Phase 15 occupation, war accounting and consensual peace settlements.
 - e8d19ba Phase 16 unrest-driven rebellions, pacification and garrison combat.
 - b3cefb0 Occupation/coalition hardening, recruitment compatibility and expanded native/live QA.
+- 462006f Recovery/handoff/README/bug documentation checkpoint.
+- 23bfacb Prevent empty or unilateral cancellation from fabricating a truce; require cancellation of guarantees before war; unit and live regressions.
+- Final documentation commit (this file): five-phase acceptance, exact CI/artifact evidence and next-session scope; no runtime changes [skip ci].
 
 Git shell push was unavailable; commits were uploaded individually through GitHub Git Data API with fast-forward-only ref updates. Local checkout was then aligned to the identical remote tree; no remote history was rewritten.
+
+## Final evidence links
+
+- [Android release and offline emulator smoke](https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/37216306934)
+- [Standalone APK artifact](https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/37216306934/artifacts/11309142115) (14-day CI retention; not debug; embedded bundle 10,205,332 bytes).
+- [Live dedicated backend](https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/37216306929)
+- [10,000-tick full-world simulation](https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/37216306932)
+
+Native proof covers offline cold launch and process restart on an emulator; hardware reboot, physical-device FPS/thermal and final-release signing/distribution remain future Phase 26/22 acceptance. No such claims are made from these tests.
