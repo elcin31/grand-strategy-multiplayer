@@ -1,3 +1,4 @@
+import { TREATIES } from './diplomacySystem.ts';
 import { UNITS } from './militarySystem.ts';
 import { TECHNOLOGIES } from './technologySystem.ts';
 import { BUILDING_TYPES } from './buildingSystem.ts';
@@ -10,6 +11,10 @@ const fields: Record<string, readonly string[]> = {
   SET_TAX_RATE: ['type', 'playerId', 'taxRate'],
   BORROW: ['type', 'playerId', 'amount'],
   REPAY_DEBT: ['type', 'playerId', 'amount'],
+  DIPLOMATIC_ACTION: ['type','playerId','targetId','action'],
+  OFFER_TREATY: ['type','playerId','targetId','treaty'],
+  RESPOND_TREATY: ['type','playerId','targetId','accept'],
+  DECLARE_WAR: ['type','playerId','targetId'],
   RECRUIT_UNIT: ['type','playerId','provinceId','troops','unitType'],
   ASSIGN_COMMANDER: ['type','playerId','armyId','commanderId'],
   START_RESEARCH: ['type', 'playerId', 'branch'],
@@ -34,6 +39,10 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId']) {
     if (allowed.includes(key) && (typeof command[key] !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(command[key] as string))) throw new Error('Invalid command identifier');
   }
+  if (allowed.includes('targetId') && (typeof command.targetId !== 'string' || !countryIds.includes(command.targetId))) throw new Error('Unknown target country');
+  if (type === 'DIPLOMATIC_ACTION' && !['Improve','Rival','Guarantee','Cancel'].includes(command.action as string)) throw new Error('Invalid diplomacy action');
+  if (type === 'OFFER_TREATY' && (typeof command.treaty !== 'string' || !Object.hasOwn(TREATIES,command.treaty))) throw new Error('Invalid treaty type');
+  if (type === 'RESPOND_TREATY' && typeof command.accept !== 'boolean') throw new Error('Invalid treaty response');
   if (type === 'SELECT_COUNTRY' && (typeof command.countryId !== 'string' || !countryIds.includes(command.countryId))) throw new Error('Unknown country');
   if (type === 'SET_TAX_RATE') assertTaxRate(command.taxRate);
   if (type === 'BORROW' || type === 'REPAY_DEBT') assertLoanAmount(command.amount);

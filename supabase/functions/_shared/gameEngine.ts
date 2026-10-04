@@ -1,3 +1,4 @@
+import { declareWar, diplomaticAction, monthlyDiplomacy, offerTreaty, respondTreaty, warBetween } from './diplomacySystem.ts';
 import { assignCommander, battleFatigue, combatMultiplier, recoverMilitary, UNITS, type UnitType } from './militarySystem.ts';
 import { monthlyResearch, startResearch, techLevel } from './technologySystem.ts';
 import { buildingModifierTotals, cancelConstructionInProvince, completeConstructions, provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
@@ -58,6 +59,7 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
   if (!origin || !destination) throw new Error('Провинция не найдена');
   if (!origin.neighbors.includes(destination.id)) throw new Error('Провинции не соседствуют');
   if (destination.ownerId === ownerId) { army.provinceId = destination.id; return; }
+  if (state.dataset && !warBetween(state, ownerId, destination.ownerId)) throw new Error('Сначала объявите войну');
   const defenderId = destination.ownerId, defenders = armiesIn(state, destination.id, defenderId), defenderTroops = totalTroops(defenders);
   const attackerNation = countryFor(state, ownerId), defenderNation = countryFor(state, defenderId);
   const attackPower = army.troops * (1 + attackerNation.technology / 200) * (0.75 + attackerNation.stability / 200) * combatMultiplier(state, army, destination, false);
@@ -117,7 +119,7 @@ function runAi(state: GameState) {
     const army = state.armies.filter((candidate) => candidate.ownerId === id && candidate.troops >= 12_000).sort((a, b) => b.troops - a.troops)[0];
     if (!army) continue;
     const origin = provinceById(state, army.provinceId); if (!origin) continue;
-    const targets = origin.neighbors.map((neighborId) => provinceById(state, neighborId)).filter((province): province is Province => Boolean(province && province.ownerId !== id));
+    const targets = origin.neighbors.map((neighborId) => provinceById(state, neighborId)).filter((province): province is Province => Boolean(province && province.ownerId !== id && (!state.dataset || warBetween(state, id, province.ownerId))));
     if (!targets.length) continue;
     const target = [...targets].sort((a, b) => totalTroops(armiesIn(state, a.id, a.ownerId)) - totalTroops(armiesIn(state, b.id, b.ownerId)))[0];
     if (target) resolveMovement(state, id, army.id, target.id);
@@ -139,6 +141,18 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       const nation = countryFor(next, player.countryId);
       if (command.type === 'SET_TAX_RATE') { nation.taxRate = command.taxRate; recalcEconomy(next); }
       else if (command.type === 'BORROW') borrow(next, nation, command.amount); else repay(next, nation, command.amount);
+      return next;
+    }
+    case 'DIPLOMATIC_ACTION':
+    case 'OFFER_TREATY':
+    case 'RESPOND_TREATY':
+    case 'DECLARE_WAR': {
+      if (!next.dataset || !['running','paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');
+      const player=getPlayer(next,command.playerId);if(!player.countryId)throw new Error('Страна не выбрана');
+      if(command.type==='DIPLOMATIC_ACTION')diplomaticAction(next,player.countryId,command.targetId,command.action);
+      if(command.type==='OFFER_TREATY')offerTreaty(next,player.countryId,command.targetId,command.treaty);
+      if(command.type==='RESPOND_TREATY')respondTreaty(next,player.countryId,command.targetId,command.accept);
+      if(command.type==='DECLARE_WAR')declareWar(next,player.countryId,command.targetId);
       return next;
     }
     case 'START_RESEARCH': {
@@ -224,6 +238,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       if (next.phase !== 'running' || next.speed === 0) return next;
       next.tick += 1; next.month += 1; if (next.month > 12) { next.month = 1; next.year += 1; }
       completeConstructions(next);
+      monthlyDiplomacy(next);
       monthlyResearch(next);
       recoverMilitary(next);
       monthlyPopulationGrowth(next); recalcCountryStats(next);

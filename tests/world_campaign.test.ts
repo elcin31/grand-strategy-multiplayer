@@ -1,3 +1,4 @@
+import { declareWar } from '../supabase/functions/_shared/diplomacySystem';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createWorldState } from '../supabase/functions/_shared/worldState';
@@ -105,6 +106,7 @@ test('battle IDs stay unique after the bounded log fills in a single paused tick
   const origin=germany.find(p=>p.neighbors.some(id=>state.provinces.find(n=>n.id===id)?.ownerId!=='germany'))!;
   const destination=origin.neighbors.find(id=>state.provinces.find(n=>n.id===id)?.ownerId!=='germany')!;
   const enemy=state.provinces.find(p=>p.id===destination)!.ownerId;
+  declareWar(state,'germany',enemy);
   state.armies.push({id:'army-boundary-test',ownerId:'germany',provinceId:origin.id,troops:1000});
   state.armies.push({id:'army-defender-test',ownerId:enemy,provinceId:destination,troops:1000000});
   const ids=new Set<string>();

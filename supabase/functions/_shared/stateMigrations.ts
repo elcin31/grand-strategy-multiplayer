@@ -1,9 +1,10 @@
+import { initializeDiplomacy } from './diplomacySystem.ts';
 import { initializeMilitary } from './militarySystem.ts';
 import { initializeTechnology } from './technologySystem.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
-export const CURRENT_STATE_VERSION = 4;
+export const CURRENT_STATE_VERSION = 5;
 
 /** Explicit modern-world state migrations. Legacy prototype saves keep their original schema/rules. */
 export function normalizeGameState(state: GameState): void {
@@ -13,5 +14,6 @@ export function normalizeGameState(state: GameState): void {
   initializeBuildings(state);
   initializeTechnology(state);
   initializeMilitary(state);
+  initializeDiplomacy(state);
   state.stateVersion = CURRENT_STATE_VERSION;
 }

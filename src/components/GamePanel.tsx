@@ -1,3 +1,4 @@
+import { DiplomacyPanel } from './DiplomacyPanel';
 import { MilitaryPanel } from './MilitaryPanel';
 import { StrategyPanel } from './StrategyPanel';
 import { BUILDINGS, BUILDING_TYPES, buildingQuote } from '../../supabase/functions/_shared/buildingSystem';
@@ -149,6 +150,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         <Text style={styles.hint}>Все религии используют одинаковые правила. Низкое единство повышает unrest; смена не обращает население автоматически.</Text>
       </View>}
 
+      <DiplomacyPanel state={state} playerId={playerId} onCommand={onCommand} />
       <StrategyPanel state={state} playerId={playerId} onCommand={onCommand} />
 
       <View style={styles.card}>

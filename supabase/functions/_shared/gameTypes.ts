@@ -1,3 +1,4 @@
+import type { DiplomacyLink, TreatyType, War } from './diplomacySystem.ts';
 import type { Commander, TerrainType, UnitType } from './militarySystem.ts';
 import type { Research, TechnologyBranch } from './technologySystem.ts';
 import type { ResourceDeposit } from './resourceSystem.ts';
@@ -7,6 +8,8 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital';
 
 export interface Country {
+  aggressiveExpansion?: number;
+  overlordId?: string;
   technologies?: Record<TechnologyBranch, number>;
   research?: Research;
   taxRate?: number;
@@ -149,6 +152,8 @@ export interface Leader {
 }
 
 export interface GameState {
+  diplomacy?: Record<string, DiplomacyLink>;
+  wars?: War[];
   commanders?: Record<string, Commander>;
   stateVersion?: number;
   nextEntityId?: number;
@@ -173,6 +178,10 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | { type: 'DIPLOMATIC_ACTION'; playerId: string; targetId: string; action: 'Improve' | 'Rival' | 'Guarantee' | 'Cancel' }
+  | { type: 'OFFER_TREATY'; playerId: string; targetId: string; treaty: TreatyType }
+  | { type: 'RESPOND_TREATY'; playerId: string; targetId: string; accept: boolean }
+  | { type: 'DECLARE_WAR'; playerId: string; targetId: string }
   | { type: 'RECRUIT_UNIT'; playerId: string; provinceId: string; troops: number; unitType: UnitType }
   | { type: 'ASSIGN_COMMANDER'; playerId: string; armyId: string; commanderId: string }
   | { type: 'START_RESEARCH'; playerId: string; branch: TechnologyBranch }
