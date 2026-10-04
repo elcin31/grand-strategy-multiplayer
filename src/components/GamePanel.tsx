@@ -1,3 +1,4 @@
+import { WarPanel } from './WarPanel';
 import { DiplomacyPanel } from './DiplomacyPanel';
 import { MilitaryPanel } from './MilitaryPanel';
 import { StrategyPanel } from './StrategyPanel';
@@ -37,7 +38,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
   const selectedCities = selected ? (state.cities ?? []).filter(c => c.provinceId === selected.id).sort((a,b) => Number(b.isCapital)-Number(a.isCapital) || b.population-a.population).slice(0,3) : [];
   const selectedConstruction = selected ? state.constructions?.find(item => item.provinceId === selected.id) ?? null : null;
   const completedBuildings = selected ? BUILDING_TYPES.filter(type => (selected.buildings?.[type] ?? 0) > 0) : [];
-  const isOwnProvince = selected?.ownerId === countryId;
+  const isOwnProvince = selected?.ownerId === countryId && (selected.controllerId ?? selected.ownerId) === countryId;
   const cooldown = Math.max(0, (nation.governmentCooldownUntilTick ?? 0) - state.tick);
   const religionCooldown = Math.max(0, (nation.religionCooldownUntilTick ?? 0) - state.tick);
   const politicalPower = nation.politicalPower ?? 0;
@@ -150,6 +151,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         <Text style={styles.hint}>Все религии используют одинаковые правила. Низкое единство повышает unrest; смена не обращает население автоматически.</Text>
       </View>}
 
+      <WarPanel state={state} playerId={playerId} onCommand={onCommand} />
       <DiplomacyPanel state={state} playerId={playerId} onCommand={onCommand} />
       <StrategyPanel state={state} playerId={playerId} onCommand={onCommand} />
 
@@ -163,6 +165,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
               <View>
                 <Text style={styles.title}>{selected.name}</Text>
                 <Text style={styles.owner}>{countryFor(state, selected.ownerId).name} · доход ${selected.income}M</Text>
+                <Text style={styles.owner}>Контроль: {countryFor(state, selected.controllerId ?? selected.ownerId).name}</Text>
                 {selected.religion && <Text style={styles.owner}>{RELIGIONS[selected.religion]?.name} · unrest {selected.unrest?.toFixed(1)}</Text>}
               </View>
               <View style={[styles.ownerDot, { backgroundColor: countryFor(state, selected.ownerId).color }]} />
@@ -220,13 +223,13 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
               </Pressable>
             ))}
 
-            {isOwnProvince && (
+            {primaryArmy && (
               <>
                 <Text style={styles.sectionTitle}>Соседние провинции</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.routes}>
                   {neighbors.map((neighbor) => {
                     if (!neighbor) return null;
-                    const enemy = neighbor.ownerId !== countryId;
+                    const enemy = (neighbor.controllerId ?? neighbor.ownerId) !== countryId;
                     return (
                       <Pressable
                         key={neighbor.id}

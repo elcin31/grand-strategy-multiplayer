@@ -1,3 +1,4 @@
+import { monthlyWar, proposePeace, recordWarBattle, respondPeace } from './warSystem.ts';
 import { declareWar, diplomaticAction, monthlyDiplomacy, offerTreaty, respondTreaty, warBetween } from './diplomacySystem.ts';
 import { assignCommander, battleFatigue, combatMultiplier, recoverMilitary, UNITS, type UnitType } from './militarySystem.ts';
 import { monthlyResearch, startResearch, techLevel } from './technologySystem.ts';
@@ -42,6 +43,7 @@ function entityId(state: GameState, kind: string): string {
 function addBattle(state: GameState, event: Omit<BattleEvent, 'id' | 'tick'>) {
   state.battleLog.unshift({ ...event, id: entityId(state, 'battle'), tick: state.tick });
   state.battleLog = state.battleLog.slice(0, 20);
+  recordWarBattle(state, state.battleLog[0]!);
 }
 function applyLosses(state: GameState, defenders: Army[], losses: number) {
   let remaining = losses;
@@ -58,9 +60,10 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
   const origin = provinceById(state, army.provinceId), destination = provinceById(state, destinationId);
   if (!origin || !destination) throw new Error('Провинция не найдена');
   if (!origin.neighbors.includes(destination.id)) throw new Error('Провинции не соседствуют');
-  if (destination.ownerId === ownerId) { army.provinceId = destination.id; return; }
-  if (state.dataset && !warBetween(state, ownerId, destination.ownerId)) throw new Error('Сначала объявите войну');
-  const defenderId = destination.ownerId, defenders = armiesIn(state, destination.id, defenderId), defenderTroops = totalTroops(defenders);
+  const controller = state.dataset ? destination.controllerId ?? destination.ownerId : destination.ownerId;
+  if (controller === ownerId) { army.provinceId = destination.id; return; }
+  if (state.dataset && !warBetween(state, ownerId, controller)) throw new Error('Сначала объявите войну');
+  const defenderId = controller, defenders = armiesIn(state, destination.id, defenderId), defenderTroops = totalTroops(defenders);
   const attackerNation = countryFor(state, ownerId), defenderNation = countryFor(state, defenderId);
   const attackPower = army.troops * (1 + attackerNation.technology / 200) * (0.75 + attackerNation.stability / 200) * combatMultiplier(state, army, destination, false);
   const fortification = state.dataset ? 1 + provinceBuildingModifiers(destination).defensePercent / 100 : 1;
@@ -71,10 +74,8 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
     const defenderLosses = defenderTroops;
     army.troops -= attackerLosses;
     state.armies = state.armies.filter((candidate) => !defenders.some((defender) => defender.id === candidate.id));
-    destination.ownerId = ownerId;
-    if (destination.controllerId) destination.controllerId = ownerId;
-    if (destination.countryId) destination.countryId = ownerId;
-    for (const city of state.cities ?? []) if (city.provinceId === destination.id) city.countryId = ownerId;
+    if (state.dataset) destination.controllerId = ownerId;
+    else { destination.ownerId = ownerId; if (destination.countryId) destination.countryId = ownerId; }
     cancelConstructionInProvince(state, destination.id);
     army.provinceId = destination.id;
     addBattle(state, { provinceId: destination.id, attackerId: ownerId, defenderId, attackerLosses, defenderLosses, winnerId: ownerId, captured: true, message: `${attackerNation.name} захватывает ${destination.name}` });
@@ -89,7 +90,7 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
   recalcCountryStats(state); recalcPopulationTotals(state); recalcReligiousUnity(state);
 }
 function recruit(state: GameState, ownerId: CountryId, province: Province, troops: number, unitType: UnitType = 'Infantry') {
-  if (province.ownerId !== ownerId) throw new Error('Нельзя нанимать войска в чужой провинции');
+  if (province.ownerId !== ownerId || (state.dataset && (province.controllerId ?? province.ownerId) !== ownerId)) throw new Error('Нельзя нанимать войска в чужой провинции');
   if (!Number.isInteger(troops) || troops < 1_000 || troops > 100_000) throw new Error('Недопустимый размер набора');
   const nation = countryFor(state, ownerId);
   if (state.dataset && state.tick < nation.bankruptcyUntilTick!) throw new Error('Набор недоступен после банкротства');
@@ -108,7 +109,7 @@ function runAi(state: GameState) {
   const humanCountries = new Set(state.players.map((player) => player.countryId).filter(Boolean) as CountryId[]);
   for (const id of countryIds(state)) {
     if (humanCountries.has(id)) continue;
-    const owned = state.provinces.filter((province) => province.ownerId === id);
+    const owned = state.provinces.filter((province) => province.ownerId === id && (!state.dataset || (province.controllerId ?? province.ownerId) === id));
     if (!owned.length) continue;
     const nation = countryFor(state, id);
     const budgetAllowsRecruitment = !state.dataset || (state.tick >= nation.bankruptcyUntilTick! && nation.economy!.monthlyBalance >= 5 && nation.treasury >= 80 + (nation.economy!.armyMaintenance + 5) * 3);
@@ -119,7 +120,7 @@ function runAi(state: GameState) {
     const army = state.armies.filter((candidate) => candidate.ownerId === id && candidate.troops >= 12_000).sort((a, b) => b.troops - a.troops)[0];
     if (!army) continue;
     const origin = provinceById(state, army.provinceId); if (!origin) continue;
-    const targets = origin.neighbors.map((neighborId) => provinceById(state, neighborId)).filter((province): province is Province => Boolean(province && province.ownerId !== id && (!state.dataset || warBetween(state, id, province.ownerId))));
+    const targets = origin.neighbors.map((neighborId) => provinceById(state, neighborId)).filter((province): province is Province => Boolean(province && (province.controllerId ?? province.ownerId) !== id && (!state.dataset || warBetween(state, id, province.controllerId ?? province.ownerId))));
     if (!targets.length) continue;
     const target = [...targets].sort((a, b) => totalTroops(armiesIn(state, a.id, a.ownerId)) - totalTroops(armiesIn(state, b.id, b.ownerId)))[0];
     if (target) resolveMovement(state, id, army.id, target.id);
@@ -142,6 +143,14 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       if (command.type === 'SET_TAX_RATE') { nation.taxRate = command.taxRate; recalcEconomy(next); }
       else if (command.type === 'BORROW') borrow(next, nation, command.amount); else repay(next, nation, command.amount);
       return next;
+    }
+    case 'PROPOSE_PEACE':
+    case 'RESPOND_PEACE': {
+      if (!next.dataset || !['running','paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');
+      const player=getPlayer(next,command.playerId);if(!player.countryId)throw new Error('Страна не выбрана');
+      if(command.type==='PROPOSE_PEACE')proposePeace(next,player.countryId,command.warId,command.terms);
+      else respondPeace(next,player.countryId,command.warId,command.accept);
+      recalcCountryStats(next);recalcPopulationTotals(next);recalcReligiousUnity(next);recalcEconomy(next);checkWinner(next);return next;
     }
     case 'DIPLOMATIC_ACTION':
     case 'OFFER_TREATY':
@@ -256,7 +265,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }
-      monthlyReligionEffects(next); monthlyEconomy(next); runAi(next); recalcCountryStats(next); checkWinner(next); return next;
+      monthlyReligionEffects(next); monthlyEconomy(next); monthlyWar(next); runAi(next); recalcCountryStats(next); checkWinner(next); return next;
     }
   }
 }

@@ -1,3 +1,4 @@
+import type { PeaceTerms, WarSummary } from './warSystem.ts';
 import type { DiplomacyLink, TreatyType, War } from './diplomacySystem.ts';
 import type { Commander, TerrainType, UnitType } from './militarySystem.ts';
 import type { Research, TechnologyBranch } from './technologySystem.ts';
@@ -8,6 +9,7 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital';
 
 export interface Country {
+  warExhaustion?: number;
   aggressiveExpansion?: number;
   overlordId?: string;
   technologies?: Record<TechnologyBranch, number>;
@@ -59,6 +61,7 @@ export interface EconomyBudget {
 }
 
 export interface Province {
+  originalOwnerId?: string;
   terrain?: TerrainType;
   buildings?: Partial<Record<BuildingType, number>>;
   resourceDeposit?: ResourceDeposit;
@@ -152,6 +155,7 @@ export interface Leader {
 }
 
 export interface GameState {
+  warHistory?: WarSummary[];
   diplomacy?: Record<string, DiplomacyLink>;
   wars?: War[];
   commanders?: Record<string, Commander>;
@@ -178,6 +182,8 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | { type: 'PROPOSE_PEACE'; playerId: string; warId: string; terms: PeaceTerms }
+  | { type: 'RESPOND_PEACE'; playerId: string; warId: string; accept: boolean }
   | { type: 'DIPLOMATIC_ACTION'; playerId: string; targetId: string; action: 'Improve' | 'Rival' | 'Guarantee' | 'Cancel' }
   | { type: 'OFFER_TREATY'; playerId: string; targetId: string; treaty: TreatyType }
   | { type: 'RESPOND_TREATY'; playerId: string; targetId: string; accept: boolean }

@@ -104,7 +104,7 @@ export function initializeBuildings(state: GameState): void {
 }
 export function startConstruction(state: GameState, ownerId: CountryId, province: Province, buildingType: BuildingType): Construction {
   if (!state.dataset) throw new Error('Строительство доступно в кампании современного мира');
-  if (province.ownerId !== ownerId) throw new Error('Нельзя строить в чужой провинции');
+  if (province.ownerId !== ownerId || (province.controllerId ?? province.ownerId) !== ownerId) throw new Error('Нельзя строить в чужой провинции');
   if (state.constructions!.some(item => item.provinceId === province.id)) throw new Error('В провинции уже идёт строительство');
   const nation = state.countries[ownerId];
   if (!nation) throw new Error('Страна не найдена');
@@ -128,7 +128,7 @@ export function completeConstructions(state: GameState): void {
   for (const construction of state.constructions) {
     if (construction.completeTick > state.tick) { remaining.push(construction); continue; }
     const province = state.provinces.find(p => p.id === construction.provinceId);
-    if (!province || province.ownerId !== construction.ownerId) continue;
+    if (!province || province.ownerId !== construction.ownerId || (province.controllerId ?? province.ownerId) !== construction.ownerId) continue;
     const current = buildingLevel(province, construction.buildingType);
     if (current + 1 !== construction.targetLevel) throw new Error('Construction target changed');
     province.buildings = { ...(province.buildings ?? {}), [construction.buildingType]: construction.targetLevel };

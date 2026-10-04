@@ -18,7 +18,7 @@ function seedForCampaign(id: string): number {
 export function createWorldState(gameId: string, roomCode: string, playerId: string, displayName: string, campaignSeed = seedForCampaign(gameId)): GameState {
   if (!Number.isSafeInteger(campaignSeed) || campaignSeed < 0) throw new Error('Invalid campaign seed');
   const countries: Record<string, Country> = {};
-  const provinces = provinceDefinitions.map(p => ({ ...p, ownerId: p.countryId, controllerId: p.countryId, neighbors: [...p.neighbors], cityIds: [...p.cityIds] }));
+  const provinces = provinceDefinitions.map(p => ({ ...p, ownerId: p.countryId, originalOwnerId: p.countryId, controllerId: p.countryId, neighbors: [...p.neighbors], cityIds: [...p.cityIds] }));
   const cities = cityDefinitions.map(c => ({ ...c }));
   const income = new Map<string, number>();
   for (const p of provinces) income.set(p.countryId, (income.get(p.countryId) ?? 0) + p.income);

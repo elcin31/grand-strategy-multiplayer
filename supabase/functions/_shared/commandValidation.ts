@@ -1,3 +1,4 @@
+import { assertPeaceTerms } from './warSystem.ts';
 import { TREATIES } from './diplomacySystem.ts';
 import { UNITS } from './militarySystem.ts';
 import { TECHNOLOGIES } from './technologySystem.ts';
@@ -11,6 +12,8 @@ const fields: Record<string, readonly string[]> = {
   SET_TAX_RATE: ['type', 'playerId', 'taxRate'],
   BORROW: ['type', 'playerId', 'amount'],
   REPAY_DEBT: ['type', 'playerId', 'amount'],
+  PROPOSE_PEACE: ['type','playerId','warId','terms'],
+  RESPOND_PEACE: ['type','playerId','warId','accept'],
   DIPLOMATIC_ACTION: ['type','playerId','targetId','action'],
   OFFER_TREATY: ['type','playerId','targetId','treaty'],
   RESPOND_TREATY: ['type','playerId','targetId','accept'],
@@ -36,13 +39,14 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (typeof type !== 'string' || !Object.hasOwn(fields, type)) throw new Error('Unknown command');
   const allowed = fields[type]!;
   if (Object.keys(command).some(key => !allowed.includes(key)) || allowed.some(key => !Object.hasOwn(command, key))) throw new Error('Invalid command fields');
-  for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId']) {
+  for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId', 'warId']) {
     if (allowed.includes(key) && (typeof command[key] !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(command[key] as string))) throw new Error('Invalid command identifier');
   }
   if (allowed.includes('targetId') && (typeof command.targetId !== 'string' || !countryIds.includes(command.targetId))) throw new Error('Unknown target country');
   if (type === 'DIPLOMATIC_ACTION' && !['Improve','Rival','Guarantee','Cancel'].includes(command.action as string)) throw new Error('Invalid diplomacy action');
   if (type === 'OFFER_TREATY' && (typeof command.treaty !== 'string' || !Object.hasOwn(TREATIES,command.treaty))) throw new Error('Invalid treaty type');
-  if (type === 'RESPOND_TREATY' && typeof command.accept !== 'boolean') throw new Error('Invalid treaty response');
+  if (type === 'PROPOSE_PEACE') assertPeaceTerms(command.terms);
+  if ((type === 'RESPOND_TREATY' || type === 'RESPOND_PEACE') && typeof command.accept !== 'boolean') throw new Error('Invalid treaty response');
   if (type === 'SELECT_COUNTRY' && (typeof command.countryId !== 'string' || !countryIds.includes(command.countryId))) throw new Error('Unknown country');
   if (type === 'SET_TAX_RATE') assertTaxRate(command.taxRate);
   if (type === 'BORROW' || type === 'REPAY_DEBT') assertLoanAmount(command.amount);

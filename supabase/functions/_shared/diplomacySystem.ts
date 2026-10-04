@@ -1,3 +1,4 @@
+import type { PeaceOffer } from './warSystem.ts';
 import { countryFor, type GameState } from './gameTypes.ts';
 import { techLevel } from './technologySystem.ts';
 export const TREATIES = { Alliance:'Союз', NonAggression:'Ненападение', DefensivePact:'Оборонительный пакт' } as const;
@@ -6,7 +7,7 @@ export interface DiplomacyLink {
   a:string; b:string; relation:number; treaties:TreatyType[]; rivals:string[]; guarantors:string[]; truceUntilTick:number;
   improveAfter?:number; proposal?:{from:string;type:TreatyType;expiresTick:number};
 }
-export interface War { id:string; attackers:string[]; defenders:string[]; startedTick:number }
+export interface War { warScore?:number; occupiedProvinceIds?:string[]; casualties?:Record<string,number>; peaceOffer?:PeaceOffer; id:string; attackers:string[]; defenders:string[]; startedTick:number }
 export function pairKey(a:string,b:string):string{return [a,b].sort().join('|');}
 export function diplomaticLink(state:GameState,a:string,b:string):DiplomacyLink {
   if(a===b)throw new Error('Нужна другая страна');countryFor(state,a);countryFor(state,b);
@@ -85,7 +86,7 @@ export function declareWar(state:GameState,actor:string,target:string):War {
   if(!Number.isSafeInteger(state.nextEntityId)||state.nextEntityId!<1||state.nextEntityId!>=Number.MAX_SAFE_INTEGER)throw new Error('Entity sequence exhausted');
   const attackers=[actor,...Object.values(state.countries).filter(v=>v.overlordId===actor).map(v=>v.id)];
   if([...attackers,...defenders].some(id=>busy.has(id)))throw new Error('Вассал уже участвует в войне');
-  const war={id:`war-${state.id}-${state.nextEntityId!++}`,attackers,defenders,startedTick:state.tick};
+  const war={id:`war-${state.id}-${state.nextEntityId!++}`,attackers,defenders,startedTick:state.tick,warScore:0,occupiedProvinceIds:[],casualties:{}};
   state.wars!.push(war);c.politicalPower!-=25;c.aggressiveExpansion=Math.min(100,c.aggressiveExpansion!+5);
   for(const a of attackers)for(const d of defenders){const pair=diplomaticLink(state,a,d);pair.relation=-100;pair.treaties=[];delete pair.proposal;}
   return war;

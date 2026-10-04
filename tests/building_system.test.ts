@@ -73,7 +73,7 @@ test('conquest preserves completed buildings but cancels the defeated owner cons
   declareWar(state,'germany',defenderId);
   const next=applyServerCommand(state,{type:'MOVE_ARMY',playerId:'host',armyId:army.id,provinceId:target.id},'host');
   const captured=next.provinces.find(p=>p.id===target.id)!;
-  assert.equal(captured.ownerId,'germany'); assert.equal(captured.buildings?.Fort,1); assert.ok(!next.constructions!.some(c=>c.provinceId===target.id));
+  assert.equal(captured.ownerId,defenderId); assert.equal(captured.controllerId,'germany'); assert.equal(captured.buildings?.Fort,1); assert.ok(!next.constructions!.some(c=>c.provinceId===target.id));
 });
 
 test('versioned migration upgrades old modern saves sparsely, rejects malformed buildings and leaves legacy state untouched',()=>{
