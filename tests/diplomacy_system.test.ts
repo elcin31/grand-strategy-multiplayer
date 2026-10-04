@@ -29,3 +29,14 @@ test('paid relations have cooldowns, NPC consent is deterministic, and spoofed f
   assert.throws(()=>applyServerCommand(s,{...cmd,relation:100} as never,'host'));
   n.diplomacy![pairKey('germany','poland')]!.relation=Infinity;assert.throws(()=>initializeDiplomacy(n));
 });
+
+test('unilateral cancellation cannot fabricate a truce or make rivalry an immunity exploit',()=>{
+  const s=campaign();const cancel={type:'DIPLOMATIC_ACTION',playerId:'host',targetId:'france',action:'Cancel'} as const;
+  assert.throws(()=>applyServerCommand(s,cancel,'host'));
+  let n=applyServerCommand(s,{...cancel,action:'Rival'},'host');n=applyServerCommand(n,cancel,'host');
+  assert.equal(n.diplomacy![pairKey('germany','france')]!.truceUntilTick,0);
+  n=applyServerCommand(n,{type:'DECLARE_WAR',playerId:'host',targetId:'france'},'host');assert.ok(warBetween(n,'germany','france'));
+  let guaranteed=applyServerCommand(s,{...cancel,action:'Guarantee'},'host');
+  assert.throws(()=>applyServerCommand(guaranteed,{type:'DECLARE_WAR',playerId:'host',targetId:'france'},'host'));
+  guaranteed=applyServerCommand(guaranteed,cancel,'host');assert.equal(guaranteed.diplomacy![pairKey('germany','france')]!.truceUntilTick,0);
+});

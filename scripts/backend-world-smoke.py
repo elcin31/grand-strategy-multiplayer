@@ -225,6 +225,10 @@ artillery = next(a for a in strategy['armies'] if a['provinceId'] == province['i
 command(host, {'type':'ASSIGN_COMMANDER','playerId':host['playerId'],'armyId':artillery['id'],'commanderId':'general-germany-0'})
 command(guest, {'type':'ASSIGN_COMMANDER','playerId':guest['playerId'],'armyId':artillery['id'],'commanderId':'general-france-0'}, 400)
 assert next(a for a in snapshot()['state']['armies'] if a['id'] == artillery['id'])['commanderId'] == 'general-germany-0'
+command(host, {'type':'DIPLOMATIC_ACTION','playerId':host['playerId'],'targetId':'france','action':'Cancel'},400)
+command(host, {'type':'DIPLOMATIC_ACTION','playerId':host['playerId'],'targetId':'france','action':'Rival'})
+command(host, {'type':'DIPLOMATIC_ACTION','playerId':host['playerId'],'targetId':'france','action':'Cancel'})
+assert snapshot()['state']['diplomacy']['france|germany']['truceUntilTick'] == 0
 command(host, {'type':'OFFER_TREATY','playerId':host['playerId'],'targetId':'france','treaty':'NonAggression'})
 assert snapshot()['state']['diplomacy']['france|germany']['treaties'] == []
 command(guest, {'type':'RESPOND_TREATY','playerId':guest['playerId'],'targetId':'germany','accept':True})

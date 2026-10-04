@@ -65,12 +65,15 @@ export function diplomaticAction(state:GameState,actor:string,target:string,acti
     if(warBetween(state,actor,target)||l.rivals.length||l.guarantors.includes(actor)||c.politicalPower!<20)throw new Error('Гарантия недоступна');
     c.politicalPower!-=20;l.guarantors.push(actor);
   } else {
+    const endedTreaty=l.treaties.length>0;
+    if(!endedTreaty&&!l.rivals.includes(actor)&&!l.guarantors.includes(actor)&&!l.proposal)throw new Error('Нет договоров или обязательств для отмены');
     l.treaties=[];l.rivals=l.rivals.filter(x=>x!==actor);l.guarantors=l.guarantors.filter(x=>x!==actor);delete l.proposal;
-    l.truceUntilTick=Math.max(l.truceUntilTick,state.tick+6);
+    if(endedTreaty)l.truceUntilTick=Math.max(l.truceUntilTick,state.tick+6);
   }
 }
 export function declareWar(state:GameState,actor:string,target:string):War {
   const l=diplomaticLink(state,actor,target),c=countryFor(state,actor),enemy=countryFor(state,target);
+  if(l.guarantors.includes(actor))throw new Error('Сначала отмените свою гарантию');
   if(c.overlordId||enemy.overlordId)throw new Error('Война с вассалом ведётся через сюзерена');
   if(!c.provinceIds?.length||!enemy.provinceIds?.length||l.treaties.length||state.tick<l.truceUntilTick)throw new Error('Договор или перемирие запрещает войну');
   if(c.politicalPower!<25)throw new Error('Нужно 25 PP для объявления войны');
