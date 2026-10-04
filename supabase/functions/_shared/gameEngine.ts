@@ -1,3 +1,4 @@
+import { monthlyResearch, startResearch, techLevel } from './technologySystem.ts';
 import { buildingModifierTotals, cancelConstructionInProvince, completeConstructions, provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
 import { initializeResources } from './resourceSystem.ts';
 import { initializePopulation, monthlyPopulationGrowth, recalcPopulationTotals } from './populationSystem.ts';
@@ -137,6 +138,11 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       else if (command.type === 'BORROW') borrow(next, nation, command.amount); else repay(next, nation, command.amount);
       return next;
     }
+    case 'START_RESEARCH': {
+      if (!next.dataset || !['running', 'paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');
+      const player = getPlayer(next, command.playerId); if (!player.countryId) throw new Error('Страна не выбрана');
+      startResearch(next, countryFor(next, player.countryId), command.branch); return next;
+    }
     case 'BUILD': {
       if (!next.dataset) throw new Error('Строительство доступно в кампании современного мира');
       if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
@@ -208,6 +214,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       if (next.phase !== 'running' || next.speed === 0) return next;
       next.tick += 1; next.month += 1; if (next.month > 12) { next.month = 1; next.year += 1; }
       completeConstructions(next);
+      monthlyResearch(next);
       monthlyPopulationGrowth(next); recalcCountryStats(next);
       const buildingTotals = buildingModifierTotals(next);
       for (const id of countryIds(next)) {
@@ -219,7 +226,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
         if (government) {
           nation.politicalPower = Math.min(500, nation.politicalPower! + POLITICAL_POWER_MONTHLY);
           nation.technology = Math.min(100, nation.technology + .025 * (1 + (government.researchPercent + (buildings?.researchPercent ?? 0)) / 100));
-          nation.stability = Math.min(100, Math.max(0, nation.stability + (government.stabilityPerYear + (buildings?.stabilityPerYear ?? 0)) / 12));
+          nation.stability = Math.min(100, Math.max(0, nation.stability + (government.stabilityPerYear + (buildings?.stabilityPerYear ?? 0) + techLevel(nation, 'Administration') * .6) / 12));
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }

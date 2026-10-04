@@ -152,3 +152,7 @@ Prior work has been integrated into main without rewriting history. See RECOVERY
 Phase 10 source adds food, iron, coal, oil, gas, gold, copper, uranium, timber and rare materials. Seeded deposits are original scenario assumptions, not geological data. Production depends on province base output, richness, development, technology and unrest, and is automatically sold at fixed game prices into the current owner's monthly ledger. Conquest preserves deposits and redirects revenue; old modern saves initialize missing deposits once, malformed records fail explicitly, and legacy scenarios retain their rules. Actual income/output appears in Economy and province panels, and a categorical Resources mode renders deposit types.
 
 Strict TypeScript and all 74 JavaScript assertions in 14 test files pass, including five resource regressions. A 100-tick full-world simulation passes: 195 countries, 4,386 provinces, 7,214 cities, 277 final armies; host p95 tick 135.36ms. This does not claim physical FPS. Android smoke now checks resource income and nine modes; dedicated HTTP smoke checks bounded deposits, income and persistence across policy changes. Phase 10 native/live/extended stress gates are pending. Phase 11 is next only after these gates pass.
+
+## Current recovery — 2026-10-04
+
+The earlier top-of-file status is historical. Main d9a5fb3 has completed resources/buildings plus passing exact-SHA Android/live/stress gates. See RECOVERY_AUDIT.md for the current 26-phase matrix. This session is restricted to Phases 12–16.

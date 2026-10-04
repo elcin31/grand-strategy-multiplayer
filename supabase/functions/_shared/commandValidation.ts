@@ -1,3 +1,4 @@
+import { TECHNOLOGIES } from './technologySystem.ts';
 import { BUILDING_TYPES } from './buildingSystem.ts';
 import { assertReligion } from './religionSystem.ts';
 import { assertLoanAmount, assertTaxRate } from './economySystem.ts';
@@ -8,6 +9,7 @@ const fields: Record<string, readonly string[]> = {
   SET_TAX_RATE: ['type', 'playerId', 'taxRate'],
   BORROW: ['type', 'playerId', 'amount'],
   REPAY_DEBT: ['type', 'playerId', 'amount'],
+  START_RESEARCH: ['type', 'playerId', 'branch'],
   BUILD: ['type', 'playerId', 'provinceId', 'buildingType'],
   SELECT_COUNTRY: ['type', 'playerId', 'countryId'],
   SET_READY: ['type', 'playerId', 'ready'],
@@ -32,6 +34,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (type === 'SELECT_COUNTRY' && (typeof command.countryId !== 'string' || !countryIds.includes(command.countryId))) throw new Error('Unknown country');
   if (type === 'SET_TAX_RATE') assertTaxRate(command.taxRate);
   if (type === 'BORROW' || type === 'REPAY_DEBT') assertLoanAmount(command.amount);
+  if (type === 'START_RESEARCH' && (typeof command.branch !== 'string' || !Object.hasOwn(TECHNOLOGIES, command.branch))) throw new Error('Invalid research branch');
   if (type === 'BUILD' && (typeof command.buildingType !== 'string' || !BUILDING_TYPES.includes(command.buildingType as BuildingType))) throw new Error('Invalid building type');
   if (type === 'CHANGE_RELIGION') assertReligion(command.religionId);
   if (type === 'CHANGE_GOVERNMENT' && (typeof command.governmentType !== 'string' || !GOVERNMENT_TYPES.includes(command.governmentType as GovernmentType))) throw new Error('Invalid government type');

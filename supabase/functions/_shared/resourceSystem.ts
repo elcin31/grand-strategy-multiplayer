@@ -1,3 +1,4 @@
+import { techLevel } from './technologySystem.ts';
 import type { Country, GameState, Province } from './gameTypes.ts';
 
 /** Original scenario deposits/prices, not real geological or market data. */
@@ -47,7 +48,7 @@ export function provinceProduction(p: Province, country: Country): { units: numb
   const development = p.development ?? 40, unrest = p.unrest ?? 0;
   if (![development, unrest, country.technology].every(n => Number.isFinite(n) && n >= 0 && n <= 100) || !Number.isFinite(p.income) || p.income < 0) throw new Error('Invalid resource production inputs');
   // Province base output is stable; ownership controls recipient, not the deposit.
-  const units = Math.round(p.income * p.resourceDeposit.richness / 100 * (.5 + development / 100) * (.5 + country.technology / 100) * (1 - unrest / 200) * 1000) / 1000;
+  const units = Math.round(p.income * p.resourceDeposit.richness / 100 * (.5 + development / 100) * (.5 + country.technology / 100) * (1 - unrest / 200) * (1 + techLevel(country, 'Industry') * .05) * 1000) / 1000;
   const revenue = Math.round(units * RESOURCES[p.resourceDeposit.type].price * 1000) / 1000;
   if (![units, revenue].every(n => Number.isFinite(n) && n >= 0 && n <= Number.MAX_SAFE_INTEGER / 1000)) throw new Error('Resource production overflow');
   return { units, revenue };

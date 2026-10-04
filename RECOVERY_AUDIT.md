@@ -1,40 +1,40 @@
-# Recovery audit — 2026-10-03
+# Recovery audit — 2026-10-04
 
-Source of truth at recovery: remote main `67e2936`. Previous work was preserved in open PR #1 / `world-update` at `392ab36`, 166 changed files, not in main. Main was fast-forwarded without rewriting history to preserve that work. No new repository or branch was created.
+Source of truth: main d9a5fb3. No DEVELOPMENT_HANDOFF.md existed. Historical README/WORLD_UPDATE_STATUS/2026-10-03 audit lagged behind actual commits. Phase 10 resources (82c6ef9), Phase 11 buildings (9061d35/c8aa212/352779e), server authority split (6bced4e), serialized host ticks (d55a634), compressed snapshots (49b9ead/d9a5fb3) are integrated.
 
-The previous last documented completed phase was 8. Phase 9 source `f631efa` passed native standalone/offline smoke (36975556052), dedicated live QA (36975555995), and the previously unrecorded 10,000-tick CI run 36985831373 completed successfully. Its job 110770517044 ran the real authoritative benchmark; artifact 11218196427 preserves the report. Latest checkpoint Android run 36985831246 also passed. Current dedicated backend is game-command v10 / game-room v9, confirmed ACTIVE. These facts do not establish physical-device FPS or final release acceptance.
+Verified GitHub Actions on exact main SHA: Android APK 37112386818 SUCCESS; World backend QA 37112386742 SUCCESS; Full world stress 37112386730 SUCCESS. Baseline strict TypeScript and 83 JS tests passed locally. No AGENTS.md exists. Checked shared types/factory/reducer/validators/migrations, map, data counts, policies, economy/resources/buildings, transport/Edge functions/SQL, UI and workflows/tests.
 
-## Recovered implementation, now integrated in main
+Status uses the user's current 26-phase numbering. DONE means requested functional integration plus recorded automated gates; physical FPS belongs to Phase 22, not a reason to repeat Phase 1. Procedural scenario data is not census/geological truth. No phase after 11 was considered complete just because it has preliminary fields.
 
-DONE means the scoped phase implementation and recorded automated gates passed; device/final acceptance is tracked separately. Some phases overlap: resources are Phase 10 even though Phase 9's budget reserves a resource-income field.
-
-| Phase | Status | Code evidence / remaining work |
+| Phase | Recovery status | Evidence / gap |
 |---|---|---|
-| 1 Map | PARTIAL | Skia WorldMap, camera, spatial culling, batched polygons, LOD, tilt, gestures and standalone emulator gates; physical-device profiling pending |
-| 2 Countries | DONE | world catalogue and shared definitions: 195 UN member/observer states, not every disputed entity/territory |
-| 3 Provinces | DONE | 4,386 polygons, symmetric land adjacency, owner/controller, linked campaign data |
-| 4 Cities | DONE | 7,214 cities, capitals, viewport/collision-aware labels |
-| 5 Rulers | DONE | seeded leaderGeneration, skills/traits and procedural initial avatars |
-| 6 Governments | DONE | ten policies, authenticated costs/cooldown/modifiers and UI |
-| 7 Religion | DONE | country policy, province identity, denominations, unity/unrest, paid command and UI |
-| 8 Population | DONE | monthly province/city growth, integer/carry safety, urban conservation, ownership totals |
-| 9 Economy | PARTIAL | taxes, commerce, upkeep, debt/default tested; newly found stale budget after faith change needs fix; commodity income depends on Phase 10 |
-| 10 Resources | NOT STARTED | no deposits/production; resource-income ledger is zero |
-| 11 Buildings | NOT STARTED | no construction model or commands |
-| 12 Technology | PARTIAL | scalar technology and passive government-modified growth only; five branches absent |
-| 13 Military | PARTIAL | real authoritative recruitment, adjacency movement and deterministic conquest; unit types, generals, morale, organization absent |
-| 14 Diplomacy | NOT STARTED | no war/treaty/peace model; direct neighboring conquest remains prototype behavior |
-| 15 Stability | PARTIAL | stability/unrest from policy/taxes/religion; rebellions absent |
-| 16 AI | PARTIAL | simple recruitment and nearby conquest with budget guard; personalities/strategic diplomacy absent |
-| 17 Multiplayer | PARTIAL | room codes, 8-player server join gate, hashed bearer auth, RLS, CAS and version polling; durable client sessions/idempotency/checksum/reconnect/host migration absent |
-| Save system | PARTIAL | server room JSON persists; offline transport is in-memory, no manual save/restore |
-| 18 UI/modes | PARTIAL | landscape config/safe areas, actual economy/policy/province actions; eight backed modes, incomplete navigation/HUD |
-| 19 Performance | PARTIAL | GPU/culling/cached geometry and CPU benchmarks; 30/60 FPS on physical Android unverified |
-| 20 QA | PARTIAL | command fuzz, ownership/combat, migration, map, 68 original JS tests, Python/native/live and 10,000 ticks; concurrency/chaos/final gameplay QA incomplete |
-| 21 Release | PARTIAL | standalone checkpoint APK built with embedded JS/Hermes/Skia; final full-roadmap release unavailable |
+| 1 Map engine | DONE | Skia GPU, political polygons, shading/water/borders, labels/markers, gestures/inertia/LOD/culling, landscape native CI |
+| 2 World database | DONE | 195 UN member/observer states, linked metadata; disputed territories not separate playable states |
+| 3 Provinces | DONE | 4,386 linked polygons/ownership/adjacency/population/resource/city data; terrain/coasts from map definitions, military terrain added in Phase 13 |
+| 4 Cities | DONE | 7,214 cities, capitals/regional centres and zoom/collision labels |
+| 5 Rulers | DONE | Seeded fictional names/skills/ideology/traits/popularity/portraits |
+| 6 Governments | DONE | Ten policies, paid server commands, cooldown and effects |
+| 7 Religion | DONE | Required faiths, province identity, weighted Unity, actual policy effects |
+| 8 Population | DONE | Province/city growth, conservation, country totals, taxes/manpower/production |
+| 9 Economy | DONE | Budgets, trade, loans/debt/default, immutable authoritative commands |
+| 10 Resources | DONE | Ten seeded deposits, real monthly production/sales, conquest revenue, mode/UI |
+| 11 Buildings | DONE | Ten types, paid queues, duration/levels/effects, UI, conquest/migration regressions |
+| 12 Technology | PARTIAL | Passive scalar only; missing five research branches/projects |
+| 13 Military | PARTIAL | Recruitment/movement/combat; missing unit types, readiness and commanders |
+| 14 Diplomacy | NOT STARTED | No treaties/relations/war guards |
+| 15 War system | NOT STARTED | Immediate ownership conquest only; no occupation/peace model |
+| 16 Stability/rebellions | PARTIAL | Policy/tax/religion unrest; no rebellion model |
+| 17 AI 2.0 | PARTIAL | Budget-guarded recruitment and local conquest; no strategic personalities |
+| 18 Multiplayer 2.0 | PARTIAL | 2–8, codes, tokens, CAS/polling; no durable client recovery/idempotency/checksum/timeouts |
+| 19 Saves | PARTIAL | Server snapshots/compression; no offline save UI/session restore |
+| 20 Landscape UI | PARTIAL | Landscape HUD and panels; missing later-system navigation/full acceptance |
+| 21 Modes/polish | PARTIAL | Nine working modes; diplomatic/relations/development pending |
+| 22 Performance | PARTIAL | GPU/culling/LOD/CPU benchmarks; physical 30/60 FPS unverified |
+| 23 Bug hunt | PARTIAL | Prior regression/security work and bug report; full new systems pending |
+| 24 Chaos/security | PARTIAL | Validator fuzz/auth/CAS; packet/reorder/reconnect suite incomplete |
+| 25 Long simulation | PARTIAL | Earlier 10,000-tick gate passed; must include final systems later |
+| 26 Android release | PARTIAL | Standalone checkpoint with bundle and emulator smoke; final product release pending |
 
-No phase is marked BROKEN solely because future requirements are absent. Unfinished roadmap acceptance is not an existing crash. Existing critical bugs must be fixed before later features. First concrete continuation: correct the Phase 9 stale budget, then implement Phase 10. The outstanding physical-device gate cannot be inferred from emulator/CPU results.
+## Fixed session scope
 
-## Files inspected
-
-Reviewed commit progression and major diffs; README/status/bug report; App, components, map scene/camera/settings; shared types/world factory/reducer/policy/demography/economy/validation; transports and Edge handlers; sole SQL migration/RLS/CAS; data pipeline/licensing and generated data counts; all workflow definitions and test inventory. No AGENTS.md is present. No lint command/config exists; strict TypeScript covers unused locals/parameters. No local Android SDK/device is assumed.
+A=12 Technology; B=13 Military 2.0; C=14 Diplomacy; D=15 War system; E=16 Stability/rebellions. Stop after E. Changes to existing AI only prevent illegal actions under new war rules; strategic AI 2.0 is explicitly out of scope. Dedicated backend only dfjsnjxnyjspwugjguhq. AssetMind resources are prohibited.

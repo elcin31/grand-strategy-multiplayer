@@ -7,7 +7,7 @@ import { initializePopulation } from './populationSystem.ts';
 import { initializeEconomy } from './economySystem.ts';
 import { initializeReligions } from './religionSystem.ts';
 import { governmentIncome, initializeGovernment } from './governmentSystem.ts';
-import { CURRENT_STATE_VERSION } from './stateMigrations.ts';
+import { normalizeGameState, CURRENT_STATE_VERSION } from './stateMigrations.ts';
 
 function seedForCampaign(id: string): number {
   let seed = 2166136261;
@@ -43,6 +43,7 @@ export function createWorldState(gameId: string, roomCode: string, playerId: str
   initializeReligions(state);
   initializeResources(state);
   initializeBuildings(state);
+  normalizeGameState(state);
   initializeEconomy(state);
   return state;
 }

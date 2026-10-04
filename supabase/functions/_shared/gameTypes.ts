@@ -1,3 +1,4 @@
+import type { Research, TechnologyBranch } from './technologySystem.ts';
 import type { ResourceDeposit } from './resourceSystem.ts';
 export type CountryId = string;
 export type GameSpeed = 0 | 1 | 2 | 3 | 4;
@@ -5,6 +6,8 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital';
 
 export interface Country {
+  technologies?: Record<TechnologyBranch, number>;
+  research?: Research;
   taxRate?: number;
   debt?: number;
   bankruptcyUntilTick?: number;
@@ -163,6 +166,7 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | { type: 'START_RESEARCH'; playerId: string; branch: TechnologyBranch }
   | { type: 'SET_TAX_RATE'; playerId: string; taxRate: number }
   | { type: 'BORROW'; playerId: string; amount: number }
   | { type: 'REPAY_DEBT'; playerId: string; amount: number }

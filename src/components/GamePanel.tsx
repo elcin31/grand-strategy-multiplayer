@@ -1,3 +1,4 @@
+import { StrategyPanel } from './StrategyPanel';
 import { BUILDINGS, BUILDING_TYPES, buildingQuote } from '../../supabase/functions/_shared/buildingSystem';
 import { RESOURCES, provinceProduction, resourceReport } from '../../supabase/functions/_shared/resourceSystem';
 import { useState } from 'react';
@@ -145,6 +146,8 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         </ScrollView>
         <Text style={styles.hint}>Все религии используют одинаковые правила. Низкое единство повышает unrest; смена не обращает население автоматически.</Text>
       </View>}
+
+      <StrategyPanel state={state} playerId={playerId} onCommand={onCommand} />
 
       <View style={styles.card}>
         <Text style={styles.eyebrow}>КОМАНДОВАНИЕ</Text>

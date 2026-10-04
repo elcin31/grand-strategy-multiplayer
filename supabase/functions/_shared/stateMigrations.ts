@@ -1,15 +1,15 @@
+import { initializeTechnology } from './technologySystem.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
-export const CURRENT_STATE_VERSION = 2;
+export const CURRENT_STATE_VERSION = 3;
 
 /** Explicit modern-world state migrations. Legacy prototype saves keep their original schema/rules. */
 export function normalizeGameState(state: GameState): void {
   if (!state.dataset) return;
   const version = state.stateVersion ?? 1;
   if (!Number.isSafeInteger(version) || version < 1 || version > CURRENT_STATE_VERSION) throw new Error('Unsupported campaign state version');
-  if (version === 1) {
-    initializeBuildings(state);
-    state.stateVersion = 2;
-  } else initializeBuildings(state);
+  initializeBuildings(state);
+  initializeTechnology(state);
+  state.stateVersion = CURRENT_STATE_VERSION;
 }
