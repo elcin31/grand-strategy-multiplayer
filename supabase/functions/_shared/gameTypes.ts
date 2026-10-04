@@ -1,3 +1,4 @@
+import type { Rebellion, RebellionEvent } from './stabilitySystem.ts';
 import type { PeaceTerms, WarSummary } from './warSystem.ts';
 import type { DiplomacyLink, TreatyType, War } from './diplomacySystem.ts';
 import type { Commander, TerrainType, UnitType } from './militarySystem.ts';
@@ -61,6 +62,8 @@ export interface EconomyBudget {
 }
 
 export interface Province {
+  rebellion?: Rebellion;
+  rebellionCooldownUntilTick?: number;
   originalOwnerId?: string;
   terrain?: TerrainType;
   buildings?: Partial<Record<BuildingType, number>>;
@@ -155,6 +158,7 @@ export interface Leader {
 }
 
 export interface GameState {
+  rebellionLog?: RebellionEvent[];
   warHistory?: WarSummary[];
   diplomacy?: Record<string, DiplomacyLink>;
   wars?: War[];
@@ -182,6 +186,8 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | { type: 'PACIFY_PROVINCE'; playerId: string; provinceId: string }
+  | { type: 'SUPPRESS_REBELLION'; playerId: string; provinceId: string }
   | { type: 'PROPOSE_PEACE'; playerId: string; warId: string; terms: PeaceTerms }
   | { type: 'RESPOND_PEACE'; playerId: string; warId: string; accept: boolean }
   | { type: 'DIPLOMATIC_ACTION'; playerId: string; targetId: string; action: 'Improve' | 'Rival' | 'Guarantee' | 'Cancel' }

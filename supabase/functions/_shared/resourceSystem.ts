@@ -1,3 +1,4 @@
+import { provinceBuildingModifiers } from './buildingSystem.ts';
 import { techLevel } from './technologySystem.ts';
 import type { Country, GameState, Province } from './gameTypes.ts';
 
@@ -57,11 +58,11 @@ export function resourceReport(state: GameState, countryId: string): { type: Res
   const country = state.countries[countryId];
   if (!country || country.id !== countryId) throw new Error('Unknown resource country');
   const rows = new Map(RESOURCE_TYPES.map(type => [type, { type, units: 0, revenue: 0 }]));
-  for (const p of state.provinces) if (p.ownerId === countryId && p.resourceDeposit) {
+  for (const p of state.provinces) if (p.ownerId === countryId && (p.controllerId ?? p.ownerId) === countryId && !p.rebellion && p.resourceDeposit) {
     const row = rows.get(p.resourceDeposit.type)!;
     const production = provinceProduction(p, country);
     row.units = Math.round((row.units + production.units) * 1000) / 1000;
-    row.revenue = Math.round((row.revenue + production.revenue) * 1000) / 1000;
+    row.revenue = Math.round((row.revenue + production.revenue * (1 + provinceBuildingModifiers(p).resourcePercent / 100)) * 1000) / 1000;
   }
   return [...rows.values()];
 }

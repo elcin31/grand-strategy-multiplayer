@@ -7,7 +7,7 @@ export function MilitaryPanel({state,playerId,onCommand,province,army}: Strategy
   const countryId=state.players.find(p=>p.id===playerId)?.countryId;
   if(!state.dataset || !countryId)return null;
   const c=state.countries[countryId]!;
-  const own=province.ownerId===countryId && (province.controllerId??province.ownerId)===countryId;
+  const own=!province.rebellion && province.ownerId===countryId && (province.controllerId??province.ownerId)===countryId;
   return <View style={styles.wrap}>
     <Text style={styles.text}>Рельеф: {province.terrain} · {army ? `${UNITS[army.unitType??'Infantry'].name} · мораль ${army.morale?.toFixed(0)} · организация ${army.organization?.toFixed(0)}` : 'Выберите свою армию ниже'}</Text>
     {own && <ScrollView horizontal contentContainerStyle={styles.row}>{UNIT_TYPES.map(unitType=>{const u=UNITS[unitType],disabled=techLevel(c,'Military')<u.unlock || c.treasury<u.cost*10 || c.manpower<10000 || state.tick<(c.bankruptcyUntilTick??0);return <Pressable accessibilityRole="button" key={unitType} disabled={disabled} style={[styles.option,disabled&&styles.disabled]} onPress={()=>onCommand({type:'RECRUIT_UNIT',playerId,provinceId:province.id,troops:10000,unitType})}><Text style={styles.title}>{u.name} +10K</Text><Text style={styles.text}>${u.cost*10}M · военная технология {u.unlock}</Text></Pressable>;})}</ScrollView>}

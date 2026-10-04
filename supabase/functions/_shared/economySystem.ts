@@ -36,7 +36,7 @@ export function recalcEconomy(state: GameState): void {
   for (const p of state.provinces) {
     if (!Object.hasOwn(state.countries, p.ownerId)) throw new Error('Unknown economic province owner');
     validMoney(p.income);
-    if ((p.controllerId ?? p.ownerId) !== p.ownerId) continue; // Occupation suspends local income and building upkeep.
+    if (p.rebellion || (p.controllerId ?? p.ownerId) !== p.ownerId) continue; // Occupation suspends local income and building upkeep.
     const modifiers = provinceBuildingModifiers(p), country = state.countries[p.ownerId]!;
     resources.set(p.ownerId, money((resources.get(p.ownerId) ?? 0) + provinceProduction(p, country).revenue * (1 + modifiers.resourcePercent / 100)));
     taxBase.set(p.ownerId, money((taxBase.get(p.ownerId) ?? 0) + p.income * (1 + modifiers.taxPercent / 100)));

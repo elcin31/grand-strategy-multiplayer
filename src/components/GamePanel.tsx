@@ -1,3 +1,4 @@
+import { StabilityPanel } from './StabilityPanel';
 import { WarPanel } from './WarPanel';
 import { DiplomacyPanel } from './DiplomacyPanel';
 import { MilitaryPanel } from './MilitaryPanel';
@@ -151,6 +152,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         <Text style={styles.hint}>Все религии используют одинаковые правила. Низкое единство повышает unrest; смена не обращает население автоматически.</Text>
       </View>}
 
+      <StabilityPanel state={state} playerId={playerId} onCommand={onCommand} />
       <WarPanel state={state} playerId={playerId} onCommand={onCommand} />
       <DiplomacyPanel state={state} playerId={playerId} onCommand={onCommand} />
       <StrategyPanel state={state} playerId={playerId} onCommand={onCommand} />
@@ -184,7 +186,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
                   const definition = BUILDINGS[type];
                   const currentLevel = selected.buildings?.[type] ?? 0;
                   const quote = currentLevel < definition.maxLevel ? buildingQuote(selected, type) : null;
-                  const disabled = !economicActionsEnabled || Boolean(selectedConstruction) || !quote || nation.treasury < quote.cost;
+                  const disabled = !!selected.rebellion || !economicActionsEnabled || Boolean(selectedConstruction) || !quote || nation.treasury < quote.cost;
                   return <Pressable
                     accessibilityRole="button"
                     accessibilityLabel={`Построить ${definition.name}`}

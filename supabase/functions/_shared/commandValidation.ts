@@ -12,6 +12,8 @@ const fields: Record<string, readonly string[]> = {
   SET_TAX_RATE: ['type', 'playerId', 'taxRate'],
   BORROW: ['type', 'playerId', 'amount'],
   REPAY_DEBT: ['type', 'playerId', 'amount'],
+  PACIFY_PROVINCE: ['type','playerId','provinceId'],
+  SUPPRESS_REBELLION: ['type','playerId','provinceId'],
   PROPOSE_PEACE: ['type','playerId','warId','terms'],
   RESPOND_PEACE: ['type','playerId','warId','accept'],
   DIPLOMATIC_ACTION: ['type','playerId','targetId','action'],

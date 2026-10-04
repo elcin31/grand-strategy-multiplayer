@@ -1,3 +1,4 @@
+import { monthlyStability, pacifyProvince, suppressRebellion } from './stabilitySystem.ts';
 import { monthlyWar, proposePeace, recordWarBattle, respondPeace } from './warSystem.ts';
 import { declareWar, diplomaticAction, monthlyDiplomacy, offerTreaty, respondTreaty, warBetween } from './diplomacySystem.ts';
 import { assignCommander, battleFatigue, combatMultiplier, recoverMilitary, UNITS, type UnitType } from './militarySystem.ts';
@@ -90,7 +91,7 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
   recalcCountryStats(state); recalcPopulationTotals(state); recalcReligiousUnity(state);
 }
 function recruit(state: GameState, ownerId: CountryId, province: Province, troops: number, unitType: UnitType = 'Infantry') {
-  if (province.ownerId !== ownerId || (state.dataset && (province.controllerId ?? province.ownerId) !== ownerId)) throw new Error('Нельзя нанимать войска в чужой провинции');
+  if (province.rebellion || province.ownerId !== ownerId || (state.dataset && (province.controllerId ?? province.ownerId) !== ownerId)) throw new Error('Нельзя нанимать войска в чужой провинции');
   if (!Number.isInteger(troops) || troops < 1_000 || troops > 100_000) throw new Error('Недопустимый размер набора');
   const nation = countryFor(state, ownerId);
   if (state.dataset && state.tick < nation.bankruptcyUntilTick!) throw new Error('Набор недоступен после банкротства');
@@ -109,7 +110,7 @@ function runAi(state: GameState) {
   const humanCountries = new Set(state.players.map((player) => player.countryId).filter(Boolean) as CountryId[]);
   for (const id of countryIds(state)) {
     if (humanCountries.has(id)) continue;
-    const owned = state.provinces.filter((province) => province.ownerId === id && (!state.dataset || (province.controllerId ?? province.ownerId) === id));
+    const owned = state.provinces.filter((province) => province.ownerId === id && !province.rebellion && (!state.dataset || (province.controllerId ?? province.ownerId) === id));
     if (!owned.length) continue;
     const nation = countryFor(state, id);
     const budgetAllowsRecruitment = !state.dataset || (state.tick >= nation.bankruptcyUntilTick! && nation.economy!.monthlyBalance >= 5 && nation.treasury >= 80 + (nation.economy!.armyMaintenance + 5) * 3);
@@ -143,6 +144,15 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       if (command.type === 'SET_TAX_RATE') { nation.taxRate = command.taxRate; recalcEconomy(next); }
       else if (command.type === 'BORROW') borrow(next, nation, command.amount); else repay(next, nation, command.amount);
       return next;
+    }
+    case 'PACIFY_PROVINCE':
+    case 'SUPPRESS_REBELLION': {
+      if (!next.dataset || !['running','paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');
+      const player=getPlayer(next,command.playerId);if(!player.countryId)throw new Error('Страна не выбрана');
+      const province=provinceById(next,command.provinceId);if(!province)throw new Error('Провинция не найдена');
+      if(command.type==='PACIFY_PROVINCE')pacifyProvince(next,player.countryId,province);
+      else suppressRebellion(next,player.countryId,province);
+      recalcCountryStats(next);return next;
     }
     case 'PROPOSE_PEACE':
     case 'RESPOND_PEACE': {
@@ -265,7 +275,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }
-      monthlyReligionEffects(next); monthlyEconomy(next); monthlyWar(next); runAi(next); recalcCountryStats(next); checkWinner(next); return next;
+      monthlyReligionEffects(next); monthlyEconomy(next); monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); checkWinner(next); return next;
     }
   }
 }
