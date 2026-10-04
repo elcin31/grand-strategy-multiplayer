@@ -67,6 +67,7 @@ export function provinceBuildingMaintenance(province: Province): number {
 export function buildingModifierTotals(state: GameState): Map<CountryId, BuildingModifiers> {
   const totals = new Map<CountryId, BuildingModifiers>();
   for (const province of state.provinces) {
+    if (province.rebellion || (province.controllerId ?? province.ownerId) !== province.ownerId) continue;
     const source = provinceBuildingModifiers(province), target = totals.get(province.ownerId) ?? zero();
     for (const key of Object.keys(source) as (keyof BuildingModifiers)[]) target[key] += source[key];
     totals.set(province.ownerId, target);

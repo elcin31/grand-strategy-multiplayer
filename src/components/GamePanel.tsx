@@ -206,7 +206,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
             </>}
 
             {state.dataset && <MilitaryPanel state={state} playerId={playerId} onCommand={onCommand} province={selected} army={primaryArmy} />}
-            {isOwnProvince && !state.dataset && (
+            {isOwnProvince && !selected.rebellion && (
               <View style={styles.recruitRow}>
                 <Pressable style={styles.primaryButton} onPress={() => onCommand({ type: 'RECRUIT', playerId, provinceId: selected.id, troops: 10_000 })}>
                   <Text style={styles.primaryText}>+10K войск · $200M</Text>
@@ -221,7 +221,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
             {state.armies.filter((army) => army.provinceId === selected.id).length === 0 ? <Text style={styles.muted}>Нет армий</Text> : state.armies.filter((army) => army.provinceId === selected.id).map((army) => (
               <Pressable accessibilityRole="button" accessibilityState={{selected:primaryArmy?.id===army.id}} disabled={army.ownerId!==countryId} onPress={()=>setSelectedArmyId(army.id)} key={army.id} style={[styles.armyRow, primaryArmy?.id===army.id && styles.govSelected]}>
                 <Text style={styles.armyOwner}>{countryFor(state, army.ownerId).shortName}</Text>
-                <Text style={styles.armyTroops}>{compact(army.troops)} {primaryArmy?.id===army.id ? '✓' : ''}</Text>
+                <Text style={styles.armyTroops}>{compact(army.troops)}</Text>
               </Pressable>
             ))}
 

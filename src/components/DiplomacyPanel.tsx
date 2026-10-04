@@ -13,7 +13,7 @@ export function DiplomacyPanel({state,playerId,onCommand}:StrategyProps) {
     <Pressable accessibilityRole="button" style={styles.button} onPress={()=>setOpen(!open)}><Text style={styles.title}>Дипломатия {open?'▴':'▾'}</Text></Pressable>
     {open&&<View style={styles.card}>
       <TextInput accessibilityLabel="Поиск страны для дипломатии" placeholder="Название страны" placeholderTextColor="#8290A8" value={query} onChangeText={setQuery} style={[styles.button,styles.title]} />
-      <ScrollView horizontal contentContainerStyle={styles.row}>{Object.values(state.countries).filter(c=>c.id!==id&&c.name.toLowerCase().includes(query.toLowerCase())).slice(0,20).map(c=><Pressable accessibilityRole="button" key={c.id} style={styles.option} onPress={()=>setTargetId(c.id)}><Text style={styles.title}>{c.name}{targetId===c.id?' ✓':''}</Text></Pressable>)}</ScrollView>
+      <ScrollView horizontal contentContainerStyle={styles.row}>{Object.values(state.countries).filter(c=>c.id!==id&&`${c.name} ${c.id} ${c.shortName}`.toLowerCase().includes(query.toLowerCase())).slice(0,20).map(c=><Pressable accessibilityRole="button" key={c.id} style={styles.option} onPress={()=>setTargetId(c.id)}><Text style={styles.title}>{c.name}{targetId===c.id?' ✓':''}</Text></Pressable>)}</ScrollView>
       {target&&<>
         <Text style={styles.title}>{target.name} · отношения {link?.relation??0}</Text>
         <Text style={styles.text}>Договоры: {link?.treaties.map(t=>TREATIES[t]).join(', ')||'нет'} · перемирие {Math.max(0,(link?.truceUntilTick??0)-state.tick)} мес.</Text>

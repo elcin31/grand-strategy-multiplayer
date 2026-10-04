@@ -124,7 +124,7 @@ root = hierarchy('02-paused'); click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
 # Country preview centers the camera on Berlin; city/counter hit testing selects its real province.
 adb('shell','input','tap','640','370'); time.sleep(1)
 # Scroll the command card into view and capture the actual army size before recruitment.
-for _ in range(5):
+for _ in range(12):
     root = hierarchy('02-command')
     if any(n.get('text') == 'DEU' for n in root.iter('node')): break
     adb('shell','input','swipe','1080','570','1080','220','450')
@@ -186,6 +186,30 @@ header = next(t for t in texts if 'ГОСУДАРСТВЕННАЯ РЕЛИГИЯ
 assert int(re.search(r'(\d+) PP',header).group(1)) == religion_power - 120, 'Religion did not spend 120 PP'
 assert 'Следующая смена религии через 36 мес.' in texts, 'Religion cooldown missing'
 assert any('Religious Unity:' in t for t in texts), 'Religious Unity is missing'
+# Five-phase UI regression: real research and diplomatic agreement in the release APK.
+click_scrolling('Религия ▴')
+click_scrolling('Технологии ▾')
+click_scrolling('Исследовать Экономика')
+assert '0.0 / 6' in read_scrolling('Экономика: '), 'Research did not queue while paused'
+screenshot('research-queued')
+advance_campaign_months(7)
+assert read_scrolling('Экономика · 1/5'), 'Research did not complete through the real game clock'
+screenshot('research-complete')
+click_scrolling('Технологии ▴')
+click_scrolling('Дипломатия ▾')
+click_scrolling('Поиск страны для дипломатии')
+adb('shell','input','text','france'); adb('shell','input','keyevent','4')
+click_scrolling('Франция')
+click_scrolling('Улучшить · 10 PP')
+assert 'отношения 15' in read_scrolling('Франция · отношения ')
+click_scrolling('Предложить: Ненападение')
+assert 'Ненападение' in read_scrolling('Договоры: ')
+screenshot('diplomacy-treaty')
+click_scrolling('Дипломатия ▴')
+click_scrolling('Стабильность · восстаний 0 ▾')
+click_scrolling('Умиротворить · 50M + 10 PP')
+root = hierarchy('stability-pacified'); screenshot('stability-pacified')
+assert not any('Действие отклонено' in n.get('text','') for n in root.iter('node')), 'Pacification was rejected'
 click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
 root = hierarchy('map-controls')
 click_text(root, 'Политическая · Medium ▾')

@@ -86,6 +86,8 @@ export function declareWar(state:GameState,actor:string,target:string):War {
   if(!Number.isSafeInteger(state.nextEntityId)||state.nextEntityId!<1||state.nextEntityId!>=Number.MAX_SAFE_INTEGER)throw new Error('Entity sequence exhausted');
   const attackers=[actor,...Object.values(state.countries).filter(v=>v.overlordId===actor).map(v=>v.id)];
   if([...attackers,...defenders].some(id=>busy.has(id)))throw new Error('Вассал уже участвует в войне');
+  if(new Set([...attackers,...defenders]).size!==attackers.length+defenders.length)throw new Error('Конфликт сторон войны');
+  for(const a of attackers)for(const d of defenders){const pair=diplomaticLink(state,a,d);if(state.tick<pair.truceUntilTick||pair.treaties.length)throw new Error('Договор участника коалиции запрещает войну');}
   const war={id:`war-${state.id}-${state.nextEntityId!++}`,attackers,defenders,startedTick:state.tick,warScore:0,occupiedProvinceIds:[],casualties:{}};
   state.wars!.push(war);c.politicalPower!-=25;c.aggressiveExpansion=Math.min(100,c.aggressiveExpansion!+5);
   for(const a of attackers)for(const d of defenders){const pair=diplomaticLink(state,a,d);pair.relation=-100;pair.treaties=[];delete pair.proposal;}

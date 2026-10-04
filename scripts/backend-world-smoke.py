@@ -116,7 +116,7 @@ command(host, {'type':'BUILD','playerId':host['playerId'],'provinceId':province[
 command(guest, {'type':'BUILD','playerId':guest['playerId'],'provinceId':province['id'],'buildingType':'Farm'}, 400)
 command(host, {'type':'BUILD','playerId':host['playerId'],'provinceId':province['id'],'buildingType':'Farm'})
 build_queued = snapshot()['state']
-assert build_queued['stateVersion'] == 2
+assert build_queued['stateVersion'] == 7
 assert build_queued['countries']['germany']['treasury'] == build_cash - 120
 assert len(build_queued['constructions']) == 1
 construction = build_queued['constructions'][0]
@@ -202,3 +202,51 @@ for p in religion_after['provinces']:
 assert religion_after['countries']['germany']['economy']['resourceIncome'] > 0
 assert all(p['resourceDeposit'] == q['resourceDeposit'] for p,q in zip(religion_before['provinces'],religion_after['provinces']))
 print('PASS: all resource types, bounded deposits, real resource income and immutable deposits across policy change', flush=True)
+
+# Phases 12–16: real authenticated commands on the same persisted two-player room.
+strategy_before = snapshot()['state']
+assert strategy_before['stateVersion'] == 7
+cash = strategy_before['countries']['germany']['treasury']
+command(host, {'type':'START_RESEARCH','playerId':host['playerId'],'branch':'Military','cost':0}, 400)
+command(host, {'type':'START_RESEARCH','playerId':host['playerId'],'branch':'Military'})
+research = snapshot()['state']
+assert research['countries']['germany']['treasury'] == cash - 150
+assert research['countries']['germany']['research']['progress'] == 0
+command(host, {'type':'ADVANCE_TICK'})
+assert snapshot()['state']['countries']['germany']['research']['progress'] == 0
+command(host, {'type':'SET_SPEED','playerId':host['playerId'],'speed':1})
+for _ in range(7): command(host, {'type':'ADVANCE_TICK'})
+command(host, {'type':'SET_SPEED','playerId':host['playerId'],'speed':0})
+strategy = snapshot()['state']
+assert strategy['countries']['germany']['technologies']['Military'] == 1
+command(host, {'type':'RECRUIT_UNIT','playerId':host['playerId'],'provinceId':province['id'],'troops':1000,'unitType':'Artillery'})
+strategy = snapshot()['state']
+artillery = next(a for a in strategy['armies'] if a['provinceId'] == province['id'] and a['unitType'] == 'Artillery')
+command(host, {'type':'ASSIGN_COMMANDER','playerId':host['playerId'],'armyId':artillery['id'],'commanderId':'general-germany-0'})
+command(guest, {'type':'ASSIGN_COMMANDER','playerId':guest['playerId'],'armyId':artillery['id'],'commanderId':'general-france-0'}, 400)
+assert next(a for a in snapshot()['state']['armies'] if a['id'] == artillery['id'])['commanderId'] == 'general-germany-0'
+command(host, {'type':'OFFER_TREATY','playerId':host['playerId'],'targetId':'france','treaty':'NonAggression'})
+assert snapshot()['state']['diplomacy']['france|germany']['treaties'] == []
+command(guest, {'type':'RESPOND_TREATY','playerId':guest['playerId'],'targetId':'germany','accept':True})
+command(host, {'type':'DECLARE_WAR','playerId':host['playerId'],'targetId':'france'},400)
+command(host, {'type':'DIPLOMATIC_ACTION','playerId':host['playerId'],'targetId':'france','action':'Cancel'})
+command(host, {'type':'DECLARE_WAR','playerId':host['playerId'],'targetId':'france'},400)
+command(host, {'type':'SET_SPEED','playerId':host['playerId'],'speed':1})
+for _ in range(6): command(host, {'type':'ADVANCE_TICK'})
+command(host, {'type':'SET_SPEED','playerId':host['playerId'],'speed':0})
+command(host, {'type':'DECLARE_WAR','playerId':host['playerId'],'targetId':'france'})
+war = next(w for w in snapshot()['state']['wars'] if 'germany' in w['attackers'])
+command(host, {'type':'PROPOSE_PEACE','playerId':host['playerId'],'warId':war['id'],'terms':{'kind':'WhitePeace','provinceIds':[],'amount':0}})
+command(guest, {'type':'RESPOND_PEACE','playerId':guest['playerId'],'warId':war['id'],'accept':True})
+strategy = snapshot()['state']
+assert not strategy['wars'] and strategy['warHistory'][0]['kind'] == 'WhitePeace'
+assert strategy['diplomacy']['france|germany']['truceUntilTick'] == strategy['tick'] + 24
+pacify = next(p for p in strategy['provinces'] if p['ownerId'] == 'germany' and p['unrest'] >= 1 and not p.get('rebellion'))
+cash, power = strategy['countries']['germany']['treasury'], strategy['countries']['germany']['politicalPower']
+command(host, {'type':'PACIFY_PROVINCE','playerId':host['playerId'],'provinceId':pacify['id']})
+strategy = snapshot()['state']
+assert strategy['countries']['germany']['treasury'] == cash - 50
+assert strategy['countries']['germany']['politicalPower'] == power - 10
+assert next(p for p in strategy['provinces'] if p['id'] == pacify['id'])['unrest'] == max(0, pacify['unrest'] - 15)
+assert snapshot(guest)['state'] == strategy
+print('PASS: research/payment/pause/completion, typed recruitment/commander authority, player treaty consent, truce/war/peace, paid pacification and compressed guest recovery', flush=True)

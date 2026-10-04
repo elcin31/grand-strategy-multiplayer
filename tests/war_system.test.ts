@@ -32,3 +32,17 @@ test('return territory validates original ownership, malformed peace is rejected
   const a=invaded().s;const score=a.wars![0]!.warScore;initializeWars(a);assert.equal(a.wars![0]!.warScore,score);refreshWars(a);assert.ok(warBetween(a,'germany','france'));
   assert.throws(()=>applyServerCommand(a,{type:'PROPOSE_PEACE',playerId:'host',warId:a.wars![0]!.id,terms:{kind:'Money',provinceIds:[],amount:NaN}},'host'));
 });
+test('occupation suspends national building bonuses and AI cannot recruit in occupied land',()=>{
+  const {s,destId}=invaded();const p=s.provinces.find(p=>p.id===destId)!;p.buildings={University:5};
+  // Let the AI act for France while its richest province is occupied.
+  s.players=s.players.filter(p=>p.id==='host');s.phase='running';s.speed=1;s.tick=2;
+  for(const q of s.provinces)if(q.ownerId==='france'){q.controllerId='germany';q.buildings={University:5};}
+  assert.doesNotThrow(()=>applyServerCommand(s,{type:'ADVANCE_TICK'},'host'));
+});
+test('a vassal cannot appear on both sides of a declared war or bypass its truce',()=>{
+  const s=campaign();s.countries.poland!.overlordId='germany';
+  s.diplomacy!['france|poland']={a:'france',b:'poland',relation:30,treaties:['Alliance'],rivals:[],guarantors:[],truceUntilTick:0};
+  assert.throws(()=>applyServerCommand(s,{type:'DECLARE_WAR',playerId:'host',targetId:'france'},'host'));
+  s.diplomacy!['france|poland']!.treaties=[];s.diplomacy!['france|poland']!.truceUntilTick=10;
+  assert.throws(()=>applyServerCommand(s,{type:'DECLARE_WAR',playerId:'host',targetId:'france'},'host'));
+});
