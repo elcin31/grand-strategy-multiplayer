@@ -1,132 +1,42 @@
-# Grand Strategy Multiplayer
+# Grand Strategy Multiplayer · Dominion
 
-Android-first multiplayer grand-strategy game built as an original project with original code and data.
+Original Android-first global strategy, built with Expo 57, React Native 0.86, TypeScript and a native Skia map. No Age of History code or assets are used.
 
-## Current status
+## Current checkpoint
 
-- Expo SDK 57 / React Native 0.86 / TypeScript
-- Android-first responsive UI
-- Interactive prototype map with selectable countries and provinces
-- Deterministic game state + authoritative server command reducer
-- Lobby, room code, country selection, ready state, host start
-- Running game clock with speed controls and monthly economy ticks
-- Multiplayer transport interface separated from game logic
-- Supabase backend deployed in a dedicated project
-- Edge Functions `game-room` and `game-command` deployed
-- RLS enabled; `anon` and `authenticated` have no direct table privileges
-- Random player bearer tokens stored server-side only as SHA-256 hashes
-- Optimistic version checks prevent simultaneous commands from silently overwriting each other
-- Android client points to the deployed multiplayer backend by default
-- EAS configuration for APK preview builds
+Main contains 195 playable UN member/observer states, 4,386 provinces and 7,214 cities; seeded fictional rulers; ten government forms; religion and Religious Unity; population; economy/debt/default; ten resources and ten building types.
 
-## Production multiplayer backend
+The 2026-10-04 session adds **Phases 12–16 only**: five research branches, six military unit types and commanders/readiness, relations/treaties/guarantees, authoritative wars/occupation/peace, stability and rebellions. The roadmap is not finished. **Next: Phase 17 AI 2.0.**
 
-Project ref:
+Read [DEVELOPMENT_HANDOFF.md](DEVELOPMENT_HANDOFF.md) for exact implementation, commits, CI evidence, remaining gates and next five phases. [RECOVERY_AUDIT.md](RECOVERY_AUDIT.md) records the recovered 26-phase matrix. [BUG_REPORT.md](BUG_REPORT.md) tracks current defects/limitations; [WORLD_UPDATE_STATUS.md](WORLD_UPDATE_STATUS.md) is mostly historical evidence.
 
-```text
-dfjsnjxnyjspwugjguhq
-```
+## Run and verify
 
-Functions base URL:
-
-```text
-https://dfjsnjxnyjspwugjguhq.supabase.co/functions/v1
-```
-
-You can override the endpoint for development with:
-
-```text
-EXPO_PUBLIC_MULTIPLAYER_URL=https://<project-ref>.supabase.co/functions/v1
-```
-
-No service-role or secret key is stored in the mobile app or repository.
-
-## Run
-
-Requirements: Node.js 22.13+ for Expo SDK 57.
-
-```bash
-npm install
-npm run typecheck
-npm run start
-```
-
-For Android:
-
-```bash
-npm run android
-```
-
-For an installable preview APK after EAS authentication:
-
-```bash
-npx eas build --platform android --profile preview
-```
-
-## Architecture
-
-```text
-UI (React Native)
-      ↓ commands
-Game Engine / command model
-      ↓
-HttpTransport
-      ↓
-Supabase Edge Functions
-      ↓
-Authoritative PostgreSQL state
-```
-
-Mobile clients never write game tables directly. `game-room` handles room creation, joining and authenticated state reads. `game-command` validates the player's room token and applies commands on the server.
-
-## Backend files
-
-- `supabase/migrations/0001_multiplayer_core.sql`
-- `supabase/functions/_shared/game.ts`
-- `supabase/functions/_shared/security.ts`
-- `supabase/functions/game-room/index.ts`
-- `supabase/functions/game-command/index.ts`
-- `src/multiplayer/httpTransport.ts`
-
-## Next phase
-
-1. Test two physical Android clients in one room.
-2. Persist sessions locally and reconnect after app restarts/network loss.
-3. Add province adjacency, legal movement paths and combat resolution.
-4. Move state delivery from polling to Supabase Realtime Broadcast.
-5. Add diplomacy, wars, peace treaties and alliances.
-6. Persist long-running campaigns and player return state.
-7. Add server-side rate limiting / abuse protection for public room creation.
-
-## World update checkpoint (branch `world-update`)
-
-The map now uses a native Skia GPU canvas rather than a grid of SVG rectangles.
-Geographic contours come from public-domain Natural Earth; terrain bands and visual
-styling are original. Pan/inertia, pinch and double-tap zoom run through native
-shared-value camera transforms. Geometry is cached and batched by color; spatial
-queries and city detail budgets control visible content. Low/Medium/High/Ultra
-settings change rendering only.
-
-The landscape screen uses safe-area insets and a collapsible overlay panel.
-`ОДИНОЧНАЯ ИГРА` starts the existing scenario offline without connecting to the
-server. Offline campaign persistence is not implemented yet.
-
-This checkpoint is **not** the completed world update: it still has 8 playable
-countries and 12 provinces. See `WORLD_UPDATE_STATUS.md`, `BUG_REPORT.md` and
-`THIRD_PARTY_NOTICES.md` for exact scope, gates and source provenance.
+Node.js 22.13+:
 
 ```bash
 npm ci --include=dev
 npm run typecheck
 npm test
 npm run benchmark:map
-npx expo prebuild --platform android --clean
-python scripts/verify-native-config.py
-cd android
-./gradlew assembleRelease --no-daemon
+npm run benchmark:world -- 100
+npm start
 ```
 
-CI checks the embedded `assets/index.android.bundle`, Skia/Hermes libraries, native
-landscape configuration, and emulator cold launch / map / layout / restart. It
-builds a clearly labelled renderer checkpoint APK; the final
-`Dominion-world-update-release.apk` is reserved for full acceptance.
+The live QA script creates only an isolated test campaign in the dedicated game backend. Its exact room ID must be cleaned with the QA-name guard after verification; never delete user campaigns.
+
+## Server authority and persistence
+
+Clients send intent. A shared pure reducer implements local/server rules; the authenticated server boundary rejects actor spoofing. Edge Functions price and validate recruitment, movement/combat, research/buildings, government/resources, diplomacy/war/peace. Hashed room bearer tokens, RLS denial of direct client table access and compare-and-swap version updates remain intact.
+
+Modern snapshots use `stateVersion: 7`, incremental-compatible normalization and compressed persistence with legacy JSONB fallback. Offline play works but does **not** yet implement disk save/restore. Durable client reconnect/idempotency and full strategic AI are later phases.
+
+Dedicated backend: `dfjsnjxnyjspwugjguhq`.
+Endpoint: `https://dfjsnjxnyjspwugjguhq.supabase.co/functions/v1`.
+Only this backend is used; AssetMind projects/data/auth/storage are excluded. Both `game-room` and `game-command` must be deployed from the same tested shared-source revision.
+
+## Android
+
+GitHub Actions builds an **assembleRelease standalone checkpoint APK**, checks `assets/index.android.bundle` and Hermes/Skia libraries, then exercises offline gameplay, landscape layouts and restart without Metro. Download `dominion-world-checkpoint` from a **successful** Android APK run. It is not the final completed-roadmap release; physical-device FPS/thermal acceptance is outstanding. Do not distribute a debug/Metro-dependent APK.
+
+Natural Earth geometry/data and licensed flag assets have provenance in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Population allocation, resources, combat terrain and policies are original game abstractions rather than census, geological or political claims.
