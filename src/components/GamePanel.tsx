@@ -1,3 +1,4 @@
+import { MilitaryPanel } from './MilitaryPanel';
 import { StrategyPanel } from './StrategyPanel';
 import { BUILDINGS, BUILDING_TYPES, buildingQuote } from '../../supabase/functions/_shared/buildingSystem';
 import { RESOURCES, provinceProduction, resourceReport } from '../../supabase/functions/_shared/resourceSystem';
@@ -19,6 +20,7 @@ const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).t
 const currency = (value: number) => `${value < 0 ? '−' : ''}$${Math.abs(value) >= 1000 ? (Math.abs(value)/1000).toFixed(1)+'B' : Math.abs(value).toFixed(3).replace(/\.?0+$/, '')+'M'}`;
 
 export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: GamePanelProps) {
+  const [selectedArmyId, setSelectedArmyId] = useState<string | null>(null);
   const [religionOpen, setReligionOpen] = useState(false);
   const [governmentOpen, setGovernmentOpen] = useState(false);
   const [economyOpen, setEconomyOpen] = useState(false);
@@ -29,7 +31,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
   const ruler = nation.rulerId ? state.leaders?.[nation.rulerId] : undefined;
   const selected = state.provinces.find((province) => province.id === selectedProvinceId) ?? null;
   const ownArmies = selected ? state.armies.filter((army) => army.provinceId === selected.id && army.ownerId === countryId).sort((a, b) => b.troops - a.troops) : [];
-  const primaryArmy = ownArmies[0] ?? null;
+  const primaryArmy = ownArmies.find(a => a.id === selectedArmyId) ?? ownArmies[0] ?? null;
   const neighbors = selected ? selected.neighbors.map((id) => state.provinces.find((province) => province.id === id)).filter(Boolean) : [];
   const selectedCities = selected ? (state.cities ?? []).filter(c => c.provinceId === selected.id).sort((a,b) => Number(b.isCapital)-Number(a.isCapital) || b.population-a.population).slice(0,3) : [];
   const selectedConstruction = selected ? state.constructions?.find(item => item.provinceId === selected.id) ?? null : null;
@@ -196,7 +198,8 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
               </ScrollView>}
             </>}
 
-            {isOwnProvince && (
+            {state.dataset && <MilitaryPanel state={state} playerId={playerId} onCommand={onCommand} province={selected} army={primaryArmy} />}
+            {isOwnProvince && !state.dataset && (
               <View style={styles.recruitRow}>
                 <Pressable style={styles.primaryButton} onPress={() => onCommand({ type: 'RECRUIT', playerId, provinceId: selected.id, troops: 10_000 })}>
                   <Text style={styles.primaryText}>+10K войск · $200M</Text>
@@ -209,10 +212,10 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
 
             <Text style={styles.sectionTitle}>Армии в провинции</Text>
             {state.armies.filter((army) => army.provinceId === selected.id).length === 0 ? <Text style={styles.muted}>Нет армий</Text> : state.armies.filter((army) => army.provinceId === selected.id).map((army) => (
-              <View key={army.id} style={styles.armyRow}>
+              <Pressable accessibilityRole="button" accessibilityState={{selected:primaryArmy?.id===army.id}} disabled={army.ownerId!==countryId} onPress={()=>setSelectedArmyId(army.id)} key={army.id} style={[styles.armyRow, primaryArmy?.id===army.id && styles.govSelected]}>
                 <Text style={styles.armyOwner}>{countryFor(state, army.ownerId).shortName}</Text>
-                <Text style={styles.armyTroops}>{compact(army.troops)}</Text>
-              </View>
+                <Text style={styles.armyTroops}>{compact(army.troops)} {primaryArmy?.id===army.id ? '✓' : ''}</Text>
+              </Pressable>
             ))}
 
             {isOwnProvince && (

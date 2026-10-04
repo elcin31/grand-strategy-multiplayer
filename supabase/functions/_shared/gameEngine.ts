@@ -1,3 +1,4 @@
+import { assignCommander, battleFatigue, combatMultiplier, recoverMilitary, UNITS, type UnitType } from './militarySystem.ts';
 import { monthlyResearch, startResearch, techLevel } from './technologySystem.ts';
 import { buildingModifierTotals, cancelConstructionInProvince, completeConstructions, provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
 import { initializeResources } from './resourceSystem.ts';
@@ -59,14 +60,14 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
   if (destination.ownerId === ownerId) { army.provinceId = destination.id; return; }
   const defenderId = destination.ownerId, defenders = armiesIn(state, destination.id, defenderId), defenderTroops = totalTroops(defenders);
   const attackerNation = countryFor(state, ownerId), defenderNation = countryFor(state, defenderId);
-  const attackPower = army.troops * (1 + attackerNation.technology / 200) * (0.75 + attackerNation.stability / 200);
+  const attackPower = army.troops * (1 + attackerNation.technology / 200) * (0.75 + attackerNation.stability / 200) * combatMultiplier(state, army, destination, false);
   const fortification = state.dataset ? 1 + provinceBuildingModifiers(destination).defensePercent / 100 : 1;
-  const defensePower = (defenderTroops + 2_500) * (1 + defenderNation.technology / 180) * (0.85 + defenderNation.stability / 250) * 1.12 * fortification;
+  const defensePower = (defenderTroops + 2_500) * (1 + defenderNation.technology / 180) * (0.85 + defenderNation.stability / 250) * 1.12 * fortification * (defenderTroops > 0 ? defenders.reduce((sum, a) => sum + a.troops * combatMultiplier(state, a, destination, true), 0) / defenderTroops : 1);
   const ratio = attackPower / Math.max(1, defensePower);
   if (ratio >= 1) {
-    const attackerLosses = Math.min(army.troops - 1_000, Math.max(1_000, Math.round((defenderTroops + 2_500) * (0.42 + 0.18 / ratio))));
+    const attackerLosses = Math.min(Math.max(0, army.troops - 1), Math.max(1_000, Math.round((defenderTroops + 2_500) * (0.42 + 0.18 / ratio))));
     const defenderLosses = defenderTroops;
-    army.troops = Math.max(1_000, army.troops - attackerLosses);
+    army.troops -= attackerLosses;
     state.armies = state.armies.filter((candidate) => !defenders.some((defender) => defender.id === candidate.id));
     destination.ownerId = ownerId;
     if (destination.controllerId) destination.controllerId = ownerId;
@@ -82,20 +83,22 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
     state.armies = state.armies.filter((candidate) => candidate.troops > 0);
     addBattle(state, { provinceId: destination.id, attackerId: ownerId, defenderId, attackerLosses, defenderLosses, winnerId: defenderId, captured: false, message: `${defenderNation.name} удерживает ${destination.name}` });
   }
+  if (state.dataset) battleFatigue([army, ...defenders]);
   recalcCountryStats(state); recalcPopulationTotals(state); recalcReligiousUnity(state);
 }
-function recruit(state: GameState, ownerId: CountryId, province: Province, troops: number) {
+function recruit(state: GameState, ownerId: CountryId, province: Province, troops: number, unitType: UnitType = 'Infantry') {
   if (province.ownerId !== ownerId) throw new Error('Нельзя нанимать войска в чужой провинции');
   if (!Number.isInteger(troops) || troops < 1_000 || troops > 100_000) throw new Error('Недопустимый размер набора');
   const nation = countryFor(state, ownerId);
   if (state.dataset && state.tick < nation.bankruptcyUntilTick!) throw new Error('Набор недоступен после банкротства');
-  const cost = Math.ceil(troops / 1_000) * 20;
+  if (state.dataset && techLevel(nation, 'Military') < UNITS[unitType].unlock) throw new Error('Нужен более высокий уровень военной технологии');
+  const cost = Math.ceil(troops / 1_000) * (state.dataset ? UNITS[unitType].cost : 20);
   if (nation.treasury < cost) throw new Error('Недостаточно средств');
   if (nation.manpower < troops) throw new Error('Недостаточно людских ресурсов');
   nation.treasury = state.dataset ? money(nation.treasury - cost) : nation.treasury - cost;
   nation.manpower -= troops;
-  const existing = state.armies.find((candidate) => candidate.ownerId === ownerId && candidate.provinceId === province.id);
-  if (existing) existing.troops += troops; else state.armies.push({ id: entityId(state, 'army'), ownerId, provinceId: province.id, troops });
+  const existing = state.armies.find((candidate) => candidate.ownerId === ownerId && candidate.provinceId === province.id && (candidate.unitType ?? 'Infantry') === unitType);
+  if (existing) existing.troops += troops; else state.armies.push({ id: entityId(state, 'army'), ownerId, provinceId: province.id, troops, ...(state.dataset ? { unitType, morale: 80, organization: 60 } : {}) });
   nation.army += troops;
   if (state.dataset) refreshArmyBudget(nation);
 }
@@ -172,11 +175,18 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       const player = getPlayer(next, command.playerId); if (!player.isHost) throw new Error('Скорость меняет хост');
       next.speed = command.speed; next.phase = command.speed === 0 ? 'paused' : 'running'; return next;
     }
+    case 'ASSIGN_COMMANDER': {
+      if (!next.dataset || !['running','paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');
+      const player = getPlayer(next, command.playerId); if (!player.countryId) throw new Error('Страна не выбрана');
+      assignCommander(next, player.countryId, command.armyId, command.commanderId); return next;
+    }
+    case 'RECRUIT_UNIT':
     case 'RECRUIT': {
       if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId); if (!player.countryId) throw new Error('Страна не выбрана');
       const province = provinceById(next, command.provinceId); if (!province) throw new Error('Провинция не найдена');
-      recruit(next, player.countryId, province, command.troops); return next;
+      if (command.type === 'RECRUIT_UNIT' && !next.dataset) throw new Error('Нужна современная кампания');
+      recruit(next, player.countryId, province, command.troops, command.type === 'RECRUIT_UNIT' ? command.unitType : 'Infantry'); return next;
     }
     case 'MOVE_ARMY': {
       if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
@@ -215,6 +225,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       next.tick += 1; next.month += 1; if (next.month > 12) { next.month = 1; next.year += 1; }
       completeConstructions(next);
       monthlyResearch(next);
+      recoverMilitary(next);
       monthlyPopulationGrowth(next); recalcCountryStats(next);
       const buildingTotals = buildingModifierTotals(next);
       for (const id of countryIds(next)) {

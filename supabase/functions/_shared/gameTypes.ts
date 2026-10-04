@@ -1,3 +1,4 @@
+import type { Commander, TerrainType, UnitType } from './militarySystem.ts';
 import type { Research, TechnologyBranch } from './technologySystem.ts';
 import type { ResourceDeposit } from './resourceSystem.ts';
 export type CountryId = string;
@@ -55,6 +56,7 @@ export interface EconomyBudget {
 }
 
 export interface Province {
+  terrain?: TerrainType;
   buildings?: Partial<Record<BuildingType, number>>;
   resourceDeposit?: ResourceDeposit;
   populationGrowthCarry?: number;
@@ -89,6 +91,10 @@ export interface Construction {
 }
 
 export interface Army {
+  unitType?: UnitType;
+  morale?: number;
+  organization?: number;
+  commanderId?: string;
   id: string;
   ownerId: CountryId;
   provinceId: string;
@@ -143,6 +149,7 @@ export interface Leader {
 }
 
 export interface GameState {
+  commanders?: Record<string, Commander>;
   stateVersion?: number;
   nextEntityId?: number;
   dataset?: 'modern-world-v1';
@@ -166,6 +173,8 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | { type: 'RECRUIT_UNIT'; playerId: string; provinceId: string; troops: number; unitType: UnitType }
+  | { type: 'ASSIGN_COMMANDER'; playerId: string; armyId: string; commanderId: string }
   | { type: 'START_RESEARCH'; playerId: string; branch: TechnologyBranch }
   | { type: 'SET_TAX_RATE'; playerId: string; taxRate: number }
   | { type: 'BORROW'; playerId: string; amount: number }
