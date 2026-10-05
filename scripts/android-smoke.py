@@ -136,9 +136,8 @@ for attempt in range(4):
     assert not any(n.get('text')=='Действие отклонено' for n in root.iter('node')), 'Start command rejected'
     click_scrolling('НАЧАТЬ ИГРУ')
 assert any(n.get('text','').startswith('Ход ') for n in root.iter('node')), 'Campaign did not start after visible start control'
-if any(n.get('text')=='УПРАВЛЕНИЕ' for n in root.iter('node')):click_text(root,'УПРАВЛЕНИЕ')
 set_speed(0)
-root = hierarchy('02-paused'); click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
+root = hierarchy('02-paused')
 # Country preview centers the camera on Berlin; city/counter hit testing selects its real province.
 navigate('Армия')
 root=hierarchy('army-list')
@@ -153,9 +152,7 @@ before = province_army_text(root)
 click_scrolling('+25K · $500M')
 root = hierarchy('02-recruited'); screenshot('02-recruited')
 assert province_army_text(root) == str(int(before[:-1])+25)+'K', 'Recruitment command did not update the army'
-click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
 # Government is a real paid command, with a frozen 24-month cooldown on pause.
-root = hierarchy('government-open'); click_text(root,'УПРАВЛЕНИЕ')
 click_scrolling('Экономика ▾')
 root = hierarchy('economy-before'); screenshot('economy-before')
 assert read_scrolling('Налоги: ').startswith('Налоги: 30%'), 'Initial tax policy missing'
@@ -233,8 +230,11 @@ click_scrolling('Стабильность · восстаний 0 ▾')
 click_scrolling('Умиротворить · 50M + 10 PP')
 root = hierarchy('stability-pacified'); screenshot('stability-pacified')
 assert not any('Действие отклонено' in n.get('text','') for n in root.iter('node')), 'Pacification was rejected'
-click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
-root = hierarchy('map-controls')
+adb('shell','input','keyevent','4')
+for _ in range(6):
+    time.sleep(1);root=hierarchy('map-controls')
+    if any(n.get('text')=='УПРАВЛЕНИЕ' for n in root.iter('node')):break
+assert any(n.get('text')=='УПРАВЛЕНИЕ' for n in root.iter('node')), 'Back did not close campaign panel'
 click_text(root, 'Политическая · Medium ▾')
 for quality in ['Low','Medium','High','Ultra']:
     root = hierarchy('graphics-'+quality)
