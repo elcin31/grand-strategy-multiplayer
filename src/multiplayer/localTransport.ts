@@ -11,6 +11,13 @@ const emit = (state: GameState) => listeners.get(state.id)?.forEach((listener) =
 export class LocalTransport implements MultiplayerTransport {
   private readonly playerIds = new Map<string, string>();
 
+  async restore(state: GameState): Promise<TransportSession> {
+    const {validateCampaign}=await import('../persistence/campaignCodec');
+    const restored=validateCampaign(state);const playerId=restored.players[0]!.id;
+    rooms.set(restored.id,restored);this.playerIds.set(restored.id,playerId);
+    return {state:structuredClone(restored),playerId};
+  }
+
   async createRoom(displayName: string): Promise<TransportSession> {
     const roomCode = randomCode();
     const state = createWorldState('game-'+roomCode.toLowerCase(), roomCode, 'local-player', displayName.trim() || 'Игрок 1');

@@ -1,5 +1,7 @@
+import { campaignStore } from './src/persistence/nativeCampaignStore';
+import type { CampaignEntry } from './src/persistence/campaignStore';
 import { useEffect, useRef, useState } from 'react';
-import { Alert, BackHandler, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Alert, AppState, BackHandler, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CountryPicker } from './src/components/CountryPicker';
@@ -21,11 +23,17 @@ export default function App() {
 }
 
 function GameApp() {
+  const [savedCampaigns,setSavedCampaigns]=useState<CampaignEntry[]>([]);
+  const [saveStatus,setSaveStatus]=useState('');
+  const latestState=useRef<GameState|null>(null);
   const [savedRooms,setSavedRooms]=useState<RemoteSession[]>([]);
   const [connectionStatus,setConnectionStatus]=useState('');
 
   const [transport, setTransport] = useState<MultiplayerTransport>(() => new HttpTransport(remoteUrl));
   const [state, setState] = useState<GameState | null>(null);
+  latestState.current=state;
+  useEffect(()=>{if(!state)void campaignStore.list().then(setSavedCampaigns).catch(()=>setSaveStatus('Ошибка чтения списка кампаний'));},[state?.id]);
+  useEffect(()=>{if(!(transport instanceof LocalTransport)||!state)return;const save=()=>{const current=latestState.current;if(current)void campaignStore.save(current).then(()=>setSaveStatus('Автосохранено')).catch(e=>setSaveStatus(e.message));};const timer=setInterval(save,10000);const sub=AppState.addEventListener('change',status=>{if(status!=='active')save();});return()=>{clearInterval(timer);sub.remove();};},[state?.id,transport]);
   useEffect(()=>{if(!state)void new HttpTransport(remoteUrl).savedSessions().then(setSavedRooms).catch(()=>setConnectionStatus('Не удалось прочитать сохранённые сессии'));},[state?.id]);
   const [previewCountryId, setPreviewCountryId] = useState<CountryId | null>(null);
   const [selectedProvinceId, setSelectedProvinceId] = useState<string | null>(null);
@@ -121,7 +129,11 @@ function GameApp() {
         <ScrollView contentContainerStyle={styles.entryWrap} keyboardShouldPersistTaps="handled">
           <Text style={styles.brand}>DOMINION</Text>
           <Text style={styles.tagline}>MULTIPLAYER GRAND STRATEGY</Text>
+          <Text style={styles.exitText}>НОВАЯ КАМПАНИЯ</Text>
           <EntryPanel onCreate={createRoom} onJoin={joinRoom} />
+          {savedCampaigns.length>0&&<Text style={styles.exitText}>ЗАГРУЗИТЬ КАМПАНИЮ</Text>}
+          {savedCampaigns.map(item=><View key={item.id} style={{gap:6}}><Pressable accessibilityLabel="Продолжить кампанию" style={styles.exitButton} onPress={()=>void safeAction(async()=>{const local=new LocalTransport();attach(await local.restore(await campaignStore.load(item.id)),local);})}><Text style={styles.exitText}>{item.metadata?.name??item.id} · {item.error??`${item.metadata?.month}/${item.metadata?.year} · ход ${item.metadata?.tick}`}</Text></Pressable><Pressable style={styles.exitButton} onPress={()=>Alert.alert('Удалить сохранение?','Это действие нельзя отменить',[{text:'Отмена'},{text:'Удалить',style:'destructive',onPress:()=>void safeAction(async()=>{await campaignStore.delete(item.id);setSavedCampaigns(await campaignStore.list());})}])}><Text style={styles.exitText}>Удалить</Text></Pressable></View>)}
+          <Text style={styles.exitText}>{saveStatus}</Text>
           {savedRooms.map(room=><Pressable key={room.gameId} style={styles.exitButton} onPress={()=>void safeAction(async()=>{const remote=new HttpTransport(remoteUrl);attach(await remote.reconnect(room.gameId),remote);})}><Text style={styles.exitText}>ПРОДОЛЖИТЬ ONLINE · {room.roomCode} · {room.countryId??"Лобби"}</Text></Pressable>)}
           <Pressable accessibilityLabel="Одиночная игра" style={styles.exitButton} onPress={createOffline}><Text style={styles.exitText}>ОДИНОЧНАЯ ИГРА</Text></Pressable>
           <Text style={styles.footer}>DOMINION · ONLINE CAMPAIGNS</Text>
@@ -141,18 +153,21 @@ function GameApp() {
           </View>
           {!gameStarted && <CountryPicker state={state} onPreview={id => { setPreviewCountryId(id); setFocusCountryId(id); setPanelOpen(true); }} />}
           <Pressable style={styles.exitButton} onPress={() => setPanelOpen(!panelOpen)}><Text style={styles.exitText}>{panelOpen ? "ЗАКРЫТЬ ПАНЕЛЬ" : "УПРАВЛЕНИЕ"}</Text></Pressable>
-          <Pressable style={styles.exitButton} onPress={() => {
-            transport.leave(state.id).catch(() => undefined);
+          {transport instanceof LocalTransport&&<Pressable accessibilityLabel="Сохранить кампанию" style={styles.exitButton} onPress={()=>void safeAction(async()=>{await campaignStore.save(state);setSaveStatus('Сохранено');})}><Text style={styles.exitText}>СОХРАНИТЬ</Text></Pressable>}
+          <Pressable style={styles.exitButton} onPress={() => void safeAction(async() => {
+            if(transport instanceof LocalTransport)await campaignStore.save(state);
+            await transport.leave(state.id).catch(() => undefined);
             unsubscribeRef.current?.();
             setState(null);
             setPlayerId(null);
             setSelectedProvinceId(null);
             setPreviewCountryId(null);
-          }}>
+          })}>
             <Text style={styles.exitText}>ВЫЙТИ</Text>
           </Pressable>
         </View>
 
+        {transport instanceof LocalTransport&&saveStatus!==''&&<Text style={{color:"#9BABBF",fontSize:10}}>{saveStatus}</Text>}
         {connectionStatus!==''&&<Text style={{color:"#ffcf85",padding:6}}>{connectionStatus}</Text>}
         <View style={styles.mapArea}><WorldMap
           state={state}

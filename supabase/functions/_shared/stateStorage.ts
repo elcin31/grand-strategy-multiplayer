@@ -1,3 +1,4 @@
+import {normalizeGameState} from './stateMigrations.ts';
 import type { GameState } from './gameTypes.ts';
 
 export interface StoredRoomState {
@@ -63,11 +64,12 @@ export async function unpackRoomState(row: StoredRoomState): Promise<GameState> 
       throw new Error('Corrupted persisted campaign state');
     }
     assertState(decoded);
+    normalizeGameState(decoded);
     return decoded;
   }
   if (row.state) {
     assertState(row.state);
-    return row.state;
+    const restored=structuredClone(row.state);normalizeGameState(restored);return restored;
   }
   throw new Error('Campaign state is missing');
 }
