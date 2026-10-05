@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { TREATIES, pairKey, treatyAcceptance, warBetween, type TreatyType } from '../../supabase/functions/_shared/diplomacySystem';
 import { styles, type StrategyProps } from './StrategyPanel';
-export function DiplomacyPanel({state,playerId,onCommand}:StrategyProps) {
-  const [open,setOpen]=useState(false),[query,setQuery]=useState(''),[targetId,setTargetId]=useState('');
+export function DiplomacyPanel({state,playerId,onCommand,initialOpen}:StrategyProps) {
+  const [open,setOpen]=useState(initialOpen??false),[query,setQuery]=useState(''),[targetId,setTargetId]=useState('');
   const id=state.players.find(p=>p.id===playerId)?.countryId;
   if(!state.dataset||!id)return null;
   const target=state.countries[targetId],link=target?state.diplomacy?.[pairKey(id,targetId)]:undefined;

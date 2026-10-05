@@ -1,7 +1,9 @@
+import {LandscapeHUD} from './src/components/LandscapeHUD';
+import {SECTIONS,SECTION_LABELS,panelWidth,backAction,type Section} from './src/ui/landscape';
 import { campaignStore } from './src/persistence/nativeCampaignStore';
 import type { CampaignEntry } from './src/persistence/campaignStore';
 import { useEffect, useRef, useState } from 'react';
-import { Alert, AppState, BackHandler, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Alert, AppState, BackHandler, Keyboard, LayoutAnimation, useWindowDimensions, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CountryPicker } from './src/components/CountryPicker';
@@ -23,6 +25,9 @@ export default function App() {
 }
 
 function GameApp() {
+  const {width}=useWindowDimensions();
+  const [section,setSection]=useState<Section>('Country');
+  const [mapMenuOpen,setMapMenuOpen]=useState(false);
   const [savedCampaigns,setSavedCampaigns]=useState<CampaignEntry[]>([]);
   const [saveStatus,setSaveStatus]=useState('');
   const latestState=useRef<GameState|null>(null);
@@ -53,6 +58,8 @@ function GameApp() {
     setPreviewCountryId(null);
     setFocusCountryId(null);
     setPanelOpen(true);
+    setSection('Country');
+    setConnectionStatus('');
     unsubscribeRef.current = source.subscribe(session.state.id, setState, setConnectionStatus);
   };
 
@@ -83,18 +90,14 @@ function GameApp() {
   const gameStarted = Boolean(state && (state.phase === 'running' || state.phase === 'paused' || state.phase === 'finished'));
 
   const selectProvince = (province: Province) => {
-    if (gameStarted) { setSelectedProvinceId(province.id); setPanelOpen(true); }
+    if (gameStarted) { setSelectedProvinceId(province.id); setSection('Context'); setPanelOpen(true); }
     else setPreviewCountryId(province.ownerId);
   };
 
   useEffect(() => { if (gameStarted) setPanelOpen(false); }, [gameStarted]);
-  useEffect(() => {
-    const handler = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (panelOpen && state) { setPanelOpen(false); return true; }
-      return false;
-    });
-    return () => handler.remove();
-  }, [panelOpen, state?.id]);
+  const exitCampaign=()=>void safeAction(async()=>{if(!state)return;if(transport instanceof LocalTransport)await campaignStore.save(state);await transport.leave(state.id);unsubscribeRef.current?.();setState(null);setPlayerId(null);setSelectedProvinceId(null);setPreviewCountryId(null);});
+  const confirmExit=()=>Alert.alert('Выйти из кампании?',transport instanceof LocalTransport?'Прогресс будет сохранён.':'К кампании можно вернуться через список сохранённых сессий.',[{text:'Остаться',style:'cancel'},{text:'Выйти',onPress:exitCampaign}]);
+  useEffect(()=>{const handler=BackHandler.addEventListener('hardwareBackPress',()=>{const action=backAction({keyboard:Keyboard.isVisible(),modal:mapMenuOpen,context:!!selectedProvinceId&&panelOpen,panel:panelOpen,campaign:!!state});if(action==='keyboard')Keyboard.dismiss();else if(action==='modal')setMapMenuOpen(false);else if(action==='context'){setSelectedProvinceId(null);setSection('Country');setPanelOpen(false);}else if(action==='panel')setPanelOpen(false);else if(action==='confirm')confirmExit();else return false;return true;});return()=>handler.remove();},[mapMenuOpen,panelOpen,state,selectedProvinceId,transport]);
 
   useEffect(() => {
     if (transport instanceof HttpTransport || !state || !playerId || state.phase !== 'running' || state.speed === 0) return;
@@ -147,30 +150,23 @@ function GameApp() {
       <StatusBar barStyle="light-content" />
       <View style={styles.content}>
         <View style={styles.topbar}>
-          <View>
-            <Text style={styles.brand}>DOMINION</Text>
+          <View style={{maxWidth:gameStarted?115:220}}>
+            <Text style={[styles.brand,gameStarted&&{fontSize:15}]}>DOMINION</Text>
             <Text style={styles.subbrand}>{gameStarted ? `Ход ${state.tick} · ${state.phase === 'finished' ? 'КАМПАНИЯ ЗАВЕРШЕНА' : 'КАМПАНИЯ'}` : `Комната ${state.roomCode}`}</Text>
           </View>
+          {gameStarted&&<LandscapeHUD state={state} playerId={playerId??''} onCommand={sendCommand}/> }
           {!gameStarted && <CountryPicker state={state} onPreview={id => { setPreviewCountryId(id); setFocusCountryId(id); setPanelOpen(true); }} />}
           <Pressable style={styles.exitButton} onPress={() => setPanelOpen(!panelOpen)}><Text style={styles.exitText}>{panelOpen ? "ЗАКРЫТЬ ПАНЕЛЬ" : "УПРАВЛЕНИЕ"}</Text></Pressable>
           {transport instanceof LocalTransport&&<Pressable accessibilityLabel="Сохранить кампанию" style={styles.exitButton} onPress={()=>void safeAction(async()=>{await campaignStore.save(state);setSaveStatus('Сохранено');})}><Text style={styles.exitText}>СОХРАНИТЬ</Text></Pressable>}
-          <Pressable style={styles.exitButton} onPress={() => void safeAction(async() => {
-            if(transport instanceof LocalTransport)await campaignStore.save(state);
-            await transport.leave(state.id).catch(() => undefined);
-            unsubscribeRef.current?.();
-            setState(null);
-            setPlayerId(null);
-            setSelectedProvinceId(null);
-            setPreviewCountryId(null);
-          })}>
-            <Text style={styles.exitText}>ВЫЙТИ</Text>
-          </Pressable>
+          <Pressable style={styles.exitButton} onPress={confirmExit}><Text style={styles.exitText}>ВЫЙТИ</Text></Pressable>
         </View>
 
         {transport instanceof LocalTransport&&saveStatus!==''&&<Text style={{color:"#9BABBF",fontSize:10}}>{saveStatus}</Text>}
         {connectionStatus!==''&&<Text style={{color:"#ffcf85",padding:6}}>{connectionStatus}</Text>}
         <View style={styles.mapArea}><WorldMap
           state={state}
+          settingsOpen={mapMenuOpen}
+          onSettingsChange={setMapMenuOpen}
           focusCountryId={focusCountryId}
           selectedCountryId={selectedCountryId}
           selectedProvinceId={selectedProvinceId}
@@ -178,7 +174,8 @@ function GameApp() {
           onLongPressProvince={selectProvince}
         /></View>
 
-        {panelOpen && <ScrollView style={styles.panel} contentContainerStyle={styles.panelContent}>
+        {gameStarted&&<ScrollView horizontal style={styles.navigation} contentContainerStyle={{gap:4,flexGrow:1}} showsHorizontalScrollIndicator={false}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:'#2a405e'}]} onPress={()=>{LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);setSection(tab);setPanelOpen(true);}}><Text style={styles.exitText}>{SECTION_LABELS[tab]}</Text></Pressable>)}</ScrollView>}
+        {panelOpen && <ScrollView key={section} keyboardShouldPersistTaps="handled" style={[styles.panel,{width:panelWidth(width),bottom:gameStarted?54:12}]} contentContainerStyle={styles.panelContent}>
 
         {!gameStarted && (
           <CountryPanel
@@ -198,7 +195,7 @@ function GameApp() {
             onStart={() => playerId && safeAction(() => transport.sendCommand(state.id, { type: 'START_GAME', playerId }))}
           />
         ) : (
-          <GamePanel
+          <GamePanel key={section} section={section} onFocusProvince={id=>{setSelectedProvinceId(id);setSection('Context');setFocusCountryId(myCountryId);}}
             state={state}
             playerId={playerId ?? ''}
             selectedProvinceId={selectedProvinceId}
@@ -216,6 +213,8 @@ const styles = StyleSheet.create({
   entryWrap: { flexGrow: 1, justifyContent: 'center', padding: 18, gap: 12, maxWidth: 600, width: '100%', alignSelf: 'center' },
   content: { flex: 1 },
   mapArea: { flex: 1 },
+  navigation:{position:'absolute',left:8,right:8,bottom:4,height:46,backgroundColor:'#101a2af5',borderRadius:12},
+  navButton:{flex:1,minWidth:90,minHeight:44,paddingHorizontal:12,alignItems:'center',justifyContent:'center',borderRadius:9},
   panel: { position: 'absolute', right: 8, top: 62, bottom: 12, width: '34%', maxWidth: 410, minWidth: 250, backgroundColor: '#111A2Af5', borderRadius: 12 },
   panelContent: { padding: 8, gap: 10 },
   topbar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 6, gap: 8 },
@@ -223,6 +222,6 @@ const styles = StyleSheet.create({
   tagline: { color: '#61718A', fontSize: 10, fontWeight: '800', letterSpacing: 1.4, marginBottom: 5 },
   subbrand: { color: '#6F7F99', fontSize: 11, marginTop: 2 },
   footer: { color: '#46546A', textAlign: 'center', fontSize: 10, letterSpacing: 0.4 },
-  exitButton: { backgroundColor: '#151F30', borderRadius: 12, paddingHorizontal: 13, paddingVertical: 9 },
+  exitButton: { backgroundColor: '#151F30', borderRadius: 12, paddingHorizontal: 13, paddingVertical: 9, minHeight:44,justifyContent:'center' },
   exitText: { color: '#9BABBF', fontWeight: '900', fontSize: 10 },
 });

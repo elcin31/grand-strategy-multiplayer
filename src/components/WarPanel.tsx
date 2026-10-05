@@ -25,7 +25,7 @@ function WarCard({state,playerId,onCommand,war,id}:StrategyProps&{war:War;id:str
     </>}
   </View>;
 }
-export function WarPanel(props:StrategyProps){const [open,setOpen]=useState(false),id=props.state.players.find(p=>p.id===props.playerId)?.countryId;if(!props.state.dataset||!id)return null;const wars=props.state.wars?.filter(w=>w.attackers.includes(id)||w.defenders.includes(id))??[];return <View style={styles.wrap}>
+export function WarPanel(props:StrategyProps){const [open,setOpen]=useState(props.initialOpen??false),id=props.state.players.find(p=>p.id===props.playerId)?.countryId;if(!props.state.dataset||!id)return null;const wars=props.state.wars?.filter(w=>w.attackers.includes(id)||w.defenders.includes(id))??[];return <View style={styles.wrap}>
   <Pressable accessibilityRole="button" style={styles.button} onPress={()=>setOpen(!open)}><Text style={styles.title}>Войны и мир · {wars.length} {open?'▴':'▾'}</Text></Pressable>
   {open&&<>{wars.length===0&&<Text style={styles.text}>Активных войн нет</Text>}{wars.map(w=><WarCard key={w.id} {...props} war={w} id={id}/>)}<Text style={styles.text}>После мира — 24 месяца перемирия. Вассал платит 10% положительного месячного баланса и участвует в войнах сюзерена.</Text>{props.state.warHistory?.filter(w=>w.attackers.includes(id)||w.defenders.includes(id)).slice(0,5).map(w=><Text style={styles.text} key={w.id}>Мир на ходу {w.endedTick}: {LABELS[w.kind]}</Text>)}</>}
 </View>;}

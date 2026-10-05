@@ -34,7 +34,16 @@ def click_text(root, text):
     nums = [int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
     assert len(nums)==4
     adb('shell','input','tap',str((nums[0]+nums[2])//2),str((nums[1]+nums[3])//2))
+def navigate(section):
+    root=hierarchy('navigation-'+section)
+    click_text(root,'Раздел '+section);time.sleep(.4)
 def click_scrolling(text):
+    sections={'Экономика':'Экономика','Правительство':'Правительство','Религия':'Религия','Технологии':'Технологии','Дипломатия':'Дипломатия'}
+    if text.endswith(' ▾') and text[:-2] in sections:
+        navigate(sections[text[:-2]]);return
+    if text.endswith(' ▴') and text[:-2] in sections:
+        navigate('Страна');return
+    if text.startswith('Стабильность ·'):navigate('Страна')
     for attempt in range(14):
         root = hierarchy('flow-'+str(attempt))
         node = next((n for n in root.iter('node') if n.get('text') == text or n.get('content-desc') == text), None)
@@ -61,6 +70,7 @@ def read_scrolling(prefix):
         adb('shell','input','swipe','1080','530','1080','320','350')
     raise AssertionError('Missing readable state: '+prefix)
 def set_speed(speed):
+    navigate('Страна')
     label = 'Пауза' if speed == 0 else f'Скорость {speed}×'
     for attempt in range(4):
         click_scrolling(label)
@@ -122,7 +132,10 @@ click_text(root,'УПРАВЛЕНИЕ')
 set_speed(0)
 root = hierarchy('02-paused'); click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
 # Country preview centers the camera on Berlin; city/counter hit testing selects its real province.
-adb('shell','input','tap','640','370'); time.sleep(1)
+navigate('Армия')
+root=hierarchy('army-list')
+army_row=next(n.get('text') for n in root.iter('node') if n.get('text','').startswith('Берлин · '))
+click_text(root,army_row);time.sleep(1)
 # Scroll the command card into view and capture the actual army size before recruitment.
 for _ in range(12):
     root = hierarchy('02-command')
@@ -165,6 +178,7 @@ assert int(re.search(r'(\d+) PP',header).group(1)) == power_before - 80, 'Govern
 assert 'Следующая смена через 24 мес.' in texts, 'Government cooldown missing'
 # Accumulate political power through the actual running campaign, then pause before payment assertions.
 for _ in range(5): adb('shell','input','swipe','1080','220','1080','570','350')
+navigate('Страна')
 population_root = hierarchy('population-before')
 population_before = next(n.get('text') for n in population_root.iter('node') if n.get('text','').startswith('Население: ')).split(' · ')[0]
 advance_campaign_months(20)
@@ -193,15 +207,16 @@ click_scrolling('Исследовать Экономика')
 assert '0.0 / 6' in read_scrolling('Экономика: '), 'Research did not queue while paused'
 screenshot('research-queued')
 advance_campaign_months(7)
+navigate('Технологии')
 assert read_scrolling('Экономика · 1/5'), 'Research did not complete through the real game clock'
 screenshot('research-complete')
 click_scrolling('Технологии ▴')
 click_scrolling('Дипломатия ▾')
 click_scrolling('Поиск страны для дипломатии')
-adb('shell','input','text','france'); adb('shell','input','keyevent','4')
-click_scrolling('Франция')
+adb('shell','input','text','bra'); adb('shell','input','keyevent','4')
+click_scrolling('Бразилия')
 click_scrolling('Улучшить · 10 PP')
-assert 'отношения 15' in read_scrolling('Франция · отношения ')
+assert 'отношения 15' in read_scrolling('Бразилия · отношения ')
 click_scrolling('Предложить: Ненападение')
 assert 'Ненападение' in read_scrolling('Договоры: ')
 screenshot('diplomacy-treaty')
@@ -239,13 +254,27 @@ adb('shell','input','tap','500','320'); adb('shell','input','tap','500','320')
 time.sleep(1)
 screenshot('03-camera')
 # GPU surface resize/layout across target widths.
-for width, height in [(1600,720),(1920,1080),(1280,800)]:
+for width, height in [(1600,720),(1920,1080),(2340,1080),(1280,800)]:
     adb('shell','wm','size',f'{height}x{width}')
     time.sleep(3)
     screenshot(f'layout-{width}x{height}')
+# Persist the actual paused campaign, kill its process, and load it from the entry menu.
+root=hierarchy('save-before-restart');click_text(root,'СОХРАНИТЬ');time.sleep(3)
+saved_tick=next(n.get('text') for n in root.iter('node') if n.get('text','').startswith('Ход '))
 launch(); root = hierarchy('04-restart'); screenshot('04-restart')
+for _ in range(6):
+    if any(n.get('content-desc')=='Продолжить кампанию' for n in root.iter('node')):break
+    adb('shell','input','swipe','640','580','640','260','350');root=hierarchy('save-list')
+click_text(root,'Продолжить кампанию');time.sleep(8)
+root=hierarchy('campaign-restored');screenshot('campaign-restored')
+assert any(n.get('text')==saved_tick for n in root.iter('node')), 'Saved tick did not survive process restart'
+navigate('Экономика');adb('shell','input','keyevent','4');time.sleep(1)
+root=hierarchy('back-closed-panel');assert any(n.get('text')=='УПРАВЛЕНИЕ' for n in root.iter('node')), 'Back did not close secondary panel'
+adb('shell','input','keyevent','4');time.sleep(1)
+root=hierarchy('exit-confirmation');assert any(n.get('text')=='Выйти из кампании?' for n in root.iter('node')), 'Back skipped exit confirmation'
+click_text(root,'Остаться')
 assert any(n.get('text')=='DOMINION' for n in root.iter('node')), 'Restart failed without Metro'
 logs = adb('logcat','-d'); (OUT/'logcat.txt').write_text(logs)
 assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs, 'Native crash detected'
 assert 'Unable to load script' not in logs, 'Standalone JS load failed'
-print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, population growth, government/religion cost/cooldown and Unity, 4 presets, 9 modes, camera inputs, 4 layouts, restart, no fatal logs')
+print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, population growth, government/religion cost/cooldown and Unity, 4 presets, 9 modes, camera inputs, 5 layouts, persistent campaign restore, Back priority, restart, no fatal logs')

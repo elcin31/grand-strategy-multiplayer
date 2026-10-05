@@ -37,7 +37,7 @@ assert len(s['state']['countries'])==195 and len(s['state']['provinces'])==4386 
 request('game-room',{'action':'reconnect',**auth(host),'token':'bad'},401)
 command(players[1],'SET_READY',400,ready=True)
 spoof=envelope(players[1],{'type':'SELECT_COUNTRY','playerId':host['playerId'],'countryId':'germany'});request('game-command',spoof,400)
-for p,c in zip(players,['germany','france','usa','china','india','brazil','russia','canada']):
+for p,c in zip(players,['germany','france','usa','chn','ind','bra','russia','can']):
     command(p,'SELECT_COUNTRY',countryId=c);command(p,'SET_READY',ready=True)
 command(host,'START_GAME');command(host,'SET_SPEED',speed=0)
 s=snapshot();old=s['state'];capital=next(c for c in old['cities'] if c['id']==old['countries']['germany']['capitalCityId']);province=capital['provinceId']

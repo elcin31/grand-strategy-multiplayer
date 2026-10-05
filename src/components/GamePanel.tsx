@@ -1,3 +1,4 @@
+import type {Section} from '../ui/landscape';
 import { StabilityPanel } from './StabilityPanel';
 import { WarPanel } from './WarPanel';
 import { DiplomacyPanel } from './DiplomacyPanel';
@@ -13,6 +14,8 @@ import { RELIGIONS, RELIGION_IDS, RELIGION_CHANGE_COST, RELIGION_STABILITY_COST,
 import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, GOVERNMENT_TYPES, governmentModifiers } from '../../supabase/functions/_shared/governmentSystem';
 
 interface GamePanelProps {
+  section?:Section;
+  onFocusProvince?:(id:string)=>void;
   state: GameState;
   playerId: string;
   selectedProvinceId: string | null;
@@ -22,11 +25,11 @@ interface GamePanelProps {
 const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).toFixed(1)}M` : value >= 1_000 ? `${Math.round(value / 1_000)}K` : String(value);
 const currency = (value: number) => `${value < 0 ? '−' : ''}$${Math.abs(value) >= 1000 ? (Math.abs(value)/1000).toFixed(1)+'B' : Math.abs(value).toFixed(3).replace(/\.?0+$/, '')+'M'}`;
 
-export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: GamePanelProps) {
+export function GamePanel({ state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
   const [selectedArmyId, setSelectedArmyId] = useState<string | null>(null);
-  const [religionOpen, setReligionOpen] = useState(false);
-  const [governmentOpen, setGovernmentOpen] = useState(false);
-  const [economyOpen, setEconomyOpen] = useState(false);
+  const [religionOpen, setReligionOpen] = useState(section==='Religion');
+  const [governmentOpen, setGovernmentOpen] = useState(section==='Government');
+  const [economyOpen, setEconomyOpen] = useState(section==='Economy');
   const me = state.players.find((player) => player.id === playerId);
   const countryId = me?.countryId ?? null;
   if (!countryId) return null;
@@ -55,7 +58,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
 
   return (
     <View style={styles.wrap}>
-      <View style={styles.card}>
+      {section==='Country'&&<View style={styles.card}>
         <View style={styles.header}>
           <View>
             <Text style={styles.eyebrow}>ТВОЁ ГОСУДАРСТВО</Text>
@@ -63,7 +66,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
           </View>
           <View style={styles.dateBadge}><Text style={styles.dateText}>{String(state.month).padStart(2, '0')}/{state.year}</Text></View>
         </View>
-        {ruler && <View style={styles.rulerRow}><View style={[styles.rulerPortrait,{backgroundColor:['#526E75','#765F70','#6E7455','#756448','#516481','#7A6252'][ruler.portraitSeed%6]}]}><Text style={styles.rulerInitials}>{ruler.name.split(/\s+/).map(part=>part[0]).slice(0,2).join('')}</Text></View><View><Text style={styles.rulerLabel}>ВЫМЫШЛЕННЫЙ ПРАВИТЕЛЬ · {ruler.age}</Text><Text style={styles.rulerName}>{ruler.name}</Text><Text style={styles.rulerDetails}>{ruler.ideology} · дипломатия {ruler.diplomaticSkill}</Text></View></View>}
+        {ruler && <View style={styles.rulerRow}><View style={[styles.rulerPortrait,{backgroundColor:['#526E75','#765F70','#6E7455','#756448','#516481','#7A6252'][ruler.portraitSeed%6]}]}><Text style={styles.rulerInitials}>{ruler.name.split(/\s+/).map(part=>part[0]).slice(0,2).join('')}</Text></View><View style={{flex:1,minWidth:0}}><Text style={styles.rulerLabel}>ВЫМЫШЛЕННЫЙ ПРАВИТЕЛЬ · {ruler.age}</Text><Text style={styles.rulerName}>{ruler.name}</Text><Text style={styles.rulerDetails}>{ruler.ideology} · {ruler.aiPersonality} · дипломатия {ruler.diplomaticSkill}</Text></View></View>}
         <View style={styles.metrics}>
           <Metric label="Казна" value={state.dataset ? currency(nation.treasury) : `$${compact(nation.treasury)}M`} />
           <Metric label={budget ? 'Баланс / мес.' : 'Доход'} value={budget ? (budget.monthlyBalance >= 0 ? '+' : '')+currency(budget.monthlyBalance) : `+$${compact(nation.income)}M`} />
@@ -79,9 +82,9 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
             </Pressable>
           ))}
         </View>
-      </View>
+      </View>}
 
-      {budget && <Pressable accessibilityRole="button" onPress={() => { setEconomyOpen(!economyOpen); setGovernmentOpen(false); setReligionOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Экономика {economyOpen ? '▴' : '▾'}</Text></Pressable>}
+      {section==='Economy'&&budget && <Pressable accessibilityRole="button" onPress={() => { setEconomyOpen(!economyOpen); setGovernmentOpen(false); setReligionOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Экономика {economyOpen ? '▴' : '▾'}</Text></Pressable>}
       {economyOpen && budget && <View style={styles.card}>
         <Text style={styles.eyebrow}>МЕСЯЧНЫЙ БЮДЖЕТ</Text>
         <Text style={styles.hint}>Налоги: {nation.taxRate}% · {currency(budget.taxIncome)}</Text>
@@ -109,7 +112,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         <Text style={styles.hint}>Дефицит использует кредитный лимит. Неплатёжеспособность списывает долг, снижает стабильность и репутацию, вызывает unrest и сокращает армию до доступного бюджета.</Text>
       </View>}
 
-      {state.dataset && <Pressable accessibilityRole="button" onPress={() => { setGovernmentOpen(!governmentOpen); setReligionOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Правительство {governmentOpen ? '▴' : '▾'}</Text></Pressable>}
+      {section==='Government'&&state.dataset && <Pressable accessibilityRole="button" onPress={() => { setGovernmentOpen(!governmentOpen); setReligionOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Правительство {governmentOpen ? '▴' : '▾'}</Text></Pressable>}
       {governmentOpen && state.dataset && <View style={styles.card}>
         <Text style={styles.eyebrow}>ФОРМА ПРАВЛЕНИЯ · {Math.floor(politicalPower)} PP</Text>
         <Text style={styles.govCurrent}>{nation.governmentType}</Text>
@@ -131,7 +134,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         <Text style={styles.hint}>Репутация: {nation.diplomaticReputation?.toFixed(0)} · стабильность {nation.stability.toFixed(1)} · unrest {nation.unrest?.toFixed(1)}</Text>
       </View>}
 
-      {state.dataset && <Pressable accessibilityRole="button" onPress={() => { setReligionOpen(!religionOpen); setGovernmentOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Религия {religionOpen ? '▴' : '▾'}</Text></Pressable>}
+      {section==='Religion'&&state.dataset && <Pressable accessibilityRole="button" onPress={() => { setReligionOpen(!religionOpen); setGovernmentOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Религия {religionOpen ? '▴' : '▾'}</Text></Pressable>}
       {religionOpen && state.dataset && <View style={styles.card}>
         <Text style={styles.eyebrow}>ГОСУДАРСТВЕННАЯ РЕЛИГИЯ · {Math.floor(politicalPower)} PP</Text>
         <Text style={styles.govCurrent}>{RELIGIONS[nation.religion ?? 'secular']?.name}</Text>
@@ -152,19 +155,20 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
         <Text style={styles.hint}>Все религии используют одинаковые правила. Низкое единство повышает unrest; смена не обращает население автоматически.</Text>
       </View>}
 
-      <StabilityPanel state={state} playerId={playerId} onCommand={onCommand} />
-      <WarPanel state={state} playerId={playerId} onCommand={onCommand} />
-      <DiplomacyPanel state={state} playerId={playerId} onCommand={onCommand} />
-      <StrategyPanel state={state} playerId={playerId} onCommand={onCommand} />
+      {section==='Country'&&<StabilityPanel state={state} playerId={playerId} onCommand={onCommand} />}
+      {section==='Diplomacy'&&<WarPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
+      {section==='Diplomacy'&&<DiplomacyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
+      {section==='Technology'&&<StrategyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
 
-      <View style={styles.card}>
+      {section==='Military'&&<View style={styles.card}><Text style={styles.eyebrow}>АРМИИ · {compact(nation.army)}</Text>{state.armies.filter(a=>a.ownerId===countryId).map(a=><Pressable key={a.id} style={styles.secondaryButton} onPress={()=>onFocusProvince?.(a.provinceId)}><Text style={styles.secondaryText}>{state.provinces.find(p=>p.id===a.provinceId)?.name} · {compact(a.troops)}</Text><Text style={styles.hint}>Мораль {a.morale?.toFixed(0)} · организация {a.organization?.toFixed(0)}</Text></Pressable>)}</View>}
+      {section==='Context'&&<View style={styles.card}>
         <Text style={styles.eyebrow}>КОМАНДОВАНИЕ</Text>
         {!selected ? (
           <Text style={styles.hint}>Нажми на провинцию на карте. Там будут армия, строительство, набор и доступные направления движения.</Text>
         ) : (
           <>
             <View style={styles.provinceTitleRow}>
-              <View>
+              <View style={{flex:1,minWidth:0}}>
                 <Text style={styles.title}>{selected.name}</Text>
                 <Text style={styles.owner}>{countryFor(state, selected.ownerId).name} · доход ${selected.income}M</Text>
                 <Text style={styles.owner}>Контроль: {countryFor(state, selected.controllerId ?? selected.ownerId).name}</Text>
@@ -173,9 +177,9 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
               <View style={[styles.ownerDot, { backgroundColor: countryFor(state, selected.ownerId).color }]} />
             </View>
 
-            <Text style={styles.hint}>Население провинции: {compact(selected.population)} · рост +{compact(selected.monthlyPopulationGrowth ?? 0)}/мес.</Text>
+            <Text style={styles.hint}>Развитие: {selected.development??40}/100 · Население провинции: {compact(selected.population)} · рост +{compact(selected.monthlyPopulationGrowth ?? 0)}/мес.</Text>
             {selected.resourceDeposit && production && <Text style={styles.hint}>{RESOURCES[selected.resourceDeposit.type].name} · богатство {selected.resourceDeposit.richness}/100 · выпуск {production.units.toFixed(1)} ед./мес. · {currency(production.revenue)}/мес.</Text>}
-            {selectedCities.map(city => <Text key={city.id} style={styles.owner}>{city.isCapital ? '★ ' : ''}{city.name} · {compact(city.population)}</Text>)}
+            {selectedCities.map(city => <Text key={city.id} style={styles.owner}>{city.isCapital ? '★ Столица · ' : city.isRegionalCapital?'Региональный центр · ':''}{city.name} · {compact(city.population)} · развитие {city.development}</Text>)}
 
             {state.dataset && <>
               <Text style={styles.sectionTitle}>ЗДАНИЯ</Text>
@@ -249,9 +253,9 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
             )}
           </>
         )}
-      </View>
+      </View>}
 
-      <View style={styles.card}>
+      {(section==='Military'||section==='Country')&&<View style={styles.card}>
         <Text style={styles.eyebrow}>ВОЕННАЯ СВОДКА</Text>
         {state.battleLog.length === 0 ? <Text style={styles.hint}>Боёв пока не было.</Text> : state.battleLog.slice(0, 6).map((battle) => (
           <View key={battle.id} style={styles.logRow}>
@@ -259,7 +263,7 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand }: Ga
             <Text style={styles.logLoss}>Потери: {countryFor(state, battle.attackerId).shortName} −{compact(battle.attackerLosses)} · {countryFor(state, battle.defenderId).shortName} −{compact(battle.defenderLosses)}</Text>
           </View>
         ))}
-      </View>
+      </View>}
     </View>
   );
 }
@@ -302,9 +306,9 @@ const styles = StyleSheet.create({
   owner: { color: '#8494AA', fontSize: 11, marginTop: 3 },
   ownerDot: { width: 14, height: 14, borderRadius: 7 },
   recruitRow: { flexDirection: 'row', gap: 8 },
-  primaryButton: { flex: 1.2, backgroundColor: '#E8EEF8', borderRadius: 13, paddingVertical: 12, alignItems: 'center' },
+  primaryButton: { flex: 1.2, backgroundColor: '#E8EEF8', borderRadius: 13, paddingVertical: 12, minHeight:44, alignItems: 'center' },
   primaryText: { color: '#0D1522', fontWeight: '900', fontSize: 11 },
-  secondaryButton: { flex: 1, backgroundColor: '#1B2739', borderRadius: 13, paddingVertical: 12, alignItems: 'center' },
+  secondaryButton: { flex: 1, backgroundColor: '#1B2739', borderRadius: 13, paddingVertical: 12, minHeight:44, alignItems: 'center' },
   secondaryText: { color: '#C2D0E6', fontWeight: '900', fontSize: 11 },
   sectionTitle: { color: '#687991', fontSize: 9, fontWeight: '900', letterSpacing: 0.8, marginTop: 2 },
   muted: { color: '#65758B', fontSize: 12 },

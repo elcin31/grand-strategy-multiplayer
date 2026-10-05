@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { BackHandler, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Canvas, Circle, Fill, Group, LinearGradient, Path, Rect, Text as MapText, Skia, matchFont, vec } from '@shopify/react-native-skia';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { cancelAnimation, runOnJS, useAnimatedReaction, useDerivedValue, useSharedValue, withDecay, withRepeat, withTiming } from 'react-native-reanimated';
@@ -12,6 +12,8 @@ import { AVAILABLE_MODES, GRAPHICS, GraphicsPreset, MapMode, MODE_LABELS } from 
 import { lakes, rivers, terrainPatches } from '../map/terrain';
 
 interface WorldMapProps {
+  settingsOpen?:boolean;
+  onSettingsChange?:(value:boolean)=>void;
   state: GameState;
   selectedCountryId: CountryId | null;
   selectedProvinceId: string | null;
@@ -36,7 +38,7 @@ const desertPath = terrainPatches.filter(t => t.type === 'desert').map(t => line
 const compact = (v: number) => v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : `${Math.round(v / 1e3)}K`;
 const defaults: Camera = { x: 800, y: 160, zoom: 3.5 };
 
-export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince, focusCountryId }: WorldMapProps) {
+export function WorldMap({ settingsOpen=false,onSettingsChange, state, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince, focusCountryId }: WorldMapProps) {
   const scene = useMemo(() => mapSceneFor(state), [state.dataset]);
   const { features, spatialIndex, provinceGeometry, cities: mapCities } = scene;
   const { paths, contextPath } = useMemo(() => nativeScene(scene), [scene]);
@@ -44,8 +46,7 @@ export function WorldMap({ state, selectedCountryId, selectedProvinceId, onSelec
   const [snapshot, setSnapshot] = useState<Camera>(defaults);
   const [preset, setPreset] = useState<GraphicsPreset>('Medium');
   const [mode, setMode] = useState<MapMode>('Political');
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  useEffect(() => { if (!settingsOpen) return; const handler = BackHandler.addEventListener('hardwareBackPress', () => { setSettingsOpen(false); return true; }); return () => handler.remove(); }, [settingsOpen]);
+  const setSettingsOpen=(value:boolean)=>onSettingsChange?.(value);
   const x = useSharedValue(defaults.x), y = useSharedValue(defaults.y), zoom = useSharedValue(defaults.zoom);
   const startX = useSharedValue(0), startY = useSharedValue(0), startZoom = useSharedValue(1);
   const pinchX = useSharedValue(0), pinchY = useSharedValue(0), pinching = useSharedValue(false);
