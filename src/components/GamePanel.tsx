@@ -14,6 +14,8 @@ import { RELIGIONS, RELIGION_IDS, RELIGION_CHANGE_COST, RELIGION_STABILITY_COST,
 import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, GOVERNMENT_TYPES, governmentModifiers } from '../../supabase/functions/_shared/governmentSystem';
 
 interface GamePanelProps {
+  focusedArmyId?:string|null;
+  focusedCityId?:string|null;
   section?:Section;
   onFocusProvince?:(id:string)=>void;
   state: GameState;
@@ -25,7 +27,7 @@ interface GamePanelProps {
 const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).toFixed(1)}M` : value >= 1_000 ? `${Math.round(value / 1_000)}K` : String(value);
 const currency = (value: number) => `${value < 0 ? '−' : ''}$${Math.abs(value) >= 1000 ? (Math.abs(value)/1000).toFixed(1)+'B' : Math.abs(value).toFixed(3).replace(/\.?0+$/, '')+'M'}`;
 
-export function GamePanel({ state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
+export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
   const [selectedArmyId, setSelectedArmyId] = useState<string | null>(null);
   const [religionOpen, setReligionOpen] = useState(section==='Religion');
   const [governmentOpen, setGovernmentOpen] = useState(section==='Government');
@@ -37,9 +39,9 @@ export function GamePanel({ state, playerId, selectedProvinceId, onCommand, sect
   const ruler = nation.rulerId ? state.leaders?.[nation.rulerId] : undefined;
   const selected = state.provinces.find((province) => province.id === selectedProvinceId) ?? null;
   const ownArmies = selected ? state.armies.filter((army) => army.provinceId === selected.id && army.ownerId === countryId).sort((a, b) => b.troops - a.troops) : [];
-  const primaryArmy = ownArmies.find(a => a.id === selectedArmyId) ?? ownArmies[0] ?? null;
+  const primaryArmy = ownArmies.find(a => a.id === (selectedArmyId??focusedArmyId)) ?? ownArmies[0] ?? null;
   const neighbors = selected ? selected.neighbors.map((id) => state.provinces.find((province) => province.id === id)).filter(Boolean) : [];
-  const selectedCities = selected ? (state.cities ?? []).filter(c => c.provinceId === selected.id).sort((a,b) => Number(b.isCapital)-Number(a.isCapital) || b.population-a.population).slice(0,3) : [];
+  const selectedCities = selected ? (state.cities ?? []).filter(c => c.provinceId === selected.id).sort((a,b) => Number(b.id===focusedCityId)-Number(a.id===focusedCityId) || Number(b.isCapital)-Number(a.isCapital) || b.population-a.population).slice(0,3) : [];
   const selectedConstruction = selected ? state.constructions?.find(item => item.provinceId === selected.id) ?? null : null;
   const completedBuildings = selected ? BUILDING_TYPES.filter(type => (selected.buildings?.[type] ?? 0) > 0) : [];
   const isOwnProvince = selected?.ownerId === countryId && (selected.controllerId ?? selected.ownerId) === countryId;

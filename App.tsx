@@ -41,6 +41,8 @@ function GameApp() {
   useEffect(()=>{if(!(transport instanceof LocalTransport)||!state)return;const save=()=>{const current=latestState.current;if(current)void campaignStore.save(current).then(()=>setSaveStatus('Автосохранено')).catch(e=>setSaveStatus(e.message));};const timer=setInterval(save,10000);const sub=AppState.addEventListener('change',status=>{if(status!=='active')save();});return()=>{clearInterval(timer);sub.remove();};},[state?.id,transport]);
   useEffect(()=>{if(!state)void new HttpTransport(remoteUrl).savedSessions().then(setSavedRooms).catch(()=>setConnectionStatus('Не удалось прочитать сохранённые сессии'));},[state?.id]);
   const [previewCountryId, setPreviewCountryId] = useState<CountryId | null>(null);
+  const [selectedArmyId,setSelectedArmyId]=useState<string|null>(null);
+  const [selectedCityId,setSelectedCityId]=useState<string|null>(null);
   const [selectedProvinceId, setSelectedProvinceId] = useState<string | null>(null);
   const [playerId, setPlayerId] = useState<string | null>(null);
   const [focusCountryId, setFocusCountryId] = useState<string | null>(null);
@@ -90,6 +92,7 @@ function GameApp() {
   const gameStarted = Boolean(state && (state.phase === 'running' || state.phase === 'paused' || state.phase === 'finished'));
 
   const selectProvince = (province: Province) => {
+    setSelectedArmyId(null);setSelectedCityId(null);
     if (gameStarted) { setSelectedProvinceId(province.id); setSection('Context'); setPanelOpen(true); }
     else setPreviewCountryId(province.ownerId);
   };
@@ -168,8 +171,11 @@ function GameApp() {
           settingsOpen={mapMenuOpen}
           onSettingsChange={setMapMenuOpen}
           focusCountryId={focusCountryId}
-          selectedCountryId={selectedCountryId}
+          selectedCountryId={gameStarted?myCountryId:selectedCountryId}
           selectedProvinceId={selectedProvinceId}
+          selectedArmyId={selectedArmyId} selectedCityId={selectedCityId}
+          onSelectArmy={(id,province)=>{setSelectedArmyId(id);setSelectedCityId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);}}
+          onSelectCity={(id,province)=>{setSelectedCityId(id);setSelectedArmyId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);}}
           onSelectProvince={selectProvince}
           onLongPressProvince={selectProvince}
         /></View>
@@ -195,7 +201,7 @@ function GameApp() {
             onStart={() => playerId && safeAction(() => transport.sendCommand(state.id, { type: 'START_GAME', playerId }))}
           />
         ) : (
-          <GamePanel key={section} section={section} onFocusProvince={id=>{setSelectedProvinceId(id);setSection('Context');setFocusCountryId(myCountryId);}}
+          <GamePanel focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedProvinceId(id);setSection('Context');setFocusCountryId(myCountryId);}}
             state={state}
             playerId={playerId ?? ''}
             selectedProvinceId={selectedProvinceId}

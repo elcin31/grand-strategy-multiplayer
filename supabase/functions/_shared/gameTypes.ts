@@ -162,6 +162,7 @@ export interface Leader {
 }
 
 export interface GameState {
+  movements?: import("./movementHistory.ts").MovementEvent[];
   rebellionLog?: RebellionEvent[];
   warHistory?: WarSummary[];
   diplomacy?: Record<string, DiplomacyLink>;

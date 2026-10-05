@@ -1,3 +1,4 @@
+import {initializeMovements} from './movementHistory.ts';
 import { initializeAI } from './aiSystem.ts';
 import { initializeStability } from './stabilitySystem.ts';
 import { initializeWars } from './warSystem.ts';
@@ -7,7 +8,7 @@ import { initializeTechnology } from './technologySystem.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
-export const CURRENT_STATE_VERSION = 9;
+export const CURRENT_STATE_VERSION = 10;
 
 /** Ordered schema migrations; every normalizer is also run as validation for current saves. */
 export function migrateV1ToV2(s:GameState){initializeBuildings(s);}
@@ -18,7 +19,8 @@ export function migrateV5ToV6(s:GameState){initializeWars(s);}
 export function migrateV6ToV7(s:GameState){initializeStability(s);}
 export function migrateV7ToV8(s:GameState){initializeAI(s);}
 export function migrateV8ToV9(s:GameState){for(const p of s.players){p.connected??=true;p.aiControlled??=false;p.lastSeen??=0;if(typeof p.connected!=='boolean'||typeof p.aiControlled!=='boolean'||!Number.isFinite(p.lastSeen)||p.lastSeen<0)throw Error('Invalid player presence');}}
-const migrations=[migrateV1ToV2,migrateV2ToV3,migrateV3ToV4,migrateV4ToV5,migrateV5ToV6,migrateV6ToV7,migrateV7ToV8,migrateV8ToV9];
+export function migrateV9ToV10(s:GameState){initializeMovements(s);}
+const migrations=[migrateV1ToV2,migrateV2ToV3,migrateV3ToV4,migrateV4ToV5,migrateV5ToV6,migrateV6ToV7,migrateV7ToV8,migrateV8ToV9,migrateV9ToV10];
 export function normalizeGameState(state:GameState):void {
  if(!state.dataset)return;
  const version=state.stateVersion??1;

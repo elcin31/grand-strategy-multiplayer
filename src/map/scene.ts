@@ -1,3 +1,5 @@
+import {DIPLOMATIC_COLORS,TERRAIN_COLORS,GOVERNMENT_COLORS,diplomaticCategory,relationColor} from './modes';
+import {pairKey} from '../../supabase/functions/_shared/diplomacySystem';
 import { RESOURCES } from '../../supabase/functions/_shared/resourceSystem';
 import { countryFor, type GameState } from '../types/game';
 import geography from './geography.json';
@@ -42,16 +44,19 @@ export function troopsByProvince(state: GameState): Map<string, number> {
   return result;
 }
 /** Linear preprocessing, then O(1) lookup. Never scan the full world per visible polygon. */
-export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map<string, number>): Map<string, string> {
+export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map<string, number>, reference=state.selectedCountryId??state.players[0]?.countryId??Object.keys(state.countries)[0]!): Map<string, string> {
+  if(mode==='Diplomatic')return new Map(state.provinces.map(p=>[p.id,DIPLOMATIC_COLORS[diplomaticCategory(state,reference,p.ownerId)]]));
+  if(mode==='Relations')return new Map(state.provinces.map(p=>[p.id,relationColor(p.ownerId===reference?100:state.diplomacy?.[pairKey(reference,p.ownerId)]?.relation??0)]));
+  if(mode==='Terrain')return new Map(state.provinces.map(p=>[p.id,TERRAIN_COLORS[p.terrain??'plains']]));
   if (mode === 'Resources') return new Map(state.provinces.map(p => [p.id, p.resourceDeposit ? RESOURCES[p.resourceDeposit.type].color : '#657080']));
   if (mode === 'Religion') return new Map(state.provinces.map(p => [p.id, RELIGIONS[p.religion ?? 'secular']?.color ?? RELIGIONS.secular!.color]));
   if (mode === 'Government') {
-    const palette = ['#718F8A', '#6F83A0', '#8887A8', '#A88E63', '#9B705E', '#956862', '#778D74', '#8C7185', '#688D97', '#8E875E'];
+    const palette = GOVERNMENT_COLORS;
     const colors = new Map(Object.values(state.countries).map(c => [c.id, palette[GOVERNMENT_TYPES.indexOf(c.governmentType ?? 'Parliamentary Republic')] ?? palette[0]!]));
     return new Map(state.provinces.map(p => [p.id, colors.get(p.ownerId) ?? palette[0]!]));
   }
-  if (mode === 'Political' || mode === 'Terrain') return new Map(state.provinces.map(p => [p.id, mode === 'Political' ? countryFor(state, p.ownerId).color : '#637364']));
-  const values = new Map(state.provinces.map(p => [p.id, mode === 'Economy' ? p.income : mode === 'Population' ? p.population : mode === 'Military' ? troops.get(p.id) ?? 0 : countryFor(state, p.ownerId).stability]));
+  if (mode === 'Political') return new Map(state.provinces.map(p => [p.id, countryFor(state, p.ownerId).color]));
+  const values = new Map(state.provinces.map(p => [p.id, mode === 'Development' ? p.development??40 : mode === 'Economy' ? p.income*(1+(p.development??40)/100) : mode === 'Population' ? p.population : mode === 'Military' ? troops.get(p.id) ?? 0 : (countryFor(state,p.ownerId).stability+100-(p.unrest??0))/2]));
   const all = [...values.values()], max = Math.max(1, ...all), min = Math.min(...all);
   const low = [66, 77, 91], high = [197, 161, 89];
   return new Map([...values.entries()].map(([id, value]) => {
@@ -60,7 +65,7 @@ export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map
   }));
 }
 export function visibleCities<T extends { capital: boolean; population: number; point: Point }>(cities: readonly T[], bounds: Bounds, zoom: number, preset: GraphicsPreset): T[] {
-  return cities.filter(c => (c.capital || zoom >= 5) && c.point.x >= bounds.left && c.point.x <= bounds.right && c.point.y >= bounds.top && c.point.y <= bounds.bottom)
+  return cities.filter(c => (c.capital || (zoom >= 5 && (c.population>=250000||zoom>=9))) && c.point.x >= bounds.left && c.point.x <= bounds.right && c.point.y >= bounds.top && c.point.y <= bounds.bottom)
     .sort((a, b) => Number(b.capital) - Number(a.capital) || b.population - a.population).slice(0, GRAPHICS[preset].cityBudget);
 }
 

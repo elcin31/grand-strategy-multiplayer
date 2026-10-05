@@ -1,3 +1,4 @@
+import {recordMovement} from './movementHistory.ts';
 import { runStrategicAI } from './aiSystem.ts';
 import { monthlyStability, pacifyProvince, suppressRebellion } from './stabilitySystem.ts';
 import { monthlyWar, proposePeace, recordWarBattle, respondPeace } from './warSystem.ts';
@@ -63,8 +64,9 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
   if (!origin || !destination) throw new Error('Провинция не найдена');
   if (!origin.neighbors.includes(destination.id)) throw new Error('Провинции не соседствуют');
   const controller = state.dataset ? destination.controllerId ?? destination.ownerId : destination.ownerId;
-  if (controller === ownerId) { army.provinceId = destination.id; return; }
+  if (controller === ownerId) { recordMovement(state,{armyId,ownerId,from:origin.id,to:destination.id,tick:state.tick}); army.provinceId = destination.id; return; }
   if (state.dataset && !warBetween(state, ownerId, controller)) throw new Error('Сначала объявите войну');
+  recordMovement(state,{armyId,ownerId,from:origin.id,to:destination.id,tick:state.tick});
   const defenderId = controller, defenders = armiesIn(state, destination.id, defenderId), defenderTroops = totalTroops(defenders);
   const attackerNation = countryFor(state, ownerId), defenderNation = countryFor(state, defenderId);
   const attackPower = army.troops * (1 + attackerNation.technology / 200) * (0.75 + attackerNation.stability / 200) * combatMultiplier(state, army, destination, false);

@@ -235,14 +235,14 @@ for quality in ['Low','Medium','High','Ultra']:
     screenshot('graphics-'+quality)
 root = hierarchy('graphics-close')
 click_text(root, 'Политическая · Ultra ▾')
-for label in ['Правительство','Религия','Экономика','Население','Армии','Ресурсы','Рельеф','Стабильность','Политическая']:
+for label in ['Правительство','Религия','Экономика','Население','Армии','Ресурсы','Рельеф','Стабильность','Дипломатия','Отношения','Развитие','Политическая']:
     root = hierarchy('mode-open')
     current = next(n.get('text') for n in root.iter('node') if ' · Ultra ▾' in n.get('text',''))
     click_text(root,current)
     root = hierarchy('mode-select')
-    click_text(root,label)
+    click_text(root,"Режим "+label)
     time.sleep(1)
-    screenshot('mode-'+str(['Правительство','Религия','Экономика','Население','Армии','Ресурсы','Рельеф','Стабильность','Политическая'].index(label)))
+    screenshot('mode-'+str(['Правительство','Религия','Экономика','Население','Армии','Ресурсы','Рельеф','Стабильность','Дипломатия','Отношения','Развитие','Политическая'].index(label)))
 # Exercise camera before taking evidence. Animation is on the native UI thread.
 adb('shell','dumpsys','gfxinfo',PACKAGE,'reset')
 for _ in range(4):

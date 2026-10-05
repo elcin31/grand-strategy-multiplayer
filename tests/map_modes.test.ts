@@ -1,0 +1,15 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {createWorldState} from '../supabase/functions/_shared/worldState';
+import {normalizeGameState} from '../supabase/functions/_shared/stateMigrations';
+import {recordMovement} from '../supabase/functions/_shared/movementHistory';
+import {diplomaticLink} from '../supabase/functions/_shared/diplomacySystem';
+import {AVAILABLE_MODES} from '../src/map/settings';
+import {buildProvinceColors,troopsByProvince} from '../src/map/scene';
+import {mapLegend,diplomaticCategory,relationColor,TERRAIN_COLORS} from '../src/map/modes';
+import {armyCounters,constructionProgress} from '../src/map/overlays';
+const world=()=>createWorldState('mapqa','MAPQA1','host','QA',44);
+test('all twelve map modes derive valid colors and legends from the world snapshot',()=>{const s=world();assert.equal(AVAILABLE_MODES.length,12);for(const mode of AVAILABLE_MODES){const colors=buildProvinceColors(s,mode,troopsByProvince(s),'germany');assert.equal(colors.size,s.provinces.length);for(const color of colors.values())assert.match(color,/^(#[0-9a-f]{6}|rgb\([\d, ]+\))$/i);assert.ok(mapLegend(s,mode).length>0);}const p=s.provinces[0]!;assert.equal(buildProvinceColors(s,'Terrain',new Map()).get(p.id),TERRAIN_COLORS[p.terrain??"plains"]);});
+test('diplomacy and relations use the viewing country and live treaties',()=>{const s=world();assert.equal(diplomaticCategory(s,'germany','germany'),'own');const link=diplomaticLink(s,'germany','france');link.treaties=['Alliance'];link.relation=-80;assert.equal(diplomaticCategory(s,'germany','france'),'ally');const p=s.provinces.find(p=>p.ownerId==='france')!;assert.equal(buildProvinceColors(s,'Relations',new Map(),'germany').get(p.id),relationColor(-80));assert.notEqual(buildProvinceColors(s,'Diplomatic',new Map(),'germany').get(p.id),buildProvinceColors(s,'Diplomatic',new Map(),'france').get(p.id));});
+test('army counters conserve troops and construction progress follows simulation time',()=>{const s=world();const visible=new Set(s.provinces.map(p=>p.id));assert.equal(armyCounters(s,visible).reduce((n,a)=>n+a.troops,0),s.armies.reduce((n,a)=>n+a.troops,0));assert.deepEqual(armyCounters(s,new Set()),[]);assert.equal(constructionProgress(s,s.provinces[0]!.id),null);});
+test('movement history is bounded, migrated and rejects invalid routes',()=>{const s=world(),p=s.provinces[0]!,q=s.provinces[1]!;for(let i=0;i<30;i++)recordMovement(s,{armyId:String(i),ownerId:p.ownerId,from:p.id,to:q.id,tick:s.tick});assert.equal(s.movements!.length,20);normalizeGameState(s);s.movements![0]!.to='missing';assert.throws(()=>normalizeGameState(s),/movement/i);const old=world();delete old.movements;old.stateVersion=9;normalizeGameState(old);assert.deepEqual(old.movements,[]);assert.equal(old.stateVersion,10);});

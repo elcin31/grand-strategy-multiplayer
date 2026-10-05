@@ -1,0 +1,4 @@
+import type {GameState} from './gameTypes.ts';
+export interface MovementEvent {armyId:string;ownerId:string;from:string;to:string;tick:number}
+export function initializeMovements(s:GameState){if(!s.dataset)return;s.movements??=[];if(!Array.isArray(s.movements)||s.movements.length>20)throw Error('Invalid movement history');const provinces=new Set(s.provinces.map(p=>p.id));for(const m of s.movements)if(!provinces.has(m.from)||!provinces.has(m.to)||!Object.hasOwn(s.countries,m.ownerId)||typeof m.armyId!=='string'||!Number.isSafeInteger(m.tick)||m.tick<0||m.tick>s.tick)throw Error('Invalid movement event');}
+export function recordMovement(s:GameState,event:MovementEvent){if(!s.dataset)return;s.movements=[event,...(s.movements??[]).filter(m=>m.armyId!==event.armyId&&s.tick-m.tick<=2)].slice(0,20);}

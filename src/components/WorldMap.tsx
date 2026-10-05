@@ -1,5 +1,7 @@
+import {mapLegend} from '../map/modes';
+import {armyCounters,constructionProgress,occupationFeatures,warBorderPath} from '../map/overlays';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Canvas, Circle, Fill, Group, LinearGradient, Path, Rect, Text as MapText, Skia, matchFont, vec } from '@shopify/react-native-skia';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { cancelAnimation, runOnJS, useAnimatedReaction, useDerivedValue, useSharedValue, withDecay, withRepeat, withTiming } from 'react-native-reanimated';
@@ -14,6 +16,10 @@ import { lakes, rivers, terrainPatches } from '../map/terrain';
 interface WorldMapProps {
   settingsOpen?:boolean;
   onSettingsChange?:(value:boolean)=>void;
+  selectedArmyId?:string|null;
+  selectedCityId?:string|null;
+  onSelectArmy?:(armyId:string,provinceId:string)=>void;
+  onSelectCity?:(cityId:string,provinceId:string)=>void;
   state: GameState;
   selectedCountryId: CountryId | null;
   selectedProvinceId: string | null;
@@ -38,7 +44,7 @@ const desertPath = terrainPatches.filter(t => t.type === 'desert').map(t => line
 const compact = (v: number) => v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : `${Math.round(v / 1e3)}K`;
 const defaults: Camera = { x: 800, y: 160, zoom: 3.5 };
 
-export function WorldMap({ settingsOpen=false,onSettingsChange, state, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince, focusCountryId }: WorldMapProps) {
+export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCity,settingsOpen=false,onSettingsChange, state, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince, focusCountryId }: WorldMapProps) {
   const scene = useMemo(() => mapSceneFor(state), [state.dataset]);
   const { features, spatialIndex, provinceGeometry, cities: mapCities } = scene;
   const { paths, contextPath } = useMemo(() => nativeScene(scene), [scene]);
@@ -73,8 +79,12 @@ export function WorldMap({ settingsOpen=false,onSettingsChange, state, selectedC
   const visible = useMemo(() => spatialIndex.query(bounds).filter(f => f.provinceId), [bounds]);
   const visibleIds = useMemo(() => new Set(visible.map(f => f.provinceId!)), [visible]);
   const borders = useMemo(() => borderPaths(state, visibleIds, scene.edges), [state.provinces, visibleIds, scene]);
+  const warBorders=useMemo(()=>warBorderPath(state,visibleIds,scene.edges),[state.provinces,state.wars,visibleIds,scene]);
+  const occupations=useMemo(()=>occupationFeatures(state,visible),[state.provinces,visible]);
+  const counters=useMemo(()=>armyCounters(state,visibleIds),[state.armies,visibleIds]);
+  const legend=useMemo(()=>mapLegend(state,mode),[state.provinces,mode]);
   const troops = useMemo(() => troopsByProvince(state), [state.armies]);
-  const provinceColors = useMemo(() => buildProvinceColors(state, mode, troops), [state.countries, state.provinces, mode, troops]);
+  const provinceColors = useMemo(() => buildProvinceColors(state, mode, troops, selectedCountryId??undefined), [state.countries, state.provinces, state.diplomacy,state.wars,selectedCountryId, mode, troops]);
   const provinces = useMemo(() => new Map(state.provinces.map(p => [p.id, p])), [state.provinces]);
   const currentMapCities = useMemo(() => {
     const populations = new Map((state.cities ?? []).map(c => [c.id, c.population]));
@@ -95,8 +105,10 @@ export function WorldMap({ settingsOpen=false,onSettingsChange, state, selectedC
     const nearby = z >= 1.5 ? state.armies.map(a => ({ a, g: provinceGeometry.get(a.provinceId) })).find(({ g }) => g && Math.abs((g.anchor.x - world.x) * z) < 25 && Math.abs((g.anchor.y - world.y) * z * TILT) < 20) : null;
     const hit = nearby?.g ?? (cityHit ? provinceGeometry.get(cityHit.provinceId) : null) ?? spatialIndex.hit(world);
     const province = hit?.provinceId ? provinces.get(hit.provinceId) : null;
+    if(!long&&nearby&&onSelectArmy){onSelectArmy(nearby.a.id,nearby.a.provinceId);return;}
+    if(!long&&cityHit&&onSelectCity){onSelectCity(cityHit.id,cityHit.provinceId);return;}
     if (province) (long ? onLongPressProvince ?? onSelectProvince : onSelectProvince)(province);
-  }, [viewport, provinces, state.armies, onSelectProvince, onLongPressProvince, preset, scene, currentMapCities]);
+  }, [viewport, provinces, state.armies, onSelectProvince, onLongPressProvince,onSelectArmy,onSelectCity, preset, scene, currentMapCities]);
 
   const gestures = useMemo(() => {
     const pan = Gesture.Pan().minDistance(5).maxPointers(1).onStart(() => { cancelAnimation(x); cancelAnimation(y); startX.value = x.value; startY.value = y.value; })
@@ -163,8 +175,8 @@ export function WorldMap({ settingsOpen=false,onSettingsChange, state, selectedC
           <Path path={contextPath} color="#354440" fillType="evenOdd" />
           <Path path={contextPath} style="stroke" color="#65736b" strokeWidth={borderScale} opacity={0.4} />
           {GRAPHICS[preset].shadows && <Group transform={[{ translateX: 0.9 }, { translateY: 1.2 }]}><Path path={shadowPath} color="#030b12" opacity={0.5} /></Group>}
-          {colors.map(([color, path]) => <Path key={color} path={path} color={color} fillType="evenOdd"><LinearGradient start={vec(720, 70)} end={vec(900, 310)} colors={[color, '#455252']} /></Path>)}
-          {terrain && <>
+          {colors.map(([color, path]) => <Path key={color} path={path} color={color} fillType="evenOdd">{mode==='Political'&&<LinearGradient start={vec(720, 70)} end={vec(900, 310)} colors={[color, '#455252']} />}</Path>)}
+          {terrain && (mode==='Political'||mode==='Terrain') && <>
             <Path path={mountainPath} color="#d1cfbc" opacity={0.32} />
             <Path path={mountainPath} style="stroke" color="#273b36" strokeWidth={0.3} opacity={0.8} />
             <Path path={forestPath} color="#183f32" opacity={0.5} />
@@ -174,6 +186,9 @@ export function WorldMap({ settingsOpen=false,onSettingsChange, state, selectedC
           </>}
           <Path path={borders.inner} style="stroke" color="#273638" strokeWidth={borderScale} opacity={0.65} />
           <Path path={borders.outer} style="stroke" color="#131f24" strokeWidth={outerScale} />
+          {occupations.map(f=><Group key={'occupied-'+f.id}><Path path={paths.get(f.id)!} color={state.countries[provinces.get(f.provinceId!)!.controllerId!]!.color} opacity={.28}/><Path key={'occupation-'+f.id} path={paths.get(f.id)!} color={state.countries[provinces.get(f.provinceId!)!.controllerId!]!.color} opacity={.55} style="stroke" strokeWidth={selectionScale}/></Group>)}
+          {warBorders!==''&&<Path path={warBorders} style="stroke" color="#ed7f72" strokeWidth={selectionScale} opacity={pulse}/>}
+          {(state.movements??[]).filter(m=>state.tick-m.tick<=2&&(visibleIds.has(m.from)||visibleIds.has(m.to))).map((m,i)=>{const from=provinceGeometry.get(m.from)?.anchor,to=provinceGeometry.get(m.to)?.anchor;if(!from||!to)return null;return <Path key={'movement-'+i} path={`M${from.x},${from.y}L${to.x},${to.y}`} style="stroke" strokeWidth={selectionScale} color={state.countries[m.ownerId]!.color} opacity={pulse}/>;})}
           {!selectedPath.isEmpty() && <Path path={selectedPath} style="stroke" color="#f0db9e" strokeWidth={selectionScale} opacity={pulse} />}
           {snapshot.zoom < 8 && labels.filter(label => label.anchor.x >= bounds.left && label.anchor.x <= bounds.right && label.anchor.y >= bounds.top && label.anchor.y <= bounds.bottom).map(label => {
             if (label.blocked) return null;
@@ -188,18 +203,20 @@ export function WorldMap({ settingsOpen=false,onSettingsChange, state, selectedC
           {cities.map(city => <Group key={city.id} transform={[{ translateX: city.point.x }, { translateY: city.point.y }]}><Group transform={inverseScale}>
             {GRAPHICS[preset].shadows && city.capital && <Circle cx={0} cy={0} r={7} color="#ebd6a1" opacity={0.16} />}
             <Circle cx={0} cy={0} r={city.capital ? 3.2 : 2} color={city.capital ? '#f1dca8' : '#c7cec1'} />
+            {city.id===selectedCityId&&<Circle cx={0} cy={0} r={9} style="stroke" strokeWidth={2} color="#ffffff"/>}
             {city.capital && <Circle cx={0} cy={0} r={5} style="stroke" strokeWidth={1} color="#f1dca8" />}
             {cityLabels.has(city.id) && <MapText x={cityLabels.get(city.id)!.dx} y={cityLabels.get(city.id)!.dy} text={city.name} font={font} color="#eee9d8" />}
           </Group></Group>)}
-          {[...troops.entries()].filter(([id]) => snapshot.zoom >= 1.5 && visibleIds.has(id)).map(([id, count]) => {
-            const f = provinceGeometry.get(id)!;
-            return <Group key={id} transform={[{ translateX: f.anchor.x }, { translateY: f.anchor.y }]}><Group transform={inverseScale}>
+          {counters.filter(()=>snapshot.zoom>=1.5).map(counter=>{const {provinceId:id,troops:count}=counter;const selected=counter.ids.includes(selectedArmyId??'');
+            const f=provinceGeometry.get(id)!;
+            return <Group key={id+'|'+counter.ownerId} transform={[{ translateX: f.anchor.x }, { translateY: f.anchor.y }]}><Group transform={inverseScale}>
               <Rect x={-24} y={-8} width={48} height={18} color="#172329" />
-              <Rect x={-24} y={-8} width={48} height={18} style="stroke" strokeWidth={0.8} color="#c7c9b8" />
+              <Rect x={-24} y={-8} width={48} height={18} style="stroke" strokeWidth={selected?2.5:.8} color={selected?'#ffe5a1':state.countries[counter.ownerId]!.color} />
               <Path path="M-19,-4L-10,5M-10,-4L-19,5" color="#bec5b6" style="stroke" strokeWidth={0.8} />
               <MapText x={-7} y={5} text={compact(count)} font={counterFont} color="#eff0e3" />
             </Group></Group>;
           })}
+          {(state.constructions??[]).filter(c=>visibleIds.has(c.provinceId)).slice(0,60).map(c=>{const f=provinceGeometry.get(c.provinceId);if(!f)return null;return <Group key={c.id} transform={[{translateX:f.anchor.x},{translateY:f.anchor.y}]}><Group transform={inverseScale}><Rect x={-18} y={16} width={36} height={5} color="#182633"/><Rect x={-18} y={16} width={36*(constructionProgress(state,c.provinceId)??0)} height={5} color="#dbc58a"/></Group></Group>;})}
           {state.battleLog.filter(b => state.tick - b.tick <= 1).slice(0, 8).map(b => {
             const f = provinceGeometry.get(b.provinceId); if (!f) return null;
             return <Group key={b.id} transform={[{ translateX: f.anchor.x }, { translateY: f.anchor.y }]}><Group transform={inverseScale}><Circle cx={0} cy={0} r={17} style="stroke" strokeWidth={2} color="#c66b55" opacity={pulse} /></Group></Group>;
@@ -210,27 +227,28 @@ export function WorldMap({ settingsOpen=false,onSettingsChange, state, selectedC
     <View style={styles.toolbar}>
       <Pressable accessibilityLabel="Настройки карты" style={styles.button} onPress={() => setSettingsOpen(!settingsOpen)}><Text style={styles.text}>{MODE_LABELS[mode]} · {preset} ▾</Text></Pressable>
       <Pressable accessibilityLabel="Обзор мира" style={styles.button} onPress={() => animateCamera({ x: 720, y: 310, zoom: Math.max(0.5, viewport.width / 1450) })}><Text style={styles.text}>МИР</Text></Pressable>
+      <Pressable accessibilityLabel="Фокус выбранной провинции или страны" style={styles.button} onPress={()=>{const selected=selectedProvinceId?provinceGeometry.get(selectedProvinceId)?.anchor:undefined;const capital=mapCities.find(c=>c.id===state.countries[selectedCountryId??'']?.capitalCityId)?.point;const target=selected??capital;if(target)animateCamera({...target,zoom:6});}}><Text style={styles.text}>К ВЫБРАННОМУ</Text></Pressable>
       <Pressable accessibilityLabel="Европа" style={styles.button} onPress={() => animateCamera(defaults)}><Text style={styles.text}>ЕВРОПА</Text></Pressable>
     </View>
     <View style={styles.zoomControls}>
       {[1.5, 1 / 1.5].map((factor, i) => <Pressable key={i} accessibilityLabel={i ? 'Отдалить' : 'Приблизить'} style={styles.button} onPress={() => animateCamera(zoomAt({ x: x.value, y: y.value, zoom: zoom.value }, factor, { x: viewport.width / 2, y: viewport.height / 2 }, viewport))}><Text style={styles.zoomText}>{i ? '−' : '+'}</Text></Pressable>)}
     </View>
     {settingsOpen && <View style={styles.settings}>
-      <Text style={styles.heading}>РЕЖИМ КАРТЫ</Text><View style={styles.options}>{AVAILABLE_MODES.filter(m => m !== 'Resources' || state.provinces.some(p => p.resourceDeposit)).map(m => <Pressable key={m} style={[styles.option, mode === m && styles.active]} onPress={() => { setMode(m); setSettingsOpen(false); }}><Text style={styles.text}>{MODE_LABELS[m]}</Text></Pressable>)}</View>
+      <Text style={styles.heading}>РЕЖИМ КАРТЫ</Text><View style={styles.options}>{AVAILABLE_MODES.filter(m => m !== 'Resources' || state.provinces.some(p => p.resourceDeposit)).map(m => <Pressable accessibilityLabel={`Режим ${MODE_LABELS[m]}`} accessibilityState={{selected:mode===m}} key={m} style={[styles.option, mode === m && styles.active]} onPress={() => { setMode(m); setSettingsOpen(false); }}><Text style={styles.text}>{MODE_LABELS[m]}</Text></Pressable>)}</View>
       <Text style={styles.heading}>КАЧЕСТВО ГРАФИКИ</Text><View style={styles.options}>{(Object.keys(GRAPHICS) as GraphicsPreset[]).map(p => <Pressable key={p} style={[styles.option, preset === p && styles.active]} onPress={() => setPreset(p)}><Text style={styles.text}>{p}</Text></Pressable>)}</View>
     </View>}
-    <View pointerEvents="none" style={styles.legend}><Text style={styles.note}>{mode === 'Political' ? (state.dataset ? 'Современный мир · границы Natural Earth' : 'Провинции кампании · нейтральная суша вне сценария') : mode === 'Terrain' ? 'Стилизованный рельеф' : mode === 'Resources' ? 'Ресурсы · цвета видов; состав и выпуск — в панели провинции' : mode === 'Religion' ? 'Религия провинций · цвета конфессий и категорий' : mode === 'Government' ? 'Формы правления · отдельный цвет для каждой политики' : `${MODE_LABELS[mode]} · от меньшего (серый) к большему (золотой)`}</Text></View>
+    <View style={styles.legend}><Text style={styles.note}>{MODE_LABELS[mode]}{(mode==='Diplomatic'||mode==='Relations')?` · ${state.countries[selectedCountryId??'']?.name??'Выберите страну'}`:''}</Text><ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap:9}}>{legend.map(item=><View key={item.label} style={{flexDirection:'row',alignItems:'center',gap:4}}><View style={{width:10,height:10,backgroundColor:item.color}}/><Text style={styles.note}>{item.label}</Text></View>)}</ScrollView></View>
   </View>;
 }
 const styles = StyleSheet.create({
   frame: { flex: 1, backgroundColor: '#101f2b', overflow: 'hidden' },
   toolbar: { position: 'absolute', top: 12, left: 12, right: 60, flexDirection: 'row', gap: 6, flexWrap: 'wrap' },
-  button: { backgroundColor: '#17242aee', borderWidth: 1, borderColor: '#485953', paddingHorizontal: 12, paddingVertical: 10, borderRadius: 5 },
+  button: { backgroundColor: '#17242aee', borderWidth: 1, borderColor: '#485953', paddingHorizontal: 12, paddingVertical: 10,minHeight:44,justifyContent:'center', borderRadius: 5 },
   text: { color: '#dddcca', fontSize: 11, fontWeight: '600' },
   zoomText: { color: '#dddcca', fontSize: 20, textAlign: 'center' },
-  zoomControls: { position: 'absolute', right: 10, bottom: 38, gap: 6 },
-  settings: { position: 'absolute', left: 12, top: 60, width: 300, maxWidth: '90%', backgroundColor: '#17242af5', padding: 14, borderRadius: 6, gap: 10, borderWidth: 1, borderColor: '#485953' },
+  zoomControls: { position: 'absolute', right: 10, bottom: 108, gap: 6 },
+  settings: { position: 'absolute', left: 12, top: 60, width: 420, maxWidth: '65%', backgroundColor: '#17242af5', padding: 14, borderRadius: 6, gap: 10, borderWidth: 1, borderColor: '#485953' },
   heading: { color: '#98a79e', fontSize: 10, letterSpacing: 1 }, options: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  option: { padding: 10, backgroundColor: '#2a383d', borderRadius: 4 }, active: { backgroundColor: '#625b40' },
-  legend: { position: 'absolute', left: 12, bottom: 10, right: 55 }, note: { color: '#c1c7b6', fontSize: 9, backgroundColor: '#17242acc', padding: 5, alignSelf: 'flex-start' },
+  option: { padding: 10,minHeight:44,justifyContent:'center', backgroundColor: '#2a383d', borderRadius: 4 }, active: { backgroundColor: '#625b40' },
+  legend: { position: 'absolute', left: 12, bottom: 54, width:'55%',maxWidth:600,backgroundColor:'#17242acc',padding:4,borderRadius:6 }, note: { color: '#c1c7b6', fontSize: 9, backgroundColor: '#17242acc', padding: 5, alignSelf: 'flex-start' },
 });

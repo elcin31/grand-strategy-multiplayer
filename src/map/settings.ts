@@ -6,6 +6,6 @@ export const GRAPHICS = {
   Ultra: { terrain: true, shadows: true, water: true, cityBudget: 100, borderWidth: 1.3 },
 } as const;
 export type MapMode = 'Political' | 'Diplomatic' | 'Relations' | 'Economy' | 'Population' | 'Religion' | 'Government' | 'Military' | 'Resources' | 'Terrain' | 'Stability' | 'Development';
-// Only modes backed by the current server schema are selectable in this phase.
-export const AVAILABLE_MODES: MapMode[] = ['Political', 'Government', 'Religion', 'Economy', 'Population', 'Military', 'Resources', 'Terrain', 'Stability'];
+// All modes derive from the authoritative snapshot.
+export const AVAILABLE_MODES: MapMode[] = ['Political','Diplomatic','Relations','Economy','Population','Religion','Government','Military','Resources','Terrain','Stability','Development'];
 export const MODE_LABELS: Record<MapMode, string> = { Political: 'Политическая', Diplomatic: 'Дипломатия', Relations: 'Отношения', Economy: 'Экономика', Population: 'Население', Religion: 'Религия', Government: 'Правительство', Military: 'Армии', Resources: 'Ресурсы', Terrain: 'Рельеф', Stability: 'Стабильность', Development: 'Развитие' };
