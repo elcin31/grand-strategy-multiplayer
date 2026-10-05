@@ -21,7 +21,8 @@ export function validateCampaign(input:unknown):GameState {
  if(new Set(s.players.map(p=>p.id)).size!==s.players.length||s.players.some(p=>p.countryId&&!countries.has(p.countryId)))throw Error('Некорректные игроки');
  s.battleLog??=[];s.cities??=[];
  initializeGovernments(s);initializePopulation(s);initializeReligions(s);initializeResources(s);normalizeGameState(s);initializeEconomy(s);
- if(s.dataset)for(const city of s.cities){const p=s.provinces.find(p=>p.id===city.provinceId);if(!p||city.countryId!==p.ownerId)throw Error('Некорректное владение городом');}
+ const provincesById=new Map(s.provinces.map(p=>[p.id,p]));
+ if(s.dataset)for(const city of s.cities){const p=provincesById.get(city.provinceId);if(!p||city.countryId!==p.ownerId)throw Error('Некорректное владение городом');}
  return s;
 }
 export function encodeCampaign(state:GameState,generation:number,name?:string):string {

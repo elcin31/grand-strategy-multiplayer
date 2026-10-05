@@ -38,7 +38,7 @@ function GameApp() {
   const [state, setState] = useState<GameState | null>(null);
   latestState.current=state;
   useEffect(()=>{if(!state)void campaignStore.list().then(setSavedCampaigns).catch(()=>setSaveStatus('Ошибка чтения списка кампаний'));},[state?.id]);
-  useEffect(()=>{if(!(transport instanceof LocalTransport)||!state)return;const save=()=>{const current=latestState.current;if(current)void campaignStore.save(current).then(()=>setSaveStatus('Автосохранено')).catch(e=>setSaveStatus(e.message));};const timer=setInterval(save,10000);const sub=AppState.addEventListener('change',status=>{if(status!=='active')save();});return()=>{clearInterval(timer);sub.remove();};},[state?.id,transport]);
+  useEffect(()=>{if(!(transport instanceof LocalTransport)||!state)return;let busy=false,pending=false,lastSaved:GameState|null=null;const save=()=>{const current=latestState.current;if(!current||current.id!==state.id||current===lastSaved)return;if(busy){pending=true;return;}busy=true;void campaignStore.save(current).then(()=>{lastSaved=current;setSaveStatus('Автосохранено');}).catch(e=>setSaveStatus(e.message)).finally(()=>{busy=false;if(pending){pending=false;save();}});};const timer=setInterval(save,10000);const sub=AppState.addEventListener('change',status=>{if(status!=='active')save();});return()=>{clearInterval(timer);sub.remove();};},[state?.id,transport]);
   useEffect(()=>{if(!state)void new HttpTransport(remoteUrl).savedSessions().then(setSavedRooms).catch(()=>setConnectionStatus('Не удалось прочитать сохранённые сессии'));},[state?.id]);
   const [previewCountryId, setPreviewCountryId] = useState<CountryId | null>(null);
   const [selectedArmyId,setSelectedArmyId]=useState<string|null>(null);
