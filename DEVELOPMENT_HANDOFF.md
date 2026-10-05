@@ -26,7 +26,7 @@ Main files: `src/multiplayer/{httpTransport,sessionStore,transport}.ts`, `_share
 
 Before: compressed server snapshots only; offline campaign disappeared with process. Added offline manual save, 10s/background autosave, load/delete and campaign metadata/list. Serialized writes use validated pending files then immutable generations; retain last two complete generations. Partial pending files do not replace a valid save. A corrupt latest generation reports an error and blocks autosave overwrite until explicit deletion; no silent rollback. LocalTransport restores the original player identity.
 
-Central codec validates core structure/ownership/finite values, runs ordered migrations and normalization, rejects unsupported future schema. Both legacy JSONB and compressed server reads normalize a cloned snapshot. Main files: `src/persistence/{campaignCodec,campaignStore,nativeCampaignStore}.ts`, `localTransport.ts`, App, `_shared/{stateMigrations,stateStorage}.ts`. Tests: save/load on new store instance, missing legacy fields, future/invalid ownership, corruption, interrupted rename, queued saves and bounded generations. Phase gate: typecheck + 117 tests; immutable legacy read regression corrected separately. Commits `bb9566d`, `0bbe20c`.
+Central codec validates core structure/ownership/finite values, runs ordered migrations and normalization, rejects unsupported future schema. Both legacy JSONB and compressed server reads normalize a cloned snapshot. Native testing exposed quadratic city-to-province validation during autosave; a province index now validates ownership in linear time. Autosave skips unchanged snapshots and coalesces a busy write into at most one latest-state follow-up, guarded against campaign switches (`6bf988f`). The added city-ownership regression brings the final suite to 124 tests. Main files: `src/persistence/{campaignCodec,campaignStore,nativeCampaignStore}.ts`, `localTransport.ts`, App, `_shared/{stateMigrations,stateStorage}.ts`. Tests: save/load on new store instance, missing legacy fields, future/invalid ownership, corruption, interrupted rename, queued saves and bounded generations. Phase gate: typecheck + 117 tests; immutable legacy read regression corrected separately. Commits `bb9566d`, `0bbe20c`.
 
 ### Phase 20 — Landscape UI
 
@@ -42,7 +42,7 @@ Main files: `src/map/{modes,overlays,scene,settings}.ts`, `WorldMap.tsx`, App/Ga
 
 ## CURRENT PROJECT STATUS
 
-Latest implemented phase: **PHASE 21**. Final Android/live acceptance is still being checked; do not treat this draft as the final CI result until the CI section below is updated.
+Last completed phase: **PHASE 21**. Exactly Phases **17, 18, 19, 20 and 21** are complete in this session, with unit, dedicated-backend and native Android acceptance recorded below. Stop here; Phase 22 is next.
 
 Modern GameState schema: **10**. Ordered normalization retains old modern campaigns; future/invalid saves are rejected clearly. Shared reducer remains source of game rules. Online client sends intent only; treasury, ownership, army/combat, construction, research, government, resources and diplomacy/peace remain server authoritative.
 
@@ -62,7 +62,7 @@ Backend functions deployed together from Phase 21 shared source: `game-room` **v
 
 ## BUGS / limitations
 
-See `BUG_REPORT.md`. Pending final CI acceptance is tracked separately from implementation. No new feature beyond Phase 21 should be added while finishing these gates.
+See `BUG_REPORT.md`. No known unresolved BLOCKER, CRITICAL or HIGH remains after the recorded acceptance checks. Remaining MEDIUM/LOW limitations are listed below; physical-device performance is not claimed.
 
 - AI is a deterministic heuristic with local neighbor tactics; no global path planner. One active war per country and no allied-land transit remain existing game rules.
 - Offline multiplayer clock is poll-driven/dormant, with bounded catch-up; it is host-independent but not a continuously scheduled background service.
@@ -75,13 +75,22 @@ See `BUG_REPORT.md`. Pending final CI acceptance is tracked separately from impl
 ## CI
 
 - Local strict TypeScript: PASS.
-- Local JavaScript tests: **123/123 PASS** (includes 36-month AI simulation, not Phase 25).
+- Local JavaScript tests: **124/124 PASS** (includes 36-month AI simulation, not Phase 25).
 - Python: **3/3 PASS**, with pinned Shapely dependency.
 - Existing CPU map spatial-index regression: PASS; 5,000 features, p95 query 0.035ms, maximum 266 visible. Not Android FPS.
 - Direct dedicated-DB rollback RPC checks: PASS; no retained fixture data.
 - Live HTTP QA: run **37285016137 PASS**: eight players/ninth rejection, invalid token/spoof, duplicate/stale/concurrent writes, research/building, human treaty consent, authenticated snapshot, host timeout/AI replacement/migration and same-country reconnect on schema 10. QA room `51d7d6f3-10d7-4b8e-9562-23ed8feae3cd` removed with its original-host-name guard after passing.
-- Latest Android release/checkpoint CI: run **37286097964** (source `d5825c1`), pending final result. `assembleRelease` must pass bundle/native verification and emulator smoke before this gate is accepted.
+- Android build run **37290841593** (runtime source `6bf988f`): typecheck, 124 tests, 3 Python tests, native landscape configuration, `assembleRelease` and `assets/index.android.bundle`/native bundle verification PASS. Native gameplay, all 12 map modes and five layouts passed; the original smoke then failed because its density-change fixture did not restore the app after Android recreation. Corrected smoke **37328473081 PASS** uses the identical APK (runtime-source equality gate passed). It verifies network-disabled cold launch, real campaign commands, four graphics presets, all twelve mode selections, camera input, five landscape layouts, density 320/cutout, persisted paused tick across Android recreation and process restart, Back panel/exit priority, cancellation of exit, and absence of native fatal/JS bundle-load errors. Evidence artifact: `11353812182`. This is a standalone checkpoint build, not Phase 26 release acceptance.
 - Earlier local HTTP attempts were interrupted by proxy/network errors and are NOT counted as passing. Exact QA rooms were cleaned with original-host-name guards; no user campaign was deleted.
+
+## Reproduce / inspect verification
+
+- `npm ci --include=dev --no-audit --no-fund`, `npm run typecheck`, `npm test`.
+- Install `scripts/world-requirements.txt`, then `python -m unittest discover -s tests -p '*_test.py'`.
+- Native build/config/bundle checks are in `.github/workflows/android-apk.yml`. [Build evidence](https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/37290841593), artifact `dominion-world-checkpoint` (14-day retention).
+- [Current native acceptance](https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/37328473081) reuses that APK through `.github/workflows/android-checkpoint-smoke.yml`; runtime-source equality is mandatory. `scripts/android-smoke.py` exercises the installed APK with network disabled. Evidence includes XML, screenshots, logcat and camera framestats, not a claimed physical-device performance measurement.
+- [Live dedicated-backend QA](https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/37285016137). `tests/multiplayer_rpc.sql` is rollback-only; run it only against this project's dedicated backend. Do not create QA rooms in another project.
+- Intermediate native failures were retained in CI: lost/partially visible touch targets, asynchronous navigation, Android configuration recreation and uppercase system-dialog labels were corrected in the test fixture. Run 37326326449 failed downloading the Android system image before app execution. The final run above passed; the earlier failures remain visible for traceability.
 
 ## LAST COMMITS
 
@@ -93,5 +102,16 @@ See `BUG_REPORT.md`. Pending final CI acceptance is tracked separately from impl
 - `609eba7` — Phase 21 map modes/overlays/history.
 - `b5f8c34` — lobby picking, foreign army context, selection reset and HUD units.
 - `d5825c1` — scrollable density-safe map selector, actual package version in save metadata, SQL RPC checks and density/cutout smoke. Targeted save/map tests 8/8 and typecheck passed.
+- `8c8790a` — implementation/live-check handoff checkpoint.
+- `4654ada` — fully visible Android test targets and reusable checkpoint smoke with runtime-source equality gate.
+- `c81ce06` — run corrected smoke against Phase 21 APK.
+- `a77279b` — native touch duration and actual campaign-transition checks.
+- `0c57d45` — exercise new section navigation and wait for Back transitions.
+- `6bf988f` — linear save ownership validation and coalesced autosave.
+- `829ffe1` — restore the persisted campaign after Android density/cutout recreation and verify the paused tick.
+- `f207a85`, `7b8e675` — wait for actual map-menu state, independent of scrolled quality controls, and assert all selected mode labels.
+- `a11e5f2` — inspect the fresh app hierarchy after cancelling the exit dialog.
+- `a8d3358` — await selected section before inspecting policy state.
+- `b49243d` — match Android’s uppercase native dialog action.
 
 The GitHub commits preserve phase boundaries; local intermediate SHAs differed because publishing used Git Data API and verified identical trees. No force push.

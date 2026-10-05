@@ -16,11 +16,13 @@ Current scope: Phases 17–21, recovered main 8cde76f. Historical reports remain
 | MEDIUM | No coalition allied-land transit; each participant moves through own controlled land or attacks wartime enemies | Current military/diplomacy limitation; allies still enter defensive wars and fight on their fronts. |
 | MEDIUM | Physical Android 30/60 FPS and sustained memory/thermal behavior unverified | Phase 22 gate; emulator/CPU timings are not proof. |
 | HIGH — FIXED | Restart lost offline campaigns and multiplayer identity; repeated commands could be applied twice | Atomic offline generations, SecureStore reconnect/pending intent, server command receipts/CAS. Unit and live protocol-v2 checks pass. |
-| LOW | Some long labels/costs in two-column province cards clip at narrow panel widths | Observed in final emulator screenshots; refine wrapping/card sizing in Phase 20 landscape UI. Actions and server costs remain functional. |
+| LOW | Some long labels/costs in two-column province cards clip at narrow panel widths | Observed in final emulator screenshots; remaining cosmetic wrapping/card-sizing follow-up after the Phase 20 layout changes. Actions and server costs remain functional. |
 | LOW | Original terrain and resource distributions are procedural scenario abstractions | Explicitly documented; not real-world topographic/geological data. |
 | LOW | Sparse diplomacy can eventually include all country pairs; histories/proposals are bounded but full Phase 25 growth verification remains future work | Current 195-state roster bounds pair count; strategic AI is now integrated. |
 
-Current source verification: strict TypeScript and 123 JS tests PASS; 3 Python tests PASS; live protocol-v2 QA 37285016137 PASS; direct DB rollback checks PASS. Final Android acceptance is pending in DEVELOPMENT_HANDOFF.md. Phase 25 stress was not run this session.
+Current source verification: strict TypeScript and 124 JS tests PASS; 3 Python tests PASS; live protocol-v2 QA 37285016137 PASS; direct DB rollback checks PASS. Standalone release build job 111700588433 (run 37290841593) and final native acceptance 37328473081 PASS; see DEVELOPMENT_HANDOFF.md. Phase 25 stress was not run this session.
+
+Native regression fixed during this session: **HIGH — FIXED** quadratic city/province save validation could stall input while autosave accumulated work. Indexed ownership validation and coalesced autosave remove this repeated work; invalid city ownership still rejects with a dedicated regression. Commit `6bf988f`; 124 tests and native gameplay checks pass.
 
 Additional current limits:
 
@@ -31,4 +33,4 @@ Additional current limits:
 - HIGH — FIXED: map selector could exceed the available height on high-density landscape displays; it now has bounded height and scrolling, with a density/cutout native smoke step.
 - LOW — FIXED: HUD formatted million-unit treasury as KM; it now uses M/B. Foreign-army context is visible without commander assignment controls.
 
-No known unresolved source BLOCKER/CRITICAL/HIGH at this checkpoint; Android acceptance remains an explicit gate, not a claimed pass.
+No known unresolved BLOCKER/CRITICAL/HIGH at this checkpoint. Final Android acceptance passed, including density/cutout, persisted campaign restart and Back/exit cancellation. Physical-device FPS remains unverified and belongs to Phase 22.

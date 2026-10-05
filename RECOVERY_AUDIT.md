@@ -1,6 +1,6 @@
 # Recovery audit — current checkpoint 2026-10-05
 
-Current session recovered `8cde76f`, verified Phase 16 integration and prior CI, and selected exactly Phases 17–21 as explicitly requested. Phase 1–16 remain DONE. Phases 17–19 are DONE with unit/live/DB gates. Phases 20–21 are implemented with passing unit/typecheck gates; final native acceptance is pending in DEVELOPMENT_HANDOFF.md. Phase 22–26 retain their prior PARTIAL status and were not advanced. See the handoff for current commits and final acceptance; the historical audit below records the earlier recovery and is not the current roadmap status.
+Current session recovered `8cde76f`, verified Phase 16 integration and prior CI, and selected exactly Phases 17–21 as explicitly requested. Phase 1–16 remain DONE. Phases 17–19 are DONE with unit/live/DB gates. Phases 20–21 are DONE with passing unit/typecheck and final native acceptance run 37328473081. This session stops at Phase 21; DEVELOPMENT_HANDOFF.md records all acceptance evidence. Phase 22–26 retain their prior PARTIAL status and were not advanced. See the handoff for current commits and final acceptance; the historical audit below records the earlier recovery and is not the current roadmap status.
 
 ---
 
