@@ -45,8 +45,11 @@ def map_menu(opened):
         time.sleep(2)
     raise AssertionError('Map menu did not reach requested state: '+str(opened))
 def navigate(section):
-    root=hierarchy('navigation-'+section)
-    click_text(root,'Раздел '+section);time.sleep(.4)
+    for attempt in range(5):
+        root=hierarchy('navigation-'+section+'-'+str(attempt))
+        if any(n.get('content-desc')=='Раздел '+section and n.get('selected')=='true' for n in root.iter('node')):return
+        click_text(root,'Раздел '+section);time.sleep(1)
+    raise AssertionError('Navigation did not select section: '+section)
 def click_scrolling(text):
     sections={'Экономика':'Экономика','Правительство':'Правительство','Религия':'Религия','Технологии':'Технологии','Дипломатия':'Дипломатия'}
     if text.endswith(' ▾') and text[:-2] in sections:
