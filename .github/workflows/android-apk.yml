@@ -2,6 +2,11 @@ name: Android APK
 on:
   push:
     branches: [main, world-update]
+    paths-ignore:
+      - "**/*.md"
+      - scripts/android-smoke.py
+      - .github/workflows/android-checkpoint-smoke.yml
+      - .github/android-smoke-source
   workflow_dispatch:
 permissions:
   contents: read

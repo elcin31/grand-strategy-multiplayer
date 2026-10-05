@@ -49,7 +49,7 @@ def click_scrolling(text):
         node = next((n for n in root.iter('node') if n.get('text') == text or n.get('content-desc') == text), None)
         if node is not None:
             nums = [int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
-            if len(nums) == 4 and nums[2] > nums[0] and 70 <= nums[1] < nums[3] <= 660:
+            if len(nums) == 4 and nums[2] > nums[0] and 70 <= nums[1] and nums[3]-nums[1]>=14 and nums[3]<=640:
                 click_text(root,text); time.sleep(1); return
         # Collapsing a policy card can leave its next control ABOVE the viewport.
         # Start a missing-control search at the top, then advance in small steps.
@@ -65,7 +65,7 @@ def read_scrolling(prefix):
         for node in root.iter('node'):
             if node.get('text','').startswith(prefix):
                 bounds = [int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
-                if len(bounds) == 4 and 70 <= bounds[1] < bounds[3] <= 660:
+                if len(bounds) == 4 and 70 <= bounds[1] and bounds[3]-bounds[1]>=12 and bounds[3]<=640:
                     return node.get('text')
         adb('shell','input','swipe','1080','530','1080','320','350')
     raise AssertionError('Missing readable state: '+prefix)
@@ -272,7 +272,7 @@ root=hierarchy('save-before-restart');click_text(root,'СОХРАНИТЬ');time
 saved_tick=next(n.get('text') for n in root.iter('node') if n.get('text','').startswith('Ход '))
 launch(); root = hierarchy('04-restart'); screenshot('04-restart')
 for _ in range(6):
-    if any(n.get('content-desc')=='Продолжить кампанию' for n in root.iter('node')):break
+    if any(n.get('content-desc')=='Продолжить кампанию' and int(re.findall(r'\d+',n.get('bounds',''))[3])-int(re.findall(r'\d+',n.get('bounds',''))[1])>=30 for n in root.iter('node')):break
     adb('shell','input','swipe','640','580','640','260','350');root=hierarchy('save-list')
 click_text(root,'Продолжить кампанию');time.sleep(8)
 root=hierarchy('campaign-restored');screenshot('campaign-restored')
