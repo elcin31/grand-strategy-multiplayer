@@ -39,7 +39,7 @@ def click_text(root, text):
 def map_menu(opened):
     for attempt in range(5):
         root=hierarchy('map-menu-'+str(opened)+'-'+str(attempt))
-        visible=any(n.get('text')=='Low' for n in root.iter('node'))
+        visible=any(n.get('text') in ('РЕЖИМ КАРТЫ','КАЧЕСТВО ГРАФИКИ') for n in root.iter('node'))
         if visible==opened:return root
         click_text(root,'Настройки карты')
         time.sleep(2)
