@@ -6,7 +6,7 @@ Original Android-first global strategy, built with Expo 57, React Native 0.86, T
 
 Main contains 195 playable UN member/observer states, 4,386 provinces and 7,214 cities; seeded fictional rulers; ten government forms; religion and Religious Unity; population; economy/debt/default; ten resources and ten building types.
 
-The 2026-10-04 session adds **Phases 12–16 only**: five research branches, six military unit types and commanders/readiness, relations/treaties/guarantees, authoritative wars/occupation/peace, stability and rebellions. The roadmap is not finished. **Next: Phase 17 AI 2.0.**
+The 2026-10-05 session adds **Phases 17–21 only** to the completed technology/military/diplomacy/war/stability systems: strategic AI, durable multiplayer sessions and atomic commands, campaign saves/migrations, landscape HUD/navigation, and all twelve map modes. **Next: Phase 22 Performance.** Final gate evidence is in the handoff; the roadmap is not finished.
 
 Read [DEVELOPMENT_HANDOFF.md](DEVELOPMENT_HANDOFF.md) for exact implementation, commits, CI evidence, remaining gates and next five phases. [RECOVERY_AUDIT.md](RECOVERY_AUDIT.md) records the recovered 26-phase matrix. [BUG_REPORT.md](BUG_REPORT.md) tracks current defects/limitations; [WORLD_UPDATE_STATUS.md](WORLD_UPDATE_STATUS.md) is mostly historical evidence.
 
@@ -29,7 +29,7 @@ The live QA script creates only an isolated test campaign in the dedicated game 
 
 Clients send intent. A shared pure reducer implements local/server rules; the authenticated server boundary rejects actor spoofing. Edge Functions price and validate recruitment, movement/combat, research/buildings, government/resources, diplomacy/war/peace. Hashed room bearer tokens, RLS denial of direct client table access and compare-and-swap version updates remain intact.
 
-Modern snapshots use `stateVersion: 7`, incremental-compatible normalization and compressed persistence with legacy JSONB fallback. Offline play works but does **not** yet implement disk save/restore. Durable client reconnect/idempotency and full strategic AI are later phases.
+Modern snapshots use `stateVersion: 10`, ordered migrations and compressed persistence with legacy JSONB fallback. Offline campaigns use validated atomic save generations; multiplayer credentials/pending commands persist in native SecureStore. Reconnect recovers server state, versioned transactional receipts prevent duplicate effects, and server time can progress through any connected member. All-offline campaigns are dormant with bounded catch-up. Strategic AI takes over a timed-out country and yields on authenticated return.
 
 Dedicated backend: `dfjsnjxnyjspwugjguhq`.
 Endpoint: `https://dfjsnjxnyjspwugjguhq.supabase.co/functions/v1`.

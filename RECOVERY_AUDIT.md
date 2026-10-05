@@ -1,3 +1,9 @@
+# Recovery audit — current checkpoint 2026-10-05
+
+Current session recovered `8cde76f`, verified Phase 16 integration and prior CI, and selected exactly Phases 17–21 as explicitly requested. Phase 1–16 remain DONE. Phases 17–19 are DONE with unit/live/DB gates. Phases 20–21 are implemented with passing unit/typecheck gates; final native acceptance is pending in DEVELOPMENT_HANDOFF.md. Phase 22–26 retain their prior PARTIAL status and were not advanced. See the handoff for current commits and final acceptance; the historical audit below records the earlier recovery and is not the current roadmap status.
+
+---
+
 # Recovery audit — 2026-10-04
 
 Source of truth: main d9a5fb3. No DEVELOPMENT_HANDOFF.md existed. Historical README/WORLD_UPDATE_STATUS/2026-10-03 audit lagged behind actual commits. Phase 10 resources (82c6ef9), Phase 11 buildings (9061d35/c8aa212/352779e), server authority split (6bced4e), serialized host ticks (d55a634), compressed snapshots (49b9ead/d9a5fb3) are integrated.
