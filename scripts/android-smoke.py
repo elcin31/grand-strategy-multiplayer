@@ -33,7 +33,9 @@ def click_text(root, text):
     assert node is not None, 'Missing control: '+text
     nums = [int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
     assert len(nums)==4
-    adb('shell','input','tap',str((nums[0]+nums[2])//2),str((nums[1]+nums[3])//2))
+    print('Tap:',text,node.get('bounds'),flush=True)
+    x,y=str((nums[0]+nums[2])//2),str((nums[1]+nums[3])//2)
+    adb('shell','input','swipe',x,y,x,y,'100')
 def navigate(section):
     root=hierarchy('navigation-'+section)
     click_text(root,'Раздел '+section);time.sleep(.4)
@@ -127,8 +129,14 @@ root = hierarchy('country-search'); click_text(root,'Германия'); time.sl
 click_scrolling('ИГРАТЬ ЗА ЭТУ СТРАНУ')
 click_scrolling('Я ГОТОВ')
 click_scrolling('НАЧАТЬ ИГРУ')
-root = hierarchy('02-running')
-click_text(root,'УПРАВЛЕНИЕ')
+for attempt in range(4):
+    time.sleep(3)
+    root=hierarchy('02-running');screenshot('02-running')
+    if any(n.get('text','').startswith('Ход ') for n in root.iter('node')):break
+    assert not any(n.get('text')=='Действие отклонено' for n in root.iter('node')), 'Start command rejected'
+    click_scrolling('НАЧАТЬ ИГРУ')
+assert any(n.get('text','').startswith('Ход ') for n in root.iter('node')), 'Campaign did not start after visible start control'
+if any(n.get('text')=='УПРАВЛЕНИЕ' for n in root.iter('node')):click_text(root,'УПРАВЛЕНИЕ')
 set_speed(0)
 root = hierarchy('02-paused'); click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ')
 # Country preview centers the camera on Berlin; city/counter hit testing selects its real province.
