@@ -321,7 +321,7 @@ navigate('Экономика');adb('shell','input','keyevent','4');time.sleep(1)
 root=hierarchy('back-closed-panel');assert any(n.get('text')=='УПРАВЛЕНИЕ' for n in root.iter('node')), 'Back did not close secondary panel'
 adb('shell','input','keyevent','4');time.sleep(1)
 root=hierarchy('exit-confirmation');assert any(n.get('text')=='Выйти из кампании?' for n in root.iter('node')), 'Back skipped exit confirmation'
-click_text(root,'Остаться');time.sleep(1)
+click_text(root,'ОСТАТЬСЯ');time.sleep(1)
 root=hierarchy('exit-cancelled')
 assert any(n.get('text')=='DOMINION' for n in root.iter('node')), 'Restart failed without Metro'
 logs = adb('logcat','-d'); (OUT/'logcat.txt').write_text(logs)
