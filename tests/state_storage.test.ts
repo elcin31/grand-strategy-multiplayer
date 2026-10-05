@@ -14,7 +14,9 @@ test('compressed persistence round-trips a full modern world and materially redu
 
 test('legacy JSONB state remains readable for lazy migration', async () => {
   const state = createWorldState('storage-legacy','STORE2','host','Storage QA',708);
-  assert.equal(await unpackRoomState({ state }), state);
+  const restored=await unpackRoomState({state});
+  assert.deepEqual(restored,state);assert.notEqual(restored,state);
+  restored.tick++;assert.equal(state.tick,0);
 });
 
 test('missing, malformed and unknown-codec persistence is rejected', async () => {
