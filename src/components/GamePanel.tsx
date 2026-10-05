@@ -211,7 +211,7 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
               </ScrollView>}
             </>}
 
-            {state.dataset && <MilitaryPanel state={state} playerId={playerId} onCommand={onCommand} province={selected} army={primaryArmy} />}
+            {state.dataset && <MilitaryPanel state={state} playerId={playerId} onCommand={onCommand} province={selected} army={state.armies.find(a=>a.id===focusedArmyId&&a.provinceId===selected.id)??primaryArmy} />}
             {isOwnProvince && !selected.rebellion && (
               <View style={styles.recruitRow}>
                 <Pressable style={styles.primaryButton} onPress={() => onCommand({ type: 'RECRUIT', playerId, provinceId: selected.id, troops: 10_000 })}>

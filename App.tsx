@@ -57,6 +57,7 @@ function GameApp() {
     setPlayerId(session.playerId);
     setState(session.state);
     setSelectedProvinceId(null);
+    setSelectedArmyId(null);setSelectedCityId(null);setMapMenuOpen(false);
     setPreviewCountryId(null);
     setFocusCountryId(null);
     setPanelOpen(true);
@@ -174,8 +175,8 @@ function GameApp() {
           selectedCountryId={gameStarted?myCountryId:selectedCountryId}
           selectedProvinceId={selectedProvinceId}
           selectedArmyId={selectedArmyId} selectedCityId={selectedCityId}
-          onSelectArmy={(id,province)=>{setSelectedArmyId(id);setSelectedCityId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);}}
-          onSelectCity={(id,province)=>{setSelectedCityId(id);setSelectedArmyId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);}}
+          onSelectArmy={!gameStarted?undefined:(id,province)=>{setSelectedArmyId(id);setSelectedCityId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);}}
+          onSelectCity={!gameStarted?undefined:(id,province)=>{setSelectedCityId(id);setSelectedArmyId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);}}
           onSelectProvince={selectProvince}
           onLongPressProvince={selectProvince}
         /></View>
