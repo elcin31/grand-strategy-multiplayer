@@ -266,25 +266,46 @@ for width, height in [(1600,720),(1920,1080),(2340,1080),(1280,800)]:
     adb('shell','wm','size',f'{height}x{width}')
     time.sleep(3)
     screenshot(f'layout-{width}x{height}')
+# Save before configuration changes, which Android may handle by recreating the app.
+root=hierarchy('save-before-configuration');click_text(root,'СОХРАНИТЬ');time.sleep(3)
+saved_tick=next(n.get('text') for n in root.iter('node') if n.get('text','').startswith('Ход '))
+def restore_after_configuration(name):
+    root=hierarchy(name)
+    if not any(n.get('text','').startswith('Ход ') for n in root.iter('node')):
+        sizes=re.findall(r'(\d+)x(\d+)',adb('shell','wm','size'))
+        width,height=sorted(map(int,sizes[-1]),reverse=True)
+        for attempt in range(8):
+            usable=False
+            for node in root.iter('node'):
+                if node.get('content-desc')!='Продолжить кампанию':continue
+                bounds=list(map(int,re.findall(r'\d+',node.get('bounds',''))))
+                usable=len(bounds)==4 and bounds[3]-bounds[1]>=30 and bounds[1]>=0 and bounds[3]<=height-40
+                if usable:break
+            if usable:break
+            adb('shell','input','swipe',str(width//2),str(int(height*.8)),str(width//2),str(int(height*.35)),'350')
+            root=hierarchy(name+'-list-'+str(attempt))
+        assert usable, 'No usable saved campaign after configuration change'
+        click_text(root,'Продолжить кампанию')
+        for attempt in range(12):
+            time.sleep(1);root=hierarchy(name+'-restore-'+str(attempt))
+            if any(n.get('text','').startswith('Ход ') for n in root.iter('node')):break
+    assert any(n.get('text')==saved_tick for n in root.iter('node')), 'Paused campaign changed across recreation: '+name
+    return root
 # Real phone density: verify the compact selector remains scrollable inside safe area.
 adb('shell','wm','size','1080x2340');adb('shell','wm','density','320');time.sleep(3)
-root=hierarchy('dense-phone');click_text(root,'Настройки карты');time.sleep(1);screenshot('dense-phone-menu')
+root=restore_after_configuration('dense-phone');click_text(root,'Настройки карты');time.sleep(1);screenshot('dense-phone-menu')
 adb('shell','input','keyevent','4');time.sleep(1)
 cutout='com.android.internal.display.cutout.emulation.corner'
 if cutout in adb('shell','cmd','overlay','list'):
-    adb('shell','cmd','overlay','enable',cutout);time.sleep(2);screenshot('cutout-landscape')
-    adb('shell','cmd','overlay','disable',cutout)
+    adb('shell','cmd','overlay','enable',cutout);time.sleep(3)
+    restore_after_configuration('cutout');screenshot('cutout-landscape')
+    adb('shell','cmd','overlay','disable',cutout);time.sleep(3)
+    restore_after_configuration('cutout-disabled')
 adb('shell','wm','density','160');adb('shell','wm','size','720x1280');time.sleep(3)
-# Persist the actual paused campaign, kill its process, and load it from the entry menu.
-root=hierarchy('save-before-restart');click_text(root,'СОХРАНИТЬ');time.sleep(3)
-saved_tick=next(n.get('text') for n in root.iter('node') if n.get('text','').startswith('Ход '))
-launch(); root = hierarchy('04-restart'); screenshot('04-restart')
-for _ in range(6):
-    if any(n.get('content-desc')=='Продолжить кампанию' and int(re.findall(r'\d+',n.get('bounds',''))[3])-int(re.findall(r'\d+',n.get('bounds',''))[1])>=30 for n in root.iter('node')):break
-    adb('shell','input','swipe','640','580','640','260','350');root=hierarchy('save-list')
-click_text(root,'Продолжить кампанию');time.sleep(8)
-root=hierarchy('campaign-restored');screenshot('campaign-restored')
-assert any(n.get('text')==saved_tick for n in root.iter('node')), 'Saved tick did not survive process restart'
+restore_after_configuration('density-reset')
+# Kill the process and explicitly load the same paused campaign from the entry menu.
+launch();screenshot('04-restart')
+root=restore_after_configuration('campaign-restored');screenshot('campaign-restored')
 navigate('Экономика');adb('shell','input','keyevent','4');time.sleep(1)
 root=hierarchy('back-closed-panel');assert any(n.get('text')=='УПРАВЛЕНИЕ' for n in root.iter('node')), 'Back did not close secondary panel'
 adb('shell','input','keyevent','4');time.sleep(1)
