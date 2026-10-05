@@ -258,6 +258,15 @@ for width, height in [(1600,720),(1920,1080),(2340,1080),(1280,800)]:
     adb('shell','wm','size',f'{height}x{width}')
     time.sleep(3)
     screenshot(f'layout-{width}x{height}')
+# Real phone density: verify the compact selector remains scrollable inside safe area.
+adb('shell','wm','size','1080x2340');adb('shell','wm','density','320');time.sleep(3)
+root=hierarchy('dense-phone');click_text(root,'Настройки карты');time.sleep(1);screenshot('dense-phone-menu')
+adb('shell','input','keyevent','4');time.sleep(1)
+cutout='com.android.internal.display.cutout.emulation.corner'
+if cutout in adb('shell','cmd','overlay','list'):
+    adb('shell','cmd','overlay','enable',cutout);time.sleep(2);screenshot('cutout-landscape')
+    adb('shell','cmd','overlay','disable',cutout)
+adb('shell','wm','density','160');adb('shell','wm','size','720x1280');time.sleep(3)
 # Persist the actual paused campaign, kill its process, and load it from the entry menu.
 root=hierarchy('save-before-restart');click_text(root,'СОХРАНИТЬ');time.sleep(3)
 saved_tick=next(n.get('text') for n in root.iter('node') if n.get('text','').startswith('Ход '))
@@ -277,4 +286,4 @@ assert any(n.get('text')=='DOMINION' for n in root.iter('node')), 'Restart faile
 logs = adb('logcat','-d'); (OUT/'logcat.txt').write_text(logs)
 assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs, 'Native crash detected'
 assert 'Unable to load script' not in logs, 'Standalone JS load failed'
-print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, population growth, government/religion cost/cooldown and Unity, 4 presets, 9 modes, camera inputs, 5 layouts, persistent campaign restore, Back priority, restart, no fatal logs')
+print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, population growth, government/religion cost/cooldown and Unity, 4 presets, 12 modes, camera inputs, 5 layouts, persistent campaign restore, Back priority, restart, no fatal logs')

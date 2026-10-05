@@ -1,3 +1,4 @@
+import {version as GAME_VERSION} from '../../package.json';
 import type {GameState} from '../types/game';
 import {normalizeGameState,CURRENT_STATE_VERSION} from '../../supabase/functions/_shared/stateMigrations';
 import {initializeGovernments} from '../../supabase/functions/_shared/governmentSystem';
@@ -25,7 +26,7 @@ export function validateCampaign(input:unknown):GameState {
 }
 export function encodeCampaign(state:GameState,generation:number,name?:string):string {
  const s=validateCampaign(state),country=s.players[0]?.countryId??null;
- const saved:SavedCampaign={format:1,metadata:{id:s.id,name:name??s.countries[country??'']?.name??'Новая кампания',country,year:s.year,month:s.month,tick:s.tick,lastPlayed:Date.now(),gameVersion:'0.2.0',stateVersion:s.stateVersion??CURRENT_STATE_VERSION,generation},checksum:stateChecksum(s),state:s};
+ const saved:SavedCampaign={format:1,metadata:{id:s.id,name:name??s.countries[country??'']?.name??'Новая кампания',country,year:s.year,month:s.month,tick:s.tick,lastPlayed:Date.now(),gameVersion:GAME_VERSION,stateVersion:s.stateVersion??CURRENT_STATE_VERSION,generation},checksum:stateChecksum(s),state:s};
  return JSON.stringify(saved);
 }
 export function decodeCampaign(text:string):SavedCampaign {

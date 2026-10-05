@@ -233,10 +233,10 @@ export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCi
     <View style={styles.zoomControls}>
       {[1.5, 1 / 1.5].map((factor, i) => <Pressable key={i} accessibilityLabel={i ? 'Отдалить' : 'Приблизить'} style={styles.button} onPress={() => animateCamera(zoomAt({ x: x.value, y: y.value, zoom: zoom.value }, factor, { x: viewport.width / 2, y: viewport.height / 2 }, viewport))}><Text style={styles.zoomText}>{i ? '−' : '+'}</Text></Pressable>)}
     </View>
-    {settingsOpen && <View style={styles.settings}>
+    {settingsOpen && <ScrollView style={styles.settings} contentContainerStyle={{padding:14,gap:10}}>
       <Text style={styles.heading}>РЕЖИМ КАРТЫ</Text><View style={styles.options}>{AVAILABLE_MODES.filter(m => m !== 'Resources' || state.provinces.some(p => p.resourceDeposit)).map(m => <Pressable accessibilityLabel={`Режим ${MODE_LABELS[m]}`} accessibilityState={{selected:mode===m}} key={m} style={[styles.option, mode === m && styles.active]} onPress={() => { setMode(m); setSettingsOpen(false); }}><Text style={styles.text}>{MODE_LABELS[m]}</Text></Pressable>)}</View>
       <Text style={styles.heading}>КАЧЕСТВО ГРАФИКИ</Text><View style={styles.options}>{(Object.keys(GRAPHICS) as GraphicsPreset[]).map(p => <Pressable key={p} style={[styles.option, preset === p && styles.active]} onPress={() => setPreset(p)}><Text style={styles.text}>{p}</Text></Pressable>)}</View>
-    </View>}
+    </ScrollView>}
     <View style={styles.legend}><Text style={styles.note}>{MODE_LABELS[mode]}{(mode==='Diplomatic'||mode==='Relations')?` · ${state.countries[selectedCountryId??'']?.name??'Выберите страну'}`:''}</Text><ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap:9}}>{legend.map(item=><View key={item.label} style={{flexDirection:'row',alignItems:'center',gap:4}}><View style={{width:10,height:10,backgroundColor:item.color}}/><Text style={styles.note}>{item.label}</Text></View>)}</ScrollView></View>
   </View>;
 }
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   text: { color: '#dddcca', fontSize: 11, fontWeight: '600' },
   zoomText: { color: '#dddcca', fontSize: 20, textAlign: 'center' },
   zoomControls: { position: 'absolute', right: 10, bottom: 108, gap: 6 },
-  settings: { position: 'absolute', left: 12, top: 60, width: 420, maxWidth: '65%', backgroundColor: '#17242af5', padding: 14, borderRadius: 6, gap: 10, borderWidth: 1, borderColor: '#485953' },
+  settings: { position: 'absolute', left: 12, top: 60, width: 420, maxWidth: '65%', maxHeight:'75%', backgroundColor: '#17242af5', borderRadius: 6, borderWidth: 1, borderColor: '#485953' },
   heading: { color: '#98a79e', fontSize: 10, letterSpacing: 1 }, options: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   option: { padding: 10,minHeight:44,justifyContent:'center', backgroundColor: '#2a383d', borderRadius: 4 }, active: { backgroundColor: '#625b40' },
   legend: { position: 'absolute', left: 12, bottom: 54, width:'55%',maxWidth:600,backgroundColor:'#17242acc',padding:4,borderRadius:6 }, note: { color: '#c1c7b6', fontSize: 9, backgroundColor: '#17242acc', padding: 5, alignSelf: 'flex-start' },
