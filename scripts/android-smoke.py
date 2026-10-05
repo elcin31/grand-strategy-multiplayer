@@ -36,6 +36,14 @@ def click_text(root, text):
     print('Tap:',text,node.get('bounds'),flush=True)
     x,y=str((nums[0]+nums[2])//2),str((nums[1]+nums[3])//2)
     adb('shell','input','swipe',x,y,x,y,'100')
+def map_menu(opened):
+    for attempt in range(5):
+        root=hierarchy('map-menu-'+str(opened)+'-'+str(attempt))
+        visible=any(n.get('text')=='Low' for n in root.iter('node'))
+        if visible==opened:return root
+        click_text(root,'Настройки карты')
+        time.sleep(2)
+    raise AssertionError('Map menu did not reach requested state: '+str(opened))
 def navigate(section):
     root=hierarchy('navigation-'+section)
     click_text(root,'Раздел '+section);time.sleep(.4)
@@ -235,21 +243,21 @@ for _ in range(6):
     time.sleep(1);root=hierarchy('map-controls')
     if any(n.get('text')=='УПРАВЛЕНИЕ' for n in root.iter('node')):break
 assert any(n.get('text')=='УПРАВЛЕНИЕ' for n in root.iter('node')), 'Back did not close campaign panel'
-click_text(root, 'Политическая · Medium ▾')
+map_menu(True)
 for quality in ['Low','Medium','High','Ultra']:
     root = hierarchy('graphics-'+quality)
     click_text(root, quality)
     time.sleep(1)
     screenshot('graphics-'+quality)
 root = hierarchy('graphics-close')
-click_text(root, 'Политическая · Ultra ▾')
+map_menu(False)
 for label in ['Правительство','Религия','Экономика','Население','Армии','Ресурсы','Рельеф','Стабильность','Дипломатия','Отношения','Развитие','Политическая']:
     root = hierarchy('mode-open')
-    current = next(n.get('text') for n in root.iter('node') if ' · Ultra ▾' in n.get('text',''))
-    click_text(root,current)
-    root = hierarchy('mode-select')
+    root = map_menu(True)
     click_text(root,"Режим "+label)
-    time.sleep(1)
+    time.sleep(2)
+    root=map_menu(False)
+    assert any(n.get('text','').startswith(label+' · Ultra') for n in root.iter('node')), 'Map mode did not switch: '+label
     screenshot('mode-'+str(['Правительство','Религия','Экономика','Население','Армии','Ресурсы','Рельеф','Стабильность','Дипломатия','Отношения','Развитие','Политическая'].index(label)))
 # Exercise camera before taking evidence. Animation is on the native UI thread.
 adb('shell','dumpsys','gfxinfo',PACKAGE,'reset')
@@ -293,7 +301,7 @@ def restore_after_configuration(name):
     return root
 # Real phone density: verify the compact selector remains scrollable inside safe area.
 adb('shell','wm','size','1080x2340');adb('shell','wm','density','320');time.sleep(3)
-root=restore_after_configuration('dense-phone');click_text(root,'Настройки карты');time.sleep(1);screenshot('dense-phone-menu')
+restore_after_configuration('dense-phone');map_menu(True);screenshot('dense-phone-menu')
 adb('shell','input','keyevent','4');time.sleep(1)
 cutout='com.android.internal.display.cutout.emulation.corner'
 if cutout in adb('shell','cmd','overlay','list'):
