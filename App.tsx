@@ -8,7 +8,7 @@ import { GamePanel } from './src/components/GamePanel';
 import { EntryPanel, LobbyPanel } from './src/components/LobbyPanel';
 import { WorldMap } from './src/components/WorldMap';
 import { LocalTransport } from './src/multiplayer/localTransport';
-import { HttpTransport } from './src/multiplayer/httpTransport';
+import { HttpTransport, type RemoteSession } from './src/multiplayer/httpTransport';
 import type { MultiplayerTransport, TransportSession } from './src/multiplayer/transport';
 import { CountryId, GameCommand, GameState, Province } from './src/types/game';
 
@@ -21,8 +21,12 @@ export default function App() {
 }
 
 function GameApp() {
+  const [savedRooms,setSavedRooms]=useState<RemoteSession[]>([]);
+  const [connectionStatus,setConnectionStatus]=useState('');
+
   const [transport, setTransport] = useState<MultiplayerTransport>(() => new HttpTransport(remoteUrl));
   const [state, setState] = useState<GameState | null>(null);
+  useEffect(()=>{if(!state)void new HttpTransport(remoteUrl).savedSessions().then(setSavedRooms).catch(()=>setConnectionStatus('Не удалось прочитать сохранённые сессии'));},[state?.id]);
   const [previewCountryId, setPreviewCountryId] = useState<CountryId | null>(null);
   const [selectedProvinceId, setSelectedProvinceId] = useState<string | null>(null);
   const [playerId, setPlayerId] = useState<string | null>(null);
@@ -41,7 +45,7 @@ function GameApp() {
     setPreviewCountryId(null);
     setFocusCountryId(null);
     setPanelOpen(true);
-    unsubscribeRef.current = source.subscribe(session.state.id, setState);
+    unsubscribeRef.current = source.subscribe(session.state.id, setState, setConnectionStatus);
   };
 
   const selectedCountryId = previewCountryId ?? state?.selectedCountryId ?? null;
@@ -85,7 +89,7 @@ function GameApp() {
   }, [panelOpen, state?.id]);
 
   useEffect(() => {
-    if (!state || !playerId || state.phase !== 'running' || state.speed === 0) return;
+    if (transport instanceof HttpTransport || !state || !playerId || state.phase !== 'running' || state.speed === 0) return;
     const me = state.players.find((player) => player.id === playerId);
     if (!me?.isHost) return;
 
@@ -118,6 +122,7 @@ function GameApp() {
           <Text style={styles.brand}>DOMINION</Text>
           <Text style={styles.tagline}>MULTIPLAYER GRAND STRATEGY</Text>
           <EntryPanel onCreate={createRoom} onJoin={joinRoom} />
+          {savedRooms.map(room=><Pressable key={room.gameId} style={styles.exitButton} onPress={()=>void safeAction(async()=>{const remote=new HttpTransport(remoteUrl);attach(await remote.reconnect(room.gameId),remote);})}><Text style={styles.exitText}>ПРОДОЛЖИТЬ ONLINE · {room.roomCode} · {room.countryId??"Лобби"}</Text></Pressable>)}
           <Pressable accessibilityLabel="Одиночная игра" style={styles.exitButton} onPress={createOffline}><Text style={styles.exitText}>ОДИНОЧНАЯ ИГРА</Text></Pressable>
           <Text style={styles.footer}>DOMINION · ONLINE CAMPAIGNS</Text>
         </ScrollView>
@@ -148,6 +153,7 @@ function GameApp() {
           </Pressable>
         </View>
 
+        {connectionStatus!==''&&<Text style={{color:"#ffcf85",padding:6}}>{connectionStatus}</Text>}
         <View style={styles.mapArea}><WorldMap
           state={state}
           focusCountryId={focusCountryId}

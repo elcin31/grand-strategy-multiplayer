@@ -111,6 +111,8 @@ export interface Army {
 }
 
 export interface Player {
+  connected?: boolean;
+  lastSeen?: number;
   aiControlled?: boolean;
   id: string;
   displayName: string;

@@ -1,70 +1,26 @@
 import { GameCommand, GameState } from '../types/game';
 import { MultiplayerTransport, TransportSession, Unsubscribe } from './transport';
-
-interface RemoteSession { gameId: string; playerId: string; token: string; version?: number; }
-interface RoomResponse { state: GameState; playerId: string; token?: string; version?: number; }
-const normalizeBaseUrl = (value: string) => value.replace(/\/+$/, '');
-
+import {secureSessionStore,type KeyStore} from './sessionStore';
+import {stateChecksum} from '../../supabase/functions/_shared/sessionState';
+export interface RemoteSession {gameId:string;playerId:string;token:string;version:number;countryId?:string|null;roomCode:string;lastPlayed:number;pending?:{command:GameCommand;commandId:string;expectedVersion:number}}
+interface RoomResponse {state:GameState;playerId:string;token?:string;version:number;checksum?:string;unchanged?:boolean}
+export class RemoteError extends Error {constructor(message:string,public status:number){super(message);}}
+const indexKey='dominion.sessions.v1',key=(id:string)=>'dominion.session.'+id;
 export class HttpTransport implements MultiplayerTransport {
-  private readonly sessions = new Map<string, RemoteSession>();
-  private readonly baseUrl: string;
-
-  constructor(baseUrl: string) { this.baseUrl = normalizeBaseUrl(baseUrl); }
-
-  private async request<T>(path: string, body: Record<string, unknown>): Promise<T> {
-    const response = await fetch(`${this.baseUrl}/${path}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    const payload = await response.json().catch(() => ({})) as { error?: string } & T;
-    if (!response.ok) throw new Error(payload.error || `Server error ${response.status}`);
-    return payload;
-  }
-
-  async createRoom(displayName: string): Promise<TransportSession> {
-    const result = await this.request<RoomResponse>('game-room', { action: 'create', displayName });
-    if (!result.token) throw new Error('Сервер не вернул токен игрока');
-    this.sessions.set(result.state.id, { gameId: result.state.id, playerId: result.playerId, token: result.token, version: result.version });
-    return { state: result.state, playerId: result.playerId };
-  }
-
-  async joinRoom(roomCode: string, displayName: string): Promise<TransportSession> {
-    const result = await this.request<RoomResponse>('game-room', { action: 'join', roomCode, displayName });
-    if (!result.token) throw new Error('Сервер не вернул токен игрока');
-    this.sessions.set(result.state.id, { gameId: result.state.id, playerId: result.playerId, token: result.token, version: result.version });
-    return { state: result.state, playerId: result.playerId };
-  }
-
-  async sendCommand(gameId: string, command: GameCommand): Promise<void> {
-    const session = this.sessions.get(gameId);
-    if (!session) throw new Error('Сессия комнаты потеряна');
-    await this.request('game-command', { gameId, playerId: session.playerId, token: session.token, command });
-  }
-
-  subscribe(gameId: string, onState: (state: GameState) => void): Unsubscribe {
-    let stopped = false;
-    let inFlight = false;
-    const poll = async () => {
-      if (stopped || inFlight) return;
-      const session = this.sessions.get(gameId);
-      if (!session) return;
-      inFlight = true;
-      try {
-        const result = await this.request<RoomResponse & { unchanged?: boolean }>('game-room', { action: 'state', gameId, playerId: session.playerId, token: session.token, version: session.version });
-        if (stopped) return;
-        if (result.version !== undefined) session.version = result.version;
-        if (!result.unchanged) onState(result.state);
-      } catch {
-        // A transient network miss must not destroy an active campaign.
-      } finally {
-        inFlight = false;
-      }
-    };
-    const timer = setInterval(poll, 900);
-    void poll();
-    return () => { stopped = true; clearInterval(timer); };
-  }
-
-  async leave(gameId: string): Promise<void> { this.sessions.delete(gameId); }
+ private sessions=new Map<string,RemoteSession>();private checksums=new Map<string,string>();private queues=new Map<string,Promise<void>>();private listeners=new Map<string,(s:GameState)=>void>();
+ constructor(private baseUrl:string,private store:KeyStore=secureSessionStore){this.baseUrl=baseUrl.replace(/\/+$/,'');}
+ private async request<T>(path:string,body:unknown):Promise<T>{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);try{const response=await fetch(`${this.baseUrl}/${path}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:controller.signal});const result=await response.json();if(!response.ok)throw new RemoteError(result.error??`Server ${response.status}`,response.status);return result;}finally{clearTimeout(timer);}}
+ async savedSessions():Promise<RemoteSession[]>{const ids=JSON.parse(await this.store.get(indexKey)??'[]') as string[];const rows=await Promise.all(ids.map(id=>this.store.get(key(id))));return rows.filter((r):r is string=>r!==null).map(r=>JSON.parse(r) as RemoteSession).sort((a,b)=>b.lastPlayed-a.lastPlayed);}
+ private async persist(s:RemoteSession){await this.store.set(key(s.gameId),JSON.stringify(s));const ids=JSON.parse(await this.store.get(indexKey)??'[]') as string[];if(!ids.includes(s.gameId))await this.store.set(indexKey,JSON.stringify([...ids,s.gameId]));}
+ async forget(gameId:string){this.sessions.delete(gameId);await this.store.remove(key(gameId));const ids=JSON.parse(await this.store.get(indexKey)??'[]') as string[];await this.store.set(indexKey,JSON.stringify(ids.filter(id=>id!==gameId)));}
+ private adopt(s:RemoteSession,r:RoomResponse){if(r.version<s.version)return;if(!r.state||r.state.id!==s.gameId||!r.state.players.some(p=>p.id===s.playerId))throw new Error('Некорректный снимок кампании');const checksum=stateChecksum(r.state);if(r.checksum&&checksum!==r.checksum)throw new Error('Ошибка целостности снимка; повторите синхронизацию');s.version=r.version;s.countryId=r.state.players.find(p=>p.id===s.playerId)?.countryId;this.checksums.set(s.gameId,checksum);this.listeners.get(s.gameId)?.(r.state);}
+ private async establish(body:unknown):Promise<TransportSession>{const r=await this.request<RoomResponse>('game-room',body);if(!r.token)throw new Error('Сервер не вернул токен');const s:RemoteSession={gameId:r.state.id,playerId:r.playerId,token:r.token,version:r.version,roomCode:r.state.roomCode,lastPlayed:Date.now()};this.adopt(s,r);await this.persist(s);this.sessions.set(s.gameId,s);return{state:r.state,playerId:r.playerId};}
+ createRoom(displayName:string){return this.establish({action:'create',displayName});}
+ joinRoom(roomCode:string,displayName:string){return this.establish({action:'join',roomCode,displayName});}
+ async reconnect(gameId:string):Promise<TransportSession>{const raw=await this.store.get(key(gameId));if(!raw)throw new Error('Сессия не найдена');const s=JSON.parse(raw) as RemoteSession;const r=await this.request<RoomResponse>('game-room',{action:'reconnect',gameId,playerId:s.playerId,token:s.token});this.adopt(s,r);this.sessions.set(gameId,s);s.lastPlayed=Date.now();await this.persist(s);if(s.pending){try{await this.deliver(s);}catch(error){if(!(error instanceof RemoteError&&error.status===409))throw error;}}const fresh=await this.refresh(s);return{state:fresh.state,playerId:s.playerId};}
+ private async refresh(s:RemoteSession){const r=await this.request<RoomResponse>('game-room',{action:'state',gameId:s.gameId,playerId:s.playerId,token:s.token});this.adopt(s,r);return r;}
+ private async deliver(s:RemoteSession){if(!s.pending)return;const pending=s.pending;try{await this.request('game-command',{gameId:s.gameId,playerId:s.playerId,token:s.token,...pending});delete s.pending;await this.persist(s);await this.refresh(s);}catch(error){if(error instanceof RemoteError&&[400,401,409,429].includes(error.status)){delete s.pending;await this.persist(s);if(error.status!==401)await this.refresh(s);}throw error;}}
+ async sendCommand(gameId:string,command:GameCommand):Promise<void>{if(command.type==='ADVANCE_TICK')return;const previous=this.queues.get(gameId)??Promise.resolve();const next=previous.catch(()=>{}).then(async()=>{const s=this.sessions.get(gameId);if(!s)throw new Error('Сессия потеряна');if(s.pending)await this.deliver(s);s.pending={command,commandId:`cmd-${Date.now()}-${Math.random().toString(36).slice(2,14)}`,expectedVersion:s.version};await this.persist(s);await this.deliver(s);});this.queues.set(gameId,next);return next;}
+ subscribe(gameId:string,onState:(s:GameState)=>void,onStatus?:(status:string)=>void):Unsubscribe{let stopped=false,inFlight=false;this.listeners.set(gameId,onState);const poll=async()=>{const s=this.sessions.get(gameId);if(stopped||inFlight||!s)return;inFlight=true;try{const r=await this.request<RoomResponse>('game-room',{action:'state',gameId,playerId:s.playerId,token:s.token,version:s.version,checksum:this.checksums.get(gameId)});if(!stopped){if(!r.unchanged)this.adopt(s,r);onStatus?.('');}}catch(error){if(!stopped)onStatus?.(error instanceof RemoteError&&error.status===401?'Сессия истекла. Вернитесь к списку кампаний.':'Связь потеряна — восстанавливаем…');}finally{inFlight=false;}};const timer=setInterval(poll,1500);void poll();return()=>{stopped=true;clearInterval(timer);this.listeners.delete(gameId);};}
+ async leave(gameId:string){const s=this.sessions.get(gameId);if(s){s.lastPlayed=Date.now();await this.persist(s);}this.sessions.delete(gameId);}
 }

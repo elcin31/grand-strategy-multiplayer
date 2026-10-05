@@ -70,7 +70,7 @@ export function proposePeace(state:GameState,actor:string,warId:string,terms:Pea
   const w=peaceContext(state,actor,warId);if(w.peaceOffer)throw new Error('Сначала дождитесь ответа на предложение мира');
   peaceCost(state,w,actor,terms);w.peaceOffer={from:actor,terms:structuredClone(terms),expiresTick:state.tick+6};
   const enemy=opponentSide(w,actor)[0]!;
-  if(!state.players.some(p=>p.countryId===enemy)) {
+  if(!state.players.some(p=>p.countryId===enemy&&!p.aiControlled)) {
     const cost=peaceCost(state,w,actor,terms),score=scoreFor(w,actor);
     const accepts=terms.kind==='WhitePeace' ? state.tick-w.startedTick>=12||countryFor(state,enemy).warExhaustion!>=70 : score+1e-6>=cost && (state.tick-w.startedTick>=3||score>=50);
     if(!accepts)throw new Error('Противник отклонил мир: недостаточно военного счёта или длительности войны');

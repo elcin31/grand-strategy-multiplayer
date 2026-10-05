@@ -42,7 +42,7 @@ export function offerTreaty(state:GameState,from:string,to:string,type:TreatyTyp
   if(warBetween(state,from,to)||l.treaties.includes(type)||l.proposal||l.rivals.length)throw new Error('Договор недоступен');
   if(!countryFor(state,from).provinceIds?.length||!countryFor(state,to).provinceIds?.length)throw new Error('Страна без территории');
   l.proposal={from,type,expiresTick:state.tick+12};
-  if(!state.players.some(p=>p.countryId===to)) {
+  if(!state.players.some(p=>p.countryId===to&&!p.aiControlled)) {
     if(treatyAcceptance(state,from,to)<20)throw new Error('Страна отклонила договор: улучшите отношения');
     l.treaties.push(type);delete l.proposal;
   }
