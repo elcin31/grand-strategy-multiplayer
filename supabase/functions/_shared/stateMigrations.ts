@@ -1,3 +1,4 @@
+import { initializeAI } from './aiSystem.ts';
 import { initializeStability } from './stabilitySystem.ts';
 import { initializeWars } from './warSystem.ts';
 import { initializeDiplomacy } from './diplomacySystem.ts';
@@ -6,7 +7,7 @@ import { initializeTechnology } from './technologySystem.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
-export const CURRENT_STATE_VERSION = 7;
+export const CURRENT_STATE_VERSION = 8;
 
 /** Explicit modern-world state migrations. Legacy prototype saves keep their original schema/rules. */
 export function normalizeGameState(state: GameState): void {
@@ -19,5 +20,6 @@ export function normalizeGameState(state: GameState): void {
   initializeDiplomacy(state);
   initializeWars(state);
   initializeStability(state);
+  initializeAI(state);
   state.stateVersion = CURRENT_STATE_VERSION;
 }

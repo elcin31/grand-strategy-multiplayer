@@ -1,3 +1,4 @@
+import { runStrategicAI } from './aiSystem.ts';
 import { monthlyStability, pacifyProvince, suppressRebellion } from './stabilitySystem.ts';
 import { monthlyWar, proposePeace, recordWarBattle, respondPeace } from './warSystem.ts';
 import { declareWar, diplomaticAction, monthlyDiplomacy, offerTreaty, respondTreaty, warBetween } from './diplomacySystem.ts';
@@ -107,6 +108,7 @@ function recruit(state: GameState, ownerId: CountryId, province: Province, troop
   if (state.dataset) refreshArmyBudget(nation);
 }
 function runAi(state: GameState) {
+  if(state.dataset){runStrategicAI(state,{recruit,move:resolveMovement});return;}
   const humanCountries = new Set(state.players.map((player) => player.countryId).filter(Boolean) as CountryId[]);
   for (const id of countryIds(state)) {
     if (humanCountries.has(id)) continue;

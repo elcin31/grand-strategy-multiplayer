@@ -43,9 +43,9 @@ test('construction completes only after game time, then affects maintenance and 
   const quote=buildingQuote(province,'Mine'); state=applyServerCommand(state,{type:'BUILD',playerId:'host',provinceId:province.id,buildingType:'Mine'},'host');
   state=applyServerCommand(state,{type:'SET_SPEED',playerId:'host',speed:1},'host');
   for(let i=0;i<quote.buildTime-1;i++) state=applyServerCommand(state,{type:'ADVANCE_TICK'},'host');
-  assert.equal(capitalProvince(state).buildings?.Mine,undefined); assert.equal(state.constructions!.length,1);
+  assert.equal(capitalProvince(state).buildings?.Mine,undefined); assert.equal(state.constructions!.filter(q=>q.ownerId==='germany').length,1);
   state=applyServerCommand(state,{type:'ADVANCE_TICK'},'host');
-  assert.equal(capitalProvince(state).buildings?.Mine,1); assert.equal(state.constructions!.length,0);
+  assert.equal(capitalProvince(state).buildings?.Mine,1); assert.equal(state.constructions!.filter(q=>q.ownerId==='germany').length,0);
   assert.equal(state.countries.germany!.economy!.buildingMaintenance,BUILDINGS.Mine.maintenance);
   assert.ok(state.countries.germany!.economy!.resourceIncome>beforeResource);
 });

@@ -111,6 +111,7 @@ export interface Army {
 }
 
 export interface Player {
+  aiControlled?: boolean;
   id: string;
   displayName: string;
   countryId: CountryId | null;
@@ -144,6 +145,7 @@ export interface City {
 }
 
 export interface Leader {
+  aiPersonality?: import("./aiSystem.ts").AIPersonality;
   id: string;
   name: string;
   countryId: CountryId;
