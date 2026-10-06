@@ -26,7 +26,7 @@ def screenshot(name):
     with (OUT / (name+'.png')).open('wb') as f: subprocess.run(['adb','exec-out','screencap','-p'],stdout=f,check=True)
 def launch():
     adb('shell','am','force-stop',PACKAGE)
-    adb('shell','am','start','-W','-n',PACKAGE+'/.MainActivity')
+    with (OUT/'startup.txt').open('a') as f: f.write(adb('shell','am','start','-W','-n',PACKAGE+'/.MainActivity'))
     time.sleep(12)
 def click_text(root, text):
     node = next((n for n in root.iter('node') if n.get('text') == text or n.get('content-desc') == text), None)
@@ -324,7 +324,20 @@ root=hierarchy('exit-confirmation');assert any(n.get('text')=='Выйти из �
 click_text(root,'ОСТАТЬСЯ');time.sleep(1)
 root=hierarchy('exit-cancelled')
 assert any(n.get('text')=='DOMINION' for n in root.iter('node')), 'Restart failed without Metro'
+# Reboot with persisted app data and network still disabled; no Metro is running.
+(OUT/'meminfo-before-reboot.txt').write_text(adb('shell','dumpsys','meminfo',PACKAGE))
+adb('reboot')
+subprocess.run(['adb','wait-for-device'],check=True,timeout=60)
+for attempt in range(60):
+    if adb('shell','getprop','sys.boot_completed').strip()=='1':break
+    time.sleep(2)
+else: raise AssertionError('Emulator did not finish reboot')
+adb('shell','input','keyevent','82');time.sleep(3)
+adb('shell','svc','wifi','disable');adb('shell','svc','data','disable')
+launch();restore_after_configuration('campaign-after-reboot');screenshot('campaign-after-reboot')
+(OUT/'meminfo-after-reboot.txt').write_text(adb('shell','dumpsys','meminfo',PACKAGE))
+assert 'Metro' not in adb('shell','ps','-A'), 'Unexpected Metro process'
 logs = adb('logcat','-d'); (OUT/'logcat.txt').write_text(logs)
 assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs, 'Native crash detected'
 assert 'Unable to load script' not in logs, 'Standalone JS load failed'
-print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, population growth, government/religion cost/cooldown and Unity, 4 presets, 12 modes, camera inputs, 5 layouts, persistent campaign restore, Back priority, restart, no fatal logs')
+print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, population growth, government/religion cost/cooldown and Unity, 4 presets, 12 modes, camera inputs, 5 layouts, persistent campaign restore, Back priority, restart and device reboot, no fatal logs')

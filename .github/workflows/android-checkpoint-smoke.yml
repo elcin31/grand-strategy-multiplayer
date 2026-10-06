@@ -1,11 +1,5 @@
 name: Android checkpoint smoke
 on:
-  push:
-    branches: [main]
-    paths:
-      - scripts/android-smoke.py
-      - .github/workflows/android-checkpoint-smoke.yml
-      - .github/android-smoke-source
   workflow_dispatch:
     inputs:
       apk_run_id:

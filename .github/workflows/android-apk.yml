@@ -1,10 +1,9 @@
-name: Android APK
+name: Android final release
 on:
   push:
     branches: [main, world-update]
     paths-ignore:
       - "**/*.md"
-      - scripts/android-smoke.py
       - .github/workflows/android-checkpoint-smoke.yml
       - .github/android-smoke-source
   workflow_dispatch:
@@ -13,7 +12,29 @@ permissions:
 env:
   CI: '1'
 jobs:
+  long-simulation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --include=dev --no-audit --no-fund
+      - name: Require 10000 authoritative ticks before release build
+        run: npm run test:long > world-stress-report.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: final-long-simulation-evidence
+          path: |
+            world-stress-report.txt
+            LONG_SIMULATION_RESULTS.json
+            long-simulation-failure.json
+          retention-days: 14
   build-apk:
+    needs: long-simulation
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
@@ -52,23 +73,29 @@ jobs:
           NODE_ENV=production ./gradlew assembleRelease --no-daemon
       - name: Verify bundled JavaScript and native libraries
         run: python scripts/verify-apk.py android/app/build/outputs/apk/release/app-release.apk
-      - name: Package world-update checkpoint
-        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-world-checkpoint.apk
+      - name: Verify release manifest, signature and production backend
+        run: |
+          python scripts/verify-release.py android/app/build/outputs/apk/release/app-release.apk > release-integrity.txt
+          sha256sum android/app/build/outputs/apk/release/app-release.apk >> release-integrity.txt
+      - name: Package final release
+        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-final-release.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: dominion-world-checkpoint
-          path: Dominion-world-checkpoint.apk
+          name: dominion-final-release
+          path: |
+            Dominion-final-release.apk
+            release-integrity.txt
           if-no-files-found: error
           retention-days: 14
   android-smoke:
     needs: build-apk
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: dominion-world-checkpoint
+          name: dominion-final-release
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -80,7 +107,7 @@ jobs:
           arch: x86_64
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: python scripts/android-smoke.py Dominion-world-checkpoint.apk
+          script: python scripts/android-smoke.py Dominion-final-release.apk
       - uses: actions/upload-artifact@v4
         if: always()
         with:

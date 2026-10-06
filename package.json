@@ -1,6 +1,6 @@
 {
   "name": "grand-strategy-multiplayer",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/*.test.ts",
     "benchmark:map": "node --import tsx scripts/benchmark-map.ts",
-    "benchmark:world": "node --import tsx scripts/benchmark-world.ts"
+    "benchmark:world": "node --import tsx scripts/benchmark-world.ts",
+    "test:long": "node --expose-gc --import tsx scripts/long-simulation.ts"
   },
   "dependencies": {
     "@shopify/react-native-skia": "2.6.2",
