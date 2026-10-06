@@ -14,7 +14,7 @@ export async function authoritativeSnapshot(gameId:string){
   const now=Date.now(),state=await unpackRoomState(room),changed=applyPresence(state,members!,now),clock=pumpClock(state,Date.parse(room.clock_at),now);
   if(changed||clock.ticks){const {data:updated,error:writeError}=await db.from('game_rooms').update({state:null,state_compressed:await packRoomState(clock.state),clock_at:new Date(clock.clockAt).toISOString(),version:room.version+1,updated_at:new Date(now).toISOString(),last_active_at:new Date(now).toISOString()}).eq('id',gameId).eq('version',room.version).select('version').maybeSingle();if(writeError)throw writeError;if(!updated)continue;return{state:clock.state,version:updated.version,checksum:stateChecksum(clock.state)};}
   // lastSeen changes need not create a new snapshot revision on every heartbeat.
-  const persisted=await unpackRoomState(room);return{state:persisted,version:room.version,checksum:stateChecksum(persisted)};
+  return{state,version:room.version,checksum:stateChecksum(state)};
  }
  throw new Error('Одновременное обновление: повторите синхронизацию');
 }

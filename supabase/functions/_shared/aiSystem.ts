@@ -54,24 +54,27 @@ interface Actions {recruit:(s:GameState,id:string,p:Province,n:number)=>void;mov
 export function runStrategicAI(s:GameState,actions:Actions):void {
   const provinces=new Map(s.provinces.map(p=>[p.id,p])),owned=new Map<string,Province[]>(),neighbours=new Map<string,Set<string>>();
   for(const p of s.provinces){const list=owned.get(p.ownerId)??[];list.push(p);owned.set(p.ownerId,list);const border=neighbours.get(p.ownerId)??new Set<string>();for(const n of p.neighbors){const q=provinces.get(n);if(q&&q.ownerId!==p.ownerId)border.add(q.ownerId);}neighbours.set(p.ownerId,border);}
+  const capitals=new Map((s.cities??[]).map(city=>[city.id,city.provinceId]));
   const ids=Object.keys(s.countries).sort();
   for(let index=0;index<ids.length;index++){
     const id=ids[index]!,c=s.countries[id]!;if(!aiControls(s,id))continue;
     const home=(owned.get(id)??[]).filter(p=>(p.controllerId??p.ownerId)===id);if(!home.length)continue;
-    const adjacent=[...(neighbours.get(id)??[])].sort(),context=strategicContext(s,id,adjacent),style=personality(s,id);
-    const capital=s.cities?.find(city=>city.id===c.capitalCityId)?.provinceId??home[0]!.id;
+    const adjacent=[...(neighbours.get(id)??[])].sort(),style=personality(s,id);
+    let cachedContext:AIStrategicContext|undefined;
+    const context=()=>cachedContext??=strategicContext(s,id,adjacent);
+    const capital=capitals.get(c.capitalCityId??'')??home[0]!.id;
     const w=s.wars?.find(w=>[...w.attackers,...w.defenders].includes(id));
     // Event-driven responses do not wait for the country's strategic slot.
     for(const l of Object.values(s.diplomacy??{}))if(l.proposal&&l.proposal.from!==id&&(l.a===id||l.b===id))respondTreaty(s,id,l.proposal.from,treatyAcceptance(s,l.proposal.from,id)>=20);
-    if(w&&isWarLeader(w,id)&&w.peaceOffer&&w.peaceOffer.from!==id){const offer=w.peaceOffer;const accept=offer.terms.kind==='WhitePeace'?(s.tick-w.startedTick>=12||context.warExhaustion>50||context.incomeBalance<0):scoreFor(w,offer.from)>=peaceCost(s,w,offer.from,offer.terms);respondPeace(s,id,w.id,accept);}
+    if(w&&isWarLeader(w,id)&&w.peaceOffer&&w.peaceOffer.from!==id){const offer=w.peaceOffer;const accept=offer.terms.kind==='WhitePeace'?(s.tick-w.startedTick>=12||context().warExhaustion>50||context().incomeBalance<0):scoreFor(w,offer.from)>=peaceCost(s,w,offer.from,offer.terms);respondPeace(s,id,w.id,accept);}
     if(s.tick%6===index%6){
-      const affordable=(cost:number)=>c.treasury-cost>=context.treasuryReserve&&s.tick>=c.bankruptcyUntilTick!;
+      const affordable=(cost:number)=>c.treasury-cost>=context().treasuryReserve&&s.tick>=c.bankruptcyUntilTick!;
       const unrest=[...home].sort((a,b)=>(b.unrest??0)-(a.unrest??0))[0]!;
       if(!unrest.rebellion&&unrest.unrest!>=65&&c.politicalPower!>=10&&affordable(50))pacifyProvince(s,id,unrest);
       const active=s.wars?.find(w=>[...w.attackers,...w.defenders].includes(id));
       if(active&&isWarLeader(active,id)&&!active.peaceOffer){
         const score=scoreFor(active,id),age=s.tick-active.startedTick;
-        if(age>=12||context.warExhaustion>65||score>=50){
+        if(age>=12||context().warExhaustion>65||score>=50){
           const occupied=s.provinces.filter(p=>opponentSide(active,id).includes(p.ownerId)&&(p.controllerId??p.ownerId)===id).map(p=>p.id).slice(0,3);
           let terms:PeaceTerms={kind:'WhitePeace',provinceIds:[],amount:0};
           if(score>=80&&!c.overlordId&&!s.countries[opponentSide(active,id)[0]!]!.overlordId&&!Object.values(s.countries).some(x=>x.overlordId===opponentSide(active,id)[0])&&style==='Expansionist')terms={kind:'Vassalization',provinceIds:[],amount:0};
@@ -80,17 +83,17 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
         }
       }
       if(!c.research){const branches:TechnologyBranch[]=style==='Economic'?['Economy','Industry','Administration','Military','Diplomacy']:style==='Diplomatic'?['Diplomacy','Economy','Administration','Military','Industry']:['Military','Economy','Administration','Industry','Diplomacy'];const branch=branches.filter(b=>techLevel(c,b)<5).sort((a,b)=>techLevel(c,a)-techLevel(c,b))[0];if(branch&&affordable(researchQuote(c,branch).cost))startResearch(s,c,branch);}
-      if(!s.constructions?.some(q=>q.ownerId===id)&&context.incomeBalance>15){
+      if(!s.constructions?.some(q=>q.ownerId===id)&&context().incomeBalance>15){
         const site=[...home].filter(p=>!p.rebellion).sort((a,b)=>b.income-a.income)[0];
-        if(site){const kinds:BuildingType[]=style==='Defensive'?['Fort','Administration','Farm']:site.resourceDeposit?['Mine','Factory','University','Infrastructure']:['Factory','University','Farm'];const kind=kinds.find(k=>(site.buildings?.[k]??0)<BUILDINGS[k].maxLevel);if(kind){const q=buildingQuote(site,kind);if(affordable(q.cost)&&context.incomeBalance>BUILDINGS[kind].maintenance*3)startConstruction(s,id,site,kind);}}
+        if(site){const kinds:BuildingType[]=style==='Defensive'?['Fort','Administration','Farm']:site.resourceDeposit?['Mine','Factory','University','Infrastructure']:['Factory','University','Farm'];const kind=kinds.find(k=>(site.buildings?.[k]??0)<BUILDINGS[k].maxLevel);if(kind){const q=buildingQuote(site,kind);if(affordable(q.cost)&&context().incomeBalance>BUILDINGS[kind].maintenance*3)startConstruction(s,id,site,kind);}}
       }
       const cap=home.find(p=>p.id===capital)??home[0]!;
       const capitalTroops=s.armies.filter(a=>a.ownerId===id&&a.provinceId===capital).reduce((n,a)=>n+a.troops,0);
       const recruitSite=capitalTroops>=12000?home.filter(p=>!p.rebellion&&p.id!==capital).sort((a,b)=>b.income-a.income)[0]??cap:cap;
-      const targetStrength=Math.max(8000,Math.min(context.neighbourThreat*(style==='Militarist'?1.5:1),Math.max(0,(c.economy?.monthlyIncome??0)*.25/1.25*1000)));
-      if(!recruitSite.rebellion&&c.army<targetStrength&&context.incomeBalance>15&&affordable(80)&&c.manpower>=4000)actions.recruit(s,id,recruitSite,4000);
+      const targetStrength=Math.max(8000,Math.min(context().neighbourThreat*(style==='Militarist'?1.5:1),Math.max(0,(c.economy?.monthlyIncome??0)*.25/1.25*1000)));
+      if(!recruitSite.rebellion&&c.army<targetStrength&&context().incomeBalance>15&&affordable(80)&&c.manpower>=4000)actions.recruit(s,id,recruitSite,4000);
       if(!s.wars?.some(w=>[...w.attackers,...w.defenders].includes(id))){
-        const enemy=adjacent.map(target=>({target,score:warDecisionScore(s,id,target,context)})).sort((a,b)=>b.score-a.score)[0];
+        const enemy=adjacent.map(target=>({target,score:warDecisionScore(s,id,target,context())})).sort((a,b)=>b.score-a.score)[0];
         if(enemy&&enemy.score>=65){try{declareWar(s,id,enemy.target);}catch{/* Coalition may have changed earlier in this scheduled tick; authoritative guard wins. */}}
         else {const friend=adjacent.filter(t=>!warBetween(s,id,t)).sort((a,b)=>(s.diplomacy?.[pairKey(id,b)]?.relation??0)-(s.diplomacy?.[pairKey(id,a)]?.relation??0))[0];if(friend){const l=s.diplomacy?.[pairKey(id,friend)];if(!l?.rivals.length&&c.politicalPower!>=35&&s.tick>=(l?.improveAfter??0))diplomaticAction(s,id,friend,'Improve');const treaty=style==='Diplomatic'?'Alliance':'NonAggression';if(!l?.proposal&&!l?.treaties.includes(treaty)&&!l?.rivals.length&&treatyAcceptance(s,id,friend)>=20)offerTreaty(s,id,friend,treaty);}
           if((style==='Expansionist'||style==='Militarist')&&enemy&&s.countries[enemy.target]!.army>c.army){const l=s.diplomacy?.[pairKey(id,enemy.target)];if(!l?.treaties.length&&!l?.rivals.includes(id))diplomaticAction(s,id,enemy.target,'Rival');}}

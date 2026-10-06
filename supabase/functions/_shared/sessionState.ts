@@ -5,7 +5,7 @@ export interface Presence {id:string;last_seen:string}
 export function applyPresence(state:GameState,members:Presence[],now:number):boolean {
  let changed=false;const byId=new Map(members.map(m=>[m.id,Date.parse(m.last_seen)]));
  for(const p of state.players){const last=byId.get(p.id)??0,connected=now-last<DISCONNECTED_MS,aiControlled=now-last>=AI_TIMEOUT_MS;
- if(p.connected!==connected||p.aiControlled!==aiControlled){changed=true;}p.connected=connected;p.aiControlled=aiControlled;p.lastSeen=last;
+ if(p.connected!==connected||p.aiControlled!==aiControlled){changed=true;p.connected=connected;p.aiControlled=aiControlled;p.lastSeen=last;}
  }
  const host=state.players.find(p=>p.isHost);if(!host||host.aiControlled){const successor=state.players.filter(p=>p.connected).sort((a,b)=>a.id.localeCompare(b.id))[0];if(successor&&successor.id!==host?.id){for(const p of state.players)p.isHost=p.id===successor.id;changed=true;}}
  return changed;

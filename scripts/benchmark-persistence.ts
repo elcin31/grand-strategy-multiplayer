@@ -1,0 +1,6 @@
+import {performance} from 'node:perf_hooks';
+import {createWorldState} from '../supabase/functions/_shared/worldState';
+import {packRoomState,unpackRoomState} from '../supabase/functions/_shared/stateStorage';
+import {encodeCampaign,decodeCampaign} from '../src/persistence/campaignCodec';
+import {stateChecksum} from '../supabase/functions/_shared/sessionState';
+async function main(){const state=createWorldState('persistence-benchmark','BENCH1','host','Benchmark');const measurements:Record<string,number>={};let start=performance.now();const json=JSON.stringify(state);measurements.serializeMs=performance.now()-start;start=performance.now();stateChecksum(state);measurements.checksumMs=performance.now()-start;start=performance.now();const packed=await packRoomState(state);measurements.packMs=performance.now()-start;start=performance.now();await unpackRoomState({state_compressed:packed});measurements.unpackMs=performance.now()-start;start=performance.now();const saved=encodeCampaign(state,1);decodeCampaign(saved);measurements.saveValidationMs=performance.now()-start;console.log(JSON.stringify({snapshotBytes:Buffer.byteLength(json),compressedBase64Bytes:Buffer.byteLength(packed),heapUsed:process.memoryUsage().heapUsed,...measurements,note:'Node CPU baseline; unchanged online responses omit state; no physical-device FPS claim'},null,2));}void main();
