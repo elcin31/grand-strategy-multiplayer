@@ -15,9 +15,10 @@ export function assertSessionFields(body:Record<string,unknown>):void {
  if(typeof body.token!=='string'||!/^[A-Za-z0-9_-]{32,128}$/.test(body.token))throw new RequestError('Invalid session token');
 }
 export function assertRoomRequest(body:Record<string,unknown>):void {
+ if(body.wireVersion!==undefined&&body.wireVersion!==1)throw new RequestError('Invalid wire version');
  const action=body.action;if(typeof action!=='string')throw new RequestError('Invalid action');
  const fields:Record<string,string[]>={create:['action','displayName'],join:['action','displayName','roomCode'],state:['action','gameId','playerId','token','version','checksum'],reconnect:['action','gameId','playerId','token'],heartbeat:['action','gameId','playerId','token']};
- if(!Object.hasOwn(fields,action)||Object.keys(body).some(k=>!fields[action]!.includes(k)))throw new RequestError('Invalid request fields');
+ if(!Object.hasOwn(fields,action)||Object.keys(body).some(k=>!fields[action]!.includes(k)&&k!=='wireVersion'))throw new RequestError('Invalid request fields');
  if(action==='create'||action==='join'){if(typeof body.displayName!=='string'||body.displayName.length>64)throw new RequestError('Invalid display name');if(action==='join'&&(typeof body.roomCode!=='string'||!/^[a-z0-9]{6}$/i.test(body.roomCode)))throw new RequestError('Invalid room code');}
  else {assertSessionFields(body);if(body.version!==undefined&&(!Number.isSafeInteger(body.version)||Number(body.version)<0))throw new RequestError('Invalid version');if(body.checksum!==undefined&&(typeof body.checksum!=='string'||!/^[0-9a-f]{8}$/.test(body.checksum)))throw new RequestError('Invalid checksum');}
 }
