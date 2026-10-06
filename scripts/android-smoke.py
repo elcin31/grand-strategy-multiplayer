@@ -348,7 +348,7 @@ def map_control(text):
     map_menu(True)
     for attempt in range(12):
         root=hierarchy('developer-control-'+str(attempt))
-        node=next((n for n in root.iter('node') if n.get('text')==text),None)
+        node=next((n for n in root.iter('node') if n.get('text')==text or n.get('content-desc')==text),None)
         if node is not None:
             nums=[int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
             if len(nums)==4 and nums[3]-nums[1]>=20:
