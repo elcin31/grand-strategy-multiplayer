@@ -247,7 +247,7 @@ for _ in range(6):
     if any(n.get('text')=='УПРАВЛЕНИЕ' for n in root.iter('node')):break
 assert any(n.get('text')=='УПРАВЛЕНИЕ' for n in root.iter('node')), 'Back did not close campaign panel'
 map_menu(True)
-for quality in ['Low','Medium','High','Ultra']:
+for quality in ['Performance','Balanced','High','Ultra']:
     root = hierarchy('graphics-'+quality)
     click_text(root, quality)
     time.sleep(1)

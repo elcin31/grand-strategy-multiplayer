@@ -1,0 +1,150 @@
+{
+  "source": "9aa6ea1",
+  "kind": "Node CPU render preparation; not device FPS",
+  "samples": [
+    {
+      "visible": 2818,
+      "labels": 119,
+      "bordersMs": 45.60053700000003,
+      "labelsMs": 113.80651799999998
+    },
+    {
+      "visible": 2818,
+      "labels": 118,
+      "bordersMs": 34.10261300000002,
+      "labelsMs": 65.13160100000005
+    },
+    {
+      "visible": 2817,
+      "labels": 118,
+      "bordersMs": 31.14810399999999,
+      "labelsMs": 67.45549100000005
+    },
+    {
+      "visible": 2814,
+      "labels": 118,
+      "bordersMs": 28.475916000000097,
+      "labelsMs": 67.0194140000001
+    },
+    {
+      "visible": 2822,
+      "labels": 120,
+      "bordersMs": 30.991512000000057,
+      "labelsMs": 62.08513700000003
+    },
+    {
+      "visible": 2835,
+      "labels": 119,
+      "bordersMs": 37.320821000000024,
+      "labelsMs": 64.73219700000004
+    },
+    {
+      "visible": 2840,
+      "labels": 119,
+      "bordersMs": 40.816201999999976,
+      "labelsMs": 69.53250000000003
+    },
+    {
+      "visible": 2840,
+      "labels": 118,
+      "bordersMs": 28.546300999999858,
+      "labelsMs": 59.99601400000006
+    },
+    {
+      "visible": 2841,
+      "labels": 118,
+      "bordersMs": 28.913256000000047,
+      "labelsMs": 56.85841499999992
+    },
+    {
+      "visible": 2844,
+      "labels": 118,
+      "bordersMs": 32.86609599999997,
+      "labelsMs": 56.08963300000005
+    },
+    {
+      "visible": 2846,
+      "labels": 118,
+      "bordersMs": 41.163302999999814,
+      "labelsMs": 56.74219199999993
+    },
+    {
+      "visible": 2848,
+      "labels": 118,
+      "bordersMs": 31.066724000000022,
+      "labelsMs": 58.31516799999986
+    },
+    {
+      "visible": 2849,
+      "labels": 118,
+      "bordersMs": 27.314362000000074,
+      "labelsMs": 59.79172100000005
+    },
+    {
+      "visible": 2850,
+      "labels": 118,
+      "bordersMs": 36.204603000000134,
+      "labelsMs": 69.00527299999999
+    },
+    {
+      "visible": 2852,
+      "labels": 118,
+      "bordersMs": 42.00202300000001,
+      "labelsMs": 63.21307100000013
+    },
+    {
+      "visible": 2856,
+      "labels": 120,
+      "bordersMs": 28.03725600000007,
+      "labelsMs": 64.76630800000021
+    },
+    {
+      "visible": 2861,
+      "labels": 121,
+      "bordersMs": 28.802060999999867,
+      "labelsMs": 63.07493599999998
+    },
+    {
+      "visible": 2873,
+      "labels": 121,
+      "bordersMs": 31.29964999999993,
+      "labelsMs": 66.72239300000001
+    },
+    {
+      "visible": 2879,
+      "labels": 121,
+      "bordersMs": 36.24209900000005,
+      "labelsMs": 64.53243100000009
+    },
+    {
+      "visible": 2888,
+      "labels": 121,
+      "bordersMs": 39.69062099999974,
+      "labelsMs": 67.22682200000008
+    },
+    {
+      "visible": 2889,
+      "labels": 121,
+      "bordersMs": 28.783444000000145,
+      "labelsMs": 63.53719299999966
+    },
+    {
+      "visible": 2893,
+      "labels": 122,
+      "bordersMs": 29.639153999999962,
+      "labelsMs": 62.601452999999765
+    },
+    {
+      "visible": 2898,
+      "labels": 122,
+      "bordersMs": 33.80125399999997,
+      "labelsMs": 63.05782100000033
+    },
+    {
+      "visible": 2899,
+      "labels": 122,
+      "bordersMs": 36.43152999999984,
+      "labelsMs": 63.16744400000016
+    }
+  ]
+}

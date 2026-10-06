@@ -87,7 +87,7 @@ test('GPU world scene has valid anchors, capital markers, cached geometry and vi
   assert.equal(scene,mapSceneFor(world())); assert.equal(scene.cities.length,7214);
   for (const feature of scene.provinceGeometry.values()) assert.ok(contains(feature,feature.anchor),feature.id);
   assert.equal(scene.cities.filter(c=>c.capital).length,195);
-  const visible=visibleCities(scene.cities,{left:700,right:850,top:100,bottom:230},2,'Low');
+  const visible=visibleCities(scene.cities,{left:700,right:850,top:100,bottom:230},2,'Performance');
   assert.ok(visible.length<=8 && visible.every(c=>c.capital));
   const labels=countryLabels(scene.features,new Map(world().provinces.map(p=>[p.id,p.ownerId])),[],{height:4},new Set(['germany']));
   assert.equal(labels.length,1);assert.equal(labels[0]!.countryId,'germany');

@@ -1,3 +1,4 @@
+import {visibleEdges,edgeLine} from './edgeIndex';
 import {DIPLOMATIC_COLORS,TERRAIN_COLORS,GOVERNMENT_COLORS,diplomaticCategory,relationColor} from './modes';
 import {pairKey} from '../../supabase/functions/_shared/diplomacySystem';
 import { RESOURCES } from '../../supabase/functions/_shared/resourceSystem';
@@ -30,9 +31,8 @@ export const edges = buildEdges(features);
 export function borderPaths(state: GameState, visibleIds: Set<string>, data: readonly Edge[] = edges): { outer: string; inner: string } {
   const owners = new Map(state.provinces.map(p => [p.id, p.ownerId]));
   let outer = '', inner = '';
-  for (const edge of data) {
-    if (!edge.provinces.some(id => visibleIds.has(id))) continue;
-    const line = `M${edge.a.x},${edge.a.y}L${edge.b.x},${edge.b.y}`;
+  for (const edge of visibleEdges(data, visibleIds)) {
+    const line = edgeLine(edge);
     if (edge.provinces.length === 1 || new Set(edge.provinces.map(id => owners.get(id))).size > 1) outer += line;
     else inner += line;
   }

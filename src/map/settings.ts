@@ -1,7 +1,7 @@
-export type GraphicsPreset = 'Low' | 'Medium' | 'High' | 'Ultra';
+export type GraphicsPreset = 'Performance' | 'Balanced' | 'High' | 'Ultra';
 export const GRAPHICS = {
-  Low: { terrain: false, shadows: false, water: false, cityBudget: 8, borderWidth: 0.8 },
-  Medium: { terrain: true, shadows: false, water: false, cityBudget: 24, borderWidth: 1 },
+  Performance: { terrain: false, shadows: false, water: false, cityBudget: 8, borderWidth: 0.8 },
+  Balanced: { terrain: true, shadows: false, water: false, cityBudget: 24, borderWidth: 1 },
   High: { terrain: true, shadows: true, water: true, cityBudget: 60, borderWidth: 1.1 },
   Ultra: { terrain: true, shadows: true, water: true, cityBudget: 100, borderWidth: 1.3 },
 } as const;
