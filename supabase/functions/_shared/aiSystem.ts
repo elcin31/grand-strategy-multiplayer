@@ -66,7 +66,13 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
     const w=s.wars?.find(w=>[...w.attackers,...w.defenders].includes(id));
     // Event-driven responses do not wait for the country's strategic slot.
     for(const l of Object.values(s.diplomacy??{}))if(l.proposal&&l.proposal.from!==id&&(l.a===id||l.b===id))respondTreaty(s,id,l.proposal.from,treatyAcceptance(s,l.proposal.from,id)>=20);
-    if(w&&isWarLeader(w,id)&&w.peaceOffer&&w.peaceOffer.from!==id){const offer=w.peaceOffer;const accept=offer.terms.kind==='WhitePeace'?(s.tick-w.startedTick>=12||context().warExhaustion>50||context().incomeBalance<0):scoreFor(w,offer.from)>=peaceCost(s,w,offer.from,offer.terms);respondPeace(s,id,w.id,accept);}
+    if(w&&isWarLeader(w,id)&&w.peaceOffer&&w.peaceOffer.from!==id){
+      const offer=w.peaceOffer;let accept=false;
+      // A pending human offer can become unaffordable or lose its occupied provinces
+      // before timeout hands control to AI. Reject it; never abort the world tick.
+      try {accept=offer.terms.kind==='WhitePeace'?(s.tick-w.startedTick>=12||context().warExhaustion>50||context().incomeBalance<0):scoreFor(w,offer.from)>=peaceCost(s,w,offer.from,offer.terms);} catch {accept=false;}
+      respondPeace(s,id,w.id,accept);
+    }
     if(s.tick%6===index%6){
       const affordable=(cost:number)=>c.treasury-cost>=context().treasuryReserve&&s.tick>=c.bankruptcyUntilTick!;
       const unrest=[...home].sort((a,b)=>(b.unrest??0)-(a.unrest??0))[0]!;

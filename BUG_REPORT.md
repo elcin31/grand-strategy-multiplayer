@@ -1,6 +1,6 @@
 # Bug report — 2026-10-05
 
-Current scope: Phases 17–21, recovered main 8cde76f. Historical reports remain in Git history and WORLD_UPDATE_STATUS.md. Missing future roadmap systems are tracked as future work rather than mislabeled completed features.
+Current scope: final five technical hardening blocks, recovered main 701c37a. Historical reports remain in Git history and WORLD_UPDATE_STATUS.md. Missing future roadmap systems are tracked as future work rather than mislabeled completed features.
 
 | Severity | Issue | Current result |
 |---|---|---|
@@ -34,3 +34,8 @@ Additional current limits:
 - LOW — FIXED: HUD formatted million-unit treasury as KM; it now uses M/B. Foreign-army context is visible without commander assignment controls.
 
 No known unresolved BLOCKER/CRITICAL/HIGH at this checkpoint. Final Android acceptance passed, including density/cutout, persisted campaign restart and Back/exit cancellation. Physical-device FPS remains unverified and belongs to Phase 22.
+
+## Final hardening — block 2
+
+- HIGH — FIXED: an outstanding money peace offer can become unaffordable before AI takes control of a disconnected player. AI called peaceCost without handling this legal state change, aborting the entire simulation tick. Reproduced with a failing regression; AI now declines obsolete terms. A genuine invalid command still rejects at the authoritative boundary.
+- Audit covered the shared command validator, combat/occupation/peace, government/religion/population/economy/resources/buildings/research normalizers, save generations, presence, transport and existing 124-system regression suite. Typecheck and 126 tests pass after the above fix. Randomized, concurrent and extended simulation checks follow in blocks 3–4; no claim that static review proves absence of defects.
