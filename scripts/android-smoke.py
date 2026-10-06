@@ -38,10 +38,17 @@ def click_text(root, text):
     x,y=str((nums[0]+nums[2])//2),str((nums[1]+nums[3])//2)
     adb('shell','input','swipe',x,y,x,y,'100')
 def map_menu(opened):
-    for attempt in range(5):
+    for attempt in range(12):
         root=hierarchy('map-menu-'+str(opened)+'-'+str(attempt))
         visible=any(n.get('text') in ('РЕЖИМ КАРТЫ','КАЧЕСТВО ГРАФИКИ') for n in root.iter('node'))
         if visible==opened:return root
+        # After process/device restore the campaign HUD can mount before the deferred
+        # world map finishes preparing. Wait for the actual map toolbar instead of
+        # treating the loading shell as a missing-control failure.
+        map_settings=next((n for n in root.iter('node') if n.get('content-desc')=='Настройки карты'),None)
+        if map_settings is None:
+            time.sleep(2)
+            continue
         click_text(root,'Настройки карты')
         time.sleep(2)
     raise AssertionError('Map menu did not reach requested state: '+str(opened))
