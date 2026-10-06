@@ -1,3 +1,4 @@
+import {pointsInBounds} from './pointIndex';
 import {visibleEdges,edgeLine} from './edgeIndex';
 import {DIPLOMATIC_COLORS,TERRAIN_COLORS,GOVERNMENT_COLORS,diplomaticCategory,relationColor} from './modes';
 import {pairKey} from '../../supabase/functions/_shared/diplomacySystem';
@@ -65,7 +66,7 @@ export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map
   }));
 }
 export function visibleCities<T extends { capital: boolean; population: number; point: Point }>(cities: readonly T[], bounds: Bounds, zoom: number, preset: GraphicsPreset): T[] {
-  return cities.filter(c => (c.capital || (zoom >= 5 && (c.population>=250000||zoom>=9))) && c.point.x >= bounds.left && c.point.x <= bounds.right && c.point.y >= bounds.top && c.point.y <= bounds.bottom)
+  return pointsInBounds(cities,bounds).filter(c => (c.capital || (zoom >= 5 && (c.population>=250000||zoom>=9))) && c.point.x >= bounds.left && c.point.x <= bounds.right && c.point.y >= bounds.top && c.point.y <= bounds.bottom)
     .sort((a, b) => Number(b.capital) - Number(a.capital) || b.population - a.population).slice(0, GRAPHICS[preset].cityBudget);
 }
 

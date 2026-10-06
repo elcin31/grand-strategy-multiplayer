@@ -10,7 +10,7 @@ import { CountryPicker } from './src/components/CountryPicker';
 import { CountryPanel } from './src/components/CountryPanel';
 import { GamePanel } from './src/components/GamePanel';
 import { EntryPanel, LobbyPanel } from './src/components/LobbyPanel';
-import { WorldMap } from './src/components/WorldMap';
+import { WorldMap } from './src/components/DeferredWorldMap';
 import { LocalTransport } from './src/multiplayer/localTransport';
 import { HttpTransport, type RemoteSession } from './src/multiplayer/httpTransport';
 import type { MultiplayerTransport, TransportSession } from './src/multiplayer/transport';
