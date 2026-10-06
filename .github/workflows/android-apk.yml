@@ -34,7 +34,6 @@ jobs:
             long-simulation-failure.json
           retention-days: 14
   build-apk:
-    needs: long-simulation
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
@@ -88,7 +87,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
   android-smoke:
-    needs: build-apk
+    needs: [build-apk, long-simulation]
     runs-on: ubuntu-latest
     timeout-minutes: 65
     steps:

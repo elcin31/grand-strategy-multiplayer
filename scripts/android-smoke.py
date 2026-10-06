@@ -361,6 +361,7 @@ time.sleep(50)
 root=hierarchy('developer-benchmark-finished');screenshot('developer-benchmark')
 assert not any(n.get('text','').startswith('Benchmark: ') for n in root.iter('node')), 'Benchmark did not finish'
 assert any('GPU FPS unavailable' in n.get('text','') for n in root.iter('node')), 'Performance overlay missing'
+assert any('Benchmark ticks: 12 · OK' in n.get('text','') for n in root.iter('node')), 'Benchmark failed to execute twelve simulation ticks'
 # Software render/simulation/autosave soak; not a physical thermal measurement.
 duration=int(os.environ.get('DOMINION_STRESS_SECONDS','0'))
 if duration:
