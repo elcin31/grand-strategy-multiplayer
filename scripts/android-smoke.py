@@ -3,6 +3,7 @@
 Verifies cold launch, landscape, offline campaign map, restart, and fatal logs.
 Evidence is uploaded by CI. This is not a physical-device FPS claim.
 """
+import os
 import atexit
 import re
 import subprocess
@@ -341,3 +342,39 @@ logs = adb('logcat','-d'); (OUT/'logcat.txt').write_text(logs)
 assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs, 'Native crash detected'
 assert 'Unable to load script' not in logs, 'Standalone JS load failed'
 print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, population growth, government/religion cost/cooldown and Unity, 4 presets, 12 modes, camera inputs, 5 layouts, persistent campaign restore, Back priority, restart and device reboot, no fatal logs')
+
+# Exercise the built-in benchmark on the actual release renderer.
+def map_control(text):
+    map_menu(True)
+    for attempt in range(12):
+        root=hierarchy('developer-control-'+str(attempt))
+        node=next((n for n in root.iter('node') if n.get('text')==text),None)
+        if node is not None:
+            nums=[int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
+            if len(nums)==4 and nums[3]-nums[1]>=20:
+                click_text(root,text);time.sleep(1);return
+        adb('shell','input','swipe','250','340','250','160','350')
+    raise AssertionError('Developer control missing: '+text)
+map_control('Performance overlay: Выкл')
+map_control('Performance Benchmark')
+time.sleep(50)
+root=hierarchy('developer-benchmark-finished');screenshot('developer-benchmark')
+assert not any(n.get('text','').startswith('Benchmark: ') for n in root.iter('node')), 'Benchmark did not finish'
+assert any('GPU FPS unavailable' in n.get('text','') for n in root.iter('node')), 'Performance overlay missing'
+# Software render/simulation/autosave soak; not a physical thermal measurement.
+duration=int(os.environ.get('DOMINION_STRESS_SECONDS','0'))
+if duration:
+    set_speed(4);start=time.monotonic();sample=0
+    while time.monotonic()-start<duration:
+        adb('shell','input','swipe','550','280','720','320','800')
+        adb('shell','input','swipe','720','320','550','280','800')
+        if time.monotonic()-start>=sample*60:
+            (OUT/f'stress-memory-{sample:02}.txt').write_text(adb('shell','dumpsys','meminfo',PACKAGE))
+            (OUT/f'stress-frames-{sample:02}.txt').write_text(adb('shell','dumpsys','gfxinfo',PACKAGE,'framestats'))
+            print('Stress seconds:',round(time.monotonic()-start),flush=True);sample+=1
+        time.sleep(5)
+    set_speed(0);screenshot('stress-complete');hierarchy('stress-complete')
+    (OUT/'stress-duration.txt').write_text(str(time.monotonic()-start))
+    logs=adb('logcat','-d');(OUT/'stress-logcat.txt').write_text(logs)
+    assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs and 'Unable to load script' not in logs
+    print('PASS: continuous release render/simulation/autosave software stress',duration,'seconds',flush=True)

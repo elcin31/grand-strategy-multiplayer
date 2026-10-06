@@ -5,146 +5,146 @@
     {
       "visible": 2400,
       "labels": 86,
-      "bordersMs": 34.65173499999992,
-      "labelsMs": 1.1110390000000052
+      "bordersMs": 71.877659,
+      "labelsMs": 1.1772280000000137
     },
     {
       "visible": 2405,
       "labels": 86,
-      "bordersMs": 8.92452000000003,
-      "labelsMs": 0.6283529999999473
+      "bordersMs": 9.609007999999903,
+      "labelsMs": 0.9008709999998246
     },
     {
       "visible": 2411,
       "labels": 87,
-      "bordersMs": 8.683562000000052,
-      "labelsMs": 1.9794489999999314
+      "bordersMs": 8.505754000000024,
+      "labelsMs": 0.8060769999999593
     },
     {
       "visible": 2415,
       "labels": 88,
-      "bordersMs": 17.869911000000002,
-      "labelsMs": 0.7455969999999752
+      "bordersMs": 18.537941000000046,
+      "labelsMs": 0.880087999999887
     },
     {
       "visible": 2424,
       "labels": 88,
-      "bordersMs": 9.864525999999955,
-      "labelsMs": 0.6582779999999957
+      "bordersMs": 24.76884300000006,
+      "labelsMs": 1.0043469999998251
     },
     {
       "visible": 2435,
       "labels": 88,
-      "bordersMs": 11.384893000000034,
-      "labelsMs": 0.6559540000000652
+      "bordersMs": 12.211969000000181,
+      "labelsMs": 0.9366340000001401
     },
     {
       "visible": 2442,
       "labels": 88,
-      "bordersMs": 10.516373000000044,
-      "labelsMs": 0.6487230000000181
+      "bordersMs": 12.701908999999887,
+      "labelsMs": 0.9575760000000173
     },
     {
       "visible": 2448,
       "labels": 89,
-      "bordersMs": 17.105706000000055,
-      "labelsMs": 0.7067200000000184
+      "bordersMs": 19.48478,
+      "labelsMs": 0.8860180000001492
     },
     {
       "visible": 2452,
       "labels": 89,
-      "bordersMs": 10.381522999999902,
-      "labelsMs": 0.6078320000000303
+      "bordersMs": 10.67441800000006,
+      "labelsMs": 0.7510439999998653
     },
     {
       "visible": 2453,
       "labels": 89,
-      "bordersMs": 9.831465999999978,
-      "labelsMs": 0.675542000000064
+      "bordersMs": 15.833647000000155,
+      "labelsMs": 0.7639830000000529
     },
     {
       "visible": 2457,
       "labels": 89,
-      "bordersMs": 10.224298999999974,
-      "labelsMs": 0.5629860000000235
+      "bordersMs": 12.455136999999922,
+      "labelsMs": 1.235936000000038
     },
     {
       "visible": 2465,
       "labels": 89,
-      "bordersMs": 11.07246900000007,
-      "labelsMs": 0.8608280000000832
+      "bordersMs": 14.118567999999868,
+      "labelsMs": 0.9429230000000643
     },
     {
       "visible": 2469,
       "labels": 89,
-      "bordersMs": 12.009720000000016,
-      "labelsMs": 0.6021940000000541
+      "bordersMs": 16.851027999999815,
+      "labelsMs": 0.7571029999999155
     },
     {
       "visible": 2474,
       "labels": 89,
-      "bordersMs": 11.726931000000036,
-      "labelsMs": 0.7893419999999196
+      "bordersMs": 19.013208000000077,
+      "labelsMs": 0.8185160000000451
     },
     {
       "visible": 2477,
       "labels": 90,
-      "bordersMs": 12.552176000000031,
-      "labelsMs": 0.6186179999999695
+      "bordersMs": 18.313402000000224,
+      "labelsMs": 1.0278419999999642
     },
     {
       "visible": 2483,
       "labels": 90,
-      "bordersMs": 11.852956999999947,
-      "labelsMs": 0.5753949999999577
+      "bordersMs": 12.54349000000002,
+      "labelsMs": 0.7555600000000595
     },
     {
       "visible": 2486,
       "labels": 90,
-      "bordersMs": 16.37929799999995,
-      "labelsMs": 0.8166420000000016
+      "bordersMs": 14.535797999999886,
+      "labelsMs": 0.7646050000000741
     },
     {
       "visible": 2488,
       "labels": 91,
-      "bordersMs": 11.715103999999997,
-      "labelsMs": 0.6757729999999356
+      "bordersMs": 10.324689000000035,
+      "labelsMs": 0.7525060000000394
     },
     {
       "visible": 2488,
       "labels": 91,
-      "bordersMs": 10.505546999999979,
-      "labelsMs": 0.550277000000051
+      "bordersMs": 10.783151000000089,
+      "labelsMs": 0.7482299999999213
     },
     {
       "visible": 2490,
       "labels": 91,
-      "bordersMs": 10.910638000000063,
-      "labelsMs": 0.6722879999999805
+      "bordersMs": 10.643812000000025,
+      "labelsMs": 1.0864410000001499
     },
     {
       "visible": 2497,
       "labels": 91,
-      "bordersMs": 13.133638999999903,
-      "labelsMs": 0.6478319999998803
+      "bordersMs": 16.448795999999902,
+      "labelsMs": 0.8380349999999908
     },
     {
       "visible": 2501,
       "labels": 91,
-      "bordersMs": 12.48766999999998,
-      "labelsMs": 0.6728589999997894
+      "bordersMs": 17.35237099999995,
+      "labelsMs": 0.8213510000000497
     },
     {
       "visible": 2502,
       "labels": 91,
-      "bordersMs": 15.917802000000165,
-      "labelsMs": 0.7218720000000758
+      "bordersMs": 19.51425500000005,
+      "labelsMs": 1.7181940000000395
     },
     {
       "visible": 2504,
       "labels": 91,
-      "bordersMs": 12.615289000000075,
-      "labelsMs": 0.8624010000000908
+      "bordersMs": 21.076344000000063,
+      "labelsMs": 1.17517399999997
     }
   ]
 }

@@ -1,4 +1,4 @@
-name: Android final release
+name: Android optimized release
 on:
   push:
     branches: [main, world-update]
@@ -78,24 +78,24 @@ jobs:
           python scripts/verify-release.py android/app/build/outputs/apk/release/app-release.apk > release-integrity.txt
           sha256sum android/app/build/outputs/apk/release/app-release.apk >> release-integrity.txt
       - name: Package final release
-        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-final-release.apk
+        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-optimized-release.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: dominion-final-release
+          name: dominion-optimized-release
           path: |
-            Dominion-final-release.apk
+            Dominion-optimized-release.apk
             release-integrity.txt
           if-no-files-found: error
           retention-days: 14
   android-smoke:
     needs: build-apk
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 65
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: dominion-final-release
+          name: dominion-optimized-release
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -107,7 +107,7 @@ jobs:
           arch: x86_64
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: python scripts/android-smoke.py Dominion-final-release.apk
+          script: DOMINION_STRESS_SECONDS=1200 python scripts/android-smoke.py Dominion-optimized-release.apk
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -1,3 +1,35 @@
+# Android optimization session — 2026-10-06 (native acceptance pending)
+
+The physical Redmi Note 12 lag report is a confirmed HIGH performance issue. No physical-device performance claim is made. Existing Skia GPU rendering is retained; no countries, provinces, cities or gameplay systems are removed.
+
+## Measured bottlenecks and changes
+
+Camera preparation traced country polygons repeatedly, scanned all border edges and recreated visible native color batches. Ownership-generation labels, indexed/cached edge lines, cached low/medium/high geometry, lazy native paths and fixed spatial batches replace those hot paths. Immutable geography is memoized separately from selection/armies; identical derived colors retain their identity. Conservative 140px overscan and bounded chunks preserve offscreen geometry needed during native gestures. City queries use a cached grid. Army counters cluster by owner/screen cell at low zoom, conserve troop totals and isolate selected armies.
+
+Camera transforms remain UI-thread shared values and are sampled at 30/60 FPS (Auto selects 30 for Performance). Decorative battle pulses obey the same budget; idle selections no longer continuously animate the whole canvas. These are camera update limits, not promises of GPU presentation rate. Adaptive quality uses sustained UI callback pressure, a 20-second cooldown and manual quality ceiling. Four presets, persisted preferences, startup-cost/pixel-load defaults, optional overlay, 12-mode benchmark and selectable/shareable report are integrated. UI callback cadence is explicitly distinguished from completed GPU frames. Native memory/thermal/GPU metrics are unavailable in that overlay.
+
+AI retains deterministic staggered evaluation; owner/province army indexes remove repeated full-army scans in tactical candidate evaluation. Movement invalidates its index, recruitment/peace array changes rebuild it. Fixed simulation and network cadence remain independent of rendering. Defensive authoritative cloning/validation are retained: no unsafe mutation optimization.
+
+Unchanged multiplayer polls already carry no snapshot. Changed snapshots now negotiate dynamic-v1, omit matching immutable metadata and restore it from the versioned local world catalog; custom legacy metadata stays on the wire. Dynamic fields, version/CAS, commands, auth and server ownership remain unchanged. Encoded snapshots have a separate checksum; original server checksum remains the unchanged-poll token. Old clients receive the old full format. No geometry polygons were sent before or after. Incremental event replay is not implemented.
+
+Exited local campaigns previously remained in the process-global room map. They are now released after the existing successful save/exit flow. Telemetry retains at most 1,800 primitive samples; geometry/index caches are weak-keyed and bounded by the finite world and three LODs. The loading shell paints before optional map preparation. Autosave remains 10-second/coalesced with important-event saves.
+
+## Before / after evidence
+
+| Measurement | Before | After |
+|---|---:|---:|
+| Mean borders preparation, Node ms | 33.72 | 17.42 |
+| Mean country labels preparation, Node ms | 65.35 | 0.94 |
+| Mean culled provinces, same 24 cameras | 2,852.92 | 2,461.08 |
+| Live full / dynamic snapshot bytes | 4,199,891 | 3,074,698 |
+| 100-tick CPU p95, ms | 116.82 | 124.20 |
+
+Raw camera samples: RENDER_BASELINE.json / RENDER_AFTER.json. The camera samples include the changed overscan and first edge-cache fill; they are CPU preparation measurements, not Android frame times. Tick p95 did not improve in these uncontrolled host samples; no simulation speedup claim is made. Live wire reduction is 26.8%; checksum/hydration of 4,386 provinces/7,214 cities and legacy response verified. Isolated QA room was removed afterwards. Dedicated functions: game-room v19, game-command v21.
+
+Latest full local suite: 145 JS passing before the two additional memory regressions (both separately passing); strict typecheck and all 3 Python tests pass. Release CI will run the combined suite, 10,000 ticks, native smoke, benchmark and 20-minute software render/simulation/autosave stress. New physical FPS, thermal behavior and optimized APK acceptance are PENDING. Prior native evidence below is BEFORE only.
+
+---
+
 # Final block 1 — Performance hardening
 
 Baseline: 701c37a. Full world: 195 countries, 4,386 provinces, 7,214 cities. Existing Skia renderer retained: cached native geometry, color batching, spatial index, viewport culling and zoom-dependent label budgets. Camera transforms run on the native UI thread; JS culling is throttled to 100ms/96px movement. No renderer rewrite.

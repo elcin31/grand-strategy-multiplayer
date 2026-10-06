@@ -1,3 +1,19 @@
+# ACTIVE PERFORMANCE SESSION — 2026-10-06
+
+Performance work is IN PROGRESS. Do not deliver Dominion-final-release.apk as optimized output. Source baseline 9aa6ea1; confirmed real Redmi Note 12 HIGH lag. Original gameplay roadmap is retained.
+
+Implemented: spatial native GPU batches, 3 cached geometry LODs, indexed edges/cities, cached national labels, isolated geography, UI-thread 30/60/Auto camera pacing, army clusters, 4 persisted presets, conservative startup/device defaults, adaptive hysteresis, optional overlay and 12-mode developer benchmark/report; indexed AI tactics; dynamic snapshot wire protocol; deferred map loading; exited-campaign memory release. See PERFORMANCE_REPORT.md for measured evidence and limitations.
+
+Backend deployed only dfjsnjxnyjspwugjguhq: game-room v19/game-command v21. Live dynamic snapshot 3,074,698B vs 4,199,891B; old clients supported; checksum/hydration pass. Temporary PERFORMANCE WIRE QA room 1749149c-e78c-48f0-a15d-c5d4f842f48b removed.
+
+Local commits: 2a863f8 rendering/quality; fd2f16c AI/telemetry; 47e81a6 wire; 99cbe54 city index/startup; 757be25 memory/benchmark host. GitHub publication may assign different SHAs; check current main.
+
+Tests: latest combined 145 JS passed; two additional memory tests passed independently; strict TS and 3 Python passed. Release 0.4.0(4) pipeline prepared: Android optimized release, dominion-optimized-release artifact, Dominion-optimized-release.apk. It includes 10k simulation, native regression, developer benchmark and 1,200-second software soak. Await actual CI acceptance; do not claim device FPS/thermal results or APK readiness yet.
+
+NEXT: publish commits, monitor/fix CI and native regressions; review frame/memory evidence against baseline; full-world replay consistency and backend regression; update final reports with actual run/SHA/results; download/extract/verify standalone APK, persist and attach it. No new gameplay systems. Remaining confirmed HIGH performance issue stays open pending native evidence and actual-device acceptance.
+
+---
+
 # Development handoff — final hardening complete, 2026-10-06
 
 ## ORIGINAL ROADMAP

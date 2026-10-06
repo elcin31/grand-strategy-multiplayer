@@ -1,3 +1,9 @@
+# ACTIVE HIGH — real-device map/runtime lag
+
+User reports severe lag on Redmi Note 12 in 0.3.0. Systemic performance work in progress; not resolved merely by passing unit tests. Baseline camera CPU work ~99ms and prior software-emulator jank are recorded. Physical 30/60 FPS remains unverified.
+
+---
+
 # Bug report — 2026-10-05
 
 Current scope: final five technical hardening blocks, recovered main 701c37a. Historical reports remain in Git history and WORLD_UPDATE_STATUS.md. Missing future roadmap systems are tracked as future work rather than mislabeled completed features.
