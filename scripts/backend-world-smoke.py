@@ -34,7 +34,7 @@ for i in range(7):players.append(request('game-room',{'action':'join','roomCode'
 request('game-room',{'action':'join','roomCode':host['state']['roomCode'],'displayName':'Ninth QA'},400)
 heartbeat();s=snapshot();assert len(s['state']['players'])==8
 assert len(s['state']['countries'])==195 and len(s['state']['provinces'])==4386 and len(s['state']['cities'])==7214
-request('game-room',{'action':'reconnect',**auth(host),'token':'bad'},401)
+request('game-room',{'action':'reconnect',**auth(host),'token':'a'*43},401)
 command(players[1],'SET_READY',400,ready=True)
 spoof=envelope(players[1],{'type':'SELECT_COUNTRY','playerId':host['playerId'],'countryId':'germany'});request('game-command',spoof,400)
 for p,c in zip(players,['germany','france','usa','chn','ind','bra','russia','can']):
@@ -47,7 +47,8 @@ after=snapshot()['state'];assert after['countries']['germany']['treasury']==befo
 request('game-command',{**body,'command':{**intent,'troops':2000}},409)
 request('game-command',{**body,'commandId':str(uuid.uuid4())},409)
 command(players[1],'RECRUIT',400,provinceId=province,troops=1000)
-heartbeat();v=snapshot()['version'];bodies=[envelope(host,intent,v),envelope(host,intent,v)]
+heartbeat();v=snapshot()['version'];france_province=next(p['id'] for p in snapshot()['state']['provinces'] if p['ownerId']=='france')
+bodies=[envelope(host,intent,v),envelope(players[1],{'type':'RECRUIT','playerId':players[1]['playerId'],'provinceId':france_province,'troops':1000},v)]
 with ThreadPoolExecutor(2) as pool:results=list(pool.map(lambda b:request('game-command',b,(200,409)),bodies))
 assert sorted(code for _,code in results)==[200,409]
 print('PASS: 8 players, ninth rejected, auth/spoof guards, exactly-once recruitment, payload replay guard, stale and concurrent versions',flush=True)

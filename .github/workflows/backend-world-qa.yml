@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/backend-world-qa.yml'
       - 'scripts/backend-world-smoke.py'
+      - 'scripts/backend-input-smoke.py'
       - 'supabase/functions/**'
   workflow_dispatch:
 permissions:
@@ -18,6 +19,8 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+      - name: Reject malformed and oversized HTTP input
+        run: python -u scripts/backend-input-smoke.py
       - name: Verify dedicated backend with an isolated campaign
         run: python -u scripts/backend-world-smoke.py
       # Contains ONLY an isolated QA room UUID, never player tokens or snapshots.
