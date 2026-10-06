@@ -1,3 +1,4 @@
+import {recordMetrics} from '../performance/telemetry';
 import { GameCommand, GameState } from '../types/game';
 import { MultiplayerTransport, TransportSession, Unsubscribe } from './transport';
 import {secureSessionStore,type KeyStore} from './sessionStore';
@@ -9,7 +10,7 @@ const indexKey='dominion.sessions.v1',key=(id:string)=>'dominion.session.'+id;
 export class HttpTransport implements MultiplayerTransport {
  private sessions=new Map<string,RemoteSession>();private checksums=new Map<string,string>();private queues=new Map<string,Promise<void>>();private listeners=new Map<string,(s:GameState)=>void>();
  constructor(private baseUrl:string,private store:KeyStore=secureSessionStore){this.baseUrl=baseUrl.replace(/\/+$/,'');}
- private async request<T>(path:string,body:unknown):Promise<T>{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);try{const response=await fetch(`${this.baseUrl}/${path}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:controller.signal});const result=await response.json();if(!response.ok)throw new RemoteError(result.error??`Server ${response.status}`,response.status);return result;}finally{clearTimeout(timer);}}
+ private async request<T>(path:string,body:unknown):Promise<T>{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);try{const started=performance.now();const response=await fetch(`${this.baseUrl}/${path}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:controller.signal});const text=await response.text();const result=JSON.parse(text);recordMetrics({networkMs:performance.now()-started,networkBytes:new TextEncoder().encode(text).byteLength});if(!response.ok)throw new RemoteError(result.error??`Server ${response.status}`,response.status);return result;}finally{clearTimeout(timer);}}
  async savedSessions():Promise<RemoteSession[]>{const ids=JSON.parse(await this.store.get(indexKey)??'[]') as string[];const rows=await Promise.all(ids.map(id=>this.store.get(key(id))));return rows.filter((r):r is string=>r!==null).map(r=>JSON.parse(r) as RemoteSession).sort((a,b)=>b.lastPlayed-a.lastPlayed);}
  private async persist(s:RemoteSession){await this.store.set(key(s.gameId),JSON.stringify(s));const ids=JSON.parse(await this.store.get(indexKey)??'[]') as string[];if(!ids.includes(s.gameId))await this.store.set(indexKey,JSON.stringify([...ids,s.gameId]));}
  async forget(gameId:string){this.sessions.delete(gameId);await this.store.remove(key(gameId));const ids=JSON.parse(await this.store.get(indexKey)??'[]') as string[];await this.store.set(indexKey,JSON.stringify(ids.filter(id=>id!==gameId)));}

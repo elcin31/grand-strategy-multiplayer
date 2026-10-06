@@ -1,3 +1,4 @@
+import {recordMetrics} from '../performance/telemetry';
 import { createWorldState } from '../../supabase/functions/_shared/worldState';
 import { applyCommand } from '../engine/gameEngine';
 import { GameCommand, GameState } from '../types/game';
@@ -41,7 +42,9 @@ export class LocalTransport implements MultiplayerTransport {
   async sendCommand(gameId: string, command: GameCommand): Promise<void> {
     const state = rooms.get(gameId);
     if (!state) throw new Error('Комната не существует');
+    const started=performance.now();
     const next = applyCommand(state, command);
+    if(command.type==='ADVANCE_TICK')recordMetrics({simulationMs:performance.now()-started});
     rooms.set(gameId, next);
     emit(next);
   }

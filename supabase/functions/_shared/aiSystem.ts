@@ -43,9 +43,9 @@ export function warDecisionScore(s:GameState,id:string,target:string,context:AIS
   return 30*(ratio-1)+bias-(l?.relation??0)*.5-c.aggressiveExpansion!*.8-context.warExhaustion;
 }
 /** Uses the same combat factors as the authoritative resolver, including fortifications and readiness. */
-export function attackRatio(s:GameState,a:Army,p:Province):number {
+export function attackRatio(s:GameState,a:Army,p:Province,byProvince?:ReadonlyMap<string,readonly Army[]>):number {
   const enemy=p.controllerId??p.ownerId,c=s.countries[a.ownerId]!,d=s.countries[enemy]!;
-  const defenders=s.armies.filter(x=>x.provinceId===p.id&&x.ownerId===enemy),troops=defenders.reduce((n,x)=>n+x.troops,0);
+  const defenders=(byProvince?.get(p.id)??(byProvince?[]:s.armies)).filter(x=>x.provinceId===p.id&&x.ownerId===enemy),troops=defenders.reduce((n,x)=>n+x.troops,0);
   const readiness=troops?defenders.reduce((n,x)=>n+x.troops*combatMultiplier(s,x,p,true),0)/troops:1;
   return a.troops*(1+c.technology/200)*(.75+c.stability/200)*combatMultiplier(s,a,p,false)/Math.max(1,(troops+2500)*(1+d.technology/180)*(.85+d.stability/250)*1.12*(1+provinceBuildingModifiers(p).defensePercent/100)*readiness);
 }
@@ -55,6 +55,10 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
   const provinces=new Map(s.provinces.map(p=>[p.id,p])),owned=new Map<string,Province[]>(),neighbours=new Map<string,Set<string>>();
   for(const p of s.provinces){const list=owned.get(p.ownerId)??[];list.push(p);owned.set(p.ownerId,list);const border=neighbours.get(p.ownerId)??new Set<string>();for(const n of p.neighbors){const q=provinces.get(n);if(q&&q.ownerId!==p.ownerId)border.add(q.ownerId);}neighbours.set(p.ownerId,border);}
   const capitals=new Map((s.cities??[]).map(city=>[city.id,city.provinceId]));
+  let armySource:Army[]|undefined,armyCount=-1;
+  let byProvince=new Map<string,Army[]>(),byOwner=new Map<string,Army[]>();
+  const indexArmies=()=>{if(armySource===s.armies&&armyCount===s.armies.length)return;armySource=s.armies;armyCount=s.armies.length;byProvince=new Map();byOwner=new Map();for(const a of s.armies){const at=byProvince.get(a.provinceId)??[];at.push(a);byProvince.set(a.provinceId,at);const own=byOwner.get(a.ownerId)??[];own.push(a);byOwner.set(a.ownerId,own);}};
+  const moveIndexed:Actions['move']=(state,owner,army,to)=>{actions.move(state,owner,army,to);armySource=undefined;};
   const ids=Object.keys(s.countries).sort();
   for(let index=0;index<ids.length;index++){
     const id=ids[index]!,c=s.countries[id]!;if(!aiControls(s,id))continue;
@@ -94,7 +98,8 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
         if(site){const kinds:BuildingType[]=style==='Defensive'?['Fort','Administration','Farm']:site.resourceDeposit?['Mine','Factory','University','Infrastructure']:['Factory','University','Farm'];const kind=kinds.find(k=>(site.buildings?.[k]??0)<BUILDINGS[k].maxLevel);if(kind){const q=buildingQuote(site,kind);if(affordable(q.cost)&&context().incomeBalance>BUILDINGS[kind].maintenance*3)startConstruction(s,id,site,kind);}}
       }
       const cap=home.find(p=>p.id===capital)??home[0]!;
-      const capitalTroops=s.armies.filter(a=>a.ownerId===id&&a.provinceId===capital).reduce((n,a)=>n+a.troops,0);
+      indexArmies();
+      const capitalTroops=(byProvince.get(capital)??[]).filter(a=>a.ownerId===id).reduce((n,a)=>n+a.troops,0);
       const recruitSite=capitalTroops>=12000?home.filter(p=>!p.rebellion&&p.id!==capital).sort((a,b)=>b.income-a.income)[0]??cap:cap;
       const targetStrength=Math.max(8000,Math.min(context().neighbourThreat*(style==='Militarist'?1.5:1),Math.max(0,(c.economy?.monthlyIncome??0)*.25/1.25*1000)));
       if(!recruitSite.rebellion&&c.army<targetStrength&&context().incomeBalance>15&&affordable(80)&&c.manpower>=4000)actions.recruit(s,id,recruitSite,4000);
@@ -106,16 +111,17 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
       }
     }
     // Retain capital garrison; spread spare stacks toward valuable threatened borders.
-    const armies=s.armies.filter(a=>a.ownerId===id).sort((a,b)=>b.troops-a.troops).slice(0,3);
-    for(const army of armies){const origin=provinces.get(army.provinceId);if(!origin)continue;
+    indexArmies();
+    const armies=[...(byOwner.get(id)??[])].sort((a,b)=>b.troops-a.troops).slice(0,3);
+    for(const army of armies){indexArmies();const origin=provinces.get(army.provinceId);if(!origin)continue;
       if(!army.commanderId){const general=Object.values(s.commanders??{}).find(g=>g.countryId===id&&!s.armies.some(a=>a.commanderId===g.id));if(general)army.commanderId=general.id;}
       const targets=origin.neighbors.map(n=>provinces.get(n)!).filter(Boolean);
-      const attack=targets.filter(p=>warBetween(s,id,p.controllerId??p.ownerId)&&attackRatio(s,army,p)>=(style==='Defensive'?1.65:1.25)).sort((a,b)=>b.income-a.income)[0];
-      if(attack&&(origin.id!==capital||home.length===1||s.armies.some(a=>a.id!==army.id&&a.ownerId===id&&a.provinceId===capital))&&army.organization!>=55&&army.morale!>=55){actions.move(s,id,army.id,attack.id);continue;}
+      const attack=targets.filter(p=>warBetween(s,id,p.controllerId??p.ownerId)&&attackRatio(s,army,p,byProvince)>=(style==='Defensive'?1.65:1.25)).sort((a,b)=>b.income-a.income)[0];
+      if(attack&&(origin.id!==capital||home.length===1||s.armies.some(a=>a.id!==army.id&&a.ownerId===id&&a.provinceId===capital))&&army.organization!>=55&&army.morale!>=55){moveIndexed(s,id,army.id,attack.id);continue;}
       if(origin.id===capital&&s.armies.filter(a=>a.ownerId===id&&a.provinceId===capital).length<=1)continue;
       const urgency=(p:Province)=> (p.id===capital?100:0)+p.income+ p.neighbors.reduce((n,q)=>n+(warBetween(s,id,provinces.get(q)?.controllerId??provinces.get(q)?.ownerId??id)?50:0),0)-s.armies.filter(a=>a.ownerId===id&&a.provinceId===p.id).reduce((n,a)=>n+a.troops/1000,0);
       const destination=targets.filter(p=>(p.controllerId??p.ownerId)===id&&!p.rebellion).sort((a,b)=>urgency(b)-urgency(a))[0];
-      if(destination&&urgency(destination)>urgency(origin)+5)actions.move(s,id,army.id,destination.id);
+      if(destination&&urgency(destination)>urgency(origin)+5)moveIndexed(s,id,army.id,destination.id);
     }
   }
 }
