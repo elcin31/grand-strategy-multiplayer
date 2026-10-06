@@ -53,11 +53,12 @@ export class LocalTransport implements MultiplayerTransport {
     const roomListeners = listeners.get(gameId) ?? new Set<(state: GameState) => void>();
     roomListeners.add(onState);
     listeners.set(gameId, roomListeners);
-    return () => roomListeners.delete(onState);
+    return () => {roomListeners.delete(onState);if(roomListeners.size===0)listeners.delete(gameId);};
   }
 
   async leave(gameId: string): Promise<void> {
     listeners.delete(gameId);
     this.playerIds.delete(gameId);
+    rooms.delete(gameId);
   }
 }

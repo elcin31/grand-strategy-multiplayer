@@ -1,0 +1,5 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';
+import {LocalTransport} from '../src/multiplayer/localTransport';
+import {recordMetrics,metricSamples,resetMetricSamples} from '../src/performance/telemetry';
+test('leaving a saved local campaign releases its live simulation rather than retaining every visited world',async()=>{const t=new LocalTransport(),s=await t.createRoom('memory');await t.leave(s.state.id);await assert.rejects(()=>t.sendCommand(s.state.id,{type:'ADVANCE_TICK'}),/не существует/);const resumed=await t.restore(s.state);assert.equal(resumed.state.id,s.state.id);await t.leave(s.state.id);});
+test('telemetry history is bounded across extended play',()=>{const original=Date.now;let time=original();Date.now=()=>time;try{resetMetricSamples();for(let i=0;i<2200;i++){time+=1000;recordMetrics({uiFps:60},true);}assert.equal(metricSamples().length,1800);resetMetricSamples();}finally{Date.now=original;}});
