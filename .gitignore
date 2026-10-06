@@ -19,3 +19,6 @@ __pycache__/
 
 supabase/.temp/
 *-tests.log
+
+long-simulation-checkpoint.json*
+long-simulation-failure.json

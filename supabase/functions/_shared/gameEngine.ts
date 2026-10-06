@@ -279,7 +279,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }
-      monthlyReligionEffects(next); monthlyEconomy(next); monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); checkWinner(next); return next;
+      monthlyReligionEffects(next); monthlyEconomy(next); monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
     }
   }
 }

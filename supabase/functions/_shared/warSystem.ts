@@ -50,7 +50,7 @@ export function recordWarBattle(state:GameState,event:BattleEvent):void {
 }
 export function assertPeaceTerms(input:unknown):asserts input is PeaceTerms {
   if(!input||typeof input!=='object'||Array.isArray(input))throw new Error('Invalid peace terms');const t=input as Record<string,unknown>;
-  if(Object.keys(t).length!==3||!['WhitePeace','Territory','ReturnTerritory','Money','Vassalization'].includes(t.kind as string)||!Array.isArray(t.provinceIds)||t.provinceIds.length>50||new Set(t.provinceIds).size!==t.provinceIds.length||t.provinceIds.some(p=>typeof p!=='string'||!/^[A-Za-z0-9_-]{1,128}$/.test(p))||typeof t.amount!=='number'||!Number.isFinite(t.amount)||t.amount<0||t.amount>1000000||money(t.amount)!==t.amount)throw new Error('Invalid peace terms');
+  if(Object.keys(t).length!==3||!['WhitePeace','Territory','ReturnTerritory','Money','Vassalization'].includes(t.kind as string)||!Array.isArray(t.provinceIds)||t.provinceIds.length>50||new Set(t.provinceIds).size!==t.provinceIds.length||t.provinceIds.some(p=>typeof p!=='string'||!/^[A-Za-z0-9_+?-]{1,128}$/.test(p))||typeof t.amount!=='number'||!Number.isFinite(t.amount)||t.amount<0||t.amount>1000000||money(t.amount)!==t.amount)throw new Error('Invalid peace terms');
   if((t.kind==='Territory'||t.kind==='ReturnTerritory') ? t.provinceIds.length===0||t.amount!==0 : t.provinceIds.length!==0)throw new Error('Invalid territory demands');
   if(t.kind==='Money' ? t.amount<=0 : t.amount!==0)throw new Error('Invalid peace payment');
 }

@@ -42,7 +42,10 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   const allowed = fields[type]!;
   if (Object.keys(command).some(key => !allowed.includes(key)) || allowed.some(key => !Object.hasOwn(command, key))) throw new Error('Invalid command fields');
   for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId', 'warId']) {
-    if (allowed.includes(key) && (typeof command[key] !== 'string' || !/^[A-Za-z0-9_-]{1,128}$/.test(command[key] as string))) throw new Error('Invalid command identifier');
+    // Natural Earth retains literal '+' and '?' in a few province IDs. Ownership
+    // and exact membership are still checked by the authoritative reducer.
+    const pattern = key === 'provinceId' ? /^[A-Za-z0-9_+?-]{1,128}$/ : /^[A-Za-z0-9_-]{1,128}$/;
+    if (allowed.includes(key) && (typeof command[key] !== 'string' || !pattern.test(command[key] as string))) throw new Error('Invalid command identifier');
   }
   if (allowed.includes('targetId') && (typeof command.targetId !== 'string' || !countryIds.includes(command.targetId))) throw new Error('Unknown target country');
   if (type === 'DIPLOMATIC_ACTION' && !['Improve','Rival','Guarantee','Cancel'].includes(command.action as string)) throw new Error('Invalid diplomacy action');
