@@ -1,50 +1,48 @@
-# Development handoff — final hardening checkpoint, 2026-10-06
+# Development handoff — final hardening complete, 2026-10-06
 
-## Scope and recovered baseline
+## ORIGINAL ROADMAP
 
-Only elcin31/grand-strategy-multiplayer and dedicated backend dfjsnjxnyjspwugjguhq. Main 701c37a was verified against source, prior CI and this file. Original feature roadmap PHASE 1–21: COMPLETED. Prior detailed phase history is preserved in 701c37a and Git history. No new feature phase is authorized.
+**PHASE 1–21: COMPLETED.** Recovery started from main 701c37a, checked against source and previous CI. Prior detailed feature-phase handoff remains in that commit. Only elcin31/grand-strategy-multiplayer and its dedicated Supabase dfjsnjxnyjspwugjguhq were used.
 
-This session is implementing exactly five final technical blocks. **Do not treat this checkpoint as final release acceptance.**
+## FINAL HARDENING — COMPLETED THIS SESSION
 
-## Completed implementation and current checks
+1. **Performance: completed.** Profiled the actual full world. Indexed capital lookup once per AI tick, made strategic context lazy, removed duplicate decoding of unchanged multiplayer snapshots and preserved checksum-stable presence. Existing Skia/cached geometry/batching/culling/LOD retained. PERFORMANCE_REPORT.md records CPU samples and device limitations. Commit 7e516c1.
+2. **Hard Bug Hunt: completed.** Fixed AI tick crash when pending peace terms become unaffordable before AI takes control. Failing-then-passing regression added; gameplay/normalization/saves/authority regression coverage retained. Commit b455a59.
+3. **Fuzz/Chaos/Security: completed.** Bounded streamed HTTP JSON to 32 KiB; strict session/envelope validation before DB work; early authenticated rate check with transactional authority retained. Added modern-world intent/spoof invariants, six durable replay cases and six action-race CAS cases. Live eight-player QA and direct rollback SQL passed. Commit 994ee5f.
+4. **Long Simulation: completed.** Initial runs found province IDs with literal `+`/`?` rejected at tick 1,850, then stale post-AI-peace population growth/religious unity at the 2,000-tick save checkpoint. Fixed both without renaming IDs or breaking schema 10; added regressions. Fresh CI passed 10,000 ticks and ten exact atomic save/restore cycles. Commit f9a413a. Raw final metrics: LONG_SIMULATION_RESULTS.json.
+5. **Android Release: completed.** Version 0.3.0 (3), standalone assembleRelease gated on 10,000 ticks. Packaged manifest/signature/backend/bundle checks; native smoke includes saved campaign after process restart and emulator reboot without network/Metro. Artifact downloaded/extracted and SHA-256 verified locally. Release pipeline/version commit 49ce9e9. File: Dominion-final-release.apk.
 
-1. Performance hardening: CPU profiles identified repeated AI capital searches, eager strategic context and duplicate snapshot decode. Optimized those paths; retained Skia renderer/cached geometry/LOD/culling. PERFORMANCE_REPORT.md records before/after measurements and limits.
-2. Hard bug hunt: fixed AI crash on obsolete unaffordable peace terms, with regression. Existing gameplay/normalization/authority tests retained.
-3. Fuzz/chaos/security: bounded streaming HTTP JSON (32 KiB), strict envelope/session validation and early authenticated rate check backed by existing transactional rate/CAS/receipts. Added modern-world hostile commands, malformed payloads, six replay scenarios and six CAS race scenarios. Direct dedicated-DB rollback checks pass. Live HTTP CI pending.
-4. Long simulation: full-world 195-country/4,386-province/7,214-city run, invariant checks every 50 ticks, atomic save/restore every 1,000. Found and fixed invalid rejection of literal `+`/`?` province IDs (tick 1,850) and stale population-growth/religious-unity totals after AI territory peace (tick 2,000). Both failing-then-passing regressions added. Fresh 10,000-tick run in progress; completion not yet claimed.
-5. Android release: pipeline prepared for version 0.3.0 (3). A mandatory 10,000-tick CI job gates assembleRelease. Release verifier inspects packaged manifest/version/signature/backend; bundle/native verification retained. Native smoke now also reboots the emulator and restores the paused campaign. Final build/run/download/attachment pending.
+## CURRENT PROJECT STATUS / NEXT ACTION
 
-## Current project status / next action
+Original feature roadmap and five final technical blocks are closed. **Stop here. No Phase 27 or new feature roadmap.** APK delivery is the final user-facing action. Physical-device FPS/thermal acceptance and Play Store signing are explicit limitations, not claims of completed physical testing.
 
-Original Phase 21 remains the last feature phase. Finish the five hardening blocks and deliver Dominion-final-release.apk. **Do not invent another roadmap or add gameplay features.**
+## CI / TEST RESULTS
 
-- Inspect the current 10,000-tick run; fix any failures with regressions and rerun.
-- Wait for final Android pipeline and live backend QA, inspect evidence and clean only its exact guarded QA room.
-- Download artifact dominion-final-release, extract actual APK, verify bundle/non-debuggable manifest/production backend and attach the APK in chat.
-- Replace this checkpoint and RELEASE_REPORT.md with actual final commit/run/test counts after success.
+- TypeScript strict: PASS.
+- JavaScript: **134/134 PASS** locally and in release CI.
+- Python: **3/3 PASS** locally and in release CI.
+- Fuzz/chaos/security and dedicated DB rollback RPC checks: PASS. Controlled harness coverage and live coverage are distinguished in RELEASE_REPORT.md.
+- Live backend workflow **37410899062 PASS**; malformed HTTP, 8-player capacity, authority/idempotency/version/concurrency, persistent construction/research, treaty consent, snapshot recovery, host departure, AI takeover and same-country return. QA room 5b1af212-84a4-4ccf-b786-2f5e7f8f6ad5 removed with original-host-name guard; zero room/membership rows verified.
+- Android final release workflow **37410899043 PASS**, source **49ce9e90c3155e4b76dae9f57371d9bda04d1049**. All three jobs: long-simulation, build-apk, android-smoke PASS.
+- Simulation: **10,000 ticks**, 195 countries / 4,386 provinces / 7,214 cities, ten restores, 9,744 peace settlements, 9,480 battles, maximum snapshot 4,903,485 bytes, maximum 2,317 armies. Longest war is deliberately idle human USA versus Mexico awaiting consent; diagnostic continuation through 7,000 confirmed AI-only wars at most 11 ticks in that interval.
+- Native acceptance: API 35 emulator; landscape layouts, density/cutout, all twelve map modes, commands, process restart, emulator reboot, persistent paused campaign, Back/exit handling, no fatal app logs. No physical-device testing claim.
+- Artifact **dominion-final-release**, ID **11390416081**; actual APK **138,622,502 bytes**, embedded bundle **10,328,920 bytes**. Evidence artifact **11390881738**. RELEASE_REPORT.md and RELEASE_INTEGRITY.txt contain SHA-256, SDK, signing and exact checks.
 
-## CI / local checks
+## BACKEND / COMPATIBILITY
 
-- Baseline: 124 JS tests; previous native acceptance 37328473081 and live QA 37285016137 passed.
-- Current strict TypeScript and 133 tests passed before the latest derived-total regression; final suite is running.
-- Python: 3/3 pass with scripts/world-requirements.txt installed.
-- Native prebuild and landscape configuration pass locally.
-- No physical-device FPS, thermal or battery testing is claimed.
-- Local live HTTP attempts hit proxy/network errors and are not counted as passing.
+Dedicated deployed functions: **game-command v20**, **game-room v18**. Existing schema 10, centralized normalizers, campaign saves and command-receipt migration retained. Server remains authoritative; client sends intents. Tokens remain in SecureStore and server secrets never enter the client. No backend from another project was used.
 
-## Backend
+## BUGS
 
-Dedicated functions game-command v19 / game-room v17 include HTTP guards and province-ID fix. Latest derived-total fix must be redeployed before final live acceptance. Existing schema 10 and receipt migration retained. No client secrets added. Offline multiplayer remains poll-driven with bounded catch-up and no host dependency.
+No known unresolved BLOCKER / CRITICAL / HIGH after recorded checks. Remaining MEDIUM/LOW issues and design limitations are documented in BUG_REPORT.md and RELEASE_REPORT.md: physical FPS unverified (software emulator has significant jank), pre-tribute HUD budget, allied-land transit absent, dormant all-offline clock with bounded catch-up, lifetime receipt retention, same-install credentials, procedural geography/resources and narrow-card text clipping. Existing test signing certificate is retained for sideload compatibility; not a Play Store signing setup.
 
-## Bugs and limits
+## LAST COMMITS
 
-See BUG_REPORT.md. New long-simulation defects are fixed in source; final rerun remains mandatory. Existing MEDIUM/LOW limits are pre-tribute HUD budget, no allied-land transit, physical performance unverified, campaign-lifetime receipt history, same-installation credentials, procedural terrain/resources and narrow-card text clipping. Release uses the existing test signing certificate for sideload compatibility; it is not a Play Store signing setup.
+- **7e516c1** — profile full world; targeted AI/poll optimization.
+- **b455a59** — obsolete AI peace terms cannot abort a tick.
+- **994ee5f** — bounded HTTP, authority/replay/chaos tests.
+- **f9a413a** — imported province IDs and post-peace save equivalence; long simulation.
+- **49ce9e9** — standalone 0.3.0 pipeline gated on simulation and reboot recovery.
+- Final report-only commit contains this handoff, release/integrity report and raw simulation results; locate by message `docs: record verified final Android release and hardening results`. It does not alter APK runtime sources.
 
-## Logical commits
-
-Published Git objects (main update pending at checkpoint creation):
-- 7e516c1 — performance profiling and targeted optimization (local c611790).
-- b455a59 — obsolete AI peace terms fix (local 956efd7).
-- 994ee5f — bounded HTTP input and chaos/security regression (local 5c1da57).
-- Local 2381901 — long-simulation province-ID and save-equivalence fixes, script and bug evidence.
-- Release pipeline/version/documentation follows separately; final remote SHAs will be recorded after publication.
+Git Data API publication preserved these logical boundaries and verified identical trees before a fast-forward main update. No force push. Historical failed simulations and earlier native-checkpoint reports remain in history; they are not mislabeled as passing.

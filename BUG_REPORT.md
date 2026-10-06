@@ -14,13 +14,13 @@ Current scope: final five technical hardening blocks, recovered main 701c37a. Hi
 | MEDIUM — FIXED | Initial native smoke expected a plain army size, while the new selection mark altered that string | Selection remains accessible; plain troop text and quick recruitment are preserved. Full native smoke runs 37197530313 and final 37216306934 PASS. |
 | MEDIUM | Vassal tribute adjusts server treasury after monthly economy; HUD budget currently shows pre-tribute balance | Explicit limitation. Add separate incoming/outgoing tribute ledger before expanding vassal economy. Funds are bounded by available cash. |
 | MEDIUM | No coalition allied-land transit; each participant moves through own controlled land or attacks wartime enemies | Current military/diplomacy limitation; allies still enter defensive wars and fight on their fronts. |
-| MEDIUM | Physical Android 30/60 FPS and sustained memory/thermal behavior unverified | Phase 22 gate; emulator/CPU timings are not proof. |
+| MEDIUM | Physical Android 30/60 FPS and sustained memory/thermal behavior unverified | Physical acceptance remains unverified; software emulator/CPU timings are not proof. |
 | HIGH — FIXED | Restart lost offline campaigns and multiplayer identity; repeated commands could be applied twice | Atomic offline generations, SecureStore reconnect/pending intent, server command receipts/CAS. Unit and live protocol-v2 checks pass. |
 | LOW | Some long labels/costs in two-column province cards clip at narrow panel widths | Observed in final emulator screenshots; remaining cosmetic wrapping/card-sizing follow-up after the Phase 20 layout changes. Actions and server costs remain functional. |
 | LOW | Original terrain and resource distributions are procedural scenario abstractions | Explicitly documented; not real-world topographic/geological data. |
-| LOW | Sparse diplomacy can eventually include all country pairs; histories/proposals are bounded but full Phase 25 growth verification remains future work | Current 195-state roster bounds pair count; strategic AI is now integrated. |
+| LOW | Sparse diplomacy can include all country pairs; histories/proposals are bounded; completed 10,000-tick snapshot stayed below 4.91 MB | Current 195-state roster bounds pair count; strategic AI is now integrated. |
 
-Current source verification: strict TypeScript and 124 JS tests PASS; 3 Python tests PASS; live protocol-v2 QA 37285016137 PASS; direct DB rollback checks PASS. Standalone release build job 111700588433 (run 37290841593) and final native acceptance 37328473081 PASS; see DEVELOPMENT_HANDOFF.md. Phase 25 stress was not run this session.
+Current final verification: strict TypeScript, 134 JS tests and 3 Python tests PASS. Live QA 37410899062 and complete Android release workflow 37410899043 PASS, including 10,000 ticks and reboot recovery. See RELEASE_REPORT.md for exact coverage and limits.
 
 Native regression fixed during this session: **HIGH — FIXED** quadratic city/province save validation could stall input while autosave accumulated work. Indexed ownership validation and coalesced autosave remove this repeated work; invalid city ownership still rejects with a dedicated regression. Commit `6bf988f`; 124 tests and native gameplay checks pass.
 
@@ -33,7 +33,7 @@ Additional current limits:
 - HIGH — FIXED: map selector could exceed the available height on high-density landscape displays; it now has bounded height and scrolling, with a density/cutout native smoke step.
 - LOW — FIXED: HUD formatted million-unit treasury as KM; it now uses M/B. Foreign-army context is visible without commander assignment controls.
 
-No known unresolved BLOCKER/CRITICAL/HIGH at this checkpoint. Final Android acceptance passed, including density/cutout, persisted campaign restart and Back/exit cancellation. Physical-device FPS remains unverified and belongs to Phase 22.
+No known unresolved BLOCKER/CRITICAL/HIGH at this checkpoint. Final Android acceptance passed, including density/cutout, persisted campaign restart and Back/exit cancellation. Physical-device FPS remains unverified; no further phase is being opened.
 
 ## Final hardening — block 2
 
@@ -45,4 +45,10 @@ No known unresolved BLOCKER/CRITICAL/HIGH at this checkpoint. Final Android acce
 - HIGH — FIXED: imported Natural Earth province IDs containing `+`/`?` were rejected by command and peace-term validators. The first full simulation stopped at tick 1,850. Province validation now accepts those literal characters while exact lookup, ownership, adjacency and authority checks remain mandatory. Regression covers a real Monaco province and AI territorial terms; unknown identifiers still reject. No ID renaming or save migration.
 - HIGH — FIXED: AI territorial peace left national monthly population growth and religious unity stale until save normalization. Strict equality failed on the 2,000-tick save/restore checkpoint. The monthly authoritative tick now refreshes both derived totals after AI actions. Regression reproduces and verifies identical state across save/restore.
 - HIGH — FIXED: HTTP functions previously parsed unbounded JSON before structural validation. Both endpoints now cap streamed request bodies at 32 KiB and validate root/session/envelope fields before DB access. Existing transactional rate limits remain authoritative; an early authenticated rate check avoids expensive reducer work for spam.
-- Security coverage: seeded modern-world intent/spoof sequences, malformed/oversized input, six durable replay cases, six reducer/CAS race scenarios. Network harness covers delayed/lost responses and persisted retry after client recreation. Direct rollback-only PostgreSQL receipt/CAS/rate/expiry/privilege checks pass. Live HTTP CI still requires final acceptance; local proxy failures are not counted as passes.
+- Security coverage: seeded modern-world intent/spoof sequences, malformed/oversized input, six durable replay cases, six reducer/CAS race scenarios. Network harness covers delayed/lost responses and persisted retry after client recreation. Direct rollback-only PostgreSQL receipt/CAS/rate/expiry/privilege checks pass. Live HTTP CI 37410899062 passed final acceptance; local proxy failures are not counted as passes.
+
+## Final release limitations
+
+- MEDIUM: physical 60/30 FPS targets are unverified. Software-rendered emulator camera sample had 25/31 janky frames; do not interpret emulator startup success as performance acceptance on hardware.
+- MEDIUM: release variant uses the existing Android test signing certificate for compatibility with prior sideload builds. It is non-debuggable and self-contained, but a separate production signing process is required for store distribution.
+- Diagnostic note: the longest simulation war is Mexico versus deliberately idle human USA, which receives WhitePeace offers. Automatically accepting them would violate human command authority. AI-only wars in diagnostic continuation through tick 7,000 ended within 11 ticks.
