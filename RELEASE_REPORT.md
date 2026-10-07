@@ -1,3 +1,36 @@
+# Dominion 0.4.0 (4) — optimized release report
+
+## Build
+
+- Repository: elcin31/grand-strategy-multiplayer.
+- Source commit: **859747dc80832adf3d66ade62a4b69854bd97d3c**. The commits after the performance runtime changes only harden the Android smoke harness; the APK was built by the final workflow from this exact HEAD.
+- Workflow: **Android optimized release**, run **37564792672**, all three jobs PASS: build-apk, long-simulation, android-smoke.
+- Artifact: **dominion-optimized-release**, ID **11458334028**. Extracted APK: **138,651,290 bytes**.
+- APK SHA-256: `cd1bd79edf4a5083b13b5ed970ab53876336457382c2604146969153def4c288`.
+- Android package: com.elcin31.grandstrategymultiplayer; versionName **0.4.0**, versionCode **4**; min API 24; target/compile API 36; landscape; arm64-v8a / armeabi-v7a / x86 / x86_64.
+- Gradle **assembleRelease**. Embedded `assets/index.android.bundle`: **10,357,708 bytes**; Hermes and Skia verified. Production multiplayer backend is embedded. V2 APK signature verified.
+- Signing remains the existing Android test certificate for sideload compatibility. This is a self-contained release variant, not Play Store production signing.
+
+## Final validation
+
+- Strict TypeScript: PASS.
+- JavaScript regression suite: **149/149 PASS**.
+- Python suite: PASS.
+- Map geometry benchmark: query p95 **0.027 ms**.
+- Full-world build benchmark: tick p95 **152.24 ms**.
+- Full-world long simulation: **10,000 authoritative ticks PASS**, **10 exact atomic save/restore cycles**, 195 countries / 4,386 provinces / 7,214 cities. Final run tick p95 **217.92 ms**, total **1,700 s**, maximum snapshot **4,903,485 bytes**, maximum armies **2,317**, 9,744 peace settlements and 9,480 battles.
+- Native API 35 smoke: PASS with network disabled and no Metro dependency. Covered cold launch, landscape, real campaign flow/commands, population progression, four graphics presets, all twelve map modes, camera, five layouts, density/cutout, process restart, persisted paused campaign, emulator reboot, Back/exit handling and fatal-log checks.
+- Built-in performance benchmark: **12 detached simulation ticks PASS**; benchmark does not mutate the active campaign.
+- Continuous software render/simulation/autosave soak: **1,200 seconds PASS** with no fatal JS/native crash.
+- Android smoke evidence artifact: **11460625490**. Long-simulation evidence artifact: **11459875290**.
+- The artifact ZIP was downloaded and extracted after the green run; APK SHA-256 matched the CI integrity report and the embedded JS bundle was independently confirmed in the archive.
+
+## Performance limitation
+
+This release completes the code-level optimization, regression, emulator/native validation and standalone APK delivery. It does **not** prove a specific FPS, thermal or battery result on the physical Redmi Note 12 or any other handset. Physical-device acceptance remains a separate empirical check using this APK.
+
+---
+
 # Dominion 0.3.0 (3) — release report
 
 ## Build
