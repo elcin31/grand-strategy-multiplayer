@@ -1,4 +1,4 @@
-# Android optimization session — 2026-10-06 (native acceptance pending)
+# Android optimization session — 2026-10-07 (optimized CI/native emulator acceptance complete)
 
 The physical Redmi Note 12 lag report is a confirmed HIGH performance issue. No physical-device performance claim is made. Existing Skia GPU rendering is retained; no countries, provinces, cities or gameplay systems are removed.
 
@@ -26,7 +26,18 @@ Exited local campaigns previously remained in the process-global room map. They 
 
 Raw camera samples: RENDER_BASELINE.json / RENDER_AFTER.json. The camera samples include the changed overscan and first edge-cache fill; they are CPU preparation measurements, not Android frame times. Tick p95 did not improve in these uncontrolled host samples; no simulation speedup claim is made. Live wire reduction is 26.8%; checksum/hydration of 4,386 provinces/7,214 cities and legacy response verified. Isolated QA room was removed afterwards. Dedicated functions: game-room v19, game-command v21.
 
-Latest full local suite: 145 JS passing before the two additional memory regressions (both separately passing); strict typecheck and all 3 Python tests pass. Release CI will run the combined suite, 10,000 ticks, native smoke, benchmark and 20-minute software render/simulation/autosave stress. New physical FPS, thermal behavior and optimized APK acceptance are PENDING. Prior native evidence below is BEFORE only.
+Final optimized release CI is complete. Workflow **37564792672**, source **859747dc80832adf3d66ade62a4b69854bd97d3c**, passed all three jobs: build-apk, long-simulation and android-smoke. Build CI passed strict typecheck, **149/149 JavaScript tests**, the Python suite, map benchmark (query p95 **0.027 ms**) and full-world benchmark (tick p95 **152.24 ms**). The final 10,000-tick run passed ten exact save/restore cycles; tick p95 was **217.92 ms**, total time **1,700 s**, maximum snapshot **4,903,485 bytes**, maximum armies **2,317**. Native API 35 smoke passed network-disabled cold launch, landscape, campaign commands, 12 map modes, four presets, camera/layout/density/cutout, process restart, emulator reboot, the detached **12-tick performance benchmark**, and a **1,200-second render/simulation/autosave software soak**. No fatal JS/native crash was recorded. Physical-device FPS, thermal and battery behavior remain unverified and are not inferred from emulator or host timings.
+
+## Optimized Android release evidence
+
+- Final release workflow: **37564792672 PASS** on source **859747dc80832adf3d66ade62a4b69854bd97d3c**.
+- Release artifact: **dominion-optimized-release**, ID **11458334028**.
+- Extracted APK: **138,651,290 bytes**, SHA-256 `cd1bd79edf4a5083b13b5ed970ab53876336457382c2604146969153def4c288`.
+- Version: **0.4.0 (4)**; min API 24, target/compile API 36; landscape; four ABIs; V2 signature; production multiplayer backend embedded.
+- Embedded `assets/index.android.bundle`: **10,357,708 bytes**; Hermes and Skia verified.
+- Android smoke evidence artifact: **11460625490**. Main native scenario PASS plus detached 12-tick benchmark and **1,200-second** continuous software soak PASS.
+- Long-simulation evidence artifact: **11459875290**. **10,000 ticks**, **10 save/restore cycles**, 195 countries / 4,386 provinces / 7,214 cities, state equality preserved.
+- This closes the code-level optimization/release session. It does **not** establish Redmi Note 12 FPS, thermals or battery acceptance; that requires a new physical-device test of this APK.
 
 ---
 
