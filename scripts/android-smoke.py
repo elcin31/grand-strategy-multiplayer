@@ -355,11 +355,11 @@ def map_control(text):
     map_menu(True)
     for attempt in range(12):
         root=hierarchy('developer-control-'+str(attempt))
-        screen=[int(n) for n in re.findall(r'\\d+',root[0].get('bounds',''))]
+        screen=[int(n) for n in re.findall(r'\d+',root[0].get('bounds',''))]
         height=screen[3]-screen[1] if len(screen)==4 else 720
         node=next((n for n in root.iter('node') if n.get('text')==text or n.get('content-desc')==text),None)
         if node is not None:
-            nums=[int(n) for n in re.findall(r'\\d+',node.get('bounds',''))]
+            nums=[int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
             # Controls clipped against the ScrollView bottom can look clickable to
             # uiautomator while the ScrollView consumes the gesture. Move them into
             # a safe interior band before tapping.
