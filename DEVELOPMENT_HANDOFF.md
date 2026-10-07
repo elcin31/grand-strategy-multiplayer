@@ -1,16 +1,22 @@
-# ACTIVE PERFORMANCE SESSION — 2026-10-06
+# PERFORMANCE OPTIMIZATION SESSION — COMPLETED 2026-10-07
 
-Performance work is IN PROGRESS. Do not deliver Dominion-final-release.apk as optimized output. Source baseline 9aa6ea1; confirmed real Redmi Note 12 HIGH lag. Original gameplay roadmap is retained.
+The Android performance completion session is closed at the code/CI/native-emulator level. Do not restart the performance roadmap or create new phases from this checkpoint.
 
-Implemented: spatial native GPU batches, 3 cached geometry LODs, indexed edges/cities, cached national labels, isolated geography, UI-thread 30/60/Auto camera pacing, army clusters, 4 persisted presets, conservative startup/device defaults, adaptive hysteresis, optional overlay and 12-mode developer benchmark/report; indexed AI tactics; dynamic snapshot wire protocol; deferred map loading; exited-campaign memory release. See PERFORMANCE_REPORT.md for measured evidence and limitations.
+Final source HEAD validated by release CI: **859747dc80832adf3d66ade62a4b69854bd97d3c**. The final smoke-harness commits only fixed test interaction races around deferred map loading and clipped ScrollView controls; they did not add gameplay systems.
 
-Backend deployed only dfjsnjxnyjspwugjguhq: game-room v19/game-command v21. Live dynamic snapshot 3,074,698B vs 4,199,891B; old clients supported; checksum/hydration pass. Temporary PERFORMANCE WIRE QA room 1749149c-e78c-48f0-a15d-c5d4f842f48b removed.
+Implemented performance work remains intact: cached/spatial GPU rendering, three geometry LODs, edge/city/label indexes, army clustering, UI-thread camera pacing, four graphics presets, adaptive quality, performance overlay/benchmark, AI indexing/scheduling, dynamic multiplayer snapshots, bounded telemetry/memory, deferred map loading and exited-campaign cleanup.
 
-Local commits: 2a863f8 rendering/quality; fd2f16c AI/telemetry; 47e81a6 wire; 99cbe54 city index/startup; 757be25 memory/benchmark host. GitHub publication may assign different SHAs; check current main.
+Final workflow **37564792672 PASS**:
 
-Tests: latest combined 145 JS passed; two additional memory tests passed independently; strict TS and 3 Python passed. Release 0.4.0(4) pipeline prepared: Android optimized release, dominion-optimized-release artifact, Dominion-optimized-release.apk. It includes 10k simulation, native regression, developer benchmark and 1,200-second software soak. Await actual CI acceptance; do not claim device FPS/thermal results or APK readiness yet.
+- build-apk: PASS; strict typecheck; **149/149 JS tests**; Python suite PASS; release binary verification PASS;
+- long-simulation: **10,000 ticks PASS** with **10 exact save/restore cycles**;
+- android-smoke: PASS on API 35 with network disabled/no Metro; real campaign flow, 12 map modes, four presets, restart/reboot persistence, detached **12-tick benchmark**, and **1,200-second** render/simulation/autosave soak PASS.
 
-NEXT: publish commits, monitor/fix CI and native regressions; review frame/memory evidence against baseline; full-world replay consistency and backend regression; update final reports with actual run/SHA/results; download/extract/verify standalone APK, persist and attach it. No new gameplay systems. Remaining confirmed HIGH performance issue stays open pending native evidence and actual-device acceptance.
+Final artifact: **dominion-optimized-release**, ID **11458334028**. Extracted user-facing file: **Dominion-optimized-v2-release.apk**, 138,651,290 bytes, SHA-256 `cd1bd79edf4a5083b13b5ed970ab53876336457382c2604146969153def4c288`. Embedded JS bundle: 10,357,708 bytes. Version **0.4.0 (4)**.
+
+Reports: PERFORMANCE_REPORT.md and RELEASE_REPORT.md contain exact evidence. Android smoke evidence artifact: **11460625490**; long-simulation evidence artifact: **11459875290**.
+
+Physical Redmi Note 12 FPS/thermal/battery behavior is **not claimed as verified**. The original real-device lag report can only be accepted or rejected by testing this new APK on physical hardware. No additional gameplay scope is opened here.
 
 ---
 
