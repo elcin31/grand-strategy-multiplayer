@@ -355,14 +355,23 @@ def map_control(text):
     map_menu(True)
     for attempt in range(12):
         root=hierarchy('developer-control-'+str(attempt))
+        screen=[int(n) for n in re.findall(r'\\d+',root[0].get('bounds',''))]
+        height=screen[3]-screen[1] if len(screen)==4 else 720
         node=next((n for n in root.iter('node') if n.get('text')==text or n.get('content-desc')==text),None)
         if node is not None:
-            nums=[int(n) for n in re.findall(r'\d+',node.get('bounds',''))]
-            if len(nums)==4 and nums[3]-nums[1]>=20:
-                click_text(root,text);time.sleep(1);return
+            nums=[int(n) for n in re.findall(r'\\d+',node.get('bounds',''))]
+            # Controls clipped against the ScrollView bottom can look clickable to
+            # uiautomator while the ScrollView consumes the gesture. Move them into
+            # a safe interior band before tapping.
+            if len(nums)==4 and nums[3]-nums[1]>=20 and nums[1]>=70 and nums[3]<=height-150:
+                x,y=str((nums[0]+nums[2])//2),str((nums[1]+nums[3])//2)
+                print('Tap developer:',text,node.get('bounds'),flush=True)
+                adb('shell','input','tap',x,y);time.sleep(2);return
         adb('shell','input','swipe','250','340','250','160','350')
     raise AssertionError('Developer control missing: '+text)
 map_control('Performance overlay: Выкл')
+root=hierarchy('developer-overlay-enabled')
+assert any(n.get('text')=='Performance overlay: Вкл' or n.get('content-desc')=='Performance overlay: Вкл' for n in root.iter('node')), 'Performance overlay toggle did not apply'
 map_control('Performance Benchmark')
 time.sleep(50)
 root=hierarchy('developer-benchmark-finished');screenshot('developer-benchmark')
