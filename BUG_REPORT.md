@@ -1,6 +1,8 @@
-# ACTIVE HIGH — real-device map/runtime lag
+# PHYSICAL-DEVICE PERFORMANCE ACCEPTANCE — OPEN
 
-User reports severe lag on Redmi Note 12 in 0.3.0. Systemic performance work in progress; not resolved merely by passing unit tests. Baseline camera CPU work ~99ms and prior software-emulator jank are recorded. Physical 30/60 FPS remains unverified.
+The original severe Redmi Note 12 lag report triggered the completed 0.4.0 optimization session. Code-level optimization, regression, release build, native emulator smoke, detached 12-tick benchmark and 1,200-second software render/simulation/autosave soak now PASS in final workflow **37564792672**.
+
+This does **not** mark the physical-device lag report as empirically fixed. Physical 30/60 FPS, thermals and battery behavior remain unverified until the new **Dominion-optimized-v2-release.apk** is tested on real hardware. No unresolved code-level BLOCKER/CRITICAL/HIGH was found by the completed CI/native-emulator checks.
 
 ---
 
