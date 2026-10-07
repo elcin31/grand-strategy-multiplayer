@@ -61,7 +61,7 @@ const desertPath = terrainPatches.filter(t => t.type === 'desert').map(t => line
 const compact = (v: number) => v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : `${Math.round(v / 1e3)}K`;
 function useStableColors(next:Map<string,string>):Map<string,string>{
   const ref=useRef(next),old=ref.current;
-  if(old.size!==next.size||[...next].some(([id,color])=>old.get(id)!==color))ref.current=next;
+  if(old.size!==next.size)ref.current=next;else for(const [id,color]of next)if(old.get(id)!==color){ref.current=next;break;}
   return ref.current;
 }
 const measurements=new WeakMap<object,Map<string,number>>();
@@ -188,8 +188,8 @@ export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCi
   };
   const chunks=useMemo(()=>visibleChunks(renderFeatures,bounds),[renderFeatures,bounds]);
   const colors=useMemo(()=>chunks.flatMap(chunk=>batchChunk(chunk,provinceColors,paths)),[chunks,provinceColors,paths]);
-  const selectedPath = useMemo(() => { const path = Skia.Path.Make(); const silhouette=!selectedProvinceId?renderFeatures.find(f=>f.id==='render-country-'+selectedCountryId):undefined;if(silhouette){path.addPath(paths.get(silhouette.id)!);return path;} visible.filter(f => selectedProvinceId ? f.provinceId === selectedProvinceId : provinces.get(f.provinceId!)?.ownerId === selectedCountryId).forEach(f => path.addPath(paths.get(f.id)!)); return path; }, [visible, selectedProvinceId, selectedCountryId, provinces, paths,renderFeatures]);
-  const shadowPath = useMemo(() => { const path = Skia.Path.Make(); colors.forEach(c => path.addPath(c[1])); return path; }, [colors]);
+  const selectedPath = useMemo(() => { const path = Skia.Path.Make(); const silhouette=!selectedProvinceId?renderFeatures.find(f=>f.id==='render-country-'+selectedCountryId):undefined;if(silhouette){path.addPath(paths.get(silhouette.id)!);return path;} visible.filter(f => selectedProvinceId ? f.provinceId === selectedProvinceId : owners.get(f.provinceId!) === selectedCountryId).forEach(f => path.addPath(paths.get(f.id)!)); return path; }, [visible, selectedProvinceId, selectedCountryId, owners, paths,renderFeatures]);
+  const shadowPath = useMemo(() => { const path = Skia.Path.Make(); if(GRAPHICS[preset].shadows)colors.forEach(c => path.addPath(c[1])); return path; }, [colors,preset]);
   const labelZoom = Math.exp(Math.round(Math.log(snapshot.zoom) * 4) / 4);
   const preparedLabels = useMemo(() => preparedCountryLabels(features,owners),[features,owners]);
   const labels = useMemo(() => {
