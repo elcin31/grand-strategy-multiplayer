@@ -1,3 +1,37 @@
+# PASS 2 — 0.5.0 / optimized v3 (acceptance pending)
+
+Baseline: main a9d1d78, previously delivered optimized v2 0.4.0. Prior PASS 1 evidence follows unchanged. Physical Redmi Note 12 lag is confirmed; no physical FPS claim.
+
+## Measured decisions
+
+CPU profile of 100 authoritative ticks identified native structuredClone (3.686 seconds self CPU), recalcEconomy (1.345 seconds), AI (0.712 seconds) and GC (0.551 seconds). Creation 73.55ms; scene preparation 389.63ms; tick p95 143.62ms in that profiled host run. These are host measurements, not Android FPS or a controlled speedup estimate.
+
+The world has 4,386 gameplay provinces, 7,214 cities, 95,984 geometry edges and 165,859 vertices including context. Full world view fed 4,386 province features into batches; the sampled Europe view fed 2,229. Province state alone is 2,439,462 bytes of the seeded 4,195,254-byte snapshot. Detailed inputs and sampled viewport/clone timings: PROVINCE_COST_PASS2.json.
+
+**Gameplay province count: 4,386 -> 4,386.** This pass reduces render geometry, not the authoritative campaign graph. Only 157 same-country adjacent pairs have matching initial terrain, religion, resource type and buildings. A 1,500–3,000 campaign graph would require explicit heterogeneous resource/building aggregation and balance changes; blind merging would destroy information. No schema bump, old-save incompatibility, silent migration, city/resource/army deletion or server authority changes are introduced. Save-size/payload reduction from province deletion: **0%**. The existing dynamic-v1 network protocol remains intact.
+
+## Implemented
+
+- Offline-generated render-only country union: **195 silhouettes / 66,666 vertices**, preserving every island/coastline. Political view below detail threshold uses these; changed-owner countries fall back to original provinces. Exact hit geometry, occupation and armies remain separate. All province anchors covered by the union are regression checked.
+- Global/regional country outlines use cached merged paths. Internal borders are not generated below detail threshold (Performance 5x, Balanced 3.8x, High/Ultra 2.8x). Original local geometry and all twelve modes remain available.
+- Stable ownership/controller selectors prevent unchanged ticks from rebuilding borders/labels. Empty-war worlds do not scan war edges. City culling queries the immutable coordinate index before attaching visible population values; no new 7,214-point index per tick. Bounded text-measurement cache, 10/18/32 country-label budgets, existing city budgets/army clusters retained.
+- A JSON-tree clone copies every mutable leaf without the host structuredClone serialization round-trip. It is limited to typed campaign trees. No mutable aliasing or skipped validation. Paired benchmark initially measured median 7.6ms versus 29.3ms; see current reproducible samples in the JSON report. Reducer, offline emissions and save snapshot capture use it. Input/save normalizers and server checks remain.
+- AI garrison and urgency queries use the existing per-province army index rather than full army scans. Existing deterministic six-tick strategic schedule and three-stack tactical limit retained. No nondeterministic wall-clock cutoff is added to authoritative game logic.
+- Start/singleplayer buttons are outside clipped scroll content. A synchronous latch rejects same-render duplicate taps, loading paints before synchronous world work, failure clears the latch. Saved/remote/new sessions share the latch. Map callbacks are stable across unrelated panel changes.
+- Developer report v2 includes tap-to-action and tap-to-mounted-screen timings plus actual batched render feature count. These are JS/UI measurements, not hardware input-to-photon latency. Existing world/Europe/Asia/12-mode benchmark and detached 12-tick AI exercise retained.
+
+## Validation / boundaries
+
+Local combined suite before final packaging: 156 JS tests, strict TS and 3 Python tests. Release CI must independently pass. New regression coverage checks first start, same-render double tap, slow completion, failure/retry, repeat sessions, real LocalTransport startup, no mutable clone aliases, country LOD coverage and ownership fallback.
+
+Native acceptance removes the old four-attempt Start retry. Release pipeline requires one tap, 10,000 authoritative ticks/save restores, all existing multiplayer and campaign tests, release binary verification, native process/reboot recovery, developer benchmark and **1,800 seconds** continuous rendering/simulation/autosave. Completion and exact artifact evidence will be appended only after success.
+
+No full GameState normalization rewrite, new gameplay systems, physical RAM/thermal claim, network-delta redesign or 60 FPS assertion. Software PSS/frame samples remain distinct from physical-device acceptance.
+
+---
+
+# PASS 1 — preserved historical evidence
+
 # Android optimization session — 2026-10-07 (optimized CI/native emulator acceptance complete)
 
 The physical Redmi Note 12 lag report is a confirmed HIGH performance issue. No physical-device performance claim is made. Existing Skia GPU rendering is retained; no countries, provinces, cities or gameplay systems are removed.

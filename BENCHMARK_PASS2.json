@@ -1,0 +1,15 @@
+{
+  "countries": 195,
+  "provinces": 4386,
+  "cities": 7214,
+  "armies": 202,
+  "ticks": 100,
+  "createMs": 45.43,
+  "sceneMs": 291.77,
+  "visibleCountryLabels": 10,
+  "labelMs": 48.89,
+  "tickP95Ms": 130.21,
+  "snapshotBytes": 4198915,
+  "finalSnapshotBytes": 4485261,
+  "note": "CPU/data simulation only; no native FPS, networking chaos, or completed AI 2.0 claim"
+}

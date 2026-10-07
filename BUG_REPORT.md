@@ -1,3 +1,7 @@
+# PASS 2 launch regression — implementation complete, native acceptance pending
+
+HIGH — Start/singleplayer first tap: fixed docked launch controls, immediate loading, synchronous duplicate latch and failure recovery. The previous native harness retried Start up to four times, masking the reported behavior; this retry is removed. New tests cover one launch, slow completion, duplicate taps, failure/retry and subsequent sessions. Do not mark native acceptance or real-device performance complete until the release gate passes.
+
 # PHYSICAL-DEVICE PERFORMANCE ACCEPTANCE — OPEN
 
 The original severe Redmi Note 12 lag report triggered the completed 0.4.0 optimization session. Code-level optimization, regression, release build, native emulator smoke, detached 12-tick benchmark and 1,200-second software render/simulation/autosave soak now PASS in final workflow **37564792672**.

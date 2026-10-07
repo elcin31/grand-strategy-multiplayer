@@ -2,7 +2,7 @@
   "expo": {
     "name": "Grand Strategy Multiplayer",
     "slug": "grand-strategy-multiplayer",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "orientation": "landscape",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
@@ -11,7 +11,7 @@
       "adaptiveIcon": {
         "backgroundColor": "#0B1020"
       },
-      "versionCode": 4
+      "versionCode": 5
     },
     "plugins": [
       "expo-secure-store"

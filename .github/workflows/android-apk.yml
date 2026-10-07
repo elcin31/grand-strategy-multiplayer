@@ -1,7 +1,7 @@
 name: Android optimized release
 on:
   push:
-    branches: [main, world-update]
+    branches: [main, world-update, performance-pass-2]
     paths-ignore:
       - "**/*.md"
       - .github/workflows/android-checkpoint-smoke.yml
@@ -77,19 +77,19 @@ jobs:
           python scripts/verify-release.py android/app/build/outputs/apk/release/app-release.apk > release-integrity.txt
           sha256sum android/app/build/outputs/apk/release/app-release.apk >> release-integrity.txt
       - name: Package final release
-        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-optimized-release.apk
+        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-optimized-v3-release.apk
       - uses: actions/upload-artifact@v4
         with:
           name: dominion-optimized-release
           path: |
-            Dominion-optimized-release.apk
+            Dominion-optimized-v3-release.apk
             release-integrity.txt
           if-no-files-found: error
           retention-days: 14
   android-smoke:
     needs: [build-apk, long-simulation]
     runs-on: ubuntu-latest
-    timeout-minutes: 65
+    timeout-minutes: 80
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -106,7 +106,7 @@ jobs:
           arch: x86_64
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: DOMINION_STRESS_SECONDS=1200 python scripts/android-smoke.py Dominion-optimized-release.apk
+          script: DOMINION_STRESS_SECONDS=1800 python scripts/android-smoke.py Dominion-optimized-v3-release.apk
       - uses: actions/upload-artifact@v4
         if: always()
         with:

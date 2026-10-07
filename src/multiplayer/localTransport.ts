@@ -1,3 +1,4 @@
+import {cloneGameState} from '../../supabase/functions/_shared/cloneGameState';
 import {recordMetrics} from '../performance/telemetry';
 import { createWorldState } from '../../supabase/functions/_shared/worldState';
 import { applyCommand } from '../engine/gameEngine';
@@ -7,7 +8,7 @@ import { MultiplayerTransport, TransportSession, Unsubscribe } from './transport
 const listeners = new Map<string, Set<(state: GameState) => void>>();
 const rooms = new Map<string, GameState>();
 const randomCode = () => Math.random().toString(36).slice(2, 8).toUpperCase();
-const emit = (state: GameState) => listeners.get(state.id)?.forEach((listener) => listener(structuredClone(state)));
+const emit = (state: GameState) => listeners.get(state.id)?.forEach((listener) => listener(cloneGameState(state)));
 
 export class LocalTransport implements MultiplayerTransport {
   private readonly playerIds = new Map<string, string>();
@@ -16,7 +17,7 @@ export class LocalTransport implements MultiplayerTransport {
     const {validateCampaign}=await import('../persistence/campaignCodec');
     const restored=validateCampaign(state);const playerId=restored.players[0]!.id;
     rooms.set(restored.id,restored);this.playerIds.set(restored.id,playerId);
-    return {state:structuredClone(restored),playerId};
+    return {state:cloneGameState(restored),playerId};
   }
 
   async createRoom(displayName: string): Promise<TransportSession> {
@@ -25,7 +26,7 @@ export class LocalTransport implements MultiplayerTransport {
     state.players[0]!.displayName = displayName.trim() || 'Игрок 1';
     rooms.set(state.id, state);
     this.playerIds.set(state.id, 'local-player');
-    return { state: structuredClone(state), playerId: 'local-player' };
+    return { state: cloneGameState(state), playerId: 'local-player' };
   }
 
   async joinRoom(roomCode: string, displayName: string): Promise<TransportSession> {
@@ -36,7 +37,7 @@ export class LocalTransport implements MultiplayerTransport {
     state.players.push({ id: playerId, displayName: displayName.trim() || `Игрок ${state.players.length + 1}`, countryId: null, isHost: false, ready: false });
     this.playerIds.set(state.id, playerId);
     emit(state);
-    return { state: structuredClone(state), playerId };
+    return { state: cloneGameState(state), playerId };
   }
 
   async sendCommand(gameId: string, command: GameCommand): Promise<void> {

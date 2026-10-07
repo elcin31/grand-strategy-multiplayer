@@ -1,3 +1,4 @@
+import {cloneGameState} from '../../supabase/functions/_shared/cloneGameState';
 import type {GameState} from '../types/game';
 import {encodeCampaign,decodeCampaign,type CampaignMetadata} from './campaignCodec';
 export interface CampaignFiles {list():Promise<string[]>;read(name:string):Promise<string>;write(name:string,text:string):Promise<void>;move(from:string,to:string):Promise<void>;remove(name:string):Promise<void>}
@@ -9,7 +10,7 @@ export class CampaignStore {
  constructor(private files:CampaignFiles){}
  async list():Promise<CampaignEntry[]>{const files=await this.files.list(),ids=new Set(files.filter(n=>/\.\d+\.json$/.test(n)).map(n=>n.replace(/\.\d+\.json$/,'')));const entries=await Promise.all([...ids].map(async id=>{try{const saved=decodeCampaign(await this.files.read(filenames(files,id)[0]!));return{id,metadata:saved.metadata};}catch(error){return{id,error:error instanceof Error?error.message:'Ошибка сохранения'};}}));return entries.sort((a,b)=>(b.metadata?.lastPlayed??0)-(a.metadata?.lastPlayed??0));}
  async load(id:string){if(!idPattern.test(id))throw Error('Некорректный id');await this.queue.catch(()=>{});const names=filenames(await this.files.list(),id);if(!names[0])throw Error('Сохранение не найдено');return decodeCampaign(await this.files.read(names[0])).state;}
- save(state:GameState,name?:string):Promise<void>{const snapshot=structuredClone(state);const work=this.queue.catch(()=>{}).then(async()=>{const id=snapshot.id;if(!idPattern.test(id))throw Error('Некорректный id');const old=filenames(await this.files.list(),id);let generation=1;
+ save(state:GameState,name?:string):Promise<void>{const snapshot=cloneGameState(state);const work=this.queue.catch(()=>{}).then(async()=>{const id=snapshot.id;if(!idPattern.test(id))throw Error('Некорректный id');const old=filenames(await this.files.list(),id);let generation=1;
  if(old[0])generation=decodeCampaign(await this.files.read(old[0])).metadata.generation+1;
  const text=encodeCampaign(snapshot,generation,name),target=`${id}.${generation}.json`,pending=target+'.pending';await this.files.write(pending,text);decodeCampaign(await this.files.read(pending));await this.files.move(pending,target);
  // Preserve last valid generation. A killed partial write never replaces it.

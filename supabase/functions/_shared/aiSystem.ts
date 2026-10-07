@@ -117,9 +117,9 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
       if(!army.commanderId){const general=Object.values(s.commanders??{}).find(g=>g.countryId===id&&!s.armies.some(a=>a.commanderId===g.id));if(general)army.commanderId=general.id;}
       const targets=origin.neighbors.map(n=>provinces.get(n)!).filter(Boolean);
       const attack=targets.filter(p=>warBetween(s,id,p.controllerId??p.ownerId)&&attackRatio(s,army,p,byProvince)>=(style==='Defensive'?1.65:1.25)).sort((a,b)=>b.income-a.income)[0];
-      if(attack&&(origin.id!==capital||home.length===1||s.armies.some(a=>a.id!==army.id&&a.ownerId===id&&a.provinceId===capital))&&army.organization!>=55&&army.morale!>=55){moveIndexed(s,id,army.id,attack.id);continue;}
-      if(origin.id===capital&&s.armies.filter(a=>a.ownerId===id&&a.provinceId===capital).length<=1)continue;
-      const urgency=(p:Province)=> (p.id===capital?100:0)+p.income+ p.neighbors.reduce((n,q)=>n+(warBetween(s,id,provinces.get(q)?.controllerId??provinces.get(q)?.ownerId??id)?50:0),0)-s.armies.filter(a=>a.ownerId===id&&a.provinceId===p.id).reduce((n,a)=>n+a.troops/1000,0);
+      if(attack&&(origin.id!==capital||home.length===1||(byProvince.get(capital)??[]).some(a=>a.id!==army.id&&a.ownerId===id))&&army.organization!>=55&&army.morale!>=55){moveIndexed(s,id,army.id,attack.id);continue;}
+      if(origin.id===capital&&(byProvince.get(capital)??[]).filter(a=>a.ownerId===id).length<=1)continue;
+      const urgency=(p:Province)=> (p.id===capital?100:0)+p.income+ p.neighbors.reduce((n,q)=>n+(warBetween(s,id,provinces.get(q)?.controllerId??provinces.get(q)?.ownerId??id)?50:0),0)-(byProvince.get(p.id)??[]).filter(a=>a.ownerId===id).reduce((n,a)=>n+a.troops/1000,0);
       const destination=targets.filter(p=>(p.controllerId??p.ownerId)===id&&!p.rebellion).sort((a,b)=>urgency(b)-urgency(a))[0];
       if(destination&&urgency(destination)>urgency(origin)+5)moveIndexed(s,id,army.id,destination.id);
     }

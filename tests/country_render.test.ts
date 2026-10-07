@@ -1,0 +1,19 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';
+import {createWorldState} from '../supabase/functions/_shared/worldState';
+import {mapSceneFor} from '../src/map/worldScene';
+import {countryRenderFeatures,renderFeaturesFor,countryOutlines} from '../src/map/countryRender';
+import {visibleChunks} from '../src/map/renderChunks';
+import {contains} from '../src/map/geometry';
+test('global rendering uses 195 countries, preserves all province anchors and returns exact local geometry',()=>{
+ const s=createWorldState('lod','LOD','host','Host'),scene=mapSceneFor(s),owners=new Map(s.provinces.map(p=>[p.id,p.ownerId]));
+ const merged=countryRenderFeatures(scene);assert.equal(merged.length,195);
+ const byCountry=new Map(merged.map(f=>[f.countryId,f]));
+ for(const f of scene.features)if(f.provinceId)assert.ok(contains(byCountry.get(f.countryId)!,f.anchor),f.id);
+ const global=renderFeaturesFor(scene,owners,true);assert.equal(global.length,195);assert.equal(renderFeaturesFor(scene,owners,false),scene.features);
+ assert.equal(visibleChunks(global,{left:0,top:0,right:1440,bottom:720}).reduce((n,c)=>n+c.features.length,0),195);
+ assert.ok(countryOutlines(global,{left:0,top:0,right:1440,bottom:720}));
+ owners.set(s.provinces.find(p=>p.ownerId==='germany')!.id,'france');
+ const changed=renderFeaturesFor(scene,owners,true);assert.ok(!changed.some(f=>f.id==='render-country-germany'));
+ const original=scene.features.filter(f=>f.countryId==='germany'&&f.provinceId);assert.equal(changed.filter(f=>f.countryId==='germany').length,original.length);
+ for(const f of original)assert.ok(changed.includes(f));assert.equal(countryOutlines(changed,{left:0,top:0,right:1440,bottom:720}),null);
+});

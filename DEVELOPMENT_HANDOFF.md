@@ -1,3 +1,11 @@
+# ACTIVE PASS 2 — optimized v3, 2026-10-07
+
+User reopened performance work after testing v2 on Redmi Note 12. Base a9d1d78. Branch performance-pass-2. Work only in elcin31/grand-strategy-multiplayer. AssetMind untouched.
+
+Implemented: fixed launch dock/latch/loading and one-tap native test; deep campaign tree clone; 195-country merged render LOD (all 4,386 gameplay provinces retained with explicit rationale in PERFORMANCE_REPORT); ownership/controller selectors, immutable city index reuse, text/label budgets, AI indexed garrison/urgency, developer input timing. 0.5.0 (5) release workflow names file Dominion-optimized-v3-release.apk; 30-minute native soak. No backend schema/deployment change required; dedicated production endpoint unchanged.
+
+NEXT: await/fix release CI on performance-pass-2, inspect native screenshots and first-tap/soak evidence, fast-forward main after acceptance, download/verify/save and attach exact v3 APK. Never deliver old v2 renamed. Record exact SHA/run/artifact/hash and report limitations. Stop after final APK delivery.
+
 # PERFORMANCE OPTIMIZATION SESSION — COMPLETED 2026-10-07
 
 The Android performance completion session is closed at the code/CI/native-emulator level. Do not restart the performance roadmap or create new phases from this checkpoint.

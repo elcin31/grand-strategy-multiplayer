@@ -1,3 +1,4 @@
+import {countryRenderFeatures,renderFeaturesFor,countryOutlines} from '../map/countryRender';
 import {loadPreferences,savePreferences} from '../performance/preferences';
 import {clusterArmies} from '../map/armyClusters';
 import {PerformanceControls,PerformanceOverlay} from './PerformancePanel';
@@ -43,7 +44,7 @@ class LazyPaths extends Map<string,NativePath>{
 const nativeScenes = new WeakMap<MapScene,Map<GeometryLod,{paths:LazyPaths;contextPath:NativePath}>>();
 function nativeScene(scene:MapScene,lod:GeometryLod){
   let variants=nativeScenes.get(scene);if(!variants){variants=new Map();nativeScenes.set(scene,variants);}const cached=variants.get(lod);if(cached)return cached;
-  const paths=new LazyPaths(new Map(scene.features.map(f=>[f.id,f])),lod),contextPath=Skia.Path.Make();
+  const paths=new LazyPaths(new Map([...scene.features,...countryRenderFeatures(scene)].map(f=>[f.id,f])),lod),contextPath=Skia.Path.Make();
   for(const f of scene.features)if(!f.provinceId)contextPath.addPath(paths.get(f.id)!);
   const result={paths,contextPath};variants.set(lod,result);return result;
 }
@@ -62,6 +63,11 @@ function useStableColors(next:Map<string,string>):Map<string,string>{
   const ref=useRef(next),old=ref.current;
   if(old.size!==next.size||[...next].some(([id,color])=>old.get(id)!==color))ref.current=next;
   return ref.current;
+}
+const measurements=new WeakMap<object,Map<string,number>>();
+function measure(font:ReturnType<typeof matchFont>,name:string):number{
+ let cache=measurements.get(font);if(!cache){cache=new Map();measurements.set(font,cache);}
+ let width=cache.get(name);if(width===undefined){width=font.measureText(name).width;if(cache.size>=1024)cache.delete(cache.keys().next().value!);cache.set(name,width);}return width;
 }
 const sceneCosts=new WeakMap<MapScene,number>();
 const defaults: Camera = { x: 800, y: 160, zoom: 3.5 };
@@ -115,20 +121,23 @@ export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCi
   const bounds = useMemo(() => visibleBounds(snapshot, viewport, 140), [snapshot, viewport]);
   const visible = useMemo(() => spatialIndex.query(bounds).filter(f => f.provinceId), [bounds]);
   const visibleIds = useMemo(() => new Set(visible.map(f => f.provinceId!)), [visible]);
-  const computedBorders = useMemo(() => borderPaths(state, visibleIds, scene.edges), [state.provinces, visibleIds, scene]);
+  const owners = useStableColors(useMemo(()=>new Map(state.provinces.map(p=>[p.id,p.ownerId])),[state.provinces]));
+  const provinceDetail = snapshot.zoom >= (preset==='Performance'?5:preset==='Balanced'?3.8:2.8);
+  const renderFeatures=useMemo(()=>renderFeaturesFor(scene,owners,!provinceDetail&&mode==='Political'),[scene,owners,provinceDetail,mode]);
+  const computedBorders = useMemo(() => {const outline=renderFeatures===features?null:countryOutlines(renderFeatures,bounds);return outline===null?borderPaths(state, visibleIds, scene.edges, provinceDetail):{inner:'',outer:outline};}, [owners, visibleIds, scene, provinceDetail,renderFeatures,bounds]);
   const borders=useMemo(()=>computedBorders,[computedBorders.inner,computedBorders.outer]);
-  const warBorders=useMemo(()=>warBorderPath(state,visibleIds,scene.edges),[state.provinces,state.wars,visibleIds,scene]);
+  const controllers=useStableColors(useMemo(()=>new Map(state.provinces.map(p=>[p.id,p.controllerId??p.ownerId])),[state.provinces]));
+  const warSides=(state.wars??[]).map(w=>w.id+':'+w.attackers.join(',')+'|'+w.defenders.join(',')).join(';');
+  const warBorders=useMemo(()=>state.wars?.length?warBorderPath(state,visibleIds,scene.edges):'',[controllers,warSides,visibleIds,scene]);
   const occupations=useMemo(()=>occupationFeatures(state,visible),[state.provinces,visible]);
   const counters=useMemo(()=>clusterArmies(armyCounters(state,visibleIds),provinceGeometry,snapshot.zoom,selectedArmyId),[state.armies,visibleIds,provinceGeometry,snapshot.zoom,selectedArmyId]);
   const legend=useMemo(()=>mapLegend(state,mode),[state.provinces,mode]);
   const troops = useMemo(() => troopsByProvince(state), [state.armies]);
   const provinceColors = useStableColors(useMemo(() => buildProvinceColors(state, mode, troops, selectedCountryId??undefined), [state.countries, state.provinces, state.diplomacy,state.wars,selectedCountryId, mode, troops]));
   const provinces = useMemo(() => new Map(state.provinces.map(p => [p.id, p])), [state.provinces]);
-  const currentMapCities = useMemo(() => {
-    const populations = new Map((state.cities ?? []).map(c => [c.id, c.population]));
-    return mapCities.map(c => ({ ...c, population: populations.get(c.id) ?? c.population }));
-  }, [mapCities, state.cities]);
-  const cities = useMemo(() => visibleCities(currentMapCities, bounds, snapshot.zoom, preset), [currentMapCities, bounds, snapshot.zoom, preset]);
+  const cityState = useMemo(()=>new Map((state.cities??[]).map(c=>[c.id,c])),[state.cities]);
+  // Query immutable coordinates first. Do not recreate/reindex 7,214 points each tick.
+  const cities = useMemo(() => visibleCities(mapCities, bounds, snapshot.zoom, preset).map(c=>({...c,population:cityState.get(c.id)?.population??c.population})), [mapCities, cityState, bounds, snapshot.zoom, preset]);
   const font = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 11, fontWeight: '600' }), []);
   const counterFont = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 10, fontWeight: 'bold' }), []);
   const nationFont = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 13, fontWeight: 'bold' }), []);
@@ -136,10 +145,10 @@ export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCi
     const feature = provinceGeometry.get(id);
     return feature ? [{ ...feature.anchor, halfWidth: 27 / snapshot.zoom, halfHeight: 12 / (snapshot.zoom * TILT) }] : [];
   }), [troops, provinceGeometry, visibleIds, snapshot.zoom]);
-  const cityLabels = useMemo(() => cityLabelPlacements(cities, snapshot.zoom, TILT, name => font.measureText(name).width, armyLabelBlockers, visibleBounds(snapshot, viewport, 0)), [cities, snapshot, viewport, font, armyLabelBlockers]);
+  const cityLabels = useMemo(() => cityLabelPlacements(cities, snapshot.zoom, TILT, name => measure(font,name), armyLabelBlockers, visibleBounds(snapshot, viewport, 0)), [cities, snapshot, viewport, font, armyLabelBlockers]);
   const selectAt = useCallback((px: number, py: number, cx: number, cy: number, z: number, long: boolean) => {
     const world = { x: (px - viewport.width / 2) / z + cx, y: (py - viewport.height / 2) / (z * TILT) + cy };
-    const cityHit = visibleCities(currentMapCities, visibleBounds({ x: cx, y: cy, zoom: z }, viewport, 0), z, preset).find(c => Math.hypot((c.point.x - world.x) * z, (c.point.y - world.y) * z * TILT) < 12);
+    const cityHit = visibleCities(mapCities, visibleBounds({ x: cx, y: cy, zoom: z }, viewport, 0), z, preset).find(c => Math.hypot((c.point.x - world.x) * z, (c.point.y - world.y) * z * TILT) < 12);
     const marker=counters.find(c=>Math.abs((c.x-world.x)*z)<25&&Math.abs((c.y-world.y)*z*TILT)<20);
     const army=marker?state.armies.find(a=>a.id===(marker.ids.includes(selectedArmyId??'')?selectedArmyId:marker.ids[0])):undefined;
     const nearby=army?{a:army,g:provinceGeometry.get(army.provinceId)}:undefined;
@@ -148,7 +157,7 @@ export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCi
     if(!long&&nearby&&onSelectArmy){onSelectArmy(nearby.a.id,nearby.a.provinceId);return;}
     if(!long&&cityHit&&onSelectCity){onSelectCity(cityHit.id,cityHit.provinceId);return;}
     if (province) (long ? onLongPressProvince ?? onSelectProvince : onSelectProvince)(province);
-  }, [counters,selectedArmyId,viewport, provinces, state.armies, onSelectProvince, onLongPressProvince,onSelectArmy,onSelectCity, preset, scene, currentMapCities]);
+  }, [counters,selectedArmyId,viewport, provinces, state.armies, onSelectProvince, onLongPressProvince,onSelectArmy,onSelectCity, preset, scene, mapCities]);
 
   const gestures = useMemo(() => {
     const pan = Gesture.Pan().minDistance(5).maxPointers(1).onStart(() => { cancelAnimation(x); cancelAnimation(y); startX.value = x.value; startY.value = y.value; })
@@ -177,20 +186,20 @@ export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCi
     const c = boundedCamera(camera);
     x.value = withTiming(c.x, { duration: 260 }); y.value = withTiming(c.y, { duration: 260 }); zoom.value = withTiming(c.zoom, { duration: 260 }, done => { if (done) runOnJS(setSnapshot)(c); });
   };
-  const chunks=useMemo(()=>visibleChunks(features,bounds),[features,bounds]);
+  const chunks=useMemo(()=>visibleChunks(renderFeatures,bounds),[renderFeatures,bounds]);
   const colors=useMemo(()=>chunks.flatMap(chunk=>batchChunk(chunk,provinceColors,paths)),[chunks,provinceColors,paths]);
-  const selectedPath = useMemo(() => { const path = Skia.Path.Make(); visible.filter(f => selectedProvinceId ? f.provinceId === selectedProvinceId : provinces.get(f.provinceId!)?.ownerId === selectedCountryId).forEach(f => path.addPath(paths.get(f.id)!)); return path; }, [visible, selectedProvinceId, selectedCountryId, provinces, paths]);
+  const selectedPath = useMemo(() => { const path = Skia.Path.Make(); const silhouette=!selectedProvinceId?renderFeatures.find(f=>f.id==='render-country-'+selectedCountryId):undefined;if(silhouette){path.addPath(paths.get(silhouette.id)!);return path;} visible.filter(f => selectedProvinceId ? f.provinceId === selectedProvinceId : provinces.get(f.provinceId!)?.ownerId === selectedCountryId).forEach(f => path.addPath(paths.get(f.id)!)); return path; }, [visible, selectedProvinceId, selectedCountryId, provinces, paths,renderFeatures]);
   const shadowPath = useMemo(() => { const path = Skia.Path.Make(); colors.forEach(c => path.addPath(c[1])); return path; }, [colors]);
   const labelZoom = Math.exp(Math.round(Math.log(snapshot.zoom) * 4) / 4);
-  const preparedLabels = useMemo(() => preparedCountryLabels(features,new Map(state.provinces.map(p=>[p.id,p.ownerId]))),[features,state.provinces]);
+  const preparedLabels = useMemo(() => preparedCountryLabels(features,owners),[features,owners]);
   const labels = useMemo(() => {
     const blockers=[...cityLabels.values()].map(label=>label.box).concat(armyLabelBlockers);
-    return preparedLabels.filter(label=>label.anchor.x>=bounds.left&&label.anchor.x<=bounds.right&&label.anchor.y>=bounds.top&&label.anchor.y<=bounds.bottom).map(label=>{
+    return preparedLabels.filter(label=>label.anchor.x>=bounds.left&&label.anchor.x<=bounds.right&&label.anchor.y>=bounds.top&&label.anchor.y<=bounds.bottom).sort((a,b)=>Number(b.countryId===selectedCountryId)-Number(a.countryId===selectedCountryId)||b.width-a.width).slice(0,preset==='Performance'?10:preset==='Balanced'?18:32).map(label=>{
       const name=state.countries[label.countryId]?.name??'';
-      const halfWidth=Math.min(label.width,nationFont.measureText(name).width/labelZoom)/2;
+      const halfWidth=Math.min(label.width,measure(nationFont,name)/labelZoom)/2;
       return {...label,blocked:blockers.some(b=>Math.abs(b.x-label.anchor.x)<halfWidth+(b.halfWidth??0)&&Math.abs(b.y-label.anchor.y)<11/(labelZoom*TILT)+(b.halfHeight??0))};
     });
-  },[preparedLabels,bounds,cityLabels,armyLabelBlockers,nationFont,labelZoom,state.countries]);
+  },[preparedLabels,bounds,cityLabels,armyLabelBlockers,nationFont,labelZoom,state.countries,preset,selectedCountryId]);
   useEffect(() => {
     if (!focusCountryId || viewport.width <= 1) return;
     const capitalId = state.countries[focusCountryId]?.capitalCityId;
@@ -201,7 +210,7 @@ export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCi
     zoom.value = withTiming(target.zoom, { duration: 260 }, done => { if (done) runOnJS(setSnapshot)(target); });
   }, [focusCountryId, scene, viewport.width, x, y, zoom]);
   const terrain = GRAPHICS[preset].terrain;
-  useEffect(()=>{recordMetrics({visibleProvinces:visible.length,visibleArmies:counters.length,visibleLabels:cityLabels.size+labels.filter(l=>!l.blocked).length,preset,geometryLod,mapRenders:getMetrics().mapRenders+1});});
+  useEffect(()=>{recordMetrics({renderFeatures:chunks.reduce((n,c)=>n+c.features.length,0),visibleProvinces:visible.length,visibleArmies:counters.length,visibleLabels:cityLabels.size+labels.filter(l=>!l.blocked).length,preset,geometryLod,mapRenders:getMetrics().mapRenders+1});});
   const startBenchmark=async()=>{if(benchmarkRunning)return;const token=++benchmarkToken.current,original={x:x.value,y:y.value,zoom:zoom.value},originalMode=mode;setBenchmarkRunning(true);setSettingsOpen(false);resetMetricSamples();recordMetrics({benchmarkError:'',benchmarkTicks:0});try{for(let i=0;i<AVAILABLE_MODES.length;i++){if(token!==benchmarkToken.current)return;setMode(AVAILABLE_MODES[i]!);const target=i%3===0?{x:720,y:300,zoom:.8}:i%3===1?{x:790,y:170,zoom:7}:{x:1000,y:210,zoom:3};x.value=withTiming(target.x,{duration:1800});y.value=withTiming(target.y,{duration:1800});zoom.value=withTiming(target.zoom,{duration:1800});await new Promise(r=>setTimeout(r,2200));}const {prepareBenchmarkState,advanceBenchmark}=await import('../performance/benchmark');let simulation=prepareBenchmarkState(state);for(let i=0;i<12;i++){if(token!==benchmarkToken.current)return;const started=performance.now();simulation=advanceBenchmark(simulation);recordMetrics({simulationMs:performance.now()-started,benchmarkTicks:i+1});await new Promise(r=>setTimeout(r,20));}}catch(error){recordMetrics({benchmarkError:error instanceof Error?error.message:String(error)});}finally{if(token===benchmarkToken.current){animateCamera(original);setMode(originalMode);setBenchmarkRunning(false);}}};
 
   return <View style={styles.frame} onLayout={e => setViewport({ width: e.nativeEvent.layout.width, height: e.nativeEvent.layout.height })}>
@@ -210,7 +219,7 @@ export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCi
         <Fill color="#101f2b" />
         {GRAPHICS[preset].water && <Rect x={0} y={0} width={viewport.width} height={viewport.height}><LinearGradient start={vec(0, 0)} end={vec(viewport.width, viewport.height)} colors={['#101c27', '#1e3543', '#12212e']} /></Rect>}
         <Group transform={transform}>
-          <GeographyLayer contextPath={contextPath} shadowPath={shadowPath} colors={colors} borders={borders} preset={preset} mode={mode} terrain={terrain} borderScale={borderScale} outerScale={outerScale} provinceBorders={snapshot.zoom>=3}/>
+          <GeographyLayer contextPath={contextPath} shadowPath={shadowPath} colors={colors} borders={borders} preset={preset} mode={mode} terrain={terrain} borderScale={borderScale} outerScale={outerScale} provinceBorders={provinceDetail}/>
           {occupations.map(f=><Group key={'occupied-'+f.id}><Path path={paths.get(f.id)!} color={state.countries[provinces.get(f.provinceId!)!.controllerId!]!.color} opacity={.28}/><Path key={'occupation-'+f.id} path={paths.get(f.id)!} color={state.countries[provinces.get(f.provinceId!)!.controllerId!]!.color} opacity={.55} style="stroke" strokeWidth={selectionScale}/></Group>)}
           {warBorders!==''&&<Path path={warBorders} style="stroke" color="#ed7f72" strokeWidth={selectionScale} opacity={pulse}/>}
           {(state.movements??[]).filter(m=>state.tick-m.tick<=2&&(visibleIds.has(m.from)||visibleIds.has(m.to))).map((m,i)=>{const from=provinceGeometry.get(m.from)?.anchor,to=provinceGeometry.get(m.to)?.anchor;if(!from||!to)return null;return <Path key={'movement-'+i} path={`M${from.x},${from.y}L${to.x},${to.y}`} style="stroke" strokeWidth={selectionScale} color={state.countries[m.ownerId]!.color} opacity={pulse}/>;})}
@@ -218,9 +227,9 @@ export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCi
           {snapshot.zoom < 8 && labels.filter(label => label.anchor.x >= bounds.left && label.anchor.x <= bounds.right && label.anchor.y >= bounds.top && label.anchor.y <= bounds.bottom).map(label => {
             if (label.blocked) return null;
             const country = countryFor(state, label.countryId as CountryId);
-            const fullWidth = nationFont.measureText(country.name).width;
+            const fullWidth = measure(nationFont,country.name);
             const name = label.width * snapshot.zoom / (fullWidth + 12) < 0.8 ? country.shortName : country.name;
-            const width = nationFont.measureText(name).width;
+            const width = measure(nationFont,name);
             const scale = Math.min(1.7, label.width * snapshot.zoom / (width + 12));
             if (scale < 0.55) return null;
             return <Group key={label.countryId} transform={[{ translateX: label.anchor.x }, { translateY: label.anchor.y }]}><Group transform={inverseScale}><Group transform={[{ scale }]}><MapText x={-width / 2} y={4} text={name} font={nationFont} color="#e4e6dc" /></Group></Group></Group>;

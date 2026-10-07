@@ -1,3 +1,4 @@
+import {cloneGameState} from './cloneGameState.ts';
 import {recordMovement} from './movementHistory.ts';
 import { runStrategicAI } from './aiSystem.ts';
 import { monthlyStability, pacifyProvince, suppressRebellion } from './stabilitySystem.ts';
@@ -15,7 +16,7 @@ import { assertGameCommand } from './commandValidation.ts';
 import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, POLITICAL_POWER_MONTHLY, governmentIncome, governmentModifiers, initializeGovernments } from './governmentSystem.ts';
 import { Army, BattleEvent, CountryId, GameCommand, GameState, Player, Province, countryFor } from './gameTypes.ts';
 
-const clone = (state: GameState): GameState => structuredClone(state);
+const clone = cloneGameState;
 const getPlayer = (state: GameState, playerId: string): Player => {
   const player = state.players.find((candidate) => candidate.id === playerId);
   if (!player) throw new Error('Игрок не найден');

@@ -1,0 +1,93 @@
+{
+  "provinces": 4386,
+  "cities": 7214,
+  "geometryFeatures": 4555,
+  "edges": 95984,
+  "vertices": 165859,
+  "geometryFileBytes": 3410382,
+  "snapshotBytes": 4195254,
+  "provinceBytes": 2439462,
+  "cityBytes": 1379771,
+  "neighborLookupsPerAIIndex": 21054,
+  "sameCountryEdges": 8613,
+  "initialAttributeCompatibleEdges": 157,
+  "cloneNativeMs": {
+    "median": 27.17380900000012,
+    "p95": 32.83893899999998
+  },
+  "cloneTreeMs": {
+    "median": 7.118687999999793,
+    "p95": 9.732578000000103
+  },
+  "samples": [
+    {
+      "camera": {
+        "name": "world",
+        "x": 720,
+        "y": 300,
+        "zoom": 0.8
+      },
+      "renderFeaturesAfter": 195,
+      "outlineBytes": 1261715,
+      "outlineMs": 54.32968400000004,
+      "visible": 4386,
+      "batchProvinces": 4386,
+      "chunks": 181,
+      "labelCandidates": 24,
+      "borderBytes": 3438817,
+      "bordersMs": 96.66925200000003
+    },
+    {
+      "camera": {
+        "name": "Europe",
+        "x": 790,
+        "y": 170,
+        "zoom": 3.5
+      },
+      "renderFeaturesAfter": 81,
+      "outlineBytes": 499843,
+      "outlineMs": 0.05152700000007826,
+      "visible": 2117,
+      "batchProvinces": 2229,
+      "chunks": 68,
+      "labelCandidates": 24,
+      "borderBytes": 1179587,
+      "bordersMs": 13.167128000000048
+    },
+    {
+      "camera": {
+        "name": "Asia",
+        "x": 1080,
+        "y": 230,
+        "zoom": 3.5
+      },
+      "renderFeaturesAfter": 67,
+      "outlineBytes": 532637,
+      "outlineMs": 0.07075299999996787,
+      "visible": 924,
+      "batchProvinces": 1248,
+      "chunks": 50,
+      "labelCandidates": 24,
+      "borderBytes": 1048900,
+      "bordersMs": 6.835291999999981
+    },
+    {
+      "camera": {
+        "name": "local",
+        "x": 790,
+        "y": 170,
+        "zoom": 7
+      },
+      "renderFeaturesAfter": 1816,
+      "outlineBytes": null,
+      "outlineMs": 0.04181200000016361,
+      "visible": 1634,
+      "batchProvinces": 1816,
+      "chunks": 47,
+      "labelCandidates": 24,
+      "borderBytes": 763050,
+      "bordersMs": 6.308912000000191
+    }
+  ],
+  "note": "Host CPU samples; attribute-compatible edges are only merge candidates, not proof of safe resource/building aggregation or measured Android FPS."
+}

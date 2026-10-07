@@ -146,14 +146,20 @@ adb('shell','input','text','Germany'); time.sleep(1)
 root = hierarchy('country-search'); click_text(root,'Германия'); time.sleep(2)
 
 click_scrolling('ИГРАТЬ ЗА ЭТУ СТРАНУ')
-click_scrolling('Я ГОТОВ')
-click_scrolling('НАЧАТЬ ИГРУ')
+click_text(hierarchy('ready-dock'),'Я ГОТОВ')
+for attempt in range(12):
+    root=hierarchy('start-enabled-'+str(attempt))
+    button=next((n for n in root.iter('node') if n.get('content-desc')=='Начать игру'),None)
+    if button is not None and button.get('enabled')=='true':break
+    time.sleep(1)
+assert button is not None and button.get('enabled')=='true', 'Start never became enabled'
+click_text(root,'Начать игру')
 for attempt in range(4):
     time.sleep(3)
     root=hierarchy('02-running');screenshot('02-running')
     if any(n.get('text','').startswith('Ход ') for n in root.iter('node')):break
     assert not any(n.get('text')=='Действие отклонено' for n in root.iter('node')), 'Start command rejected'
-    click_scrolling('НАЧАТЬ ИГРУ')
+    # Wait for the first command; a second tap would hide a product regression.
 assert any(n.get('text','').startswith('Ход ') for n in root.iter('node')), 'Campaign did not start after visible start control'
 set_speed(0)
 root = hierarchy('02-paused')

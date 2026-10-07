@@ -29,13 +29,12 @@ export function buildEdges(data: readonly MapFeature[]): Edge[] {
   return [...edges.values()];
 }
 export const edges = buildEdges(features);
-export function borderPaths(state: GameState, visibleIds: Set<string>, data: readonly Edge[] = edges): { outer: string; inner: string } {
+export function borderPaths(state: GameState, visibleIds: Set<string>, data: readonly Edge[] = edges, includeInner=true): { outer: string; inner: string } {
   const owners = new Map(state.provinces.map(p => [p.id, p.ownerId]));
   let outer = '', inner = '';
   for (const edge of visibleEdges(data, visibleIds)) {
-    const line = edgeLine(edge);
-    if (edge.provinces.length === 1 || new Set(edge.provinces.map(id => owners.get(id))).size > 1) outer += line;
-    else inner += line;
+    if (edge.provinces.length === 1 || edge.provinces.some(id=>owners.get(id)!==owners.get(edge.provinces[0]!))) outer += edgeLine(edge);
+    else if(includeInner) inner += edgeLine(edge);
   }
   return { outer, inner };
 }
