@@ -52,6 +52,23 @@ bodies=[envelope(host,intent,v),envelope(players[1],{'type':'RECRUIT','playerId'
 with ThreadPoolExecutor(2) as pool:results=list(pool.map(lambda b:request('game-command',b,(200,409)),bodies))
 assert sorted(code for _,code in results)==[200,409]
 print('PASS: 8 players, ninth rejected, auth/spoof guards, exactly-once recruitment, payload replay guard, stale and concurrent versions',flush=True)
+# Persist and cancel a multi-step order through the real authenticated HTTP API.
+s=snapshot()['state'];army=next(a for a in s['armies'] if a['ownerId']=='germany')
+provinces={p['id']:p for p in s['provinces']};queue=[army['provinceId']];distance={queue[0]:0}
+for origin in queue:
+    for neighbor in provinces[origin]['neighbors']:
+        p=provinces[neighbor]
+        if neighbor not in distance and p.get('controllerId',p['ownerId'])=='germany':
+            distance[neighbor]=distance[origin]+1;queue.append(neighbor)
+target=next(p for p,d in distance.items() if d>=3)
+command(players[1],'ORDER_ARMY',400,armyId=army['id'],provinceId=target)
+command(host,'ORDER_ARMY',400,armyId=army['id'],provinceId=target,route=[target])
+command(host,'ORDER_ARMY',armyId=army['id'],provinceId=target)
+ordered=next(a for a in snapshot()['state']['armies'] if a['id']==army['id'])
+assert ordered['order']['targetProvinceId']==target and len(ordered['order']['route'])>=3
+command(host,'CANCEL_ARMY_ORDER',armyId=army['id'])
+assert not next(a for a in snapshot()['state']['armies'] if a['id']==army['id']).get('order')
+print('PASS: authoritative multi-step route, ownership guard, client route rejection and cancellation persisted',flush=True)
 command(host,'SET_TAX_RATE',taxRate=20)
 command(host,'START_RESEARCH',branch='Economy')
 command(host,'BUILD',provinceId=province,buildingType='Farm')
