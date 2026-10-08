@@ -1,12 +1,14 @@
-# ACTIVE PASS 3 — optimized v4, 2026-10-08
+# COMPLETED PASS 3 — optimized v4, 2026-10-08
 
-User retested v3: lag and delayed launch persist. Branch performance-pass-3; base runtime 416b0b7 plus locally preserved v3 reports. Work only in elcin31/grand-strategy-multiplayer and dedicated backend dfjsnjxnyjspwugjguhq. AssetMind untouched.
+Only elcin31/grand-strategy-multiplayer and dedicated backend dfjsnjxnyjspwugjguhq used. AssetMind untouched. Runtime source a9df2395800d4ec09fdac25fea4cd35975221893; later QA/report changes do not change the accepted APK runtime. All requested v4 changes are summarized in PERFORMANCE_REPORT.md and RELEASE_REPORT.md.
 
-Implemented 4,386 -> 2,924 province contraction (all 195 countries / 7,214 cities / exact population retained), explicit modern-world-v2 dataset boundary, source-region resource mixes and terrain/religion profiles, calibrated province income, multi-step authoritative ORDER_ARMY / CANCEL_ARMY_ORDER with per-step permissions, direct map targeting and route line, productive building revenue / administration ledger, construction catalogue and progress, relations cooldown UI, staged campaign/map initialization and bounded startup trace, local trusted reducer avoiding repeated migrations, deterministic four-tick tactical AI budget and commander lookup.
+4,386 → 2,924 provinces; 195 countries/7,214 cities/exact initial population preserved. Multi-step server-authoritative army orders with route line/cancel/current-permission checks, building catalogue and production/admin ledger, relations cooldown UI, staged startup, bounded trace and deterministic AI staggering implemented. Schema 11 / modern-world-v2 explicitly rejects old v1 topology; original saves remain and need v3. User must start a new v4 campaign.
 
-Local: 161 JS tests pass; strict TS check required after latest edits. Python importer locally skipped because Shapely unavailable in current runtime; CI installs pinned dependency. BENCHMARK_PASS3.json / PROFILE_PASS3.json hold host measurements. APK v4 NOT built or accepted yet. Do not deliver v3 renamed.
+Release run 37725176471 ALL PASS: 161 JS regressions, strict TS, Python suite, map/world benchmarks, 10,000 ticks/10 restores, native one-tap startup, construction, process/reboot recovery, 12-tick benchmark and 1,846.65-second soak. Backend game-room v20/game-command v22; live QA 37725884194 final attempt PASS (first attempt network heartbeat timeout, unchanged repeat passed). All three exact QA rooms cleaned; zero residual rooms/players/receipts.
 
-NEXT: commit/publish this branch using Git Data API if CLI push has no credentials; deploy both Edge Functions from exact source after regressions; run live backend QA and scoped test-room cleanup; await Android release CI / 10,000 ticks / native 30-minute stress; fix any real failures, download/verify embedded release APK, finalize reports and main, save/attach Dominion-optimized-v4-release.apk. Stop after delivery. Old v1 campaigns remain untouched and require v3 to open; v4 explicitly rejects incompatible topology.
+Verified file: Dominion-optimized-v4-release.apk, 138,882,758 bytes, SHA-256 d727ab8bc136a18d65b3f9f2fa8f57c72a2aa9888cd3a94d73728dd3557ffcce. Artifact 11527528153; native evidence 11529720645; long evidence 11527911078. Embedded JS 10,589,176 bytes, all ABI Hermes/Skia, non-debuggable release, existing signing key, production endpoint and landscape verified.
+
+Deliver exact APK directly and stop. Await user's Balanced real-device checks; do not infer Redmi FPS from emulator UI callback cadence. SwiftShader frame times/jank remain poor and are documented explicitly. Native does not independently automate the full distant-target combat gesture; reducer/live HTTP regressions cover route/combat/authority as documented.
 
 ---
 

@@ -1,4 +1,4 @@
-# PASS 3 — v4 implementation; release acceptance pending
+# PASS 3 — v4 code/CI/native acceptance complete
 
 Real-device v3 lag is confirmed. Province reduction is now actual gameplay data: **4,386 -> 2,924 (-33.33%, exactly /1.5)**. Deterministic adjacent land unions within countries, at most four source regions, protected capitals/major-center pairs; sea-only links never merged. All 195 countries, 7,214 cities, islands/coastline geometry and 7,632,252,811 initial people retained. Adjacency is the validated symmetric quotient graph, with no dangling/self links; isolated components are not collapsed into newly orphaned nodes. Generator/provenance: scripts/reduce-provinces.py and PROVINCE_REDUCTION_PASS3.json.
 
@@ -10,7 +10,29 @@ Runtime: staged creation and 64-feature geometry chunks yield between work; firs
 
 Army pathfinding: bounded BFS (uniform one-month edge cost), one route per command rather than per frame, server computes route; dynamic permissions rechecked each step, failed assault stops order, peace clears participant orders. Selected army route is a separate dynamic path. Construction and relations UI expose existing server rules; production/admin budget categories are now explicit. Factories/farms generate output and incur upkeep, not free treasury mutations.
 
-Host observations are in BENCHMARK_PASS3.json and PROFILE_PASS3.json. Initial snapshot in current benchmark: 3,674,236 bytes vs recorded v3 baseline 4,195,254 (-12.42%; different documented fixture IDs). These are not paired physical device measurements or FPS. Local last regression: 161 JS tests. Final CI/native/long-simulation and release evidence pending.
+Host observations are in BENCHMARK_PASS3.json and PROFILE_PASS3.json. Initial snapshot in current benchmark: 3,674,236 bytes vs recorded v3 baseline 4,195,254 (-12.42%; different documented fixture IDs). These are not paired physical device measurements or FPS. Final regression: 161 JS tests, strict TS, Python suite and benchmarks PASS. Release run 37725176471 and live backend QA 37725884194 PASS. Full binary and native limitations are recorded in RELEASE_REPORT.md.
+
+
+## Final PASS 3 evidence
+
+| Measurement | v3 recorded | v4 recorded |
+|---|---:|---:|
+| Gameplay provinces | 4,386 | 2,924 (-33.33%) |
+| Geometry JSON bytes | 3,410,382 | 2,739,215 (-19.68%) |
+| Geometry edges | 95,984 | 82,307 |
+| Vertices including context | 165,859 | 136,918 |
+| Far political country silhouettes | 195 | 195 (unchanged) |
+| Seeded initial snapshot bytes | 4,195,254 | 3,674,236 (-12.42%) |
+| Embedded JS bundle bytes | 11,390,840 | 10,589,176 |
+| CI 10,000-tick p95, ms | 151.53 | 57.29 |
+| CI 10,000-tick elapsed, seconds | 1,178 | 452 |
+| CI maximum save bytes | 4,903,485* | 4,492,903 |
+
+*The v3 maximum save value comes from historical LONG_SIMULATION_RESULTS.json; no paired percentage is inferred. Host/CI runs are not controlled physical-device comparisons, and evolving AI trajectories/army counts differ. Source details and raw host observations are preserved in BENCHMARK_PASS3.json, PROFILE_PASS3.json and LONG_SIMULATION_PASS3.md. The initial save comparison has documented fixture-ID differences. Static geometry is not transmitted by multiplayer; unchanged polling and existing dynamic-v1 encoding remain intact, without a new delta protocol.
+
+V4 host scene preparation was 261.92ms in BENCHMARK_PASS3.json; create 68.29ms, label preparation 28.55ms, 100-tick server p95 84.48ms. Separate PROFILE_PASS3.json observed trusted local tick p95 69.35ms, AI decision callbacks 23.70ms (not full combat), 12 path queries p95 0.764ms. These are samples rather than portable speed guarantees.
+
+Native release validation and 1,846.65-second soak PASS. Thirty emulator PSS samples 538,434–811,674 KiB, first 770,905/last 604,538; not proof of absence of all leaks. SwiftShader frame p50/p95/p99 150/250/350ms, 92.69% jank: emulator smoothness remains poor and is not hidden behind the UI callback FPS counter. No physical FPS, immediate GPU paint latency or eliminated-Redmi-lag claim. A first tap is accepted once with loading state; regression covers ten rapid taps, slow/failing operations and retry. Native flow makes one tap per launch action without a retry.
 
 ---
 

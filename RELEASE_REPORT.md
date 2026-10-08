@@ -1,3 +1,24 @@
+# Dominion 0.6.0 (6) — optimized v4 verified release
+
+Runtime source **a9df2395800d4ec09fdac25fea4cd35975221893**, tree 97e965007cd38ebc94769363f0f48e0fc85f14d7. Release run **37725176471**: build-apk, long-simulation and android-smoke all PASS. Later commits change only QA scripts/workflows and reports, not the APK runtime.
+
+- File: **Dominion-optimized-v4-release.apk**, 138,882,758 bytes.
+- APK SHA-256: `d727ab8bc136a18d65b3f9f2fa8f57c72a2aa9888cd3a94d73728dd3557ffcce`.
+- Release artifact **11527528153**, ZIP SHA-256 `4766899edd20e8885a9bb3adc952c5754607de899900f9530520e69e411021eb`.
+- Embedded Hermes JS bundle: **10,589,176 bytes**; Hermes/Skia in all four ABIs verified locally. CI verifies non-debuggable release manifest, version 0.6.0 (6), landscape, production endpoint and valid V2 signature. Existing sideload signing certificate retained (certificate is named Android Debug; build itself is non-debuggable release).
+- 161 JavaScript regressions, strict TypeScript, Python suite, map/world benchmarks PASS. 10,000 deterministic authoritative ticks, 10 exact save restores; p95 tick 57.29ms on CI, elapsed 452s; maximum 3,406 armies and 4,492,903-byte snapshot. Raw v4 evidence: LONG_SIMULATION_PASS3.md; historical LONG_SIMULATION_RESULTS.json is v3.
+- Actual gameplay graph **4,386 → 2,924 provinces**, all **195 countries / 7,214 cities** retained. New topology is modern-world-v2/schema 11. Old v1 campaigns are retained but require v3 to open; start a new campaign in v4. No silent contested-save migration.
+
+Dedicated backend **dfjsnjxnyjspwugjguhq**: game-room v20 and game-command v22 deployed from accepted runtime. Live QA **37725884194**, final job **113144676872**, PASS: eight players, ninth rejected, authorization/spoof guards, idempotency/CAS, persisted multi-step army order and cancellation, forged client route rejected, construction/research, diplomacy, reconnect, host migration and server clock. First local attempt timed out establishing the proxy connection; first CI attempt timed out waiting for concurrent heartbeat responses. The unchanged repeat passed. All three isolated QA rooms removed with exact UUID plus WORLD ECONOMY QA membership guards; remaining rooms/players/receipts all zero. No user campaigns changed.
+
+Native job **113144846787** PASS; evidence **11529720645**, ZIP SHA-256 `22e134dad9e51b94918276168250e08cf0a54e84d0544aa7055a852584257d03`. Exactly one Singleplayer tap and one Start tap, offline cold launch, actual queued Farm construction, campaign commands, four presets/twelve map modes, camera/layout checks, process/reboot recovery and built-in 12-tick benchmark PASS. Real combat at a distant ordered enemy target is covered by authoritative reducer regression; live HTTP verifies persisted route/security/cancellation. Native smoke does not independently automate the full distant-target combat gesture.
+
+Continuous render/simulation/autosave stress lasted **1,846.65 seconds** with no fatal JS/native logs. Thirty PSS samples: **538,434–811,674 KiB**, first 770,905, last 604,538; no monotonic increase in this window. SwiftShader cumulative gfxinfo p50/p95/p99: **150/250/350ms**, **92.69% jank**. The overlay's sampled UI callback cadence of 60 FPS is NOT completed GPU FPS; these graphics results do not pass a physical smoothness target. Redmi Note 12 FPS, frame pacing, thermal and battery acceptance remain unverified until the user tests Balanced. Startup trace is instrumented; two animation-frame callbacks allow feedback to commit but are not a direct GPU paint measurement.
+
+Delivery: attach the exact verified APK above. User check: Balanced, single first tap/launch time, pan/zoom, own army → distant target/movement/battle, construction, Improve Relations, benchmark report.
+
+---
+
 # Dominion 0.5.0 (5) — optimized v3 verified release
 
 Runtime source: 416b0b70374ffc2f9eb84e238213bc389f19782f, branch performance-pass-2.

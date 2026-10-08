@@ -1,6 +1,10 @@
-# PASS 3 — real-device launch/performance reopened
+# PASS 3 — Start Game / Singleplayer delayed interaction — HIGH — FIXED
 
-The user reports delayed launch and remaining lag after v3. Prior emulator success did not establish physical acceptance. Staged initialization, loading shell, lighter save listing and startup trace implemented. First-tap/10-tap/slow/failure regressions pass; v4 native gate still pending. Do not mark physical performance resolved.
+Root cause addressed: heavy synchronous campaign/geometry initialization and full-save listing validation could occupy JS after a valid tap, while the existing loading latch alone did not make the heavy work cooperative. V4 yields between initialization stages and 64-feature geometry chunks, renders a loading shell, reuses world preparation, reads only save metadata on entry and avoids repeated full normalization in the private local reducer. Existing docked controls and synchronous duplicate latch retained; failures clear loading and expose the error.
+
+161-test suite includes first tap, ten rapid taps = one campaign, slow initialization feedback, failure/retry and actual campaign launch regressions. Native release run 37725176471/job 113144846787 PASS: one Singleplayer tap and one Start tap, no repeat-tap fallback; running campaign, save/reboot restore and 30-minute soak verified. Instrumented trace records launch stages; two RAF callbacks are not a GPU paint-latency measurement.
+
+Physical performance acceptance remains OPEN: confirmed Redmi lag motivated this update; only the user's v4 test can establish physical smoothness. No code-level BLOCKER/CRITICAL/HIGH detected by the completed gates. Old topology saves are explicitly rejected with a compatibility explanation and remain untouched.
 
 ---
 
