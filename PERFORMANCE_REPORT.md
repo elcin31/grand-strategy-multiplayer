@@ -1,4 +1,20 @@
-# PASS 2 — 0.5.0 / optimized v3 (acceptance pending)
+# PASS 3 — v4 implementation; release acceptance pending
+
+Real-device v3 lag is confirmed. Province reduction is now actual gameplay data: **4,386 -> 2,924 (-33.33%, exactly /1.5)**. Deterministic adjacent land unions within countries, at most four source regions, protected capitals/major-center pairs; sea-only links never merged. All 195 countries, 7,214 cities, islands/coastline geometry and 7,632,252,811 initial people retained. Adjacency is the validated symmetric quotient graph, with no dangling/self links; isolated components are not collapsed into newly orphaned nodes. Generator/provenance: scripts/reduce-provinces.py and PROVINCE_REDUCTION_PASS3.json.
+
+Geometry JSON: 3,410,382 -> 2,739,215 bytes (-19.68%). Far political view already used 195 country silhouettes in v3 and still does; no duplicate claimed gain. Local province geometry is reduced. Resource mixes preserve all original deposit types/richness with original income weights. Terrain/religion source composition is retained with dominant classifications (capital religion preserved). Population-weighted development; original aggregate base income calibrated so small-region floors do not vanish at first monthly update. Initial buildings are empty; all city and initial army capital references remapped.
+
+Compatibility: explicit modern-world-v2 / state schema 11. Existing v1 saves/rooms are not silently merged or overwritten: v4 reports that they require v3, and offers creation of a new campaign. Arbitrary contested ownership/buildings/construction/war saves cannot be merged without losing decisions. New saves/orders round-trip and server remains authoritative.
+
+Runtime: staged creation and 64-feature geometry chunks yield between work; first tap mounts loading feedback, same-render latch prevents duplicates. Entry listing reads metadata without validating every full campaign. Local private campaign states validated at creation/restore no longer run all migration/validation passes on every command; public/server reducer defaults retain full validation and commands always validate. Shared empty-building modifiers avoid thousands of hot allocations. AI strategies retain six-tick scheduling; tactical stacks use a deterministic four-tick country rotation (up to ceil(countries/4)*3 stacks/tick), preventing machine-clock nondeterminism. Free commander index replaces nested scans.
+
+Army pathfinding: bounded BFS (uniform one-month edge cost), one route per command rather than per frame, server computes route; dynamic permissions rechecked each step, failed assault stops order, peace clears participant orders. Selected army route is a separate dynamic path. Construction and relations UI expose existing server rules; production/admin budget categories are now explicit. Factories/farms generate output and incur upkeep, not free treasury mutations.
+
+Host observations are in BENCHMARK_PASS3.json and PROFILE_PASS3.json. Initial snapshot in current benchmark: 3,674,236 bytes vs recorded v3 baseline 4,195,254 (-12.42%; different documented fixture IDs). These are not paired physical device measurements or FPS. Local last regression: 161 JS tests. Final CI/native/long-simulation and release evidence pending.
+
+---
+
+# PASS 2 — 0.5.0 / optimized v3 (CI/native acceptance complete)
 
 Baseline: main a9d1d78, previously delivered optimized v2 0.4.0. Prior PASS 1 evidence follows unchanged. Physical Redmi Note 12 lag is confirmed; no physical FPS claim.
 
@@ -25,6 +41,10 @@ The world has 4,386 gameplay provinces, 7,214 cities, 95,984 geometry edges and 
 Local combined suite before final packaging: 156 JS tests, strict TS and 3 Python tests. Release CI must independently pass. New regression coverage checks first start, same-render double tap, slow completion, failure/retry, repeat sessions, real LocalTransport startup, no mutable clone aliases, country LOD coverage and ownership fallback.
 
 Native acceptance removes the old four-attempt Start retry. Release pipeline requires one tap, 10,000 authoritative ticks/save restores, all existing multiplayer and campaign tests, release binary verification, native process/reboot recovery, developer benchmark and **1,800 seconds** continuous rendering/simulation/autosave. Completion and exact artifact evidence will be appended only after success.
+
+Final acceptance: run **37576520835**, source **416b0b70374ffc2f9eb84e238213bc389f19782f**, all three jobs PASS. 156 JS regressions, strict TS, 3 Python tests, map/world benchmarks, 10,000 deterministic ticks and 10 exact save restores. Dedicated production backend QA **37607813987** PASS; isolated test data removed. Native evidence **11478246984** verifies single-tap entry/start, all modes/presets, process/reboot restore, 12 benchmark ticks and **1,847.95 seconds** continuous render/simulation/autosave with no fatal logs.
+
+Thirty native emulator PSS samples range 579,918–849,556 KiB (first 739,331; last 676,190); no monotonic growth during this window. SwiftShader remains slow: cumulative frame p50/p95/p99 150/300/450ms, 92.92% jank; sampled benchmark overlay UI 8 FPS. This is a stability/regression pass, not a passed smoothness target or physical FPS result. Do not hide these measurements or infer Redmi performance from them. APK identity and host tick/memory limits are recorded in RELEASE_REPORT.md.
 
 No full GameState normalization rewrite, new gameplay systems, physical RAM/thermal claim, network-delta redesign or 60 FPS assertion. Software PSS/frame samples remain distinct from physical-device acceptance.
 

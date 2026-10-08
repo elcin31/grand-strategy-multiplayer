@@ -50,7 +50,9 @@ export function buildingQuote(province: Province, type: BuildingType): { targetL
   if (current >= definition.maxLevel) throw new Error('Достигнут максимальный уровень здания');
   return { targetLevel: current + 1, cost: precise(definition.baseCost * (1 + current * .6)), buildTime: definition.baseBuildTime + current * 2 };
 }
+const EMPTY_MODIFIERS=Object.freeze(zero());
 export function provinceBuildingModifiers(province: Province): BuildingModifiers {
+  if(!province.buildings || Object.keys(province.buildings).length===0)return EMPTY_MODIFIERS;
   const result = zero();
   for (const type of BUILDING_TYPES) {
     const level = buildingLevel(province, type);
@@ -60,6 +62,7 @@ export function provinceBuildingModifiers(province: Province): BuildingModifiers
   return result;
 }
 export function provinceBuildingMaintenance(province: Province): number {
+  if(!province.buildings)return 0;
   let total = 0;
   for (const type of BUILDING_TYPES) total += buildingLevel(province, type) * BUILDINGS[type].maintenance;
   return precise(total);
@@ -67,7 +70,7 @@ export function provinceBuildingMaintenance(province: Province): number {
 export function buildingModifierTotals(state: GameState): Map<CountryId, BuildingModifiers> {
   const totals = new Map<CountryId, BuildingModifiers>();
   for (const province of state.provinces) {
-    if (province.rebellion || (province.controllerId ?? province.ownerId) !== province.ownerId) continue;
+    if (!province.buildings || province.rebellion || (province.controllerId ?? province.ownerId) !== province.ownerId) continue;
     const source = provinceBuildingModifiers(province), target = totals.get(province.ownerId) ?? zero();
     for (const key of Object.keys(source) as (keyof BuildingModifiers)[]) target[key] += source[key];
     totals.set(province.ownerId, target);

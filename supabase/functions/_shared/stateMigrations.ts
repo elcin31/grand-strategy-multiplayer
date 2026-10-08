@@ -1,3 +1,4 @@
+import {validateArmyOrders} from './armyOrders.ts';
 import {initializeMovements} from './movementHistory.ts';
 import { initializeAI } from './aiSystem.ts';
 import { initializeStability } from './stabilitySystem.ts';
@@ -8,7 +9,7 @@ import { initializeTechnology } from './technologySystem.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
-export const CURRENT_STATE_VERSION = 10;
+export const CURRENT_STATE_VERSION = 11;
 
 /** Ordered schema migrations; every normalizer is also run as validation for current saves. */
 export function migrateV1ToV2(s:GameState){initializeBuildings(s);}
@@ -23,8 +24,10 @@ export function migrateV9ToV10(s:GameState){initializeMovements(s);}
 const migrations=[migrateV1ToV2,migrateV2ToV3,migrateV3ToV4,migrateV4ToV5,migrateV5ToV6,migrateV6ToV7,migrateV7ToV8,migrateV8ToV9,migrateV9ToV10];
 export function normalizeGameState(state:GameState):void {
  if(!state.dataset)return;
+ if(state.dataset!=='modern-world-v2')throw Error('Эта кампания использует карту v3. Откройте её в v3; для карты v4 создайте новую кампанию. Старое сохранение не изменено.');
  const version=state.stateVersion??1;
  if(!Number.isSafeInteger(version)||version<1||version>CURRENT_STATE_VERSION)throw Error('Unsupported campaign state version');
  for(let i=0;i<migrations.length;i++){migrations[i]!(state);if(version<=i+1)state.stateVersion=i+2;}
+ validateArmyOrders(state);
  state.stateVersion=CURRENT_STATE_VERSION;
 }

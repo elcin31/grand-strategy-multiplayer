@@ -1,12 +1,18 @@
-# PASS 2 launch regression — implementation complete, native acceptance pending
+# PASS 3 — real-device launch/performance reopened
 
-HIGH — Start/singleplayer first tap: fixed docked launch controls, immediate loading, synchronous duplicate latch and failure recovery. The previous native harness retried Start up to four times, masking the reported behavior; this retry is removed. New tests cover one launch, slow completion, duplicate taps, failure/retry and subsequent sessions. Do not mark native acceptance or real-device performance complete until the release gate passes.
+The user reports delayed launch and remaining lag after v3. Prior emulator success did not establish physical acceptance. Staged initialization, loading shell, lighter save listing and startup trace implemented. First-tap/10-tap/slow/failure regressions pass; v4 native gate still pending. Do not mark physical performance resolved.
+
+---
+
+# PASS 2 launch regression — HIGH — FIXED
+
+Start/singleplayer first tap: fixed docked launch controls, immediate loading, synchronous duplicate latch and failure recovery. The previous native harness retried Start up to four times, masking the reported behavior; that retry is removed. Regression tests cover first launch, slow completion, duplicate taps, failure/retry, repeat sessions and actual LocalTransport start. Release run 37576520835 / native job 112740679221 PASS: exactly one singleplayer tap and one Start tap, followed by a running campaign. Thirty-minute stress, restore and reboot checks also pass. Evidence artifact 11478246984. This closes the launch defect at code/CI/native-emulator level; real-device performance remains open.
 
 # PHYSICAL-DEVICE PERFORMANCE ACCEPTANCE — OPEN
 
 The original severe Redmi Note 12 lag report triggered the completed 0.4.0 optimization session. Code-level optimization, regression, release build, native emulator smoke, detached 12-tick benchmark and 1,200-second software render/simulation/autosave soak now PASS in final workflow **37564792672**.
 
-This does **not** mark the physical-device lag report as empirically fixed. Physical 30/60 FPS, thermals and battery behavior remain unverified until the new **Dominion-optimized-v2-release.apk** is tested on real hardware. No unresolved code-level BLOCKER/CRITICAL/HIGH was found by the completed CI/native-emulator checks.
+This does **not** mark the physical-device lag report as empirically fixed. Physical 30/60 FPS, thermals and battery behavior remain unverified until the new **Dominion-optimized-v3-release.apk** is tested on real hardware. No unresolved code-level BLOCKER/CRITICAL/HIGH was found by the completed CI/native-emulator checks.
 
 ---
 

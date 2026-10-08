@@ -29,6 +29,8 @@ const fields: Record<string, readonly string[]> = {
   START_GAME: ['type', 'playerId'],
   SET_SPEED: ['type', 'playerId', 'speed'],
   RECRUIT: ['type', 'playerId', 'provinceId', 'troops'],
+  CANCEL_ARMY_ORDER: ['type','playerId','armyId'],
+  ORDER_ARMY: ['type','playerId','armyId','provinceId'],
   MOVE_ARMY: ['type', 'playerId', 'armyId', 'provinceId'],
   ADVANCE_TICK: ['type'],
   CHANGE_RELIGION: ['type', 'playerId', 'religionId'],

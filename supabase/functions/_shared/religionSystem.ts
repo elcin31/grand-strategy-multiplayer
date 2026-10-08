@@ -1,3 +1,5 @@
+import {provinceDefinitions} from './worldDefinitions.ts';
+const mergedRegions=new Map(provinceDefinitions.filter(p=>p.sourceRegions).map(p=>[p.id,p.sourceRegions!]));
 import type { Country, GameState } from './gameTypes.ts';
 
 /** All faiths use identical rules. This catalogue can grow without changing the engine. */
@@ -84,8 +86,10 @@ export function initializeReligions(state: GameState): void {
       const pool = regionalPools[country.region ?? ''] ?? ['secular', 'other'];
       const minorities = country.id === 'ind' || country.id === 'can' ? [...pool, 'sikhism'] : pool;
       p.religion = p.id === capitals.get(country.capitalCityId ?? '') || value % 100 < 80 ? country.religion! : minorities[value % minorities.length]!;
+      const regions=mergedRegions.get(p.id);if(regions){const shares:Record<string,number>={};const total=regions.reduce((n,r)=>n+Math.max(1,r.population),0);for(const r of regions){const v=hash(`${state.campaignSeed??0}:${r.id}`),faith=r.id===capitals.get(country.capitalCityId??'')||v%100<80?country.religion!:minorities[v%minorities.length]!;shares[faith]=(shares[faith]??0)+Math.max(1,r.population)/total;}p.religionShares=shares;p.religion=p.id===capitals.get(country.capitalCityId??'')?country.religion!:Object.entries(shares).sort((a,b)=>b[1]-a[1])[0]![0];}
     }
     p.unrest ??= 10; assertReligion(p.religion);
+    if(p.religionShares){for(const [faith,share]of Object.entries(p.religionShares)){assertReligion(faith);if(!Number.isFinite(share)||share<0)throw Error("Invalid religion shares");}if(Math.abs(Object.values(p.religionShares).reduce((n,v)=>n+v,0)-1)>1e-6)throw Error("Invalid religion shares");}
     if (!Number.isFinite(p.unrest) || p.unrest < 0 || p.unrest > 100) throw new Error('Invalid religious unrest');
   }
   recalcReligiousUnity(state);

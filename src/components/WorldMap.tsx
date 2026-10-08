@@ -73,7 +73,7 @@ const sceneCosts=new WeakMap<MapScene,number>();
 const defaults: Camera = { x: 800, y: 160, zoom: 3.5 };
 
 export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCity,settingsOpen=false,onSettingsChange, state, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince, focusCountryId }: WorldMapProps) {
-  const scene = useMemo(() => {const start=performance.now();const scene=mapSceneFor(state);if(!sceneCosts.has(scene))sceneCosts.set(scene,performance.now()-start);recordMetrics({sceneMs:sceneCosts.get(scene)!});return scene;}, [state.dataset]);
+  const scene = useMemo(() => {const start=performance.now();const scene=mapSceneFor(state);if(!sceneCosts.has(scene))sceneCosts.set(scene,Math.max(getMetrics().sceneMs,performance.now()-start));recordMetrics({sceneMs:sceneCosts.get(scene)!});return scene;}, [state.dataset]);
   const { features, spatialIndex, provinceGeometry, cities: mapCities } = scene;
   const [viewport, setViewport] = useState({ width: 1, height: 1 });
   const [snapshot, setSnapshot] = useState<Camera>(defaults);
@@ -152,8 +152,9 @@ export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCi
     const marker=counters.find(c=>Math.abs((c.x-world.x)*z)<25&&Math.abs((c.y-world.y)*z*TILT)<20);
     const army=marker?state.armies.find(a=>a.id===(marker.ids.includes(selectedArmyId??'')?selectedArmyId:marker.ids[0])):undefined;
     const nearby=army?{a:army,g:provinceGeometry.get(army.provinceId)}:undefined;
-    const hit = nearby?.g ?? (cityHit ? provinceGeometry.get(cityHit.provinceId) : null) ?? spatialIndex.hit(world);
+    const hit = selectedArmyId ? spatialIndex.hit(world) : nearby?.g ?? (cityHit ? provinceGeometry.get(cityHit.provinceId) : null) ?? spatialIndex.hit(world);
     const province = hit?.provinceId ? provinces.get(hit.provinceId) : null;
+    if(!long&&selectedArmyId&&province){onSelectProvince(province);return;}
     if(!long&&nearby&&onSelectArmy){onSelectArmy(nearby.a.id,nearby.a.provinceId);return;}
     if(!long&&cityHit&&onSelectCity){onSelectCity(cityHit.id,cityHit.provinceId);return;}
     if (province) (long ? onLongPressProvince ?? onSelectProvince : onSelectProvince)(province);
@@ -222,6 +223,7 @@ export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCi
           <GeographyLayer contextPath={contextPath} shadowPath={shadowPath} colors={colors} borders={borders} preset={preset} mode={mode} terrain={terrain} borderScale={borderScale} outerScale={outerScale} provinceBorders={provinceDetail}/>
           {occupations.map(f=><Group key={'occupied-'+f.id}><Path path={paths.get(f.id)!} color={state.countries[provinces.get(f.provinceId!)!.controllerId!]!.color} opacity={.28}/><Path key={'occupation-'+f.id} path={paths.get(f.id)!} color={state.countries[provinces.get(f.provinceId!)!.controllerId!]!.color} opacity={.55} style="stroke" strokeWidth={selectionScale}/></Group>)}
           {warBorders!==''&&<Path path={warBorders} style="stroke" color="#ed7f72" strokeWidth={selectionScale} opacity={pulse}/>}
+          {state.armies.filter(a=>a.id===selectedArmyId&&a.order).map(a=>{const points=[a.provinceId,...a.order!.route].map(id=>provinceGeometry.get(id)?.anchor).filter(Boolean);return <Path key={a.id+"-order"} path={points.map((p,i)=>`${i?"L":"M"}${p!.x},${p!.y}`).join("")} style="stroke" strokeWidth={selectionScale} color="#fff0ac"/>;})}
           {(state.movements??[]).filter(m=>state.tick-m.tick<=2&&(visibleIds.has(m.from)||visibleIds.has(m.to))).map((m,i)=>{const from=provinceGeometry.get(m.from)?.anchor,to=provinceGeometry.get(m.to)?.anchor;if(!from||!to)return null;return <Path key={'movement-'+i} path={`M${from.x},${from.y}L${to.x},${to.y}`} style="stroke" strokeWidth={selectionScale} color={state.countries[m.ownerId]!.color} opacity={pulse}/>;})}
           {!selectedPath.isEmpty() && <Path path={selectedPath} style="stroke" color="#f0db9e" strokeWidth={selectionScale} opacity={pulse} />}
           {snapshot.zoom < 8 && labels.filter(label => label.anchor.x >= bounds.left && label.anchor.x <= bounds.right && label.anchor.y >= bounds.top && label.anchor.y <= bounds.bottom).map(label => {

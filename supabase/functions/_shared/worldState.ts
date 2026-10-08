@@ -15,10 +15,10 @@ function seedForCampaign(id: string): number {
   return seed >>> 0;
 }
 /** All mutable state is newly allocated. Geometry/flag assets stay out of snapshots. */
-export function createWorldState(gameId: string, roomCode: string, playerId: string, displayName: string, campaignSeed = seedForCampaign(gameId)): GameState {
+export function createWorldState(gameId: string, roomCode: string, playerId: string, displayName: string, campaignSeed = seedForCampaign(gameId), deferred = false): GameState {
   if (!Number.isSafeInteger(campaignSeed) || campaignSeed < 0) throw new Error('Invalid campaign seed');
   const countries: Record<string, Country> = {};
-  const provinces = provinceDefinitions.map(p => ({ ...p, ownerId: p.countryId, originalOwnerId: p.countryId, controllerId: p.countryId, neighbors: [...p.neighbors], cityIds: [...p.cityIds] }));
+  const provinces = provinceDefinitions.map(({sourceRegions,...p}) => ({ ...p, ownerId: p.countryId, originalOwnerId: p.countryId, controllerId: p.countryId, neighbors: [...p.neighbors], cityIds: [...p.cityIds] }));
   const cities = cityDefinitions.map(c => ({ ...c }));
   const income = new Map<string, number>();
   for (const p of provinces) income.set(p.countryId, (income.get(p.countryId) ?? 0) + p.income);
@@ -38,7 +38,8 @@ export function createWorldState(gameId: string, roomCode: string, playerId: str
     country.income = governmentIncome(monthly, country.governmentType);
     if (troops) armies.push({ id: 'army-capital-'+definition.id, ownerId: definition.id, provinceId: capital.provinceId, troops });
   }
-  const state: GameState = { stateVersion: CURRENT_STATE_VERSION, dataset: 'modern-world-v1', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, leaders, constructions: [], armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };
+  const state: GameState = { stateVersion: CURRENT_STATE_VERSION, dataset: 'modern-world-v2', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, leaders, constructions: [], armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };
+  if(deferred)return state;
   initializePopulation(state);
   initializeReligions(state);
   initializeResources(state);
@@ -46,4 +47,13 @@ export function createWorldState(gameId: string, roomCode: string, playerId: str
   normalizeGameState(state);
   initializeEconomy(state);
   return state;
+}
+
+/** Yield between initialization stages so the native loading shell remains responsive. */
+export async function createWorldStateAsync(gameId:string,roomCode:string,playerId:string,displayName:string,onStage:(name:string)=>void=()=>{}):Promise<GameState>{
+ const yieldUI=()=>new Promise<void>(resolve=>setTimeout(resolve,0));
+ onStage("Создание стран и провинций");await yieldUI();
+ const state=createWorldState(gameId,roomCode,playerId,displayName,undefined,true);
+ for(const [name,initialize] of [["Население",initializePopulation],["Религии",initializeReligions],["Ресурсы",initializeResources],["Здания",initializeBuildings],["Армии и дипломатия",normalizeGameState],["Экономика",initializeEconomy]] as const){onStage(name);await yieldUI();initialize(state);}
+ return state;
 }

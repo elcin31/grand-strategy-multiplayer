@@ -31,13 +31,15 @@ export function assertTaxRate(value: unknown): asserts value is number {
 /** Derived from current owners/armies/buildings every time; client budget fields are never accepted. */
 export function recalcEconomy(state: GameState): void {
   if (!state.dataset) return;
-  const resources = new Map<string, number>(), buildingCosts = new Map<string, number>();
+  const resources = new Map<string, number>(), buildingCosts = new Map<string, number>(), production = new Map<string,number>(), administration = new Map<string,number>();
   const taxBase = new Map<string, number>(), tradeBase = new Map<string, number>(), development = new Map<string, number>(), population = new Map<string, number>(), troops = new Map<string, number>();
   for (const p of state.provinces) {
     if (!Object.hasOwn(state.countries, p.ownerId)) throw new Error('Unknown economic province owner');
     validMoney(p.income);
     if (p.rebellion || (p.controllerId ?? p.ownerId) !== p.ownerId) continue; // Occupation suspends local income and building upkeep.
     const modifiers = provinceBuildingModifiers(p), country = state.countries[p.ownerId]!;
+    production.set(p.ownerId,money((production.get(p.ownerId)??0)+(3*(p.buildings?.Farm??0)+12*(p.buildings?.Factory??0))*(.5+(p.development??40)/100)));
+    administration.set(p.ownerId,money((administration.get(p.ownerId)??0)+p.income*.02*(1-Math.min(.5,(p.buildings?.Administration??0)*.1))));
     resources.set(p.ownerId, money((resources.get(p.ownerId) ?? 0) + provinceProduction(p, country).revenue * (1 + modifiers.resourcePercent / 100)));
     taxBase.set(p.ownerId, money((taxBase.get(p.ownerId) ?? 0) + p.income * (1 + modifiers.taxPercent / 100)));
     tradeBase.set(p.ownerId, money((tradeBase.get(p.ownerId) ?? 0) + p.income * (1 + modifiers.tradePercent / 100)));
@@ -58,14 +60,15 @@ export function recalcEconomy(state: GameState): void {
     const meanDevelopment = people > 0 ? (development.get(c.id) ?? 0) / people : 0;
     const tradeIncome = money(rawTrade * .1 * meanDevelopment / 100 * (.5 + c.stability / 200));
     const resourceIncome = resources.get(c.id) ?? 0, buildingMaintenance = buildingCosts.get(c.id) ?? 0;
-    const monthlyIncome = money(taxIncome + tradeIncome + resourceIncome);
+    const productionIncome=production.get(c.id)??0,administrationMaintenance=administration.get(c.id)??0;
+    const monthlyIncome = money(taxIncome + tradeIncome + resourceIncome + productionIncome);
     const armyMaintenance = money((troops.get(c.id) ?? 0) / 1000 * ARMY_MAINTENANCE_PER_THOUSAND);
     const interest = money(c.debt! * MONTHLY_INTEREST);
-    const monthlyBalance = money(monthlyIncome - armyMaintenance - buildingMaintenance - interest);
+    const monthlyBalance = money(monthlyIncome - armyMaintenance - buildingMaintenance - interest - administrationMaintenance);
     const creditLimit = state.tick < c.bankruptcyUntilTick! ? 0 : money(monthlyIncome * 24);
     c.income = taxIncome;
     c.army = troops.get(c.id) ?? 0;
-    c.economy = { taxIncome, tradeIncome, resourceIncome, monthlyIncome, armyMaintenance, buildingMaintenance, interest, monthlyBalance, creditLimit };
+    c.economy = { productionIncome, administrationMaintenance, taxIncome, tradeIncome, resourceIncome, monthlyIncome, armyMaintenance, buildingMaintenance, interest, monthlyBalance, creditLimit };
   }
 }
 
@@ -73,7 +76,7 @@ export function recalcEconomy(state: GameState): void {
 export function refreshArmyBudget(c: Country): void {
   if (!c.economy) return;
   c.economy.armyMaintenance = money(c.army / 1000 * ARMY_MAINTENANCE_PER_THOUSAND);
-  c.economy.monthlyBalance = money(c.economy.monthlyIncome - c.economy.armyMaintenance - c.economy.buildingMaintenance - c.economy.interest);
+  c.economy.monthlyBalance = money(c.economy.monthlyIncome - c.economy.armyMaintenance - c.economy.buildingMaintenance - c.economy.interest - c.economy.administrationMaintenance);
 }
 
 export function initializeEconomy(state: GameState): void {

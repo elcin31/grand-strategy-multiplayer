@@ -24,7 +24,7 @@ test('every country has a linked capital, licensed offline SVG and immutable met
       assert.notEqual(country.color.toLowerCase(),getWorldCountry(neighbor)!.color.toLowerCase());
     }
   }
-  assert.equal(provinces.size,4386);
+  assert.equal(provinces.size,2924);
   assert.equal(getWorldCapital('nru')!.capitalRole,'government-seat');
 });
 test('country picker search supports Russian names, English names and ISO codes', () => {

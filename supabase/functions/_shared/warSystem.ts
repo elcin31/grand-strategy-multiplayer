@@ -96,7 +96,7 @@ function settlePeace(state:GameState,w:War,from:string,terms:PeaceTerms):void {
   for(const p of state.provinces)if(participants.has(p.ownerId)&&participants.has(p.controllerId??p.ownerId))p.controllerId=p.ownerId;
   // Relocate foreign armies to an owned province; defeated landless armies demobilize.
   const provinces=new Map(state.provinces.map(p=>[p.id,p]));
-  for(const army of state.armies){if(!participants.has(army.ownerId))continue;const p=provinces.get(army.provinceId)!;if(p.ownerId!==army.ownerId){const home=state.provinces.find(p=>p.ownerId===army.ownerId);if(home)army.provinceId=home.id;else army.troops=0;}}
+  for(const army of state.armies){if(!participants.has(army.ownerId))continue;delete army.order;const p=provinces.get(army.provinceId)!;if(p.ownerId!==army.ownerId){const home=state.provinces.find(p=>p.ownerId===army.ownerId);if(home)army.provinceId=home.id;else army.troops=0;}}
   state.armies=state.armies.filter(a=>a.troops>0);
   for(const a of w.attackers)for(const d of w.defenders){const link=diplomaticLink(state,a,d);link.truceUntilTick=state.tick+24;delete link.proposal;}
   state.warHistory!.unshift({id:w.id,endedTick:state.tick,kind:terms.kind,attackers:[...w.attackers],defenders:[...w.defenders],casualties:{...w.casualties}});state.warHistory=state.warHistory!.slice(0,20);

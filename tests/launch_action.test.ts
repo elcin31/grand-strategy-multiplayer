@@ -25,3 +25,5 @@ test('real local campaign reaches running with one start command and one navigat
  await Promise.all([gate.run(()=>t.sendCommand(current.id,{type:'START_GAME',playerId:session.playerId})),gate.run(()=>t.sendCommand(current.id,{type:'START_GAME',playerId:session.playerId}))]);
  assert.equal(current.phase,'running');assert.equal(running,1);stop();await t.leave(current.id);
 });
+
+test("ten rapid taps create exactly one real campaign with immediate loading",async()=>{let loading=false,count=0;const t=new LocalTransport();const gate=new LaunchAction(b=>loading=b,async()=>{});const pending=Array.from({length:10},()=>gate.run(async()=>{count++;const session=await t.createRoom("Ten taps");await t.leave(session.state.id);}));assert.equal(loading,true);await Promise.all(pending);assert.equal(count,1);assert.equal(loading,false);});

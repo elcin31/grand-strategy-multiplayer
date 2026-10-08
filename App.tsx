@@ -1,3 +1,4 @@
+import {traceStartup} from './src/performance/startupTrace';
 import {recordMetrics} from './src/performance/telemetry';
 import {LaunchAction} from './src/ui/launchAction';
 import {LandscapeHUD} from './src/components/LandscapeHUD';
@@ -5,7 +6,7 @@ import {SECTIONS,SECTION_LABELS,panelWidth,backAction,type Section} from './src/
 import { campaignStore } from './src/persistence/nativeCampaignStore';
 import type { CampaignEntry } from './src/persistence/campaignStore';
 import { useCallback, useMemo, useEffect, useRef, useState } from 'react';
-import { Alert, AppState, BackHandler, Keyboard, LayoutAnimation, useWindowDimensions, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, AppState, BackHandler, Keyboard, LayoutAnimation, useWindowDimensions, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { CountryPicker } from './src/components/CountryPicker';
@@ -31,7 +32,7 @@ function GameApp() {
   const [launchBusy,setLaunchBusy]=useState(false);
   const launchTapAt=useRef(0);
   const launch=useRef<LaunchAction|null>(null);
-  if(!launch.current)launch.current=new LaunchAction(busy=>{if(busy)launchTapAt.current=performance.now();setLaunchBusy(busy);},()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))),ms=>recordMetrics({tapToActionMs:ms}));
+  if(!launch.current)launch.current=new LaunchAction(busy=>{if(busy){launchTapAt.current=performance.now();traceStartup("tap");}setLaunchBusy(busy);},()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))),ms=>{traceStartup("loading painted / handler starts");recordMetrics({tapToActionMs:ms});});
   const [section,setSection]=useState<Section>('Country');
   const [mapMenuOpen,setMapMenuOpen]=useState(false);
   const [savedCampaigns,setSavedCampaigns]=useState<CampaignEntry[]>([]);
@@ -43,7 +44,7 @@ function GameApp() {
   const [transport, setTransport] = useState<MultiplayerTransport>(() => new HttpTransport(remoteUrl));
   const [state, setState] = useState<GameState | null>(null);
   latestState.current=state;
-  useEffect(()=>{if(state&&launchTapAt.current){recordMetrics({tapToScreenMs:performance.now()-launchTapAt.current});launchTapAt.current=0;}},[state?.id,state?.phase]);
+  useEffect(()=>{if(state&&launchTapAt.current){traceStartup("campaign screen committed");recordMetrics({tapToScreenMs:performance.now()-launchTapAt.current});launchTapAt.current=0;}},[state?.id,state?.phase]);
   useEffect(()=>{if(!state)void campaignStore.list().then(setSavedCampaigns).catch(()=>setSaveStatus('Ошибка чтения списка кампаний'));},[state?.id]);
   useEffect(()=>{if(!(transport instanceof LocalTransport)||!state)return;let busy=false,pending=false,lastSaved:GameState|null=null;const save=()=>{const current=latestState.current;if(!current||current.id!==state.id||current===lastSaved)return;if(busy){pending=true;return;}busy=true;void campaignStore.save(current).then(()=>{lastSaved=current;setSaveStatus('Автосохранено');}).catch(e=>setSaveStatus(e.message)).finally(()=>{busy=false;if(pending){pending=false;save();}});};const timer=setInterval(save,10000);const sub=AppState.addEventListener('change',status=>{if(status!=='active')save();});return()=>{clearInterval(timer);sub.remove();};},[state?.id,transport]);
   useEffect(()=>{if(!state)void new HttpTransport(remoteUrl).savedSessions().then(setSavedRooms).catch(()=>setConnectionStatus('Не удалось прочитать сохранённые сессии'));},[state?.id]);
@@ -100,10 +101,14 @@ function GameApp() {
   const gameStarted = Boolean(state && (state.phase === 'running' || state.phase === 'paused' || state.phase === 'finished'));
 
   const selectProvince = useCallback((province: Province) => {
+    const current=latestState.current;const army=current?.armies.find(a=>a.id===selectedArmyId);
+    if(gameStarted&&army&&army.ownerId===myCountryId&&playerId&&current){
+      void safeAction(()=>transport.sendCommand(current.id,{type:'ORDER_ARMY',playerId,armyId:army.id,provinceId:province.id}));return;
+    }
     setSelectedArmyId(null);setSelectedCityId(null);
     if (gameStarted) { setSelectedProvinceId(province.id); setSection('Context'); setPanelOpen(true); }
     else setPreviewCountryId(province.ownerId);
-  },[gameStarted]);
+  },[gameStarted,selectedArmyId,myCountryId,playerId,transport]);
   const selectArmy=useCallback((id:string,province:string)=>{setSelectedArmyId(id);setSelectedCityId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);},[]);
   const selectCity=useCallback((id:string,province:string)=>{setSelectedCityId(id);setSelectedArmyId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);},[]);
 
@@ -138,6 +143,10 @@ function GameApp() {
     };
   }, [state?.id, state?.phase, state?.speed, playerId, transport]);
 
+  useEffect(()=>{const a=state?.armies.find(a=>a.id===selectedArmyId);if(a)setSelectedProvinceId(a.provinceId);},[state?.armies,selectedArmyId]);
+
+  if(launchBusy&&!state)return <SafeAreaView style={[styles.safe,{alignItems:"center",justifyContent:"center"}]}><ActivityIndicator size="large" color="#dbc58a"/><Text accessibilityRole="alert" style={[styles.exitText,{padding:24}]}>Загрузка мира…</Text><Text style={styles.exitText}>Подготовка кампании. Повторное нажатие не требуется.</Text></SafeAreaView>;
+
   if (!state) {
     return (
       <SafeAreaView style={styles.safe}>
@@ -162,11 +171,13 @@ function GameApp() {
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="light-content" />
       <View style={styles.content}>
+        {launchBusy&&<View accessibilityRole="alert" style={{position:"absolute",top:0,bottom:0,left:0,right:0,zIndex:100,backgroundColor:"#101f2b",justifyContent:"center",alignItems:"center"}}><ActivityIndicator size="large" color="#dbc58a"/><Text style={styles.exitText}>Запуск кампании…</Text></View>}
         <View style={styles.topbar}>
           <View style={{maxWidth:gameStarted?115:220}}>
             <Text style={[styles.brand,gameStarted&&{fontSize:15}]}>DOMINION</Text>
             <Text style={styles.subbrand}>{gameStarted ? `Ход ${state.tick} · ${state.phase === 'finished' ? 'КАМПАНИЯ ЗАВЕРШЕНА' : 'КАМПАНИЯ'}` : `Комната ${state.roomCode}`}</Text>
           </View>
+          {selectedArmyId&&<Pressable accessibilityRole="button" style={styles.exitButton} onPress={()=>setSelectedArmyId(null)}><Text style={styles.exitText}>СНЯТЬ ВЫБОР АРМИИ</Text></Pressable>}
           {gameStarted&&<LandscapeHUD state={state} playerId={playerId??''} onCommand={sendCommand}/> }
           {!gameStarted && <CountryPicker state={state} onPreview={id => { setPreviewCountryId(id); setFocusCountryId(id); setPanelOpen(true); }} />}
           <Pressable style={styles.exitButton} onPress={() => setPanelOpen(!panelOpen)}><Text style={styles.exitText}>{panelOpen ? "ЗАКРЫТЬ ПАНЕЛЬ" : "УПРАВЛЕНИЕ"}</Text></Pressable>
@@ -204,7 +215,7 @@ function GameApp() {
         )}
 
         {gameStarted && (
-          <GamePanel focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedProvinceId(id);setSection('Context');setFocusCountryId(myCountryId);}}
+          <GamePanel focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedArmyId(state.armies.find(a=>a.provinceId===id&&a.ownerId===myCountryId)?.id??null);setSelectedProvinceId(id);setSection('Context');setFocusCountryId(myCountryId);}}
             state={state}
             playerId={playerId ?? ''}
             selectedProvinceId={selectedProvinceId}

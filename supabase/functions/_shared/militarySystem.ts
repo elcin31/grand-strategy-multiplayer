@@ -1,3 +1,5 @@
+import {provinceDefinitions} from './worldDefinitions.ts';
+const mergedRegions=new Map(provinceDefinitions.filter(p=>p.sourceRegions).map(p=>[p.id,p.sourceRegions!]));
 import type { Army, GameState, Province } from './gameTypes.ts';
 import { techLevel } from './technologySystem.ts';
 import { generateLeader } from './leaderGeneration.ts';
@@ -30,7 +32,10 @@ export function initializeMilitary(state: GameState): void {
   }
   for(const [id,c] of Object.entries(state.commanders)) if(id!==c.id || !Object.hasOwn(state.countries,c.countryId) || !Number.isFinite(c.skill) || c.skill<0 || c.skill>100 || typeof c.name!=='string') throw new Error('Invalid commander');
   for(const p of state.provinces) {
-    p.terrain ??= initialTerrain(p);
+    const regions=mergedRegions.get(p.id);
+    if(regions&&!p.terrainShares){const shares:Partial<Record<TerrainType,number>>={};const total=regions.reduce((n,r)=>n+Math.max(1,r.population),0);for(const r of regions){const t=initialTerrain({...p,id:r.id,development:r.development});shares[t]=(shares[t]??0)+Math.max(1,r.population)/total;}p.terrainShares=shares;}
+    p.terrain ??= p.terrainShares?Object.entries(p.terrainShares).sort((a,b)=>b[1]!-a[1]!)[0]![0] as TerrainType:initialTerrain(p);
+    if(p.terrainShares&&(Object.values(p.terrainShares).some(v=>!Number.isFinite(v)||v!<0)||Math.abs(Object.values(p.terrainShares).reduce((n,v)=>n+v!,0)-1)>1e-6))throw Error("Invalid terrain shares");
     if(!['plains','forest','mountain','desert','urban'].includes(p.terrain)) throw new Error('Invalid military terrain');
   }
   const ids=new Set<string>(), assigned=new Set<string>(), provinces=new Set(state.provinces.map(p=>p.id));

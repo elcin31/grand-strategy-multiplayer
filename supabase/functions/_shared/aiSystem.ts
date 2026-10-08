@@ -59,6 +59,9 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
   let byProvince=new Map<string,Army[]>(),byOwner=new Map<string,Army[]>();
   const indexArmies=()=>{if(armySource===s.armies&&armyCount===s.armies.length)return;armySource=s.armies;armyCount=s.armies.length;byProvince=new Map();byOwner=new Map();for(const a of s.armies){const at=byProvince.get(a.provinceId)??[];at.push(a);byProvince.set(a.provinceId,at);const own=byOwner.get(a.ownerId)??[];own.push(a);byOwner.set(a.ownerId,own);}};
   const moveIndexed:Actions['move']=(state,owner,army,to)=>{actions.move(state,owner,army,to);armySource=undefined;};
+  const assignedCommanders=new Set(s.armies.map(a=>a.commanderId).filter(Boolean));
+  const freeCommanders=new Map<string,string[]>();
+  for(const g of Object.values(s.commanders??{}))if(!assignedCommanders.has(g.id)){const list=freeCommanders.get(g.countryId)??[];list.push(g.id);freeCommanders.set(g.countryId,list);}
   const ids=Object.keys(s.countries).sort();
   for(let index=0;index<ids.length;index++){
     const id=ids[index]!,c=s.countries[id]!;if(!aiControls(s,id))continue;
@@ -110,11 +113,14 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
           if((style==='Expansionist'||style==='Militarist')&&enemy&&s.countries[enemy.target]!.army>c.army){const l=s.diplomacy?.[pairKey(id,enemy.target)];if(!l?.treaties.length&&!l?.rivals.includes(id))diplomaticAction(s,id,enemy.target,'Rival');}}
       }
     }
+    // Deterministic work budget: at most ceil(countryCount/4)*3 tactical stacks.
+    // Every country gets a slot within four ticks; treaty/peace responses above stay immediate.
+    if((index+s.tick)%4!==0)continue;
     // Retain capital garrison; spread spare stacks toward valuable threatened borders.
     indexArmies();
     const armies=[...(byOwner.get(id)??[])].sort((a,b)=>b.troops-a.troops).slice(0,3);
-    for(const army of armies){indexArmies();const origin=provinces.get(army.provinceId);if(!origin)continue;
-      if(!army.commanderId){const general=Object.values(s.commanders??{}).find(g=>g.countryId===id&&!s.armies.some(a=>a.commanderId===g.id));if(general)army.commanderId=general.id;}
+    for(const army of armies){if(army.order)continue;indexArmies();const origin=provinces.get(army.provinceId);if(!origin)continue;
+      if(!army.commanderId){const general=freeCommanders.get(id)?.shift();if(general)army.commanderId=general;}
       const targets=origin.neighbors.map(n=>provinces.get(n)!).filter(Boolean);
       const attack=targets.filter(p=>warBetween(s,id,p.controllerId??p.ownerId)&&attackRatio(s,army,p,byProvince)>=(style==='Defensive'?1.65:1.25)).sort((a,b)=>b.income-a.income)[0];
       if(attack&&(origin.id!==capital||home.length===1||(byProvince.get(capital)??[]).some(a=>a.id!==army.id&&a.ownerId===id))&&army.organization!>=55&&army.morale!>=55){moveIndexed(s,id,army.id,attack.id);continue;}

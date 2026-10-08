@@ -50,6 +50,8 @@ export interface Country {
 
 /** Monetary values are millions, with precision to $1,000. Derived forecast. */
 export interface EconomyBudget {
+  productionIncome: number;
+  administrationMaintenance: number;
   taxIncome: number;
   tradeIncome: number;
   resourceIncome: number;
@@ -66,8 +68,11 @@ export interface Province {
   rebellionCooldownUntilTick?: number;
   originalOwnerId?: string;
   terrain?: TerrainType;
+  terrainShares?: Partial<Record<TerrainType,number>>;
+  religionShares?: Record<string,number>;
   buildings?: Partial<Record<BuildingType, number>>;
   resourceDeposit?: ResourceDeposit;
+  resourceMix?: (ResourceDeposit & {weight:number})[];
   populationGrowthCarry?: number;
   monthlyPopulationGrowth?: number;
   religion?: string;
@@ -100,6 +105,7 @@ export interface Construction {
 }
 
 export interface Army {
+  order?: import("./armyOrders.ts").ArmyOrder;
   unitType?: UnitType;
   morale?: number;
   organization?: number;
@@ -170,7 +176,7 @@ export interface GameState {
   commanders?: Record<string, Commander>;
   stateVersion?: number;
   nextEntityId?: number;
-  dataset?: 'modern-world-v1';
+  dataset?: 'modern-world-v1' | 'modern-world-v2';
   campaignSeed?: number;
   cities?: City[];
   leaders?: Record<string, Leader>;
@@ -211,6 +217,8 @@ export type GameCommand =
   | { type: 'START_GAME'; playerId: string }
   | { type: 'SET_SPEED'; playerId: string; speed: GameSpeed }
   | { type: 'RECRUIT'; playerId: string; provinceId: string; troops: number }
+  | { type: 'CANCEL_ARMY_ORDER'; playerId: string; armyId: string }
+  | { type: 'ORDER_ARMY'; playerId: string; armyId: string; provinceId: string }
   | { type: 'MOVE_ARMY'; playerId: string; armyId: string; provinceId: string }
   | { type: 'CHANGE_RELIGION'; playerId: string; religionId: string }
   | { type: 'CHANGE_GOVERNMENT'; playerId: string; governmentType: GovernmentType }

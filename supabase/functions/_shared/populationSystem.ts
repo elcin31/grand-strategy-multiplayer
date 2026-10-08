@@ -1,3 +1,5 @@
+import {provinceDefinitions} from './worldDefinitions.ts';
+const incomeCalibration=new Map(provinceDefinitions.filter(p=>p.sourceRegions).map(p=>[p.id,{floor:p.sourceRegions!.length,offset:p.income-Math.max(1,Math.round(p.population/300000*(.5+p.development/100)))}]));
 import { provinceBuildingModifiers } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
@@ -59,7 +61,8 @@ export function monthlyPopulationGrowth(state: GameState): void {
     const births = Math.floor(exact);
     integer(old + births, 'overflow');
     p.population += births; p.populationGrowthCarry = exact - births; p.monthlyPopulationGrowth = births;
-    p.income = Math.max(1, Math.round(p.population / 300000 * (.5 + (p.development ?? 40) / 100)));
+    const calibration=incomeCalibration.get(p.id);
+    p.income = Math.max(calibration?.floor??1, Math.round(p.population / 300000 * (.5 + (p.development ?? 40) / 100))+(calibration?.offset??0));
     growth.set(p.id, { population: old, births });
   }
   for (const city of state.cities ?? []) {

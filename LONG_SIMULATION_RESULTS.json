@@ -11,127 +11,127 @@
   "maxWarAge": 5865,
   "maxArmies": 2317,
   "maxSnapshotBytes": 4903485,
-  "tickP95Ms": 154.14247299998533,
+  "tickP95Ms": 151.52860700001474,
   "samples": [
     {
       "tick": 1000,
       "bytes": 4500087,
-      "heapUsed": 51550840,
-      "rss": 395300864,
+      "heapUsed": 51954216,
+      "rss": 394719232,
       "armies": 257,
       "wars": 14,
       "peaceCount": 1342,
       "bankruptCountries": 2,
       "treasuryMax": 9970862.294,
-      "elapsedSeconds": 83
+      "elapsedSeconds": 98
     },
     {
       "tick": 2000,
       "bytes": 4555926,
-      "heapUsed": 52757696,
-      "rss": 426704896,
+      "heapUsed": 52798920,
+      "rss": 430891008,
       "armies": 505,
       "wars": 11,
       "peaceCount": 2668,
       "bankruptCountries": 2,
       "treasuryMax": 32678972.913,
-      "elapsedSeconds": 179
+      "elapsedSeconds": 198
     },
     {
       "tick": 3000,
       "bytes": 4590671,
-      "heapUsed": 53357600,
-      "rss": 427433984,
+      "heapUsed": 54010336,
+      "rss": 432504832,
       "armies": 676,
       "wars": 20,
       "peaceCount": 3717,
       "bankruptCountries": 2,
       "treasuryMax": 83977239.962,
-      "elapsedSeconds": 283
+      "elapsedSeconds": 297
     },
     {
       "tick": 4000,
       "bytes": 4625178,
-      "heapUsed": 53922944,
-      "rss": 432812032,
+      "heapUsed": 54066144,
+      "rss": 433573888,
       "armies": 858,
       "wars": 12,
       "peaceCount": 4758,
       "bankruptCountries": 2,
       "treasuryMax": 198371923.452,
-      "elapsedSeconds": 395
+      "elapsedSeconds": 414
     },
     {
       "tick": 5000,
       "bytes": 4681887,
-      "heapUsed": 45531264,
-      "rss": 425005056,
+      "heapUsed": 45759848,
+      "rss": 426602496,
       "armies": 1138,
       "wars": 9,
       "peaceCount": 5726,
       "bankruptCountries": 2,
       "treasuryMax": 452472684.668,
-      "elapsedSeconds": 518
+      "elapsedSeconds": 540
     },
     {
       "tick": 6000,
       "bytes": 4732450,
-      "heapUsed": 55178024,
-      "rss": 437276672,
+      "heapUsed": 56105848,
+      "rss": 462348288,
       "armies": 1413,
       "wars": 12,
       "peaceCount": 6611,
       "bankruptCountries": 2,
       "treasuryMax": 1014762400.551,
-      "elapsedSeconds": 647
+      "elapsedSeconds": 674
     },
     {
       "tick": 7000,
       "bytes": 4787263,
-      "heapUsed": 45844544,
-      "rss": 428163072,
+      "heapUsed": 46183976,
+      "rss": 427679744,
       "armies": 1703,
       "wars": 13,
       "peaceCount": 7428,
       "bankruptCountries": 2,
       "treasuryMax": 2258222833.241,
-      "elapsedSeconds": 780
+      "elapsedSeconds": 812
     },
     {
       "tick": 8000,
       "bytes": 4824012,
-      "heapUsed": 56432776,
-      "rss": 438775808,
+      "heapUsed": 56866008,
+      "rss": 438087680,
       "armies": 1907,
       "wars": 10,
       "peaceCount": 8235,
       "bankruptCountries": 2,
       "treasuryMax": 5012201319.145,
-      "elapsedSeconds": 917
+      "elapsedSeconds": 941
     },
     {
       "tick": 9000,
       "bytes": 4865175,
-      "heapUsed": 46748096,
-      "rss": 429469696,
+      "heapUsed": 47089704,
+      "rss": 429187072,
       "armies": 2117,
       "wars": 9,
       "peaceCount": 9027,
       "bankruptCountries": 2,
       "treasuryMax": 11122205970.529,
-      "elapsedSeconds": 1059
+      "elapsedSeconds": 1064
     },
     {
       "tick": 10000,
       "bytes": 4903485,
-      "heapUsed": 56995128,
-      "rss": 443789312,
+      "heapUsed": 58060296,
+      "rss": 438964224,
       "armies": 2317,
       "wars": 10,
       "peaceCount": 9744,
       "bankruptCountries": 2,
       "treasuryMax": 24704168563.76,
-      "elapsedSeconds": 1203
+      "elapsedSeconds": 1178
     }
   ],
   "note": "Full-world deterministic AI simulation; seeded initial legal war, no physical device or network claim"

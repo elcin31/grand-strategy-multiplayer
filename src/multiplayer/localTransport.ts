@@ -1,6 +1,7 @@
+import {traceStartup} from '../performance/startupTrace';
 import {cloneGameState} from '../../supabase/functions/_shared/cloneGameState';
 import {recordMetrics} from '../performance/telemetry';
-import { createWorldState } from '../../supabase/functions/_shared/worldState';
+import { createWorldStateAsync } from '../../supabase/functions/_shared/worldState';
 import { applyCommand } from '../engine/gameEngine';
 import { GameCommand, GameState } from '../types/game';
 import { MultiplayerTransport, TransportSession, Unsubscribe } from './transport';
@@ -22,7 +23,7 @@ export class LocalTransport implements MultiplayerTransport {
 
   async createRoom(displayName: string): Promise<TransportSession> {
     const roomCode = randomCode();
-    const state = createWorldState('game-'+roomCode.toLowerCase(), roomCode, 'local-player', displayName.trim() || 'Игрок 1');
+    const state = await createWorldStateAsync('game-'+roomCode.toLowerCase(), roomCode, 'local-player', displayName.trim() || 'Игрок 1',stage=>traceStartup(stage));
     state.players[0]!.displayName = displayName.trim() || 'Игрок 1';
     rooms.set(state.id, state);
     this.playerIds.set(state.id, 'local-player');
@@ -44,7 +45,7 @@ export class LocalTransport implements MultiplayerTransport {
     const state = rooms.get(gameId);
     if (!state) throw new Error('Комната не существует');
     const started=performance.now();
-    const next = applyCommand(state, command);
+    const next = applyCommand(state, command, true);
     if(command.type==='ADVANCE_TICK')recordMetrics({simulationMs:performance.now()-started});
     rooms.set(gameId, next);
     emit(next);

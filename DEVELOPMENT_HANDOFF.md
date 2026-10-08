@@ -1,10 +1,22 @@
-# ACTIVE PASS 2 — optimized v3, 2026-10-07
+# ACTIVE PASS 3 — optimized v4, 2026-10-08
+
+User retested v3: lag and delayed launch persist. Branch performance-pass-3; base runtime 416b0b7 plus locally preserved v3 reports. Work only in elcin31/grand-strategy-multiplayer and dedicated backend dfjsnjxnyjspwugjguhq. AssetMind untouched.
+
+Implemented 4,386 -> 2,924 province contraction (all 195 countries / 7,214 cities / exact population retained), explicit modern-world-v2 dataset boundary, source-region resource mixes and terrain/religion profiles, calibrated province income, multi-step authoritative ORDER_ARMY / CANCEL_ARMY_ORDER with per-step permissions, direct map targeting and route line, productive building revenue / administration ledger, construction catalogue and progress, relations cooldown UI, staged campaign/map initialization and bounded startup trace, local trusted reducer avoiding repeated migrations, deterministic four-tick tactical AI budget and commander lookup.
+
+Local: 161 JS tests pass; strict TS check required after latest edits. Python importer locally skipped because Shapely unavailable in current runtime; CI installs pinned dependency. BENCHMARK_PASS3.json / PROFILE_PASS3.json hold host measurements. APK v4 NOT built or accepted yet. Do not deliver v3 renamed.
+
+NEXT: commit/publish this branch using Git Data API if CLI push has no credentials; deploy both Edge Functions from exact source after regressions; run live backend QA and scoped test-room cleanup; await Android release CI / 10,000 ticks / native 30-minute stress; fix any real failures, download/verify embedded release APK, finalize reports and main, save/attach Dominion-optimized-v4-release.apk. Stop after delivery. Old v1 campaigns remain untouched and require v3 to open; v4 explicitly rejects incompatible topology.
+
+---
+
+# COMPLETED PASS 2 — optimized v3, 2026-10-07
 
 User reopened performance work after testing v2 on Redmi Note 12. Base a9d1d78. Branch performance-pass-2. Work only in elcin31/grand-strategy-multiplayer. AssetMind untouched.
 
 Implemented: fixed launch dock/latch/loading and one-tap native test; deep campaign tree clone; 195-country merged render LOD (all 4,386 gameplay provinces retained with explicit rationale in PERFORMANCE_REPORT); ownership/controller selectors, immutable city index reuse, text/label budgets, AI indexed garrison/urgency, developer input timing. 0.5.0 (5) release workflow names file Dominion-optimized-v3-release.apk; 30-minute native soak. No backend schema/deployment change required; dedicated production endpoint unchanged.
 
-NEXT: await/fix release CI on performance-pass-2, inspect native screenshots and first-tap/soak evidence, fast-forward main after acceptance, download/verify/save and attach exact v3 APK. Never deliver old v2 renamed. Record exact SHA/run/artifact/hash and report limitations. Stop after final APK delivery.
+Final runtime source: 416b0b70374ffc2f9eb84e238213bc389f19782f. Release workflow 37576520835 all gates PASS (native repeat job 112740679221); artifact 11463536915; native evidence 11478246984. 156 JS tests, strict TS, 3 Python tests, 10,000 ticks/10 restores, 1,847.95-second native stress. Dedicated live backend QA 37607813987 PASS and its isolated room cleaned. APK verified and saved for direct delivery: Dominion-optimized-v3-release.apk, SHA-256 b40976297cf5ad91cde6ec0ae761b3d56596fd53f06090ac393fb71d5f6d55ab. Reports after runtime source do not change the APK. Stop after delivery; await user Balanced benchmark from real Redmi Note 12. Do not claim real-device FPS or province/save-count reduction.
 
 # PERFORMANCE OPTIMIZATION SESSION — COMPLETED 2026-10-07
 

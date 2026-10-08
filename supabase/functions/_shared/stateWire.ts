@@ -20,14 +20,14 @@ function restore(row:Row,definition:unknown,keys:string[]):Row{
 export interface WireResponse{state:GameState;checksum?:string;stateEncoding?:'dynamic-v1';wireChecksum?:string}
 /** Opt-in protocol. Old clients keep full snapshots; mutable gameplay fields always travel. */
 export function encodeSnapshot<T extends WireResponse>(response:T):T&WireResponse{
- if(response.state.dataset!=='modern-world-v1')return response;
+ if(response.state.dataset!=='modern-world-v2')return response;
  const s=response.state;
  const state={...s,countries:Object.fromEntries(Object.entries(s.countries).map(([id,c])=>[id,strip(c as unknown as Row,countries.get(id),countryKeys)])),provinces:s.provinces.map(p=>strip(p as unknown as Row,provinces.get(p.id),provinceKeys)),cities:s.cities?.map(c=>strip(c as unknown as Row,cities.get(c.id),cityKeys))} as unknown as GameState;
  return{...response,state,checksum:response.checksum??stateChecksum(s),stateEncoding:'dynamic-v1',wireChecksum:stateChecksum(state)};
 }
 export function decodeSnapshot<T extends WireResponse>(response:T):T{
  if(!response.stateEncoding)return response;
- if(response.stateEncoding!=='dynamic-v1'||response.state.dataset!=='modern-world-v1'||!response.wireChecksum||stateChecksum(response.state)!==response.wireChecksum)throw new Error('Invalid dynamic snapshot');
+ if(response.stateEncoding!=='dynamic-v1'||response.state.dataset!=='modern-world-v2'||!response.wireChecksum||stateChecksum(response.state)!==response.wireChecksum)throw new Error('Invalid dynamic snapshot');
  const s=response.state;
  const state={...s,countries:Object.fromEntries(Object.entries(s.countries).map(([id,c])=>[id,restore(c as unknown as Row,countries.get(id),countryKeys)])),provinces:s.provinces.map(p=>restore(p as unknown as Row,provinces.get(p.id),provinceKeys)),cities:s.cities?.map(c=>restore(c as unknown as Row,cities.get(c.id),cityKeys))} as unknown as GameState;
  return{...response,state};

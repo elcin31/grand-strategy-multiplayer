@@ -28,6 +28,7 @@ const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).t
 const currency = (value: number) => `${value < 0 ? '−' : ''}$${Math.abs(value) >= 1000 ? (Math.abs(value)/1000).toFixed(1)+'B' : Math.abs(value).toFixed(3).replace(/\.?0+$/, '')+'M'}`;
 
 export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
+  const [buildOpen,setBuildOpen]=useState(false);
   const [selectedArmyId, setSelectedArmyId] = useState<string | null>(null);
   const [religionOpen, setReligionOpen] = useState(section==='Religion');
   const [governmentOpen, setGovernmentOpen] = useState(section==='Government');
@@ -90,6 +91,8 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
       {economyOpen && budget && <View style={styles.card}>
         <Text style={styles.eyebrow}>МЕСЯЧНЫЙ БЮДЖЕТ</Text>
         <Text style={styles.hint}>Налоги: {nation.taxRate}% · {currency(budget.taxIncome)}</Text>
+        <Text style={styles.hint}>Производство зданий: {currency(budget.productionIncome)}</Text>
+        <Text style={styles.hint}>Управление: {currency(budget.administrationMaintenance)}</Text>
         <Text style={styles.hint}>Торговля: {currency(budget.tradeIncome)}</Text>
         {state.provinces.some(p => p.resourceDeposit) && <>
           <Text style={styles.hint}>Ресурсы: {currency(budget.resourceIncome)} / мес.</Text>
@@ -180,14 +183,15 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
             </View>
 
             <Text style={styles.hint}>Развитие: {selected.development??40}/100 · Население провинции: {compact(selected.population)} · рост +{compact(selected.monthlyPopulationGrowth ?? 0)}/мес.</Text>
-            {selected.resourceDeposit && production && <Text style={styles.hint}>{RESOURCES[selected.resourceDeposit.type].name} · богатство {selected.resourceDeposit.richness}/100 · выпуск {production.units.toFixed(1)} ед./мес. · {currency(production.revenue)}/мес.</Text>}
+            {selected.resourceDeposit && production && <Text style={styles.hint}>{(selected.resourceMix??[selected.resourceDeposit]).map(r=>RESOURCES[r.type].name).join(", ")} · богатство {selected.resourceDeposit.richness}/100 · выпуск {production.units.toFixed(1)} ед./мес. · {currency(production.revenue)}/мес.</Text>}
             {selectedCities.map(city => <Text key={city.id} style={styles.owner}>{city.isCapital ? '★ Столица · ' : city.isRegionalCapital?'Региональный центр · ':''}{city.name} · {compact(city.population)} · развитие {city.development}</Text>)}
 
             {state.dataset && <>
               <Text style={styles.sectionTitle}>ЗДАНИЯ</Text>
+              {isOwnProvince&&<Pressable accessibilityRole="button" accessibilityLabel="Строить" style={styles.secondaryButton} onPress={()=>setBuildOpen(!buildOpen)}><Text style={styles.secondaryText}>СТРОИТЬ {buildOpen?"▴":"▾"}</Text></Pressable>}
               {completedBuildings.length === 0 ? <Text style={styles.muted}>Построенных зданий нет</Text> : <View style={styles.buildingList}>{completedBuildings.map(type => <View key={type} style={styles.buildingPill}><Text style={styles.buildingPillText}>{BUILDINGS[type].name} · ур. {selected.buildings?.[type]}</Text></View>)}</View>}
-              {selectedConstruction && <Text style={styles.hint}>Строится: {BUILDINGS[selectedConstruction.buildingType].name} ур. {selectedConstruction.targetLevel} · осталось {Math.max(0, selectedConstruction.completeTick-state.tick)} мес.</Text>}
-              {isOwnProvince && <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.routes}>
+              {selectedConstruction && <Text style={styles.hint}>Строится: {BUILDINGS[selectedConstruction.buildingType].name} ур. {selectedConstruction.targetLevel} · {Math.min(100,Math.round(100*(state.tick-selectedConstruction.startedTick)/(selectedConstruction.completeTick-selectedConstruction.startedTick)))}% · осталось {Math.max(0, selectedConstruction.completeTick-state.tick)} мес.</Text>}
+              {isOwnProvince && buildOpen && <View style={{gap:8}}>
                 {BUILDING_TYPES.map(type => {
                   const definition = BUILDINGS[type];
                   const currentLevel = selected.buildings?.[type] ?? 0;
@@ -204,11 +208,13 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
                   >
                     <Text style={styles.govName}>{definition.name}</Text>
                     <Text style={styles.govDetails}>Уровень {currentLevel}/{definition.maxLevel}</Text>
+                    <Text style={styles.govDetails}>{Object.entries(definition.modifiers).map(([key,value])=>`${({taxPercent:"Налоги, %",tradePercent:"Торговля, %",resourcePercent:"Добыча, %",manpowerPercent:"Резерв, %",researchPercent:"Исследования, %",defensePercent:"Защита, %",populationGrowthPercent:"Рост населения, %",stabilityPerYear:"Стабильность / год",unrestPerYear:"Беспорядки / год"} as Record<string,string>)[key]??key}: ${value!>0?"+":""}${value}`).join(" · ")}</Text>
                     <Text style={styles.govDetails}>Содержание {currency(definition.maintenance)}/мес.</Text>
+                    {(type==="Farm"||type==="Factory")&&<Text style={styles.govDetails}>Выпуск +{currency((type==="Farm"?3:12)*(.5+(selected.development??40)/100))}/мес. до содержания</Text>}
                     <Text style={styles.routeAction}>{quote ? `${currency(quote.cost)} · ${quote.buildTime} мес.` : 'МАКСИМУМ'}</Text>
                   </Pressable>;
                 })}
-              </ScrollView>}
+              </View>}
             </>}
 
             {state.dataset && <MilitaryPanel state={state} playerId={playerId} onCommand={onCommand} province={selected} army={state.armies.find(a=>a.id===focusedArmyId&&a.provinceId===selected.id)??primaryArmy} />}
@@ -243,7 +249,7 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
                         key={neighbor.id}
                         disabled={!primaryArmy}
                         style={[styles.route, enemy && styles.routeEnemy, !primaryArmy && styles.disabled]}
-                        onPress={() => primaryArmy && onCommand({ type: 'MOVE_ARMY', playerId, armyId: primaryArmy.id, provinceId: neighbor.id })}
+                        onPress={() => primaryArmy && onCommand({ type: 'ORDER_ARMY', playerId, armyId: primaryArmy.id, provinceId: neighbor.id })}
                       >
                         <Text style={styles.routeName}>{neighbor.name}</Text>
                         <Text style={[styles.routeAction, enemy && styles.attackText]}>{!primaryArmy ? 'НЕТ АРМИИ' : enemy ? 'АТАКОВАТЬ' : 'ПЕРЕМЕСТИТЬ'}</Text>

@@ -1,3 +1,5 @@
+import {provinceDefinitions} from './worldDefinitions.ts';
+const sourceRegions=new Map(provinceDefinitions.filter(p=>p.sourceRegions).map(p=>[p.id,p.sourceRegions!]));
 import { provinceBuildingModifiers } from './buildingSystem.ts';
 import { techLevel } from './technologySystem.ts';
 import type { Country, GameState, Province } from './gameTypes.ts';
@@ -40,6 +42,9 @@ export function initializeResources(state: GameState): void {
   for (const p of state.provinces) {
     if (p.resourceDeposit === undefined) p.resourceDeposit = initialDeposit(p.id, state.campaignSeed!);
     assertDeposit(p.resourceDeposit);
+    const sources=sourceRegions.get(p.id);
+    if(sources && p.resourceMix===undefined)p.resourceMix=sources.map(r=>({...initialDeposit(r.id,state.campaignSeed!),weight:r.income/sources.reduce((n,v)=>n+v.income,0)}));
+    if(p.resourceMix){if(!Array.isArray(p.resourceMix)||p.resourceMix.length>4||Math.abs(p.resourceMix.reduce((n,r)=>n+r.weight,0)-1)>1e-6)throw Error("Invalid resource mix");for(const r of p.resourceMix){assertDeposit({type:r.type,richness:r.richness});if(!Number.isFinite(r.weight)||r.weight<=0||r.weight>1)throw Error("Invalid resource weight");}}
   }
 }
 /** Production is automatically sold each month. Units and fixed prices are game abstractions. */
@@ -49,8 +54,10 @@ export function provinceProduction(p: Province, country: Country): { units: numb
   const development = p.development ?? 40, unrest = p.unrest ?? 0;
   if (![development, unrest, country.technology].every(n => Number.isFinite(n) && n >= 0 && n <= 100) || !Number.isFinite(p.income) || p.income < 0) throw new Error('Invalid resource production inputs');
   // Province base output is stable; ownership controls recipient, not the deposit.
-  const units = Math.round(p.income * p.resourceDeposit.richness / 100 * (.5 + development / 100) * (.5 + country.technology / 100) * (1 - unrest / 200) * (1 + techLevel(country, 'Industry') * .05) * 1000) / 1000;
-  const revenue = Math.round(units * RESOURCES[p.resourceDeposit.type].price * 1000) / 1000;
+  const richness=p.resourceMix?.reduce((sum,r)=>sum+r.richness*r.weight,0)??p.resourceDeposit.richness;
+  const value=p.resourceMix?.reduce((sum,r)=>sum+r.richness*r.weight*RESOURCES[r.type].price,0)??richness*RESOURCES[p.resourceDeposit.type].price;
+  const units = Math.round(p.income * richness / 100 * (.5 + development / 100) * (.5 + country.technology / 100) * (1 - unrest / 200) * (1 + techLevel(country, 'Industry') * .05) * 1000) / 1000;
+  const revenue = Math.round(units * value / richness * 1000) / 1000;
   if (![units, revenue].every(n => Number.isFinite(n) && n >= 0 && n <= Number.MAX_SAFE_INTEGER / 1000)) throw new Error('Resource production overflow');
   return { units, revenue };
 }
@@ -59,10 +66,13 @@ export function resourceReport(state: GameState, countryId: string): { type: Res
   if (!country || country.id !== countryId) throw new Error('Unknown resource country');
   const rows = new Map(RESOURCE_TYPES.map(type => [type, { type, units: 0, revenue: 0 }]));
   for (const p of state.provinces) if (p.ownerId === countryId && (p.controllerId ?? p.ownerId) === countryId && !p.rebellion && p.resourceDeposit) {
-    const row = rows.get(p.resourceDeposit.type)!;
-    const production = provinceProduction(p, country);
-    row.units = Math.round((row.units + production.units) * 1000) / 1000;
-    row.revenue = Math.round((row.revenue + production.revenue * (1 + provinceBuildingModifiers(p).resourcePercent / 100)) * 1000) / 1000;
+    for(const r of p.resourceMix??[{...p.resourceDeposit,weight:1}]){
+      const row=rows.get(r.type)!;const production=provinceProduction({...p,income:p.income*r.weight,resourceDeposit:{type:r.type,richness:r.richness},resourceMix:undefined},country);
+      row.units+=production.units;row.revenue+=production.revenue*(1+provinceBuildingModifiers(p).resourcePercent/100);
+    }
   }
-  return [...rows.values()];
+  const result=[...rows.values()];
+  const total=state.provinces.reduce((sum,p)=>p.ownerId===countryId&&(p.controllerId??p.ownerId)===countryId&&!p.rebellion?Math.round((sum+provinceProduction(p,country).revenue*(1+provinceBuildingModifiers(p).resourcePercent/100))*1000)/1000:sum,0);
+  const row=result.find(r=>r.revenue>0);if(row)row.revenue+=total-result.reduce((sum,r)=>sum+r.revenue,0);
+  return result;
 }

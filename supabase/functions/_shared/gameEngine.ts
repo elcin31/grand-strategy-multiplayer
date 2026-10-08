@@ -1,3 +1,4 @@
+import {setArmyOrder,advanceArmyOrders} from './armyOrders.ts';
 import {cloneGameState} from './cloneGameState.ts';
 import {recordMovement} from './movementHistory.ts';
 import { runStrategicAI } from './aiSystem.ts';
@@ -134,10 +135,10 @@ function runAi(state: GameState) {
 }
 function checkWinner(state: GameState) { if (new Set(state.provinces.map((province) => province.ownerId)).size === 1) state.phase = 'finished'; }
 
-export function applyCommand(state: GameState, command: GameCommand): GameState {
+export function applyCommand(state: GameState, command: GameCommand, validatedLocalState = false): GameState {
   assertGameCommand(command, Object.keys(state.countries));
   const next = clone(state);
-  initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);
+  if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   switch (command.type) {
     case 'SET_TAX_RATE':
     case 'BORROW':
@@ -226,6 +227,15 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
       if (command.type === 'RECRUIT_UNIT' && !next.dataset) throw new Error('Нужна современная кампания');
       recruit(next, player.countryId, province, command.troops, command.type === 'RECRUIT_UNIT' ? command.unitType : 'Infantry'); return next;
     }
+    case 'ORDER_ARMY':
+    case 'CANCEL_ARMY_ORDER': {
+      if (!['running','paused'].includes(next.phase)) throw Error('Сначала начните кампанию');
+      const player=getPlayer(next,command.playerId),army=next.armies.find(a=>a.id===command.armyId);
+      if(!player.countryId||!army||army.ownerId!==player.countryId)throw Error('Можно отдавать приказы только своей армии');
+      if(command.type==='CANCEL_ARMY_ORDER')delete army.order;
+      else setArmyOrder(next,player.countryId,army.id,command.provinceId);
+      return next;
+    }
     case 'MOVE_ARMY': {
       if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId); if (!player.countryId) throw new Error('Страна не выбрана');
@@ -261,6 +271,7 @@ export function applyCommand(state: GameState, command: GameCommand): GameState 
     case 'ADVANCE_TICK': {
       if (next.phase !== 'running' || next.speed === 0) return next;
       next.tick += 1; next.month += 1; if (next.month > 12) { next.month = 1; next.year += 1; }
+      advanceArmyOrders(next,resolveMovement);
       completeConstructions(next);
       monthlyDiplomacy(next);
       monthlyResearch(next);

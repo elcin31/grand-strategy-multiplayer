@@ -15,7 +15,7 @@ const world = () => createWorldState('world-qa', 'WORLD1', 'host', 'Test', 98765
 test('new campaigns contain every country, real provinces/cities and exact population totals', () => {
   const state = world(), provinces = new Map(state.provinces.map(p => [p.id, p])), cities = new Map(state.cities!.map(c => [c.id, c]));
   assert.equal(Object.keys(state.countries).length, worldCountries.length);
-  assert.equal(state.provinces.length, 4386); assert.equal(state.cities!.length, 7214);
+  assert.equal(state.provinces.length, 2924); assert.equal(state.cities!.length, 7214);
   assert.equal(provinces.size,state.provinces.length); assert.equal(cities.size,state.cities!.length);
   for (const country of Object.values(state.countries)) {
     const owned = state.provinces.filter(p => p.ownerId === country.id);
@@ -83,7 +83,7 @@ test('world gameplay pays for recruitment, respects land adjacency, and keeps a 
   assert.throws(()=>applyServerCommand(state,{type:'MOVE_ARMY',playerId:'host',armyId:army.id,provinceId:before.armies.find(a=>a.ownerId==='nzl')!.provinceId},'host'));
 });
 test('GPU world scene has valid anchors, capital markers, cached geometry and viewport LOD', () => {
-  const scene=mapSceneFor(world()); assert.equal(scene.provinceGeometry.size,4386);
+  const scene=mapSceneFor(world()); assert.equal(scene.provinceGeometry.size,2924);
   assert.equal(scene,mapSceneFor(world())); assert.equal(scene.cities.length,7214);
   for (const feature of scene.provinceGeometry.values()) assert.ok(contains(feature,feature.anchor),feature.id);
   assert.equal(scene.cities.filter(c=>c.capital).length,195);
@@ -94,7 +94,7 @@ test('GPU world scene has valid anchors, capital markers, cached geometry and vi
 });
 test('offline transport actually creates the modern world campaign', async()=> {
   const transport=new LocalTransport();const session=await transport.createRoom('Test');
-  assert.equal(session.state.dataset,'modern-world-v1');assert.equal(Object.keys(session.state.countries).length,195);
+  assert.equal(session.state.dataset,'modern-world-v2');assert.equal(Object.keys(session.state.countries).length,195);
   await transport.sendCommand(session.state.id,{type:'SELECT_COUNTRY',playerId:session.playerId,countryId:'nru'});
   await transport.leave(session.state.id);
 });

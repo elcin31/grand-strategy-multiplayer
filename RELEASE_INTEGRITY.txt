@@ -1,4 +1,4 @@
-package: name='com.elcin31.grandstrategymultiplayer' versionCode='3' versionName='0.3.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'
+package: name='com.elcin31.grandstrategymultiplayer' versionCode='5' versionName='0.5.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'
 sdkVersion:'24'
 targetSdkVersion:'36'
 uses-permission: name='android.permission.INTERNET'
@@ -140,5 +140,5 @@ V2 Signer: public key SHA-256 digest: 06104aa0b28fac286bae06b08313ac69c37c35a646
 V2 Signer: public key SHA-1 digest: 88325602a013a12d5ac13516c609aa57ce9e2234
 V2 Signer: public key MD5 digest: 49921988ad9941656cd9b95203196f17
 
-PASS: release manifest, version 0.3.0 (3), landscape, embedded production backend, verified signature
-9a744de9c7c87861a93e18bdabfd38c10cc37ca4020b98b1450e1c6dde104b6c  android/app/build/outputs/apk/release/app-release.apk
+PASS: release manifest, version 0.5.0 (5), landscape, embedded production backend, verified signature
+b40976297cf5ad91cde6ec0ae761b3d56596fd53f06090ac393fb71d5f6d55ab  android/app/build/outputs/apk/release/app-release.apk

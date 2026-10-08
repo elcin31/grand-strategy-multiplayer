@@ -1,3 +1,28 @@
+# Dominion 0.5.0 (5) — optimized v3 verified release
+
+Runtime source: 416b0b70374ffc2f9eb84e238213bc389f19782f, branch performance-pass-2.
+Release workflow 37576520835: all three jobs PASS. Final native job 112740679221 passed on repeat; native artifact 11478246984 (ZIP SHA-256 e73a426f0150638a8bf93247da0299dc8a39765778f53ee2ade954fbb003b356). The first attempt lost the emulator connection (`adb: device offline`) and is not counted as a pass. The repeat tested the unchanged APK from source 416b0b7.
+
+- File: Dominion-optimized-v3-release.apk.
+- Artifact 11463536915; ZIP SHA-256 ffa413bb60c6e5aaecf0729fc2f3aa497b3e34748cd4b58deb744128d690353f.
+- APK: 139,684,422 bytes; SHA-256 b40976297cf5ad91cde6ec0ae761b3d56596fd53f06090ac393fb71d5f6d55ab.
+- Embedded JS: 11,390,840 bytes; all four ABI Hermes/Skia libraries verified locally by scripts/verify-apk.py.
+- CI binary gate: non-debuggable release, version 0.5.0 (5), landscape, valid v2 signature, dedicated production endpoint dfjsnjxnyjspwugjguhq.supabase.co. Existing signing certificate retained for sideload updates.
+- Local/CI regressions: 156 JS tests; strict TypeScript; 3 Python tests; map/world benchmarks.
+- Full simulation: 10,000 ticks, 10 save/restore equality checks, 9,744 peace settlements, 9,480 battles, max 2,317 armies. Seeded gameplay totals equal the earlier preserved long-run baseline. Final report in LONG_SIMULATION_RESULTS.json.
+- Host tick p95 151.53ms; elapsed 1,178 seconds. Observed checkpoint heap 45.8–58.1MB and RSS 394.7–462.3MB. These are software-host measurements, not Android FPS, native peak memory, battery or thermal tests.
+- Gameplay graph remains 4,386 provinces / 7,214 cities / 195 countries. Render-only LOD reduces world silhouettes to 195; no campaign data migration or save-size reduction is claimed.
+
+Dedicated production backend QA: run 37607813987 PASS (eight players, auth/spoof/input guards, idempotency/CAS, economy, diplomacy, save/reconnect and host recovery). Exact isolated room 6256f243-4506-4504-90af-eeae26412ef2 removed with a WORLD ECONOMY QA membership guard; room/player/receipt counts verified zero. No user rooms touched.
+
+- Native acceptance: exactly one singleplayer tap and one Start tap; all four presets/twelve modes, camera inputs, commands, five layouts, offline process/reboot recovery and detached 12-tick benchmark PASS. Continuous render/simulation/autosave stress: 1,847.95 seconds; reached campaign tick 1,473; no fatal JS/native logs.
+- Thirty emulator PSS samples: 579,918–849,556 KiB; first 739,331, last 676,190. No monotonic growth in this window; not proof of absence of all leaks or physical peak RAM.
+- Software SwiftShader emulator remained slow: final cumulative gfxinfo p50/p95/p99 150/300/450ms and 92.92% janky frames; benchmark overlay sampled UI 8 FPS / 122.2ms. These are recorded limitations, not Redmi or GPU FPS and not a claim of smooth frame pacing. Physical Balanced acceptance remains pending user testing.
+
+Native screenshots confirm launch controls are fully visible outside scrollable content; logs contain exactly one singleplayer tap and one Start tap before entering the running campaign.
+
+---
+
 # Dominion 0.4.0 (4) — optimized release report
 
 ## Build

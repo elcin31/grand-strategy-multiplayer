@@ -33,7 +33,7 @@ def command(p,kind,expected=200,**fields):
 for i in range(7):players.append(request('game-room',{'action':'join','roomCode':host['state']['roomCode'],'displayName':'QA guest '+str(i)})[0])
 request('game-room',{'action':'join','roomCode':host['state']['roomCode'],'displayName':'Ninth QA'},400)
 heartbeat();s=snapshot();assert len(s['state']['players'])==8
-assert len(s['state']['countries'])==195 and len(s['state']['provinces'])==4386 and len(s['state']['cities'])==7214
+assert len(s['state']['countries'])==195 and len(s['state']['provinces'])==2924 and len(s['state']['cities'])==7214
 request('game-room',{'action':'reconnect',**auth(host),'token':'a'*43},401)
 command(players[1],'SET_READY',400,ready=True)
 spoof=envelope(players[1],{'type':'SELECT_COUNTRY','playerId':host['playerId'],'countryId':'germany'});request('game-command',spoof,400)

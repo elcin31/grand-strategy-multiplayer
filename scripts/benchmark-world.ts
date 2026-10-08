@@ -19,7 +19,7 @@ for(let i=0;i<ticks;i++){
  for(const c of Object.values(state.countries)){
   for(const n of [c.debt,c.bankruptcyCount,c.bankruptcyUntilTick])if(!Number.isFinite(n)||n!<0)throw Error('Invalid financial state');
   const b=c.economy!;for(const n of Object.values(b))if(!Number.isFinite(n))throw Error('Invalid financial budget');
-  if(b.monthlyIncome!==Math.round((b.taxIncome+b.tradeIncome+b.resourceIncome)*1000)/1000||b.monthlyBalance!==Math.round((b.monthlyIncome-b.armyMaintenance-b.buildingMaintenance-b.interest)*1000)/1000)throw Error('Inconsistent financial budget');
+  if(b.monthlyIncome!==Math.round((b.taxIncome+b.tradeIncome+b.resourceIncome+b.productionIncome)*1000)/1000||b.monthlyBalance!==Math.round((b.monthlyIncome-b.armyMaintenance-b.buildingMaintenance-b.interest-b.administrationMaintenance)*1000)/1000)throw Error('Inconsistent financial budget');
   if(b.armyMaintenance!==Math.round(c.army/1000*1.25*1000)/1000)throw Error('Inconsistent army upkeep');
  }
  for(const c of Object.values(state.countries))for(const n of [c.technology,c.stability,c.unrest,c.religiousUnity])if(!Number.isFinite(n)||n!<0||n!>100)throw Error('Invalid capped country value');
