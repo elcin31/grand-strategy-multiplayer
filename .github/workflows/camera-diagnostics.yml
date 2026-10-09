@@ -1,0 +1,37 @@
+name: Camera native failure diagnostics
+on:
+  push:
+    branches: [camera-diagnostics]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: elcin31/grand-strategy-multiplayer
+          run-id: 37952330317
+          name: android-smoke-evidence
+          path: evidence
+      - name: Inspect fatal logs and mounted screen
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64,re
+          root=Path('evidence')
+          print('FILES', [p.name for p in root.iterdir()])
+          log=(root/'logcat.txt').read_text()
+          lines=log.splitlines()
+          for i,line in enumerate(lines):
+            if re.search(r'JavascriptException|FATAL|ReactNativeJS.*(Error|Warning)|Exception|Unable to|Surface|TypeError',line):
+              print('\n'.join(lines[max(0,i-2):i+9]))
+          for p in root.glob('*xml'):
+            if p.name.startswith('01') or 'single' in p.name or 'loading' in p.name:
+              print('XML',p.name,p.read_text())
+          for p in root.glob('*png'):
+            if p.name.startswith('01'):
+              print('DOMINION_SCREENSHOT_B64='+base64.b64encode(p.read_bytes()).decode())
+          PY
