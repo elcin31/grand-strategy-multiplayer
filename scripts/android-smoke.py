@@ -228,7 +228,20 @@ assert commander_name in read_scrolling('Командир: '), 'Commander assign
 root=hierarchy('commander-art');screenshot('commander-art')
 assert any(n.get('content-desc')=='Портрет вымышленного полководца: '+commander_name for n in root.iter('node')), 'Assigned commander portrait missing'
 # Expansion 2.0: actual Canvas marker/flag touch regression, independent of row commands.
-click_scrolling('ПЕРЕМЕСТИТЬ')
+def click_owned_route():
+    # The route caption is a 13px TextView inside a 58px clickable control.
+    # Validate and tap the actual control, including ScrollView clipping bounds.
+    for attempt in range(18):
+        tree=hierarchy('find-owned-route-'+str(attempt))
+        for node in tree.iter('node'):
+            label=node.get('content-desc','')
+            rect=list(map(int,re.findall(r'\d+',node.get('bounds',''))))
+            if label.endswith(', ПЕРЕМЕСТИТЬ') and node.get('clickable')=='true' and node.get('enabled')=='true' and len(rect)==4 and rect[2]>rect[0] and 70<=rect[1] and rect[3]-rect[1]>=40 and rect[3]<=600:
+                click_text(tree,label);time.sleep(1);return
+        adb('shell','input','swipe','1080','530','1080','320','350')
+    raise AssertionError('No usable own-province movement route control')
+
+click_owned_route()
 ordered_text=read_scrolling('Командир: ')
 assert 'Цель:' in ordered_text, 'A real neighbor order did not persist'
 root=hierarchy('selected-with-order');screenshot('selected-with-order')
