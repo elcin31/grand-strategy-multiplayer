@@ -1,3 +1,11 @@
+# Camera/map interaction lag — HIGH — native validation in progress (2026-10-09)
+
+Confirmed physical symptom: strongest lag during pan/zoom/navigation. Paused old-release Android emulator reproduction remains slow, so AI/economy are not assumed to be the main cause. Coverage commit churn, repeated border/path materialization and unbounded dynamic glyph nodes are addressed by retained raster tiles, native paths/border chunks, stable UI-thread gestures and hard marker budgets. The authoritative campaign graph, mechanics, schema12 saves and production backend are unchanged.
+
+174 JS / strict TS / 8 Python / 15-art checks are required by the new release gate; local strict TS/camera and all 8 Python tests pass. Paired native camera and full release gates are still running; no final smoothness or regression-acceptance claim is made yet. First candidate run 37952330317 failed native launch with `Cannot read property 'layout' of null`: the added equal-viewport guard captured a pooled layout event inside the deferred state updater. Fixed by capturing primitive dimensions before enqueueing; regression explicitly recycles/mutates the event before evaluating the updater. Failed candidate was not published. New portrait/construct/government/religion assertions are included in the Android smoke. Physical Redmi Note12 camera acceptance remains OPEN until the user tests the delivered 0.8.0 APK.
+
+---
+
 # Dominion visual update — regression acceptance (2026-10-09)
 
 Android delivery follow-up: user reports download stops at 100% / 140.11MB before installation. Client/browser cause is **unconfirmed**; no APK-invalid/install-error diagnosis inferred. Accepted APK/native install and public checksum gates still pass. Alternative public ZIP **https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.7.0-visual-update/Dominion-visual-update-release.zip** (58,446,169 bytes), publisher run 37935645382/job 113836879926 PASS including unauthenticated ZIP download, CRC and exact enclosed APK hash. This is a delivery mitigation; user-device download/installation acceptance remains OPEN pending feedback.

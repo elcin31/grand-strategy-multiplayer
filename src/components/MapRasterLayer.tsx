@@ -68,7 +68,10 @@ const RasterTileNode=memo(function RasterTileNode({tile,drawing}:{tile:RasterTil
     const cached=drawing.resources.images.get(key);if(cached){setReady({key,image:cached});return;}
     return scheduleRaster(()=>{
       const start=performance.now(),b=tile.bounds,s=tile.level.scale,w=Math.ceil((b.right-b.left)*s)+4,h=Math.ceil((b.bottom-b.top)*s)+4;
-      const surface=Skia.Surface.MakeOffscreen(w,h);if(!surface)return;
+      // A JS-thread GPU snapshot belongs to that thread's GrDirectContext.
+      // Retain a raster image instead; the Canvas uploads it once in its own
+      // render context. Small bounded surfaces also avoid GPU locks on pinch.
+      const surface=Skia.Surface.Make(w,h);if(!surface)return;
       const canvas=surface.getCanvas();canvas.clear(Skia.Color('transparent'));canvas.translate(2-b.left*s,2-b.top*s);canvas.scale(s,s);canvas.drawPicture(picture);surface.flush();
       const image=surface.makeImageSnapshot();drawing.resources.images.set(key,image,w*h*4);setReady({key,image});
       recordMetrics({rasterBuilds:getMetrics().rasterBuilds+1,rasterMs:getMetrics().rasterMs+performance.now()-start,rasterBytes:drawing.resources.images.bytes});

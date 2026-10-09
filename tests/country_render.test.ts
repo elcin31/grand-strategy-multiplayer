@@ -10,6 +10,7 @@ test('global rendering uses 195 countries, preserves all province anchors and re
  const byCountry=new Map(merged.map(f=>[f.countryId,f]));
  for(const f of scene.features)if(f.provinceId)assert.ok(contains(byCountry.get(f.countryId)!,f.anchor),f.id);
  const global=renderFeaturesFor(scene,owners,true);assert.equal(global.length,195);assert.equal(renderFeaturesFor(scene,owners,false),scene.features);
+ assert.equal(renderFeaturesFor(scene,new Map(owners),true),global,'Returning to world zoom must reuse prepared geometry');
  assert.equal(visibleChunks(global,{left:0,top:0,right:1440,bottom:720}).reduce((n,c)=>n+c.features.length,0),195);
  assert.ok(countryOutlines(global,{left:0,top:0,right:1440,bottom:720}));
  owners.set(s.provinces.find(p=>p.ownerId==='germany')!.id,'france');

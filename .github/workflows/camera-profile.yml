@@ -1,8 +1,8 @@
 name: Camera baseline native profile
 on:
   push:
-    branches: [camera-fix]
-    paths: [.github/workflows/camera-profile.yml, scripts/android-camera-profile.py, scripts/CameraGesture.java]
+    branches: [camera-fix, camera-diagnostics]
+    paths: [.github/workflows/camera-profile.yml, scripts/android-camera-profile.py, scripts/CameraGesture.java, scripts/map_paint_check.py, scripts/camera-profile-requirements.txt]
   workflow_dispatch:
 permissions:
   contents: read
@@ -13,6 +13,7 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+      - run: python -m pip install -r scripts/camera-profile-requirements.txt
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

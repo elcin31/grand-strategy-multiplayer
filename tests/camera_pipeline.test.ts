@@ -1,11 +1,24 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {cameraCoverage,cameraNeedsCoverage,rasterLevel} from '../src/map/cameraCoverage';
+import {cameraCoverage,cameraNeedsCoverage,rasterLevel,viewportLayoutUpdate,interactionDetailZoom} from '../src/map/cameraCoverage';
 import {visibleBounds} from '../src/map/camera';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
 import {mapSceneFor} from '../src/map/worldScene';
 import {borderChunks,bordersInBounds} from '../src/map/borderChunks';
 import {rasterTiles,visibleRasterTiles,RasterCache} from '../src/map/rasterTiles';
 import {budgetArmyMarkers,markerBudgets} from '../src/map/markerBudget';
+test('deferred viewport update survives a recycled native layout event and preserves equal state',()=>{
+  const event={nativeEvent:{layout:{width:1280,height:720}}},update=viewportLayoutUpdate(event);
+  event.nativeEvent.layout.width=0;Object.assign(event,{nativeEvent:null});
+  assert.deepEqual(update({width:1,height:1}),{width:1280,height:720});
+  const previous={width:1280,height:720};assert.equal(update(previous),previous);
+});
+test('pinch reuses prepared detail across zoom-in bands, bounds zoom-out tiles and refines at settle',()=>{
+  let prepared=3.5;
+  for(const zoom of [4,6,7,10,13,9,6,3.5])prepared=interactionDetailZoom(prepared,zoom,false);
+  assert.equal(prepared,3.5);assert.equal(rasterLevel(prepared).key,'region');
+  assert.equal(interactionDetailZoom(prepared,13,true),13);
+  assert.equal(interactionDetailZoom(13,.8,false),.8);
+});
 test('camera moves inside coverage without JS snapshots, escape/zoom reculls and whole world does not churn',()=>{
   const v={width:1280,height:720},c={x:800,y:160,zoom:7};
   assert.equal(cameraNeedsCoverage({...c,x:c.x+20},c,v),false);

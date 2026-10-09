@@ -3,11 +3,17 @@
 gfxinfo measures Android frame completion on SwiftShader; never handset FPS.
 No production rooms are created. Raw framestats/cpu/memory/screenshots retained.
 """
-import json,os,re,subprocess,sys,time,xml.etree.ElementTree as ET
+import atexit,json,os,re,subprocess,sys,time,xml.etree.ElementTree as ET
 from pathlib import Path
+from camera_frame_stats import frame_stats,thread_stats
+from map_paint_check import assert_map_painted
 PACKAGE='com.elcin31.grandstrategymultiplayer'
 OUT=Path(os.environ.get('CAMERA_PROFILE_OUT','camera-profile'));OUT.mkdir(exist_ok=True)
 def adb(*args):return subprocess.check_output(['adb',*map(str,args)],text=True,stderr=subprocess.STDOUT)
+def save_logs():
+    try:(OUT/'final-logcat.txt').write_text(adb('logcat','-d'))
+    except (OSError,subprocess.CalledProcessError):pass
+atexit.register(save_logs)
 def hierarchy(name):
     adb('shell','uiautomator','dump','/sdcard/camera.xml')
     text=adb('shell','cat','/sdcard/camera.xml');(OUT/(name+'.xml')).write_text(text)
@@ -21,8 +27,11 @@ def click(root,label):
 def find_click(label):
     for i in range(18):
         root=hierarchy('find-'+str(i))
-        if any(n.get('text')==label or n.get('content-desc')==label for n in root.iter('node')):
-            click(root,label);time.sleep(1);return
+        node=next((n for n in root.iter('node') if n.get('text')==label or n.get('content-desc')==label),None)
+        if node is not None:
+            x1,y1,x2,y2=map(int,re.findall(r'\d+',node.get('bounds')))
+            if x2>x1 and 24<=y1 and y2<=664 and y2-y1>=12:
+                click(root,label);time.sleep(1);return
         if i==0:
             for _ in range(5):adb('shell','input','swipe','1080','220','1080','570','300')
         else:adb('shell','input','swipe','1080','540','1080','300','280')
@@ -35,36 +44,28 @@ def gesture(kind,cycles=5):
     adb('shell','CLASSPATH=/data/local/tmp/dominion-camera.jar app_process /system/bin CameraGesture '+kind+' '+str(cycles))
 def sample(name,kind=None):
     adb('shell','dumpsys','gfxinfo',PACKAGE,'reset');adb('logcat','-c')
+    pid=adb('shell','pidof',PACKAGE).strip()
+    thread_file=(OUT/(name+'-threads-active.txt')).open('w')
+    sampler=subprocess.Popen(['adb','shell','top','-H','-b','-d','1','-n','12','-p',pid],stdout=thread_file,stderr=subprocess.STDOUT)
     t=time.monotonic()
     if kind:gesture(kind)
     else:time.sleep(10)
     elapsed=time.monotonic()-t
+    try:sampler.wait(timeout=20)
+    except subprocess.TimeoutExpired:sampler.terminate();sampler.wait(timeout=5)
+    thread_file.close()
     raw=adb('shell','dumpsys','gfxinfo',PACKAGE,'framestats');(OUT/(name+'-frames.txt')).write_text(raw)
     cpu=adb('shell','dumpsys','cpuinfo');(OUT/(name+'-cpu.txt')).write_text(cpu)
     mem=adb('shell','dumpsys','meminfo',PACKAGE);(OUT/(name+'-memory.txt')).write_text(mem)
     logs=adb('logcat','-d');(OUT/(name+'-logcat.txt')).write_text(logs)
     shot(name)
-    frames=[]
-    lines=[line.strip() for line in raw.splitlines()]
-    for i,line in enumerate(lines):
-        if line.startswith('Flags,IntendedVsync,'):
-            fields=line.split(',');start=fields.index('IntendedVsync');end=fields.index('FrameCompleted')
-            for row in lines[i+1:]:
-                if not re.match(r'^\d+,',row):break
-                values=row.split(',')
-                if int(values[0])==0:
-                    ms=(int(values[end])-int(values[start]))/1e6
-                    if 0<ms<5000:frames.append(ms)
+    painted=assert_map_painted(OUT/(name+'.png')) if name in ('01-idle','04-world-pan','05-local-labels-armies') else None
+    tree=hierarchy(name+'-metrics')
+    trace=[n.get('content-desc') for n in tree.iter('node') if n.get('content-desc','').startswith('DOMINION_CAMERA ')]
     pid=adb('shell','pidof',PACKAGE).strip()
     if pid:(OUT/(name+'-threads.txt')).write_text(adb('shell','top','-H','-b','-n','1','-p',pid))
-    frames.sort()
-    def percentile(p):
-        if frames:return frames[min(len(frames)-1,int(len(frames)*p))]
-        match=re.search(str(int(p*100))+r'th percentile:\s*([\d.]+)ms',raw)
-        return float(match[1]) if match else None
-    match=re.search(r'Janky frames:\s*(\d+)\s*\(([\d.]+)%\)',raw)
     pss=re.search(r'TOTAL PSS:\s*(\d+)',mem)
-    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,'frames':len(frames),'p50Ms':percentile(.5),'p95Ms':percentile(.95),'p99Ms':percentile(.99),'jankPercent':float(match[2]) if match else None,'cameraTrace':re.findall(r'DOMINION_CAMERA[^\n]*',logs)}
+    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,**frame_stats(raw),'cpuThreads':thread_stats((OUT/(name+'-threads-active.txt')).read_text(),pid),'mapPaint':painted,'cameraTrace':trace or re.findall(r'DOMINION_CAMERA[^\n]*',logs)}
     results.append(result);(OUT/'results.json').write_text(json.dumps({'note':'Software SwiftShader API35 native frames, offline paused campaign. Same gestures for both builds; not physical Redmi FPS.','results':results},indent=2));print(json.dumps(result),flush=True)
 
 adb('install','-r',sys.argv[1]);adb('shell','pm','clear',PACKAGE)
@@ -78,6 +79,8 @@ find_click('ИГРАТЬ ЗА ЭТУ СТРАНУ');find_click('Я ГОТОВ');
 nav('Страна');find_click('Пауза');time.sleep(2)
 settings();find_click('Balanced');find_click('Адаптивное качество: Вкл')
 find_click('Performance overlay: Выкл')
+assert any(n.get('text')=='Performance overlay: Вкл' for n in hierarchy('overlay-on').iter('node')), 'Camera overlay was not enabled'
+assert any(n.get('text')=='Адаптивное качество: Выкл' for n in hierarchy('adaptive-off').iter('node')), 'Adaptive quality was not disabled'
 # settings stay open after quality changes; close with the toolbar button.
 settings();adb('shell','input','keyevent','4');time.sleep(2)
 results=[]

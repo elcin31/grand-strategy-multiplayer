@@ -10,4 +10,6 @@ report={'baselineRuntime':'c758ed78f586268809a2184a064ae7fdadc5156e','note':'Pai
 Path('CAMERA_NATIVE_PAIRED.json').write_text(json.dumps(report,indent=2)+'\n')
 for row in rows:print(row['scenario'],{k:row['before'][k] for k in ('p50Ms','p95Ms','jankPercent','pssKiB')},'->',{k:row['after'][k] for k in ('p50Ms','p95Ms','jankPercent','pssKiB')})
 assert all(r['after']['p95Ms'] is not None for r in rows[1:]), 'No native moving-camera frame timings captured'
+pinch=next(r for r in rows if r['scenario']=='03-pinch')
+assert pinch['after']['histogramP95Ms'] <= pinch['before']['histogramP95Ms']*1.1, 'Pinch p95 regression; candidate must not publish'
 print('PASS: paired native camera evidence generated')

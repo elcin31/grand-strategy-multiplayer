@@ -1,3 +1,11 @@
+# Dominion camera illustrated 0.8.0 (8) — release acceptance in progress
+
+Candidate source `87d9eeb8c06dc37f4a50260e0f35d964e65cf405`, release workflow `37956224636`. Standalone `assembleRelease`, embedded Hermes JS/Skia, landscape/production backend/sideload signature verification are required, alongside 173 JS/3 Python/strict TS/map/world/art benchmarks,10,000 ticks, paired real-pointer camera profiling and30-minute native smoke.
+
+Expected deliverable: `Dominion-camera-fix-illustrated-release.apk`. No accepted binary hash or success claim yet. Final artifact will be downloaded/extracted, independently checked and directly attached after all gates pass. Prior v0.7.0 remains the baseline; existing save schema and signing certificate are retained.
+
+---
+
 # Dominion visual update 0.7.0 (7) — verified standalone release
 
 Alternative Android download: **https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.7.0-visual-update/Dominion-visual-update-release.zip**, ZIP **58,446,169 bytes**, SHA256 e0f3aaa79f4a4b0e67126369520b4523766654de7aed12622a8f1dad1bb8e694. Publisher run 37935645382/job 113836879926 PASS: public unauthenticated ZIP download/CRC verified; enclosed 140,113,723-byte APK remains exactly SHA256 d90a8aca6993de2d69db42e75eb2791bc7f50c1efd3425028c5ee0a1e1205a1f. User reports direct APK transfer stuck at 100%; root cause not diagnosed. Offer ZIP extraction/opening APK, then collect exact browser/installer error if failure persists. No game/runtime/backend/signature change or rebuild.
