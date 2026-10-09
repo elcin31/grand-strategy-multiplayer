@@ -20,7 +20,7 @@ Actual changes: weak-keyed capital/major/all tier point indexes avoid querying a
 
 Nine WebP files for six original paintings total **1,370,604 bytes**. Menu/campaign/loading use 960px Performance/Balanced or 1600px High/Ultra; panel banners 640px. Only current art is mounted/decoded; static backdrops, no video/live blur. Images have RIFF length, SHA-256 and dimensions checked by scripts/verify-art.py.
 
-Strict TS/167 JS/3 Python regressions and world/map/art checks pass locally. Software native startup, frame-time, PSS, command/AI/autosave and soak evidence will be recorded after CI; no new memory result yet. Physical Redmi Note 12 FPS, thermal behavior and touch latency remain unmeasured. 30/45–60/60 FPS are targets, not achieved claims. Native QA and complete release are **pending**.
+Strict TS/167 JS/3 Python regressions and world/map/art checks pass locally. Independent CI paired sample (BENCHMARK_VISUAL_CI.json): query p95 0.163→0.058ms, tick p95 42.421→32.954ms, identical marker/state-byte counts. Full 10,000-tick run passed ten exact saves/restores, 10,906 peace settlements and 9,157 battles, max snapshot 4,082,061 bytes; LONG_SIMULATION_VISUAL_RESULTS.json. A separate cold after sample is preserved in BENCHMARK_VISUAL_AFTER_COLD.json; its heap and cold/warm timings are not a paired Android comparison. Software native startup, frame-time, PSS, command/AI/autosave and soak evidence will be recorded after CI; no new memory result yet. Physical Redmi Note 12 FPS, thermal behavior and touch latency remain unmeasured. 30/45–60/60 FPS are targets, not achieved claims. Native QA and complete release are **pending**.
 
 ---
 
