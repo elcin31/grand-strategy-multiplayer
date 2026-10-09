@@ -11,6 +11,7 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from map_paint_check import assert_map_painted
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 OUT = Path('android-smoke'); OUT.mkdir(exist_ok=True)
 def adb(*args): return subprocess.check_output(['adb', *args], text=True)
@@ -163,6 +164,7 @@ assert any('Загрузка кампании' in n.get('text','') for n in root
 time.sleep(15)
 (OUT/'menu-to-campaign-seconds.txt').write_text(str(time.monotonic()-launch_time)+'\nIncludes UI dump/screenshot and fixed smoke wait; not startup latency.\n')
 root = hierarchy('02-map'); screenshot('02-map')
+assert_map_painted(OUT/'02-map.png')
 assert any('Политическая' in n.get('text','') for n in root.iter('node')), 'GPU map screen did not mount'
 # Exercise real offline commands in the release bundle, not only a mounted canvas.
 # Select through the real searchable picker; no dependency on synthetic demo geometry.
@@ -324,6 +326,7 @@ time.sleep(1)
 adb('shell','input','tap','500','320'); adb('shell','input','tap','500','320')
 time.sleep(1)
 screenshot('03-camera')
+assert_map_painted(OUT/'03-camera.png')
 # GPU surface resize/layout across target widths.
 for width, height in [(1600,720),(1920,1080),(2340,1080),(1280,800)]:
     adb('shell','wm','size',f'{height}x{width}')

@@ -7,6 +7,9 @@ export function viewportLayoutUpdate(event:{nativeEvent:{layout:Viewport}}){
   const {width,height}=event.nativeEvent.layout;
   return (previous:Viewport)=>previous.width===width&&previous.height===height?previous:{width,height};
 }
+/** During a gesture keep prepared detail while zooming in. Downgrade on zoom
+ * out to bound the number of fine tiles; refine only once the camera settles. */
+export function interactionDetailZoom(prepared:number,current:number,settled:boolean):number{return settled?current:Math.min(prepared,current);}
 /** UI-thread containment test. Only escaping prepared coverage crosses to JS.
  * Clip ocean overscan to the world: a fully visible world needs no pan recull. */
 export function cameraNeedsCoverage(camera:Camera,prepared:Camera,viewport:Viewport):boolean {

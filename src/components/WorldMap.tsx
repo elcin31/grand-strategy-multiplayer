@@ -1,6 +1,6 @@
 import {MapRasterLayer} from './MapRasterLayer';
 import {MapMarkerLayer} from './MapMarkerLayer';
-import {cameraCoverage,cameraNeedsCoverage,viewportLayoutUpdate} from '../map/cameraCoverage';
+import {cameraCoverage,cameraNeedsCoverage,viewportLayoutUpdate,interactionDetailZoom} from '../map/cameraCoverage';
 import {budgetArmyMarkers,markerBudgets} from '../map/markerBudget';
 import {countryRenderFeatures,renderFeaturesFor} from '../map/countryRender';
 import {loadPreferences,savePreferences} from '../performance/preferences';
@@ -68,6 +68,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   const { features, spatialIndex, provinceGeometry, cities: mapCities } = scene;
   const [viewport, setViewport] = useState({ width: 1, height: 1 });
   const [snapshot, setSnapshot] = useState<Camera>(defaults);
+  const [detailZoom,setDetailZoom]=useState(defaults.zoom);
   const [preset, setPreset] = useState<GraphicsPreset>('Balanced');
   const [ceiling,setCeiling]=useState<GraphicsPreset>('Balanced');
   const [frameRate,setFrameRate]=useState<FrameRate>('Auto');
@@ -81,7 +82,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   useEffect(()=>{if(!preferencesReady||calibrated.current||viewport.width<=1)return;calibrated.current=true;choosePreset(initialQuality(getMetrics().sceneMs,viewport.width*viewport.height*PixelRatio.get()**2));},[viewport,preferencesReady]);
   useEffect(()=>()=>{benchmarkToken.current++;},[]);
   const [mode, setMode] = useState<MapMode>('Political');
-  const geometryLod=selectGeometryLod(snapshot.zoom,preset);
+  const geometryLod=selectGeometryLod(detailZoom,preset);
   const {paths}=useMemo(()=>nativeScene(scene,geometryLod),[scene,geometryLod]);
   const setSettingsOpen=(value:boolean)=>onSettingsChange?.(value);
   const x = useSharedValue(defaults.x), y = useSharedValue(defaults.y), zoom = useSharedValue(defaults.zoom);
@@ -93,7 +94,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   useFrameCallback(frame=>{const dt=frame.timeSincePreviousFrame;if(dt===null||dt<=0)return;frameCount.value++;if(dt>1000/frameBudget*1.5)slowFrames.value++;if(frame.timestamp-frameClock.value>=1000/frameBudget-.5){frameClock.value=frame.timestamp;pulse.value=animateEffects?.8+.2*Math.sin(frame.timestamp/900):.9;if(renderX.value!==x.value||renderY.value!==y.value||renderZoom.value!==zoom.value){renderX.value=x.value;renderY.value=y.value;renderZoom.value=zoom.value;cameraUpdates.value++;}}if(sampleClock.value===0)sampleClock.value=frame.timestamp;const elapsed=frame.timestamp-sampleClock.value;if(elapsed>=1000){runOnJS(acceptFrameSample)(frameCount.value*1000/elapsed,elapsed/frameCount.value,slowFrames.value,cameraUpdates.value);sampleClock.value=frame.timestamp;frameCount.value=0;slowFrames.value=0;cameraUpdates.value=0;}});
   const startX = useSharedValue(0), startY = useSharedValue(0), startZoom = useSharedValue(1);
   const pinchX = useSharedValue(0), pinchY = useSharedValue(0), pinching = useSharedValue(false);
-  const publishSnapshot=useCallback((camera:Camera)=>{setSnapshot(previous=>previous.x===camera.x&&previous.y===camera.y&&previous.zoom===camera.zoom?previous:camera);recordMetrics({cullCommits:getMetrics().cullCommits+1});},[]);
+  const publishSnapshot=useCallback((camera:Camera,settled=false)=>{setSnapshot(previous=>previous.x===camera.x&&previous.y===camera.y&&previous.zoom===camera.zoom?previous:camera);setDetailZoom(previous=>interactionDetailZoom(previous,camera.zoom,settled));recordMetrics({cullCommits:getMetrics().cullCommits+1});},[]);
   const lastCull = useSharedValue(0), cullX = useSharedValue(defaults.x), cullY = useSharedValue(defaults.y), cullZoom = useSharedValue(defaults.zoom);
   useEffect(()=>()=>{cancelAnimation(x);cancelAnimation(y);cancelAnimation(zoom);},[x,y,zoom]);
   useAnimatedReaction(() => ({ x: x.value, y: y.value, zoom: zoom.value }), camera => {
@@ -114,7 +115,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   const visible=priorVisible.current;
   const visibleIds = useMemo(() => new Set(visible.map(f => f.provinceId!)), [visible]);
   const owners = useStableColors(useMemo(()=>new Map(state.provinces.map(p=>[p.id,p.ownerId])),[state.provinces]));
-  const provinceDetail = snapshot.zoom >= (preset==='Performance'?5:preset==='Balanced'?3.8:2.8);
+  const provinceDetail = detailZoom >= (preset==='Performance'?5:preset==='Balanced'?3.8:2.8);
   const renderFeatures=useMemo(()=>renderFeaturesFor(scene,owners,!provinceDetail&&mode==='Political'),[scene,owners,provinceDetail,mode]);
   const controllers=useStableColors(useMemo(()=>new Map(state.provinces.map(p=>[p.id,p.controllerId??p.ownerId])),[state.provinces]));
   const warSides=(state.wars??[]).map(w=>w.id+':'+w.attackers.join(',')+'|'+w.defenders.join(',')).join(';');
@@ -165,11 +166,11 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
       zoom.value = clamp(startZoom.value * e.scale, 0.5, 18);
       x.value = clamp(pinchX.value - (e.focalX - viewport.width / 2) / zoom.value, 0, 1440);
       y.value = clamp(pinchY.value - (e.focalY - viewport.height / 2) / (zoom.value * TILT), 0, 720);
-    }).onFinalize(() => { pinching.value = false; runOnJS(publishSnapshot)({ x: x.value, y: y.value, zoom: zoom.value }); });
+    }).onFinalize(() => { pinching.value = false; runOnJS(publishSnapshot)({ x: x.value, y: y.value, zoom: zoom.value },true); });
     const doubleTap = Gesture.Tap().numberOfTaps(2).maxDelay(260).onEnd((e, ok) => {
       if (!ok) return;
       const target = zoomAt({ x: x.value, y: y.value, zoom: zoom.value }, 1.7, { x: e.x, y: e.y }, viewport);
-      x.value = withTiming(target.x, { duration: 240 }); y.value = withTiming(target.y, { duration: 240 }); zoom.value = withTiming(target.zoom, { duration: 240 }, done => { if (done) runOnJS(publishSnapshot)(target); });
+      x.value = withTiming(target.x, { duration: 240 }); y.value = withTiming(target.y, { duration: 240 }); zoom.value = withTiming(target.zoom, { duration: 240 }, done => { if (done) runOnJS(publishSnapshot)(target,true); });
     });
     const tap = Gesture.Tap().onEnd((e, ok) => { if (ok) runOnJS(selectCurrent)(e.x, e.y, x.value, y.value, zoom.value, false); });
     const long = Gesture.LongPress().minDuration(500).onStart(e => runOnJS(selectCurrent)(e.x, e.y, x.value, y.value, zoom.value, true));
@@ -178,7 +179,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
 
   const animateCamera = (camera: Camera) => {
     const c = boundedCamera(camera);
-    x.value = withTiming(c.x, { duration: 260 }); y.value = withTiming(c.y, { duration: 260 }); zoom.value = withTiming(c.zoom, { duration: 260 }, done => { if (done) runOnJS(publishSnapshot)(c); });
+    x.value = withTiming(c.x, { duration: 260 }); y.value = withTiming(c.y, { duration: 260 }); zoom.value = withTiming(c.zoom, { duration: 260 }, done => { if (done) runOnJS(publishSnapshot)(c,true); });
   };
   const selectedPath = useMemo(() => { const path = Skia.Path.Make(); const silhouette=!selectedProvinceId?renderFeatures.find(f=>f.id==='render-country-'+selectedCountryId):undefined;if(silhouette){path.addPath(paths.get(silhouette.id)!);return path;} visible.filter(f => selectedProvinceId ? f.provinceId === selectedProvinceId : owners.get(f.provinceId!) === selectedCountryId).forEach(f => path.addPath(paths.get(f.id)!)); return path; }, [visible, selectedProvinceId, selectedCountryId, owners, paths,renderFeatures]);
   const labelZoom = Math.exp(Math.round(Math.log(snapshot.zoom) * 4) / 4);
@@ -198,7 +199,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
     if (!capital) return;
     const target = { x: capital.point.x, y: capital.point.y, zoom: 5 };
     x.value = withTiming(target.x, { duration: 260 }); y.value = withTiming(target.y, { duration: 260 });
-    zoom.value = withTiming(target.zoom, { duration: 260 }, done => { if (done) runOnJS(publishSnapshot)(target); });
+    zoom.value = withTiming(target.zoom, { duration: 260 }, done => { if (done) runOnJS(publishSnapshot)(target,true); });
   }, [focusCountryId, scene, viewport.width, x, y, zoom]);
   useEffect(()=>{recordMetrics({renderFeatures:renderFeatures.length,visibleProvinces:visible.length,visibleArmies:counters.length,visibleLabels:Math.min(budgets.labels,cityLabels.size+labels.filter(l=>!l.blocked).length+(selectedProvinceId?1:0)),preset,geometryLod,mapRenders:getMetrics().mapRenders+1});});
   const startBenchmark=async()=>{if(benchmarkRunning)return;const token=++benchmarkToken.current,original={x:x.value,y:y.value,zoom:zoom.value},originalMode=mode;setBenchmarkRunning(true);setSettingsOpen(false);resetMetricSamples();recordMetrics({benchmarkError:'',benchmarkTicks:0});try{for(let i=0;i<AVAILABLE_MODES.length;i++){if(token!==benchmarkToken.current)return;setMode(AVAILABLE_MODES[i]!);const target=i%3===0?{x:720,y:300,zoom:.8}:i%3===1?{x:790,y:170,zoom:7}:{x:1000,y:210,zoom:3};x.value=withTiming(target.x,{duration:1800});y.value=withTiming(target.y,{duration:1800});zoom.value=withTiming(target.zoom,{duration:1800});await new Promise(r=>setTimeout(r,2200));}const {prepareBenchmarkState,advanceBenchmark}=await import('../performance/benchmark');let simulation=prepareBenchmarkState(state);for(let i=0;i<12;i++){if(token!==benchmarkToken.current)return;const started=performance.now();simulation=advanceBenchmark(simulation);recordMetrics({simulationMs:performance.now()-started,benchmarkTicks:i+1});await new Promise(r=>setTimeout(r,20));}}catch(error){recordMetrics({benchmarkError:error instanceof Error?error.message:String(error)});}finally{if(token===benchmarkToken.current){animateCamera(original);setMode(originalMode);setBenchmarkRunning(false);}}};
@@ -209,7 +210,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
         <Fill color="#203B48" />
         {GRAPHICS[preset].water && <Rect x={0} y={0} width={viewport.width} height={viewport.height}><LinearGradient start={vec(0, 0)} end={vec(viewport.width, viewport.height)} colors={['#18303C', '#294A57', '#193542']} /></Rect>}
         <Group transform={transform}>
-          <MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={snapshot.zoom}/>
+          <MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={detailZoom}/>
           {occupiedBatches.map(([color,path])=><Group key={color}><Path path={path} color={color} opacity={.28}/><Path path={path} color={color} opacity={.55} style="stroke" strokeWidth={selectionScale}/></Group>)}
           {warBorders!==''&&<Path path={warBorders} style="stroke" color="#ed7f72" strokeWidth={selectionScale} opacity={pulse}/>}
           {state.armies.filter(a=>a.id===selectedArmyId&&a.order).map(a=>{const points=[a.provinceId,...a.order!.route].map(id=>provinceGeometry.get(id)?.anchor).filter(Boolean);return <Path key={a.id+"-order"} path={points.map((p,i)=>`${i?"L":"M"}${p!.x},${p!.y}`).join("")} style="stroke" strokeWidth={selectionScale} color="#fff0ac"/>;})}

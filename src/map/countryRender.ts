@@ -2,6 +2,7 @@ import {boundsOf,featurePath,overlaps,type Bounds,type MapFeature,type Point} fr
 import type {MapScene} from './worldScene';
 interface CountryShape {id:string;countryId:string;provinceId:string;anchor:number[];polygons:number[][][][]}
 const cache=new WeakMap<MapScene,MapFeature[]>();
+const ownershipShapes=new WeakMap<MapScene,Map<string,readonly MapFeature[]>>();
 /** Static country silhouettes, independent of mutable campaign state. */
 export function countryRenderFeatures(scene:MapScene):MapFeature[]{
  let features=cache.get(scene);if(features)return features;
@@ -18,7 +19,13 @@ export function renderFeaturesFor(scene:MapScene,owners:ReadonlyMap<string,strin
  const merged=countryRenderFeatures(scene);if(!merged.length)return scene.features;
  const changed=new Set<string>();
  for(const f of scene.features)if(f.provinceId&&owners.get(f.provinceId)!==f.countryId)changed.add(f.countryId!);
- return [...merged.filter(f=>!changed.has(f.countryId!)),...scene.features.filter(f=>f.provinceId&&changed.has(f.countryId!))];
+ // Geometry depends on which countries need exact province fallback, while
+ // their current colors/owners remain separate inputs. Handle mutable callers
+ // too, and keep the same array when returning to a previously prepared zoom.
+ let variants=ownershipShapes.get(scene);if(!variants){variants=new Map();ownershipShapes.set(scene,variants);}
+ const key=[...changed].sort().join(',');const saved=variants.get(key);if(saved)return saved;
+ const result=[...merged.filter(f=>!changed.has(f.countryId!)),...scene.features.filter(f=>f.provinceId&&changed.has(f.countryId!))];
+ if(variants.size>=16)variants.delete(variants.keys().next().value!);variants.set(key,result);return result;
 }
 
 const outlinePaths=new WeakMap<MapFeature,string>();

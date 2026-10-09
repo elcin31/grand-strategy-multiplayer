@@ -11,6 +11,9 @@ permissions:
   contents: read
 env:
   CI: '1'
+concurrency:
+  group: dominion-camera-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   long-simulation:
     runs-on: ubuntu-latest
@@ -60,7 +63,10 @@ jobs:
       - name: Install world-import test dependency
         run: python -m pip install -r scripts/world-requirements.txt
       - name: APK verifier and world importer regression tests
-        run: python -m unittest discover -s tests -p '*_test.py'
+        # Native screenshot checks use the same pinned decoder as Python tests.
+        run: |
+          python -m pip install -r scripts/camera-profile-requirements.txt
+          python -m unittest discover -s tests -p '*_test.py'
       - name: Validate original optimized illustrations
         run: npm run verify:art
       - name: Paired visual update benchmark
@@ -110,6 +116,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: dominion-camera-illustrated-release
+      - run: python -m pip install -r scripts/camera-profile-requirements.txt
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -142,6 +149,7 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - run: python -m pip install -r scripts/camera-profile-requirements.txt
       - uses: actions/download-artifact@v4
         with:
           name: dominion-camera-illustrated-release
@@ -202,6 +210,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          test "$(gh api repos/elcin31/grand-strategy-multiplayer/git/ref/heads/camera-fix --jq .object.sha)" = "$GITHUB_SHA"
           cp camera-evidence/CAMERA_NATIVE_PAIRED.json .
           python -c "import shutil; shutil.make_archive('camera-native-evidence', 'zip', 'camera-evidence')"
           zip Dominion-camera-fix-illustrated-release.zip Dominion-camera-fix-illustrated-release.apk

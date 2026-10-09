@@ -6,6 +6,7 @@ No production rooms are created. Raw framestats/cpu/memory/screenshots retained.
 import atexit,json,os,re,subprocess,sys,time,xml.etree.ElementTree as ET
 from pathlib import Path
 from camera_frame_stats import frame_stats,thread_stats
+from map_paint_check import assert_map_painted
 PACKAGE='com.elcin31.grandstrategymultiplayer'
 OUT=Path(os.environ.get('CAMERA_PROFILE_OUT','camera-profile'));OUT.mkdir(exist_ok=True)
 def adb(*args):return subprocess.check_output(['adb',*map(str,args)],text=True,stderr=subprocess.STDOUT)
@@ -26,8 +27,11 @@ def click(root,label):
 def find_click(label):
     for i in range(18):
         root=hierarchy('find-'+str(i))
-        if any(n.get('text')==label or n.get('content-desc')==label for n in root.iter('node')):
-            click(root,label);time.sleep(1);return
+        node=next((n for n in root.iter('node') if n.get('text')==label or n.get('content-desc')==label),None)
+        if node is not None:
+            x1,y1,x2,y2=map(int,re.findall(r'\d+',node.get('bounds')))
+            if x2>x1 and 24<=y1 and y2<=664 and y2-y1>=12:
+                click(root,label);time.sleep(1);return
         if i==0:
             for _ in range(5):adb('shell','input','swipe','1080','220','1080','570','300')
         else:adb('shell','input','swipe','1080','540','1080','300','280')
@@ -55,10 +59,13 @@ def sample(name,kind=None):
     mem=adb('shell','dumpsys','meminfo',PACKAGE);(OUT/(name+'-memory.txt')).write_text(mem)
     logs=adb('logcat','-d');(OUT/(name+'-logcat.txt')).write_text(logs)
     shot(name)
+    painted=assert_map_painted(OUT/(name+'.png')) if name in ('01-idle','04-world-pan','05-local-labels-armies') else None
+    tree=hierarchy(name+'-metrics')
+    trace=[n.get('content-desc') for n in tree.iter('node') if n.get('content-desc','').startswith('DOMINION_CAMERA ')]
     pid=adb('shell','pidof',PACKAGE).strip()
     if pid:(OUT/(name+'-threads.txt')).write_text(adb('shell','top','-H','-b','-n','1','-p',pid))
     pss=re.search(r'TOTAL PSS:\s*(\d+)',mem)
-    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,**frame_stats(raw),'cpuThreads':thread_stats((OUT/(name+'-threads-active.txt')).read_text(),pid),'cameraTrace':re.findall(r'DOMINION_CAMERA[^\n]*',logs)}
+    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,**frame_stats(raw),'cpuThreads':thread_stats((OUT/(name+'-threads-active.txt')).read_text(),pid),'mapPaint':painted,'cameraTrace':trace or re.findall(r'DOMINION_CAMERA[^\n]*',logs)}
     results.append(result);(OUT/'results.json').write_text(json.dumps({'note':'Software SwiftShader API35 native frames, offline paused campaign. Same gestures for both builds; not physical Redmi FPS.','results':results},indent=2));print(json.dumps(result),flush=True)
 
 adb('install','-r',sys.argv[1]);adb('shell','pm','clear',PACKAGE)
@@ -72,6 +79,8 @@ find_click('ИГРАТЬ ЗА ЭТУ СТРАНУ');find_click('Я ГОТОВ');
 nav('Страна');find_click('Пауза');time.sleep(2)
 settings();find_click('Balanced');find_click('Адаптивное качество: Вкл')
 find_click('Performance overlay: Выкл')
+assert any(n.get('text')=='Performance overlay: Вкл' for n in hierarchy('overlay-on').iter('node')), 'Camera overlay was not enabled'
+assert any(n.get('text')=='Адаптивное качество: Выкл' for n in hierarchy('adaptive-off').iter('node')), 'Adaptive quality was not disabled'
 # settings stay open after quality changes; close with the toolbar button.
 settings();adb('shell','input','keyevent','4');time.sleep(2)
 results=[]
