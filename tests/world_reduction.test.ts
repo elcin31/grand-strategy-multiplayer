@@ -7,7 +7,7 @@ import {recalcEconomy} from '../supabase/functions/_shared/economySystem';
 import {startConstruction,completeConstructions} from '../supabase/functions/_shared/buildingSystem';
 test('reduced world retains every source region, city, capital, population and reciprocal graph',()=>{
  const s=createWorldState('reduced','REDUCE','host','Test',101),ids=new Map(s.provinces.map(p=>[p.id,p]));
- assert.equal(Object.keys(mapping).length,4386);assert.equal(new Set(Object.values(mapping)).size,2924);assert.equal(ids.size,2924);assert.equal(s.cities!.length,7214);assert.equal(Object.keys(s.countries).length,195);assert.equal(s.provinces.reduce((n,p)=>n+p.population,0),7632252811);
+ assert.equal(Object.keys(mapping).length,4386);assert.equal(new Set(Object.values(mapping)).size,2924);assert.equal(ids.size,2924);assert.equal(s.cities!.length,5411);assert.equal(Object.keys(s.countries).length,195);assert.equal(s.provinces.reduce((n,p)=>n+p.population,0),7632252811);
  for(const p of s.provinces){assert.ok(!p.neighbors.includes(p.id));for(const id of p.neighbors)assert.ok(ids.get(id)?.neighbors.includes(p.id));assert.ok(p.resourceDeposit);}
  for(const c of s.cities!)assert.ok(ids.has(c.provinceId));for(const c of Object.values(s.countries)){assert.ok(c.provinceIds!.length);assert.ok(s.cities!.find(city=>city.id===c.capitalCityId&&city.isCapital));}
  const old=structuredClone(s);old.dataset='modern-world-v1';assert.throws(()=>validateCampaign(old),/v3/);assert.equal(old.dataset,'modern-world-v1');

@@ -41,7 +41,7 @@ export function initializePopulation(state: GameState): void {
   for (const city of state.cities ?? []) {
     if (cityIds.has(city.id)) throw new Error('Duplicate population city');
     cityIds.add(city.id);
-    city.populationGrowthCarry ??= 0; integer(city.population, 'city'); carry(city.populationGrowthCarry);
+    integer(city.populationGrowthCarryReserve??0, 'city reserve'); city.populationGrowthCarry ??= 0; integer(city.population, 'city'); carry(city.populationGrowthCarry);
     if (!provinces.has(city.provinceId)) throw new Error('Unknown city population province');
     const sum = (cityTotals.get(city.provinceId) ?? 0) + city.population;
     integer(sum, 'city sum'); cityTotals.set(city.provinceId, sum);
@@ -67,7 +67,8 @@ export function monthlyPopulationGrowth(state: GameState): void {
   }
   for (const city of state.cities ?? []) {
     const province = growth.get(city.provinceId)!;
-    const exact = (province.population > 0 ? city.population / province.population * province.births : 0) + city.populationGrowthCarry!;
+    const exact = (province.population > 0 ? city.population / province.population * province.births : 0) + city.populationGrowthCarry! + (city.populationGrowthCarryReserve??0);
+    delete city.populationGrowthCarryReserve;
     const births = Math.floor(exact);
     integer(city.population + births, 'city overflow');
     city.population += births; city.populationGrowthCarry = exact - births;

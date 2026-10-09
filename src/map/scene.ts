@@ -65,9 +65,13 @@ export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map
     return [id, `rgb(${low.map((v, i) => Math.round(v + (high[i]! - v) * t)).join(',')})`];
   }));
 }
-export function visibleCities<T extends { capital: boolean; population: number; point: Point }>(cities: readonly T[], bounds: Bounds, zoom: number, preset: GraphicsPreset): T[] {
-  return pointsInBounds(cities,bounds).filter(c => (c.capital || (zoom >= 5 && (c.population>=250000||zoom>=9))) && c.point.x >= bounds.left && c.point.x <= bounds.right && c.point.y >= bounds.top && c.point.y <= bounds.bottom)
-    .sort((a, b) => Number(b.capital) - Number(a.capital) || b.population - a.population).slice(0, GRAPHICS[preset].cityBudget);
+interface CityPoint {capital:boolean;population:number;point:Point}
+const cityTiers=new WeakMap<readonly CityPoint[],{capitals:CityPoint[];major:CityPoint[]}>();
+/** Query a tier-specific immutable index: at global zoom only 195 capitals enter culling. */
+export function visibleCities<T extends CityPoint>(cities:readonly T[],bounds:Bounds,zoom:number,preset:GraphicsPreset):T[]{
+ let tiers=cityTiers.get(cities);if(!tiers){tiers={capitals:cities.filter(c=>c.capital),major:cities.filter(c=>c.capital||c.population>=250000)};cityTiers.set(cities,tiers);}
+ const source=(zoom<5?tiers.capitals:zoom<9?tiers.major:cities) as readonly T[];
+ return pointsInBounds(source,bounds).sort((a,b)=>Number(b.capital)-Number(a.capital)||b.population-a.population).slice(0,GRAPHICS[preset].cityBudget);
 }
 
 export interface CountryLabel { countryId: string; anchor: Point; width: number; blocked: boolean }

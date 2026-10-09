@@ -1,3 +1,29 @@
+# Dominion visual update — measured host improvements, native acceptance pending
+
+World: **7,214 → 5,411 cities (-24.993%)**, 195 countries / 2,924 provinces unchanged. All 195 capitals and 2,225 regional centers retained. Exact initial urban population 2,332,963,370 and province/country population 7,632,252,811 preserved. Selection is deterministic, population/density/protected-center ranked with country quotas; per-country counts and provenance in CITY_REDUCTION_VISUAL.json. Removed city state migrates to a retained center in its province; survivor IDs stable, ownership/development/growth carry preserved. Native pre-v12 saves and all 29 existing server rooms backed up before migration.
+
+Paired host workload (BENCHMARK_VISUAL_PAIRED.json): same campaign/seed 101, 100 trusted authoritative ticks, 1,200 camera positions at zoom 0.8/3.5/7/12, 1280×720 Balanced. Original v4 catalogue and culling algorithm compared against reduced catalogue/tier indexes, interleaved on the same Node host. No migrations timed in either tick sequence. Warm/cold earlier baseline samples remain in BENCHMARK_VISUAL_BASELINE*.json; host timings vary and are not Android FPS.
+
+| Measurement | v4 before | Visual update after |
+|---|---:|---:|
+| Cities | 7,214 | 5,411 |
+| p95 city viewport query, ms | 0.535 | 0.185 |
+| p95 local tick, ms | 75.818 | 56.907 |
+| Markers across 1,200 queries | 18,476 | 13,951 |
+| Initial full snapshot bytes | 3,671,090 | 3,297,031 |
+| Full snapshot after 100 ticks, bytes | 3,923,731 | 3,518,439 |
+| City data source bytes (definitions + points) | 1,573,708 | 1,185,389 |
+
+Markers -24.49%, initial state -10.19%, city query p95 -65.45%, tick p95 -24.94% in this sample. Simulation/growth rules and server authority retained. New dynamic snapshot carries literal province cityIds to prevent old static catalogues re-inserting removed IDs; wire checksums/version/CAS unchanged.
+
+Actual changes: weak-keyed capital/major/all tier point indexes avoid querying all points at global zoom; immutable visible city catalogue memoization avoids repeated culling on population-only ticks; marker budgets Performance/Balanced/High/Ultra 6/18/42/70; no political batch gradients on Performance/Balanced; existing camera transforms stay on UI thread. New menu imports no world/simulation/codec until launching; lightweight metadata sidecars avoid decoding multi-MB saves on menu entry (stale/missing sidecars fall back safely). Loading paints before latched world work. Existing AI staggering, geometry/border batching, autosave coalescing and bounded traces retained rather than reimplemented.
+
+Nine WebP files for six original paintings total **1,370,604 bytes**. Menu/campaign/loading use 960px Performance/Balanced or 1600px High/Ultra; panel banners 640px. Only current art is mounted/decoded; static backdrops, no video/live blur. Images have RIFF length, SHA-256 and dimensions checked by scripts/verify-art.py.
+
+Strict TS/167 JS/3 Python regressions and world/map/art checks pass locally. Software native startup, frame-time, PSS, command/AI/autosave and soak evidence will be recorded after CI; no new memory result yet. Physical Redmi Note 12 FPS, thermal behavior and touch latency remain unmeasured. 30/45–60/60 FPS are targets, not achieved claims. Native QA and complete release are **pending**.
+
+---
+
 # PASS 3 — v4 code/CI/native acceptance complete
 
 Real-device v3 lag is confirmed. Province reduction is now actual gameplay data: **4,386 -> 2,924 (-33.33%, exactly /1.5)**. Deterministic adjacent land unions within countries, at most four source regions, protected capitals/major-center pairs; sea-only links never merged. All 195 countries, 7,214 cities, islands/coastline geometry and 7,632,252,811 initial people retained. Adjacency is the validated symmetric quotient graph, with no dangling/self links; isolated components are not collapsed into newly orphaned nodes. Generator/provenance: scripts/reduce-provinces.py and PROVINCE_REDUCTION_PASS3.json.

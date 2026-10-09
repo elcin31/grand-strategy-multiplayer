@@ -1,0 +1,799 @@
+{
+  "baseCommit": "9dc0dec",
+  "before": 7214,
+  "target": 5411,
+  "after": 5411,
+  "reductionPercent": 24.99306903243693,
+  "capitalsBefore": 195,
+  "capitalsAfter": 195,
+  "regionalCentersBefore": 2225,
+  "regionalCentersAfter": 2225,
+  "protected": 3240,
+  "provincePopulationBefore": 7632252811,
+  "provincePopulationAfter": 7632252811,
+  "urbanPopulationBefore": 2332963370,
+  "urbanPopulationAfter": 2332963370,
+  "countryDistribution": {
+    "afg": {
+      "before": 33,
+      "after": 29
+    },
+    "ago": {
+      "before": 49,
+      "after": 33
+    },
+    "alb": {
+      "before": 26,
+      "after": 26
+    },
+    "and": {
+      "before": 1,
+      "after": 1
+    },
+    "are": {
+      "before": 8,
+      "after": 6
+    },
+    "arg": {
+      "before": 158,
+      "after": 115
+    },
+    "arm": {
+      "before": 8,
+      "after": 8
+    },
+    "atg": {
+      "before": 1,
+      "after": 1
+    },
+    "aus": {
+      "before": 224,
+      "after": 164
+    },
+    "aut": {
+      "before": 9,
+      "after": 8
+    },
+    "aze": {
+      "before": 17,
+      "after": 16
+    },
+    "bdi": {
+      "before": 14,
+      "after": 14
+    },
+    "bel": {
+      "before": 10,
+      "after": 10
+    },
+    "ben": {
+      "before": 9,
+      "after": 8
+    },
+    "bfa": {
+      "before": 32,
+      "after": 32
+    },
+    "bgd": {
+      "before": 16,
+      "after": 8
+    },
+    "bgr": {
+      "before": 18,
+      "after": 17
+    },
+    "bhr": {
+      "before": 1,
+      "after": 1
+    },
+    "bhs": {
+      "before": 2,
+      "after": 2
+    },
+    "bih": {
+      "before": 6,
+      "after": 4
+    },
+    "blr": {
+      "before": 15,
+      "after": 7
+    },
+    "blz": {
+      "before": 7,
+      "after": 7
+    },
+    "bol": {
+      "before": 69,
+      "after": 48
+    },
+    "bra": {
+      "before": 392,
+      "after": 290
+    },
+    "brb": {
+      "before": 1,
+      "after": 1
+    },
+    "brn": {
+      "before": 1,
+      "after": 1
+    },
+    "btn": {
+      "before": 4,
+      "after": 4
+    },
+    "bwa": {
+      "before": 20,
+      "after": 12
+    },
+    "caf": {
+      "before": 21,
+      "after": 18
+    },
+    "can": {
+      "before": 255,
+      "after": 187
+    },
+    "che": {
+      "before": 28,
+      "after": 27
+    },
+    "chl": {
+      "before": 84,
+      "after": 59
+    },
+    "chn": {
+      "before": 400,
+      "after": 296
+    },
+    "civ": {
+      "before": 25,
+      "after": 21
+    },
+    "cmr": {
+      "before": 31,
+      "after": 19
+    },
+    "cod": {
+      "before": 88,
+      "after": 62
+    },
+    "cog": {
+      "before": 17,
+      "after": 11
+    },
+    "col": {
+      "before": 72,
+      "after": 50
+    },
+    "com": {
+      "before": 1,
+      "after": 1
+    },
+    "cpv": {
+      "before": 2,
+      "after": 2
+    },
+    "cri": {
+      "before": 13,
+      "after": 7
+    },
+    "cub": {
+      "before": 26,
+      "after": 17
+    },
+    "cyp": {
+      "before": 4,
+      "after": 4
+    },
+    "cze": {
+      "before": 12,
+      "after": 11
+    },
+    "dji": {
+      "before": 5,
+      "after": 5
+    },
+    "dma": {
+      "before": 1,
+      "after": 1
+    },
+    "dnk": {
+      "before": 12,
+      "after": 8
+    },
+    "dom": {
+      "before": 31,
+      "after": 30
+    },
+    "dza": {
+      "before": 51,
+      "after": 39
+    },
+    "ecu": {
+      "before": 37,
+      "after": 24
+    },
+    "egy": {
+      "before": 42,
+      "after": 28
+    },
+    "eri": {
+      "before": 7,
+      "after": 5
+    },
+    "est": {
+      "before": 7,
+      "after": 6
+    },
+    "eth": {
+      "before": 34,
+      "after": 22
+    },
+    "fin": {
+      "before": 21,
+      "after": 13
+    },
+    "fji": {
+      "before": 4,
+      "after": 3
+    },
+    "france": {
+      "before": 71,
+      "after": 49
+    },
+    "fsm": {
+      "before": 1,
+      "after": 1
+    },
+    "gab": {
+      "before": 20,
+      "after": 11
+    },
+    "geo": {
+      "before": 7,
+      "after": 6
+    },
+    "germany": {
+      "before": 58,
+      "after": 40
+    },
+    "gha": {
+      "before": 17,
+      "after": 10
+    },
+    "gin": {
+      "before": 29,
+      "after": 28
+    },
+    "gmb": {
+      "before": 7,
+      "after": 7
+    },
+    "gnb": {
+      "before": 8,
+      "after": 8
+    },
+    "gnq": {
+      "before": 6,
+      "after": 5
+    },
+    "grc": {
+      "before": 30,
+      "after": 25
+    },
+    "grd": {
+      "before": 1,
+      "after": 1
+    },
+    "gtm": {
+      "before": 26,
+      "after": 23
+    },
+    "guy": {
+      "before": 10,
+      "after": 6
+    },
+    "hnd": {
+      "before": 19,
+      "after": 18
+    },
+    "hrv": {
+      "before": 10,
+      "after": 10
+    },
+    "hti": {
+      "before": 9,
+      "after": 9
+    },
+    "hun": {
+      "before": 20,
+      "after": 19
+    },
+    "idn": {
+      "before": 105,
+      "after": 75
+    },
+    "ind": {
+      "before": 214,
+      "after": 156
+    },
+    "irl": {
+      "before": 15,
+      "after": 13
+    },
+    "irn": {
+      "before": 63,
+      "after": 43
+    },
+    "irq": {
+      "before": 27,
+      "after": 18
+    },
+    "isl": {
+      "before": 9,
+      "after": 8
+    },
+    "isr": {
+      "before": 6,
+      "after": 6
+    },
+    "italy": {
+      "before": 56,
+      "after": 45
+    },
+    "jam": {
+      "before": 14,
+      "after": 14
+    },
+    "jor": {
+      "before": 9,
+      "after": 9
+    },
+    "jpn": {
+      "before": 69,
+      "after": 48
+    },
+    "kaz": {
+      "before": 96,
+      "after": 68
+    },
+    "ken": {
+      "before": 36,
+      "after": 23
+    },
+    "kgz": {
+      "before": 14,
+      "after": 7
+    },
+    "khm": {
+      "before": 19,
+      "after": 19
+    },
+    "kir": {
+      "before": 1,
+      "after": 1
+    },
+    "kna": {
+      "before": 1,
+      "after": 1
+    },
+    "kor": {
+      "before": 28,
+      "after": 17
+    },
+    "kwt": {
+      "before": 4,
+      "after": 4
+    },
+    "lao": {
+      "before": 14,
+      "after": 13
+    },
+    "lbn": {
+      "before": 6,
+      "after": 6
+    },
+    "lbr": {
+      "before": 13,
+      "after": 13
+    },
+    "lby": {
+      "before": 35,
+      "after": 22
+    },
+    "lca": {
+      "before": 1,
+      "after": 1
+    },
+    "lie": {
+      "before": 1,
+      "after": 1
+    },
+    "lka": {
+      "before": 14,
+      "after": 10
+    },
+    "lso": {
+      "before": 8,
+      "after": 8
+    },
+    "ltu": {
+      "before": 5,
+      "after": 5
+    },
+    "lux": {
+      "before": 3,
+      "after": 3
+    },
+    "lva": {
+      "before": 6,
+      "after": 6
+    },
+    "mar": {
+      "before": 26,
+      "after": 16
+    },
+    "mco": {
+      "before": 1,
+      "after": 1
+    },
+    "mda": {
+      "before": 5,
+      "after": 5
+    },
+    "mdg": {
+      "before": 28,
+      "after": 17
+    },
+    "mdv": {
+      "before": 1,
+      "after": 1
+    },
+    "mex": {
+      "before": 189,
+      "after": 138
+    },
+    "mhl": {
+      "before": 1,
+      "after": 1
+    },
+    "mkd": {
+      "before": 3,
+      "after": 3
+    },
+    "mli": {
+      "before": 30,
+      "after": 19
+    },
+    "mlt": {
+      "before": 1,
+      "after": 1
+    },
+    "mmr": {
+      "before": 37,
+      "after": 24
+    },
+    "mne": {
+      "before": 1,
+      "after": 1
+    },
+    "mng": {
+      "before": 24,
+      "after": 21
+    },
+    "moz": {
+      "before": 34,
+      "after": 22
+    },
+    "mrt": {
+      "before": 20,
+      "after": 14
+    },
+    "mus": {
+      "before": 2,
+      "after": 2
+    },
+    "mwi": {
+      "before": 20,
+      "after": 20
+    },
+    "mys": {
+      "before": 32,
+      "after": 20
+    },
+    "nam": {
+      "before": 27,
+      "after": 18
+    },
+    "ner": {
+      "before": 16,
+      "after": 8
+    },
+    "nga": {
+      "before": 68,
+      "after": 47
+    },
+    "nic": {
+      "before": 19,
+      "after": 17
+    },
+    "nld": {
+      "before": 14,
+      "after": 14
+    },
+    "nor": {
+      "before": 34,
+      "after": 22
+    },
+    "npl": {
+      "before": 17,
+      "after": 15
+    },
+    "nru": {
+      "before": 1,
+      "after": 1
+    },
+    "nzl": {
+      "before": 52,
+      "after": 35
+    },
+    "omn": {
+      "before": 10,
+      "after": 6
+    },
+    "pak": {
+      "before": 41,
+      "after": 27
+    },
+    "pan": {
+      "before": 14,
+      "after": 10
+    },
+    "per": {
+      "before": 89,
+      "after": 63
+    },
+    "phl": {
+      "before": 38,
+      "after": 36
+    },
+    "plw": {
+      "before": 2,
+      "after": 2
+    },
+    "png": {
+      "before": 23,
+      "after": 19
+    },
+    "poland": {
+      "before": 24,
+      "after": 19
+    },
+    "prk": {
+      "before": 27,
+      "after": 16
+    },
+    "prt": {
+      "before": 24,
+      "after": 21
+    },
+    "pry": {
+      "before": 37,
+      "after": 24
+    },
+    "psx": {
+      "before": 4,
+      "after": 3
+    },
+    "qat": {
+      "before": 1,
+      "after": 1
+    },
+    "rou": {
+      "before": 41,
+      "after": 41
+    },
+    "russia": {
+      "before": 585,
+      "after": 435
+    },
+    "rwa": {
+      "before": 11,
+      "after": 11
+    },
+    "sau": {
+      "before": 31,
+      "after": 19
+    },
+    "sdn": {
+      "before": 30,
+      "after": 19
+    },
+    "sds": {
+      "before": 15,
+      "after": 11
+    },
+    "sen": {
+      "before": 11,
+      "after": 10
+    },
+    "sgp": {
+      "before": 1,
+      "after": 1
+    },
+    "slb": {
+      "before": 3,
+      "after": 3
+    },
+    "sle": {
+      "before": 5,
+      "after": 4
+    },
+    "slv": {
+      "before": 14,
+      "after": 14
+    },
+    "smr": {
+      "before": 1,
+      "after": 1
+    },
+    "som": {
+      "before": 25,
+      "after": 15
+    },
+    "spain": {
+      "before": 49,
+      "after": 33
+    },
+    "srb": {
+      "before": 7,
+      "after": 7
+    },
+    "stp": {
+      "before": 2,
+      "after": 2
+    },
+    "sur": {
+      "before": 10,
+      "after": 9
+    },
+    "svk": {
+      "before": 7,
+      "after": 6
+    },
+    "svn": {
+      "before": 2,
+      "after": 2
+    },
+    "swe": {
+      "before": 34,
+      "after": 25
+    },
+    "swz": {
+      "before": 7,
+      "after": 6
+    },
+    "syc": {
+      "before": 1,
+      "after": 1
+    },
+    "syr": {
+      "before": 21,
+      "after": 14
+    },
+    "tcd": {
+      "before": 19,
+      "after": 15
+    },
+    "tgo": {
+      "before": 7,
+      "after": 7
+    },
+    "tha": {
+      "before": 79,
+      "after": 76
+    },
+    "tjk": {
+      "before": 9,
+      "after": 6
+    },
+    "tkm": {
+      "before": 13,
+      "after": 6
+    },
+    "tls": {
+      "before": 1,
+      "after": 1
+    },
+    "ton": {
+      "before": 2,
+      "after": 2
+    },
+    "tto": {
+      "before": 2,
+      "after": 2
+    },
+    "tun": {
+      "before": 26,
+      "after": 23
+    },
+    "turkey": {
+      "before": 83,
+      "after": 75
+    },
+    "tuv": {
+      "before": 1,
+      "after": 1
+    },
+    "tza": {
+      "before": 59,
+      "after": 40
+    },
+    "uga": {
+      "before": 43,
+      "after": 41
+    },
+    "uk": {
+      "before": 57,
+      "after": 52
+    },
+    "ukr": {
+      "before": 49,
+      "after": 33
+    },
+    "ury": {
+      "before": 32,
+      "after": 20
+    },
+    "usa": {
+      "before": 769,
+      "after": 573
+    },
+    "uzb": {
+      "before": 29,
+      "after": 18
+    },
+    "vat": {
+      "before": 1,
+      "after": 1
+    },
+    "vct": {
+      "before": 1,
+      "after": 1
+    },
+    "ven": {
+      "before": 50,
+      "after": 34
+    },
+    "vnm": {
+      "before": 60,
+      "after": 57
+    },
+    "vut": {
+      "before": 2,
+      "after": 2
+    },
+    "wsm": {
+      "before": 1,
+      "after": 1
+    },
+    "yem": {
+      "before": 20,
+      "after": 14
+    },
+    "zaf": {
+      "before": 72,
+      "after": 50
+    },
+    "zmb": {
+      "before": 34,
+      "after": 22
+    },
+    "zwe": {
+      "before": 20,
+      "after": 11
+    }
+  },
+  "method": "country quotas, protected capitals/regional/major/port names and one city per populated province; remove low-population dense candidates; transfer urban population within same province; stable survivor IDs"
+}

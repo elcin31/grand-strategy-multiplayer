@@ -8,9 +8,9 @@ const countryKeys=['name','shortName','color','adjective','flag','region'];
 const provinceKeys=['name','neighbors','cityIds','x','y','width','height'];
 const cityKeys=['name','provinceId'];
 type Row=Record<string,unknown>;
-function strip(row:Row,definition:unknown,keys:string[]):Row{
+function strip(row:Row,definition:unknown,keys:string[],literalKeys:readonly string[]=[]):Row{
  const result={...row},base=definition as Row|undefined;if(!base)return result;
- let mask=0;keys.forEach((key,i)=>{if(Object.hasOwn(row,key)&&JSON.stringify(row[key])===JSON.stringify(base[key])){delete result[key];mask|=1<<i;}});if(mask)result.$static=mask;
+ let mask=0;keys.forEach((key,i)=>{if(literalKeys.includes(key))return;if(Object.hasOwn(row,key)&&JSON.stringify(row[key])===JSON.stringify(base[key])){delete result[key];mask|=1<<i;}});if(mask)result.$static=mask;
  return result;
 }
 function restore(row:Row,definition:unknown,keys:string[]):Row{
@@ -22,7 +22,7 @@ export interface WireResponse{state:GameState;checksum?:string;stateEncoding?:'d
 export function encodeSnapshot<T extends WireResponse>(response:T):T&WireResponse{
  if(response.state.dataset!=='modern-world-v2')return response;
  const s=response.state;
- const state={...s,countries:Object.fromEntries(Object.entries(s.countries).map(([id,c])=>[id,strip(c as unknown as Row,countries.get(id),countryKeys)])),provinces:s.provinces.map(p=>strip(p as unknown as Row,provinces.get(p.id),provinceKeys)),cities:s.cities?.map(c=>strip(c as unknown as Row,cities.get(c.id),cityKeys))} as unknown as GameState;
+ const state={...s,countries:Object.fromEntries(Object.entries(s.countries).map(([id,c])=>[id,strip(c as unknown as Row,countries.get(id),countryKeys)])),provinces:s.provinces.map(p=>strip(p as unknown as Row,provinces.get(p.id),provinceKeys,['cityIds'])),cities:s.cities?.map(c=>strip(c as unknown as Row,cities.get(c.id),cityKeys))} as unknown as GameState;
  return{...response,state,checksum:response.checksum??stateChecksum(s),stateEncoding:'dynamic-v1',wireChecksum:stateChecksum(state)};
 }
 export function decodeSnapshot<T extends WireResponse>(response:T):T{

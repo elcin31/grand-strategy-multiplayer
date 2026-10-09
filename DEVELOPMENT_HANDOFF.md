@@ -1,12 +1,14 @@
-# VISUAL UPDATE — IN PROGRESS, 2026-10-09
+# VISUAL UPDATE — CITY/RENDER WORK COMPLETE, RELEASE PENDING (2026-10-09)
 
-Recovery from origin/main 9dc0dec completed. Original v4 optimizations retained. Block 0 research and host baseline complete; base 195 countries / 2,924 provinces / 7,214 cities. Raw paired fixture baseline is being recorded under BENCHMARK_VISUAL_BASELINE.json before city data changes.
+Recovery from main 9dc0dec; visual shell/art commit fbf959f. Original Skia renderer/LOD/worklets/AI schedule retained. Original six paintings integrated as nine optimized WebP variants (1,370,604 bytes); actual RIFF/hash verification passes, including economy art correction. Unified compact historical interface, GPU map/army/label redesign, lazy menu→campaign shell implemented. No new mechanics.
 
-Block 1/2 implemented: isolated lazy campaign shell, original six WebP paintings, historical menu/pages, unified tokens, compact panels/banner art, vector rulers/heraldry, political palette/army/label redesign. Typecheck and original 161 JS tests pass. Native visual acceptance remains pending; do not describe update as released.
+Cities: 7,214 → 5,411 (24.993% reduction). 195 capitals, 2,225 regional centers, all 2,924 provinces and 195 countries preserved. Urban population 2,332,963,370 and country/province total 7,632,252,811 exact. Stable retained IDs; removed cities map into same-province retained centers. Schema 12 migration retains ownership/development/fractional-growth reserve, validates before mutation; local old save retained as byte-exact .before-city-v12.backup. Dynamic snapshots explicitly retain literal city links for older catalog compatibility. No saves deleted.
 
-Next exact operation: deterministic 7,214 → 5,411 city selection and schema-12 migration retaining province/country/urban population; then viewport city indexing, paired benchmarks, regression, dedicated backend deployment/QA, Android release and APK download.
+Tier-specific city spatial queries, immutable viewport catalogue reuse, marker budgets 6/18/42/70, sidecar menu metadata and deferred codec/world imports implemented. BENCHMARK_VISUAL_PAIRED.json: same seed/campaign, 100 ticks, 1,200 camera queries; city-query p95 0.535→0.185ms; tick p95 75.8→56.9ms; initial snapshot 3,671,090→3,297,031 bytes. No physical FPS/memory claims.
 
-Only elcin31/grand-strategy-multiplayer and existing dedicated backend dfjsnjxnyjspwugjguhq authorized; AssetMind untouched. No new game mechanics or backend. CI has not yet run for visual update.
+Strict TS + 167 JS tests PASS; 3 Python tests PASS; world/map benchmarks PASS; optimized art verifier PASS. Backend game-room v21 / game-command v23 deployed to dfjsnjxnyjspwugjguhq, existing custom authentication unchanged. Additive backup migration applied: all 29 existing rooms have byte-exact JSON/compressed backups; RLS remains enabled and service-only. Advisor reports informational no-policy tables by intentional service-only design, no new security errors. Local live HTTP QA blocked by network policy; use scoped GitHub backend QA, never report local HTTP as passed.
+
+Next exact operation: publish logical city/performance commit and CI/version 0.7.0 (7) commit on visual-update; await release build, 10k simulation and native visual/30-minute smoke; review screenshots and fix failures; clean exact QA room IDs; download/extract/verify real Dominion-visual-update-release.apk; publish final reports and deliver APK. CI not yet started; no visual release accepted yet. Only this repo/existing backend used; AssetMind untouched.
 
 ---
 

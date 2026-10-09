@@ -140,7 +140,8 @@ export function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCi
   const provinces = useMemo(() => new Map(state.provinces.map(p => [p.id, p])), [state.provinces]);
   const cityState = useMemo(()=>new Map((state.cities??[]).map(c=>[c.id,c])),[state.cities]);
   // Query immutable coordinates first. Do not recreate/reindex 7,214 points each tick.
-  const cities = useMemo(() => visibleCities(mapCities, bounds, snapshot.zoom, preset).map(c=>({...c,population:cityState.get(c.id)?.population??c.population})), [mapCities, cityState, bounds, snapshot.zoom, preset]);
+  const visibleCityCatalogue = useMemo(()=>visibleCities(mapCities,bounds,snapshot.zoom,preset),[mapCities,bounds,snapshot.zoom,preset]);
+  const cities=useMemo(()=>visibleCityCatalogue.map(c=>({...c,population:cityState.get(c.id)?.population??c.population})),[visibleCityCatalogue,cityState]);
   const font = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 11, fontWeight: '600' }), []);
   const counterFont = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 10, fontWeight: 'bold' }), []);
   const nationFont = useMemo(() => matchFont({ fontFamily: 'serif', fontSize: 13, fontWeight: 'bold' }), []);

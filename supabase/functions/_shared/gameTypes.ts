@@ -141,6 +141,8 @@ export interface BattleEvent {
 }
 
 export interface City {
+  /** Deferred fractional urban-growth units carried through city consolidation. */
+  populationGrowthCarryReserve?: number;
   populationGrowthCarry?: number;
   id: string;
   name: string;

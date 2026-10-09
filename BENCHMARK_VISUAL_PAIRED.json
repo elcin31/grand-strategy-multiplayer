@@ -1,0 +1,44 @@
+{
+  "fixture": {
+    "id": "pass3-profile",
+    "seed": 101,
+    "ticks": 100,
+    "cameraQueries": 1200,
+    "viewport": [
+      1280,
+      720
+    ],
+    "preset": "Balanced"
+  },
+  "before": {
+    "cities": 7214,
+    "initialSnapshotBytes": 3671090,
+    "finalSnapshotBytes": 3923731,
+    "cityQueryP95Ms": 0.5350560000001678,
+    "localTickP95Ms": 75.81843100000015,
+    "markersAcrossQueries": 18476
+  },
+  "after": {
+    "cities": 5411,
+    "initialSnapshotBytes": 3297031,
+    "finalSnapshotBytes": 3518439,
+    "cityQueryP95Ms": 0.18487299999992501,
+    "localTickP95Ms": 56.906672999999955,
+    "markersAcrossQueries": 13951
+  },
+  "presetBudgets": {
+    "before": {
+      "Performance": 8,
+      "Balanced": 24,
+      "High": 60,
+      "Ultra": 100
+    },
+    "after": {
+      "Performance": 6,
+      "Balanced": 18,
+      "High": 42,
+      "Ultra": 70
+    }
+  },
+  "note": "Paired host CPU workload, original v4 city-culling algorithm and old catalogue compared with reduced catalogue/tier indexes; trusted simulation skips schema migrations for both. No native FPS or Android memory claim."
+}
