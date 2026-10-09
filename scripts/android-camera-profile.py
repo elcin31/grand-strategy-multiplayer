@@ -1,0 +1,85 @@
+"""Paired camera-only native profiling. Offline, paused, same input and emulator.
+
+gfxinfo measures Android frame completion on SwiftShader; never handset FPS.
+No production rooms are created. Raw framestats/cpu/memory/screenshots retained.
+"""
+import json,os,re,subprocess,sys,time,xml.etree.ElementTree as ET
+from pathlib import Path
+PACKAGE='com.elcin31.grandstrategymultiplayer'
+OUT=Path(os.environ.get('CAMERA_PROFILE_OUT','camera-profile'));OUT.mkdir(exist_ok=True)
+def adb(*args):return subprocess.check_output(['adb',*map(str,args)],text=True,stderr=subprocess.STDOUT)
+def hierarchy(name):
+    adb('shell','uiautomator','dump','/sdcard/camera.xml')
+    text=adb('shell','cat','/sdcard/camera.xml');(OUT/(name+'.xml')).write_text(text)
+    return ET.fromstring(text)
+def click(root,label):
+    node=next(n for n in root.iter('node') if n.get('text')==label or n.get('content-desc')==label)
+    x1,y1,x2,y2=map(int,re.findall(r'\d+',node.get('bounds')))
+    assert x2>x1 and y2>y1, label+' has no hit area'
+    adb('shell','input','tap',(x1+x2)//2,(y1+y2)//2)
+def find_click(label):
+    for i in range(12):
+        root=hierarchy('find-'+str(i))
+        if any(n.get('text')==label or n.get('content-desc')==label for n in root.iter('node')):
+            click(root,label);time.sleep(1);return
+        adb('shell','input','swipe','1080','540','1080','270','280')
+    raise AssertionError('Missing '+label)
+def shot(name):
+    data=subprocess.check_output(['adb','exec-out','screencap','-p']);(OUT/(name+'.png')).write_bytes(data)
+def settings():click(hierarchy('settings'),'Настройки карты');time.sleep(.5)
+def nav(section):find_click('Раздел '+section)
+def gesture(kind,cycles=5):
+    adb('shell','CLASSPATH=/data/local/tmp/dominion-camera.jar app_process /system/bin CameraGesture '+kind+' '+str(cycles))
+def sample(name,kind=None):
+    adb('shell','dumpsys','gfxinfo',PACKAGE,'reset');adb('logcat','-c')
+    t=time.monotonic()
+    if kind:gesture(kind)
+    else:time.sleep(10)
+    elapsed=time.monotonic()-t
+    raw=adb('shell','dumpsys','gfxinfo',PACKAGE,'framestats');(OUT/(name+'-frames.txt')).write_text(raw)
+    cpu=adb('shell','dumpsys','cpuinfo');(OUT/(name+'-cpu.txt')).write_text(cpu)
+    mem=adb('shell','dumpsys','meminfo',PACKAGE);(OUT/(name+'-memory.txt')).write_text(mem)
+    logs=adb('logcat','-d');(OUT/(name+'-logcat.txt')).write_text(logs)
+    shot(name)
+    frames=[]
+    lines=raw.splitlines()
+    for i,line in enumerate(lines):
+        if line.startswith('Flags,IntendedVsync,'):
+            fields=line.split(',');start=fields.index('IntendedVsync');end=fields.index('FrameCompleted')
+            for row in lines[i+1:]:
+                if not re.match(r'^\d+,',row):break
+                values=row.split(',')
+                if int(values[0])==0:
+                    ms=(int(values[end])-int(values[start]))/1e6
+                    if 0<ms<5000:frames.append(ms)
+    frames.sort()
+    def percentile(p):return frames[min(len(frames)-1,int(len(frames)*p))] if frames else None
+    match=re.search(r'Janky frames:\s*(\d+)\s*\(([\d.]+)%\)',raw)
+    result={'scenario':name,'elapsedSeconds':elapsed,'frames':len(frames),'p50Ms':percentile(.5),'p95Ms':percentile(.95),'p99Ms':percentile(.99),'jankPercent':float(match[2]) if match else None,'cameraTrace':re.findall(r'DOMINION_CAMERA[^\n]*',logs)}
+    results.append(result);(OUT/'results.json').write_text(json.dumps({'note':'Software SwiftShader API35 native frames, offline paused campaign. Same gestures for both builds; not physical Redmi FPS.','results':results},indent=2));print(json.dumps(result),flush=True)
+
+adb('install','-r',sys.argv[1]);adb('shell','pm','clear',PACKAGE)
+adb('shell','wm','size','720x1280');adb('shell','wm','density','160')
+adb('shell','svc','wifi','disable');adb('shell','svc','data','disable')
+adb('shell','am','start','-W','-n',PACKAGE+'/.MainActivity');time.sleep(5)
+find_click('Одиночная игра');time.sleep(15)
+find_click('СТРАНЫ · 195');root=hierarchy('picker');click(root,'Поиск государства')
+adb('shell','input','text','Germany');time.sleep(1);find_click('Германия')
+find_click('ИГРАТЬ ЗА ЭТУ СТРАНУ');find_click('Я ГОТОВ');time.sleep(1);find_click('Начать игру');time.sleep(8)
+find_click('Пауза');time.sleep(2)
+settings();find_click('Balanced');find_click('Адаптивное качество: Вкл')
+# settings stay open after quality changes; close with the toolbar button.
+settings();adb('shell','input','keyevent','4');time.sleep(2)
+results=[]
+sample('01-idle')
+find_click('Европа');time.sleep(2);sample('02-medium-pan','pan')
+sample('03-pinch','pinch')
+find_click('Обзор мира');time.sleep(2);sample('04-world-pan','pan')
+find_click('Европа');find_click('Приблизить');find_click('Приблизить');time.sleep(2)
+sample('05-local-labels-armies','pan')
+settings();find_click('Режим Рельеф');sample('06-terrain-pan','pan')
+settings();find_click('Режим Армии');sample('07-military-overlay','pan')
+settings();find_click('Режим Политическая');nav('Экономика');sample('08-panel-open','pan')
+adb('shell','input','keyevent','4');sample('09-panel-closed','pan')
+logs=adb('logcat','-d');assert not re.search(r'FATAL EXCEPTION|JavascriptException|com.facebook.react.common.JavascriptException',logs), 'Fatal runtime error'
+print('PASS: camera profile scenarios complete',flush=True)
