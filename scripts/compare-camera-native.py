@@ -9,6 +9,7 @@ for b,a in zip(before['results'],after['results']):
 report={'baselineRuntime':os.environ.get('CAMERA_BASELINE_RUNTIME','47b0db4f8b220e9ea89998afaac035239b64f5e0'),'baselineRun':os.environ.get('CAMERA_BASELINE_RUN','37971350100'),'candidateRuntime':os.environ.get('CAMERA_CANDIDATE_RUNTIME',os.environ.get('GITHUB_SHA')),'candidateRun':os.environ.get('CAMERA_CANDIDATE_RUN',os.environ.get('GITHUB_RUN_ID')),'comparisonRuntime':os.environ.get('GITHUB_SHA'),'comparisonRun':os.environ.get('GITHUB_RUN_ID'),'note':'Paired baseline/candidate on one SwiftShader API35 emulator with identical real-pointer gesture driver, offline paused campaign, Balanced and adaptive off. Native frame completion and host software rendering only; physical Redmi acceptance remains pending. gfxinfo histogram percentiles are used when raw timestamps are unavailable.','rows':rows}
 Path('CAMERA_NATIVE_PAIRED.json').write_text(json.dumps(report,indent=2)+'\n')
 for row in rows:print(row['scenario'],{k:row['before'][k] for k in ('p50Ms','p95Ms','jankPercent','pssKiB')},'->',{k:row['after'][k] for k in ('p50Ms','p95Ms','jankPercent','pssKiB')})
+assert all(r[side]['pssKiB'] is not None and r[side]['pssKiB']>0 for r in rows for side in ('before','after')), 'Native memory capture missing'
 assert all(r['after']['p95Ms'] is not None for r in rows[1:]), 'No native moving-camera frame timings captured'
 pinch=next(r for r in rows if r['scenario']=='03-pinch')
 assert pinch['after']['histogramP95Ms'] <= pinch['before']['histogramP95Ms']*1.1, 'Pinch p95 regression; candidate must not publish'

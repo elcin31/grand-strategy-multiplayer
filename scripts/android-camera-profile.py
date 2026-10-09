@@ -68,8 +68,8 @@ def sample(name,kind=None):
     current_pid=adb('shell','pidof',PACKAGE).strip()
     assert current_pid==pid and pid, 'Game process disappeared/restarted in '+name
     (OUT/(name+'-threads.txt')).write_text(adb('shell','top','-H','-b','-n','1','-p',pid))
-    pss=re.search(r'TOTAL PSS:\\s*(\\d+)',mem)
-    fallback=re.findall(r'DOMINION_CAMERA[^\\n]*',logs)[-1:]
+    pss=re.search(r'TOTAL PSS:\s*(\d+)',mem)
+    fallback=re.findall(r'DOMINION_CAMERA[^\n]*',logs)[-1:]
     result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,**frame_stats(raw),'cpuThreads':thread_stats((OUT/(name+'-threads-active.txt')).read_text(),pid),'mapPaint':painted,'cameraTrace':fallback,'diagnosticError':None}
     results.append(result)
     def persist(): (OUT/'results.json').write_text(json.dumps({'note':'Software SwiftShader API35 native frames, offline paused campaign. Same gestures for both builds; not physical Redmi FPS. Accessibility diagnostics are auxiliary to the completed-frame capture.','results':results},indent=2))

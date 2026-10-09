@@ -6,7 +6,10 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  actions: read
+  actions: write
+concurrency:
+  group: dominion-camera-checkpoint-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   camera-comparison:
     runs-on: ubuntu-latest
@@ -23,6 +26,12 @@ jobs:
           gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/37991163050 > source-run.json
           gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/37991163050/jobs > source-jobs.json
           python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='efd1f3d4b63d737001ab6301b65bd151609b76af';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
+      - name: Stop only superseded same-APK harness run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/37995218177 > superseded-run.json
+          python -c "import json,subprocess;r=json.load(open('superseded-run.json'));assert r['head_sha']=='072e656c56c30114f67a130f50f25a791ea50757' and r['head_branch']=='expansion-camera-qa';subprocess.run(['gh','run','cancel','37995218177','--repo','elcin31/grand-strategy-multiplayer'],check=False) if r['status']!='completed' else None"
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
