@@ -20,7 +20,7 @@ Native API35 job **113787009485 PASS**, evidence **11613239385**. Exactly one Si
 
 Software SwiftShader gfxinfo p50/p95/p99 **105/200/400ms**, **84.37% jank**. Thirty PSS samples **593,072–981,108 KiB**, first 700,306, last 631,847. Activity TotalTime **1647/674/1835ms** measures Android activity launch, not full menu readiness or touch latency. These are software-emulator observations, not physical FPS, peak memory or a leak-free guarantee. Redmi Note 12 frame pacing/FPS, pinch/touch latency, thermal and battery acceptance remain unmeasured. Native smoke does not independently automate full distant-target combat or two-finger pinch; reducer/live HTTP regressions cover route/combat/authority and existing camera worklets remain unchanged.
 
-Delivery: exact accepted APK saved successfully for direct download. Target 30 FPS low-end/45–60 mid-range/60 high-end are goals, not achieved Redmi claims. Earlier visual APKs/runs are superseded.
+Delivery: permanent public APK **https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.7.0-visual-update/Dominion-visual-update-release.apk**. Release v0.7.0-visual-update; publisher run 37929726099/job 113817204085 PASS. Public unauthenticated download rechecked against exact accepted SHA-256 and 140,113,723-byte size; no rebuild. Earlier ChatGPT download URL failed with a cross-site restriction and is superseded by this public URL. Target 30 FPS low-end/45–60 mid-range/60 high-end are goals, not achieved Redmi claims. Earlier visual APKs/runs are superseded.
 
 ---
 

@@ -16,7 +16,9 @@ Final **Dominion-visual-update-release.apk**, **140,113,723 bytes**, SHA256 `d90
 
 Exact accepted APK saved successfully with identity/metadata for direct download at /workspace/scratch/d974873ac49c/final-visual-release/Dominion-visual-update-release.apk. Local executor disconnected after successful file saving/verification; final evidence reports published through GitHub API. Code/accepted binary already preserved.
 
-Next exact operation: deliver this exact accepted APK directly. Do not repeat implementation/build older artifacts. After delivery await user's Balanced hardware observations; physical FPS/touch/thermal/battery unmeasured. SwiftShader/PSS limits in PERFORMANCE_REPORT.md; no achieved 60 FPS claim or unrelated roadmap.
+Public APK delivery fixed: **https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.7.0-visual-update/Dominion-visual-update-release.apk**. GitHub release v0.7.0-visual-update contains the exact accepted 140,113,723-byte APK, SHA-256 d90a8aca6993de2d69db42e75eb2791bc7f50c1efd3425028c5ee0a1e1205a1f. Publisher run 37929726099/job 113817204085 PASS, including unauthenticated download/checksum verification. New .github/workflows/publish-visual-release.yml republishes only this accepted binary with CI/hash guards; no runtime/backend change. ChatGPT cross-site URL failed on user Android browser; use this permanent public APK URL.
+
+Next exact operation: deliver the public direct APK link above. Do not repeat implementation/build older artifacts. After delivery await user's Balanced hardware observations; physical FPS/touch/thermal/battery unmeasured. SwiftShader/PSS limits in PERFORMANCE_REPORT.md; no achieved 60 FPS claim or unrelated roadmap.
 
 ---
 
