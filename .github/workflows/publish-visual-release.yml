@@ -83,3 +83,40 @@ jobs:
           print('PASS: permanent public APK download matches the accepted binary')
           PY
           gh release view "$RELEASE_TAG" --json url,assets
+      - name: Package identical APK in a compressed ZIP
+        run: |
+          python3 - <<'PY'
+          import pathlib, zipfile
+          apk = pathlib.Path('release/Dominion-visual-update-release.apk')
+          archive = pathlib.Path('release/Dominion-visual-update-release.zip')
+          with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
+              z.write(apk, arcname=apk.name)
+          print('ZIP bytes:', archive.stat().st_size)
+          PY
+      - name: Publish alternative ZIP download
+        run: |
+          gh api "repos/$GH_REPO/releases/tags/$RELEASE_TAG" > public-release.json
+          python3 - <<'PY'
+          import json, pathlib
+          release = json.load(open('public-release.json'))
+          if any(a['name'] == 'Dominion-visual-update-release.zip' for a in release['assets']):
+              pathlib.Path('zip-already-published').touch()
+          PY
+          if [ ! -f zip-already-published ]; then
+            gh release upload "$RELEASE_TAG" release/Dominion-visual-update-release.zip
+          fi
+      - name: Verify public ZIP and unchanged APK inside
+        run: |
+          curl --fail --location --retry 2 --max-time 180 --output public-check.zip "https://github.com/$GH_REPO/releases/download/$RELEASE_TAG/Dominion-visual-update-release.zip"
+          python3 - <<'PY'
+          import hashlib, os, pathlib, zipfile
+          with zipfile.ZipFile('public-check.zip') as z:
+              assert z.namelist() == ['Dominion-visual-update-release.apk']
+              assert z.testzip() is None
+              apk = z.read('Dominion-visual-update-release.apk')
+              assert len(apk) == 140113723
+              assert hashlib.sha256(apk).hexdigest() == os.environ['APK_SHA256']
+          print('PASS: public ZIP contains the exact accepted standalone APK')
+          print('Public ZIP bytes:', pathlib.Path('public-check.zip').stat().st_size)
+          PY
+          gh release view "$RELEASE_TAG" --json url,assets
