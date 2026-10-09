@@ -1,0 +1,85 @@
+name: Publish verified Dominion APK
+on:
+  push:
+    branches: [apk-delivery]
+    paths: [.github/workflows/publish-visual-release.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: dominion-public-visual-apk
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: elcin31/grand-strategy-multiplayer
+      RELEASE_TAG: v0.7.0-visual-update
+      RELEASE_SOURCE: c758ed78f586268809a2184a064ae7fdadc5156e
+      APK_SHA256: d90a8aca6993de2d69db42e75eb2791bc7f50c1efd3425028c5ee0a1e1205a1f
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: c758ed78f586268809a2184a064ae7fdadc5156e
+          persist-credentials: false
+      - name: Require accepted native release evidence
+        run: |
+          gh api repos/$GH_REPO/actions/runs/37918487336 > accepted-run.json
+          gh api repos/$GH_REPO/actions/runs/37918487336/jobs?per_page=100 > accepted-jobs.json
+          python3 - <<'PY'
+          import json, os
+          run = json.load(open('accepted-run.json'))
+          assert run['head_sha'] == os.environ['RELEASE_SOURCE']
+          assert run['status'] == 'completed' and run['conclusion'] == 'success'
+          jobs = json.load(open('accepted-jobs.json'))['jobs']
+          required = {'build-apk', 'long-simulation', 'android-smoke'}
+          assert required == {j['name'] for j in jobs}
+          assert all(j['status'] == 'completed' and j['conclusion'] == 'success' for j in jobs)
+          print('Accepted build, 10000 ticks and native soak verified')
+          PY
+      - name: Download the existing accepted APK
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release download "$RELEASE_TAG" --pattern Dominion-visual-update-release.apk --dir release
+          else
+            gh run download 37918487336 --name dominion-visual-release --dir release
+          fi
+      - name: Verify exact binary and embedded JavaScript
+        run: |
+          python3 - <<'PY'
+          import hashlib, os, pathlib, zipfile
+          p = pathlib.Path('release/Dominion-visual-update-release.apk')
+          assert p.stat().st_size == 140113723
+          assert hashlib.sha256(p.read_bytes()).hexdigest() == os.environ['APK_SHA256']
+          with zipfile.ZipFile(p) as z:
+              assert z.getinfo('assets/index.android.bundle').file_size == 10447040
+              assert z.testzip() is None
+          print('Exact accepted release binary and embedded JS verified')
+          PY
+          python3 scripts/verify-apk.py release/Dominion-visual-update-release.apk
+      - name: Publish permanent public download
+        run: |
+          cat > release-notes.md <<'NOTES'
+          Dominion 0.7.0: historical visual redesign, six original illustrations, new landscape main menu, 7,214 to 5,411 cities with all capitals and population preserved, and Android software optimizations.
+          
+          Standalone non-debuggable release with embedded JS, production backend and landscape. Runtime c758ed78f586268809a2184a064ae7fdadc5156e; accepted CI 37918487336 passed build, 10,000 ticks and native 30-minute soak. Physical Redmi FPS remains unmeasured.
+          
+          APK SHA-256: d90a8aca6993de2d69db42e75eb2791bc7f50c1efd3425028c5ee0a1e1205a1f
+          NOTES
+          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" release/Dominion-visual-update-release.apk --target "$RELEASE_SOURCE" --title "Dominion 0.7.0 — Visual Update" --notes-file release-notes.md
+          fi
+      - name: Verify unauthenticated download of published APK
+        run: |
+          curl --fail --location --retry 2 --max-time 180 --output public-check.apk "https://github.com/$GH_REPO/releases/download/$RELEASE_TAG/Dominion-visual-update-release.apk"
+          python3 - <<'PY'
+          import hashlib, os, pathlib
+          p = pathlib.Path('public-check.apk')
+          assert p.stat().st_size == 140113723
+          assert hashlib.sha256(p.read_bytes()).hexdigest() == os.environ['APK_SHA256']
+          print('PASS: permanent public APK download matches the accepted binary')
+          PY
+          gh release view "$RELEASE_TAG" --json url,assets
