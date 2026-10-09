@@ -16,13 +16,16 @@ def click(root,label):
     node=next(n for n in root.iter('node') if n.get('text')==label or n.get('content-desc')==label)
     x1,y1,x2,y2=map(int,re.findall(r'\d+',node.get('bounds')))
     assert x2>x1 and y2>y1, label+' has no hit area'
-    adb('shell','input','tap',(x1+x2)//2,(y1+y2)//2)
+    print('Tap:',label,node.get('bounds'),flush=True)
+    adb('shell','input','swipe',(x1+x2)//2,(y1+y2)//2,(x1+x2)//2,(y1+y2)//2,'100')
 def find_click(label):
-    for i in range(12):
+    for i in range(18):
         root=hierarchy('find-'+str(i))
         if any(n.get('text')==label or n.get('content-desc')==label for n in root.iter('node')):
             click(root,label);time.sleep(1);return
-        adb('shell','input','swipe','1080','540','1080','270','280')
+        if i==0:
+            for _ in range(5):adb('shell','input','swipe','1080','220','1080','570','300')
+        else:adb('shell','input','swipe','1080','540','1080','300','280')
     raise AssertionError('Missing '+label)
 def shot(name):
     data=subprocess.check_output(['adb','exec-out','screencap','-p']);(OUT/(name+'.png')).write_bytes(data)
@@ -66,7 +69,7 @@ find_click('Одиночная игра');time.sleep(15)
 find_click('СТРАНЫ · 195');root=hierarchy('picker');click(root,'Поиск государства')
 adb('shell','input','text','Germany');time.sleep(1);find_click('Германия')
 find_click('ИГРАТЬ ЗА ЭТУ СТРАНУ');find_click('Я ГОТОВ');time.sleep(1);find_click('Начать игру');time.sleep(8)
-find_click('Пауза');time.sleep(2)
+nav('Страна');find_click('Пауза');time.sleep(2)
 settings();find_click('Balanced');find_click('Адаптивное качество: Вкл')
 # settings stay open after quality changes; close with the toolbar button.
 settings();adb('shell','input','keyevent','4');time.sleep(2)
