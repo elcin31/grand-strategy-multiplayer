@@ -1,3 +1,46 @@
+# Dominion 0.8.1 (9) — final paired native camera evidence
+
+Tested runtime `47b0db4f8b220e9ea89998afaac035239b64f5e0`, main, workflow `37971350100`. Renderer implementation remains the recovered `61b77f4` work; the final follow-up integrates existing original artwork into commander cards, technology branches and the open war panel. No new image bytes, world reduction, gameplay/backend/save changes or new infrastructure. The architecture and rejected intermediate candidates are detailed in the archived 0.8.0 section below.
+
+## Exact final paired workload
+
+Final camera comparison job `113966823910` PASS; artifact `11638014235`, 6,058,342 bytes, SHA256 `5318ae6d204208fab98af9293499fc90108ee580c1ff67b29c4e97687e7cb818`. Download/CRC/hash, actual PNGs and all profile fatal logs independently reviewed. Same API35 SwiftShader emulator, 1280×720, Balanced/adaptive off, offline paused Germany at tick 5, identical real-pointer driver and nine scenarios for the accepted old 0.7.0 APK and final 0.8.1. Campaigns are created separately, so serialized states are not asserted byte-identical. All three broad geography-paint gates pass; idle/pinch/global/local/terrain/military/panel screenshots show actual geography and bounded markers.
+
+Whole-capture HWUI histogram quantiles follow. Moving samples last 11.35–11.52 seconds after; 114–275 frames reported, recent CSV retains 114–120. Raw and histogram quantiles are different measurements. Idle has zero completed frames in both builds; no idle frame latency/FPS is inferred.
+
+| Scenario | p50 before → after, ms | p95 before → after, ms | p99 before → after, ms | Jank before → after |
+|---|---:|---:|---:|---:|
+| Medium pan | 200 → 97 | 500 → 150 | 600 → 250 | 93.85% → 90.10% |
+| Pinch | 200 → 105 | 600 → 350 | 900 → 750 | 93.22% → 91.23% |
+| Whole-world pan | 350 → 97 | 800 → 117 | 1000 → 133 | 97.22% → 92.92% |
+| Local labels / armies | 200 → 77 | 550 → 97 | 800 → 113 | 94.64% → 80.77% |
+| Terrain pan | 250 → 81 | 550 → 109 | 650 → 133 | 97.73% → 86.17% |
+| Military overlay | 150 → 77 | 250 → 105 | 350 → 133 | 94.51% → 80.36% |
+| Panel open | 150 → 89 | 350 → 113 | 350 → 117 | 93.75% → 81.93% |
+| Panel closed | 150 → 81 | 250 → 97 | 350 → 113 | 96.12% → 80.22% |
+
+Raw recent-frame p95 for pinch is **624.92 → 375.47ms**, while its full histogram is **600 → 350ms**. Pinch passes the explicit no-regression acceptance gate, but remains the most costly motion scenario. After-capture software jank is still **80.22–92.92%**; no achieved physical 30/60 FPS or completely eliminated Redmi lag is claimed. Absolute timings differ from the separate 0.8.0 run (both its old baseline and candidate were faster); cross-run values are not a controlled 0.8.0-versus-0.8.1 regression comparison. Full raw frame/thread/resource evidence is `CAMERA_NATIVE_PAIRED_081.json`; the earlier raw pair is preserved as `_080`.
+
+Paired PSS samples: **415,232–769,351 KiB before / 343,011–439,320 KiB after**. These are samples, not continuous memory peaks. Mean JS-thread CPU (fraction of one emulator core): medium pan **17.45% → 4.91%**, whole-world pan **24.45% → 1.18%**. Pinch JS mean is **19.55% → 21.45%**, and the new main UI mean is **73.73%**; reduced frame latency does not mean every thread measurement improves. RenderThread CPU is not GPU execution time. Pinch preparation/settling and software frame pacing remain the bottleneck requiring physical evidence.
+
+Native resource counters show no path rebuild during medium pan (1,633 before/after) or whole-world pan (1,743 before/after). Raster build count remains 220 between panel-open and panel-closed samples. Sampled retained RGBA cache tops at 33,438,464 bytes, below 32MiB; this is not a total native/GPU memory limit. The overlay's 60 callback FPS is not completed GPU presentation FPS. `renderFeatures` is catalogue size, bounded label counts are estimates, and active raster/stack counters do not change authoritative armies/cities.
+
+## Final paired host benchmark
+
+`BENCHMARK_CAMERA_081_CI.json`: exact seed101 fixture, 1,200 frames / 20 seconds, 2,924 provinces / 5,411 cities / 182 armies / 1280×720. Selector/coverage/string CPU only; no native raster, React reconciliation, GPU or handset FPS claim. Pinch coverage commits **50 → 18**, selector total **284.63 → 72.56ms**, constructed geometry/border strings **45.55 → 2.11MB**. Local selector **53.40 → 16.48ms**, terrain **53.84 → 22.41ms**, world military **214.50 → 39.17ms**. Medium pan **19.84 → 18.17ms**. Cold panel-open **14.72 → 17.84ms** and panel-closed **13.76 → 18.74ms** are higher after; these cold costs are retained in the raw evidence rather than omitted. Other pan trajectories make seven old coverage commits versus one new host commit; this is the host fixture, not a count of native React updates.
+
+## Images and final validation
+
+All 15 original WebPs remain **2,188,634 bytes** with exact source-to-APK hashes; commander/technology/war use existing portrait/building/military images. Active panel mounting is lazy and stays outside the map Canvas. No repeated generation or extra compressed art bytes. Binary manifest, bundle and native/archive checks are in `RELEASE_CAMERA_081_LOCAL_VERIFICATION.json` and `RELEASE_CAMERA_081_INTEGRITY.txt`.
+
+Strict TS / 175 JS / 10 Python / 15-art / map/world/paired-host gates PASS locally and final build CI. Final long simulation job `113958490336`, artifact `11638021146`: **10,000 ticks / ten exact restores**, 10,912 observed wars, 10,906 peace settlements, 9,157 battles, max 3,406 armies / 4,082,061-byte snapshot. Tick p95 **99.74ms**, elapsed **798s** on this Node runner, not Android frame latency. Raw final data: `LONG_SIMULATION_CAMERA_081_RESULTS.json`.
+
+FINAL_081_NATIVE_SMOKE_PENDING
+
+Physical Xiaomi Redmi Note 12 pan/pinch/thermal/battery acceptance remains **OPEN** until the user tests this exact APK. Code/native gates and hardware smoothness are separate statuses; final recovery status is recorded in `RECOVERY_AUDIT_CAMERA_2026-10-09.md`.
+
+---
+
 # Camera / map pass — 0.8.0 (2026-10-09; paired native validation passed, soak pending)
 
 Recovered main `0ea39eca80dac8d68d379968f3a7275b874b56ae`; prior accepted APK runtime `c758ed78f586268809a2184a064ae7fdadc5156e`. Candidate runtime `61b77f4f4eb03fa01b710c9d34ee306a5359012d`, release workflow 37962664267. Only elcin31/grand-strategy-multiplayer and its existing backend are in scope. World/schema remain 195 countries / 2,924 provinces / 5,411 cities / modern-world-v2 / schema12. Gameplay, AI, economy schedule, server authority, saves and reconnect were not rewritten or deployed.

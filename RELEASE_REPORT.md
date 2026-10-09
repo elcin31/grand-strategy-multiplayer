@@ -1,3 +1,30 @@
+# Dominion 0.8.1 (9) — binary verified; full native release acceptance in progress
+
+Only `elcin31/grand-strategy-multiplayer` and its existing dedicated backend. Tested source/main commit `47b0db4f8b220e9ea89998afaac035239b64f5e0`; final workflow **37971350100**. Recovery checkpoint `0a23da0`, illustration integration `6c292db`, release/QA `47b0db4` are separate logical commits. The saved camera implementation `61b77f4` and all earlier optimization/game systems were continued rather than replaced.
+
+- Final APK: **Dominion-camera-optimized-illustrated.apk**, **140,949,889 bytes**.
+- APK SHA256: `7d27c4f7c3e5e6a9ad14549e435559baad960d48d3b84bab9cc264b30436b060`.
+- Release artifact **11636503809**, outer ZIP **60,873,762 bytes**, SHA256 `ab7b0524ac9d53ffddee288fac2b9f3b548c848dcae3431b00acee30c50025fb`.
+- Outer ZIP and APK CRC/SHA checked; complete APK extracted, exact CI hash matched. Independent binary AXML review confirms non-debuggable application, package `com.elcin31.grandstrategymultiplayer`, version **0.8.1 (9)**, landscape, min24/target36.
+- Embedded **10,463,744-byte Hermes bundle**, bytecode magic and existing dedicated production endpoint verified. Hermes/Skia present in arm64-v8a, armeabi-v7a, x86, x86_64; all 15 source WebP hashes found in packaged resources. No Metro/USB/computer/Expo development server dependency. Actual native installation/offline launch is a required release gate.
+- CI apksigner V2 PASS with retained sideload certificate SHA256 `fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c`; exact APK SHA matches local review. Its historical certificate name is Android Debug; the APK application is non-debuggable assembleRelease. Existing update compatibility retained, no Play Store signing claim.
+
+Binary evidence: `RELEASE_CAMERA_081_INTEGRITY.txt`, `RELEASE_CAMERA_081_LOCAL_VERIFICATION.json`. The chat ZIP fallback is the verified outer release artifact and contains the exact APK plus small integrity/benchmark files; the permanent GitHub release separately packages an APK-only ZIP.
+
+Completed source/build gates: strict TS, **175 JS / 10 Python**, map/world/host camera/visual benchmarks, 15 optimized original-art checks. Final **10,000 ticks / ten exact restores** PASS; 9,157 battles / 10,906 peace settlements, unchanged 195 countries / 2,924 provinces / 5,411 cities / modern-world-v2 / schema12. Raw final simulation: `LONG_SIMULATION_CAMERA_081_RESULTS.json`; unchanged backend/gameplay/transport/save diffs checked. No backend deployment, migration or production-room changes in this camera/illustration pass.
+
+Final paired camera job **113966823910 PASS**, evidence **11638014235**; actual maps/PNG/frame/thread/PSS/logs reviewed. Medium-pan histogram p95 **500 → 150ms**, world **800 → 117ms**, pinch **600 → 350ms** on the same software emulator. All final scenarios/raw-ring limits and higher pinch JS-thread CPU are reported in PERFORMANCE_REPORT.md; no achieved Redmi FPS or completely eliminated camera lag claim.
+
+Original painting reuse completes commander choices/assigned portraits, real technology branches and the open war panel. All ruler/religion/government/building/army/economy/diplomacy/menu/campaign/loading integrations retained; **15 WebPs / 2,188,634 bytes**, lazy active-panel mounting outside map Canvas. No duplicate art generation or added compressed image bytes.
+
+FINAL_081_RELEASE_NATIVE_PENDING
+
+FINAL_081_PUBLICATION_DELIVERY_PENDING
+
+Physical Redmi Note12 acceptance stays OPEN: install this exact APK, compare Balanced pan/rapid pan/pinch/world/local/modes and inspect panels. No game-rule or backend rewrite for frame rate. Finish direct APK delivery and await the user's device result.
+
+---
+
 # Dominion 0.8.0 (8) — camera fix and illustrated panels (acceptance pending)
 
 Candidate runtime `61b77f4f4eb03fa01b710c9d34ee306a5359012d`, release workflow `37962664267`. Required standalone release name: `Dominion-camera-fix-illustrated-release.apk`. No Metro/Expo dev server dependency. Main recovery source `0ea39eca80dac8d68d379968f3a7275b874b56ae`; prior comparison APK source `c758ed78f586268809a2184a064ae7fdadc5156e`.

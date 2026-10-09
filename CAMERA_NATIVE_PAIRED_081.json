@@ -1,0 +1,2857 @@
+{
+  "baselineRuntime": "c758ed78f586268809a2184a064ae7fdadc5156e",
+  "note": "Paired baseline/candidate on one SwiftShader API35 emulator with identical real-pointer gesture driver, offline paused campaign, Balanced and adaptive off. Native frame completion and host software rendering only; physical Redmi acceptance remains pending. gfxinfo histogram percentiles are used when raw timestamps are unavailable.",
+  "rows": [
+    {
+      "scenario": "01-idle",
+      "before": {
+        "pssKiB": 415232,
+        "scenario": "01-idle",
+        "elapsedSeconds": 10.000090513999993,
+        "reportedFrames": 0,
+        "frames": 0,
+        "timingSource": "idle-no-frames",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": null,
+        "histogramP95Ms": null,
+        "histogramP99Ms": null,
+        "p50Ms": null,
+        "p95Ms": null,
+        "p99Ms": null,
+        "jankPercent": 0.0,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 1.0,
+              "maxCpuPercent": 2.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": {
+          "landFraction": 0.3198,
+          "samplePixels": 287232
+        },
+        "cameraTrace": []
+      },
+      "after": {
+        "pssKiB": 407443,
+        "scenario": "01-idle",
+        "elapsedSeconds": 10.000102964999996,
+        "reportedFrames": 0,
+        "frames": 0,
+        "timingSource": "idle-no-frames",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": null,
+        "histogramP95Ms": null,
+        "histogramP99Ms": null,
+        "p50Ms": null,
+        "p95Ms": null,
+        "p99Ms": null,
+        "jankPercent": 0.0,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 1.0,
+              "maxCpuPercent": 2.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": {
+          "landFraction": 0.345,
+          "samplePixels": 287232
+        },
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":2,\"pathBuilds\":1633,\"pathBuildMs\":155.82946700096363,\"rasterBuilds\":52,\"rasterMs\":312.79369700024836,\"rasterBytes\":31313152,\"rasterTiles\":12,\"tapToActionMs\":32.92214799998328,\"tapToScreenMs\":128.8022709999932,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399998905,\"frameMs\":16.66666600000033,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1363,\"visibleArmies\":28,\"visibleLabels\":14,\"simulationMs\":123.22383199998876,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":20,\"geographyRenders\":6,\"preset\":\"Balanced\",\"geometryLod\":\"low\",\"sceneMs\":1320.1077850000001}"
+        ]
+      }
+    },
+    {
+      "scenario": "02-medium-pan",
+      "before": {
+        "pssKiB": 446090,
+        "scenario": "02-medium-pan",
+        "elapsedSeconds": 11.342980060000002,
+        "reportedFrames": 65,
+        "frames": 65,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 200.0,
+        "histogramP95Ms": 500.0,
+        "histogramP99Ms": 600.0,
+        "p50Ms": 216.865421,
+        "p95Ms": 533.571376,
+        "p99Ms": 633.572534,
+        "jankPercent": 93.85,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 2.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 4.27,
+              "maxCpuPercent": 7.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_6": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 1.64,
+              "maxCpuPercent": 9.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 89.82,
+              "maxCpuPercent": 94.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 17.45,
+              "maxCpuPercent": 33.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": []
+      },
+      "after": {
+        "pssKiB": 407620,
+        "scenario": "02-medium-pan",
+        "elapsedSeconds": 11.446882343000084,
+        "reportedFrames": 192,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 97.0,
+        "histogramP95Ms": 150.0,
+        "histogramP99Ms": 250.0,
+        "p50Ms": 108.73124,
+        "p95Ms": 133.57405,
+        "p99Ms": 150.122461,
+        "jankPercent": 90.1,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.27,
+              "maxCpuPercent": 1.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 18.73,
+              "maxCpuPercent": 29.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_1": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_4": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_6": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 1.18,
+              "maxCpuPercent": 8.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 59.82,
+              "maxCpuPercent": 82.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 4.91,
+              "maxCpuPercent": 10.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":9,\"pathBuilds\":1633,\"pathBuildMs\":155.82946700096363,\"rasterBuilds\":80,\"rasterMs\":480.0526830001618,\"rasterBytes\":33119680,\"rasterTiles\":28,\"tapToActionMs\":32.92214799998328,\"tapToScreenMs\":128.8022709999932,\"renderFeatures\":195,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.00000240000234,\"frameMs\":16.666665999999378,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1741,\"visibleArmies\":34,\"visibleLabels\":7,\"simulationMs\":123.22383199998876,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":26,\"geographyRenders\":12,\"preset\":\"Balanced\",\"geometryLod\":\"low\",\"sceneMs\":1320.1077850000001}"
+        ]
+      }
+    },
+    {
+      "scenario": "03-pinch",
+      "before": {
+        "pssKiB": 508413,
+        "scenario": "03-pinch",
+        "elapsedSeconds": 11.362172956999984,
+        "reportedFrames": 59,
+        "frames": 59,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 200.0,
+        "histogramP95Ms": 600.0,
+        "histogramP99Ms": 900.0,
+        "p50Ms": 216.904271,
+        "p95Ms": 624.915014,
+        "p99Ms": 916.844986,
+        "jankPercent": 93.22,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 2.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 3.73,
+              "maxCpuPercent": 6.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0
+            },
+            "hades": {
+              "meanCpuPercent": 1.45,
+              "maxCpuPercent": 9.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 91.27,
+              "maxCpuPercent": 95.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 19.55,
+              "maxCpuPercent": 35.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": []
+      },
+      "after": {
+        "pssKiB": 429118,
+        "scenario": "03-pinch",
+        "elapsedSeconds": 11.40031581200003,
+        "reportedFrames": 114,
+        "frames": 114,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 105.0,
+        "histogramP95Ms": 350.0,
+        "histogramP99Ms": 750.0,
+        "p50Ms": 113.509179,
+        "p95Ms": 375.467823,
+        "p99Ms": 783.80111,
+        "jankPercent": 91.23,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 2.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 9.91,
+              "maxCpuPercent": 20.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_6": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 2.27,
+              "maxCpuPercent": 8.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 73.73,
+              "maxCpuPercent": 94.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 21.45,
+              "maxCpuPercent": 34.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":32,\"pathBuilds\":1743,\"pathBuildMs\":182.8291040007025,\"rasterBuilds\":133,\"rasterMs\":857.0347900002962,\"rasterBytes\":33288192,\"rasterTiles\":45,\"tapToActionMs\":32.92214799998328,\"tapToScreenMs\":128.8022709999932,\"renderFeatures\":195,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399998905,\"frameMs\":16.66666600000033,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":2924,\"visibleArmies\":19,\"visibleLabels\":2,\"simulationMs\":123.22383199998876,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":48,\"geographyRenders\":30,\"preset\":\"Balanced\",\"geometryLod\":\"low\",\"sceneMs\":1320.1077850000001}"
+        ]
+      }
+    },
+    {
+      "scenario": "04-world-pan",
+      "before": {
+        "pssKiB": 604250,
+        "scenario": "04-world-pan",
+        "elapsedSeconds": 11.350450573999979,
+        "reportedFrames": 36,
+        "frames": 36,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 350.0,
+        "histogramP95Ms": 800.0,
+        "histogramP99Ms": 1000.0,
+        "p50Ms": 383.036983,
+        "p95Ms": 827.631588,
+        "p99Ms": 1033.5811,
+        "jankPercent": 97.22,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 2.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 2.36,
+              "maxCpuPercent": 4.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_6": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2205_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.91,
+              "maxCpuPercent": 4.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 94.36,
+              "maxCpuPercent": 97.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 24.45,
+              "maxCpuPercent": 34.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": {
+          "landFraction": 0.2526,
+          "samplePixels": 287232
+        },
+        "cameraTrace": []
+      },
+      "after": {
+        "pssKiB": 439320,
+        "scenario": "04-world-pan",
+        "elapsedSeconds": 11.354171120999922,
+        "reportedFrames": 212,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 97.0,
+        "histogramP95Ms": 117.0,
+        "histogramP99Ms": 133.0,
+        "p50Ms": 101.748103,
+        "p95Ms": 127.857987,
+        "p99Ms": 135.241342,
+        "jankPercent": 92.92,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 20.34,
+              "maxCpuPercent": 24.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_2": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_7": {
+              "meanCpuPercent": 0.17,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 58.48,
+              "maxCpuPercent": 66.3
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 1.18,
+              "maxCpuPercent": 3.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": {
+          "landFraction": 0.2742,
+          "samplePixels": 287232
+        },
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":39,\"pathBuilds\":1743,\"pathBuildMs\":182.8291040007025,\"rasterBuilds\":133,\"rasterMs\":857.0347900002962,\"rasterBytes\":33288192,\"rasterTiles\":45,\"tapToActionMs\":32.92214799998328,\"tapToScreenMs\":128.8022709999932,\"renderFeatures\":195,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399998905,\"frameMs\":16.66666600000033,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":2924,\"visibleArmies\":23,\"visibleLabels\":5,\"simulationMs\":123.22383199998876,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":54,\"geographyRenders\":36,\"preset\":\"Balanced\",\"geometryLod\":\"low\",\"sceneMs\":1320.1077850000001}"
+        ]
+      }
+    },
+    {
+      "scenario": "05-local-labels-armies",
+      "before": {
+        "pssKiB": 668180,
+        "scenario": "05-local-labels-armies",
+        "elapsedSeconds": 11.36759745500001,
+        "reportedFrames": 56,
+        "frames": 56,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 200.0,
+        "histogramP95Ms": 550.0,
+        "histogramP99Ms": 800.0,
+        "p50Ms": 216.87457,
+        "p95Ms": 600.188748,
+        "p99Ms": 804.62435,
+        "jankPercent": 94.64,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.36,
+              "maxCpuPercent": 2.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 3.55,
+              "maxCpuPercent": 7.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_6": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2205_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 1.73,
+              "maxCpuPercent": 10.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 90.0,
+              "maxCpuPercent": 93.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 21.45,
+              "maxCpuPercent": 34.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": {
+          "landFraction": 0.7673,
+          "samplePixels": 287232
+        },
+        "cameraTrace": []
+      },
+      "after": {
+        "pssKiB": 422682,
+        "scenario": "05-local-labels-armies",
+        "elapsedSeconds": 11.402149731999998,
+        "reportedFrames": 260,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 97.0,
+        "histogramP99Ms": 113.0,
+        "p50Ms": 83.632373,
+        "p95Ms": 101.522628,
+        "p99Ms": 117.185546,
+        "jankPercent": 80.77,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 21.25,
+              "maxCpuPercent": 25.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_1": {
+              "meanCpuPercent": 0.26,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_2": {
+              "meanCpuPercent": 0.27,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_7": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.73,
+              "maxCpuPercent": 6.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 46.32,
+              "maxCpuPercent": 53.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 3.72,
+              "maxCpuPercent": 7.9
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": {
+          "landFraction": 0.7483,
+          "samplePixels": 287232
+        },
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":52,\"pathBuilds\":3227,\"pathBuildMs\":260.17390500108013,\"rasterBuilds\":172,\"rasterMs\":1209.8682499999995,\"rasterBytes\":33438464,\"rasterTiles\":15,\"tapToActionMs\":32.92214799998328,\"tapToScreenMs\":128.8022709999932,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.00000240000234,\"frameMs\":16.666665999999378,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1234,\"visibleArmies\":45,\"visibleLabels\":16,\"simulationMs\":123.22383199998876,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":64,\"geographyRenders\":45,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1320.1077850000001}"
+        ]
+      }
+    },
+    {
+      "scenario": "06-terrain-pan",
+      "before": {
+        "pssKiB": 722068,
+        "scenario": "06-terrain-pan",
+        "elapsedSeconds": 11.34815697900001,
+        "reportedFrames": 44,
+        "frames": 44,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 250.0,
+        "histogramP95Ms": 550.0,
+        "histogramP99Ms": 650.0,
+        "p50Ms": 266.867081,
+        "p95Ms": 600.338469,
+        "p99Ms": 697.492436,
+        "jankPercent": 97.73,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 2.82,
+              "maxCpuPercent": 5.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_4": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2205_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.91,
+              "maxCpuPercent": 10.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 91.09,
+              "maxCpuPercent": 96.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 20.36,
+              "maxCpuPercent": 33.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": []
+      },
+      "after": {
+        "pssKiB": 438166,
+        "scenario": "06-terrain-pan",
+        "elapsedSeconds": 11.41969722600004,
+        "reportedFrames": 253,
+        "frames": 118,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 81.0,
+        "histogramP95Ms": 109.0,
+        "histogramP99Ms": 133.0,
+        "p50Ms": 85.38918,
+        "p95Ms": 116.860636,
+        "p99Ms": 117.201804,
+        "jankPercent": 86.17,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 22.25,
+              "maxCpuPercent": 28.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_2": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_3": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_7": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.73,
+              "maxCpuPercent": 5.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 46.93,
+              "maxCpuPercent": 74.2
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 3.35,
+              "maxCpuPercent": 6.9
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":57,\"pathBuilds\":3227,\"pathBuildMs\":260.17390500108013,\"rasterBuilds\":187,\"rasterMs\":1347.3756319999811,\"rasterBytes\":33155072,\"rasterTiles\":12,\"tapToActionMs\":32.92214799998328,\"tapToScreenMs\":128.8022709999932,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399995466,\"frameMs\":16.666666000001285,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1152,\"visibleArmies\":45,\"visibleLabels\":16,\"simulationMs\":123.22383199998876,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":71,\"geographyRenders\":51,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1320.1077850000001}"
+        ]
+      }
+    },
+    {
+      "scenario": "07-military-overlay",
+      "before": {
+        "pssKiB": 769351,
+        "scenario": "07-military-overlay",
+        "elapsedSeconds": 11.33732672900004,
+        "reportedFrames": 91,
+        "frames": 91,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 150.0,
+        "histogramP95Ms": 250.0,
+        "histogramP99Ms": 350.0,
+        "p50Ms": 164.922004,
+        "p95Ms": 300.741266,
+        "p99Ms": 356.238074,
+        "jankPercent": 94.51,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 2.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 6.0,
+              "maxCpuPercent": 8.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_5": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2205_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.91,
+              "maxCpuPercent": 6.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 82.45,
+              "maxCpuPercent": 90.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 17.64,
+              "maxCpuPercent": 31.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": []
+      },
+      "after": {
+        "pssKiB": 343011,
+        "scenario": "07-military-overlay",
+        "elapsedSeconds": 11.519103954999991,
+        "reportedFrames": 275,
+        "frames": 118,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 105.0,
+        "histogramP99Ms": 133.0,
+        "p50Ms": 83.668259,
+        "p95Ms": 116.838988,
+        "p99Ms": 161.142226,
+        "jankPercent": 80.36,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 23.97,
+              "maxCpuPercent": 28.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_1": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 2.0
+            },
+            "binder:3597_2": {
+              "meanCpuPercent": 0.27,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_3": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_7": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.64,
+              "maxCpuPercent": 7.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 44.32,
+              "maxCpuPercent": 51.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 4.45,
+              "maxCpuPercent": 10.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":65,\"pathBuilds\":3295,\"pathBuildMs\":271.540742001147,\"rasterBuilds\":205,\"rasterMs\":1541.3088149996474,\"rasterBytes\":33015744,\"rasterTiles\":15,\"tapToActionMs\":32.92214799998328,\"tapToScreenMs\":128.8022709999932,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.00000240000234,\"frameMs\":16.666665999999378,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1035,\"visibleArmies\":43,\"visibleLabels\":17,\"simulationMs\":123.22383199998876,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":80,\"geographyRenders\":58,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1320.1077850000001}"
+        ]
+      }
+    },
+    {
+      "scenario": "08-panel-open",
+      "before": {
+        "pssKiB": 495215,
+        "scenario": "08-panel-open",
+        "elapsedSeconds": 11.365751843999988,
+        "reportedFrames": 80,
+        "frames": 80,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 150.0,
+        "histogramP95Ms": 350.0,
+        "histogramP99Ms": 350.0,
+        "p50Ms": 169.90964,
+        "p95Ms": 366.822313,
+        "p99Ms": 385.617798,
+        "jankPercent": 93.75,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.27,
+              "maxCpuPercent": 3.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 6.45,
+              "maxCpuPercent": 9.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_7": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.91,
+              "maxCpuPercent": 8.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 82.09,
+              "maxCpuPercent": 89.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 17.45,
+              "maxCpuPercent": 26.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": []
+      },
+      "after": {
+        "pssKiB": 359874,
+        "scenario": "08-panel-open",
+        "elapsedSeconds": 11.385967871999924,
+        "reportedFrames": 249,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 89.0,
+        "histogramP95Ms": 113.0,
+        "histogramP99Ms": 117.0,
+        "p50Ms": 96.840917,
+        "p95Ms": 117.507015,
+        "p99Ms": 122.234498,
+        "jankPercent": 81.93,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 28.36,
+              "maxCpuPercent": 34.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_1": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_2": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_3": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_4": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 44.82,
+              "maxCpuPercent": 52.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 2.82,
+              "maxCpuPercent": 7.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":70,\"pathBuilds\":3295,\"pathBuildMs\":271.540742001147,\"rasterBuilds\":220,\"rasterMs\":1676.1233329996467,\"rasterBytes\":33015744,\"rasterTiles\":15,\"tapToActionMs\":32.92214799998328,\"tapToScreenMs\":128.8022709999932,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.00000240000234,\"frameMs\":16.666665999999378,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":998,\"visibleArmies\":47,\"visibleLabels\":16,\"simulationMs\":123.22383199998876,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":87,\"geographyRenders\":64,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1320.1077850000001}"
+        ]
+      }
+    },
+    {
+      "scenario": "09-panel-closed",
+      "before": {
+        "pssKiB": 518646,
+        "scenario": "09-panel-closed",
+        "elapsedSeconds": 11.351815627000008,
+        "reportedFrames": 103,
+        "frames": 102,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 150.0,
+        "histogramP95Ms": 250.0,
+        "histogramP99Ms": 350.0,
+        "p50Ms": 150.192323,
+        "p95Ms": 266.865988,
+        "p99Ms": 366.900764,
+        "jankPercent": 96.12,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 6.73,
+              "maxCpuPercent": 10.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2205_6": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2205_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 1.45,
+              "maxCpuPercent": 8.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 79.82,
+              "maxCpuPercent": 89.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 15.55,
+              "maxCpuPercent": 26.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": []
+      },
+      "after": {
+        "pssKiB": 352656,
+        "scenario": "09-panel-closed",
+        "elapsedSeconds": 11.393296239999927,
+        "reportedFrames": 268,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 81.0,
+        "histogramP95Ms": 97.0,
+        "histogramP99Ms": 113.0,
+        "p50Ms": 84.885025,
+        "p95Ms": 102.859772,
+        "p99Ms": 116.868159,
+        "jankPercent": 80.22,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 24.46,
+              "maxCpuPercent": 30.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_2": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3597_6": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3597_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.82,
+              "maxCpuPercent": 5.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 44.01,
+              "maxCpuPercent": 54.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 2.79,
+              "maxCpuPercent": 6.7
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":75,\"pathBuilds\":3295,\"pathBuildMs\":271.540742001147,\"rasterBuilds\":220,\"rasterMs\":1676.1233329996467,\"rasterBytes\":33015744,\"rasterTiles\":15,\"tapToActionMs\":32.92214799998328,\"tapToScreenMs\":128.8022709999932,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.00000240000234,\"frameMs\":16.666665999999378,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":972,\"visibleArmies\":46,\"visibleLabels\":15,\"simulationMs\":123.22383199998876,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":92,\"geographyRenders\":69,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1320.1077850000001}"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "apk": "Dominion-camera-optimized-illustrated.apk",
+  "bytes": 140949889,
+  "sha256": "7d27c4f7c3e5e6a9ad14549e435559baad960d48d3b84bab9cc264b30436b060",
+  "manifest": {
+    "versionCode": 9,
+    "versionName": "0.8.1",
+    "compileSdkVersion": 36,
+    "compileSdkVersionCodename": "16",
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "platformBuildVersionCode": 36,
+    "platformBuildVersionName": 16
+  },
+  "debuggable": false,
+  "mainActivity": {
+    "theme": 2131886682,
+    "name": "com.elcin31.grandstrategymultiplayer.MainActivity",
+    "exported": true,
+    "launchMode": 2,
+    "screenOrientation": 0,
+    "configChanges": 2147487664,
+    "windowSoftInputMode": 16
+  },
+  "sdk": {
+    "minSdkVersion": 24,
+    "targetSdkVersion": 36
+  },
+  "embeddedHermesBundleBytes": 10463744,
+  "hermesMagic": "c61fbc03c103191f",
+  "nativeLibraries": {
+    "arm64-v8a": [
+      "lib/arm64-v8a/libhermestooling.so",
+      "lib/arm64-v8a/libhermesvm.so",
+      "lib/arm64-v8a/librnskia.so"
+    ],
+    "armeabi-v7a": [
+      "lib/armeabi-v7a/libhermestooling.so",
+      "lib/armeabi-v7a/libhermesvm.so",
+      "lib/armeabi-v7a/librnskia.so"
+    ],
+    "x86": [
+      "lib/x86/libhermestooling.so",
+      "lib/x86/libhermesvm.so",
+      "lib/x86/librnskia.so"
+    ],
+    "x86_64": [
+      "lib/x86_64/libhermestooling.so",
+      "lib/x86_64/libhermesvm.so",
+      "lib/x86_64/librnskia.so"
+    ]
+  },
+  "art": [
+    {
+      "file": "buildings-atlas.webp",
+      "bytes": 189400,
+      "sha256": "0600b398018822e86d02737ecd861919086fc39a29d1d7e82be8b8efb75c9054"
+    },
+    {
+      "file": "campaign-high.webp",
+      "bytes": 334892,
+      "sha256": "523b217eda3d15ff3a4fee14fc6bd3adb9d0c669ed3d2da3528203769d0ab284"
+    },
+    {
+      "file": "campaign-low.webp",
+      "bytes": 108074,
+      "sha256": "e0966871209db0bdf234762f22196b7ad5dae47976a49dd8f5a99890036cfe71"
+    },
+    {
+      "file": "diplomacy-panel.webp",
+      "bytes": 49080,
+      "sha256": "c01c065950e83a28d0dae1112514b731875c78a4025718bd66d05c38f4e5a853"
+    },
+    {
+      "file": "economy-panel.webp",
+      "bytes": 74266,
+      "sha256": "d131cb0af8303f7919fc397b8e90d68abe74f3c5ca69334ec5650e9294742283"
+    },
+    {
+      "file": "government-atlas.webp",
+      "bytes": 104252,
+      "sha256": "7bef1dbe4718e0ee5a94b83ba562237bdd55e223dcb1a7833426d624d3291a80"
+    },
+    {
+      "file": "loading-high.webp",
+      "bytes": 354624,
+      "sha256": "9bad5025dc2576e3c00ff53a004c498a751d0eed5196f0344b8565ab78cad123"
+    },
+    {
+      "file": "loading-low.webp",
+      "bytes": 106168,
+      "sha256": "1b1f5efed45e702e421a62361e546cf821293b7beebf44c33d1154512a47435a"
+    },
+    {
+      "file": "loading-port-high.webp",
+      "bytes": 136304,
+      "sha256": "b429c0656e953c3e35628ed4441395bfc271bda78422f0fa5c951331e1e222cc"
+    },
+    {
+      "file": "loading-port-low.webp",
+      "bytes": 59788,
+      "sha256": "2d31bcb40074d1c47c2ec03b035f34e62e55048d6a038ed01f0305bc616773a0"
+    },
+    {
+      "file": "main-menu-high.webp",
+      "bytes": 221928,
+      "sha256": "448159aa08c30193c20878498e29c1b1f7f624ac8e15fef7ed4dd6e7ad262488"
+    },
+    {
+      "file": "main-menu-low.webp",
+      "bytes": 67754,
+      "sha256": "9bc65757256dca1471f3bcb6529fd4a1fbcea5023c4356543affb49a9452bf96"
+    },
+    {
+      "file": "military-panel.webp",
+      "bytes": 53818,
+      "sha256": "f1de8fde7e4b8c942a0e9c2976c93a2e3eb7b7c3de6d9f10da09f69b4c85344e"
+    },
+    {
+      "file": "religion-atlas.webp",
+      "bytes": 210432,
+      "sha256": "efccc659759bab724d4851f51fa10b3e421e422a27cfb439a9592ba03452a3ac"
+    },
+    {
+      "file": "rulers-atlas.webp",
+      "bytes": 117854,
+      "sha256": "e1f5cbb2bf318d9b26042828e2911bfee43342ea1560688d58b5558f6682fd05"
+    }
+  ],
+  "crc": "PASS",
+  "sourceArtBytes": 2188634,
+  "note": "Signature validation is independently supplied by the exact-SHA-matching CI apksigner report.",
+  "acceptedSource": "47b0db4f8b220e9ea89998afaac035239b64f5e0",
+  "workflowRun": 37971350100,
+  "releaseArtifact": 11636503809,
+  "releaseArtifactBytes": 60873762,
+  "releaseArtifactSha256": "ab7b0524ac9d53ffddee288fac2b9f3b548c848dcae3431b00acee30c50025fb",
+  "independentReview": "Binary AXML parsed directly; exact SHA matches CI apksigner integrity report; all source artwork hashes independently found in packaged WebPs."
+}

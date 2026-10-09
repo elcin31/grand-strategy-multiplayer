@@ -1,3 +1,17 @@
+# Dominion 0.8.1 — final camera and illustrated-panel regression status
+
+Tested runtime `47b0db4f8b220e9ea89998afaac035239b64f5e0`, workflow `37971350100`. Recovery continued the saved implementation and preserved all prior successful performance/gameplay work. The caught pooled-layout crash, missing-map GPU snapshot defect and cold-pinch regression are fixed in the recovered source; failed/missing-geography candidates were not accepted as performance improvements. Final broad map-paint checks and actual political/global/local/pinch/terrain/military/panel PNGs PASS.
+
+Strict TS / 175 JS / 10 Python / 15-art / host benchmarks / 10,000 ticks / ten exact restores / final paired native camera comparison PASS. Final 0.8.1 native gameplay/layout/portrait/technology/30-minute acceptance is tracked below. Commander-ID portrait seeds are visual only: no new save fields, permission/command changes or backend deployment. Existing online protocol/reducer regressions and the accepted unchanged-backend live QA evidence are retained; no fresh online production-room test is claimed for this client-only pass.
+
+FINAL_081_BUG_ACCEPTANCE_PENDING
+
+**Physical camera lag remains OPEN for hardware validation.** Final software-emulator pinch histogram p95 **600 → 350ms**, raw p95 **624.92 → 375.47ms**, but candidate jank remains **80.22–92.92%**. Native pinch JS mean **19.55% → 21.45%** and main UI mean **73.73%** remain documented bottlenecks. Passing the no-regression gate is not physical smoothness acceptance. No exact FPS, thermal/battery improvement or universally leak-free result is inferred. Detailed paired and memory evidence: PERFORMANCE_REPORT.md.
+
+No new BLOCKER/CRITICAL/HIGH detected by completed gates; original real-device symptom is not marked empirically fixed. Existing MEDIUM/LOW gameplay/UI/signing limits in the historical sections remain explicit.
+
+---
+
 # Camera / map pass — regression status (2026-10-09; native validation pending)
 
 Primary physical defect: severe camera pan/zoom/navigation lag. Paused old-release native captures isolate a renderer/input contribution without assuming AI/economy is the main bottleneck. Coverage churn, repeated geometry/path materialization and unbounded glyph nodes are addressed with retained transferable raster tiles, stable native paths/border chunks, prepared pinch detail and hard label/army budgets. Gameplay/world/schema/backend are unchanged.

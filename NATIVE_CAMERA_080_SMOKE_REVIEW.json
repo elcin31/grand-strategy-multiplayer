@@ -1,0 +1,132 @@
+{
+  "source": "61b77f4f4eb03fa01b710c9d34ee306a5359012d",
+  "run": 37962664267,
+  "smokeArtifact": 11634803435,
+  "smokeArtifactBytes": 27079736,
+  "smokeArtifactSha256": "07dd38249968818ccf45a077697dc43280cdb0dbdb5c261d69fc53a1d5f5186a",
+  "stressSeconds": 1839.26314831,
+  "stressPssKiB": [
+    {
+      "capture": "stress-memory-00",
+      "pssKiB": 422397
+    },
+    {
+      "capture": "stress-memory-01",
+      "pssKiB": 449006
+    },
+    {
+      "capture": "stress-memory-02",
+      "pssKiB": 493774
+    },
+    {
+      "capture": "stress-memory-03",
+      "pssKiB": 471666
+    },
+    {
+      "capture": "stress-memory-04",
+      "pssKiB": 454488
+    },
+    {
+      "capture": "stress-memory-05",
+      "pssKiB": 468708
+    },
+    {
+      "capture": "stress-memory-06",
+      "pssKiB": 480576
+    },
+    {
+      "capture": "stress-memory-07",
+      "pssKiB": 466978
+    },
+    {
+      "capture": "stress-memory-08",
+      "pssKiB": 513116
+    },
+    {
+      "capture": "stress-memory-09",
+      "pssKiB": 455214
+    },
+    {
+      "capture": "stress-memory-10",
+      "pssKiB": 476288
+    },
+    {
+      "capture": "stress-memory-11",
+      "pssKiB": 482384
+    },
+    {
+      "capture": "stress-memory-12",
+      "pssKiB": 476620
+    },
+    {
+      "capture": "stress-memory-13",
+      "pssKiB": 473282
+    },
+    {
+      "capture": "stress-memory-14",
+      "pssKiB": 468942
+    },
+    {
+      "capture": "stress-memory-15",
+      "pssKiB": 479704
+    },
+    {
+      "capture": "stress-memory-16",
+      "pssKiB": 472576
+    },
+    {
+      "capture": "stress-memory-17",
+      "pssKiB": 472392
+    },
+    {
+      "capture": "stress-memory-18",
+      "pssKiB": 475844
+    },
+    {
+      "capture": "stress-memory-19",
+      "pssKiB": 477824
+    },
+    {
+      "capture": "stress-memory-20",
+      "pssKiB": 474458
+    },
+    {
+      "capture": "stress-memory-21",
+      "pssKiB": 500615
+    },
+    {
+      "capture": "stress-memory-22",
+      "pssKiB": 491065
+    },
+    {
+      "capture": "stress-memory-23",
+      "pssKiB": 501171
+    },
+    {
+      "capture": "stress-memory-24",
+      "pssKiB": 491686
+    },
+    {
+      "capture": "stress-memory-25",
+      "pssKiB": 478320
+    },
+    {
+      "capture": "stress-memory-26",
+      "pssKiB": 539120
+    },
+    {
+      "capture": "stress-memory-27",
+      "pssKiB": 485618
+    },
+    {
+      "capture": "stress-memory-28",
+      "pssKiB": 488668
+    },
+    {
+      "capture": "stress-memory-29",
+      "pssKiB": 515560
+    }
+  ],
+  "fatalLogMatches": [],
+  "note": "Historical 0.8.0 intermediate. Software API35 SwiftShader emulator; snapshots and activity start times are not physical FPS, memory peaks or full campaign startup latency. Final 0.8.1 gates are separate."
+}
