@@ -1,0 +1,16 @@
+name: Cancel superseded camera candidate
+on:
+  push:
+    branches: [camera-diagnostics]
+    paths: [.github/workflows/cancel-superseded-camera.yml]
+permissions:
+  actions: write
+  contents: read
+jobs:
+  cancel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prevent publication of rejected native-camera candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run cancel 37956224636 --repo elcin31/grand-strategy-multiplayer
