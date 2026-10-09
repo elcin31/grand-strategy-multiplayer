@@ -1,4 +1,4 @@
-# Camera / map pass — 0.8.0 (2026-10-09; final native validation pending)
+# Camera / map pass — 0.8.0 (2026-10-09; paired native validation passed, soak pending)
 
 Recovered main `0ea39eca80dac8d68d379968f3a7275b874b56ae`; prior accepted APK runtime `c758ed78f586268809a2184a064ae7fdadc5156e`. Candidate runtime `61b77f4f4eb03fa01b710c9d34ee306a5359012d`, release workflow 37962664267. Only elcin31/grand-strategy-multiplayer and its existing backend are in scope. World/schema remain 195 countries / 2,924 provinces / 5,411 cities / modern-world-v2 / schema12. Gameplay, AI, economy schedule, server authority, saves and reconnect were not rewritten or deployed.
 
@@ -24,9 +24,26 @@ Native protocol: same API35 SwiftShader emulator, old/new standalone APKs, offli
 
 Android CSV is a bounded recent-frame ring: report raw and whole-capture histogram quantiles together when truncated. Zero completed idle frames means no scheduled paint, not a 4,950ms frame. CPU percentages are fractions of one emulator core; RenderThread CPU is not GPU execution time. Overlay callback FPS is not GPU presentation FPS. Candidate accessibility counters record prepared-coverage province IDs, bounded label estimates/army stacks, coverage commits, path builds/time, raster builds/time/cache bytes/tiles and map/layer renders. renderFeatures is the geometry catalogue length, not a claim that every catalogue feature draws; label estimates are budget-capped rather than a GPU glyph trace. Raster tiles and path-build counters describe the retained native resources. Full Android allocation stacks, physical GPU/thermal/battery measurements are unavailable; host path-string bytes and native resource/PSS counters are proxies.
 
-FINAL_NATIVE_TABLE_PENDING
+Paired comparison job **113937051395 PASS**, artifact **11634175847**, ZIP SHA-256 `24d29835411fef669fea7fb1aa2c009bf91f84847abcf60cff9c43b303ead215`. Both APKs use an offline Germany campaign paused at tick 5, same topology, Balanced, adaptive off, viewport, emulator and real gesture driver. Campaigns are created separately; serialized states are not asserted byte-identical. The pure-host comparison additionally fixes seed 101 and the exact state fixture. All three broad map-paint checks pass; actual political/global/local/pinch/panel PNGs were reviewed. No fatal JS/native error appears in either final profile log.
 
-Paired pure-host camera benchmark covers 11 paths with 1,200 frames / 20 seconds / seed101. It measures selector/coverage preparation and string allocations, not raster painting, React reconciliation, GPU completion or handset FPS. Cold medium/panel paths can be higher even while repeated pinch/local/overview work falls. Final accepted CI host output and native results will be recorded with their exact runtime.
+The table reports whole-capture HWUI histogram quantiles in milliseconds. Each moving capture lasts about 11.25–11.41 seconds. New captures produce 157–350 reported frames while the raw recent-frame ring retains only 117–120, so whole-capture histogram and raw quantiles must not be conflated. Idle schedules zero completed frames in both APKs and has no meaningful frame quantile.
+
+| Scenario | Histogram p50 before → after, ms | Histogram p95 before → after, ms | Histogram p99 before → after, ms | Jank before → after |
+|---|---:|---:|---:|---:|
+| Medium pan | 150 → 81 | 300 → 109 | 350 → 113 | 95.79% → 86.49% |
+| Pinch | 150 → 81 | 300 → 250 | 500 → 350 | 94.19% → 91.72% |
+| Whole-world pan | 250 → 81 | 650 → 101 | 800 → 113 | 100.00% → 85.16% |
+| Local labels / armies | 150 → 65 | 300 → 81 | 400 → 81 | 95.56% → 65.78% |
+| Terrain pan | 150 → 61 | 350 → 81 | 450 → 89 | 96.34% → 64.55% |
+| Military overlay | 109 → 61 | 150 → 81 | 150 → 89 | 98.61% → 66.29% |
+| Panel open | 129 → 65 | 200 → 85 | 250 → 97 | 99.24% → 65.34% |
+| Panel closed | 113 → 61 | 150 → 81 | 200 → 93 | 95.51% → 64.04% |
+
+Paired profile PSS samples range **442,738–756,785 KiB before / 336,174–445,156 KiB after**, not a continuous peak or full allocation trace. Medium-pan sampled JS-thread mean CPU **14.73% → 2.91%** of one emulator core; world pan **20.91% → 0.91%**. Pinch mean JS CPU **17.73% → 12.14%**; new pinch max remains 28%, and main UI mean remains 78.67%. RenderThread CPU rises as the new renderer completes more frames and transfers work; this is not physical GPU utilization. Counters confirm retained paths/tiles stay reused across world/local pan and image cache bytes stay below the 32 MiB budget.
+
+Raw recent-ring p95 remains **339.75 → 316.46ms for pinch**, compared with the full histogram **300 → 250ms**. This candidate passes the explicit no-regression pinch gate, but pinch cold preparation/settling and software frame pacing remain bottlenecks. Even improved SwiftShader captures still report 64.04–91.72% jank. No achieved 30/60 FPS or complete elimination of hardware lag is claimed. Raw captures and thread/resource data: `CAMERA_NATIVE_PAIRED_080.json`; full PNG/CSV/logs remain in the named artifact.
+
+Paired pure-host camera benchmark covers 11 paths with 1,200 frames / 20 seconds / seed101. It measures selector/coverage preparation and string allocations, not raster painting, React reconciliation, GPU completion or handset FPS. Cold medium/panel paths can be higher even while repeated pinch/local/overview work falls. Final CI output in `BENCHMARK_CAMERA_080_CI.json`: pinch coverage commits **50 → 18**, selector CPU **351.29 → 83.65ms**, constructed geometry/border strings **45.55 → 2.11 MB**. Local selector work **64.49 → 19.45ms**, terrain **71.51 → 26.53ms**, world military **224.87 → 49.09ms**. Medium pan is **22.44 → 25.41ms** and panel-open **15.88 → 19.44ms** including cold preparation. These are different measurements from native raster painting and must not be converted into handset FPS.
 
 ## Illustration loading
 

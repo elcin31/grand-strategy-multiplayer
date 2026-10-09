@@ -1,5 +1,6 @@
 """Inspect the built binary, not just Gradle's selected task."""
 import os
+import json
 import re
 import subprocess
 import sys
@@ -12,7 +13,8 @@ def run(*args): return subprocess.check_output(list(map(str,args)),text=True,std
 badging = run(build_tools/'aapt','dump','badging',apk)
 manifest = run(build_tools/'aapt','dump','xmltree',apk,'AndroidManifest.xml')
 assert "package: name='com.elcin31.grandstrategymultiplayer'" in badging
-assert "versionCode='8'" in badging and "versionName='0.8.0'" in badging
+config=json.loads((Path(__file__).resolve().parent.parent/'app.json').read_text())['expo']
+assert f"versionCode='{config['android']['versionCode']}'" in badging and f"versionName='{config['version']}'" in badging
 assert 'application-debuggable' not in badging, 'APK is debuggable'
 assert not re.search(r'android:debuggable[^\n]*0xffffffff',manifest), 'Debuggable manifest'
 assert re.search(r'android:screenOrientation[^\n]*\)0x(?:0|6)\b',manifest), 'Landscape missing in packaged manifest'
@@ -23,4 +25,4 @@ with zipfile.ZipFile(apk) as archive:
     assert b'dfjsnjxnyjspwugjguhq.supabase.co' in bundle, 'Dedicated production backend missing'
 print(badging)
 print(signature)
-print('PASS: release manifest, version 0.8.0 (8), landscape, embedded production backend, verified signature')
+print(f"PASS: release manifest, version {config['version']} ({config['android']['versionCode']}), landscape, embedded production backend, verified signature")

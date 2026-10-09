@@ -209,6 +209,23 @@ before = province_army_text(root)
 click_scrolling('+25K · $500M')
 root = hierarchy('02-recruited'); screenshot('02-recruited')
 assert province_army_text(root) == str(int(before[:-1])+25)+'K', 'Recruitment command did not update the army'
+# Assign a real free commander, then verify its painted portrait and state text.
+commander_label=None
+for _ in range(5): adb('shell','input','swipe','1080','220','1080','570','350')
+for attempt in range(18):
+    tree=hierarchy('find-commander-'+str(attempt))
+    for node in tree.iter('node'):
+        label=node.get('content-desc','');bounds=list(map(int,re.findall(r'\d+',node.get('bounds',''))))
+        if label.startswith('Полководец ') and node.get('enabled')=='true' and len(bounds)==4 and 70<=bounds[1] and bounds[3]<=640 and bounds[3]-bounds[1]>=20:
+            commander_label=label;break
+    if commander_label:break
+    adb('shell','input','swipe','1080','530','1080','320','350')
+assert commander_label, 'No usable illustrated commander card'
+click_scrolling(commander_label)
+commander_name=commander_label.removeprefix('Полководец ')
+assert commander_name in read_scrolling('Командир: '), 'Commander assignment did not apply'
+root=hierarchy('commander-art');screenshot('commander-art')
+assert any(n.get('content-desc')=='Портрет вымышленного полководца: '+commander_name for n in root.iter('node')), 'Assigned commander portrait missing'
 click_scrolling('Строить')
 root=hierarchy('construction-art');screenshot('construction-art')
 assert any(n.get('content-desc')=='Иллюстрация здания: Ферма' for n in root.iter('node')), 'Construction painting missing'
@@ -273,6 +290,8 @@ assert any('Religious Unity:' in t for t in texts), 'Religious Unity is missing'
 # Five-phase UI regression: real research and diplomatic agreement in the release APK.
 click_scrolling('Религия ▴')
 click_scrolling('Технологии ▾')
+root=hierarchy('technology-art');screenshot('technology-art')
+assert any(n.get('content-desc')=='Иллюстрация технологий: университет' for n in root.iter('node')), 'Technology painting missing'
 click_scrolling('Исследовать Экономика')
 assert '0.0 / 6' in read_scrolling('Экономика: '), 'Research did not queue while paused'
 screenshot('research-queued')
