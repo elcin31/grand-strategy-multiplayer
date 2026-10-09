@@ -131,8 +131,29 @@ rotation = adb('shell','dumpsys','input')
 # Verify rendered hierarchy is landscape, rather than trusting requested orientation.
 bounds = [int(n) for n in re.findall(r'\d+', root[0].get('bounds',''))]
 assert bounds[2]-bounds[0] > bounds[3]-bounds[1], 'App is not landscape'
-click_text(root,'ОДИНОЧНАЯ ИГРА')
+assert next(n for n in root.iter('node') if n.get('content-desc')=='Продолжить').get('enabled')=='false', 'Continue should be disabled without a save'
+click_text(root,'Новая кампания'); time.sleep(1)
+root=hierarchy('01-new-campaign'); screenshot('01-new-campaign')
+assert any(n.get('text')=='Начать кампанию' for n in root.iter('node'))
+adb('shell','input','keyevent','4'); time.sleep(1)
+root=hierarchy('01-menu-back')
+click_text(root,'Мультиплеер'); time.sleep(1)
+root=hierarchy('01-multiplayer'); screenshot('01-multiplayer')
+assert any(n.get('content-desc')=='Код комнаты' for n in root.iter('node'))
+adb('shell','input','keyevent','4');time.sleep(1)
+root=hierarchy('01-menu-load'); click_text(root,'Загрузить игру');time.sleep(1)
+root=hierarchy('01-load'); screenshot('01-load')
+assert any(n.get('text')=='Хроника кампаний' for n in root.iter('node'))
+adb('shell','input','keyevent','4');time.sleep(1)
+root=hierarchy('01-menu-settings'); click_text(root,'Настройки');time.sleep(1)
+screenshot('01-settings');adb('shell','input','keyevent','4');time.sleep(1)
+root=hierarchy('01-menu-launch')
+launch_time=time.monotonic()
+click_text(root,'Одиночная игра')
+root=hierarchy('01-campaign-loading');screenshot('01-campaign-loading')
+assert any('Загрузка кампании' in n.get('text','') for n in root.iter('node')) or any('Политическая' in n.get('text','') for n in root.iter('node')), 'One tap produced no visible loading or campaign'
 time.sleep(15)
+(OUT/'menu-to-campaign-seconds.txt').write_text(str(time.monotonic()-launch_time)+'\nIncludes UI dump/screenshot and fixed smoke wait; not startup latency.\n')
 root = hierarchy('02-map'); screenshot('02-map')
 assert any('Политическая' in n.get('text','') for n in root.iter('node')), 'GPU map screen did not mount'
 # Exercise real offline commands in the release bundle, not only a mounted canvas.
@@ -306,7 +327,7 @@ def restore_after_configuration(name):
         for attempt in range(8):
             usable=False
             for node in root.iter('node'):
-                if node.get('content-desc')!='Продолжить кампанию':continue
+                if node.get('content-desc')!='Продолжить':continue
                 bounds=list(map(int,re.findall(r'\d+',node.get('bounds',''))))
                 usable=len(bounds)==4 and bounds[3]-bounds[1]>=30 and bounds[1]>=0 and bounds[3]<=height-40
                 if usable:break
@@ -314,7 +335,7 @@ def restore_after_configuration(name):
             adb('shell','input','swipe',str(width//2),str(int(height*.8)),str(width//2),str(int(height*.35)),'350')
             root=hierarchy(name+'-list-'+str(attempt))
         assert usable, 'No usable saved campaign after configuration change'
-        click_text(root,'Продолжить кампанию')
+        click_text(root,'Продолжить')
         for attempt in range(12):
             time.sleep(1);root=hierarchy(name+'-restore-'+str(attempt))
             if any(n.get('text','').startswith('Ход ') for n in root.iter('node')):break

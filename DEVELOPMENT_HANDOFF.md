@@ -8,7 +8,7 @@ Tier-specific city spatial queries, immutable viewport catalogue reuse, marker b
 
 Strict TS + 167 JS tests PASS; 3 Python tests PASS; world/map benchmarks PASS; optimized art verifier PASS. Backend game-room v21 / game-command v23 deployed to dfjsnjxnyjspwugjguhq, existing custom authentication unchanged. Additive backup migration applied: all 29 existing rooms have byte-exact JSON/compressed backups; RLS remains enabled and service-only. Advisor reports informational no-policy tables by intentional service-only design, no new security errors. Local live HTTP QA blocked by network policy; use scoped GitHub backend QA, never report local HTTP as passed.
 
-Next exact operation: publish logical city/performance commit and CI/version 0.7.0 (7) commit on visual-update; await release build, 10k simulation and native visual/30-minute smoke; review screenshots and fix failures; clean exact QA room IDs; download/extract/verify real Dominion-visual-update-release.apk; publish final reports and deliver APK. CI not yet started; no visual release accepted yet. Only this repo/existing backend used; AssetMind untouched.
+Next exact operation: publish city/performance commit 3991cbd and CI/version 0.7.0 (7) commit on visual-update; await release build, 10k simulation and native visual/30-minute smoke; review screenshots and fix failures; clean exact QA room IDs; download/extract/verify real Dominion-visual-update-release.apk; publish final reports and deliver APK. CI not yet started; no visual release accepted yet. Only this repo/existing backend used; AssetMind untouched.
 
 ---
 

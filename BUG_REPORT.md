@@ -1,3 +1,11 @@
+# Dominion visual update — regression status (2026-10-09)
+
+TS/167 JS/3 Python/world/map/art gates pass. Fixed during this update: truncated economy WebP caught by file integrity verifier; grouped menu-intent discriminant preventing type narrowing; stale unused province source chunks incorrectly entering reduction generator; round-to-even target replaced with specified 5,411; old static city links reappearing in dynamic snapshots; city growth carry aggregation without population loss; metadata-sidecar directory counting and advisory corruption behavior. Meaningful migration/authority/save/wire regressions are green.
+
+No known open BLOCKER/CRITICAL/HIGH from host tests. Native visual layout/start/runtime and live production HTTP verification are still pending, so no native acceptance claim yet. Previously reported physical Redmi lag remains open for real-device validation after delivering the new APK.
+
+---
+
 # PASS 3 — Start Game / Singleplayer delayed interaction — HIGH — FIXED
 
 Root cause addressed: heavy synchronous campaign/geometry initialization and full-save listing validation could occupy JS after a valid tap, while the existing loading latch alone did not make the heavy work cooperative. V4 yields between initialization stages and 64-feature geometry chunks, renders a loading shell, reuses world preparation, reads only save metadata on entry and avoids repeated full normalization in the private local reducer. Existing docked controls and synchronous duplicate latch retained; failures clear loading and expose the error.

@@ -1,3 +1,4 @@
+import {colors,tokens} from '../ui/tokens';
 import { useMemo, useState } from 'react';
 import { FlatList, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -30,12 +31,12 @@ export function CountryPicker({ state, onPreview }: { state: GameState; onPrevie
   </>;
 }
 const styles = StyleSheet.create({
-  button: { backgroundColor: '#17242a', borderColor: '#485953', borderWidth: 1, borderRadius: 5, paddingHorizontal: 12, paddingVertical: 10 },
-  text: { color: '#dddcca', fontSize: 11, fontWeight: '700' },
+  button: { backgroundColor: colors.surface, borderColor: colors.border, borderWidth: 1, borderRadius: 5, paddingHorizontal: 12, paddingVertical: 10 },
+  text: { color: colors.parchment, fontSize: 11, fontWeight: '700' },
   overlay: { flex: 1, backgroundColor: '#030b12bb', alignItems: 'center', justifyContent: 'center' },
-  dialog: { height: '90%', width: '70%', maxWidth: 660, backgroundColor: '#17242a', padding: 16, borderRadius: 8, borderColor: '#485953', borderWidth: 1, gap: 12 },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }, title: { color: '#f0ead8', fontWeight: '800', fontSize: 13 },
-  input: { borderWidth: 1, borderColor: '#485953', backgroundColor: '#101c23', color: '#eee9d8', padding: 10, borderRadius: 4 },
-  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 13, borderBottomWidth: 1, borderBottomColor: '#33433e', gap: 12 },
-  swatch: { width: 16, height: 16, borderRadius: 3 }, name: { flex: 1, color: '#e4e6dc', fontSize: 13 }, code: { color: '#a1afa4', fontSize: 10 },
+  dialog: { height: '90%', width: '70%', maxWidth: 660, backgroundColor: colors.surface, padding: 16, borderRadius:tokens.radius.panel, borderColor: colors.border, borderWidth: 1, gap: 12 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }, title: { color: colors.parchment, fontWeight: '800', fontSize: 13 },
+  input: { borderWidth: 1, borderColor: colors.border, backgroundColor: colors.inset, color: colors.parchment, padding: 10, borderRadius: 4 },
+  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 13, borderBottomWidth: 1, borderBottomColor: colors.border, gap: 12 },
+  swatch: { width: 16, height: 16, borderRadius: 3 }, name: { flex: 1, color: colors.parchment, fontSize: 13 }, code: { color: colors.muted, fontSize: 10 },
 });

@@ -1,3 +1,13 @@
+# Dominion visual update 0.7.0 (7) — RELEASE PENDING
+
+Original historical menu and six paintings, compact unified panels, GPU map/counter redesign, city reduction 7,214→5,411 and schema-12 save migration implemented. Backend game-room v21/game-command v23 deployed to existing dedicated project; 29 existing rooms backed up exactly before deployment. Local TS/167 JS/3 Python/map/world/art checks pass. Paired host metrics in PERFORMANCE_REPORT.md.
+
+Android workflow now builds **Dominion-visual-update-release.apk** as non-debuggable standalone 0.7.0 (7), same package/signing lineage, embedded Hermes/Skia/JS, production endpoint, landscape. Requires 10,000 ticks/10 restores plus native menu/command/layout/preset/30-minute soak. Actual CI/artifact/APK validation is pending; older artifacts below are historical evidence and must not be presented as this release.
+
+Local live HTTP test was blocked by environment networking before creating QA data. Use GitHub World backend QA to verify deployed functions and then delete only its exact guarded QA room. Physical Redmi FPS remains unverified.
+
+---
+
 # Dominion 0.6.0 (6) — optimized v4 verified release
 
 Runtime source **a9df2395800d4ec09fdac25fea4cd35975221893**, tree 97e965007cd38ebc94769363f0f48e0fc85f14d7. Release run **37725176471**: build-apk, long-simulation and android-smoke all PASS. Later commits change only QA scripts/workflows and reports, not the APK runtime.
