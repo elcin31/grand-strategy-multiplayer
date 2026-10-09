@@ -1,0 +1,27 @@
+{
+  "source": "a9df2395800d4ec09fdac25fea4cd35975221893",
+  "run": 37725176471,
+  "artifact": 11529720645,
+  "artifactSha256": "22e134dad9e51b94918276168250e08cf0a54e84d0544aa7055a852584257d03",
+  "activityTotalTimeMs": [
+    1325,
+    423,
+    1212
+  ],
+  "pssKiB": {
+    "samples": 30,
+    "min": 538434,
+    "max": 811674,
+    "first": 770905,
+    "last": 604538
+  },
+  "framesFile": "stress-frames-29.txt",
+  "gfxinfo": {
+    "p50Ms": 150,
+    "p95Ms": 250,
+    "p99Ms": 350,
+    "frames": 15057,
+    "jankPercent": 92.69
+  },
+  "note": "Accepted v4 API35 software emulator evidence. Old smoke did not contain the new menu. Not a controlled paired GPU/startup-readiness/peak-RAM comparison."
+}

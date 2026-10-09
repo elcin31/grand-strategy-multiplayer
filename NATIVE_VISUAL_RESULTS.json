@@ -1,0 +1,30 @@
+{
+  "source": "c758ed78f586268809a2184a064ae7fdadc5156e",
+  "run": 37918487336,
+  "nativeJob": 113787009485,
+  "nativeConclusion": "success",
+  "artifact": 11613239385,
+  "artifactSha256": "da4499adaecf0766c8f7b3905d1a6dff4790c83bf2a171fb6ae61ba9d2c0f34d",
+  "soakSeconds": 1836.6461575399999,
+  "activityTotalTimeMs": [
+    1647,
+    674,
+    1835
+  ],
+  "pssKiB": {
+    "samples": 30,
+    "min": 593072,
+    "max": 981108,
+    "first": 700306,
+    "last": 631847
+  },
+  "framesFile": "stress-frames-29.txt",
+  "gfxinfo": {
+    "p50Ms": 105,
+    "p95Ms": 200,
+    "p99Ms": 400,
+    "frames": 10149,
+    "jankPercent": 84.37
+  },
+  "note": "API35 software emulator. Activity launch is not menu readiness; no physical Redmi FPS, touch latency, peak memory, thermal, battery or leak-free claim. Native covers pan/double-tap; full distant-target combat and two-finger pinch are not independently automated."
+}

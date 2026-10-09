@@ -141,4 +141,4 @@ V2 Signer: public key SHA-1 digest: 88325602a013a12d5ac13516c609aa57ce9e2234
 V2 Signer: public key MD5 digest: 49921988ad9941656cd9b95203196f17
 
 PASS: release manifest, version 0.7.0 (7), landscape, embedded production backend, verified signature
-93b447e53cc4638ada33ef16b2a7645417201d6cc6a0192751dea66266314ec4  android/app/build/outputs/apk/release/app-release.apk
+d90a8aca6993de2d69db42e75eb2791bc7f50c1efd3425028c5ee0a1e1205a1f  android/app/build/outputs/apk/release/app-release.apk

@@ -14,16 +14,16 @@
     "cities": 7214,
     "initialSnapshotBytes": 3671090,
     "finalSnapshotBytes": 3923731,
-    "cityQueryP95Ms": 0.16300300000000334,
-    "localTickP95Ms": 42.421154000000115,
+    "cityQueryP95Ms": 0.28468199999997523,
+    "localTickP95Ms": 75.80764999999974,
     "markersAcrossQueries": 18476
   },
   "after": {
     "cities": 5411,
     "initialSnapshotBytes": 3297031,
     "finalSnapshotBytes": 3518439,
-    "cityQueryP95Ms": 0.0575059999999894,
-    "localTickP95Ms": 32.954097000000274,
+    "cityQueryP95Ms": 0.09181199999989076,
+    "localTickP95Ms": 61.917732000000115,
     "markersAcrossQueries": 13951
   },
   "presetBudgets": {

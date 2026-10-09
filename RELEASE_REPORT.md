@@ -1,10 +1,26 @@
-# Dominion visual update 0.7.0 (7) — RELEASE PENDING
+# Dominion visual update 0.7.0 (7) — verified standalone release
 
-Original historical menu and six paintings, compact unified panels, GPU map/counter redesign, city reduction 7,214→5,411 and schema-12 save migration implemented. Backend game-room v21/game-command v23 deployed to existing dedicated project; 29 existing rooms backed up exactly before deployment. Local TS/167 JS/3 Python/map/world/art checks pass. Paired host metrics in PERFORMANCE_REPORT.md.
+Accepted runtime **c758ed78f586268809a2184a064ae7fdadc5156e**. Final Android workflow **37918487336 all PASS**: build-apk, long-simulation, android-smoke. Subsequent commits change reports/evidence only. Only elcin31/grand-strategy-multiplayer and its existing dedicated backend dfjsnjxnyjspwugjguhq used; AssetMind untouched.
 
-Android workflow now builds **Dominion-visual-update-release.apk** as non-debuggable standalone 0.7.0 (7), same package/signing lineage, embedded Hermes/Skia/JS, production endpoint, landscape. Requires 10,000 ticks/10 restores plus native menu/command/layout/preset/30-minute soak. Runtime HEAD 7d00b2fd86bf3cf3b40c84e23608719e84f62e65; Android run 37911320195 and backend run 37911320238 are in progress. Host CI gates pass, native build/simulation/live QA pending. Actual artifact/APK validation is pending; older artifacts below are historical evidence and must not be presented as this release.
+- File: **Dominion-visual-update-release.apk**, **140,113,723 bytes**.
+- APK SHA-256: `d90a8aca6993de2d69db42e75eb2791bc7f50c1efd3425028c5ee0a1e1205a1f`.
+- Release artifact **11611437585**, ZIP SHA-256 `40fa1ddebd7164e2786cce1deee978b7897d2cf73e9a8caad14dca275ab11396`.
+- Actual artifact downloaded/extracted and CRC/hash checked. Embedded Hermes JS **10,447,040 bytes**, all four ABI Hermes/Skia libraries and all nine WebP hashes independently verified.
+- Non-debuggable assembleRelease, package com.elcin31.grandstrategymultiplayer, **0.7.0 (7)**, min API24/target36, landscape, embedded production backend. No Metro/Expo development server required. Valid V2 signature and existing sideload certificate retained; not Play Store production signing. Binary evidence: RELEASE_VISUAL_INTEGRITY.txt.
 
-Local live HTTP test was blocked by environment networking before creating QA data. Use GitHub World backend QA to verify deployed functions and then delete only its exact guarded QA room. Physical Redmi FPS remains unverified.
+Implemented: full lightweight landscape main menu; six original historical paintings/nine optimized WebPs; unified tokens/compact panels/heraldry/vector portraits; softer political colours/coasts/labels/capitals/shield army counters; safe-area feedback, latched launch, deferred world/codec and metadata-only save listing. Existing Skia/worklet camera, terrain, server authority and gameplay retained.
+
+Cities **7,214→5,411 (-24.993%)**, exact round(count×0.75). All 195 countries/2,924 provinces/195 capitals/2,225 regional centers retained, exact population conserved. Schema12 migration preserves surviving IDs, ownership, population/development/growth carry and provincial links. Native old bytes retained as .before-city-v12.backup; no user saves deleted. Existing older v1-topology restriction unchanged. Backend gzip persistence stores full JSON before normalization.
+
+Strict TypeScript, **167 JS / 3 Python** tests and world/map/art checks PASS locally and final build CI. Final **10,000 ticks/10 exact save restores**, 10,906 peace settlements, 9,157 battles, max 3,406 armies/max 4,082,061-byte snapshot; tick p95 75.17ms, elapsed 592s on CI. Long evidence11610974406; LONG_SIMULATION_VISUAL_RESULTS.json. Paired host metrics and native limitations: PERFORMANCE_REPORT.md.
+
+Existing backend game-room **v21** / game-command **v23** deployed together; custom authentication/server authority unchanged. All 29 existing rooms have byte-exact additive pre-v12 JSON/compressed backups. Live backend QA **37911320238 PASS**: malformed/oversize/auth/capacity/idempotency/CAS guards, movement/cancellation, buildings/research/units/diplomacy, reconnect/host migration/server clock/AI recovery. Exact guarded QA room d224a5eb-3715-4c77-9657-98bb6028ca8d removed; zero related room/membership/receipt rows; original 29 backups remain. Locally blocked HTTP attempt is not counted as pass.
+
+Native API35 job **113787009485 PASS**, evidence **11613239385**. Exactly one Singleplayer tap and one Start tap; disabled Continue without save, menu/pages/Back, visible launch feedback, real campaign commands, four presets/twelve map modes, pan/double-tap, five layouts, density/cutout, process/reboot recovery and detached 12-tick benchmark pass. Actual final menu/new-campaign/loading/map/economy/diplomacy/government/dense screenshots reviewed. Native assertions enforce full painting coverage and un-clipped statistics. Continuous render/simulation/autosave soak **1,836.65 seconds**, no fatal JS/native logs.
+
+Software SwiftShader gfxinfo p50/p95/p99 **105/200/400ms**, **84.37% jank**. Thirty PSS samples **593,072–981,108 KiB**, first 700,306, last 631,847. Activity TotalTime **1647/674/1835ms** measures Android activity launch, not full menu readiness or touch latency. These are software-emulator observations, not physical FPS, peak memory or a leak-free guarantee. Redmi Note 12 frame pacing/FPS, pinch/touch latency, thermal and battery acceptance remain unmeasured. Native smoke does not independently automate full distant-target combat or two-finger pinch; reducer/live HTTP regressions cover route/combat/authority and existing camera worklets remain unchanged.
+
+Delivery: exact accepted APK saved successfully for direct download. Target 30 FPS low-end/45–60 mid-range/60 high-end are goals, not achieved Redmi claims. Earlier visual APKs/runs are superseded.
 
 ---
 
