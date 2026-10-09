@@ -1,8 +1,20 @@
-# Camera/map interaction lag — HIGH — native validation in progress (2026-10-09)
+# Camera / map pass — regression status (2026-10-09; native validation pending)
 
-Confirmed physical symptom: strongest lag during pan/zoom/navigation. Paused old-release Android emulator reproduction remains slow, so AI/economy are not assumed to be the main cause. Coverage commit churn, repeated border/path materialization and unbounded dynamic glyph nodes are addressed by retained raster tiles, native paths/border chunks, stable UI-thread gestures and hard marker budgets. The authoritative campaign graph, mechanics, schema12 saves and production backend are unchanged.
+Primary physical defect: severe camera pan/zoom/navigation lag. Paused old-release native captures isolate a renderer/input contribution without assuming AI/economy is the main bottleneck. Coverage churn, repeated geometry/path materialization and unbounded glyph nodes are addressed with retained transferable raster tiles, stable native paths/border chunks, prepared pinch detail and hard label/army budgets. Gameplay/world/schema/backend are unchanged.
 
-174 JS / strict TS / 8 Python / 15-art checks are required by the new release gate; local strict TS/camera and all 8 Python tests pass. Paired native camera and full release gates are still running; no final smoothness or regression-acceptance claim is made yet. First candidate run 37952330317 failed native launch with `Cannot read property 'layout' of null`: the added equal-viewport guard captured a pooled layout event inside the deferred state updater. Fixed by capturing primitive dimensions before enqueueing; regression explicitly recycles/mutates the event before evaluating the updater. Failed candidate was not published. New portrait/construct/government/religion assertions are included in the Android smoke. Physical Redmi Note12 camera acceptance remains OPEN until the user tests the delivered 0.8.0 APK.
+Introduced defects caught before delivery:
+- CRITICAL pooled-layout crash in the first equal-viewport guard: fixed by capturing primitive dimensions before enqueueing React's updater; a regression recycles/mutates the event before evaluating the updater.
+- CRITICAL transparent static map with JS-thread GPU snapshots: fixed by retaining raster images transferable to the Canvas context. Native screenshot checks reject labels/armies drawn over an absent base map.
+- HIGH pinch detail churn/cold-frame spike: prepared detail stays fixed while zooming in, lowers for zoom-out coverage and refines at settle; country geometry identity is reused. Native paired pinch p95 is now a publishing gate.
+- QA profiler lacked its new PNG decoder dependency: the auxiliary baseline workflow installs the pinned dependency and is verified separately; the release workflow already installs it.
+
+The rejected native candidate's faster pan timings are excluded because its geography did not paint correctly. Failed/cancelled candidates were not delivered or published as the accepted release.
+
+FINAL_BUG_ACCEPTANCE_PENDING
+
+175 JS / strict TS / 10 Python tests pass locally. Fifteen asset checks pass. Full native screenshots, portrait/construction/government/religion assertions, paired camera timings, ten thousand authoritative ticks, save/process/reboot/layout/preset checks and 30-minute soak must pass before delivery. Real online multiplayer/reconnect are covered by protocol/reducer tests and prior unchanged-backend live evidence; no new production rooms or gameplay backend writes are made in this pass.
+
+Physical Redmi Note12 pan/zoom acceptance remains **OPEN** for the user's new APK test; no exact hardware FPS or completely eliminated lag claim.
 
 ---
 

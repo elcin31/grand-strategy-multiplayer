@@ -1,10 +1,14 @@
-# CAMERA / MAP PASS — runtime candidate under validation (2026-10-09)
+# Camera / map pass — final release validation in progress (2026-10-09)
 
-Current candidate `87d9eeb8c06dc37f4a50260e0f35d964e65cf405` on `camera-fix`; release run `37956224636`. Recovered main `0ea39eca80dac8d68d379968f3a7275b874b56ae`. Only this Grand Strategy repository/existing backend used. User explicitly reopened camera performance after physical Android testing and authorized illustration expansion/release delivery, superseding the older stop checkpoints below.
+Runtime candidate `61b77f4f4eb03fa01b710c9d34ee306a5359012d` on camera-fix, release workflow `37962664267`. Recovered main `0ea39eca80dac8d68d379968f3a7275b874b56ae`. Only this Grand Strategy repository/existing backend used; no backend deployment or production-data writes. User authorized the reopened camera symptom, illustration expansion, release build and direct APK delivery; older stop checkpoints below are historical.
 
-Retained Skia paths/border chunks/raster tiles + conservative coverage replace repeated camera geometry work; UI-thread camera/clamps/inertia/hit semantics retained. Hard budgets/army stacks and one native glyph picture cap dynamic layers. Five original paintings supply ruler/building/government/religion atlas cards and an additional loading scene; lazy panels,15 WebPs/2,188,634 bytes. Existing 195/2,924/5,411/schema12/gameplay/server/save/reconnect unchanged. No backend deployment or data write.
+Retained native paths/border chunks and transferable raster tiles, coverage-based camera commits, stable gestures, prepared pinch detail, bounded glyph pictures/army stacks. Exact geometry/hits/orders/world/game systems preserved: 195 countries, 2,924 provinces, 5,411 cities, modern-world-v2/schema12. Five original paintings add ruler/building/government/religion cards and port loading art; lazy panel mounting, 15 WebPs / 2,188,634 bytes.
 
-Local TS/173 JS/3 Python/art PASS. Next: inspect paired API35 old/new camera timings and all native screenshots, finish 10k ticks/30min smoke, correct regressions, verify/download exact accepted artifact, update reports/main, attach `Dominion-camera-fix-illustrated-release.apk`, then stop. Do not claim Redmi FPS until user tests.
+First native candidate's pooled-layout crash and second candidate's transparent-map/pinch regression were caught before publication and fixed. Do not reuse their speed figures as valid acceptance. Release gate requires native map paint plus paired pinch timings, full startup/gameplay/layout/save smoke, 10k ticks and 30-minute native soak.
+
+Local typecheck / 175 JS / 10 Python / art checks PASS. FINAL_HANDOFF_EVIDENCE_PENDING
+
+Remaining operations: inspect exact accepted native evidence, download/verify standalone release APK, finish reports and fast-forward main, save/attach `Dominion-camera-fix-illustrated-release.apk`, then **STOP**. Do not start another gameplay roadmap. Physical Redmi smoothness remains unverified until the user's retest.
 
 ---
 

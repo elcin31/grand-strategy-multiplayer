@@ -1,8 +1,16 @@
-# Dominion camera illustrated 0.8.0 (8) — release acceptance in progress
+# Dominion 0.8.0 (8) — camera fix and illustrated panels (acceptance pending)
 
-Candidate source `87d9eeb8c06dc37f4a50260e0f35d964e65cf405`, release workflow `37956224636`. Standalone `assembleRelease`, embedded Hermes JS/Skia, landscape/production backend/sideload signature verification are required, alongside 173 JS/3 Python/strict TS/map/world/art benchmarks,10,000 ticks, paired real-pointer camera profiling and30-minute native smoke.
+Candidate runtime `61b77f4f4eb03fa01b710c9d34ee306a5359012d`, release workflow `37962664267`. Required standalone release name: `Dominion-camera-fix-illustrated-release.apk`. No Metro/Expo dev server dependency. Main recovery source `0ea39eca80dac8d68d379968f3a7275b874b56ae`; prior comparison APK source `c758ed78f586268809a2184a064ae7fdadc5156e`.
 
-Expected deliverable: `Dominion-camera-fix-illustrated-release.apk`. No accepted binary hash or success claim yet. Final artifact will be downloaded/extracted, independently checked and directly attached after all gates pass. Prior v0.7.0 remains the baseline; existing save schema and signing certificate are retained.
+Camera/rendering changes: retained transferable map rasters, cached native paths/border chunks, conservative pre-render coverage/culling, prepared pinch detail, stable selection delegate, label and army budgets/stacking, separate dynamic overlays. Original ruler/building/government/religion cards and additional loading painting; full existing army/economy/diplomacy/campaign/menu illustrations retained. GameState/schema/world/server/transport/gameplay unchanged.
+
+FINAL_BINARY_IDENTITY_PENDING
+
+Required gates: TS, 175 JS, 10 Python, map/world/host camera/visual checks, 15 exact WebP checks, 10,000 ticks and ten exact restores, native API35 smoke/paint/pan/pinch/modes/presets/layout/save/reboot/art checks and 30-minute soak. Final paired native camera quantiles and actual PNGs must be reviewed. Failed intermediate releases are excluded.
+
+Binary checks must inspect embedded Hermes JS, all ABI Hermes/Skia, non-debuggable packaged manifest, version 0.8.0(8), landscape, existing dedicated production endpoint and verified retained sideload certificate. Hash/CRC/public byte identity and direct chat attachment follow successful CI completion. The existing certificate may be named Android Debug; this refers to the retained signing key, not a debuggable or development build.
+
+No achieved FPS or completely fixed Redmi lag claim. User retest: install, main menu, singleplayer, pan/navigation, zoom in/out, compare smoothness, then inspect ruler/religion/government/economy/army/construction art and report the change. Stop after delivery.
 
 ---
 
