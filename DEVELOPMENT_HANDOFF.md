@@ -1,3 +1,13 @@
+# CAMERA / MAP PASS — runtime candidate under validation (2026-10-09)
+
+Current candidate `87d9eeb8c06dc37f4a50260e0f35d964e65cf405` on `camera-fix`; release run `37956224636`. Recovered main `0ea39eca80dac8d68d379968f3a7275b874b56ae`. Only this Grand Strategy repository/existing backend used. User explicitly reopened camera performance after physical Android testing and authorized illustration expansion/release delivery, superseding the older stop checkpoints below.
+
+Retained Skia paths/border chunks/raster tiles + conservative coverage replace repeated camera geometry work; UI-thread camera/clamps/inertia/hit semantics retained. Hard budgets/army stacks and one native glyph picture cap dynamic layers. Five original paintings supply ruler/building/government/religion atlas cards and an additional loading scene; lazy panels,15 WebPs/2,188,634 bytes. Existing 195/2,924/5,411/schema12/gameplay/server/save/reconnect unchanged. No backend deployment or data write.
+
+Local TS/173 JS/3 Python/art PASS. Next: inspect paired API35 old/new camera timings and all native screenshots, finish 10k ticks/30min smoke, correct regressions, verify/download exact accepted artifact, update reports/main, attach `Dominion-camera-fix-illustrated-release.apk`, then stop. Do not claim Redmi FPS until user tests.
+
+---
+
 # VISUAL UPDATE — CODE, QA AND RELEASE COMPLETE (2026-10-09)
 
 Alternative Android download: **https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.7.0-visual-update/Dominion-visual-update-release.zip**, ZIP **58,446,169 bytes**, SHA256 e0f3aaa79f4a4b0e67126369520b4523766654de7aed12622a8f1dad1bb8e694. Publisher run 37935645382/job 113836879926 PASS: public unauthenticated ZIP download/CRC verified; enclosed 140,113,723-byte APK remains exactly SHA256 d90a8aca6993de2d69db42e75eb2791bc7f50c1efd3425028c5ee0a1e1205a1f. User reports direct APK transfer stuck at 100%; root cause not diagnosed. Offer ZIP extraction/opening APK, then collect exact browser/installer error if failure persists. No game/runtime/backend/signature change or rebuild.
