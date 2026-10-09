@@ -1,0 +1,18 @@
+{
+  "provinces": 2924,
+  "cities": 5411,
+  "geometryFeatures": 2924,
+  "edges": 82307,
+  "vertices": 136918,
+  "createMs": 124.13954999999987,
+  "sceneMs": 571.799464,
+  "pathQueries": 12,
+  "pathP95Ms": 2.372110000000248,
+  "aiDecisionMs": 47.48128399999996,
+  "localTickP95Ms": 77.49042499999996,
+  "initialSnapshotBytes": 3297024,
+  "finalSnapshotBytes": 3518439,
+  "dynamicSnapshotBytes": 2877473,
+  "heapUsed": 245896728,
+  "note": "Host CPU only. AI decision probe uses no-op military callbacks; not full combat tick time. No physical FPS claim. Final native-save-fix runtime; cold host timings are unpaired; exact dynamic snapshot bytes include literal v12 city links."
+}
