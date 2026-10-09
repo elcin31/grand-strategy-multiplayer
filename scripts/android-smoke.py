@@ -131,10 +131,18 @@ rotation = adb('shell','dumpsys','input')
 # Verify rendered hierarchy is landscape, rather than trusting requested orientation.
 bounds = [int(n) for n in re.findall(r'\d+', root[0].get('bounds',''))]
 assert bounds[2]-bounds[0] > bounds[3]-bounds[1], 'App is not landscape'
+painting=next(n for n in root.iter('node') if n.get('content-desc')=='Иллюстрация Dominion: main-menu')
+art_bounds=list(map(int,re.findall(r'\d+',painting.get('bounds',''))))
+assert art_bounds[2]-art_bounds[0]>=bounds[2]-bounds[0], 'Menu painting leaves uncovered landscape width'
+assert art_bounds[3]-art_bounds[1]>=bounds[3]-bounds[1]-80, 'Menu painting leaves uncovered landscape height'
 assert next(n for n in root.iter('node') if n.get('content-desc')=='Продолжить').get('enabled')=='false', 'Continue should be disabled without a save'
 click_text(root,'Новая кампания'); time.sleep(1)
 root=hierarchy('01-new-campaign'); screenshot('01-new-campaign')
 assert any(n.get('text')=='Начать кампанию' for n in root.iter('node'))
+for number in ['195','2 924']:
+    stat=next(n for n in root.iter('node') if n.get('text')==number)
+    b=list(map(int,re.findall(r'\d+',stat.get('bounds',''))))
+    assert b[3]-b[1]>=24, 'Campaign number clipped by text line height: '+number
 adb('shell','input','keyevent','4'); time.sleep(1)
 root=hierarchy('01-menu-back')
 click_text(root,'Мультиплеер'); time.sleep(1)
