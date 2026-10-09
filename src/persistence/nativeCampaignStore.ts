@@ -4,7 +4,7 @@ const files:CampaignFiles={
  async list(){const{dir}=await directory();return dir.list().map(f=>f.name);},
  async read(name){const{fs,dir}=await directory();return new fs.File(dir,name).text();},
  async write(name,text){const{fs,dir}=await directory();const f=new fs.File(dir,name);f.create({overwrite:true});f.write(text);},
- async move(from,to){const{fs,dir}=await directory();new fs.File(dir,from).move(new fs.File(dir,to));},
+ async move(from,to){const{fs,dir}=await directory();await new fs.File(dir,from).move(new fs.File(dir,to),{overwrite:to.endsWith('.index.json')});},
  async remove(name){const{fs,dir}=await directory();const f=new fs.File(dir,name);if(f.exists)f.delete();},
 };
 export const campaignStore=new CampaignStore(files);
