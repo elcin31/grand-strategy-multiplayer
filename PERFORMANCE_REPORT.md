@@ -1,3 +1,13 @@
+# Expansion 2.0 — stage 1 implementation / native validation pending
+
+Baseline main dbb354ab, accepted native runtime 47b0db4 (0.8.1). New fixed-deadline camera pacing avoids clock drift; identical deterministic callback replay in EXPANSION_FRAME_PACING.json uses 20 seconds at 60/90/120Hz. At a 90Hz display and target60, old gate issues 900 updates / 20s versus 1200 after (45→60/s); target30 with ±0.9ms jitter issues 450 versus 600 (22.5→30/s). These isolate the algorithm, **not presented GPU frames or measured handset FPS**. Native CPU, frame latency and actual display smoothness require fresh paired CI/hardware evidence.
+
+Added bounded UI interval histogram (23 buckets, at most one sample transfer per second), P50/P95/P99 upper bounds and counts >50/>100ms. Camera graphics transforms stay on UI thread; new game systems remain tick/event based. Gesture callbacks pair starts/finalization including cancellation; automatic saves wait for 750ms camera quiet, local ticks defer for at most1.5s, and manual/background saves remain durable. No save write/schema behavior changed. Heavy save validation/JSON/checksum can still cause a JS stall once scheduled; physical results are unclaimed.
+
+Renderer, static geography, province/city counts and existing LOD/caches unchanged. New country flags are recorded into the retained glyph picture from bounded existing licensed offline SVGs; no per-frame flag decoding. Touch glyph and hit bounds share the same layout and only visible painted labels have country targets. Fresh same-emulator 0.8.1 paired camera test configured, not yet completed. Earlier results below remain historical.
+
+---
+
 # Dominion 0.8.1 (9) — final paired native camera evidence
 
 Tested runtime `47b0db4f8b220e9ea89998afaac035239b64f5e0`, main, workflow `37971350100`. Renderer implementation remains the recovered `61b77f4` work; the final follow-up integrates existing original artwork into commander cards, technology branches and the open war panel. No new image bytes, world reduction, gameplay/backend/save changes or new infrastructure. The architecture and rejected intermediate candidates are detailed in the archived 0.8.0 section below.

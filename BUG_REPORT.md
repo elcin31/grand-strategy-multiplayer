@@ -1,3 +1,13 @@
+# Expansion 2.0 — active bug status
+
+**HIGH army selection capture: fixed in implementation, native validation pending.** selectAt previously dispatched every tap to ORDER_ARMY when selected, ahead of marker testing. Marker taps now toggle/switch first; foreign flag/label targets precede markers. Android Back used to close context with selectedArmyId alive; it now clears the selection independently. Internal army-row state no longer diverges from campaign selection. Deselect emits no authoritative command; route/save/authority regressions PASS. Separate Cancel Movement remains the sole cancellation command. No final APK has been delivered for this expansion.
+
+**Microstutter: PARTIAL.** 90Hz pacing drift is corrected and synthetic replay verified; gesture-sensitive autosave/tick scheduling and raw UI histogram added. Actual native performance comparison and physical Redmi acceptance remain OPEN. Existing save encoder still runs synchronously outside gestures; total stall elimination is not claimed.
+
+**Roadmap gaps:** all entries in RECOVERY_AUDIT_EXPANSION_2026-10-09.md remain scoped. New diplomacy/espionage/economic policy/supply/tech graph/focus/art/long integration release gates remain unfinished. Existing warnings below are historical.
+
+---
+
 # Dominion 0.8.1 — final camera and illustrated-panel regression status
 
 Tested runtime `47b0db4f8b220e9ea89998afaac035239b64f5e0`, workflow `37971350100`. Recovery continued the saved implementation and preserved all prior successful performance/gameplay work. The caught pooled-layout crash, missing-map GPU snapshot defect and cold-pinch regression are fixed in the recovered source; failed/missing-geography candidates were not accepted as performance improvements. Final broad map-paint checks and actual political/global/local/pinch/terrain/military/panel PNGs PASS.

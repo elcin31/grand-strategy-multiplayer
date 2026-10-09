@@ -1,0 +1,46 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {mapTapIntent} from '../src/ui/mapInteraction';
+import {backAction} from '../src/ui/landscape';
+import {countryGlyph,hitCountryGlyph} from '../src/map/countryTargets';
+import {createWorldState} from '../supabase/functions/_shared/worldState';
+import {findArmyRoute} from '../supabase/functions/_shared/armyOrders';
+import {applyServerCommand} from '../supabase/functions/_shared/serverCommand';
+import {encodeCampaign,decodeCampaign} from '../src/persistence/campaignCodec';
+test('actual map intent selects, toggles, switches, prioritizes foreign flags and empty-map deselection',()=>{
+  const hit={id:'one',ownerId:'germany',provinceId:'home'};
+  assert.deepEqual(mapTapIntent(null,'germany',{army:hit}),{type:'selectArmy',armyId:'one',provinceId:'home'});
+  assert.deepEqual(mapTapIntent('one','germany',{army:hit,provinceId:'home'}),{type:'deselect'});
+  assert.equal(mapTapIntent('two','germany',{army:hit}).type,'selectArmy');
+  assert.deepEqual(mapTapIntent('one','germany',{countryId:'france',army:hit,provinceId:'border'}),{type:'diplomacy',countryId:'france'});
+  assert.deepEqual(mapTapIntent('one','germany',{}),{type:'deselect'});
+  assert.equal(mapTapIntent('one','germany',{army:{...hit,ownerId:'france'}}).type,'diplomacy');
+  assert.equal(mapTapIntent(null,'germany',{provinceId:'border',provinceOwnerId:'france'}).type,'diplomacy');
+  assert.equal(backAction({keyboard:false,modal:false,army:true,context:false,panel:false,campaign:true}),'army');
+});
+test('move → repeated tap → diplomacy → reselect preserves active route through authoritative save/load',()=>{
+  let s=createWorldState('selection','SEL1','host','Test',101);s.phase='paused';s.speed=0;s.players[0]!.countryId='germany';
+  const army=s.armies.find(a=>a.ownerId==='germany')!;
+  const target=s.provinces.find(p=>p.ownerId==='germany'&&findArmyRoute(s,army,p.id).length>=2)!;
+  const intent=mapTapIntent(army.id,'germany',{provinceId:target.id,provinceOwnerId:'germany'});assert.equal(intent.type,'order');
+  if(intent.type!=='order')throw Error('Expected order');
+  s=applyServerCommand(s,{type:'ORDER_ARMY',playerId:'host',armyId:intent.armyId,provinceId:intent.provinceId},'host');
+  const ordered=s.armies.find(a=>a.id===army.id)!,route=structuredClone(ordered.order);
+  assert.equal(mapTapIntent(army.id,'germany',{army:ordered}).type,'deselect');
+  assert.equal(mapTapIntent(null,'germany',{countryId:'france'}).type,'diplomacy');
+  assert.equal(mapTapIntent(null,'germany',{army:ordered}).type,'selectArmy');
+  assert.deepEqual(ordered.order,route);
+  const loaded=decodeCampaign(encodeCampaign(s,1)).state;assert.deepEqual(loaded.armies.find(a=>a.id===army.id)!.order,route);
+  const cancelled=applyServerCommand(loaded,{type:'CANCEL_ARMY_ORDER',playerId:'host',armyId:army.id},'host');assert.equal(cancelled.armies.find(a=>a.id===army.id)!.order,undefined);
+  assert.throws(()=>applyServerCommand(s,{type:'ORDER_ARMY',playerId:'host',armyId:army.id,provinceId:'missing'},'host'));
+  assert.throws(()=>applyServerCommand(s,{type:'CANCEL_ARMY_ORDER',playerId:'host',armyId:s.armies.find(a=>a.ownerId==='france')!.id},'other'));
+});
+test('only painted country labels are touchable; flag and text share exact layout',()=>{
+  const s=createWorldState('glyph','GLYPH','host','Test',101),c=s.countries.france!;
+  const label={countryId:c.id,anchor:{x:100,y:100},width:80,blocked:false};
+  const glyph=countryGlyph(label,c,4,n=>n.length*7)!;
+  assert.ok(glyph);assert.equal(hitCountryGlyph(glyph,100,100,4,.78),true);
+  assert.equal(hitCountryGlyph(glyph,500,500,4,.78),false);
+  assert.equal(countryGlyph({...label,blocked:true},c,4,n=>n.length*7),null);
+  assert.equal(countryGlyph(label,c,9,n=>n.length*7),null);
+});

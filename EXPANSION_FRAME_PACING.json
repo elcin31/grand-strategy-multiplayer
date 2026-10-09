@@ -1,0 +1,234 @@
+{
+  "baselineSource": "dbb354ab038713c3e54b969b34a6fc88bf2de11f",
+  "note": "Deterministic 20-second callback replay of the exact old reset-clock condition versus the new phase-preserving deadline. Isolates the pacing algorithm. Does not measure GPU presentation, Android FPS or Redmi hardware. Irregular callbacks can still produce physical microstutter.",
+  "scenarios": [
+    {
+      "displayHz": 60,
+      "target": 30,
+      "jitter": false,
+      "before": {
+        "updates": 600,
+        "updatesPerSecond": 30,
+        "intervalP50Ms": 33.33333333333303,
+        "intervalP95Ms": 33.33333333333576,
+        "intervalP99Ms": 33.33333333333576
+      },
+      "after": {
+        "updates": 600,
+        "updatesPerSecond": 30,
+        "intervalP50Ms": 33.33333333333303,
+        "intervalP95Ms": 33.33333333333576,
+        "intervalP99Ms": 33.33333333333576
+      }
+    },
+    {
+      "displayHz": 60,
+      "target": 30,
+      "jitter": true,
+      "before": {
+        "updates": 600,
+        "updatesPerSecond": 30,
+        "intervalP50Ms": 33.333333333333485,
+        "intervalP95Ms": 33.33333333333394,
+        "intervalP99Ms": 33.33333333333394
+      },
+      "after": {
+        "updates": 600,
+        "updatesPerSecond": 30,
+        "intervalP50Ms": 33.333333333333485,
+        "intervalP95Ms": 33.33333333333394,
+        "intervalP99Ms": 33.33333333333394
+      }
+    },
+    {
+      "displayHz": 60,
+      "target": 60,
+      "jitter": false,
+      "before": {
+        "updates": 1200,
+        "updatesPerSecond": 60,
+        "intervalP50Ms": 16.666666666666515,
+        "intervalP95Ms": 16.66666666666788,
+        "intervalP99Ms": 16.66666666666788
+      },
+      "after": {
+        "updates": 1200,
+        "updatesPerSecond": 60,
+        "intervalP50Ms": 16.666666666666515,
+        "intervalP95Ms": 16.66666666666788,
+        "intervalP99Ms": 16.66666666666788
+      }
+    },
+    {
+      "displayHz": 60,
+      "target": 60,
+      "jitter": true,
+      "before": {
+        "updates": 600,
+        "updatesPerSecond": 30,
+        "intervalP50Ms": 33.333333333333485,
+        "intervalP95Ms": 33.33333333333394,
+        "intervalP99Ms": 33.33333333333394
+      },
+      "after": {
+        "updates": 1200,
+        "updatesPerSecond": 60,
+        "intervalP50Ms": 17.566666666665697,
+        "intervalP95Ms": 17.566666666667516,
+        "intervalP99Ms": 17.566666666667516
+      }
+    },
+    {
+      "displayHz": 90,
+      "target": 30,
+      "jitter": false,
+      "before": {
+        "updates": 600,
+        "updatesPerSecond": 30,
+        "intervalP50Ms": 33.33333333333394,
+        "intervalP95Ms": 33.33333333333394,
+        "intervalP99Ms": 33.33333333333394
+      },
+      "after": {
+        "updates": 600,
+        "updatesPerSecond": 30,
+        "intervalP50Ms": 33.33333333333394,
+        "intervalP95Ms": 33.33333333333394,
+        "intervalP99Ms": 33.33333333333394
+      }
+    },
+    {
+      "displayHz": 90,
+      "target": 30,
+      "jitter": true,
+      "before": {
+        "updates": 450,
+        "updatesPerSecond": 22.5,
+        "intervalP50Ms": 44.44444444444525,
+        "intervalP95Ms": 44.44444444444525,
+        "intervalP99Ms": 44.44444444444525
+      },
+      "after": {
+        "updates": 600,
+        "updatesPerSecond": 30,
+        "intervalP50Ms": 34.233333333332666,
+        "intervalP95Ms": 34.233333333333576,
+        "intervalP99Ms": 34.233333333333576
+      }
+    },
+    {
+      "displayHz": 90,
+      "target": 60,
+      "jitter": false,
+      "before": {
+        "updates": 900,
+        "updatesPerSecond": 45,
+        "intervalP50Ms": 22.222222222222626,
+        "intervalP95Ms": 22.222222222222626,
+        "intervalP99Ms": 22.222222222222626
+      },
+      "after": {
+        "updates": 1200,
+        "updatesPerSecond": 60,
+        "intervalP50Ms": 22.22222222221899,
+        "intervalP95Ms": 22.222222222222626,
+        "intervalP99Ms": 22.222222222222626
+      }
+    },
+    {
+      "displayHz": 90,
+      "target": 60,
+      "jitter": true,
+      "before": {
+        "updates": 900,
+        "updatesPerSecond": 45,
+        "intervalP50Ms": 22.222222222222626,
+        "intervalP95Ms": 22.222222222222626,
+        "intervalP99Ms": 22.222222222222626
+      },
+      "after": {
+        "updates": 1200,
+        "updatesPerSecond": 60,
+        "intervalP50Ms": 22.222222222221717,
+        "intervalP95Ms": 22.222222222222626,
+        "intervalP99Ms": 22.222222222222626
+      }
+    },
+    {
+      "displayHz": 120,
+      "target": 30,
+      "jitter": false,
+      "before": {
+        "updates": 600,
+        "updatesPerSecond": 30,
+        "intervalP50Ms": 33.33333333333394,
+        "intervalP95Ms": 33.33333333333576,
+        "intervalP99Ms": 33.33333333333576
+      },
+      "after": {
+        "updates": 600,
+        "updatesPerSecond": 30,
+        "intervalP50Ms": 33.33333333333394,
+        "intervalP95Ms": 33.33333333333576,
+        "intervalP99Ms": 33.33333333333576
+      }
+    },
+    {
+      "displayHz": 120,
+      "target": 30,
+      "jitter": true,
+      "before": {
+        "updates": 600,
+        "updatesPerSecond": 30,
+        "intervalP50Ms": 33.33333333333303,
+        "intervalP95Ms": 33.33333333333576,
+        "intervalP99Ms": 33.33333333333576
+      },
+      "after": {
+        "updates": 600,
+        "updatesPerSecond": 30,
+        "intervalP50Ms": 33.33333333333303,
+        "intervalP95Ms": 33.33333333333576,
+        "intervalP99Ms": 33.33333333333576
+      }
+    },
+    {
+      "displayHz": 120,
+      "target": 60,
+      "jitter": false,
+      "before": {
+        "updates": 1200,
+        "updatesPerSecond": 60,
+        "intervalP50Ms": 16.66666666666697,
+        "intervalP95Ms": 16.66666666666788,
+        "intervalP99Ms": 16.66666666666788
+      },
+      "after": {
+        "updates": 1200,
+        "updatesPerSecond": 60,
+        "intervalP50Ms": 16.66666666666697,
+        "intervalP95Ms": 16.66666666666788,
+        "intervalP99Ms": 16.66666666666788
+      }
+    },
+    {
+      "displayHz": 120,
+      "target": 60,
+      "jitter": true,
+      "before": {
+        "updates": 1200,
+        "updatesPerSecond": 60,
+        "intervalP50Ms": 16.666666666666515,
+        "intervalP95Ms": 16.66666666666788,
+        "intervalP99Ms": 16.66666666666788
+      },
+      "after": {
+        "updates": 1200,
+        "updatesPerSecond": 60,
+        "intervalP50Ms": 16.666666666666515,
+        "intervalP95Ms": 16.66666666666788,
+        "intervalP99Ms": 16.66666666666788
+      }
+    }
+  ]
+}

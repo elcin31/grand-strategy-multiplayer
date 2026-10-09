@@ -19,6 +19,9 @@ import { RELIGIONS, RELIGION_IDS, RELIGION_CHANGE_COST, RELIGION_STABILITY_COST,
 import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, GOVERNMENT_TYPES, governmentModifiers } from '../../supabase/functions/_shared/governmentSystem';
 
 interface GamePanelProps {
+  diplomacyCountryId?:string|null;
+  onSelectArmy?:(id:string,province:string)=>void;
+  onDeselectArmy?:()=>void;
   focusedArmyId?:string|null;
   focusedCityId?:string|null;
   section?:Section;
@@ -32,9 +35,8 @@ interface GamePanelProps {
 const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).toFixed(1)}M` : value >= 1_000 ? `${Math.round(value / 1_000)}K` : String(value);
 const currency = (value: number) => `${value < 0 ? '−' : ''}$${Math.abs(value) >= 1000 ? (Math.abs(value)/1000).toFixed(1)+'B' : Math.abs(value).toFixed(3).replace(/\.?0+$/, '')+'M'}`;
 
-export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
+export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
   const [buildOpen,setBuildOpen]=useState(false);
-  const [selectedArmyId, setSelectedArmyId] = useState<string | null>(null);
   const [religionOpen, setReligionOpen] = useState(section==='Religion');
   const [governmentOpen, setGovernmentOpen] = useState(section==='Government');
   const [economyOpen, setEconomyOpen] = useState(section==='Economy');
@@ -45,7 +47,7 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
   const ruler = nation.rulerId ? state.leaders?.[nation.rulerId] : undefined;
   const selected = state.provinces.find((province) => province.id === selectedProvinceId) ?? null;
   const ownArmies = selected ? state.armies.filter((army) => army.provinceId === selected.id && army.ownerId === countryId).sort((a, b) => b.troops - a.troops) : [];
-  const primaryArmy = ownArmies.find(a => a.id === (selectedArmyId??focusedArmyId)) ?? ownArmies[0] ?? null;
+  const primaryArmy = ownArmies.find(a => a.id === focusedArmyId) ?? ownArmies[0] ?? null;
   const neighbors = selected ? selected.neighbors.map((id) => state.provinces.find((province) => province.id === id)).filter(Boolean) : [];
   const selectedCities = selected ? (state.cities ?? []).filter(c => c.provinceId === selected.id).sort((a,b) => Number(b.id===focusedCityId)-Number(a.id===focusedCityId) || Number(b.isCapital)-Number(a.isCapital) || b.population-a.population).slice(0,3) : [];
   const selectedConstruction = selected ? state.constructions?.find(item => item.provinceId === selected.id) ?? null : null;
@@ -172,7 +174,7 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
 
       {section==='Country'&&<StabilityPanel state={state} playerId={playerId} onCommand={onCommand} />}
       {section==='Diplomacy'&&<WarPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
-      {section==='Diplomacy'&&<DiplomacyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
+      {section==='Diplomacy'&&<DiplomacyPanel initialOpen initialTargetId={diplomacyCountryId??undefined} state={state} playerId={playerId} onCommand={onCommand} />}
       {section==='Technology'&&<StrategyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
 
       {section==='Military'&&<View style={styles.card}><Text style={styles.eyebrow}>АРМИИ · {compact(nation.army)}</Text>{state.armies.filter(a=>a.ownerId===countryId).map(a=><Pressable key={a.id} style={styles.secondaryButton} onPress={()=>onFocusProvince?.(a.provinceId)}><Text style={styles.secondaryText}>{state.provinces.find(p=>p.id===a.provinceId)?.name} · {compact(a.troops)}</Text><Text style={styles.hint}>Мораль {a.morale?.toFixed(0)} · организация {a.organization?.toFixed(0)}</Text></Pressable>)}</View>}
@@ -240,12 +242,13 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
 
             <Text style={styles.sectionTitle}>Армии в провинции</Text>
             {state.armies.filter((army) => army.provinceId === selected.id).length === 0 ? <Text style={styles.muted}>Нет армий</Text> : state.armies.filter((army) => army.provinceId === selected.id).map((army) => (
-              <Pressable accessibilityRole="button" accessibilityState={{selected:primaryArmy?.id===army.id}} disabled={army.ownerId!==countryId} onPress={()=>setSelectedArmyId(army.id)} key={army.id} style={[styles.armyRow, primaryArmy?.id===army.id && styles.govSelected]}>
+              <Pressable accessibilityRole="button" accessibilityState={{selected:focusedArmyId===army.id}} disabled={army.ownerId!==countryId} onPress={()=>onSelectArmy?.(army.id,army.provinceId)} key={army.id} style={[styles.armyRow, focusedArmyId===army.id && styles.govSelected]}>
                 <Text style={styles.armyOwner}>{countryFor(state, army.ownerId).shortName}</Text>
                 <Text style={styles.armyTroops}>{compact(army.troops)}</Text>
               </Pressable>
             ))}
 
+            {focusedArmyId&&<Pressable accessibilityLabel="Снять выбор армии без отмены приказа" style={styles.secondaryButton} onPress={onDeselectArmy}><Text style={styles.secondaryText}>СНЯТЬ ВЫБОР · ПРИКАЗ СОХРАНИТСЯ</Text></Pressable>}
             {primaryArmy && (
               <>
                 <Text style={styles.sectionTitle}>Соседние провинции</Text>

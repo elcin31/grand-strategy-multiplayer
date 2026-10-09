@@ -1,3 +1,5 @@
+import {mapTapIntent} from './src/ui/mapInteraction';
+import {CameraWorkGate} from './src/performance/framePacing';
 import {colors,tokens} from './src/ui/tokens';
 import {traceStartup} from './src/performance/startupTrace';
 import {recordMetrics} from './src/performance/telemetry';
@@ -33,17 +35,20 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   const launchTapAt=useRef(0);
   const launch=useRef<LaunchAction|null>(null);
   if(!launch.current)launch.current=new LaunchAction(busy=>{if(busy){launchTapAt.current=performance.now();traceStartup("tap");}setLaunchBusy(busy);},()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))),ms=>{traceStartup("loading painted / handler starts");recordMetrics({tapToActionMs:ms});});
+  const [diplomacyCountryId,setDiplomacyCountryId]=useState<string|null>(null);
   const [section,setSection]=useState<Section>('Country');
   const [mapMenuOpen,setMapMenuOpen]=useState(false);
   const [saveStatus,setSaveStatus]=useState('');
   const latestState=useRef<GameState|null>(null);
+  const cameraWork=useRef(new CameraWorkGate());
+  const cameraActivity=useCallback((active:boolean)=>cameraWork.current.activity(active),[]);
   const [connectionStatus,setConnectionStatus]=useState('');
 
   const [transport, setTransport] = useState<MultiplayerTransport>(() => new HttpTransport(remoteUrl));
   const [state, setState] = useState<GameState | null>(null);
   latestState.current=state;
   useEffect(()=>{if(state&&launchTapAt.current){traceStartup("campaign screen committed");recordMetrics({tapToScreenMs:performance.now()-launchTapAt.current});launchTapAt.current=0;}},[state?.id,state?.phase]);
-  useEffect(()=>{if(!(transport instanceof LocalTransport)||!state)return;let busy=false,pending=false,lastSaved:GameState|null=null;const save=()=>{const current=latestState.current;if(!current||current.id!==state.id||current===lastSaved)return;if(busy){pending=true;return;}busy=true;void campaignStore.save(current).then(()=>{lastSaved=current;setSaveStatus('Автосохранено');}).catch(e=>setSaveStatus(e.message)).finally(()=>{busy=false;if(pending){pending=false;save();}});};const timer=setInterval(save,10000);const sub=AppState.addEventListener('change',status=>{if(status!=='active')save();});return()=>{clearInterval(timer);sub.remove();};},[state?.id,transport]);
+  useEffect(()=>{if(!(transport instanceof LocalTransport)||!state)return;let busy=false,pending=false,lastSaved:GameState|null=null;const save=()=>{const current=latestState.current;if(!current||current.id!==state.id||current===lastSaved)return;if(busy){pending=true;return;}busy=true;void campaignStore.save(current).then(()=>{lastSaved=current;setSaveStatus('Автосохранено');}).catch(e=>setSaveStatus(e.message)).finally(()=>{busy=false;if(pending){pending=false;save();}});};const timer=setInterval(()=>{if(!cameraWork.current.defer(performance.now(),750))save();},10000);const sub=AppState.addEventListener('change',status=>{if(status!=='active')save();});return()=>{clearInterval(timer);sub.remove();};},[state?.id,transport]);
   const [previewCountryId, setPreviewCountryId] = useState<CountryId | null>(null);
   const [selectedArmyId,setSelectedArmyId]=useState<string|null>(null);
   const [selectedCityId,setSelectedCityId]=useState<string|null>(null);
@@ -93,22 +98,40 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   const myCountryId = state?.players.find((player) => player.id === playerId)?.countryId ?? null;
   const gameStarted = Boolean(state && (state.phase === 'running' || state.phase === 'paused' || state.phase === 'finished'));
 
+  const deselectArmy=useCallback(()=>{setSelectedArmyId(null);setSelectedCityId(null);setSelectedProvinceId(null);setPanelOpen(false);},[]);
+  const selectCountry=useCallback((id:string)=>{
+    setSelectedArmyId(null);setSelectedCityId(null);setSelectedProvinceId(null);
+    if(!gameStarted){setPreviewCountryId(id);setPanelOpen(true);return;}
+    setDiplomacyCountryId(id===myCountryId?null:id);setSection(id===myCountryId?'Country':'Diplomacy');setPanelOpen(true);
+  },[gameStarted,myCountryId]);
+  const selectContext=useCallback((province:Province)=>{
+    setSelectedArmyId(null);setSelectedCityId(null);setSelectedProvinceId(province.id);setSection('Context');setPanelOpen(true);
+  },[]);
   const selectProvince = useCallback((province: Province) => {
-    const current=latestState.current;const army=current?.armies.find(a=>a.id===selectedArmyId);
-    if(gameStarted&&army&&army.ownerId===myCountryId&&playerId&&current){
-      void safeAction(()=>transport.sendCommand(current.id,{type:'ORDER_ARMY',playerId,armyId:army.id,provinceId:province.id}));return;
-    }
-    setSelectedArmyId(null);setSelectedCityId(null);
-    if (gameStarted) { setSelectedProvinceId(province.id); setSection('Context'); setPanelOpen(true); }
-    else setPreviewCountryId(province.ownerId);
-  },[gameStarted,selectedArmyId,myCountryId,playerId,transport]);
-  const selectArmy=useCallback((id:string,province:string)=>{setSelectedArmyId(id);setSelectedCityId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);},[]);
-  const selectCity=useCallback((id:string,province:string)=>{setSelectedCityId(id);setSelectedArmyId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);},[]);
+    if(!gameStarted){setPreviewCountryId(province.ownerId);return;}
+    const current=latestState.current,army=current?.armies.find(a=>a.id===selectedArmyId&&a.ownerId===myCountryId);
+    const intent=mapTapIntent(army?.id??null,myCountryId,{provinceId:province.id,provinceOwnerId:province.ownerId});
+    if(intent.type==='order'&&playerId&&current){void safeAction(()=>transport.sendCommand(current.id,{type:'ORDER_ARMY',playerId,armyId:intent.armyId,provinceId:intent.provinceId}));return;}
+    if(intent.type==='diplomacy'){selectCountry(intent.countryId);setSelectedProvinceId(province.id);return;}
+    selectContext(province);
+  },[gameStarted,selectedArmyId,myCountryId,playerId,transport,selectCountry,selectContext]);
+  const selectArmy=useCallback((id:string,province:string)=>{
+    const army=latestState.current?.armies.find(a=>a.id===id);if(!army)return;
+    const intent=mapTapIntent(selectedArmyId,myCountryId,{army});
+    if(intent.type==='deselect'){deselectArmy();return;}
+    if(intent.type==='diplomacy'){selectCountry(intent.countryId);return;}
+    setSelectedArmyId(id);setSelectedCityId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);
+  },[selectedArmyId,myCountryId,deselectArmy,selectCountry]);
+  const selectCity=useCallback((id:string,province:string)=>{
+    const p=latestState.current?.provinces.find(p=>p.id===province);if(!p)return;
+    if(p.ownerId!==myCountryId){selectCountry(p.ownerId);setSelectedProvinceId(province);return;}
+    setSelectedCityId(id);setSelectedArmyId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);
+  },[myCountryId,selectCountry]);
 
   useEffect(() => { if (gameStarted) setPanelOpen(false); }, [gameStarted]);
   const exitCampaign=()=>void safeAction(async()=>{if(!state)return;if(transport instanceof LocalTransport)await campaignStore.save(state);await transport.leave(state.id);unsubscribeRef.current?.();setState(null);setPlayerId(null);setSelectedProvinceId(null);setPreviewCountryId(null);onExit();});
   const confirmExit=()=>Alert.alert('Выйти из кампании?',transport instanceof LocalTransport?'Прогресс будет сохранён.':'К кампании можно вернуться через список сохранённых сессий.',[{text:'Остаться',style:'cancel'},{text:'Выйти',onPress:exitCampaign}]);
-  useEffect(()=>{const handler=BackHandler.addEventListener('hardwareBackPress',()=>{const action=backAction({keyboard:Keyboard.isVisible(),modal:mapMenuOpen,context:!!selectedProvinceId&&panelOpen,panel:panelOpen,campaign:!!state});if(action==='keyboard')Keyboard.dismiss();else if(action==='modal')setMapMenuOpen(false);else if(action==='context'){setSelectedProvinceId(null);setSection('Country');setPanelOpen(false);}else if(action==='panel')setPanelOpen(false);else if(action==='confirm')confirmExit();else return false;return true;});return()=>handler.remove();},[mapMenuOpen,panelOpen,state,selectedProvinceId,transport]);
+  useEffect(()=>{const handler=BackHandler.addEventListener('hardwareBackPress',()=>{const action=backAction({keyboard:Keyboard.isVisible(),modal:mapMenuOpen,army:!!selectedArmyId,context:!!selectedProvinceId&&panelOpen,panel:panelOpen,campaign:!!state});if(action==='keyboard')Keyboard.dismiss();else if(action==='modal')setMapMenuOpen(false);else if(action==='army')deselectArmy();else if(action==='context'){setSelectedArmyId(null);setSelectedCityId(null);setSelectedProvinceId(null);setSection('Country');setPanelOpen(false);}else if(action==='panel')setPanelOpen(false);else if(action==='confirm')confirmExit();else return false;return true;});return()=>handler.remove();},[mapMenuOpen,panelOpen,state,selectedProvinceId,selectedArmyId,transport,deselectArmy]);
 
   useEffect(() => {
     if (transport instanceof HttpTransport || !state || !playerId || state.phase !== 'running' || state.speed === 0) return;
@@ -119,14 +142,16 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
     let inFlight = false;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const delay = Math.max(650, 2600 / state.speed);
+    let tickDue=performance.now()+delay;
     const advance = async () => {
       if (disposed || inFlight) return;
+      if(cameraWork.current.defer(performance.now(),350,tickDue)){timer=setTimeout(()=>void advance(),80);return;}
       inFlight = true;
       try { await transport.sendCommand(state.id, { type: 'ADVANCE_TICK' }); }
       catch { /* A transient authoritative conflict must not create a request pile-up. */ }
       finally {
         inFlight = false;
-        if (!disposed) timer = setTimeout(() => { void advance(); }, delay);
+        if (!disposed) {tickDue=performance.now()+delay;timer = setTimeout(() => { void advance(); }, delay);}
       }
     };
     timer = setTimeout(() => { void advance(); }, delay);
@@ -136,7 +161,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
     };
   }, [state?.id, state?.phase, state?.speed, playerId, transport]);
 
-  useEffect(()=>{const a=state?.armies.find(a=>a.id===selectedArmyId);if(a)setSelectedProvinceId(a.provinceId);},[state?.armies,selectedArmyId]);
+  useEffect(()=>{const a=state?.armies.find(a=>a.id===selectedArmyId);if(a)setSelectedProvinceId(a.provinceId);else if(selectedArmyId)deselectArmy();},[state?.armies,selectedArmyId,deselectArmy]);
 
   const initialized=useRef(false);
   useEffect(()=>{if(initialized.current)return;initialized.current=true;
@@ -160,7 +185,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
             <Text style={[styles.brand,gameStarted&&{fontSize:15}]}>DOMINION</Text>
             <Text style={styles.subbrand}>{gameStarted ? `Ход ${state.tick} · ${state.phase === 'finished' ? 'КАМПАНИЯ ЗАВЕРШЕНА' : 'КАМПАНИЯ'}` : `Комната ${state.roomCode}`}</Text>
           </View>
-          {selectedArmyId&&<Pressable accessibilityRole="button" style={styles.exitButton} onPress={()=>setSelectedArmyId(null)}><Text style={styles.exitText}>СНЯТЬ ВЫБОР АРМИИ</Text></Pressable>}
+          {selectedArmyId&&<Pressable accessibilityRole="button" style={styles.exitButton} onPress={deselectArmy}><Text style={styles.exitText}>СНЯТЬ ВЫБОР</Text></Pressable>}
           {gameStarted&&<LandscapeHUD state={state} playerId={playerId??''} onCommand={sendCommand}/> }
           {!gameStarted && <CountryPicker state={state} onPreview={id => { setPreviewCountryId(id); setFocusCountryId(id); setPanelOpen(true); }} />}
           <Pressable style={styles.exitButton} onPress={() => setPanelOpen(!panelOpen)}><Text style={styles.exitText}>{panelOpen ? "ЗАКРЫТЬ ПАНЕЛЬ" : "УПРАВЛЕНИЕ"}</Text></Pressable>
@@ -172,6 +197,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
         {connectionStatus!==''&&<Text style={{color:"#ffcf85",padding:6}}>{connectionStatus}</Text>}
         <View style={styles.mapArea}><WorldMap
           state={state}
+          onCameraActivity={cameraActivity}
           settingsOpen={mapMenuOpen}
           onSettingsChange={setMapMenuOpen}
           focusCountryId={focusCountryId}
@@ -181,7 +207,9 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
           onSelectArmy={!gameStarted?undefined:selectArmy}
           onSelectCity={!gameStarted?undefined:selectCity}
           onSelectProvince={selectProvince}
-          onLongPressProvince={selectProvince}
+          onLongPressProvince={selectContext}
+          onSelectCountry={selectCountry}
+          onClearSelection={deselectArmy}
         /></View>
 
         {gameStarted&&<ScrollView horizontal style={styles.navigation} contentContainerStyle={{gap:4,flexGrow:1}} showsHorizontalScrollIndicator={false}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onPress={()=>{LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);setSection(tab);setPanelOpen(true);}}><Text style={styles.exitText}>{SECTION_LABELS[tab]}</Text></Pressable>)}</ScrollView>}
@@ -198,7 +226,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
         )}
 
         {gameStarted && (
-          <GamePanel focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedArmyId(state.armies.find(a=>a.provinceId===id&&a.ownerId===myCountryId)?.id??null);setSelectedProvinceId(id);setSection('Context');setFocusCountryId(myCountryId);}}
+          <GamePanel diplomacyCountryId={diplomacyCountryId} onSelectArmy={selectArmy} onDeselectArmy={deselectArmy} focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedArmyId(state.armies.find(a=>a.provinceId===id&&a.ownerId===myCountryId)?.id??null);setSelectedProvinceId(id);setSection('Context');setFocusCountryId(myCountryId);}}
             state={state}
             playerId={playerId ?? ''}
             selectedProvinceId={selectedProvinceId}

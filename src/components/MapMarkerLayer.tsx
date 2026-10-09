@@ -1,3 +1,5 @@
+import {getWorldFlag} from '../world/catalog';
+import type {CountryGlyph} from '../map/countryTargets';
 import {memo,useMemo} from 'react';
 import {Group,Picture,Skia,PaintStyle,type SkFont} from '@shopify/react-native-skia';
 import type {GameState} from '../types/game';
@@ -8,15 +10,17 @@ import type {DisplayArmy} from '../map/markerBudget';
 import type {CityLabelPlacement,CountryLabel} from '../map/scene';
 import {constructionProgress} from '../map/overlays';
 import {GRAPHICS,type GraphicsPreset} from '../map/settings';
+const flags=new Map<string,ReturnType<typeof Skia.SVG.MakeFromString>>();
+function countryFlag(id:string){if(!flags.has(id)){const source=getWorldFlag(id);flags.set(id,source?Skia.SVG.MakeFromString(source):null);}return flags.get(id);}
 const compact=(value:number)=>value>=1e6?(value/1e6).toFixed(1)+'M':Math.round(value/1e3)+'K';
 function paint(color:string,stroke=0){const p=Skia.Paint();p.setAntiAlias(true);p.setColor(Skia.Color(color));if(stroke){p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(stroke);}return p;}
-interface Props {state:GameState;zoom:number;preset:GraphicsPreset;labels:CountryLabel[];cities:MapCity[];cityLabels:Map<string,CityLabelPlacement>;counters:DisplayArmy[];countryId:string|null;armyId?:string|null;cityId?:string|null;provinceId:string|null;geometry:ReadonlyMap<string,MapFeature>;visible:ReadonlySet<string>;font:SkFont;counterFont:SkFont;nationFont:SkFont;labelBudget:number}
+interface Props {state:GameState;zoom:number;preset:GraphicsPreset;labels:CountryLabel[];countryGlyphs:CountryGlyph[];cities:MapCity[];cityLabels:Map<string,CityLabelPlacement>;counters:DisplayArmy[];countryId:string|null;armyId?:string|null;cityId?:string|null;provinceId:string|null;geometry:ReadonlyMap<string,MapFeature>;visible:ReadonlySet<string>;font:SkFont;counterFont:SkFont;nationFont:SkFont;labelBudget:number}
 /** One retained native display node replaces hundreds of animated inverse-scale
  * groups. Pan never records glyphs; zoom changes size smoothly until coverage
  * commits, then exact screen-sized glyphs are recorded at the settled scale. */
 export const MapMarkerLayer=memo(function MapMarkerLayer(props:Props){
   const picture=useMemo(()=>{
-    const {state,zoom,preset,labels,cities,cityLabels,counters,countryId,armyId,cityId,provinceId,geometry,visible,font,counterFont,nationFont,labelBudget}=props;
+    const {state,zoom,preset,countryGlyphs,cities,cityLabels,counters,countryId,armyId,cityId,provinceId,geometry,visible,font,counterFont,nationFont,labelBudget}=props;
     const recorder=Skia.PictureRecorder(),canvas=recorder.beginRecording(Skia.XYWHRect(-100,-100,1640,920));
     const anchor=(x:number,y:number)=>{canvas.save();canvas.translate(x,y);canvas.scale(1/zoom,1/(zoom*TILT));};
     let remaining=labelBudget;
@@ -25,12 +29,14 @@ export const MapMarkerLayer=memo(function MapMarkerLayer(props:Props){
       const name=state.provinces.find(p=>p.id===provinceId)?.name;
       if(name){anchor(selected.anchor.x,selected.anchor.y);canvas.drawText(name,8,-15,paint('#FFF0AC'),font);canvas.restore();remaining--;}
     }
-    if(zoom<8)for(const label of labels){
-      if(label.blocked||remaining<=0)continue;
-      const country=state.countries[label.countryId];if(!country)continue;
-      const fullWidth=nationFont.measureText(country.name).width,name=label.width*zoom/(fullWidth+12)<.8?country.shortName:country.name;
-      const width=nationFont.measureText(name).width,scale=Math.min(1.7,label.width*zoom/(width+12));if(scale<.55)continue;
-      anchor(label.anchor.x,label.anchor.y);canvas.scale(scale,scale);canvas.drawText(name,-width/2+.7,4.7,paint('#0C1721'),nationFont);canvas.drawText(name,-width/2,4,paint('#F1E6CB'),nationFont);canvas.restore();remaining--;
+    for(const glyph of countryGlyphs){
+      const {label,name,width,scale}=glyph;
+      anchor(label.anchor.x,label.anchor.y);canvas.scale(scale,scale);
+      canvas.drawText(name,-width/2+.7,4.7,paint('#0C1721'),nationFont);canvas.drawText(name,-width/2,4,paint('#F1E6CB'),nationFont);
+      canvas.save();canvas.translate(-width/2-25,-8);
+      canvas.drawRect(Skia.XYWHRect(-1,-1,22,16),paint('#C6A76A'));
+      const flag=countryFlag(label.countryId);if(flag)canvas.drawSvg(flag,20,14);
+      canvas.restore();canvas.restore();remaining--;
     }
     const ordered=[...cities].sort((a,b)=>Number(b.id===cityId)-Number(a.id===cityId)||Number(b.capital)-Number(a.capital)||b.population-a.population);
     for(const city of ordered){

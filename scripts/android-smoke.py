@@ -4,6 +4,7 @@ Verifies cold launch, landscape, offline campaign map, restart, and fatal logs.
 Evidence is uploaded by CI. This is not a physical-device FPS claim.
 """
 import os
+import json
 import atexit
 import re
 import subprocess
@@ -226,6 +227,68 @@ commander_name=commander_label.removeprefix('Полководец ')
 assert commander_name in read_scrolling('Командир: '), 'Commander assignment did not apply'
 root=hierarchy('commander-art');screenshot('commander-art')
 assert any(n.get('content-desc')=='Портрет вымышленного полководца: '+commander_name for n in root.iter('node')), 'Assigned commander portrait missing'
+# Expansion 2.0: actual Canvas marker/flag touch regression, independent of row commands.
+click_scrolling('ПЕРЕМЕСТИТЬ')
+ordered_text=read_scrolling('Командир: ')
+assert 'Цель:' in ordered_text, 'A real neighbor order did not persist'
+root=hierarchy('selected-with-order');screenshot('selected-with-order')
+click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ');time.sleep(1)
+def set_overlay(wanted):
+    map_menu(True)
+    text='Performance overlay: '+('Выкл' if wanted else 'Вкл')
+    for attempt in range(12):
+        tree=hierarchy('overlay-control-'+str(attempt))
+        node=next((n for n in tree.iter('node') if n.get('text')==text),None)
+        if node is not None:
+            rect=list(map(int,re.findall(r'\d+',node.get('bounds',''))))
+            if len(rect)==4 and rect[3]-rect[1]>=14 and 70<=rect[1] and rect[3]<=570:
+                click_text(tree,text);time.sleep(1);map_menu(False);return
+        adb('shell','input','swipe','250','500','250','240','350')
+    raise AssertionError('Overlay toggle not reachable')
+set_overlay(True);time.sleep(2)
+def camera_targets():
+    root=hierarchy('map-touch-targets')
+    raw=next(n.get('content-desc') for n in root.iter('node') if n.get('content-desc','').startswith('DOMINION_CAMERA '))
+    metrics=json.loads(raw.removeprefix('DOMINION_CAMERA '))
+    canvas=next(n for n in root.iter('node') if n.get('content-desc')=='Карта Dominion')
+    bounds=list(map(int,re.findall(r'\d+',canvas.get('bounds',''))))
+    assert len(bounds)==4, 'Canvas touch bounds missing'
+    return root,metrics,bounds
+
+def touch_target(target,bounds):
+    x,y=round(bounds[0]+target['x']),round(bounds[1]+target['y'])
+    assert bounds[0]<x<bounds[2] and bounds[1]<y<bounds[3], 'Painted target outside map'
+    adb('shell','input','swipe',str(x),str(y),str(x),str(y),'100');time.sleep(2)
+
+root,metrics,bounds=camera_targets()
+marker=next(t for t in json.loads(metrics['armyTargets']) if t['selected'])
+touch_target(marker,bounds)
+root=hierarchy('army-repeated-tap-deselected');screenshot('army-repeated-tap-deselected')
+assert not any(n.get('text')=='СНЯТЬ ВЫБОР' for n in root.iter('node')), 'Repeated marker tap did not clear army selection'
+root,metrics,bounds=camera_targets()
+marker=next(t for t in json.loads(metrics['armyTargets']) if 'germany' in t['ownerIds'] and abs(t['x']-marker['x'])<50 and abs(t['y']-marker['y'])<50)
+touch_target(marker,bounds)
+assert 'Цель:' in read_scrolling('Командир: '), 'Deselect silently cancelled movement'
+root=hierarchy('selected-before-back')
+adb('shell','input','keyevent','4');time.sleep(1)
+root=hierarchy('army-back-deselected')
+assert not any(n.get('text')=='СНЯТЬ ВЫБОР' for n in root.iter('node')), 'Android Back left army selected'
+# Explicit country flag must open diplomacy even with an army selected.
+root,metrics,bounds=camera_targets();touch_target(marker,bounds)
+root=hierarchy('selected-before-foreign-flag');click_text(root,'ЗАКРЫТЬ ПАНЕЛЬ');time.sleep(1)
+click_text(root,'Обзор мира');time.sleep(2)
+root,metrics,bounds=camera_targets()
+foreign=next(t for t in json.loads(metrics['countryTargets']) if t['countryId']!='germany' and 30<t['x']<bounds[2]-bounds[0]-60 and 70<t['y']<bounds[3]-bounds[1]-130)
+touch_target(foreign,bounds)
+root=hierarchy('foreign-flag-diplomacy');screenshot('foreign-flag-diplomacy')
+assert any(n.get('content-desc')=='Раздел Дипломатия' and n.get('selected')=='true' for n in root.iter('node')), 'Foreign flag did not open diplomacy'
+assert not any(n.get('text')=='СНЯТЬ ВЫБОР' for n in root.iter('node')), 'Foreign flag left the army capturing future map taps'
+set_overlay(False)
+navigate('Армия');root=hierarchy('army-list-after-diplomacy');click_text(root,army_row);time.sleep(1)
+assert 'Цель:' in read_scrolling('Командир: '), 'Foreign diplomacy cancelled the retained order'
+# Cancel is a separate authoritative command; clear it before inherited scenario checks.
+click_scrolling('Отменить приказ')
+assert 'Цель:' not in read_scrolling('Командир: '), 'Explicit movement cancellation did not apply'
 click_scrolling('Строить')
 root=hierarchy('construction-art');screenshot('construction-art')
 assert any(n.get('content-desc')=='Иллюстрация здания: Ферма' for n in root.iter('node')), 'Construction painting missing'

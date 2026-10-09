@@ -1,7 +1,7 @@
-name: Android Dominion camera illustrated release
+name: Android Dominion Expansion 2.0 checkpoint
 on:
   push:
-    branches: [main, world-update, performance-pass-2, performance-pass-3, visual-update, camera-fix]
+    branches: [main, world-update, performance-pass-2, performance-pass-3, visual-update, camera-fix, expansion-v2]
     paths-ignore:
       - "**/*.md"
       - .github/workflows/android-checkpoint-smoke.yml
@@ -156,8 +156,8 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 37918487336
-          name: dominion-visual-release
+          run-id: 37971350100
+          name: dominion-camera-illustrated-release
           path: baseline-apk
       - name: Compile identical real gesture driver
         run: |
@@ -178,7 +178,7 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar
-            CAMERA_PROFILE_OUT=camera-before python scripts/android-camera-profile.py baseline-apk/Dominion-visual-update-release.apk
+            CAMERA_PROFILE_OUT=camera-before python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
             CAMERA_PROFILE_OUT=camera-after python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
             python scripts/compare-camera-native.py camera-before/results.json camera-after/results.json
       - uses: actions/upload-artifact@v4
