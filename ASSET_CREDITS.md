@@ -1,5 +1,39 @@
 # Dominion asset provenance
 
+## Original camera-pass artwork — 2026-10-09
+
+Five additional original ImageGen compositions are embedded as six optimized
+WebPs: a 12-person fictional ruler atlas, ten-building atlas, six-government
+institution atlas, eight-faith architecture atlas and alternate night-port
+loading scene (low/high). All were generated from text only; no AoH3 artwork,
+photograph, screenshot or real person's portrait was supplied. The existing
+military, economy, diplomacy, campaign and menu paintings are retained.
+
+Files: `assets/art/rulers-atlas.webp`, `buildings-atlas.webp`,
+`government-atlas.webp`, `religion-atlas.webp`, `loading-port-low.webp`,
+`loading-port-high.webp`. Their complete checksums, dimensions and generated
+source identifiers are in `assets/art/manifest.json`. Added compressed bytes:
+818,030; all 15 WebPs together: 2,188,634 bytes. Four atlases together occupy
+11,713,536 bytes if all decode at full source resolution; they are mounted by
+the relevant panel, never by the map or hidden/collapsed sections. Shared
+sources avoid a separate full image per card. Actual native memory is measured
+separately; these pixel counts are not a peak-memory claim.
+
+Final prompt set / built-in ImageGen: historical oil-painted fictional busts
+(4×3, six men/six women, diverse faces, no real person); ten original
+construction scenes in a fixed 5×2 order (farm, mine, factory, barracks, fort,
+university, port, infrastructure, administration, hospital); government council
+scenes in a 3×2 order (monarchy, republic, federation, military, theocracy,
+community elders); respectful religious architecture in a 4×2 order
+(Christianity, Islam, Hinduism, Buddhism, Judaism, Shinto, Sikhism, sacred grove);
+16:9 lantern-lit historic port with campaign map. Shared constraints: navy,
+burgundy, antique gold and parchment, original brushwork, no text/logos,
+watermarks, screenshots or copied game material. Source originals remain in
+the generating conversation; repo-native WebP derivatives are the shipped
+assets. Secular/other/traditional belief cards use the neutral garden motif;
+different Christian/Islamic branches share family architecture. Portrait seed
+selects the same fictional painted miniature after save/reconnect.
+
 ## Original visual update artwork — 2026-10-09
 All six illustrations under `assets/art/` were commissioned through OpenAI ImageGen specifically for Dominion in this session, from textual descriptions. No AoH3 screenshot, game artwork or other external image was supplied as generation input. Subjects: main-menu army/city panorama; campaign cartographic table; military commander; diplomacy council; trading-port economy; loading atlas.
 

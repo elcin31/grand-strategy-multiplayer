@@ -70,5 +70,59 @@
     "bytes": 354624,
     "sha256": "9bad5025dc2576e3c00ff53a004c498a751d0eed5196f0344b8565ab78cad123",
     "source": "Original OpenAI ImageGen artwork commissioned for Dominion on 2026-10-09"
+  },
+  {
+    "path": "assets/art/rulers-atlas.webp",
+    "width": 960,
+    "height": 900,
+    "bytes": 117854,
+    "sha256": "e1f5cbb2bf318d9b26042828e2911bfee43342ea1560688d58b5558f6682fd05",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion camera pass on 2026-10-09",
+    "generated_source": "exec-817cd991-0592-4844-9c0f-25927089b080.png"
+  },
+  {
+    "path": "assets/art/buildings-atlas.webp",
+    "width": 1280,
+    "height": 512,
+    "bytes": 189400,
+    "sha256": "0600b398018822e86d02737ecd861919086fc39a29d1d7e82be8b8efb75c9054",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion camera pass on 2026-10-09",
+    "generated_source": "exec-08fc50e3-c101-4c3d-94a2-e5bcbe75c1ad.png"
+  },
+  {
+    "path": "assets/art/government-atlas.webp",
+    "width": 1152,
+    "height": 512,
+    "bytes": 104252,
+    "sha256": "7bef1dbe4718e0ee5a94b83ba562237bdd55e223dcb1a7833426d624d3291a80",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion camera pass on 2026-10-09",
+    "generated_source": "exec-2b52c919-e514-4770-93af-c87db6cedcc1.png"
+  },
+  {
+    "path": "assets/art/religion-atlas.webp",
+    "width": 1280,
+    "height": 640,
+    "bytes": 210432,
+    "sha256": "efccc659759bab724d4851f51fa10b3e421e422a27cfb439a9592ba03452a3ac",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion camera pass on 2026-10-09",
+    "generated_source": "exec-365b2f81-c303-4868-ab35-1a6e2af52039.png"
+  },
+  {
+    "path": "assets/art/loading-port-low.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 59788,
+    "sha256": "2d31bcb40074d1c47c2ec03b035f34e62e55048d6a038ed01f0305bc616773a0",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion camera pass on 2026-10-09",
+    "generated_source": "exec-8b861173-b670-4379-8f2a-68f0ea309f4c.png"
+  },
+  {
+    "path": "assets/art/loading-port-high.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 136304,
+    "sha256": "b429c0656e953c3e35628ed4441395bfc271bda78422f0fa5c951331e1e222cc",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion camera pass on 2026-10-09",
+    "generated_source": "exec-8b861173-b670-4379-8f2a-68f0ea309f4c.png"
   }
 ]

@@ -1,3 +1,5 @@
+import {AtlasArt} from './AtlasArt';
+import {BUILDING_ART,GOVERNMENT_ART,RELIGION_ART} from '../ui/artCatalogue';
 import {HistoricalArt} from './HistoricalArt';
 import {LeaderPortrait,Crest} from './Heraldry';
 import {colors,tokens} from '../ui/tokens';
@@ -123,6 +125,7 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
 
       {section==='Government'&&state.dataset && <Pressable accessibilityRole="button" onPress={() => { setGovernmentOpen(!governmentOpen); setReligionOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Правительство {governmentOpen ? '▴' : '▾'}</Text></Pressable>}
       {governmentOpen && state.dataset && <View style={styles.card}>
+        <AtlasArt atlas="government" index={GOVERNMENT_ART[nation.governmentType??'Parliamentary Republic']} height={92} label="Иллюстрация формы правления"/>
         <Text style={styles.eyebrow}>ФОРМА ПРАВЛЕНИЯ · {Math.floor(politicalPower)} PP</Text>
         <Text style={styles.govCurrent}>{nation.governmentType}</Text>
         <Text style={styles.hint}>Смена: {GOVERNMENT_CHANGE_COST} PP, −{GOVERNMENT_STABILITY_COST} стабильности; cooldown {GOVERNMENT_COOLDOWN_TICKS} мес.</Text>
@@ -133,6 +136,7 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
             const active = governmentType === nation.governmentType;
             const disabled = active || cooldown > 0 || politicalPower < GOVERNMENT_CHANGE_COST;
             return <Pressable accessibilityRole="button" accessibilityState={{ disabled, selected: active }} key={governmentType} disabled={disabled} style={[styles.govOption, disabled && styles.disabled, active && styles.govSelected]} onPress={() => onCommand({ type: 'CHANGE_GOVERNMENT', playerId, governmentType })}>
+              <AtlasArt atlas="government" index={GOVERNMENT_ART[governmentType]} width={68} height={44} label={'Иллюстрация: '+governmentType}/>
               <Text style={styles.govName}>{governmentType}</Text>
               <Text style={styles.govDetails}>Налоги {signed(modifiers.taxationPercent)}% · Manpower {signed(modifiers.manpowerPercent)}%</Text>
               <Text style={styles.govDetails}>Research {signed(modifiers.researchPercent)}% · Дипломатия {signed(modifiers.diplomacy)}</Text>
@@ -145,6 +149,7 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
 
       {section==='Religion'&&state.dataset && <Pressable accessibilityRole="button" onPress={() => { setReligionOpen(!religionOpen); setGovernmentOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Религия {religionOpen ? '▴' : '▾'}</Text></Pressable>}
       {religionOpen && state.dataset && <View style={styles.card}>
+        <AtlasArt atlas="religion" index={RELIGION_ART[nation.religion??'secular']??7} height={92} label="Иллюстрация религиозной архитектуры"/>
         <Text style={styles.eyebrow}>ГОСУДАРСТВЕННАЯ РЕЛИГИЯ · {Math.floor(politicalPower)} PP</Text>
         <Text style={styles.govCurrent}>{RELIGIONS[nation.religion ?? 'secular']?.name}</Text>
         <Text style={styles.hint}>Religious Unity: {nation.religiousUnity?.toFixed(1)}% · unrest {nation.unrest?.toFixed(1)}</Text>
@@ -155,6 +160,7 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
             const active = religionId === nation.religion;
             const disabled = active || religionCooldown > 0 || politicalPower < RELIGION_CHANGE_COST;
             return <Pressable accessibilityRole="button" accessibilityState={{ disabled, selected: active }} key={religionId} disabled={disabled} style={[styles.govOption, disabled && styles.disabled, active && styles.govSelected]} onPress={() => onCommand({ type: 'CHANGE_RELIGION', playerId, religionId })}>
+              <AtlasArt atlas="religion" index={RELIGION_ART[religionId]??7} width={68} height={44} label={'Иллюстрация: '+RELIGIONS[religionId]!.name}/>
               <Text style={styles.govName}>{RELIGIONS[religionId]!.name}</Text>
               <Text style={styles.govDetails}>{RELIGIONS[religionId]!.group}</Text>
               <Text style={styles.govDetails}>{active ? 'Действует' : 'Принять · 120 PP'}</Text>
@@ -193,7 +199,7 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
             {state.dataset && <>
               <Text style={styles.sectionTitle}>ЗДАНИЯ</Text>
               {isOwnProvince&&<Pressable accessibilityRole="button" accessibilityLabel="Строить" style={styles.secondaryButton} onPress={()=>setBuildOpen(!buildOpen)}><Text style={styles.secondaryText}>СТРОИТЬ {buildOpen?"▴":"▾"}</Text></Pressable>}
-              {completedBuildings.length === 0 ? <Text style={styles.muted}>Построенных зданий нет</Text> : <View style={styles.buildingList}>{completedBuildings.map(type => <View key={type} style={styles.buildingPill}><Text style={styles.buildingPillText}>{BUILDINGS[type].name} · ур. {selected.buildings?.[type]}</Text></View>)}</View>}
+              {completedBuildings.length === 0 ? <Text style={styles.muted}>Построенных зданий нет</Text> : <View style={styles.buildingList}>{completedBuildings.map(type => <View key={type} style={[styles.buildingPill,{flexDirection:'row',alignItems:'center',gap:6}]}><AtlasArt atlas="buildings" index={BUILDING_ART[type]} width={26} height={26} label={'Построено: '+BUILDINGS[type].name}/><Text style={styles.buildingPillText}>{BUILDINGS[type].name} · ур. {selected.buildings?.[type]}</Text></View>)}</View>}
               {selectedConstruction && <Text style={styles.hint}>Строится: {BUILDINGS[selectedConstruction.buildingType].name} ур. {selectedConstruction.targetLevel} · {Math.min(100,Math.round(100*(state.tick-selectedConstruction.startedTick)/(selectedConstruction.completeTick-selectedConstruction.startedTick)))}% · осталось {Math.max(0, selectedConstruction.completeTick-state.tick)} мес.</Text>}
               {isOwnProvince && buildOpen && <View style={{gap:8}}>
                 {BUILDING_TYPES.map(type => {
@@ -210,8 +216,7 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
                     style={[styles.buildOption, disabled && styles.disabled]}
                     onPress={() => onCommand({ type: 'BUILD', playerId, provinceId: selected.id, buildingType: type })}
                   >
-                    <Text style={styles.govName}>{definition.name}</Text>
-                    <Text style={styles.govDetails}>Уровень {currentLevel}/{definition.maxLevel}</Text>
+                    <View style={{flexDirection:'row',alignItems:'center',gap:10}}><AtlasArt atlas="buildings" index={BUILDING_ART[type]} width={56} height={56} label={'Иллюстрация здания: '+definition.name}/><View style={{flex:1}}><Text style={styles.govName}>{definition.name}</Text><Text style={styles.govDetails}>Уровень {currentLevel}/{definition.maxLevel}</Text></View></View>
                     <Text style={styles.govDetails}>{Object.entries(definition.modifiers).map(([key,value])=>`${({taxPercent:"Налоги, %",tradePercent:"Торговля, %",resourcePercent:"Добыча, %",manpowerPercent:"Резерв, %",researchPercent:"Исследования, %",defensePercent:"Защита, %",populationGrowthPercent:"Рост населения, %",stabilityPerYear:"Стабильность / год",unrestPerYear:"Беспорядки / год"} as Record<string,string>)[key]??key}: ${value!>0?"+":""}${value}`).join(" · ")}</Text>
                     <Text style={styles.govDetails}>Содержание {currency(definition.maintenance)}/мес.</Text>
                     {(type==="Farm"||type==="Factory")&&<Text style={styles.govDetails}>Выпуск +{currency((type==="Farm"?3:12)*(.5+(selected.development??40)/100))}/мес. до содержания</Text>}

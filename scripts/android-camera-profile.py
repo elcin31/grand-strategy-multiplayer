@@ -45,7 +45,7 @@ def sample(name,kind=None):
     logs=adb('logcat','-d');(OUT/(name+'-logcat.txt')).write_text(logs)
     shot(name)
     frames=[]
-    lines=raw.splitlines()
+    lines=[line.strip() for line in raw.splitlines()]
     for i,line in enumerate(lines):
         if line.startswith('Flags,IntendedVsync,'):
             fields=line.split(',');start=fields.index('IntendedVsync');end=fields.index('FrameCompleted')
@@ -55,10 +55,16 @@ def sample(name,kind=None):
                 if int(values[0])==0:
                     ms=(int(values[end])-int(values[start]))/1e6
                     if 0<ms<5000:frames.append(ms)
+    pid=adb('shell','pidof',PACKAGE).strip()
+    if pid:(OUT/(name+'-threads.txt')).write_text(adb('shell','top','-H','-b','-n','1','-p',pid))
     frames.sort()
-    def percentile(p):return frames[min(len(frames)-1,int(len(frames)*p))] if frames else None
+    def percentile(p):
+        if frames:return frames[min(len(frames)-1,int(len(frames)*p))]
+        match=re.search(str(int(p*100))+r'th percentile:\s*([\d.]+)ms',raw)
+        return float(match[1]) if match else None
     match=re.search(r'Janky frames:\s*(\d+)\s*\(([\d.]+)%\)',raw)
-    result={'scenario':name,'elapsedSeconds':elapsed,'frames':len(frames),'p50Ms':percentile(.5),'p95Ms':percentile(.95),'p99Ms':percentile(.99),'jankPercent':float(match[2]) if match else None,'cameraTrace':re.findall(r'DOMINION_CAMERA[^\n]*',logs)}
+    pss=re.search(r'TOTAL PSS:\s*(\d+)',mem)
+    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,'frames':len(frames),'p50Ms':percentile(.5),'p95Ms':percentile(.95),'p99Ms':percentile(.99),'jankPercent':float(match[2]) if match else None,'cameraTrace':re.findall(r'DOMINION_CAMERA[^\n]*',logs)}
     results.append(result);(OUT/'results.json').write_text(json.dumps({'note':'Software SwiftShader API35 native frames, offline paused campaign. Same gestures for both builds; not physical Redmi FPS.','results':results},indent=2));print(json.dumps(result),flush=True)
 
 adb('install','-r',sys.argv[1]);adb('shell','pm','clear',PACKAGE)
@@ -71,6 +77,7 @@ adb('shell','input','text','Germany');time.sleep(1);find_click('Германия
 find_click('ИГРАТЬ ЗА ЭТУ СТРАНУ');find_click('Я ГОТОВ');time.sleep(1);find_click('Начать игру');time.sleep(8)
 nav('Страна');find_click('Пауза');time.sleep(2)
 settings();find_click('Balanced');find_click('Адаптивное качество: Вкл')
+find_click('Performance overlay: Выкл')
 # settings stay open after quality changes; close with the toolbar button.
 settings();adb('shell','input','keyevent','4');time.sleep(2)
 results=[]

@@ -192,6 +192,7 @@ for attempt in range(4):
 assert any(n.get('text','').startswith('Ход ') for n in root.iter('node')), 'Campaign did not start after visible start control'
 set_speed(0)
 root = hierarchy('02-paused')
+assert any(n.get('content-desc')=='Портрет вымышленного правителя' for n in root.iter('node')), 'Painted ruler portrait missing'
 # Country preview centers the camera on Berlin; city/counter hit testing selects its real province.
 navigate('Армия')
 root=hierarchy('army-list')
@@ -207,6 +208,8 @@ click_scrolling('+25K · $500M')
 root = hierarchy('02-recruited'); screenshot('02-recruited')
 assert province_army_text(root) == str(int(before[:-1])+25)+'K', 'Recruitment command did not update the army'
 click_scrolling('Строить')
+root=hierarchy('construction-art');screenshot('construction-art')
+assert any(n.get('content-desc')=='Иллюстрация здания: Ферма' for n in root.iter('node')), 'Construction painting missing'
 click_scrolling('Построить Ферма')
 assert 'Ферма' in read_scrolling('Строится: '), 'Construction did not start from the catalogue'
 screenshot('construction-queued')
@@ -229,7 +232,8 @@ click_scrolling('Налоги −5%')
 click_scrolling('Экономика ▴')
 for _ in range(5): adb('shell','input','swipe','1080','220','1080','570','350')
 click_scrolling('Правительство ▾')
-root = hierarchy('government-before')
+root = hierarchy('government-before');screenshot('government-art')
+assert any(n.get('content-desc')=='Иллюстрация формы правления' for n in root.iter('node')), 'Government painting missing'
 header = next(n.get('text') for n in root.iter('node') if 'ФОРМА ПРАВЛЕНИЯ · ' in n.get('text',''))
 power_before = int(re.search(r'(\d+) PP',header).group(1))
 click_scrolling('Parliamentary Republic')
@@ -250,7 +254,8 @@ population_after = next(n.get('text') for n in population_root.iter('node') if n
 assert population_after != population_before, 'Actual campaign population did not grow'
 click_scrolling('Правительство ▴')
 click_scrolling('Религия ▾')
-root = hierarchy('religion-before')
+root = hierarchy('religion-before');screenshot('religion-art')
+assert any(n.get('content-desc')=='Иллюстрация религиозной архитектуры' for n in root.iter('node')), 'Religion painting missing'
 header = next(n.get('text') for n in root.iter('node') if 'ГОСУДАРСТВЕННАЯ РЕЛИГИЯ · ' in n.get('text',''))
 religion_power = int(re.search(r'(\d+) PP',header).group(1))
 assert religion_power >= 120, 'Campaign did not accumulate enough political power'

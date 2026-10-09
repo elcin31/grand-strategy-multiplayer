@@ -1,3 +1,4 @@
+import {HistoricalArt} from './HistoricalArt';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import type { Army, Province } from '../types/game';
 import { UNITS, UNIT_TYPES } from '../../supabase/functions/_shared/militarySystem';
@@ -8,7 +9,7 @@ export function MilitaryPanel({state,playerId,onCommand,province,army}: Strategy
   if(!state.dataset || !countryId)return null;
   const c=state.countries[countryId]!;
   const own=!province.rebellion && province.ownerId===countryId && (province.controllerId??province.ownerId)===countryId;
-  return <View style={styles.wrap}>
+  return <View style={styles.wrap}><HistoricalArt name="military"/>
     <Text style={styles.text}>Рельеф: {province.terrain} · {army ? `${UNITS[army.unitType??'Infantry'].name} · мораль ${army.morale?.toFixed(0)} · организация ${army.organization?.toFixed(0)}` : 'Выберите свою армию ниже'}</Text>
     {army&&<Text style={styles.text}>Командир: {army.commanderId?state.commanders?.[army.commanderId]?.name:'Не назначен'} · {army.troops.toLocaleString()} солдат. {army.order?`Цель: ${state.provinces.find(p=>p.id===army.order!.targetProvinceId)?.name} · ${army.order.route.length} шагов / мес.`:"Приказ: удерживать позицию. Выберите армию на карте, затем нажмите целевую провинцию."}</Text>}
     {army?.order&&<Pressable accessibilityRole="button" style={styles.button} onPress={()=>onCommand({type:"CANCEL_ARMY_ORDER",playerId,armyId:army.id})}><Text style={styles.title}>Отменить приказ</Text></Pressable>}

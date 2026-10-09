@@ -1,7 +1,7 @@
-name: Android Dominion visual release
+name: Android Dominion camera illustrated release
 on:
   push:
-    branches: [main, world-update, performance-pass-2, performance-pass-3, visual-update]
+    branches: [main, world-update, performance-pass-2, performance-pass-3, visual-update, camera-fix]
     paths-ignore:
       - "**/*.md"
       - .github/workflows/android-checkpoint-smoke.yml
@@ -65,6 +65,8 @@ jobs:
         run: npm run verify:art
       - name: Paired visual update benchmark
         run: npm run benchmark:visual > paired-visual-ci.json
+      - name: Paired camera selectors and coverage benchmark
+        run: npm run benchmark:camera > paired-camera-ci.json
       - name: Map geometry benchmark
         run: npm run benchmark:map
       - name: Full-world data benchmark
@@ -85,14 +87,16 @@ jobs:
           python scripts/verify-release.py android/app/build/outputs/apk/release/app-release.apk > release-integrity.txt
           sha256sum android/app/build/outputs/apk/release/app-release.apk >> release-integrity.txt
       - name: Package final release
-        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-visual-update-release.apk
+        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-camera-fix-illustrated-release.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: dominion-visual-release
+          name: dominion-camera-illustrated-release
           path: |
-            Dominion-visual-update-release.apk
+            Dominion-camera-fix-illustrated-release.apk
             release-integrity.txt
             paired-visual-ci.json
+            paired-camera-ci.json
+            CAMERA_HOST_PAIRED.json
           if-no-files-found: error
           retention-days: 14
   android-smoke:
@@ -105,7 +109,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/download-artifact@v4
         with:
-          name: dominion-visual-release
+          name: dominion-camera-illustrated-release
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -117,10 +121,91 @@ jobs:
           arch: x86_64
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: DOMINION_STRESS_SECONDS=1800 python scripts/android-smoke.py Dominion-visual-update-release.apk
+          script: DOMINION_STRESS_SECONDS=1800 python scripts/android-smoke.py Dominion-camera-fix-illustrated-release.apk
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: android-smoke-evidence
           path: android-smoke/
           retention-days: 14
+
+  camera-comparison:
+    needs: build-apk
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion-camera-illustrated-release
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 37918487336
+          name: dominion-visual-release
+          path: baseline-apk
+      - name: Compile identical real gesture driver
+        run: |
+          mkdir -p camera-classes camera-dex
+          javac -cp "$ANDROID_HOME/platforms/android-35/android.jar" -d camera-classes scripts/CameraGesture.java
+          "$ANDROID_HOME/build-tools/35.0.0/d8" --lib "$ANDROID_HOME/platforms/android-35/android.jar" --output camera-dex camera-classes/CameraGesture.class
+          cd camera-dex && zip ../dominion-camera.jar classes.dex
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_2
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar
+            CAMERA_PROFILE_OUT=camera-before python scripts/android-camera-profile.py baseline-apk/Dominion-visual-update-release.apk
+            CAMERA_PROFILE_OUT=camera-after python scripts/android-camera-profile.py Dominion-camera-fix-illustrated-release.apk
+            python scripts/compare-camera-native.py camera-before/results.json camera-after/results.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: camera-native-paired-evidence
+          path: |
+            camera-before/
+            camera-after/
+            CAMERA_NATIVE_PAIRED.json
+          retention-days: 14
+  publish-release:
+    needs: [build-apk, long-simulation, android-smoke, camera-comparison]
+    if: github.ref == 'refs/heads/camera-fix'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion-camera-illustrated-release
+      - uses: actions/download-artifact@v4
+        with:
+          name: camera-native-paired-evidence
+          path: camera-evidence
+      - name: Publish the tested standalone APK and verified ZIP fallback
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp camera-evidence/CAMERA_NATIVE_PAIRED.json .
+          python -c "import shutil; shutil.make_archive('camera-native-evidence', 'zip', 'camera-evidence')"
+          zip Dominion-camera-fix-illustrated-release.zip Dominion-camera-fix-illustrated-release.apk
+          sha256sum Dominion-camera-fix-illustrated-release.apk Dominion-camera-fix-illustrated-release.zip > camera-release-checksums.txt
+          gh release create v0.8.0-camera-illustrated --target "$GITHUB_SHA" --title 'Dominion 0.8.0 — camera and illustrated panels' --notes 'Standalone release with embedded JavaScript. Retained map raster tiles, cached borders, stable UI-thread gestures, bounded labels/army stacks, original rulers/buildings/government/religion artwork. Physical Redmi smoothness awaits user testing.' Dominion-camera-fix-illustrated-release.apk Dominion-camera-fix-illustrated-release.zip camera-release-checksums.txt release-integrity.txt CAMERA_NATIVE_PAIRED.json camera-native-evidence.zip
+          curl --fail --location --retry 3 'https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.8.0-camera-illustrated/Dominion-camera-fix-illustrated-release.apk' -o verified-public.apk
+          cmp Dominion-camera-fix-illustrated-release.apk verified-public.apk
