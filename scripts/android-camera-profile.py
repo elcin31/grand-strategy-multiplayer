@@ -24,17 +24,19 @@ def click(root,label):
     assert x2>x1 and y2>y1, label+' has no hit area'
     print('Tap:',label,node.get('bounds'),flush=True)
     adb('shell','input','swipe',(x1+x2)//2,(y1+y2)//2,(x1+x2)//2,(y1+y2)//2,'100')
-def find_click(label):
+def find_click(label,scroll_x=1080,lower=664):
     for i in range(18):
         root=hierarchy('find-'+str(i))
         node=next((n for n in root.iter('node') if n.get('text')==label or n.get('content-desc')==label),None)
         if node is not None:
             x1,y1,x2,y2=map(int,re.findall(r'\d+',node.get('bounds')))
-            if x2>x1 and 24<=y1 and y2<=664 and y2-y1>=12:
+            if x2>x1 and 24<=y1 and y2<=lower and y2-y1>=12:
                 click(root,label);time.sleep(1);return
+            if y2>lower:
+                adb('shell','input','swipe',scroll_x,'500',scroll_x,'300','280');continue
         if i==0:
-            for _ in range(5):adb('shell','input','swipe','1080','220','1080','570','300')
-        else:adb('shell','input','swipe','1080','540','1080','300','280')
+            for _ in range(5):adb('shell','input','swipe',scroll_x,'220',scroll_x,'500','300')
+        else:adb('shell','input','swipe',scroll_x,'500',scroll_x,'300','280')
     raise AssertionError('Missing '+label)
 def shot(name):
     data=subprocess.check_output(['adb','exec-out','screencap','-p']);(OUT/(name+'.png')).write_bytes(data)
@@ -77,10 +79,10 @@ find_click('СТРАНЫ · 195');root=hierarchy('picker');click(root,'Поис�
 adb('shell','input','text','Germany');time.sleep(1);find_click('Германия')
 find_click('ИГРАТЬ ЗА ЭТУ СТРАНУ');find_click('Я ГОТОВ');time.sleep(1);find_click('Начать игру');time.sleep(8)
 nav('Страна');find_click('Пауза');time.sleep(2)
-settings();find_click('Balanced');find_click('Адаптивное качество: Вкл')
-find_click('Performance overlay: Выкл')
-assert any(n.get('text')=='Performance overlay: Вкл' for n in hierarchy('overlay-on').iter('node')), 'Camera overlay was not enabled'
+settings();find_click('Balanced',200,540);find_click('Адаптивное качество: Вкл',200,540)
 assert any(n.get('text')=='Адаптивное качество: Выкл' for n in hierarchy('adaptive-off').iter('node')), 'Adaptive quality was not disabled'
+find_click('Performance overlay: Выкл',200,540)
+assert any(n.get('text')=='Performance overlay: Вкл' for n in hierarchy('overlay-on').iter('node')), 'Camera overlay was not enabled'
 # settings stay open after quality changes; close with the toolbar button.
 settings();adb('shell','input','keyevent','4');time.sleep(2)
 results=[]
