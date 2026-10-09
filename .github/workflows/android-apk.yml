@@ -6,6 +6,8 @@ on:
       - "**/*.md"
       - .github/workflows/android-checkpoint-smoke.yml
       - .github/android-smoke-source
+      - .github/workflows/expansion-native-checkpoint.yml
+      - .github/expansion-apk-source
   workflow_dispatch:
 permissions:
   contents: read

@@ -275,11 +275,14 @@ def touch_target(target,bounds):
 
 root,metrics,bounds=camera_targets()
 marker=next(t for t in json.loads(metrics['armyTargets']) if t['selected'])
+selected_marker_ids=set(marker['ids'])
 touch_target(marker,bounds)
 root=hierarchy('army-repeated-tap-deselected');screenshot('army-repeated-tap-deselected')
 assert not any(n.get('text')=='СНЯТЬ ВЫБОР' for n in root.iter('node')), 'Repeated marker tap did not clear army selection'
 root,metrics,bounds=camera_targets()
-marker=next(t for t in json.loads(metrics['armyTargets']) if 'germany' in t['ownerIds'] and abs(t['x']-marker['x'])<50 and abs(t['y']-marker['y'])<50)
+# Selection pins this stack to its province; deselection restores its weighted
+# cluster anchor. Follow the same army IDs rather than its previous pixels.
+marker=next(t for t in json.loads(metrics['armyTargets']) if 'germany' in t['ownerIds'] and selected_marker_ids.intersection(t['ids']))
 touch_target(marker,bounds)
 assert 'Цель:' in read_scrolling('Командир: '), 'Deselect silently cancelled movement'
 root=hierarchy('selected-before-back')

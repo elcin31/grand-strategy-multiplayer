@@ -1,0 +1,2901 @@
+{
+  "baselineRuntime": "47b0db4f8b220e9ea89998afaac035239b64f5e0",
+  "note": "Paired baseline/candidate on one SwiftShader API35 emulator with identical real-pointer gesture driver, offline paused campaign, Balanced and adaptive off. Native frame completion and host software rendering only; physical Redmi acceptance remains pending. gfxinfo histogram percentiles are used when raw timestamps are unavailable.",
+  "rows": [
+    {
+      "scenario": "01-idle",
+      "before": {
+        "pssKiB": 431560,
+        "scenario": "01-idle",
+        "elapsedSeconds": 10.000099515999977,
+        "reportedFrames": 0,
+        "frames": 0,
+        "timingSource": "idle-no-frames",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": null,
+        "histogramP95Ms": null,
+        "histogramP99Ms": null,
+        "p50Ms": null,
+        "p95Ms": null,
+        "p99Ms": null,
+        "jankPercent": 0.0,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 1.0,
+              "maxCpuPercent": 1.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": {
+          "landFraction": 0.345,
+          "samplePixels": 287232
+        },
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":2,\"pathBuilds\":1633,\"pathBuildMs\":100.93432299993583,\"rasterBuilds\":52,\"rasterMs\":388.59803200000897,\"rasterBytes\":31313152,\"rasterTiles\":12,\"tapToActionMs\":32.936054999998305,\"tapToScreenMs\":165.27866799999902,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399998905,\"frameMs\":16.66666600000033,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1363,\"visibleArmies\":28,\"visibleLabels\":14,\"simulationMs\":125.71539700000721,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":20,\"geographyRenders\":6,\"preset\":\"Balanced\",\"geometryLod\":\"low\",\"sceneMs\":1276.2607749999952}"
+        ]
+      },
+      "after": {
+        "pssKiB": 448264,
+        "scenario": "01-idle",
+        "elapsedSeconds": 10.000075263999975,
+        "reportedFrames": 0,
+        "frames": 0,
+        "timingSource": "idle-no-frames",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": null,
+        "histogramP95Ms": null,
+        "histogramP99Ms": null,
+        "p50Ms": null,
+        "p95Ms": null,
+        "p99Ms": null,
+        "jankPercent": 0.0,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 1.18,
+              "maxCpuPercent": 2.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": {
+          "landFraction": 0.345,
+          "samplePixels": 287232
+        },
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"countryTargets\":\"[{\\\"countryId\\\":\\\"dza\\\",\\\"x\\\":311.71333333333314,\\\"y\\\":746.6713333333335},{\\\"countryId\\\":\\\"sau\\\",\\\"x\\\":1176.673916666667,\\\"y\\\":846.3524133333334},{\\\"countryId\\\":\\\"lby\\\",\\\"x\\\":640.4695,\\\"y\\\":769.2346399999999},{\\\"countryId\\\":\\\"egy\\\",\\\"x\\\":916.6700000000003,\\\"y\\\":829.34215},{\\\"countryId\\\":\\\"spain\\\",\\\"x\\\":257.95883333333336,\\\"y\\\":476.76648666666665}]\",\"armyTargets\":\"[{\\\"ids\\\":[\\\"army-capital-che\\\",\\\"army-capital-germany\\\"],\\\"ownerIds\\\":[\\\"che\\\",\\\"germany\\\"],\\\"selected\\\":false,\\\"x\\\":619.4495000000001,\\\"y\\\":302.79202275862076},{\\\"ids\\\":[\\\"army-capital-bel\\\",\\\"army-capital-france\\\",\\\"army-capital-lux\\\",\\\"army-capital-nld\\\",\\\"army-capital-uk\\\"],\\\"ownerIds\\\":[\\\"bel\\\",\\\"france\\\",\\\"lux\\\",\\\"nld\\\",\\\"uk\\\"],\\\"selected\\\":false,\\\"x\\\":413.08341871165624,\\\"y\\\":319.8820596319018},{\\\"ids\\\":[\\\"army-capital-cyp\\\",\\\"army-capital-egy\\\",\\\"army-capital-isr\\\",\\\"army-capital-jor\\\",\\\"army-capital-lbn\\\",\\\"army-capital-psx\\\",\\\"army-capital-syr\\\"],\\\"ownerIds\\\":[\\\"cyp\\\",\\\"egy\\\",\\\"isr\\\",\\\"jor\\\",\\\"lbn\\\",\\\"psx\\\",\\\"syr\\\"],\\\"selected\\\":false,\\\"x\\\":1049.6215886792452,\\\"y\\\":671.6695322264152},{\\\"ids\\\":[\\\"army-capital-aut\\\",\\\"army-capital-cze\\\",\\\"army-capital-hun\\\",\\\"army-capital-poland\\\",\\\"army-capital-svk\\\",\\\"army-capital-svn\\\"],\\\"ownerIds\\\":[\\\"aut\\\",\\\"cze\\\",\\\"hun\\\",\\\"poland\\\",\\\"svk\\\",\\\"svn\\\"],\\\"selected\\\":false,\\\"x\\\":753.5519639639642,\\\"y\\\":324.4332078378379},{\\\"ids\\\":[\\\"army-capital-blr\\\",\\\"army-capital-mda\\\",\\\"army-capital-ukr\\\"],\\\"ownerIds\\\":[\\\"blr\\\",\\\"mda\\\",\\\"ukr\\\"],\\\"selected\\\":false,\\\"x\\\":970.8099433962263,\\\"y\\\":318.225111446541},{\\\"ids\\\":[\\\"army-capital-prt\\\",\\\"army-capital-spain\\\"],\\\"ownerIds\\\":[\\\"prt\\\",\\\"spain\\\"],\\\"selected\\\":false,\\\"x\\\":274.76650000000006,\\\"y\\\":511.4897400000001},{\\\"ids\\\":[\\\"army-capital-irn\\\",\\\"army-capital-kwt\\\"],\\\"ownerIds\\\":[\\\"irn\\\",\\\"kwt\\\"],\\\"selected\\\":false,\\\"x\\\":1393.544409090909,\\\"y\\\":608.6312018181818},{\\\"ids\\\":[\\\"army-capital-dza\\\"],\\\"ownerIds\\\":[\\\"dza\\\"],\\\"selected\\\":false,\\\"x\\\":434.08950000000004,\\\"y\\\":575.67262},{\\\"ids\\\":[\\\"army-capital-italy\\\"],\\\"ownerIds\\\":[\\\"italy\\\"],\\\"selected\\\":false,\\\"x\\\":625.7929999999999,\\\"y\\\":480.92825999999997},{\\\"ids\\\":[\\\"army-capital-russia\\\"],\\\"ownerIds\\\":[\\\"russia\\\"],\\\"selected\\\":false,\\\"x\\\":1117.151,\\\"y\\\":231.39896},{\\\"ids\\\":[\\\"army-capital-turkey\\\"],\\\"ownerIds\\\":[\\\"turkey\\\"],\\\"selected\\\":false,\\\"x\\\":1023.8425000000001,\\\"y\\\":521.43494},{\\\"ids\\\":[\\\"army-capital-irq\\\"],\\\"ownerIds\\\":[\\\"irq\\\"],\\\"selected\\\":false,\\\"x\\\":1259.857,\\\"y\\\":638.0679400000001},{\\\"ids\\\":[\\\"army-capital-bgr\\\",\\\"army-capital-grc\\\",\\\"army-capital-rou\\\"],\\\"ownerIds\\\":[\\\"bgr\\\",\\\"grc\\\",\\\"rou\\\"],\\\"selected\\\":false,\\\"x\\\":870.4253454545454,\\\"y\\\":474.0608614545455},{\\\"ids\\\":[\\\"army-capital-mar\\\"],\\\"ownerIds\\\":[\\\"mar\\\"],\\\"selected\\\":false,\\\"x\\\":244.0915000000001,\\\"y\\\":631.288},{\\\"ids\\\":[\\\"army-capital-sau\\\"],\\\"ownerIds\\\":[\\\"sau\\\"],\\\"selected\\\":false,\\\"x\\\":1276.422,\\\"y\\\":819.5954400000002},{\\\"ids\\\":[\\\"army-capital-alb\\\",\\\"army-capital-bih\\\",\\\"army-capital-hrv\\\",\\\"army-capital-mkd\\\",\\\"army-capital-mne\\\",\\\"army-capital-srb\\\"],\\\"ownerIds\\\":[\\\"alb\\\",\\\"bih\\\",\\\"hrv\\\",\\\"mkd\\\",\\\"mne\\\",\\\"srb\\\"],\\\"selected\\\":false,\\\"x\\\":757.1802734375007,\\\"y\\\":446.80794687499997},{\\\"ids\\\":[\\\"army-capital-lby\\\",\\\"army-capital-tun\\\"],\\\"ownerIds\\\":[\\\"lby\\\",\\\"tun\\\"],\\\"selected\\\":false,\\\"x\\\":598.479681818182,\\\"y\\\":602.7406090909092},{\\\"ids\\\":[\\\"army-capital-are\\\",\\\"army-capital-bhr\\\",\\\"army-capital-qat\\\"],\\\"ownerIds\\\":[\\\"are\\\",\\\"bhr\\\",\\\"qat\\\"],\\\"selected\\\":false,\\\"x\\\":1430.3172560975618,\\\"y\\\":802.8226170731706},{\\\"ids\\\":[\\\"army-capital-est\\\",\\\"army-capital-fin\\\",\\\"army-capital-ltu\\\",\\\"army-capital-lva\\\"],\\\"ownerIds\\\":[\\\"est\\\",\\\"fin\\\",\\\"ltu\\\",\\\"lva\\\"],\\\"selected\\\":false,\\\"x\\\":865.168319444445,\\\"y\\\":180.77199888888885},{\\\"ids\\\":[\\\"army-capital-dnk\\\",\\\"army-capital-nor\\\"],\\\"ownerIds\\\":[\\\"dnk\\\",\\\"nor\\\"],\\\"selected\\\":false,\\\"x\\\":602.1537272727278,\\\"y\\\":186.82712060606065},{\\\"ids\\\":[\\\"army-capital-aze\\\"],\\\"ownerIds\\\":[\\\"aze\\\"],\\\"selected\\\":false,\\\"x\\\":1360.944,\\\"y\\\":512.72162},{\\\"ids\\\":[\\\"army-capital-swe\\\"],\\\"ownerIds\\\":[\\\"swe\\\"],\\\"selected\\\":false,\\\"x\\\":732.792,\\\"y\\\":155.98748},{\\\"ids\\\":[\\\"army-capital-arm\\\",\\\"army-capital-geo\\\"],\\\"ownerIds\\\":[\\\"arm\\\",\\\"geo\\\"],\\\"selected\\\":false,\\\"x\\\":1265.8966315789473,\\\"y\\\":495.8851599999999},{\\\"ids\\\":[\\\"army-capital-tkm\\\"],\\\"ownerIds\\\":[\\\"tkm\\\"],\\\"selected\\\":false,\\\"x\\\":1559.1550000000002,\\\"y\\\":554.35162},{\\\"ids\\\":[\\\"army-capital-irl\\\"],\\\"ownerIds\\\":[\\\"irl\\\"],\\\"selected\\\":false,\\\"x\\\":247.13549999999998,\\\"y\\\":269.37426000000005},{\\\"ids\\\":[\\\"army-capital-omn\\\"],\\\"ownerIds\\\":[\\\"omn\\\"],\\\"selected\\\":false,\\\"x\\\":1546.839,\\\"y\\\":822.85086},{\\\"ids\\\":[\\\"army-capital-mlt\\\"],\\\"ownerIds\\\":[\\\"mlt\\\"],\\\"selected\\\":false,\\\"x\\\":662.2315000000003,\\\"y\\\":590.97452},{\\\"ids\\\":[\\\"army-capital-isl\\\"],\\\"ownerIds\\\":[\\\"isl\\\"],\\\"selected\\\":false,\\\"x\\\":-63.940000000000055,\\\"y\\\":71.43856}]\",\"frameP50Ms\":17,\"frameP95Ms\":17,\"frameP99Ms\":17,\"frameSamples\":61,\"over50Ms\":0,\"over100Ms\":0,\"cullCommits\":2,\"pathBuilds\":1633,\"pathBuildMs\":292.02029900084017,\"rasterBuilds\":52,\"rasterMs\":397.9196679998422,\"rasterBytes\":31313152,\"rasterTiles\":12,\"tapToActionMs\":40.12729199999012,\"tapToScreenMs\":163.03949799999828,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.00000240000234,\"frameMs\":16.666665999999378,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1363,\"visibleArmies\":28,\"visibleLabels\":14,\"simulationMs\":125.96933100000024,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":22,\"geographyRenders\":7,\"preset\":\"Balanced\",\"geometryLod\":\"low\",\"sceneMs\":1297.751699000015}"
+        ]
+      }
+    },
+    {
+      "scenario": "02-medium-pan",
+      "before": {
+        "pssKiB": 413572,
+        "scenario": "02-medium-pan",
+        "elapsedSeconds": 11.486948030999997,
+        "reportedFrames": 156,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 113.0,
+        "histogramP95Ms": 150.0,
+        "histogramP99Ms": 300.0,
+        "p50Ms": 116.847371,
+        "p95Ms": 134.989693,
+        "p99Ms": 150.226009,
+        "jankPercent": 95.51,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.45,
+              "maxCpuPercent": 2.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 13.71,
+              "maxCpuPercent": 22.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_2": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.64,
+              "maxCpuPercent": 7.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 62.85,
+              "maxCpuPercent": 85.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 6.26,
+              "maxCpuPercent": 12.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":9,\"pathBuilds\":1633,\"pathBuildMs\":100.93432299993583,\"rasterBuilds\":80,\"rasterMs\":564.7249629999278,\"rasterBytes\":33119680,\"rasterTiles\":24,\"tapToActionMs\":32.936054999998305,\"tapToScreenMs\":165.27866799999902,\"renderFeatures\":195,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399998905,\"frameMs\":16.66666600000033,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1810,\"visibleArmies\":23,\"visibleLabels\":10,\"simulationMs\":125.71539700000721,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":26,\"geographyRenders\":12,\"preset\":\"Balanced\",\"geometryLod\":\"low\",\"sceneMs\":1276.2607749999952}"
+        ]
+      },
+      "after": {
+        "pssKiB": 446030,
+        "scenario": "02-medium-pan",
+        "elapsedSeconds": 11.416627450999954,
+        "reportedFrames": 152,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 113.0,
+        "histogramP95Ms": 200.0,
+        "histogramP99Ms": 350.0,
+        "p50Ms": 117.461114,
+        "p95Ms": 151.310926,
+        "p99Ms": 168.337841,
+        "jankPercent": 92.11,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.45,
+              "maxCpuPercent": 1.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 14.97,
+              "maxCpuPercent": 23.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_3": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_7": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 1.36,
+              "maxCpuPercent": 8.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 63.57,
+              "maxCpuPercent": 88.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 6.26,
+              "maxCpuPercent": 12.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"countryTargets\":\"[{\\\"countryId\\\":\\\"germany\\\",\\\"x\\\":361.6922988424216,\\\"y\\\":263.47934466666663},{\\\"countryId\\\":\\\"russia\\\",\\\"x\\\":1476.167898975792,\\\"y\\\":154.38280511763278},{\\\"countryId\\\":\\\"kaz\\\",\\\"x\\\":1120.4212671875002,\\\"y\\\":296.5563653333333},{\\\"countryId\\\":\\\"ind\\\",\\\"x\\\":1295.4027421875003,\\\"y\\\":620.2865250000001},{\\\"countryId\\\":\\\"dza\\\",\\\"x\\\":198.87760052083368,\\\"y\\\":575.6637113333334},{\\\"countryId\\\":\\\"turkey\\\",\\\"x\\\":682.3610666988471,\\\"y\\\":428.81773807384025},{\\\"countryId\\\":\\\"lby\\\",\\\"x\\\":429.5169171875005,\\\"y\\\":591.458026}]\",\"armyTargets\":\"[{\\\"ids\\\":[\\\"army-capital-dnk\\\",\\\"army-capital-germany\\\",\\\"army-capital-nor\\\"],\\\"ownerIds\\\":[\\\"dnk\\\",\\\"germany\\\",\\\"nor\\\"],\\\"selected\\\":false,\\\"x\\\":441.8717907169126,\\\"y\\\":237.47056915032675},{\\\"ids\\\":[\\\"army-capital-bel\\\",\\\"army-capital-france\\\",\\\"army-capital-spain\\\",\\\"army-capital-uk\\\"],\\\"ownerIds\\\":[\\\"bel\\\",\\\"france\\\",\\\"spain\\\",\\\"uk\\\"],\\\"selected\\\":false,\\\"x\\\":259.00428546161237,\\\"y\\\":319.86445029441626},{\\\"ids\\\":[\\\"army-capital-cyp\\\",\\\"army-capital-egy\\\",\\\"army-capital-isr\\\",\\\"army-capital-jor\\\",\\\"army-capital-lbn\\\",\\\"army-capital-psx\\\",\\\"army-capital-syr\\\",\\\"army-capital-turkey\\\"],\\\"ownerIds\\\":[\\\"cyp\\\",\\\"egy\\\",\\\"isr\\\",\\\"jor\\\",\\\"lbn\\\",\\\"psx\\\",\\\"syr\\\",\\\"turkey\\\"],\\\"selected\\\":false,\\\"x\\\":729.1688508238642,\\\"y\\\":490.38399407272726},{\\\"ids\\\":[\\\"army-capital-ben\\\",\\\"army-capital-bfa\\\",\\\"army-capital-civ\\\",\\\"army-capital-gha\\\",\\\"army-capital-ner\\\",\\\"army-capital-tgo\\\"],\\\"ownerIds\\\":[\\\"ben\\\",\\\"bfa\\\",\\\"civ\\\",\\\"gha\\\",\\\"ner\\\",\\\"tgo\\\"],\\\"selected\\\":false,\\\"x\\\":251.53754288974756,\\\"y\\\":816.0947349494382},{\\\"ids\\\":[\\\"army-capital-alb\\\",\\\"army-capital-bgr\\\",\\\"army-capital-bih\\\",\\\"army-capital-hun\\\",\\\"army-capital-mkd\\\",\\\"army-capital-mne\\\",\\\"army-capital-poland\\\",\\\"army-capital-rou\\\",\\\"army-capital-srb\\\",\\\"army-capital-svk\\\"],\\\"ownerIds\\\":[\\\"alb\\\",\\\"bgr\\\",\\\"bih\\\",\\\"hun\\\",\\\"mkd\\\",\\\"mne\\\",\\\"poland\\\",\\\"rou\\\",\\\"srb\\\",\\\"svk\\\"],\\\"selected\\\":false,\\\"x\\\":565.7505468750003,\\\"y\\\":314.8019396597222},{\\\"ids\\\":[\\\"army-capital-afg\\\",\\\"army-capital-pak\\\",\\\"army-capital-tjk\\\"],\\\"ownerIds\\\":[\\\"afg\\\",\\\"pak\\\",\\\"tjk\\\"],\\\"selected\\\":false,\\\"x\\\":1254.3557493714088,\\\"y\\\":484.0386853563218},{\\\"ids\\\":[\\\"army-capital-irn\\\",\\\"army-capital-irq\\\",\\\"army-capital-kwt\\\"],\\\"ownerIds\\\":[\\\"irn\\\",\\\"irq\\\",\\\"kwt\\\"],\\\"selected\\\":false,\\\"x\\\":931.5674708019585,\\\"y\\\":488.71782351807235},{\\\"ids\\\":[\\\"army-capital-cmr\\\",\\\"army-capital-nga\\\",\\\"army-capital-tcd\\\"],\\\"ownerIds\\\":[\\\"cmr\\\",\\\"nga\\\",\\\"tcd\\\"],\\\"selected\\\":false,\\\"x\\\":402.54942251536926,\\\"y\\\":824.006254442623},{\\\"ids\\\":[\\\"army-capital-dza\\\",\\\"army-capital-mar\\\"],\\\"ownerIds\\\":[\\\"dza\\\",\\\"mar\\\"],\\\"selected\\\":false,\\\"x\\\":240.61590670715123,\\\"y\\\":474.4949766026201},{\\\"ids\\\":[\\\"army-capital-aut\\\",\\\"army-capital-che\\\",\\\"army-capital-cze\\\",\\\"army-capital-hrv\\\",\\\"army-capital-italy\\\",\\\"army-capital-lux\\\",\\\"army-capital-svn\\\"],\\\"ownerIds\\\":[\\\"aut\\\",\\\"che\\\",\\\"cze\\\",\\\"hrv\\\",\\\"italy\\\",\\\"lux\\\",\\\"svn\\\"],\\\"selected\\\":false,\\\"x\\\":442.5459658361489,\\\"y\\\":353.09603783783786},{\\\"ids\\\":[\\\"army-capital-ind\\\",\\\"army-capital-npl\\\"],\\\"ownerIds\\\":[\\\"ind\\\",\\\"npl\\\"],\\\"selected\\\":false,\\\"x\\\":1388.0211696265246,\\\"y\\\":564.3116432195122},{\\\"ids\\\":[\\\"army-capital-bhr\\\",\\\"army-capital-sau\\\",\\\"army-capital-yem\\\"],\\\"ownerIds\\\":[\\\"bhr\\\",\\\"sau\\\",\\\"yem\\\"],\\\"selected\\\":false,\\\"x\\\":888.7009190009721,\\\"y\\\":672.791638953368},{\\\"ids\\\":[\\\"army-capital-kaz\\\",\\\"army-capital-uzb\\\"],\\\"ownerIds\\\":[\\\"kaz\\\",\\\"uzb\\\"],\\\"selected\\\":false,\\\"x\\\":1241.024849445565,\\\"y\\\":351.9980621935484},{\\\"ids\\\":[\\\"army-capital-eth\\\",\\\"army-capital-sds\\\"],\\\"ownerIds\\\":[\\\"eth\\\",\\\"sds\\\"],\\\"selected\\\":false,\\\"x\\\":781.5891681678926,\\\"y\\\":825.3729498039215},{\\\"ids\\\":[\\\"army-capital-gin\\\",\\\"army-capital-gmb\\\",\\\"army-capital-gnb\\\",\\\"army-capital-lbr\\\",\\\"army-capital-mli\\\",\\\"army-capital-sle\\\"],\\\"ownerIds\\\":[\\\"gin\\\",\\\"gmb\\\",\\\"gnb\\\",\\\"lbr\\\",\\\"mli\\\",\\\"sle\\\"],\\\"selected\\\":false,\\\"x\\\":103.33804856681104,\\\"y\\\":792.9696121379311},{\\\"ids\\\":[\\\"army-capital-eri\\\",\\\"army-capital-sdn\\\"],\\\"ownerIds\\\":[\\\"eri\\\",\\\"sdn\\\"],\\\"selected\\\":false,\\\"x\\\":730.8387128396744,\\\"y\\\":724.6965580000001},{\\\"ids\\\":[\\\"army-capital-mda\\\",\\\"army-capital-ukr\\\"],\\\"ownerIds\\\":[\\\"mda\\\",\\\"ukr\\\"],\\\"selected\\\":false,\\\"x\\\":686.6265335997141,\\\"y\\\":284.547083648855},{\\\"ids\\\":[\\\"army-capital-bgd\\\",\\\"army-game-y7258k-43\\\"],\\\"ownerIds\\\":[\\\"bgd\\\"],\\\"selected\\\":false,\\\"x\\\":1526.3603171875006,\\\"y\\\":618.2120400000001},{\\\"ids\\\":[\\\"army-capital-russia\\\"],\\\"ownerIds\\\":[\\\"russia\\\"],\\\"selected\\\":false,\\\"x\\\":782.0639671875006,\\\"y\\\":214.97305},{\\\"ids\\\":[\\\"army-capital-blr\\\",\\\"army-capital-est\\\",\\\"army-capital-fin\\\",\\\"army-capital-ltu\\\",\\\"army-capital-lva\\\",\\\"army-capital-swe\\\"],\\\"ownerIds\\\":[\\\"blr\\\",\\\"est\\\",\\\"fin\\\",\\\"ltu\\\",\\\"lva\\\",\\\"swe\\\"],\\\"selected\\\":false,\\\"x\\\":588.3729209109047,\\\"y\\\":190.39977072340426},{\\\"ids\\\":[\\\"army-capital-irl\\\",\\\"army-capital-nld\\\"],\\\"ownerIds\\\":[\\\"irl\\\",\\\"nld\\\"],\\\"selected\\\":false,\\\"x\\\":295.7702194951927,\\\"y\\\":249.00781095384616},{\\\"ids\\\":[\\\"army-capital-lka\\\"],\\\"ownerIds\\\":[\\\"lka\\\"],\\\"selected\\\":false,\\\"x\\\":1380.9125671875008,\\\"y\\\":840.592968},{\\\"ids\\\":[\\\"army-capital-mrt\\\",\\\"army-capital-sen\\\"],\\\"ownerIds\\\":[\\\"mrt\\\",\\\"sen\\\"],\\\"selected\\\":false,\\\"x\\\":22.049168826844834,\\\"y\\\":729.6791389508196},{\\\"ids\\\":[\\\"army-capital-lby\\\",\\\"army-capital-mlt\\\",\\\"army-capital-tun\\\"],\\\"ownerIds\\\":[\\\"lby\\\",\\\"mlt\\\",\\\"tun\\\"],\\\"selected\\\":false,\\\"x\\\":422.7129005208342,\\\"y\\\":474.2258491666666},{\\\"ids\\\":[\\\"army-capital-are\\\",\\\"army-capital-omn\\\",\\\"army-capital-qat\\\"],\\\"ownerIds\\\":[\\\"are\\\",\\\"omn\\\",\\\"qat\\\"],\\\"selected\\\":false,\\\"x\\\":1026.2699544424022,\\\"y\\\":620.6737868235293},{\\\"ids\\\":[\\\"army-capital-arm\\\",\\\"army-capital-aze\\\",\\\"army-capital-geo\\\"],\\\"ownerIds\\\":[\\\"arm\\\",\\\"aze\\\",\\\"geo\\\"],\\\"selected\\\":false,\\\"x\\\":926.920495758929,\\\"y\\\":407.3290157142857},{\\\"ids\\\":[\\\"army-capital-grc\\\"],\\\"ownerIds\\\":[\\\"grc\\\"],\\\"selected\\\":false,\\\"x\\\":593.5875671875003,\\\"y\\\":439.635992},{\\\"ids\\\":[\\\"army-capital-prt\\\"],\\\"ownerIds\\\":[\\\"prt\\\"],\\\"selected\\\":false,\\\"x\\\":131.6208171875004,\\\"y\\\":426.93180400000006},{\\\"ids\\\":[\\\"army-capital-kgz\\\"],\\\"ownerIds\\\":[\\\"kgz\\\"],\\\"selected\\\":false,\\\"x\\\":1304.6969171875007,\\\"y\\\":377.495144},{\\\"ids\\\":[\\\"army-capital-tkm\\\"],\\\"ownerIds\\\":[\\\"tkm\\\"],\\\"selected\\\":false,\\\"x\\\":1091.4667671875004,\\\"y\\\":441.03991199999996},{\\\"ids\\\":[\\\"army-capital-btn\\\"],\\\"ownerIds\\\":[\\\"btn\\\"],\\\"selected\\\":false,\\\"x\\\":1514.0655171875007,\\\"y\\\":573.025136},{\\\"ids\\\":[\\\"army-capital-cpv\\\"],\\\"ownerIds\\\":[\\\"cpv\\\"],\\\"selected\\\":false,\\\"x\\\":-68.98238281249962,\\\"y\\\":736.6478260000001},{\\\"ids\\\":[\\\"army-game-y7258k-47\\\"],\\\"ownerIds\\\":[\\\"ind\\\"],\\\"selected\\\":false,\\\"x\\\":1316.3169171875004,\\\"y\\\":686.457042},{\\\"ids\\\":[\\\"army-capital-dji\\\"],\\\"ownerIds\\\":[\\\"dji\\\"],\\\"selected\\\":false,\\\"x\\\":863.0819671875006,\\\"y\\\":780.0704920000001},{\\\"ids\\\":[\\\"army-capital-isl\\\"],\\\"ownerIds\\\":[\\\"isl\\\"],\\\"selected\\\":false,\\\"x\\\":-44.69973281249963,\\\"y\\\":103.00076999999999}]\",\"frameP50Ms\":17,\"frameP95Ms\":17,\"frameP99Ms\":17,\"frameSamples\":61,\"over50Ms\":0,\"over100Ms\":0,\"cullCommits\":9,\"pathBuilds\":1633,\"pathBuildMs\":292.02029900084017,\"rasterBuilds\":80,\"rasterMs\":569.6600289997878,\"rasterBytes\":33119680,\"rasterTiles\":28,\"tapToActionMs\":40.12729199999012,\"tapToScreenMs\":163.03949799999828,\"renderFeatures\":195,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.00000240000234,\"frameMs\":16.666665999999378,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1739,\"visibleArmies\":35,\"visibleLabels\":7,\"simulationMs\":125.96933100000024,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":28,\"geographyRenders\":13,\"preset\":\"Balanced\",\"geometryLod\":\"low\",\"sceneMs\":1297.751699000015}"
+        ]
+      }
+    },
+    {
+      "scenario": "03-pinch",
+      "before": {
+        "pssKiB": 443296,
+        "scenario": "03-pinch",
+        "elapsedSeconds": 11.38079447200002,
+        "reportedFrames": 96,
+        "frames": 96,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 113.0,
+        "histogramP95Ms": 550.0,
+        "histogramP99Ms": 900.0,
+        "p50Ms": 116.842519,
+        "p95Ms": 596.015809,
+        "p99Ms": 916.819989,
+        "jankPercent": 97.92,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 2.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 7.82,
+              "maxCpuPercent": 17.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_6": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 2.55,
+              "maxCpuPercent": 7.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 77.36,
+              "maxCpuPercent": 96.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 23.27,
+              "maxCpuPercent": 55.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":33,\"pathBuilds\":1743,\"pathBuildMs\":125.51598699984606,\"rasterBuilds\":130,\"rasterMs\":880.3343639999803,\"rasterBytes\":33288192,\"rasterTiles\":45,\"tapToActionMs\":32.936054999998305,\"tapToScreenMs\":165.27866799999902,\"renderFeatures\":195,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002400000625,\"frameMs\":16.666665999999854,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":2924,\"visibleArmies\":19,\"visibleLabels\":2,\"simulationMs\":125.71539700000721,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":48,\"geographyRenders\":31,\"preset\":\"Balanced\",\"geometryLod\":\"low\",\"sceneMs\":1276.2607749999952}"
+        ]
+      },
+      "after": {
+        "pssKiB": 475186,
+        "scenario": "03-pinch",
+        "elapsedSeconds": 11.41993770099998,
+        "reportedFrames": 70,
+        "frames": 70,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 129.0,
+        "histogramP95Ms": 700.0,
+        "histogramP99Ms": 1250.0,
+        "p50Ms": 133.508208,
+        "p95Ms": 720.305164,
+        "p99Ms": 1300.14398,
+        "jankPercent": 94.29,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.27,
+              "maxCpuPercent": 3.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 5.88,
+              "maxCpuPercent": 16.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_3": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 1.35,
+              "maxCpuPercent": 7.8
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 83.42,
+              "maxCpuPercent": 96.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 14.65,
+              "maxCpuPercent": 37.2
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"countryTargets\":\"[{\\\"countryId\\\":\\\"russia\\\",\\\"x\\\":455.93966222475683,\\\"y\\\":241.48325787394754},{\\\"countryId\\\":\\\"can\\\",\\\"x\\\":63.94322080402499,\\\"y\\\":230.5237484761905}]\",\"armyTargets\":\"[{\\\"ids\\\":[\\\"army-capital-alb\\\",\\\"army-capital-arm\\\",\\\"army-capital-aut\\\",\\\"army-capital-aze\\\",\\\"army-capital-bgr\\\",\\\"army-capital-bih\\\",\\\"army-capital-blr\\\",\\\"army-capital-cze\\\",\\\"army-capital-dnk\\\",\\\"army-capital-est\\\",\\\"army-capital-fin\\\",\\\"army-capital-geo\\\",\\\"army-capital-germany\\\",\\\"army-capital-grc\\\",\\\"army-capital-hrv\\\",\\\"army-capital-hun\\\",\\\"army-capital-italy\\\",\\\"army-capital-ltu\\\",\\\"army-capital-lva\\\",\\\"army-capital-mda\\\",\\\"army-capital-mkd\\\",\\\"army-capital-mne\\\",\\\"army-capital-poland\\\",\\\"army-capital-rou\\\",\\\"army-capital-russia\\\",\\\"army-capital-srb\\\",\\\"army-capital-svk\\\",\\\"army-capital-svn\\\",\\\"army-capital-swe\\\",\\\"army-capital-tkm\\\",\\\"army-capital-turkey\\\",\\\"army-capital-ukr\\\"],\\\"ownerIds\\\":[\\\"alb\\\",\\\"arm\\\",\\\"aut\\\",\\\"aze\\\",\\\"bgr\\\",\\\"bih\\\",\\\"blr\\\",\\\"cze\\\",\\\"dnk\\\",\\\"est\\\",\\\"fin\\\",\\\"geo\\\",\\\"germany\\\",\\\"grc\\\",\\\"hrv\\\",\\\"hun\\\",\\\"italy\\\",\\\"ltu\\\",\\\"lva\\\",\\\"mda\\\",\\\"mkd\\\",\\\"mne\\\",\\\"poland\\\",\\\"rou\\\",\\\"russia\\\",\\\"srb\\\",\\\"svk\\\",\\\"svn\\\",\\\"swe\\\",\\\"tkm\\\",\\\"turkey\\\",\\\"ukr\\\"],\\\"selected\\\":false,\\\"x\\\":389.5824652366611,\\\"y\\\":263.72110937765444},{\\\"ids\\\":[\\\"army-capital-ago\\\",\\\"army-capital-are\\\",\\\"army-capital-bdi\\\",\\\"army-capital-bhr\\\",\\\"army-capital-caf\\\",\\\"army-capital-cod\\\",\\\"army-capital-cog\\\",\\\"army-capital-com\\\",\\\"army-capital-cyp\\\",\\\"army-capital-dji\\\",\\\"army-capital-egy\\\",\\\"army-capital-eri\\\",\\\"army-capital-eth\\\",\\\"army-capital-irn\\\",\\\"army-capital-irq\\\",\\\"army-capital-isr\\\",\\\"army-capital-jor\\\",\\\"army-capital-ken\\\",\\\"army-capital-kwt\\\",\\\"army-capital-lbn\\\",\\\"army-capital-lby\\\",\\\"army-capital-mlt\\\",\\\"army-capital-mwi\\\",\\\"army-capital-omn\\\",\\\"army-capital-psx\\\",\\\"army-capital-qat\\\",\\\"army-capital-rwa\\\",\\\"army-capital-sau\\\",\\\"army-capital-sdn\\\",\\\"army-capital-sds\\\",\\\"army-capital-som\\\",\\\"army-capital-syr\\\",\\\"army-capital-tcd\\\",\\\"army-capital-tza\\\",\\\"army-capital-uga\\\",\\\"army-capital-yem\\\"],\\\"ownerIds\\\":[\\\"ago\\\",\\\"are\\\",\\\"bdi\\\",\\\"bhr\\\",\\\"caf\\\",\\\"cod\\\",\\\"cog\\\",\\\"com\\\",\\\"cyp\\\",\\\"dji\\\",\\\"egy\\\",\\\"eri\\\",\\\"eth\\\",\\\"irn\\\",\\\"irq\\\",\\\"isr\\\",\\\"jor\\\",\\\"ken\\\",\\\"kwt\\\",\\\"lbn\\\",\\\"lby\\\",\\\"mlt\\\",\\\"mwi\\\",\\\"omn\\\",\\\"psx\\\",\\\"qat\\\",\\\"rwa\\\",\\\"sau\\\",\\\"sdn\\\",\\\"sds\\\",\\\"som\\\",\\\"syr\\\",\\\"tcd\\\",\\\"tza\\\",\\\"uga\\\",\\\"yem\\\"],\\\"selected\\\":false,\\\"x\\\":409.7867622321256,\\\"y\\\":329.18962165505224},{\\\"ids\\\":[\\\"army-capital-afg\\\",\\\"army-capital-bgd\\\",\\\"army-game-y7258k-43\\\",\\\"army-capital-btn\\\",\\\"army-capital-idn\\\",\\\"army-capital-ind\\\",\\\"army-game-y7258k-47\\\",\\\"army-capital-khm\\\",\\\"army-capital-lao\\\",\\\"army-capital-lka\\\",\\\"army-capital-mdv\\\",\\\"army-capital-mmr\\\",\\\"army-capital-mys\\\",\\\"army-capital-npl\\\",\\\"army-capital-pak\\\",\\\"army-capital-sgp\\\",\\\"army-capital-tha\\\",\\\"army-capital-vnm\\\"],\\\"ownerIds\\\":[\\\"afg\\\",\\\"bgd\\\",\\\"btn\\\",\\\"idn\\\",\\\"ind\\\",\\\"khm\\\",\\\"lao\\\",\\\"lka\\\",\\\"mdv\\\",\\\"mmr\\\",\\\"mys\\\",\\\"npl\\\",\\\"pak\\\",\\\"sgp\\\",\\\"tha\\\",\\\"vnm\\\"],\\\"selected\\\":false,\\\"x\\\":521.6972833616221,\\\"y\\\":317.17662264016695},{\\\"ids\\\":[\\\"army-capital-ben\\\",\\\"army-capital-bfa\\\",\\\"army-capital-civ\\\",\\\"army-capital-cmr\\\",\\\"army-capital-cpv\\\",\\\"army-capital-dza\\\",\\\"army-capital-gab\\\",\\\"army-capital-gha\\\",\\\"army-capital-gin\\\",\\\"army-capital-gmb\\\",\\\"army-capital-gnb\\\",\\\"army-capital-gnq\\\",\\\"army-capital-lbr\\\",\\\"army-capital-mar\\\",\\\"army-capital-mli\\\",\\\"army-capital-mrt\\\",\\\"army-capital-ner\\\",\\\"army-capital-nga\\\",\\\"army-capital-sen\\\",\\\"army-capital-sle\\\",\\\"army-capital-stp\\\",\\\"army-capital-tgo\\\",\\\"army-capital-tun\\\"],\\\"ownerIds\\\":[\\\"ben\\\",\\\"bfa\\\",\\\"civ\\\",\\\"cmr\\\",\\\"cpv\\\",\\\"dza\\\",\\\"gab\\\",\\\"gha\\\",\\\"gin\\\",\\\"gmb\\\",\\\"gnb\\\",\\\"gnq\\\",\\\"lbr\\\",\\\"mar\\\",\\\"mli\\\",\\\"mrt\\\",\\\"ner\\\",\\\"nga\\\",\\\"sen\\\",\\\"sle\\\",\\\"stp\\\",\\\"tgo\\\",\\\"tun\\\"],\\\"selected\\\":false,\\\"x\\\":337.69129827892493,\\\"y\\\":322.9690366077272},{\\\"ids\\\":[\\\"army-capital-bel\\\",\\\"army-capital-che\\\",\\\"army-capital-france\\\",\\\"army-capital-irl\\\",\\\"army-capital-isl\\\",\\\"army-capital-lux\\\",\\\"army-capital-nld\\\",\\\"army-capital-nor\\\",\\\"army-capital-prt\\\",\\\"army-capital-spain\\\",\\\"army-capital-uk\\\"],\\\"ownerIds\\\":[\\\"bel\\\",\\\"che\\\",\\\"france\\\",\\\"irl\\\",\\\"isl\\\",\\\"lux\\\",\\\"nld\\\",\\\"nor\\\",\\\"prt\\\",\\\"spain\\\",\\\"uk\\\"],\\\"selected\\\":false,\\\"x\\\":340.5493742249257,\\\"y\\\":264.02167839473685},{\\\"ids\\\":[\\\"army-capital-bhs\\\",\\\"army-capital-brb\\\",\\\"army-capital-col\\\",\\\"army-capital-cub\\\",\\\"army-capital-dom\\\",\\\"army-capital-ecu\\\",\\\"army-capital-grd\\\",\\\"army-capital-guy\\\",\\\"army-capital-hti\\\",\\\"army-capital-jam\\\",\\\"army-capital-lca\\\",\\\"army-capital-pan\\\",\\\"army-capital-per\\\",\\\"army-capital-sur\\\",\\\"army-capital-tto\\\",\\\"army-capital-vct\\\",\\\"army-capital-ven\\\"],\\\"ownerIds\\\":[\\\"bhs\\\",\\\"brb\\\",\\\"col\\\",\\\"cub\\\",\\\"dom\\\",\\\"ecu\\\",\\\"grd\\\",\\\"guy\\\",\\\"hti\\\",\\\"jam\\\",\\\"lca\\\",\\\"pan\\\",\\\"per\\\",\\\"sur\\\",\\\"tto\\\",\\\"vct\\\",\\\"ven\\\"],\\\"selected\\\":false,\\\"x\\\":191.99048847885956,\\\"y\\\":342.25649066863036},{\\\"ids\\\":[\\\"army-capital-bwa\\\",\\\"army-capital-lso\\\",\\\"army-capital-mdg\\\",\\\"army-capital-moz\\\",\\\"army-capital-mus\\\",\\\"army-capital-nam\\\",\\\"army-capital-swz\\\",\\\"army-capital-zaf\\\",\\\"army-capital-zmb\\\",\\\"army-capital-zwe\\\"],\\\"ownerIds\\\":[\\\"bwa\\\",\\\"lso\\\",\\\"mdg\\\",\\\"moz\\\",\\\"mus\\\",\\\"nam\\\",\\\"swz\\\",\\\"zaf\\\",\\\"zmb\\\",\\\"zwe\\\"],\\\"selected\\\":false,\\\"x\\\":406.91827818494596,\\\"y\\\":393.0580211236264},{\\\"ids\\\":[\\\"army-capital-brn\\\",\\\"army-capital-jpn\\\",\\\"army-capital-kor\\\",\\\"army-capital-phl\\\",\\\"army-capital-png\\\",\\\"army-capital-tls\\\"],\\\"ownerIds\\\":[\\\"brn\\\",\\\"jpn\\\",\\\"kor\\\",\\\"phl\\\",\\\"png\\\",\\\"tls\\\"],\\\"selected\\\":false,\\\"x\\\":600.4262828484074,\\\"y\\\":303.6288955736264},{\\\"ids\\\":[\\\"army-capital-arg\\\",\\\"army-capital-bol\\\",\\\"army-capital-bra\\\",\\\"army-game-y7258k-73\\\",\\\"army-capital-chl\\\",\\\"army-capital-pry\\\",\\\"army-capital-ury\\\"],\\\"ownerIds\\\":[\\\"arg\\\",\\\"bol\\\",\\\"bra\\\",\\\"chl\\\",\\\"pry\\\",\\\"ury\\\"],\\\"selected\\\":false,\\\"x\\\":225.52626739003023,\\\"y\\\":400.3729227757339},{\\\"ids\\\":[\\\"army-capital-blz\\\",\\\"army-capital-cri\\\",\\\"army-capital-gtm\\\",\\\"army-capital-hnd\\\",\\\"army-capital-mex\\\",\\\"army-capital-nic\\\",\\\"army-capital-slv\\\"],\\\"ownerIds\\\":[\\\"blz\\\",\\\"cri\\\",\\\"gtm\\\",\\\"hnd\\\",\\\"mex\\\",\\\"nic\\\",\\\"slv\\\"],\\\"selected\\\":false,\\\"x\\\":153.0001090724612,\\\"y\\\":322.19112065079366},{\\\"ids\\\":[\\\"army-capital-kaz\\\",\\\"army-capital-kgz\\\",\\\"army-capital-mng\\\",\\\"army-capital-tjk\\\",\\\"army-capital-uzb\\\"],\\\"ownerIds\\\":[\\\"kaz\\\",\\\"kgz\\\",\\\"mng\\\",\\\"tjk\\\",\\\"uzb\\\"],\\\"selected\\\":false,\\\"x\\\":483.56822696928657,\\\"y\\\":271.2682695047619},{\\\"ids\\\":[\\\"army-capital-chn\\\",\\\"army-capital-prk\\\"],\\\"ownerIds\\\":[\\\"chn\\\",\\\"prk\\\"],\\\"selected\\\":false,\\\"x\\\":580.3076005407152,\\\"y\\\":279.00879959183675},{\\\"ids\\\":[\\\"army-capital-usa\\\"],\\\"ownerIds\\\":[\\\"usa\\\"],\\\"selected\\\":false,\\\"x\\\":185.84345054071514,\\\"y\\\":280.5715491428572},{\\\"ids\\\":[\\\"army-capital-can\\\"],\\\"ownerIds\\\":[\\\"can\\\"],\\\"selected\\\":false,\\\"x\\\":165.48475054071514,\\\"y\\\":261.56020914285716},{\\\"ids\\\":[\\\"army-capital-aus\\\"],\\\"ownerIds\\\":[\\\"aus\\\"],\\\"selected\\\":false,\\\"x\\\":637.7133505407152,\\\"y\\\":417.55789314285715},{\\\"ids\\\":[\\\"army-capital-fji\\\",\\\"army-capital-nzl\\\",\\\"army-capital-vut\\\"],\\\"ownerIds\\\":[\\\"fji\\\",\\\"nzl\\\",\\\"vut\\\"],\\\"selected\\\":false,\\\"x\\\":690.4423358348328,\\\"y\\\":420.334474789916},{\\\"ids\\\":[\\\"army-capital-fsm\\\",\\\"army-capital-slb\\\"],\\\"ownerIds\\\":[\\\"fsm\\\",\\\"slb\\\"],\\\"selected\\\":false,\\\"x\\\":658.6613005407152,\\\"y\\\":359.5293531428572},{\\\"ids\\\":[\\\"army-capital-kir\\\",\\\"army-capital-wsm\\\"],\\\"ownerIds\\\":[\\\"kir\\\",\\\"wsm\\\"],\\\"selected\\\":false,\\\"x\\\":10.699225540715133,\\\"y\\\":363.23605614285714},{\\\"ids\\\":[\\\"army-capital-ton\\\"],\\\"ownerIds\\\":[\\\"ton\\\"],\\\"selected\\\":false,\\\"x\\\":-10.503599459284828,\\\"y\\\":391.18747314285713}]\",\"frameP50Ms\":17,\"frameP95Ms\":17,\"frameP99Ms\":17,\"frameSamples\":61,\"over50Ms\":0,\"over100Ms\":0,\"cullCommits\":26,\"pathBuilds\":1743,\"pathBuildMs\":318.1510160006583,\"rasterBuilds\":127,\"rasterMs\":853.9320119997137,\"rasterBytes\":33288192,\"rasterTiles\":45,\"tapToActionMs\":40.12729199999012,\"tapToScreenMs\":163.03949799999828,\"renderFeatures\":195,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399998905,\"frameMs\":16.66666600000033,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":2924,\"visibleArmies\":19,\"visibleLabels\":2,\"simulationMs\":125.96933100000024,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":44,\"geographyRenders\":25,\"preset\":\"Balanced\",\"geometryLod\":\"low\",\"sceneMs\":1297.751699000015}"
+        ]
+      }
+    },
+    {
+      "scenario": "04-world-pan",
+      "before": {
+        "pssKiB": 440898,
+        "scenario": "04-world-pan",
+        "elapsedSeconds": 11.419739671999992,
+        "reportedFrames": 190,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 109.0,
+        "histogramP95Ms": 133.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 118.563371,
+        "p95Ms": 142.27469,
+        "p99Ms": 150.43363,
+        "jankPercent": 95.79,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.08,
+              "maxCpuPercent": 0.9
+            },
+            "Profile": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 18.89,
+              "maxCpuPercent": 25.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_1": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_2": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0
+            },
+            "hades": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 59.21,
+              "maxCpuPercent": 70.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 1.18,
+              "maxCpuPercent": 3.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": {
+          "landFraction": 0.2843,
+          "samplePixels": 287232
+        },
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":40,\"pathBuilds\":1743,\"pathBuildMs\":125.51598699984606,\"rasterBuilds\":130,\"rasterMs\":880.3343639999803,\"rasterBytes\":33288192,\"rasterTiles\":45,\"tapToActionMs\":32.936054999998305,\"tapToScreenMs\":165.27866799999902,\"renderFeatures\":195,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002400000625,\"frameMs\":16.666665999999854,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":2924,\"visibleArmies\":23,\"visibleLabels\":5,\"simulationMs\":125.71539700000721,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":54,\"geographyRenders\":37,\"preset\":\"Balanced\",\"geometryLod\":\"low\",\"sceneMs\":1276.2607749999952}"
+        ]
+      },
+      "after": {
+        "pssKiB": 472000,
+        "scenario": "04-world-pan",
+        "elapsedSeconds": 11.445233436999956,
+        "reportedFrames": 151,
+        "frames": 118,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 150.0,
+        "histogramP95Ms": 150.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 144.972752,
+        "p95Ms": 177.289549,
+        "p99Ms": 188.186483,
+        "jankPercent": 96.03,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 16.09,
+              "maxCpuPercent": 20.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_3": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_7": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.73,
+              "maxCpuPercent": 4.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 65.82,
+              "maxCpuPercent": 76.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 1.45,
+              "maxCpuPercent": 4.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": {
+          "landFraction": 0.3131,
+          "samplePixels": 287232
+        },
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"countryTargets\":\"[{\\\"countryId\\\":\\\"russia\\\",\\\"x\\\":661.8340308546701,\\\"y\\\":130.2354661183389},{\\\"countryId\\\":\\\"usa\\\",\\\"x\\\":5.81852608836207,\\\"y\\\":190.88649224827586},{\\\"countryId\\\":\\\"can\\\",\\\"x\\\":-81.14615988864944,\\\"y\\\":110.88626331954023},{\\\"countryId\\\":\\\"chn\\\",\\\"x\\\":702.5730162033044,\\\"y\\\":194.9876128367816},{\\\"countryId\\\":\\\"bra\\\",\\\"x\\\":153.36900500969153,\\\"y\\\":350.8789099402299}]\",\"armyTargets\":\"[{\\\"ids\\\":[\\\"army-capital-aut\\\",\\\"army-capital-bel\\\",\\\"army-capital-che\\\",\\\"army-capital-cze\\\",\\\"army-capital-dnk\\\",\\\"army-capital-france\\\",\\\"army-capital-germany\\\",\\\"army-capital-hrv\\\",\\\"army-capital-hun\\\",\\\"army-capital-irl\\\",\\\"army-capital-lux\\\",\\\"army-capital-nld\\\",\\\"army-capital-nor\\\",\\\"army-capital-poland\\\",\\\"army-capital-svk\\\",\\\"army-capital-svn\\\",\\\"army-capital-swe\\\",\\\"army-capital-uk\\\"],\\\"ownerIds\\\":[\\\"aut\\\",\\\"bel\\\",\\\"che\\\",\\\"cze\\\",\\\"dnk\\\",\\\"france\\\",\\\"germany\\\",\\\"hrv\\\",\\\"hun\\\",\\\"irl\\\",\\\"lux\\\",\\\"nld\\\",\\\"nor\\\",\\\"poland\\\",\\\"svk\\\",\\\"svn\\\",\\\"swe\\\",\\\"uk\\\"],\\\"selected\\\":false,\\\"x\\\":440.3006667780172,\\\"y\\\":158.7893084170385},{\\\"ids\\\":[\\\"army-capital-alb\\\",\\\"army-capital-ben\\\",\\\"army-capital-bfa\\\",\\\"army-capital-bgr\\\",\\\"army-capital-bih\\\",\\\"army-capital-caf\\\",\\\"army-capital-civ\\\",\\\"army-capital-cmr\\\",\\\"army-capital-dza\\\",\\\"army-capital-gha\\\",\\\"army-capital-gin\\\",\\\"army-capital-gmb\\\",\\\"army-capital-gnb\\\",\\\"army-capital-gnq\\\",\\\"army-capital-grc\\\",\\\"army-capital-italy\\\",\\\"army-capital-lbr\\\",\\\"army-capital-lby\\\",\\\"army-capital-mar\\\",\\\"army-capital-mkd\\\",\\\"army-capital-mli\\\",\\\"army-capital-mlt\\\",\\\"army-capital-mne\\\",\\\"army-capital-mrt\\\",\\\"army-capital-ner\\\",\\\"army-capital-nga\\\",\\\"army-capital-prt\\\",\\\"army-capital-sle\\\",\\\"army-capital-spain\\\",\\\"army-capital-srb\\\",\\\"army-capital-tcd\\\",\\\"army-capital-tgo\\\",\\\"army-capital-tun\\\"],\\\"ownerIds\\\":[\\\"alb\\\",\\\"ben\\\",\\\"bfa\\\",\\\"bgr\\\",\\\"bih\\\",\\\"caf\\\",\\\"civ\\\",\\\"cmr\\\",\\\"dza\\\",\\\"gha\\\",\\\"gin\\\",\\\"gmb\\\",\\\"gnb\\\",\\\"gnq\\\",\\\"grc\\\",\\\"italy\\\",\\\"lbr\\\",\\\"lby\\\",\\\"mar\\\",\\\"mkd\\\",\\\"mli\\\",\\\"mlt\\\",\\\"mne\\\",\\\"mrt\\\",\\\"ner\\\",\\\"nga\\\",\\\"prt\\\",\\\"sle\\\",\\\"spain\\\",\\\"srb\\\",\\\"tcd\\\",\\\"tgo\\\",\\\"tun\\\"],\\\"selected\\\":false,\\\"x\\\":415.59243303331914,\\\"y\\\":252.1750606310321},{\\\"ids\\\":[\\\"army-capital-are\\\",\\\"army-capital-arm\\\",\\\"army-capital-aze\\\",\\\"army-capital-bhr\\\",\\\"army-capital-cyp\\\",\\\"army-capital-dji\\\",\\\"army-capital-egy\\\",\\\"army-capital-eri\\\",\\\"army-capital-eth\\\",\\\"army-capital-geo\\\",\\\"army-capital-irn\\\",\\\"army-capital-irq\\\",\\\"army-capital-isr\\\",\\\"army-capital-jor\\\",\\\"army-capital-kwt\\\",\\\"army-capital-lbn\\\",\\\"army-capital-omn\\\",\\\"army-capital-psx\\\",\\\"army-capital-qat\\\",\\\"army-capital-rou\\\",\\\"army-capital-sau\\\",\\\"army-capital-sdn\\\",\\\"army-capital-sds\\\",\\\"army-capital-som\\\",\\\"army-capital-syr\\\",\\\"army-capital-tkm\\\",\\\"army-capital-turkey\\\",\\\"army-capital-yem\\\"],\\\"ownerIds\\\":[\\\"are\\\",\\\"arm\\\",\\\"aze\\\",\\\"bhr\\\",\\\"cyp\\\",\\\"dji\\\",\\\"egy\\\",\\\"eri\\\",\\\"eth\\\",\\\"geo\\\",\\\"irn\\\",\\\"irq\\\",\\\"isr\\\",\\\"jor\\\",\\\"kwt\\\",\\\"lbn\\\",\\\"omn\\\",\\\"psx\\\",\\\"qat\\\",\\\"rou\\\",\\\"sau\\\",\\\"sdn\\\",\\\"sds\\\",\\\"som\\\",\\\"syr\\\",\\\"tkm\\\",\\\"turkey\\\",\\\"yem\\\"],\\\"selected\\\":false,\\\"x\\\":546.4287004727472,\\\"y\\\":238.8297842408848},{\\\"ids\\\":[\\\"army-capital-afg\\\",\\\"army-capital-bgd\\\",\\\"army-game-y7258k-43\\\",\\\"army-capital-btn\\\",\\\"army-capital-ind\\\",\\\"army-capital-kgz\\\",\\\"army-capital-khm\\\",\\\"army-capital-lao\\\",\\\"army-capital-lka\\\",\\\"army-capital-mdv\\\",\\\"army-capital-mmr\\\",\\\"army-capital-mys\\\",\\\"army-capital-npl\\\",\\\"army-capital-pak\\\",\\\"army-capital-tha\\\",\\\"army-capital-tjk\\\",\\\"army-capital-uzb\\\",\\\"army-game-y7258k-47\\\"],\\\"ownerIds\\\":[\\\"afg\\\",\\\"bgd\\\",\\\"btn\\\",\\\"ind\\\",\\\"kgz\\\",\\\"khm\\\",\\\"lao\\\",\\\"lka\\\",\\\"mdv\\\",\\\"mmr\\\",\\\"mys\\\",\\\"npl\\\",\\\"pak\\\",\\\"tha\\\",\\\"tjk\\\",\\\"uzb\\\"],\\\"selected\\\":false,\\\"x\\\":705.8203255065016,\\\"y\\\":246.65740282881484},{\\\"ids\\\":[\\\"army-capital-bdi\\\",\\\"army-capital-bwa\\\",\\\"army-capital-com\\\",\\\"army-capital-ken\\\",\\\"army-capital-lso\\\",\\\"army-capital-mdg\\\",\\\"army-capital-moz\\\",\\\"army-capital-mus\\\",\\\"army-capital-mwi\\\",\\\"army-capital-rwa\\\",\\\"army-capital-swz\\\",\\\"army-capital-tza\\\",\\\"army-capital-uga\\\",\\\"army-capital-zaf\\\",\\\"army-capital-zmb\\\",\\\"army-capital-zwe\\\"],\\\"ownerIds\\\":[\\\"bdi\\\",\\\"bwa\\\",\\\"com\\\",\\\"ken\\\",\\\"lso\\\",\\\"mdg\\\",\\\"moz\\\",\\\"mus\\\",\\\"mwi\\\",\\\"rwa\\\",\\\"swz\\\",\\\"tza\\\",\\\"uga\\\",\\\"zaf\\\",\\\"zmb\\\",\\\"zwe\\\"],\\\"selected\\\":false,\\\"x\\\":527.2296457592957,\\\"y\\\":365.4697562426171},{\\\"ids\\\":[\\\"army-capital-brn\\\",\\\"army-capital-chn\\\",\\\"army-capital-jpn\\\",\\\"army-capital-kor\\\",\\\"army-capital-phl\\\",\\\"army-capital-prk\\\",\\\"army-capital-vnm\\\"],\\\"ownerIds\\\":[\\\"brn\\\",\\\"chn\\\",\\\"jpn\\\",\\\"kor\\\",\\\"phl\\\",\\\"prk\\\",\\\"vnm\\\"],\\\"selected\\\":false,\\\"x\\\":837.6323113519489,\\\"y\\\":225.54260759887944},{\\\"ids\\\":[\\\"army-capital-bhs\\\",\\\"army-capital-blz\\\",\\\"army-capital-brb\\\",\\\"army-capital-col\\\",\\\"army-capital-cri\\\",\\\"army-capital-cub\\\",\\\"army-capital-dom\\\",\\\"army-capital-grd\\\",\\\"army-capital-gtm\\\",\\\"army-capital-guy\\\",\\\"army-capital-hnd\\\",\\\"army-capital-hti\\\",\\\"army-capital-jam\\\",\\\"army-capital-lca\\\",\\\"army-capital-nic\\\",\\\"army-capital-pan\\\",\\\"army-capital-slv\\\",\\\"army-capital-tto\\\",\\\"army-capital-usa\\\",\\\"army-capital-vct\\\",\\\"army-capital-ven\\\"],\\\"ownerIds\\\":[\\\"bhs\\\",\\\"blz\\\",\\\"brb\\\",\\\"col\\\",\\\"cri\\\",\\\"cub\\\",\\\"dom\\\",\\\"grd\\\",\\\"gtm\\\",\\\"guy\\\",\\\"hnd\\\",\\\"hti\\\",\\\"jam\\\",\\\"lca\\\",\\\"nic\\\",\\\"pan\\\",\\\"slv\\\",\\\"tto\\\",\\\"usa\\\",\\\"vct\\\",\\\"ven\\\"],\\\"selected\\\":false,\\\"x\\\":133.9295369701103,\\\"y\\\":268.96567388140744},{\\\"ids\\\":[\\\"army-capital-arg\\\",\\\"army-capital-bol\\\",\\\"army-capital-chl\\\",\\\"army-capital-ecu\\\",\\\"army-capital-per\\\"],\\\"ownerIds\\\":[\\\"arg\\\",\\\"bol\\\",\\\"chl\\\",\\\"ecu\\\",\\\"per\\\"],\\\"selected\\\":false,\\\"x\\\":162.49000356410892,\\\"y\\\":397.0115893174527},{\\\"ids\\\":[\\\"army-capital-blr\\\",\\\"army-capital-est\\\",\\\"army-capital-fin\\\",\\\"army-capital-ltu\\\",\\\"army-capital-lva\\\",\\\"army-capital-mda\\\",\\\"army-capital-russia\\\",\\\"army-capital-ukr\\\"],\\\"ownerIds\\\":[\\\"blr\\\",\\\"est\\\",\\\"fin\\\",\\\"ltu\\\",\\\"lva\\\",\\\"mda\\\",\\\"russia\\\",\\\"ukr\\\"],\\\"selected\\\":false,\\\"x\\\":518.8572838508142,\\\"y\\\":152.23347335496442},{\\\"ids\\\":[\\\"army-capital-ago\\\",\\\"army-capital-cod\\\",\\\"army-capital-cog\\\",\\\"army-capital-gab\\\",\\\"army-capital-nam\\\",\\\"army-capital-stp\\\"],\\\"ownerIds\\\":[\\\"ago\\\",\\\"cod\\\",\\\"cog\\\",\\\"gab\\\",\\\"nam\\\",\\\"stp\\\"],\\\"selected\\\":false,\\\"x\\\":457.37721938040994,\\\"y\\\":346.8710423438142},{\\\"ids\\\":[\\\"army-capital-bra\\\",\\\"army-capital-pry\\\",\\\"army-capital-ury\\\",\\\"army-game-y7258k-73\\\"],\\\"ownerIds\\\":[\\\"bra\\\",\\\"pry\\\",\\\"ury\\\"],\\\"selected\\\":false,\\\"x\\\":229.95478415287818,\\\"y\\\":385.4618518951724},{\\\"ids\\\":[\\\"army-capital-idn\\\",\\\"army-capital-tls\\\"],\\\"ownerIds\\\":[\\\"idn\\\",\\\"tls\\\"],\\\"selected\\\":false,\\\"x\\\":784.3384703776809,\\\"y\\\":345.8332154940286},{\\\"ids\\\":[\\\"army-capital-aus\\\",\\\"army-capital-fji\\\",\\\"army-capital-nzl\\\",\\\"army-capital-png\\\",\\\"army-capital-slb\\\",\\\"army-capital-vut\\\"],\\\"ownerIds\\\":[\\\"aus\\\",\\\"fji\\\",\\\"nzl\\\",\\\"png\\\",\\\"slb\\\",\\\"vut\\\"],\\\"selected\\\":false,\\\"x\\\":943.737449998308,\\\"y\\\":422.1709771508692},{\\\"ids\\\":[\\\"army-capital-mex\\\"],\\\"ownerIds\\\":[\\\"mex\\\"],\\\"selected\\\":false,\\\"x\\\":55.348258502155204,\\\"y\\\":262.9503739586207},{\\\"ids\\\":[\\\"army-capital-can\\\"],\\\"ownerIds\\\":[\\\"can\\\"],\\\"selected\\\":false,\\\"x\\\":97.62639367456893,\\\"y\\\":165.68166973793103},{\\\"ids\\\":[\\\"army-capital-kaz\\\"],\\\"ownerIds\\\":[\\\"kaz\\\"],\\\"selected\\\":false,\\\"x\\\":657.7189067780173,\\\"y\\\":159.61759823448273},{\\\"ids\\\":[\\\"army-capital-cpv\\\",\\\"army-capital-sen\\\",\\\"army-capital-sur\\\"],\\\"ownerIds\\\":[\\\"cpv\\\",\\\"sen\\\",\\\"sur\\\"],\\\"selected\\\":false,\\\"x\\\":339.72603668861746,\\\"y\\\":278.15893809042143},{\\\"ids\\\":[\\\"army-capital-sgp\\\"],\\\"ownerIds\\\":[\\\"sgp\\\"],\\\"selected\\\":false,\\\"x\\\":772.127778502155,\\\"y\\\":321.24092424827586},{\\\"ids\\\":[\\\"army-capital-mng\\\"],\\\"ownerIds\\\":[\\\"mng\\\"],\\\"selected\\\":false,\\\"x\\\":783.1095605711207,\\\"y\\\":169.8705959724138},{\\\"ids\\\":[\\\"army-capital-ton\\\",\\\"army-capital-wsm\\\"],\\\"ownerIds\\\":[\\\"ton\\\",\\\"wsm\\\"],\\\"selected\\\":false,\\\"x\\\":-207.05734701508618,\\\"y\\\":382.6634844689655},{\\\"ids\\\":[\\\"army-capital-fsm\\\"],\\\"ownerIds\\\":[\\\"fsm\\\"],\\\"selected\\\":false,\\\"x\\\":964.1513481573277,\\\"y\\\":303.35025655172416},{\\\"ids\\\":[\\\"army-capital-isl\\\"],\\\"ownerIds\\\":[\\\"isl\\\"],\\\"selected\\\":false,\\\"x\\\":328.45938677801723,\\\"y\\\":117.27605627586206},{\\\"ids\\\":[\\\"army-capital-kir\\\"],\\\"ownerIds\\\":[\\\"kir\\\"],\\\"selected\\\":false,\\\"x\\\":-150.2696173599138,\\\"y\\\":319.59813164137927}]\",\"frameP50Ms\":17,\"frameP95Ms\":17,\"frameP99Ms\":17,\"frameSamples\":61,\"over50Ms\":0,\"over100Ms\":0,\"cullCommits\":33,\"pathBuilds\":1743,\"pathBuildMs\":318.1510160006583,\"rasterBuilds\":127,\"rasterMs\":853.9320119997137,\"rasterBytes\":33288192,\"rasterTiles\":45,\"tapToActionMs\":40.12729199999012,\"tapToScreenMs\":163.03949799999828,\"renderFeatures\":195,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399998905,\"frameMs\":16.66666600000033,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":2924,\"visibleArmies\":23,\"visibleLabels\":5,\"simulationMs\":125.96933100000024,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":50,\"geographyRenders\":31,\"preset\":\"Balanced\",\"geometryLod\":\"low\",\"sceneMs\":1297.751699000015}"
+        ]
+      }
+    },
+    {
+      "scenario": "05-local-labels-armies",
+      "before": {
+        "pssKiB": 439868,
+        "scenario": "05-local-labels-armies",
+        "elapsedSeconds": 11.381452668999998,
+        "reportedFrames": 236,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 89.0,
+        "histogramP95Ms": 113.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 100.147751,
+        "p95Ms": 116.933765,
+        "p99Ms": 120.036618,
+        "jankPercent": 90.68,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 22.55,
+              "maxCpuPercent": 26.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_1": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_3": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_4": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_5": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 46.82,
+              "maxCpuPercent": 53.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 3.91,
+              "maxCpuPercent": 7.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": {
+          "landFraction": 0.7493,
+          "samplePixels": 287232
+        },
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":53,\"pathBuilds\":3227,\"pathBuildMs\":219.18961799956742,\"rasterBuilds\":166,\"rasterMs\":1204.790839000052,\"rasterBytes\":33438464,\"rasterTiles\":15,\"tapToActionMs\":32.936054999998305,\"tapToScreenMs\":165.27866799999902,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002400000625,\"frameMs\":16.666665999999854,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1234,\"visibleArmies\":45,\"visibleLabels\":16,\"simulationMs\":125.71539700000721,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":63,\"geographyRenders\":46,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1276.2607749999952}"
+        ]
+      },
+      "after": {
+        "pssKiB": 377110,
+        "scenario": "05-local-labels-armies",
+        "elapsedSeconds": 11.367220462999967,
+        "reportedFrames": 167,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 101.0,
+        "histogramP95Ms": 200.0,
+        "histogramP99Ms": 200.0,
+        "p50Ms": 102.72678,
+        "p95Ms": 207.513222,
+        "p99Ms": 216.840709,
+        "jankPercent": 88.02,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.08,
+              "maxCpuPercent": 0.9
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 15.85,
+              "maxCpuPercent": 22.5
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_3": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_7": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.64,
+              "maxCpuPercent": 5.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 60.48,
+              "maxCpuPercent": 74.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 3.88,
+              "maxCpuPercent": 7.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": {
+          "landFraction": 0.7516,
+          "samplePixels": 287232
+        },
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"countryTargets\":\"[{\\\"countryId\\\":\\\"germany\\\",\\\"x\\\":135.0062937499992,\\\"y\\\":236.57852549999996},{\\\"countryId\\\":\\\"ukr\\\",\\\"x\\\":798.4959752085169,\\\"y\\\":302.72145617851106},{\\\"countryId\\\":\\\"turkey\\\",\\\"x\\\":918.2452614005289,\\\"y\\\":608.5899106661404},{\\\"countryId\\\":\\\"france\\\",\\\"x\\\":-142.1592500000009,\\\"y\\\":349.6442369999999},{\\\"countryId\\\":\\\"spain\\\",\\\"x\\\":-254.2771250000012,\\\"y\\\":513.893217},{\\\"countryId\\\":\\\"poland\\\",\\\"x\\\":410.2384187499989,\\\"y\\\":203.3041725000001},{\\\"countryId\\\":\\\"fin\\\",\\\"x\\\":633.6390687499988,\\\"y\\\":-86.38039049999998},{\\\"countryId\\\":\\\"irq\\\",\\\"x\\\":1191.0079999999991,\\\"y\\\":804.1187400000001},{\\\"countryId\\\":\\\"swe\\\",\\\"x\\\":440.3971249999984,\\\"y\\\":-194.75593049999998}]\",\"armyTargets\":\"[{\\\"ids\\\":[\\\"army-capital-germany\\\"],\\\"ownerIds\\\":[\\\"germany\\\"],\\\"selected\\\":false,\\\"x\\\":302.5836749999988,\\\"y\\\":211.28429849999998},{\\\"ids\\\":[\\\"army-capital-dza\\\"],\\\"ownerIds\\\":[\\\"dza\\\"],\\\"selected\\\":false,\\\"x\\\":-20.37007500000118,\\\"y\\\":669.6703770000001},{\\\"ids\\\":[\\\"army-capital-egy\\\"],\\\"ownerIds\\\":[\\\"egy\\\"],\\\"selected\\\":false,\\\"x\\\":876.1892249999987,\\\"y\\\":862.8228015000001},{\\\"ids\\\":[\\\"army-capital-france\\\"],\\\"ownerIds\\\":[\\\"france\\\"],\\\"selected\\\":false,\\\"x\\\":-43.835212500001035,\\\"y\\\":318.67041300000005},{\\\"ids\\\":[\\\"army-capital-irn\\\"],\\\"ownerIds\\\":[\\\"irn\\\"],\\\"selected\\\":false,\\\"x\\\":1499.333249999999,\\\"y\\\":705.5642805},{\\\"ids\\\":[\\\"army-capital-italy\\\"],\\\"ownerIds\\\":[\\\"italy\\\"],\\\"selected\\\":false,\\\"x\\\":281.5629374999986,\\\"y\\\":520.44801},{\\\"ids\\\":[\\\"army-capital-russia\\\"],\\\"ownerIds\\\":[\\\"russia\\\"],\\\"selected\\\":false,\\\"x\\\":1055.4517874999988,\\\"y\\\":127.43936249999996},{\\\"ids\\\":[\\\"army-capital-spain\\\"],\\\"ownerIds\\\":[\\\"spain\\\"],\\\"selected\\\":false,\\\"x\\\":-237.11842500000103,\\\"y\\\":559.6412865},{\\\"ids\\\":[\\\"army-capital-turkey\\\"],\\\"ownerIds\\\":[\\\"turkey\\\"],\\\"selected\\\":false,\\\"x\\\":908.4908999999989,\\\"y\\\":584.2460309999999},{\\\"ids\\\":[\\\"army-capital-uk\\\"],\\\"ownerIds\\\":[\\\"uk\\\"],\\\"selected\\\":false,\\\"x\\\":-123.36405000000059,\\\"y\\\":241.17499499999994},{\\\"ids\\\":[\\\"army-capital-ukr\\\"],\\\"ownerIds\\\":[\\\"ukr\\\"],\\\"selected\\\":false,\\\"x\\\":845.2877249999989,\\\"y\\\":276.0024345000001},{\\\"ids\\\":[\\\"army-capital-irq\\\"],\\\"ownerIds\\\":[\\\"irq\\\"],\\\"selected\\\":false,\\\"x\\\":1280.2137374999988,\\\"y\\\":767.9430060000001},{\\\"ids\\\":[\\\"army-capital-poland\\\"],\\\"ownerIds\\\":[\\\"poland\\\"],\\\"selected\\\":false,\\\"x\\\":559.1582624999992,\\\"y\\\":219.98409450000008},{\\\"ids\\\":[\\\"army-capital-bel\\\",\\\"army-capital-nld\\\"],\\\"ownerIds\\\":[\\\"bel\\\",\\\"nld\\\"],\\\"selected\\\":false,\\\"x\\\":30.178132499998696,\\\"y\\\":229.3949148},{\\\"ids\\\":[\\\"army-capital-isr\\\",\\\"army-capital-jor\\\",\\\"army-capital-psx\\\"],\\\"ownerIds\\\":[\\\"isr\\\",\\\"jor\\\",\\\"psx\\\"],\\\"selected\\\":false,\\\"x\\\":1004.2074100352097,\\\"y\\\":814.845748225352},{\\\"ids\\\":[\\\"army-capital-lbn\\\",\\\"army-capital-syr\\\"],\\\"ownerIds\\\":[\\\"lbn\\\",\\\"syr\\\"],\\\"selected\\\":false,\\\"x\\\":1018.2704519366189,\\\"y\\\":760.2652856197183},{\\\"ids\\\":[\\\"army-capital-aut\\\",\\\"army-capital-cze\\\"],\\\"ownerIds\\\":[\\\"aut\\\",\\\"cze\\\"],\\\"selected\\\":false,\\\"x\\\":364.49070646551667,\\\"y\\\":307.13217589655176},{\\\"ids\\\":[\\\"army-capital-rou\\\"],\\\"ownerIds\\\":[\\\"rou\\\"],\\\"selected\\\":false,\\\"x\\\":703.9968374999992,\\\"y\\\":445.95347100000004},{\\\"ids\\\":[\\\"army-capital-tun\\\"],\\\"ownerIds\\\":[\\\"tun\\\"],\\\"selected\\\":false,\\\"x\\\":201.15682499999895,\\\"y\\\":668.066334},{\\\"ids\\\":[\\\"army-capital-grc\\\"],\\\"ownerIds\\\":[\\\"grc\\\"],\\\"selected\\\":false,\\\"x\\\":631.3798874999986,\\\"y\\\":632.9309819999999},{\\\"ids\\\":[\\\"army-capital-aze\\\"],\\\"ownerIds\\\":[\\\"aze\\\"],\\\"selected\\\":false,\\\"x\\\":1439.4257624999989,\\\"y\\\":570.5225520000001},{\\\"ids\\\":[\\\"army-capital-bgr\\\",\\\"army-capital-mkd\\\"],\\\"ownerIds\\\":[\\\"bgr\\\",\\\"mkd\\\"],\\\"selected\\\":false,\\\"x\\\":596.3161874999985,\\\"y\\\":503.7052979999999},{\\\"ids\\\":[\\\"army-capital-swe\\\"],\\\"ownerIds\\\":[\\\"swe\\\"],\\\"selected\\\":false,\\\"x\\\":450.0863624999988,\\\"y\\\":8.666281500000025},{\\\"ids\\\":[\\\"army-capital-hun\\\"],\\\"ownerIds\\\":[\\\"hun\\\"],\\\"selected\\\":false,\\\"x\\\":483.75828749999886,\\\"y\\\":359.0352059999999},{\\\"ids\\\":[\\\"army-capital-blr\\\"],\\\"ownerIds\\\":[\\\"blr\\\"],\\\"selected\\\":false,\\\"x\\\":751.2633749999994,\\\"y\\\":171.59981100000005},{\\\"ids\\\":[\\\"army-capital-che\\\"],\\\"ownerIds\\\":[\\\"che\\\"],\\\"selected\\\":false,\\\"x\\\":122.71552499999939,\\\"y\\\":377.1592980000001},{\\\"ids\\\":[\\\"army-capital-lby\\\"],\\\"ownerIds\\\":[\\\"lby\\\"],\\\"selected\\\":false,\\\"x\\\":303.97282499999926,\\\"y\\\":789.71568},{\\\"ids\\\":[\\\"army-capital-srb\\\"],\\\"ownerIds\\\":[\\\"srb\\\"],\\\"selected\\\":false,\\\"x\\\":524.3042999999994,\\\"y\\\":439.9582334999999},{\\\"ids\\\":[\\\"army-capital-hrv\\\",\\\"army-capital-svn\\\"],\\\"ownerIds\\\":[\\\"hrv\\\",\\\"svn\\\"],\\\"selected\\\":false,\\\"x\\\":369.5888999999997,\\\"y\\\":405.0387825},{\\\"ids\\\":[\\\"army-capital-dnk\\\"],\\\"ownerIds\\\":[\\\"dnk\\\"],\\\"selected\\\":false,\\\"x\\\":269.44173749999914,\\\"y\\\":115.20328200000006},{\\\"ids\\\":[\\\"army-capital-fin\\\"],\\\"ownerIds\\\":[\\\"fin\\\"],\\\"selected\\\":false,\\\"x\\\":656.9318999999992,\\\"y\\\":-14.176479000000086},{\\\"ids\\\":[\\\"army-capital-nor\\\"],\\\"ownerIds\\\":[\\\"nor\\\"],\\\"selected\\\":false,\\\"x\\\":217.65101249999924,\\\"y\\\":-4.348636500000055},{\\\"ids\\\":[\\\"army-capital-svk\\\"],\\\"ownerIds\\\":[\\\"svk\\\"],\\\"selected\\\":false,\\\"x\\\":423.539737499999,\\\"y\\\":333.7363905},{\\\"ids\\\":[\\\"army-capital-alb\\\",\\\"army-capital-mne\\\"],\\\"ownerIds\\\":[\\\"alb\\\",\\\"mne\\\"],\\\"selected\\\":false,\\\"x\\\":498.4135413461536,\\\"y\\\":525.8129325},{\\\"ids\\\":[\\\"army-capital-geo\\\"],\\\"ownerIds\\\":[\\\"geo\\\"],\\\"selected\\\":false,\\\"x\\\":1293.064162499999,\\\"y\\\":524.4436274999999},{\\\"ids\\\":[\\\"army-capital-mda\\\"],\\\"ownerIds\\\":[\\\"mda\\\"],\\\"selected\\\":false,\\\"x\\\":790.8612374999991,\\\"y\\\":371.0191604999999},{\\\"ids\\\":[\\\"army-capital-bih\\\"],\\\"ownerIds\\\":[\\\"bih\\\"],\\\"selected\\\":false,\\\"x\\\":457.97159999999894,\\\"y\\\":463.38421650000004},{\\\"ids\\\":[\\\"army-capital-lva\\\"],\\\"ownerIds\\\":[\\\"lva\\\"],\\\"selected\\\":false,\\\"x\\\":641.8063874999991,\\\"y\\\":82.7138039999999},{\\\"ids\\\":[\\\"army-capital-arm\\\"],\\\"ownerIds\\\":[\\\"arm\\\"],\\\"selected\\\":false,\\\"x\\\":1285.1363999999987,\\\"y\\\":570.9021899999999},{\\\"ids\\\":[\\\"army-capital-ltu\\\"],\\\"ownerIds\\\":[\\\"ltu\\\"],\\\"selected\\\":false,\\\"x\\\":676.9241624999988,\\\"y\\\":144.64406399999993},{\\\"ids\\\":[\\\"army-capital-mlt\\\"],\\\"ownerIds\\\":[\\\"mlt\\\"],\\\"selected\\\":false,\\\"x\\\":338.9535749999993,\\\"y\\\":693.7708695},{\\\"ids\\\":[\\\"army-capital-cyp\\\"],\\\"ownerIds\\\":[\\\"cyp\\\"],\\\"selected\\\":false,\\\"x\\\":923.666812499999,\\\"y\\\":719.2471875},{\\\"ids\\\":[\\\"army-capital-est\\\"],\\\"ownerIds\\\":[\\\"est\\\"],\\\"selected\\\":false,\\\"x\\\":668.7617249999994,\\\"y\\\":14.171757000000014},{\\\"ids\\\":[\\\"army-capital-lux\\\"],\\\"ownerIds\\\":[\\\"lux\\\"],\\\"selected\\\":false,\\\"x\\\":72.55334999999889,\\\"y\\\":296.8629630000001}]\",\"frameP50Ms\":17,\"frameP95Ms\":17,\"frameP99Ms\":17,\"frameSamples\":61,\"over50Ms\":0,\"over100Ms\":0,\"cullCommits\":46,\"pathBuilds\":3227,\"pathBuildMs\":402.91688200068893,\"rasterBuilds\":160,\"rasterMs\":1112.6000330001116,\"rasterBytes\":33438464,\"rasterTiles\":15,\"tapToActionMs\":40.12729199999012,\"tapToScreenMs\":163.03949799999828,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.00000240000234,\"frameMs\":16.666665999999378,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1224,\"visibleArmies\":44,\"visibleLabels\":16,\"simulationMs\":125.96933100000024,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":59,\"geographyRenders\":40,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1297.751699000015}"
+        ]
+      }
+    },
+    {
+      "scenario": "06-terrain-pan",
+      "before": {
+        "pssKiB": 442476,
+        "scenario": "06-terrain-pan",
+        "elapsedSeconds": 11.457630213000016,
+        "reportedFrames": 235,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 89.0,
+        "histogramP95Ms": 113.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 99.731059,
+        "p95Ms": 119.039059,
+        "p99Ms": 127.04983,
+        "jankPercent": 86.81,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 20.64,
+              "maxCpuPercent": 26.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_5": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.64,
+              "maxCpuPercent": 7.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 49.73,
+              "maxCpuPercent": 71.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 4.18,
+              "maxCpuPercent": 11.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":59,\"pathBuilds\":3227,\"pathBuildMs\":219.18961799956742,\"rasterBuilds\":181,\"rasterMs\":1371.8429580000811,\"rasterBytes\":33155072,\"rasterTiles\":12,\"tapToActionMs\":32.936054999998305,\"tapToScreenMs\":165.27866799999902,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002400000625,\"frameMs\":16.666665999999854,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1070,\"visibleArmies\":43,\"visibleLabels\":16,\"simulationMs\":125.71539700000721,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":71,\"geographyRenders\":52,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1276.2607749999952}"
+        ]
+      },
+      "after": {
+        "pssKiB": 372394,
+        "scenario": "06-terrain-pan",
+        "elapsedSeconds": 11.474746739000011,
+        "reportedFrames": 209,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 97.0,
+        "histogramP95Ms": 129.0,
+        "histogramP99Ms": 200.0,
+        "p50Ms": 101.655888,
+        "p95Ms": 130.917292,
+        "p99Ms": 134.515542,
+        "jankPercent": 90.43,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 21.45,
+              "maxCpuPercent": 27.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_4": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_7": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.73,
+              "maxCpuPercent": 6.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 50.64,
+              "maxCpuPercent": 83.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 4.55,
+              "maxCpuPercent": 9.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"countryTargets\":\"[{\\\"countryId\\\":\\\"germany\\\",\\\"x\\\":-13.120659375001082,\\\"y\\\":236.57852549999996},{\\\"countryId\\\":\\\"ukr\\\",\\\"x\\\":650.3690220835167,\\\"y\\\":302.72145617851106},{\\\"countryId\\\":\\\"turkey\\\",\\\"x\\\":770.1183082755285,\\\"y\\\":608.5899106661404},{\\\"countryId\\\":\\\"irn\\\",\\\"x\\\":1372.0488281249989,\\\"y\\\":761.1904245000001},{\\\"countryId\\\":\\\"france\\\",\\\"x\\\":-290.28620312500124,\\\"y\\\":349.6442369999999},{\\\"countryId\\\":\\\"poland\\\",\\\"x\\\":262.1114656249986,\\\"y\\\":203.3041725000001},{\\\"countryId\\\":\\\"fin\\\",\\\"x\\\":485.5121156249985,\\\"y\\\":-86.38039049999998},{\\\"countryId\\\":\\\"irq\\\",\\\"x\\\":1042.8810468749987,\\\"y\\\":804.1187400000001},{\\\"countryId\\\":\\\"swe\\\",\\\"x\\\":292.2701718749981,\\\"y\\\":-194.75593049999998}]\",\"armyTargets\":\"[{\\\"ids\\\":[\\\"army-capital-germany\\\"],\\\"ownerIds\\\":[\\\"germany\\\"],\\\"selected\\\":false,\\\"x\\\":154.4567218749985,\\\"y\\\":211.28429849999998},{\\\"ids\\\":[\\\"army-capital-dza\\\"],\\\"ownerIds\\\":[\\\"dza\\\"],\\\"selected\\\":false,\\\"x\\\":-168.4970281250014,\\\"y\\\":669.6703770000001},{\\\"ids\\\":[\\\"army-capital-egy\\\"],\\\"ownerIds\\\":[\\\"egy\\\"],\\\"selected\\\":false,\\\"x\\\":728.0622718749984,\\\"y\\\":862.8228015000001},{\\\"ids\\\":[\\\"army-capital-france\\\"],\\\"ownerIds\\\":[\\\"france\\\"],\\\"selected\\\":false,\\\"x\\\":-191.96216562500126,\\\"y\\\":318.67041300000005},{\\\"ids\\\":[\\\"army-capital-irn\\\"],\\\"ownerIds\\\":[\\\"irn\\\"],\\\"selected\\\":false,\\\"x\\\":1351.2062968749988,\\\"y\\\":705.5642805},{\\\"ids\\\":[\\\"army-capital-italy\\\"],\\\"ownerIds\\\":[\\\"italy\\\"],\\\"selected\\\":false,\\\"x\\\":133.43598437499833,\\\"y\\\":520.44801},{\\\"ids\\\":[\\\"army-capital-russia\\\"],\\\"ownerIds\\\":[\\\"russia\\\"],\\\"selected\\\":false,\\\"x\\\":907.3248343749985,\\\"y\\\":127.43936249999996},{\\\"ids\\\":[\\\"army-capital-turkey\\\"],\\\"ownerIds\\\":[\\\"turkey\\\"],\\\"selected\\\":false,\\\"x\\\":760.3639468749986,\\\"y\\\":584.2460309999999},{\\\"ids\\\":[\\\"army-capital-uk\\\"],\\\"ownerIds\\\":[\\\"uk\\\"],\\\"selected\\\":false,\\\"x\\\":-271.49100312500093,\\\"y\\\":241.17499499999994},{\\\"ids\\\":[\\\"army-capital-ukr\\\"],\\\"ownerIds\\\":[\\\"ukr\\\"],\\\"selected\\\":false,\\\"x\\\":697.1607718749985,\\\"y\\\":276.0024345000001},{\\\"ids\\\":[\\\"army-capital-irq\\\"],\\\"ownerIds\\\":[\\\"irq\\\"],\\\"selected\\\":false,\\\"x\\\":1132.0867843749986,\\\"y\\\":767.9430060000001},{\\\"ids\\\":[\\\"army-capital-poland\\\"],\\\"ownerIds\\\":[\\\"poland\\\"],\\\"selected\\\":false,\\\"x\\\":411.03130937499884,\\\"y\\\":219.98409450000008},{\\\"ids\\\":[\\\"army-capital-bel\\\",\\\"army-capital-nld\\\"],\\\"ownerIds\\\":[\\\"bel\\\",\\\"nld\\\"],\\\"selected\\\":false,\\\"x\\\":-117.94882062500164,\\\"y\\\":229.3949148},{\\\"ids\\\":[\\\"army-capital-isr\\\",\\\"army-capital-jor\\\",\\\"army-capital-psx\\\"],\\\"ownerIds\\\":[\\\"isr\\\",\\\"jor\\\",\\\"psx\\\"],\\\"selected\\\":false,\\\"x\\\":856.0804569102094,\\\"y\\\":814.845748225352},{\\\"ids\\\":[\\\"army-capital-lbn\\\",\\\"army-capital-syr\\\"],\\\"ownerIds\\\":[\\\"lbn\\\",\\\"syr\\\"],\\\"selected\\\":false,\\\"x\\\":870.1434988116187,\\\"y\\\":760.2652856197183},{\\\"ids\\\":[\\\"army-capital-aut\\\",\\\"army-capital-cze\\\"],\\\"ownerIds\\\":[\\\"aut\\\",\\\"cze\\\"],\\\"selected\\\":false,\\\"x\\\":216.36375334051638,\\\"y\\\":307.13217589655176},{\\\"ids\\\":[\\\"army-capital-rou\\\"],\\\"ownerIds\\\":[\\\"rou\\\"],\\\"selected\\\":false,\\\"x\\\":555.8698843749988,\\\"y\\\":445.95347100000004},{\\\"ids\\\":[\\\"army-capital-tun\\\"],\\\"ownerIds\\\":[\\\"tun\\\"],\\\"selected\\\":false,\\\"x\\\":53.02987187499866,\\\"y\\\":668.066334},{\\\"ids\\\":[\\\"army-capital-grc\\\"],\\\"ownerIds\\\":[\\\"grc\\\"],\\\"selected\\\":false,\\\"x\\\":483.2529343749983,\\\"y\\\":632.9309819999999},{\\\"ids\\\":[\\\"army-capital-aze\\\"],\\\"ownerIds\\\":[\\\"aze\\\"],\\\"selected\\\":false,\\\"x\\\":1291.2988093749987,\\\"y\\\":570.5225520000001},{\\\"ids\\\":[\\\"army-capital-bgr\\\",\\\"army-capital-mkd\\\"],\\\"ownerIds\\\":[\\\"bgr\\\",\\\"mkd\\\"],\\\"selected\\\":false,\\\"x\\\":448.1892343749982,\\\"y\\\":503.7052979999999},{\\\"ids\\\":[\\\"army-capital-swe\\\"],\\\"ownerIds\\\":[\\\"swe\\\"],\\\"selected\\\":false,\\\"x\\\":301.95940937499853,\\\"y\\\":8.666281500000025},{\\\"ids\\\":[\\\"army-capital-hun\\\"],\\\"ownerIds\\\":[\\\"hun\\\"],\\\"selected\\\":false,\\\"x\\\":335.6313343749986,\\\"y\\\":359.0352059999999},{\\\"ids\\\":[\\\"army-capital-blr\\\"],\\\"ownerIds\\\":[\\\"blr\\\"],\\\"selected\\\":false,\\\"x\\\":603.1364218749992,\\\"y\\\":171.59981100000005},{\\\"ids\\\":[\\\"army-capital-che\\\"],\\\"ownerIds\\\":[\\\"che\\\"],\\\"selected\\\":false,\\\"x\\\":-25.411428125000953,\\\"y\\\":377.1592980000001},{\\\"ids\\\":[\\\"army-capital-lby\\\"],\\\"ownerIds\\\":[\\\"lby\\\"],\\\"selected\\\":false,\\\"x\\\":155.84587187499892,\\\"y\\\":789.71568},{\\\"ids\\\":[\\\"army-capital-srb\\\"],\\\"ownerIds\\\":[\\\"srb\\\"],\\\"selected\\\":false,\\\"x\\\":376.17734687499916,\\\"y\\\":439.9582334999999},{\\\"ids\\\":[\\\"army-capital-hrv\\\",\\\"army-capital-svn\\\"],\\\"ownerIds\\\":[\\\"hrv\\\",\\\"svn\\\"],\\\"selected\\\":false,\\\"x\\\":221.4619468749994,\\\"y\\\":405.0387825},{\\\"ids\\\":[\\\"army-capital-dnk\\\"],\\\"ownerIds\\\":[\\\"dnk\\\"],\\\"selected\\\":false,\\\"x\\\":121.3147843749988,\\\"y\\\":115.20328200000006},{\\\"ids\\\":[\\\"army-capital-tkm\\\"],\\\"ownerIds\\\":[\\\"tkm\\\"],\\\"selected\\\":false,\\\"x\\\":1603.4811343749986,\\\"y\\\":636.089802},{\\\"ids\\\":[\\\"army-capital-fin\\\"],\\\"ownerIds\\\":[\\\"fin\\\"],\\\"selected\\\":false,\\\"x\\\":508.8049468749989,\\\"y\\\":-14.176479000000086},{\\\"ids\\\":[\\\"army-capital-nor\\\"],\\\"ownerIds\\\":[\\\"nor\\\"],\\\"selected\\\":false,\\\"x\\\":69.52405937499896,\\\"y\\\":-4.348636500000055},{\\\"ids\\\":[\\\"army-capital-svk\\\"],\\\"ownerIds\\\":[\\\"svk\\\"],\\\"selected\\\":false,\\\"x\\\":275.4127843749987,\\\"y\\\":333.7363905},{\\\"ids\\\":[\\\"army-capital-alb\\\",\\\"army-capital-mne\\\"],\\\"ownerIds\\\":[\\\"alb\\\",\\\"mne\\\"],\\\"selected\\\":false,\\\"x\\\":350.28658822115324,\\\"y\\\":525.8129325},{\\\"ids\\\":[\\\"army-capital-geo\\\"],\\\"ownerIds\\\":[\\\"geo\\\"],\\\"selected\\\":false,\\\"x\\\":1144.9372093749985,\\\"y\\\":524.4436274999999},{\\\"ids\\\":[\\\"army-capital-mda\\\"],\\\"ownerIds\\\":[\\\"mda\\\"],\\\"selected\\\":false,\\\"x\\\":642.7342843749988,\\\"y\\\":371.0191604999999},{\\\"ids\\\":[\\\"army-capital-bih\\\"],\\\"ownerIds\\\":[\\\"bih\\\"],\\\"selected\\\":false,\\\"x\\\":309.84464687499866,\\\"y\\\":463.38421650000004},{\\\"ids\\\":[\\\"army-capital-lva\\\"],\\\"ownerIds\\\":[\\\"lva\\\"],\\\"selected\\\":false,\\\"x\\\":493.67943437499883,\\\"y\\\":82.7138039999999},{\\\"ids\\\":[\\\"army-capital-arm\\\"],\\\"ownerIds\\\":[\\\"arm\\\"],\\\"selected\\\":false,\\\"x\\\":1137.0094468749985,\\\"y\\\":570.9021899999999},{\\\"ids\\\":[\\\"army-capital-ltu\\\"],\\\"ownerIds\\\":[\\\"ltu\\\"],\\\"selected\\\":false,\\\"x\\\":528.7972093749985,\\\"y\\\":144.64406399999993},{\\\"ids\\\":[\\\"army-capital-mlt\\\"],\\\"ownerIds\\\":[\\\"mlt\\\"],\\\"selected\\\":false,\\\"x\\\":190.82662187499898,\\\"y\\\":693.7708695},{\\\"ids\\\":[\\\"army-capital-cyp\\\"],\\\"ownerIds\\\":[\\\"cyp\\\"],\\\"selected\\\":false,\\\"x\\\":775.5398593749985,\\\"y\\\":719.2471875},{\\\"ids\\\":[\\\"army-capital-est\\\"],\\\"ownerIds\\\":[\\\"est\\\"],\\\"selected\\\":false,\\\"x\\\":520.634771874999,\\\"y\\\":14.171757000000014},{\\\"ids\\\":[\\\"army-capital-lux\\\"],\\\"ownerIds\\\":[\\\"lux\\\"],\\\"selected\\\":false,\\\"x\\\":-75.57360312500145,\\\"y\\\":296.8629630000001}]\",\"frameP50Ms\":17,\"frameP95Ms\":17,\"frameP99Ms\":17,\"frameSamples\":61,\"over50Ms\":0,\"over100Ms\":0,\"cullCommits\":52,\"pathBuilds\":3227,\"pathBuildMs\":402.91688200068893,\"rasterBuilds\":175,\"rasterMs\":1275.7359770002076,\"rasterBytes\":33155072,\"rasterTiles\":12,\"tapToActionMs\":40.12729199999012,\"tapToScreenMs\":163.03949799999828,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.00000240000234,\"frameMs\":16.666665999999378,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1097,\"visibleArmies\":44,\"visibleLabels\":16,\"simulationMs\":125.96933100000024,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":66,\"geographyRenders\":46,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1297.751699000015}"
+        ]
+      }
+    },
+    {
+      "scenario": "07-military-overlay",
+      "before": {
+        "pssKiB": 454626,
+        "scenario": "07-military-overlay",
+        "elapsedSeconds": 11.424352112999998,
+        "reportedFrames": 236,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 89.0,
+        "histogramP95Ms": 113.0,
+        "histogramP99Ms": 133.0,
+        "p50Ms": 100.187742,
+        "p95Ms": 118.23897,
+        "p99Ms": 121.831112,
+        "jankPercent": 87.71,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 20.0,
+              "maxCpuPercent": 25.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_1": {
+              "meanCpuPercent": 0.27,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_2": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_3": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_5": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.64,
+              "maxCpuPercent": 5.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 47.27,
+              "maxCpuPercent": 61.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 4.09,
+              "maxCpuPercent": 8.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":64,\"pathBuilds\":3295,\"pathBuildMs\":234.23931899986928,\"rasterBuilds\":196,\"rasterMs\":1579.8903580001206,\"rasterBytes\":33015744,\"rasterTiles\":15,\"tapToActionMs\":32.936054999998305,\"tapToScreenMs\":165.27866799999902,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399998905,\"frameMs\":16.66666600000033,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":998,\"visibleArmies\":47,\"visibleLabels\":16,\"simulationMs\":125.71539700000721,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":78,\"geographyRenders\":58,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1276.2607749999952}"
+        ]
+      },
+      "after": {
+        "pssKiB": 376465,
+        "scenario": "07-military-overlay",
+        "elapsedSeconds": 11.529560013000037,
+        "reportedFrames": 222,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 93.0,
+        "histogramP95Ms": 117.0,
+        "histogramP99Ms": 129.0,
+        "p50Ms": 101.119497,
+        "p95Ms": 120.116635,
+        "p99Ms": 133.665381,
+        "jankPercent": 87.84,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 22.42,
+              "maxCpuPercent": 29.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_2": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_3": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_7": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_8": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 1.25,
+              "maxCpuPercent": 7.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 47.16,
+              "maxCpuPercent": 56.8
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 5.62,
+              "maxCpuPercent": 11.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"countryTargets\":\"[{\\\"countryId\\\":\\\"germany\\\",\\\"x\\\":-135.1069875000013,\\\"y\\\":236.57852549999996},{\\\"countryId\\\":\\\"ukr\\\",\\\"x\\\":528.3826939585165,\\\"y\\\":302.72145617851106},{\\\"countryId\\\":\\\"turkey\\\",\\\"x\\\":648.1319801505283,\\\"y\\\":608.5899106661404},{\\\"countryId\\\":\\\"irn\\\",\\\"x\\\":1250.0624999999984,\\\"y\\\":761.1904245000001},{\\\"countryId\\\":\\\"poland\\\",\\\"x\\\":140.12513749999837,\\\"y\\\":203.3041725000001},{\\\"countryId\\\":\\\"fin\\\",\\\"x\\\":363.5257874999983,\\\"y\\\":-86.38039049999998},{\\\"countryId\\\":\\\"uzb\\\",\\\"x\\\":1416.9086312499985,\\\"y\\\":479.78001374999997},{\\\"countryId\\\":\\\"irq\\\",\\\"x\\\":920.8947187499986,\\\"y\\\":804.1187400000001}]\",\"armyTargets\":\"[{\\\"ids\\\":[\\\"army-capital-germany\\\"],\\\"ownerIds\\\":[\\\"germany\\\"],\\\"selected\\\":false,\\\"x\\\":32.470393749998266,\\\"y\\\":211.28429849999998},{\\\"ids\\\":[\\\"army-capital-dza\\\"],\\\"ownerIds\\\":[\\\"dza\\\"],\\\"selected\\\":false,\\\"x\\\":-290.48335625000163,\\\"y\\\":669.6703770000001},{\\\"ids\\\":[\\\"army-capital-egy\\\"],\\\"ownerIds\\\":[\\\"egy\\\"],\\\"selected\\\":false,\\\"x\\\":606.0759437499983,\\\"y\\\":862.8228015000001},{\\\"ids\\\":[\\\"army-capital-irn\\\"],\\\"ownerIds\\\":[\\\"irn\\\"],\\\"selected\\\":false,\\\"x\\\":1229.2199687499983,\\\"y\\\":705.5642805},{\\\"ids\\\":[\\\"army-capital-italy\\\"],\\\"ownerIds\\\":[\\\"italy\\\"],\\\"selected\\\":false,\\\"x\\\":11.449656249998043,\\\"y\\\":520.44801},{\\\"ids\\\":[\\\"army-capital-russia\\\"],\\\"ownerIds\\\":[\\\"russia\\\"],\\\"selected\\\":false,\\\"x\\\":785.3385062499983,\\\"y\\\":127.43936249999996},{\\\"ids\\\":[\\\"army-capital-turkey\\\"],\\\"ownerIds\\\":[\\\"turkey\\\"],\\\"selected\\\":false,\\\"x\\\":638.3776187499984,\\\"y\\\":584.2460309999999},{\\\"ids\\\":[\\\"army-capital-ukr\\\"],\\\"ownerIds\\\":[\\\"ukr\\\"],\\\"selected\\\":false,\\\"x\\\":575.1744437499983,\\\"y\\\":276.0024345000001},{\\\"ids\\\":[\\\"army-capital-irq\\\"],\\\"ownerIds\\\":[\\\"irq\\\"],\\\"selected\\\":false,\\\"x\\\":1010.1004562499984,\\\"y\\\":767.9430060000001},{\\\"ids\\\":[\\\"army-capital-poland\\\"],\\\"ownerIds\\\":[\\\"poland\\\"],\\\"selected\\\":false,\\\"x\\\":289.0449812499986,\\\"y\\\":219.98409450000008},{\\\"ids\\\":[\\\"army-capital-isr\\\",\\\"army-capital-jor\\\",\\\"army-capital-psx\\\"],\\\"ownerIds\\\":[\\\"isr\\\",\\\"jor\\\",\\\"psx\\\"],\\\"selected\\\":false,\\\"x\\\":734.0941287852091,\\\"y\\\":814.845748225352},{\\\"ids\\\":[\\\"army-capital-rou\\\"],\\\"ownerIds\\\":[\\\"rou\\\"],\\\"selected\\\":false,\\\"x\\\":433.8835562499986,\\\"y\\\":445.95347100000004},{\\\"ids\\\":[\\\"army-capital-nld\\\"],\\\"ownerIds\\\":[\\\"nld\\\"],\\\"selected\\\":false,\\\"x\\\":-233.0265687500015,\\\"y\\\":208.6203120000001},{\\\"ids\\\":[\\\"army-capital-syr\\\"],\\\"ownerIds\\\":[\\\"syr\\\"],\\\"selected\\\":false,\\\"x\\\":754.8921812499989,\\\"y\\\":763.548189},{\\\"ids\\\":[\\\"army-capital-tun\\\"],\\\"ownerIds\\\":[\\\"tun\\\"],\\\"selected\\\":false,\\\"x\\\":-68.95645625000157,\\\"y\\\":668.066334},{\\\"ids\\\":[\\\"army-capital-bel\\\"],\\\"ownerIds\\\":[\\\"bel\\\"],\\\"selected\\\":false,\\\"x\\\":-250.2980187500018,\\\"y\\\":260.5568190000001},{\\\"ids\\\":[\\\"army-capital-cze\\\"],\\\"ownerIds\\\":[\\\"cze\\\"],\\\"selected\\\":false,\\\"x\\\":67.15661874999887,\\\"y\\\":283.66257300000007},{\\\"ids\\\":[\\\"army-capital-grc\\\"],\\\"ownerIds\\\":[\\\"grc\\\"],\\\"selected\\\":false,\\\"x\\\":361.26660624999806,\\\"y\\\":632.9309819999999},{\\\"ids\\\":[\\\"army-capital-aze\\\"],\\\"ownerIds\\\":[\\\"aze\\\"],\\\"selected\\\":false,\\\"x\\\":1169.3124812499984,\\\"y\\\":570.5225520000001},{\\\"ids\\\":[\\\"army-capital-swe\\\"],\\\"ownerIds\\\":[\\\"swe\\\"],\\\"selected\\\":false,\\\"x\\\":179.9730812499983,\\\"y\\\":8.666281500000025},{\\\"ids\\\":[\\\"army-capital-hun\\\"],\\\"ownerIds\\\":[\\\"hun\\\"],\\\"selected\\\":false,\\\"x\\\":213.64500624999835,\\\"y\\\":359.0352059999999},{\\\"ids\\\":[\\\"army-capital-blr\\\"],\\\"ownerIds\\\":[\\\"blr\\\"],\\\"selected\\\":false,\\\"x\\\":481.150093749999,\\\"y\\\":171.59981100000005},{\\\"ids\\\":[\\\"army-capital-aut\\\"],\\\"ownerIds\\\":[\\\"aut\\\"],\\\"selected\\\":false,\\\"x\\\":127.87995624999826,\\\"y\\\":336.017841},{\\\"ids\\\":[\\\"army-capital-che\\\"],\\\"ownerIds\\\":[\\\"che\\\"],\\\"selected\\\":false,\\\"x\\\":-147.39775625000118,\\\"y\\\":377.1592980000001},{\\\"ids\\\":[\\\"army-capital-bgr\\\"],\\\"ownerIds\\\":[\\\"bgr\\\"],\\\"selected\\\":false,\\\"x\\\":345.81191874999826,\\\"y\\\":497.020578},{\\\"ids\\\":[\\\"army-capital-lbn\\\"],\\\"ownerIds\\\":[\\\"lbn\\\"],\\\"selected\\\":false,\\\"x\\\":730.9828937499987,\\\"y\\\":751.8938820000001},{\\\"ids\\\":[\\\"army-capital-lby\\\"],\\\"ownerIds\\\":[\\\"lby\\\"],\\\"selected\\\":false,\\\"x\\\":33.85954374999869,\\\"y\\\":789.71568},{\\\"ids\\\":[\\\"army-capital-srb\\\"],\\\"ownerIds\\\":[\\\"srb\\\"],\\\"selected\\\":false,\\\"x\\\":254.19101874999893,\\\"y\\\":439.9582334999999},{\\\"ids\\\":[\\\"army-capital-dnk\\\"],\\\"ownerIds\\\":[\\\"dnk\\\"],\\\"selected\\\":false,\\\"x\\\":-0.6715437500014332,\\\"y\\\":115.20328200000006},{\\\"ids\\\":[\\\"army-capital-tkm\\\"],\\\"ownerIds\\\":[\\\"tkm\\\"],\\\"selected\\\":false,\\\"x\\\":1481.4948062499984,\\\"y\\\":636.089802},{\\\"ids\\\":[\\\"army-capital-fin\\\"],\\\"ownerIds\\\":[\\\"fin\\\"],\\\"selected\\\":false,\\\"x\\\":386.81861874999873,\\\"y\\\":-14.176479000000086},{\\\"ids\\\":[\\\"army-capital-nor\\\"],\\\"ownerIds\\\":[\\\"nor\\\"],\\\"selected\\\":false,\\\"x\\\":-52.46226875000127,\\\"y\\\":-4.348636500000055},{\\\"ids\\\":[\\\"army-capital-svk\\\"],\\\"ownerIds\\\":[\\\"svk\\\"],\\\"selected\\\":false,\\\"x\\\":153.42645624999847,\\\"y\\\":333.7363905},{\\\"ids\\\":[\\\"army-capital-hrv\\\"],\\\"ownerIds\\\":[\\\"hrv\\\"],\\\"selected\\\":false,\\\"x\\\":113.69314374999885,\\\"y\\\":407.7839129999999},{\\\"ids\\\":[\\\"army-capital-geo\\\"],\\\"ownerIds\\\":[\\\"geo\\\"],\\\"selected\\\":false,\\\"x\\\":1022.9508812499984,\\\"y\\\":524.4436274999999},{\\\"ids\\\":[\\\"army-capital-mda\\\"],\\\"ownerIds\\\":[\\\"mda\\\"],\\\"selected\\\":false,\\\"x\\\":520.7479562499985,\\\"y\\\":371.0191604999999},{\\\"ids\\\":[\\\"army-capital-mkd\\\"],\\\"ownerIds\\\":[\\\"mkd\\\"],\\\"selected\\\":false,\\\"x\\\":286.98488124999824,\\\"y\\\":517.074738},{\\\"ids\\\":[\\\"army-capital-bih\\\"],\\\"ownerIds\\\":[\\\"bih\\\"],\\\"selected\\\":false,\\\"x\\\":187.85831874999843,\\\"y\\\":463.38421650000004},{\\\"ids\\\":[\\\"army-capital-lva\\\"],\\\"ownerIds\\\":[\\\"lva\\\"],\\\"selected\\\":false,\\\"x\\\":371.69310624999866,\\\"y\\\":82.7138039999999},{\\\"ids\\\":[\\\"army-capital-alb\\\"],\\\"ownerIds\\\":[\\\"alb\\\"],\\\"selected\\\":false,\\\"x\\\":234.24679374999891,\\\"y\\\":539.2234274999998},{\\\"ids\\\":[\\\"army-capital-arm\\\"],\\\"ownerIds\\\":[\\\"arm\\\"],\\\"selected\\\":false,\\\"x\\\":1015.0231187499983,\\\"y\\\":570.9021899999999},{\\\"ids\\\":[\\\"army-capital-ltu\\\"],\\\"ownerIds\\\":[\\\"ltu\\\"],\\\"selected\\\":false,\\\"x\\\":406.8108812499983,\\\"y\\\":144.64406399999993},{\\\"ids\\\":[\\\"army-capital-svn\\\"],\\\"ownerIds\\\":[\\\"svn\\\"],\\\"selected\\\":false,\\\"x\\\":71.0405687499989,\\\"y\\\":399.5485215},{\\\"ids\\\":[\\\"army-capital-mlt\\\"],\\\"ownerIds\\\":[\\\"mlt\\\"],\\\"selected\\\":false,\\\"x\\\":68.84029374999875,\\\"y\\\":693.7708695},{\\\"ids\\\":[\\\"army-capital-mne\\\"],\\\"ownerIds\\\":[\\\"mne\\\"],\\\"selected\\\":false,\\\"x\\\":218.78580624999893,\\\"y\\\":504.3561405000001},{\\\"ids\\\":[\\\"army-capital-cyp\\\"],\\\"ownerIds\\\":[\\\"cyp\\\"],\\\"selected\\\":false,\\\"x\\\":653.5535312499984,\\\"y\\\":719.2471875},{\\\"ids\\\":[\\\"army-capital-est\\\"],\\\"ownerIds\\\":[\\\"est\\\"],\\\"selected\\\":false,\\\"x\\\":398.6484437499988,\\\"y\\\":14.171757000000014},{\\\"ids\\\":[\\\"army-capital-lux\\\"],\\\"ownerIds\\\":[\\\"lux\\\"],\\\"selected\\\":false,\\\"x\\\":-197.55993125000168,\\\"y\\\":296.8629630000001}]\",\"frameP50Ms\":17,\"frameP95Ms\":17,\"frameP99Ms\":17,\"frameSamples\":61,\"over50Ms\":0,\"over100Ms\":0,\"cullCommits\":59,\"pathBuilds\":3295,\"pathBuildMs\":415.8521580011584,\"rasterBuilds\":193,\"rasterMs\":1484.7919280005153,\"rasterBytes\":33015744,\"rasterTiles\":15,\"tapToActionMs\":40.12729199999012,\"tapToScreenMs\":163.03949799999828,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399995466,\"frameMs\":16.666666000001285,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":1012,\"visibleArmies\":48,\"visibleLabels\":17,\"simulationMs\":125.96933100000024,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":75,\"geographyRenders\":53,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1297.751699000015}"
+        ]
+      }
+    },
+    {
+      "scenario": "08-panel-open",
+      "before": {
+        "pssKiB": 362601,
+        "scenario": "08-panel-open",
+        "elapsedSeconds": 11.441911945000015,
+        "reportedFrames": 217,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 97.0,
+        "histogramP95Ms": 117.0,
+        "histogramP99Ms": 133.0,
+        "p50Ms": 104.343526,
+        "p95Ms": 122.159883,
+        "p99Ms": 134.076629,
+        "jankPercent": 93.55,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 23.82,
+              "maxCpuPercent": 28.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_1": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_2": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_3": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_4": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 2.0
+            },
+            "binder:2207_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 48.64,
+              "maxCpuPercent": 58.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 3.27,
+              "maxCpuPercent": 7.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":69,\"pathBuilds\":3295,\"pathBuildMs\":234.23931899986928,\"rasterBuilds\":211,\"rasterMs\":1770.7419239999726,\"rasterBytes\":33015744,\"rasterTiles\":15,\"tapToActionMs\":32.936054999998305,\"tapToScreenMs\":165.27866799999902,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399998905,\"frameMs\":16.66666600000033,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":964,\"visibleArmies\":46,\"visibleLabels\":15,\"simulationMs\":125.71539700000721,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":85,\"geographyRenders\":64,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1276.2607749999952}"
+        ]
+      },
+      "after": {
+        "pssKiB": 365134,
+        "scenario": "08-panel-open",
+        "elapsedSeconds": 11.365866020999988,
+        "reportedFrames": 216,
+        "frames": 118,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 101.0,
+        "histogramP95Ms": 129.0,
+        "histogramP99Ms": 133.0,
+        "p50Ms": 105.670837,
+        "p95Ms": 133.532044,
+        "p99Ms": 150.119089,
+        "jankPercent": 92.59,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 27.45,
+              "maxCpuPercent": 32.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_2": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_3": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_4": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_7": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 2.0
+            },
+            "binder:3621_8": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 45.73,
+              "maxCpuPercent": 55.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 3.45,
+              "maxCpuPercent": 8.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"countryTargets\":\"[{\\\"countryId\\\":\\\"germany\\\",\\\"x\\\":-258.7632375000005,\\\"y\\\":236.57852549999996},{\\\"countryId\\\":\\\"ukr\\\",\\\"x\\\":404.7264439585172,\\\"y\\\":302.72145617851106},{\\\"countryId\\\":\\\"turkey\\\",\\\"x\\\":524.4757301505292,\\\"y\\\":608.5899106661404},{\\\"countryId\\\":\\\"irn\\\",\\\"x\\\":1126.4062499999993,\\\"y\\\":761.1904245000001},{\\\"countryId\\\":\\\"fin\\\",\\\"x\\\":239.8695374999991,\\\"y\\\":-86.38039049999998},{\\\"countryId\\\":\\\"uzb\\\",\\\"x\\\":1293.2523812499994,\\\"y\\\":479.78001374999997},{\\\"countryId\\\":\\\"afg\\\",\\\"x\\\":1441.8095874999995,\\\"y\\\":793.0754280000001}]\",\"armyTargets\":\"[{\\\"ids\\\":[\\\"army-capital-alb\\\"],\\\"ownerIds\\\":[\\\"alb\\\"],\\\"selected\\\":false,\\\"x\\\":110.59054374999971,\\\"y\\\":539.2234274999998},{\\\"ids\\\":[\\\"army-capital-arm\\\"],\\\"ownerIds\\\":[\\\"arm\\\"],\\\"selected\\\":false,\\\"x\\\":891.366868749999,\\\"y\\\":570.9021899999999},{\\\"ids\\\":[\\\"army-capital-aut\\\"],\\\"ownerIds\\\":[\\\"aut\\\"],\\\"selected\\\":false,\\\"x\\\":4.223706249999054,\\\"y\\\":336.017841},{\\\"ids\\\":[\\\"army-capital-aze\\\"],\\\"ownerIds\\\":[\\\"aze\\\"],\\\"selected\\\":false,\\\"x\\\":1045.656231249999,\\\"y\\\":570.5225520000001},{\\\"ids\\\":[\\\"army-capital-bgr\\\"],\\\"ownerIds\\\":[\\\"bgr\\\"],\\\"selected\\\":false,\\\"x\\\":222.1556687499991,\\\"y\\\":497.020578},{\\\"ids\\\":[\\\"army-capital-bih\\\"],\\\"ownerIds\\\":[\\\"bih\\\"],\\\"selected\\\":false,\\\"x\\\":64.20206874999928,\\\"y\\\":463.38421650000004},{\\\"ids\\\":[\\\"army-capital-blr\\\"],\\\"ownerIds\\\":[\\\"blr\\\"],\\\"selected\\\":false,\\\"x\\\":357.49384374999977,\\\"y\\\":171.59981100000005},{\\\"ids\\\":[\\\"army-capital-che\\\"],\\\"ownerIds\\\":[\\\"che\\\"],\\\"selected\\\":false,\\\"x\\\":-271.0540062500004,\\\"y\\\":377.1592980000001},{\\\"ids\\\":[\\\"army-capital-cyp\\\"],\\\"ownerIds\\\":[\\\"cyp\\\"],\\\"selected\\\":false,\\\"x\\\":529.8972812499992,\\\"y\\\":719.2471875},{\\\"ids\\\":[\\\"army-capital-cze\\\"],\\\"ownerIds\\\":[\\\"cze\\\"],\\\"selected\\\":false,\\\"x\\\":-56.499631250000334,\\\"y\\\":283.66257300000007},{\\\"ids\\\":[\\\"army-capital-dnk\\\"],\\\"ownerIds\\\":[\\\"dnk\\\"],\\\"selected\\\":false,\\\"x\\\":-124.32779375000064,\\\"y\\\":115.20328200000006},{\\\"ids\\\":[\\\"army-capital-egy\\\"],\\\"ownerIds\\\":[\\\"egy\\\"],\\\"selected\\\":false,\\\"x\\\":482.419693749999,\\\"y\\\":862.8228015000001},{\\\"ids\\\":[\\\"army-capital-est\\\"],\\\"ownerIds\\\":[\\\"est\\\"],\\\"selected\\\":false,\\\"x\\\":274.9921937499997,\\\"y\\\":14.171757000000014},{\\\"ids\\\":[\\\"army-capital-fin\\\"],\\\"ownerIds\\\":[\\\"fin\\\"],\\\"selected\\\":false,\\\"x\\\":263.16236874999953,\\\"y\\\":-14.176479000000086},{\\\"ids\\\":[\\\"army-capital-geo\\\"],\\\"ownerIds\\\":[\\\"geo\\\"],\\\"selected\\\":false,\\\"x\\\":899.2946312499992,\\\"y\\\":524.4436274999999},{\\\"ids\\\":[\\\"army-capital-germany\\\"],\\\"ownerIds\\\":[\\\"germany\\\"],\\\"selected\\\":false,\\\"x\\\":-91.18585625000094,\\\"y\\\":211.28429849999998},{\\\"ids\\\":[\\\"army-capital-grc\\\"],\\\"ownerIds\\\":[\\\"grc\\\"],\\\"selected\\\":false,\\\"x\\\":237.61035624999892,\\\"y\\\":632.9309819999999},{\\\"ids\\\":[\\\"army-capital-hrv\\\"],\\\"ownerIds\\\":[\\\"hrv\\\"],\\\"selected\\\":false,\\\"x\\\":-9.96310625000035,\\\"y\\\":407.7839129999999},{\\\"ids\\\":[\\\"army-capital-hun\\\"],\\\"ownerIds\\\":[\\\"hun\\\"],\\\"selected\\\":false,\\\"x\\\":89.98875624999914,\\\"y\\\":359.0352059999999},{\\\"ids\\\":[\\\"army-capital-irn\\\"],\\\"ownerIds\\\":[\\\"irn\\\"],\\\"selected\\\":false,\\\"x\\\":1105.5637187499992,\\\"y\\\":705.5642805},{\\\"ids\\\":[\\\"army-capital-irq\\\"],\\\"ownerIds\\\":[\\\"irq\\\"],\\\"selected\\\":false,\\\"x\\\":886.4442062499992,\\\"y\\\":767.9430060000001},{\\\"ids\\\":[\\\"army-capital-isr\\\"],\\\"ownerIds\\\":[\\\"isr\\\"],\\\"selected\\\":false,\\\"x\\\":590.248131249999,\\\"y\\\":814.6573169999999},{\\\"ids\\\":[\\\"army-capital-italy\\\"],\\\"ownerIds\\\":[\\\"italy\\\"],\\\"selected\\\":false,\\\"x\\\":-112.20659375000105,\\\"y\\\":520.44801},{\\\"ids\\\":[\\\"army-capital-jor\\\"],\\\"ownerIds\\\":[\\\"jor\\\"],\\\"selected\\\":false,\\\"x\\\":633.8362562499997,\\\"y\\\":818.6181585},{\\\"ids\\\":[\\\"army-capital-lbn\\\"],\\\"ownerIds\\\":[\\\"lbn\\\"],\\\"selected\\\":false,\\\"x\\\":607.3266437499994,\\\"y\\\":751.8938820000001},{\\\"ids\\\":[\\\"army-capital-lby\\\"],\\\"ownerIds\\\":[\\\"lby\\\"],\\\"selected\\\":false,\\\"x\\\":-89.79670625000051,\\\"y\\\":789.71568},{\\\"ids\\\":[\\\"army-capital-ltu\\\"],\\\"ownerIds\\\":[\\\"ltu\\\"],\\\"selected\\\":false,\\\"x\\\":283.1546312499991,\\\"y\\\":144.64406399999993},{\\\"ids\\\":[\\\"army-capital-lva\\\"],\\\"ownerIds\\\":[\\\"lva\\\"],\\\"selected\\\":false,\\\"x\\\":248.03685624999946,\\\"y\\\":82.7138039999999},{\\\"ids\\\":[\\\"army-capital-mda\\\"],\\\"ownerIds\\\":[\\\"mda\\\"],\\\"selected\\\":false,\\\"x\\\":397.09170624999933,\\\"y\\\":371.0191604999999},{\\\"ids\\\":[\\\"army-capital-mkd\\\"],\\\"ownerIds\\\":[\\\"mkd\\\"],\\\"selected\\\":false,\\\"x\\\":163.32863124999903,\\\"y\\\":517.074738},{\\\"ids\\\":[\\\"army-capital-mlt\\\"],\\\"ownerIds\\\":[\\\"mlt\\\"],\\\"selected\\\":false,\\\"x\\\":-54.815956250000454,\\\"y\\\":693.7708695},{\\\"ids\\\":[\\\"army-capital-mne\\\"],\\\"ownerIds\\\":[\\\"mne\\\"],\\\"selected\\\":false,\\\"x\\\":95.12955624999972,\\\"y\\\":504.3561405000001},{\\\"ids\\\":[\\\"army-capital-nor\\\"],\\\"ownerIds\\\":[\\\"nor\\\"],\\\"selected\\\":false,\\\"x\\\":-176.11851875000048,\\\"y\\\":-4.348636500000055},{\\\"ids\\\":[\\\"army-capital-poland\\\"],\\\"ownerIds\\\":[\\\"poland\\\"],\\\"selected\\\":false,\\\"x\\\":165.3887312499994,\\\"y\\\":219.98409450000008},{\\\"ids\\\":[\\\"army-capital-psx\\\"],\\\"ownerIds\\\":[\\\"psx\\\"],\\\"selected\\\":false,\\\"x\\\":599.235868749999,\\\"y\\\":807.1254150000001},{\\\"ids\\\":[\\\"army-capital-rou\\\"],\\\"ownerIds\\\":[\\\"rou\\\"],\\\"selected\\\":false,\\\"x\\\":310.2273062499994,\\\"y\\\":445.95347100000004},{\\\"ids\\\":[\\\"army-capital-russia\\\"],\\\"ownerIds\\\":[\\\"russia\\\"],\\\"selected\\\":false,\\\"x\\\":661.6822562499992,\\\"y\\\":127.43936249999996},{\\\"ids\\\":[\\\"army-capital-srb\\\"],\\\"ownerIds\\\":[\\\"srb\\\"],\\\"selected\\\":false,\\\"x\\\":130.53476874999978,\\\"y\\\":439.9582334999999},{\\\"ids\\\":[\\\"army-capital-svk\\\"],\\\"ownerIds\\\":[\\\"svk\\\"],\\\"selected\\\":false,\\\"x\\\":29.77020624999932,\\\"y\\\":333.7363905},{\\\"ids\\\":[\\\"army-capital-svn\\\"],\\\"ownerIds\\\":[\\\"svn\\\"],\\\"selected\\\":false,\\\"x\\\":-52.61568125000031,\\\"y\\\":399.5485215},{\\\"ids\\\":[\\\"army-capital-swe\\\"],\\\"ownerIds\\\":[\\\"swe\\\"],\\\"selected\\\":false,\\\"x\\\":56.316831249999154,\\\"y\\\":8.666281500000025},{\\\"ids\\\":[\\\"army-capital-syr\\\"],\\\"ownerIds\\\":[\\\"syr\\\"],\\\"selected\\\":false,\\\"x\\\":631.2359312499997,\\\"y\\\":763.548189},{\\\"ids\\\":[\\\"army-capital-tkm\\\"],\\\"ownerIds\\\":[\\\"tkm\\\"],\\\"selected\\\":false,\\\"x\\\":1357.8385562499993,\\\"y\\\":636.089802},{\\\"ids\\\":[\\\"army-capital-tun\\\"],\\\"ownerIds\\\":[\\\"tun\\\"],\\\"selected\\\":false,\\\"x\\\":-192.61270625000077,\\\"y\\\":668.066334},{\\\"ids\\\":[\\\"army-capital-turkey\\\"],\\\"ownerIds\\\":[\\\"turkey\\\"],\\\"selected\\\":false,\\\"x\\\":514.7213687499992,\\\"y\\\":584.2460309999999},{\\\"ids\\\":[\\\"army-capital-ukr\\\"],\\\"ownerIds\\\":[\\\"ukr\\\"],\\\"selected\\\":false,\\\"x\\\":451.51819374999917,\\\"y\\\":276.0024345000001}]\",\"frameP50Ms\":17,\"frameP95Ms\":17,\"frameP99Ms\":17,\"frameSamples\":61,\"over50Ms\":0,\"over100Ms\":0,\"cullCommits\":64,\"pathBuilds\":3295,\"pathBuildMs\":415.8521580011584,\"rasterBuilds\":208,\"rasterMs\":1687.3683890004177,\"rasterBytes\":33015744,\"rasterTiles\":15,\"tapToActionMs\":40.12729199999012,\"tapToScreenMs\":163.03949799999828,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399995466,\"frameMs\":16.666666000001285,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":969,\"visibleArmies\":46,\"visibleLabels\":15,\"simulationMs\":125.96933100000024,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":82,\"geographyRenders\":59,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1297.751699000015}"
+        ]
+      }
+    },
+    {
+      "scenario": "09-panel-closed",
+      "before": {
+        "pssKiB": 347581,
+        "scenario": "09-panel-closed",
+        "elapsedSeconds": 11.377894438999988,
+        "reportedFrames": 235,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 93.0,
+        "histogramP95Ms": 113.0,
+        "histogramP99Ms": 121.0,
+        "p50Ms": 94.333061,
+        "p95Ms": 116.935445,
+        "p99Ms": 130.413385,
+        "jankPercent": 89.79,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 21.09,
+              "maxCpuPercent": 27.0
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_2": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_3": {
+              "meanCpuPercent": 0.27,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_4": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_5": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:2207_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:2207_7": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.73,
+              "maxCpuPercent": 5.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 46.73,
+              "maxCpuPercent": 58.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 3.45,
+              "maxCpuPercent": 8.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"cullCommits\":75,\"pathBuilds\":3295,\"pathBuildMs\":234.23931899986928,\"rasterBuilds\":211,\"rasterMs\":1770.7419239999726,\"rasterBytes\":33015744,\"rasterTiles\":15,\"tapToActionMs\":32.936054999998305,\"tapToScreenMs\":165.27866799999902,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399998905,\"frameMs\":16.66666600000033,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":936,\"visibleArmies\":46,\"visibleLabels\":16,\"simulationMs\":125.71539700000721,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":90,\"geographyRenders\":69,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1276.2607749999952}"
+        ]
+      },
+      "after": {
+        "pssKiB": 352406,
+        "scenario": "09-panel-closed",
+        "elapsedSeconds": 11.370860917999948,
+        "reportedFrames": 201,
+        "frames": 118,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 93.0,
+        "histogramP95Ms": 150.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 102.468536,
+        "p95Ms": 200.160585,
+        "p99Ms": 250.576647,
+        "jankPercent": 91.04,
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "DefaultDispatch": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Expo": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FinalizerWatchd": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HeapTaskDaemon": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "HybridData": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InsetsAnimation": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "InteractionJank": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Jit": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "Profile": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ReferenceQueueD": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 21.12,
+              "maxCpuPercent": 29.7
+            },
+            "Signal": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "SurfaceSyncGrou": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_2": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_3": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_4": {
+              "meanCpuPercent": 0.18,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_5": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_6": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "binder:3621_7": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            },
+            "binder:3621_8": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hades": {
+              "meanCpuPercent": 0.72,
+              "maxCpuPercent": 3.0
+            },
+            "hwuiTask0": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "hwuiTask1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 51.48,
+              "maxCpuPercent": 72.8
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 4.07,
+              "maxCpuPercent": 11.0
+            },
+            "mqt_v_native": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "ncFunctionQueue": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "perfetto_hprof_": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "pool-2-thread-1": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            }
+          }
+        },
+        "mapPaint": null,
+        "cameraTrace": [
+          "DOMINION_CAMERA {\"countryTargets\":\"[{\\\"countryId\\\":\\\"kaz\\\",\\\"x\\\":1392.865087499999,\\\"y\\\":311.00182199999995},{\\\"countryId\\\":\\\"ukr\\\",\\\"x\\\":265.16785020851756,\\\"y\\\":302.72145617851106},{\\\"countryId\\\":\\\"turkey\\\",\\\"x\\\":384.91713640052956,\\\"y\\\":608.5899106661404},{\\\"countryId\\\":\\\"irn\\\",\\\"x\\\":986.8476562499998,\\\"y\\\":761.1904245000001},{\\\"countryId\\\":\\\"poland\\\",\\\"x\\\":-123.08970625000049,\\\"y\\\":203.3041725000001},{\\\"countryId\\\":\\\"fin\\\",\\\"x\\\":100.31094374999944,\\\"y\\\":-86.38039049999998},{\\\"countryId\\\":\\\"uzb\\\",\\\"x\\\":1153.6937874999999,\\\"y\\\":479.78001374999997},{\\\"countryId\\\":\\\"afg\\\",\\\"x\\\":1302.2509937499997,\\\"y\\\":793.0754280000001}]\",\"armyTargets\":\"[{\\\"ids\\\":[\\\"army-capital-afg\\\"],\\\"ownerIds\\\":[\\\"afg\\\"],\\\"selected\\\":false,\\\"x\\\":1532.7625749999997,\\\"y\\\":732.9728399999999},{\\\"ids\\\":[\\\"army-capital-alb\\\"],\\\"ownerIds\\\":[\\\"alb\\\"],\\\"selected\\\":false,\\\"x\\\":-28.96804999999995,\\\"y\\\":539.2234274999998},{\\\"ids\\\":[\\\"army-capital-arm\\\"],\\\"ownerIds\\\":[\\\"arm\\\"],\\\"selected\\\":false,\\\"x\\\":751.8082749999994,\\\"y\\\":570.9021899999999},{\\\"ids\\\":[\\\"army-capital-aut\\\"],\\\"ownerIds\\\":[\\\"aut\\\"],\\\"selected\\\":false,\\\"x\\\":-135.3348875000006,\\\"y\\\":336.017841},{\\\"ids\\\":[\\\"army-capital-aze\\\"],\\\"ownerIds\\\":[\\\"aze\\\"],\\\"selected\\\":false,\\\"x\\\":906.0976374999996,\\\"y\\\":570.5225520000001},{\\\"ids\\\":[\\\"army-capital-bgr\\\"],\\\"ownerIds\\\":[\\\"bgr\\\"],\\\"selected\\\":false,\\\"x\\\":82.59707499999945,\\\"y\\\":497.020578},{\\\"ids\\\":[\\\"army-capital-bih\\\"],\\\"ownerIds\\\":[\\\"bih\\\"],\\\"selected\\\":false,\\\"x\\\":-75.35652500000037,\\\"y\\\":463.38421650000004},{\\\"ids\\\":[\\\"army-capital-blr\\\"],\\\"ownerIds\\\":[\\\"blr\\\"],\\\"selected\\\":false,\\\"x\\\":217.9352500000001,\\\"y\\\":171.59981100000005},{\\\"ids\\\":[\\\"army-capital-cyp\\\"],\\\"ownerIds\\\":[\\\"cyp\\\"],\\\"selected\\\":false,\\\"x\\\":390.33868749999954,\\\"y\\\":719.2471875},{\\\"ids\\\":[\\\"army-capital-cze\\\"],\\\"ownerIds\\\":[\\\"cze\\\"],\\\"selected\\\":false,\\\"x\\\":-196.058225,\\\"y\\\":283.66257300000007},{\\\"ids\\\":[\\\"army-capital-dnk\\\"],\\\"ownerIds\\\":[\\\"dnk\\\"],\\\"selected\\\":false,\\\"x\\\":-263.8863875000003,\\\"y\\\":115.20328200000006},{\\\"ids\\\":[\\\"army-capital-egy\\\"],\\\"ownerIds\\\":[\\\"egy\\\"],\\\"selected\\\":false,\\\"x\\\":342.86109999999934,\\\"y\\\":862.8228015000001},{\\\"ids\\\":[\\\"army-capital-est\\\"],\\\"ownerIds\\\":[\\\"est\\\"],\\\"selected\\\":false,\\\"x\\\":135.4336,\\\"y\\\":14.171757000000014},{\\\"ids\\\":[\\\"army-capital-fin\\\"],\\\"ownerIds\\\":[\\\"fin\\\"],\\\"selected\\\":false,\\\"x\\\":123.60377499999981,\\\"y\\\":-14.176479000000086},{\\\"ids\\\":[\\\"army-capital-geo\\\"],\\\"ownerIds\\\":[\\\"geo\\\"],\\\"selected\\\":false,\\\"x\\\":759.7360374999995,\\\"y\\\":524.4436274999999},{\\\"ids\\\":[\\\"army-capital-germany\\\"],\\\"ownerIds\\\":[\\\"germany\\\"],\\\"selected\\\":false,\\\"x\\\":-230.7444500000006,\\\"y\\\":211.28429849999998},{\\\"ids\\\":[\\\"army-capital-grc\\\"],\\\"ownerIds\\\":[\\\"grc\\\"],\\\"selected\\\":false,\\\"x\\\":98.0517624999992,\\\"y\\\":632.9309819999999},{\\\"ids\\\":[\\\"army-capital-hrv\\\"],\\\"ownerIds\\\":[\\\"hrv\\\"],\\\"selected\\\":false,\\\"x\\\":-149.5217,\\\"y\\\":407.7839129999999},{\\\"ids\\\":[\\\"army-capital-hun\\\"],\\\"ownerIds\\\":[\\\"hun\\\"],\\\"selected\\\":false,\\\"x\\\":-49.56983750000052,\\\"y\\\":359.0352059999999},{\\\"ids\\\":[\\\"army-capital-irn\\\"],\\\"ownerIds\\\":[\\\"irn\\\"],\\\"selected\\\":false,\\\"x\\\":966.0051249999997,\\\"y\\\":705.5642805},{\\\"ids\\\":[\\\"army-capital-irq\\\"],\\\"ownerIds\\\":[\\\"irq\\\"],\\\"selected\\\":false,\\\"x\\\":746.8856124999995,\\\"y\\\":767.9430060000001},{\\\"ids\\\":[\\\"army-capital-isr\\\"],\\\"ownerIds\\\":[\\\"isr\\\"],\\\"selected\\\":false,\\\"x\\\":450.68953749999935,\\\"y\\\":814.6573169999999},{\\\"ids\\\":[\\\"army-capital-italy\\\"],\\\"ownerIds\\\":[\\\"italy\\\"],\\\"selected\\\":false,\\\"x\\\":-251.7651875000007,\\\"y\\\":520.44801},{\\\"ids\\\":[\\\"army-capital-jor\\\"],\\\"ownerIds\\\":[\\\"jor\\\"],\\\"selected\\\":false,\\\"x\\\":494.27766249999996,\\\"y\\\":818.6181585},{\\\"ids\\\":[\\\"army-capital-lbn\\\"],\\\"ownerIds\\\":[\\\"lbn\\\"],\\\"selected\\\":false,\\\"x\\\":467.7680499999998,\\\"y\\\":751.8938820000001},{\\\"ids\\\":[\\\"army-capital-lby\\\"],\\\"ownerIds\\\":[\\\"lby\\\"],\\\"selected\\\":false,\\\"x\\\":-229.35530000000017,\\\"y\\\":789.71568},{\\\"ids\\\":[\\\"army-capital-ltu\\\"],\\\"ownerIds\\\":[\\\"ltu\\\"],\\\"selected\\\":false,\\\"x\\\":143.59603749999945,\\\"y\\\":144.64406399999993},{\\\"ids\\\":[\\\"army-capital-lva\\\"],\\\"ownerIds\\\":[\\\"lva\\\"],\\\"selected\\\":false,\\\"x\\\":108.4782624999998,\\\"y\\\":82.7138039999999},{\\\"ids\\\":[\\\"army-capital-mda\\\"],\\\"ownerIds\\\":[\\\"mda\\\"],\\\"selected\\\":false,\\\"x\\\":257.5331124999997,\\\"y\\\":371.0191604999999},{\\\"ids\\\":[\\\"army-capital-mkd\\\"],\\\"ownerIds\\\":[\\\"mkd\\\"],\\\"selected\\\":false,\\\"x\\\":23.770037499999376,\\\"y\\\":517.074738},{\\\"ids\\\":[\\\"army-capital-mlt\\\"],\\\"ownerIds\\\":[\\\"mlt\\\"],\\\"selected\\\":false,\\\"x\\\":-194.3745500000001,\\\"y\\\":693.7708695},{\\\"ids\\\":[\\\"army-capital-mne\\\"],\\\"ownerIds\\\":[\\\"mne\\\"],\\\"selected\\\":false,\\\"x\\\":-44.429037499999936,\\\"y\\\":504.3561405000001},{\\\"ids\\\":[\\\"army-capital-poland\\\"],\\\"ownerIds\\\":[\\\"poland\\\"],\\\"selected\\\":false,\\\"x\\\":25.83013749999975,\\\"y\\\":219.98409450000008},{\\\"ids\\\":[\\\"army-capital-psx\\\"],\\\"ownerIds\\\":[\\\"psx\\\"],\\\"selected\\\":false,\\\"x\\\":459.6772749999993,\\\"y\\\":807.1254150000001},{\\\"ids\\\":[\\\"army-capital-rou\\\"],\\\"ownerIds\\\":[\\\"rou\\\"],\\\"selected\\\":false,\\\"x\\\":170.66871249999974,\\\"y\\\":445.95347100000004},{\\\"ids\\\":[\\\"army-capital-russia\\\"],\\\"ownerIds\\\":[\\\"russia\\\"],\\\"selected\\\":false,\\\"x\\\":522.1236624999996,\\\"y\\\":127.43936249999996},{\\\"ids\\\":[\\\"army-capital-srb\\\"],\\\"ownerIds\\\":[\\\"srb\\\"],\\\"selected\\\":false,\\\"x\\\":-9.023824999999874,\\\"y\\\":439.9582334999999},{\\\"ids\\\":[\\\"army-capital-svk\\\"],\\\"ownerIds\\\":[\\\"svk\\\"],\\\"selected\\\":false,\\\"x\\\":-109.78838750000034,\\\"y\\\":333.7363905},{\\\"ids\\\":[\\\"army-capital-svn\\\"],\\\"ownerIds\\\":[\\\"svn\\\"],\\\"selected\\\":false,\\\"x\\\":-192.17427499999997,\\\"y\\\":399.5485215},{\\\"ids\\\":[\\\"army-capital-swe\\\"],\\\"ownerIds\\\":[\\\"swe\\\"],\\\"selected\\\":false,\\\"x\\\":-83.2417625000005,\\\"y\\\":8.666281500000025},{\\\"ids\\\":[\\\"army-capital-syr\\\"],\\\"ownerIds\\\":[\\\"syr\\\"],\\\"selected\\\":false,\\\"x\\\":491.6773375,\\\"y\\\":763.548189},{\\\"ids\\\":[\\\"army-capital-tjk\\\"],\\\"ownerIds\\\":[\\\"tjk\\\"],\\\"selected\\\":false,\\\"x\\\":1515.0548499999995,\\\"y\\\":616.1233065},{\\\"ids\\\":[\\\"army-capital-tkm\\\"],\\\"ownerIds\\\":[\\\"tkm\\\"],\\\"selected\\\":false,\\\"x\\\":1218.2799624999996,\\\"y\\\":636.089802},{\\\"ids\\\":[\\\"army-capital-turkey\\\"],\\\"ownerIds\\\":[\\\"turkey\\\"],\\\"selected\\\":false,\\\"x\\\":375.16277499999956,\\\"y\\\":584.2460309999999},{\\\"ids\\\":[\\\"army-capital-ukr\\\"],\\\"ownerIds\\\":[\\\"ukr\\\"],\\\"selected\\\":false,\\\"x\\\":311.9595999999995,\\\"y\\\":276.0024345000001},{\\\"ids\\\":[\\\"army-capital-uzb\\\"],\\\"ownerIds\\\":[\\\"uzb\\\"],\\\"selected\\\":false,\\\"x\\\":1530.3599124999992,\\\"y\\\":536.1312615}]\",\"frameP50Ms\":17,\"frameP95Ms\":17,\"frameP99Ms\":17,\"frameSamples\":61,\"over50Ms\":0,\"over100Ms\":0,\"cullCommits\":70,\"pathBuilds\":3295,\"pathBuildMs\":415.8521580011584,\"rasterBuilds\":208,\"rasterMs\":1687.3683890004177,\"rasterBytes\":33015744,\"rasterTiles\":15,\"tapToActionMs\":40.12729199999012,\"tapToScreenMs\":163.03949799999828,\"renderFeatures\":3093,\"benchmarkError\":\"\",\"benchmarkTicks\":0,\"uiFps\":60.000002399995466,\"frameMs\":16.666666000001285,\"slowFrames\":0,\"cameraUpdates\":0,\"visibleProvinces\":908,\"visibleArmies\":46,\"visibleLabels\":14,\"simulationMs\":125.96933100000024,\"networkMs\":0,\"networkBytes\":0,\"mapRenders\":88,\"geographyRenders\":65,\"preset\":\"Balanced\",\"geometryLod\":\"high\",\"sceneMs\":1297.751699000015}"
+        ]
+      }
+    }
+  ],
+  "originalBaselineRuntimeMetadata": "c758ed78f586268809a2184a064ae7fdadc5156e",
+  "baselineRun": 37971350100,
+  "candidateRuntime": "056a5b2d0c23276e31d407d21b371ec19436d52a",
+  "candidateRun": 37985852569,
+  "artifactId": 11645185137,
+  "acceptance": "REJECTED: pinch histogram p95 550 -> 700ms exceeds unchanged 10% threshold; stages 3\u201311 remain blocked"
+}

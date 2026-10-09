@@ -1,3 +1,13 @@
+# Dominion Expansion 2.0 — release NOT READY
+
+Stages 0–2 checkpoint only; stages 3–11 remain scoped in EXPANSION_SCOPE.md. Existing main/runtime release below is historical. Main remains `dbb354ab038713c3e54b969b34a6fc88bf2de11f`; expansion work is isolated on `expansion-v2` in the same repository.
+
+First checkpoint run `37985852569` built a non-debuggable standalone release and passed 181 JS / strict TS / 10 Python / 10,000 ticks with ten exact restores. Its APK was downloaded, CRC/SHA/bundle/production-endpoint checked; metadata and retained certificate are recorded in EXPANSION_STAGE12_APK_VERIFICATION.json. Nevertheless, the paired native pinch gate FAILED (550 → 700ms full-histogram P95), and full native smoke is incomplete. Therefore that binary is REJECTED for delivery, regardless of successful packaging. No Expansion 2.0 APK has been published or delivered.
+
+Next revision requires a fresh build, unchanged performance gates, real army/order/deselect/Back/foreign-flag UX and complete native soak before stage 3. Final version/name **Dominion-grand-strategy-v2-release.apk** will be assigned only after all requested systems, migrations, authority and integration gates are complete. No physical Redmi FPS is claimed.
+
+---
+
 # Dominion 0.8.1 (9) — verified standalone camera and illustrated release
 
 Only `elcin31/grand-strategy-multiplayer` and its existing dedicated backend. Tested source/main commit `47b0db4f8b220e9ea89998afaac035239b64f5e0`; final workflow **37971350100**. Recovery checkpoint `0a23da0`, illustration integration `6c292db`, release/QA `47b0db4` are separate logical commits. The saved camera implementation `61b77f4` and all earlier optimization/game systems were continued rather than replaced.

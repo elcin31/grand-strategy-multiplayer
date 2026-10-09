@@ -1,7 +1,7 @@
 import {getWorldFlag} from '../world/catalog';
 import type {CountryGlyph} from '../map/countryTargets';
 import {memo,useMemo} from 'react';
-import {Group,Picture,Skia,PaintStyle,type SkFont} from '@shopify/react-native-skia';
+import {Group,Picture,Skia,PaintStyle,type SkFont,type SkImage} from '@shopify/react-native-skia';
 import type {GameState} from '../types/game';
 import {TILT} from '../map/camera';
 import type {MapFeature} from '../map/geometry';
@@ -10,8 +10,19 @@ import type {DisplayArmy} from '../map/markerBudget';
 import type {CityLabelPlacement,CountryLabel} from '../map/scene';
 import {constructionProgress} from '../map/overlays';
 import {GRAPHICS,type GraphicsPreset} from '../map/settings';
-const flags=new Map<string,ReturnType<typeof Skia.SVG.MakeFromString>>();
-function countryFlag(id:string){if(!flags.has(id)){const source=getWorldFlag(id);flags.set(id,source?Skia.SVG.MakeFromString(source):null);}return flags.get(id);}
+const flags=new Map<string,SkImage|null>();
+function countryFlag(id:string){
+  if(!flags.has(id)){
+    const source=getWorldFlag(id),svg=source?Skia.SVG.MakeFromString(source):null;
+    // Transferable CPU raster, like map tiles. Retaining a GPU offscreen image
+    // here would cross render contexts; replaying detailed SVGs costs each pan.
+    const surface=svg?Skia.Surface.Make(60,42):null;
+    let image:SkImage|null=null;
+    if(surface&&svg){const canvas=surface.getCanvas();canvas.clear(Skia.Color('transparent'));canvas.drawSvg(svg,60,42);surface.flush();image=surface.makeImageSnapshot();surface.dispose();}
+    flags.set(id,image);
+  }
+  return flags.get(id);
+}
 const compact=(value:number)=>value>=1e6?(value/1e6).toFixed(1)+'M':Math.round(value/1e3)+'K';
 function paint(color:string,stroke=0){const p=Skia.Paint();p.setAntiAlias(true);p.setColor(Skia.Color(color));if(stroke){p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(stroke);}return p;}
 interface Props {state:GameState;zoom:number;preset:GraphicsPreset;labels:CountryLabel[];countryGlyphs:CountryGlyph[];cities:MapCity[];cityLabels:Map<string,CityLabelPlacement>;counters:DisplayArmy[];countryId:string|null;armyId?:string|null;cityId?:string|null;provinceId:string|null;geometry:ReadonlyMap<string,MapFeature>;visible:ReadonlySet<string>;font:SkFont;counterFont:SkFont;nationFont:SkFont;labelBudget:number}
@@ -35,7 +46,7 @@ export const MapMarkerLayer=memo(function MapMarkerLayer(props:Props){
       canvas.drawText(name,-width/2+.7,4.7,paint('#0C1721'),nationFont);canvas.drawText(name,-width/2,4,paint('#F1E6CB'),nationFont);
       canvas.save();canvas.translate(-width/2-25,-8);
       canvas.drawRect(Skia.XYWHRect(-1,-1,22,16),paint('#C6A76A'));
-      const flag=countryFlag(label.countryId);if(flag)canvas.drawSvg(flag,20,14);
+      const flag=countryFlag(label.countryId);if(flag)canvas.drawImageRect(flag,Skia.XYWHRect(0,0,60,42),Skia.XYWHRect(0,0,20,14),paint('#FFFFFF'));
       canvas.restore();canvas.restore();remaining--;
     }
     const ordered=[...cities].sort((a,b)=>Number(b.id===cityId)-Number(a.id===cityId)||Number(b.capital)-Number(a.capital)||b.population-a.population);

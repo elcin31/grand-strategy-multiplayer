@@ -1,0 +1,17 @@
+{
+  "status": "checkpoint only; not Expansion 2.0 final",
+  "runtimeCommit": "056a5b2d0c23276e31d407d21b371ec19436d52a",
+  "runId": 37985852569,
+  "artifactId": 11644161664,
+  "zipBytes": 60879250,
+  "zipSha256": "f59b4e31a9c89ed89321e6e7e1137e145c59c81b3a033db9cd547508fd18b263",
+  "apkBytes": 140959769,
+  "apkSha256": "04d33d959edb6ce67bb79cb07bcf07ca97635da2c19ebdb50a127392dd178b17",
+  "embeddedHermesBytes": 10473624,
+  "package": "com.elcin31.grandstrategymultiplayer",
+  "version": "0.8.1 (9)",
+  "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "signingNote": "Existing sideload certificate retained. CI apksigner verification, binary landscape/non-debuggable checks and backend check PASS. No Play Store signing claim.",
+  "nativeQa": "pending",
+  "assetExpansion": "not started"
+}

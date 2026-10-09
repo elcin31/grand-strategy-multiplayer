@@ -4,6 +4,8 @@ Recovered main: `dbb354ab038713c3e54b969b34a6fc88bf2de11f`; previous tested runt
 
 World unchanged: **195 countries, 2,924 provinces, 5,411 cities**, modern-world-v2, schema12. Backend is the existing dedicated `dfjsnjxnyjspwugjguhq` endpoint. No AssetMind access. Retained Skia raster tiles, path/border caches, culling/LOD/marker budgets and Reanimated camera.
 
+Read-only production recovery confirms project name `grand-strategy-multiplayer`, ACTIVE_HEALTHY, game-room v21 and game-command v23. The retrieved deployed command bundle contains the existing 32KiB input limit, command receipt lookup and `commit_game_command` atomic RPC. No deployment, data mutation or other project access during stages 0–2.
+
 | System | Status against Expansion 2.0 | Actual source / gap |
 |---|---|---|
 | Map/camera | PARTIAL | Retained optimized renderer, coverage commits and native paired evidence; microstutter/frame pacing and physical Redmi verification remain open. |
