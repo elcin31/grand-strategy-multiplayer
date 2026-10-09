@@ -284,7 +284,11 @@ root=hierarchy('foreign-flag-diplomacy');screenshot('foreign-flag-diplomacy')
 assert any(n.get('content-desc')=='Раздел Дипломатия' and n.get('selected')=='true' for n in root.iter('node')), 'Foreign flag did not open diplomacy'
 assert not any(n.get('text')=='СНЯТЬ ВЫБОР' for n in root.iter('node')), 'Foreign flag left the army capturing future map taps'
 set_overlay(False)
-navigate('Армия');root=hierarchy('army-list-after-diplomacy');click_text(root,army_row);time.sleep(1)
+navigate('Армия');root=hierarchy('army-list-after-diplomacy')
+# Recruitment changes the troop count in the army row's label. Re-read the same
+# named province instead of tapping the obsolete pre-recruitment text.
+army_row=next(n.get('text') for n in root.iter('node') if n.get('text','').startswith('Берлин · '))
+click_text(root,army_row);time.sleep(1)
 assert 'Цель:' in read_scrolling('Командир: '), 'Foreign diplomacy cancelled the retained order'
 # Cancel is a separate authoritative command; clear it before inherited scenario checks.
 click_scrolling('Отменить приказ')
