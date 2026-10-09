@@ -9,14 +9,14 @@ from camera_frame_stats import frame_stats,thread_stats
 from map_paint_check import assert_map_painted
 PACKAGE='com.elcin31.grandstrategymultiplayer'
 OUT=Path(os.environ.get('CAMERA_PROFILE_OUT','camera-profile'));OUT.mkdir(exist_ok=True)
-def adb(*args):return subprocess.check_output(['adb',*map(str,args)],text=True,stderr=subprocess.STDOUT)
+def adb(*args,timeout=None):return subprocess.check_output(['adb',*map(str,args)],text=True,stderr=subprocess.STDOUT,timeout=timeout)
 def save_logs():
     try:(OUT/'final-logcat.txt').write_text(adb('logcat','-d'))
     except (OSError,subprocess.CalledProcessError):pass
 atexit.register(save_logs)
 def hierarchy(name):
-    adb('shell','uiautomator','dump','/sdcard/camera.xml')
-    text=adb('shell','cat','/sdcard/camera.xml');(OUT/(name+'.xml')).write_text(text)
+    adb('shell','uiautomator','dump','/sdcard/camera.xml',timeout=20)
+    text=adb('shell','cat','/sdcard/camera.xml',timeout=10);(OUT/(name+'.xml')).write_text(text)
     return ET.fromstring(text)
 def click(root,label):
     node=next(n for n in root.iter('node') if n.get('text')==label or n.get('content-desc')==label)
@@ -62,13 +62,28 @@ def sample(name,kind=None):
     logs=adb('logcat','-d');(OUT/(name+'-logcat.txt')).write_text(logs)
     shot(name)
     painted=assert_map_painted(OUT/(name+'.png')) if name in ('01-idle','04-world-pan','05-local-labels-armies') else None
-    tree=hierarchy(name+'-metrics')
-    trace=[n.get('content-desc') for n in tree.iter('node') if n.get('content-desc','').startswith('DOMINION_CAMERA ')]
-    pid=adb('shell','pidof',PACKAGE).strip()
-    if pid:(OUT/(name+'-threads.txt')).write_text(adb('shell','top','-H','-b','-n','1','-p',pid))
-    pss=re.search(r'TOTAL PSS:\s*(\d+)',mem)
-    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,**frame_stats(raw),'cpuThreads':thread_stats((OUT/(name+'-threads-active.txt')).read_text(),pid),'mapPaint':painted,'cameraTrace':trace or re.findall(r'DOMINION_CAMERA[^\n]*',logs)}
-    results.append(result);(OUT/'results.json').write_text(json.dumps({'note':'Software SwiftShader API35 native frames, offline paused campaign. Same gestures for both builds; not physical Redmi FPS.','results':results},indent=2));print(json.dumps(result),flush=True)
+    # Completed-frame timestamps, PSS and PNG are already captured. Persist
+    # them before the optional accessibility diagnostic process can be killed.
+    assert not re.search(r'FATAL EXCEPTION|Fatal signal|JavascriptException',logs), 'Fatal runtime error in '+name
+    current_pid=adb('shell','pidof',PACKAGE).strip()
+    assert current_pid==pid and pid, 'Game process disappeared/restarted in '+name
+    (OUT/(name+'-threads.txt')).write_text(adb('shell','top','-H','-b','-n','1','-p',pid))
+    pss=re.search(r'TOTAL PSS:\\s*(\\d+)',mem)
+    fallback=re.findall(r'DOMINION_CAMERA[^\\n]*',logs)[-1:]
+    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,**frame_stats(raw),'cpuThreads':thread_stats((OUT/(name+'-threads-active.txt')).read_text(),pid),'mapPaint':painted,'cameraTrace':fallback,'diagnosticError':None}
+    results.append(result)
+    def persist(): (OUT/'results.json').write_text(json.dumps({'note':'Software SwiftShader API35 native frames, offline paused campaign. Same gestures for both builds; not physical Redmi FPS. Accessibility diagnostics are auxiliary to the completed-frame capture.','results':results},indent=2))
+    persist()
+    try:
+        tree=hierarchy(name+'-metrics')
+        trace=[n.get('content-desc') for n in tree.iter('node') if n.get('content-desc','').startswith('DOMINION_CAMERA ')]
+        if trace:result['cameraTrace']=trace
+    except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as error:
+        # Do not conceal gameplay death or alter frame/camera thresholds.
+        assert adb('shell','pidof',PACKAGE).strip()==pid, 'Game process died during diagnostics'
+        result['diagnosticError']=str(error)
+        print('Camera accessibility diagnostic unavailable:',name,str(error),flush=True)
+    persist();print(json.dumps(result),flush=True)
 
 adb('install','-r',sys.argv[1]);adb('shell','pm','clear',PACKAGE)
 adb('shell','wm','size','720x1280');adb('shell','wm','density','160')
