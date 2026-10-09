@@ -2,6 +2,11 @@ import type {Camera,Viewport} from './camera';
 import {TILT,visibleBounds} from './camera';
 import {WORLD_WIDTH,WORLD_HEIGHT,type Bounds} from './geometry';
 export const CAMERA_OVERSCAN=288;
+/** Native events are pooled. Capture primitives before React defers the updater. */
+export function viewportLayoutUpdate(event:{nativeEvent:{layout:Viewport}}){
+  const {width,height}=event.nativeEvent.layout;
+  return (previous:Viewport)=>previous.width===width&&previous.height===height?previous:{width,height};
+}
 /** UI-thread containment test. Only escaping prepared coverage crosses to JS.
  * Clip ocean overscan to the world: a fully visible world needs no pan recull. */
 export function cameraNeedsCoverage(camera:Camera,prepared:Camera,viewport:Viewport):boolean {

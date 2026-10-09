@@ -1,6 +1,6 @@
 import {MapRasterLayer} from './MapRasterLayer';
 import {MapMarkerLayer} from './MapMarkerLayer';
-import {cameraCoverage,cameraNeedsCoverage} from '../map/cameraCoverage';
+import {cameraCoverage,cameraNeedsCoverage,viewportLayoutUpdate} from '../map/cameraCoverage';
 import {budgetArmyMarkers,markerBudgets} from '../map/markerBudget';
 import {countryRenderFeatures,renderFeaturesFor} from '../map/countryRender';
 import {loadPreferences,savePreferences} from '../performance/preferences';
@@ -203,7 +203,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   useEffect(()=>{recordMetrics({renderFeatures:renderFeatures.length,visibleProvinces:visible.length,visibleArmies:counters.length,visibleLabels:Math.min(budgets.labels,cityLabels.size+labels.filter(l=>!l.blocked).length+(selectedProvinceId?1:0)),preset,geometryLod,mapRenders:getMetrics().mapRenders+1});});
   const startBenchmark=async()=>{if(benchmarkRunning)return;const token=++benchmarkToken.current,original={x:x.value,y:y.value,zoom:zoom.value},originalMode=mode;setBenchmarkRunning(true);setSettingsOpen(false);resetMetricSamples();recordMetrics({benchmarkError:'',benchmarkTicks:0});try{for(let i=0;i<AVAILABLE_MODES.length;i++){if(token!==benchmarkToken.current)return;setMode(AVAILABLE_MODES[i]!);const target=i%3===0?{x:720,y:300,zoom:.8}:i%3===1?{x:790,y:170,zoom:7}:{x:1000,y:210,zoom:3};x.value=withTiming(target.x,{duration:1800});y.value=withTiming(target.y,{duration:1800});zoom.value=withTiming(target.zoom,{duration:1800});await new Promise(r=>setTimeout(r,2200));}const {prepareBenchmarkState,advanceBenchmark}=await import('../performance/benchmark');let simulation=prepareBenchmarkState(state);for(let i=0;i<12;i++){if(token!==benchmarkToken.current)return;const started=performance.now();simulation=advanceBenchmark(simulation);recordMetrics({simulationMs:performance.now()-started,benchmarkTicks:i+1});await new Promise(r=>setTimeout(r,20));}}catch(error){recordMetrics({benchmarkError:error instanceof Error?error.message:String(error)});}finally{if(token===benchmarkToken.current){animateCamera(original);setMode(originalMode);setBenchmarkRunning(false);}}};
 
-  return <View style={styles.frame} onLayout={e => setViewport(previous=>previous.width===e.nativeEvent.layout.width&&previous.height===e.nativeEvent.layout.height?previous:{width:e.nativeEvent.layout.width,height:e.nativeEvent.layout.height})}>
+  return <View style={styles.frame} onLayout={e => setViewport(viewportLayoutUpdate(e))}>
     <GestureDetector gesture={gestures}>
       <Canvas style={StyleSheet.absoluteFill}>
         <Fill color="#203B48" />
