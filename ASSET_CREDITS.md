@@ -1,5 +1,7 @@
 # Dominion asset provenance
 
+The illustration completion pass reuses the same original portrait atlas for fictional commanders and the same building/military paintings for technology branches and open war panels. Commander visual identity derives from the existing stable ID; it does not add a save field. No extra generated artwork or third-party image was introduced by this completion pass.
+
 ## Original camera-pass artwork — 2026-10-09
 
 Five additional original ImageGen compositions are embedded as six optimized

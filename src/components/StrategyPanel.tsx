@@ -1,4 +1,6 @@
 import {colors,tokens} from '../ui/tokens';
+import {AtlasArt} from './AtlasArt';
+import {BUILDING_ART,TECHNOLOGY_ART} from '../ui/artCatalogue';
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import type { GameCommand, GameState } from '../types/game';
@@ -13,10 +15,12 @@ export function StrategyPanel({ state, playerId, onCommand, initialOpen }: Strat
   return <View style={styles.wrap}>
     <Pressable accessibilityRole="button" style={styles.button} onPress={() => setOpen(!open)}><Text style={styles.title}>Технологии {open ? '▴' : '▾'}</Text></Pressable>
     {open && <View style={styles.card}>
+      <AtlasArt atlas="buildings" index={BUILDING_ART.University} height={84} label="Иллюстрация технологий: университет"/>
       <Text style={styles.text}>{c.research ? `${TECHNOLOGIES[c.research.branch].name}: ${c.research.progress.toFixed(1)} / ${c.research.required} мес. исследования` : 'Выберите исследование. Одновременно доступен один проект.'}</Text>
       <Text style={styles.text}>Университеты и правительство влияют на скорость. При банкротстве работа приостановлена.</Text>
       <ScrollView horizontal contentContainerStyle={styles.row}>
         {TECHNOLOGY_BRANCHES.map(branch => { const q = researchQuote(c, branch); const disabled = !!c.research || q.targetLevel > 5 || c.treasury < q.cost || state.tick < (c.bankruptcyUntilTick ?? 0) || !['running','paused'].includes(state.phase); return <Pressable key={branch} accessibilityRole="button" accessibilityLabel={`Исследовать ${TECHNOLOGIES[branch].name}`} disabled={disabled} style={[styles.option, disabled && styles.disabled]} onPress={() => onCommand({ type: 'START_RESEARCH', playerId, branch })}>
+          <AtlasArt atlas="buildings" index={TECHNOLOGY_ART[branch]} width={52} height={44} label={'Иллюстрация исследования: '+TECHNOLOGIES[branch].name}/>
           <Text style={styles.title}>{TECHNOLOGIES[branch].name} · {techLevel(c, branch)}/5</Text><Text style={styles.text}>{TECHNOLOGIES[branch].effect}</Text><Text style={styles.text}>{q.targetLevel > 5 ? 'Максимум' : `$${q.cost}M · ${q.months} базовых мес.`}</Text>
         </Pressable>; })}
       </ScrollView>

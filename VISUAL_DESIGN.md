@@ -1,5 +1,11 @@
 # Dominion — historical atlas visual update
 
+## Camera-pass illustration coverage (2026-10-09)
+
+Original painted ruler/government/religion/building atlases and the port loading scene are integrated. The completion pass additionally reuses the ready portrait atlas for real commander assignment cards and the assigned-commander row, with a stable visual seed derived only from commander ID. Research mounts the university scene and a relevant building miniature for each of the five authoritative branches. Open war/peace panels reuse the military painting. Existing country/menu/campaign/loading/economy/diplomacy/army paintings remain. All images are outside the map canvas and mount only with their active panel or expanded section; no new image files, eager preload or per-pan decoding.
+
+Commands, costs, assignment permissions, research progression, war/peace decisions and save data keep their existing authoritative implementations. Native acceptance must show actual commander assignment/portrait, research illustration and research completion in the final versioned APK, alongside existing ruler/building/government/religion assertions.
+
 ## Recovery and references (2026-10-09)
 Base: origin/main 9dc0dec, accepted v4 runtime a9df239. 195 countries, 2,924 gameplay provinces, 7,214 cities. Existing Skia renderer, LOD, batching, camera worklets, staged startup, deterministic AI scheduling and authority remain the foundation.
 

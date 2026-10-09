@@ -1,4 +1,16 @@
-# Camera / map pass — final release validation in progress (2026-10-09)
+# Illustration completion — final 0.8.1 release in preparation (2026-10-09)
+
+Recovered main and the saved camera work are now preserved on main at `0a23da07cdcb7244c51c53e6e27b9518cbb0b281`; exact recovered runtime `61b77f4f4eb03fa01b710c9d34ee306a5359012d`. Local unpublished duplicate baseline/checkpoint commits are retained by recovery tags; no source optimization was discarded. Recovery status table: `RECOVERY_AUDIT_CAMERA_2026-10-09.md`.
+
+Code audit found remaining illustration gaps in commander cards, technologies and the open war panel. Ready original portraits/building/military paintings now fill these gaps, using stable commander-ID visual seeds and lazy active-panel mounting. No new image bytes, map changes, backend changes, save fields or gameplay rules. React/native component review, strict TS, 175 JS, 10 Python, 15-art hashes and unchanged renderer/backend diffs PASS locally.
+
+The original 0.8.0 candidate has build, 10k simulation and paired native camera PASS; its full smoke is still running. New small panel integrations require the final 0.8.1 APK and native commander assignment/portrait/technology assertions. The previous 0.8.0 binary is a checked intermediate, not the final delivery for this reopened task. Preserve its evidence; do not repeat generation or renderer implementation.
+
+Next exact task: save the illustration integration and versioned release QA as separate main commits, run final standalone 0.8.1 (9) gates, inspect PNGs/frame data/soak, verify and attach `Dominion-camera-optimized-illustrated.apk`. Publisher must wait for the exact accepted run and then verify public bytes. Keep main at the tested runtime until the publisher's HEAD guard completes. Physical Redmi acceptance stays open; final delivery ends this update.
+
+---
+
+# Camera / map pass — final 0.8.0 candidate validation in progress (2026-10-09)
 
 Runtime candidate `61b77f4f4eb03fa01b710c9d34ee306a5359012d` on camera-fix, release workflow `37962664267`. Recovered main `0ea39eca80dac8d68d379968f3a7275b874b56ae`. Only this Grand Strategy repository/existing backend used; no backend deployment or production-data writes. User authorized the reopened camera symptom, illustration expansion, release build and direct APK delivery; older stop checkpoints below are historical.
 
