@@ -1,6 +1,6 @@
 # VISUAL UPDATE — CITY/RENDER WORK COMPLETE, RELEASE PENDING (2026-10-09)
 
-Recovery from main 9dc0dec; visual shell/art commit fbf959f. Original Skia renderer/LOD/worklets/AI schedule retained. Original six paintings integrated as nine optimized WebP variants (1,370,604 bytes); actual RIFF/hash verification passes, including economy art correction. Unified compact historical interface, GPU map/army/label redesign, lazy menu→campaign shell implemented. No new mechanics.
+Recovery from main 9dc0dec; visual shell/art commit 16b0520. Original Skia renderer/LOD/worklets/AI schedule retained. Original six paintings integrated as nine optimized WebP variants (1,370,604 bytes); actual RIFF/hash verification passes, including economy art correction. Unified compact historical interface, GPU map/army/label redesign, lazy menu→campaign shell implemented. No new mechanics.
 
 Cities: 7,214 → 5,411 (24.993% reduction). 195 capitals, 2,225 regional centers, all 2,924 provinces and 195 countries preserved. Urban population 2,332,963,370 and country/province total 7,632,252,811 exact. Stable retained IDs; removed cities map into same-province retained centers. Schema 12 migration retains ownership/development/fractional-growth reserve, validates before mutation; local old save retained as byte-exact .before-city-v12.backup. Dynamic snapshots explicitly retain literal city links for older catalog compatibility. No saves deleted.
 
@@ -8,7 +8,7 @@ Tier-specific city spatial queries, immutable viewport catalogue reuse, marker b
 
 Strict TS + 167 JS tests PASS; 3 Python tests PASS; world/map benchmarks PASS; optimized art verifier PASS. Backend game-room v21 / game-command v23 deployed to dfjsnjxnyjspwugjguhq, existing custom authentication unchanged. Additive backup migration applied: all 29 existing rooms have byte-exact JSON/compressed backups; RLS remains enabled and service-only. Advisor reports informational no-policy tables by intentional service-only design, no new security errors. Local live HTTP QA blocked by network policy; use scoped GitHub backend QA, never report local HTTP as passed.
 
-Next exact operation: publish city/performance commit 3991cbd and CI/version 0.7.0 (7) commit on visual-update; await release build, 10k simulation and native visual/30-minute smoke; review screenshots and fix failures; clean exact QA room IDs; download/extract/verify real Dominion-visual-update-release.apk; publish final reports and deliver APK. CI not yet started; no visual release accepted yet. Only this repo/existing backend used; AssetMind untouched.
+Next exact operation: publish city/performance commit dc92084 and CI/version 0.7.0 (7) commit on visual-update; await release build, 10k simulation and native visual/30-minute smoke; review screenshots and fix failures; clean exact QA room IDs; download/extract/verify real Dominion-visual-update-release.apk; publish final reports and deliver APK. Published runtime HEAD 7d00b2fd86bf3cf3b40c84e23608719e84f62e65. Android run 37911320195: host gates green, release build and 10k simulation in progress. Backend run 37911320238: input guards pass, live world QA in progress. No visual release accepted yet. Only this repo/existing backend used; AssetMind untouched.
 
 ---
 
