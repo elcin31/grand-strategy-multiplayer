@@ -1,0 +1,74 @@
+[
+  {
+    "path": "assets/art/main-menu-low.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 67754,
+    "sha256": "9bc65757256dca1471f3bcb6529fd4a1fbcea5023c4356543affb49a9452bf96",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion on 2026-10-09"
+  },
+  {
+    "path": "assets/art/main-menu-high.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 221928,
+    "sha256": "448159aa08c30193c20878498e29c1b1f7f624ac8e15fef7ed4dd6e7ad262488",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion on 2026-10-09"
+  },
+  {
+    "path": "assets/art/campaign-low.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 108074,
+    "sha256": "e0966871209db0bdf234762f22196b7ad5dae47976a49dd8f5a99890036cfe71",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion on 2026-10-09"
+  },
+  {
+    "path": "assets/art/campaign-high.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 334892,
+    "sha256": "523b217eda3d15ff3a4fee14fc6bd3adb9d0c669ed3d2da3528203769d0ab284",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion on 2026-10-09"
+  },
+  {
+    "path": "assets/art/military-panel.webp",
+    "width": 640,
+    "height": 360,
+    "bytes": 53818,
+    "sha256": "f1de8fde7e4b8c942a0e9c2976c93a2e3eb7b7c3de6d9f10da09f69b4c85344e",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion on 2026-10-09"
+  },
+  {
+    "path": "assets/art/diplomacy-panel.webp",
+    "width": 640,
+    "height": 360,
+    "bytes": 49080,
+    "sha256": "c01c065950e83a28d0dae1112514b731875c78a4025718bd66d05c38f4e5a853",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion on 2026-10-09"
+  },
+  {
+    "path": "assets/art/economy-panel.webp",
+    "width": 640,
+    "height": 360,
+    "bytes": 74266,
+    "sha256": "d131cb0af8303f7919fc397b8e90d68abe74f3c5ca69334ec5650e9294742283",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion on 2026-10-09"
+  },
+  {
+    "path": "assets/art/loading-low.webp",
+    "width": 960,
+    "height": 540,
+    "bytes": 106168,
+    "sha256": "1b1f5efed45e702e421a62361e546cf821293b7beebf44c33d1154512a47435a",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion on 2026-10-09"
+  },
+  {
+    "path": "assets/art/loading-high.webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 354624,
+    "sha256": "9bad5025dc2576e3c00ff53a004c498a751d0eed5196f0344b8565ab78cad123",
+    "source": "Original OpenAI ImageGen artwork commissioned for Dominion on 2026-10-09"
+  }
+]

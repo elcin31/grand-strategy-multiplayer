@@ -1,3 +1,6 @@
+import {HistoricalArt} from './HistoricalArt';
+import {LeaderPortrait,Crest} from './Heraldry';
+import {colors,tokens} from '../ui/tokens';
 import type {Section} from '../ui/landscape';
 import { StabilityPanel } from './StabilityPanel';
 import { WarPanel } from './WarPanel';
@@ -61,6 +64,7 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
 
   return (
     <View style={styles.wrap}>
+      {(section==='Military'||section==='Diplomacy'||section==='Economy')&&<View style={{overflow:'hidden',borderWidth:1,borderColor:colors.border}}><HistoricalArt name={section==='Military'?'military':section==='Diplomacy'?'diplomacy':'economy'}/><View style={{padding:10,flexDirection:'row',alignItems:'center',gap:10}}><Crest/><Text style={{fontFamily:'serif',fontSize:20,color:colors.parchment}}>{section==='Military'?'Военный совет':section==='Diplomacy'?'Дипломатический корпус':'Государственная казна'}</Text></View></View>}
       {section==='Country'&&<View style={styles.card}>
         <View style={styles.header}>
           <View>
@@ -69,7 +73,7 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
           </View>
           <View style={styles.dateBadge}><Text style={styles.dateText}>{String(state.month).padStart(2, '0')}/{state.year}</Text></View>
         </View>
-        {ruler && <View style={styles.rulerRow}><View style={[styles.rulerPortrait,{backgroundColor:['#526E75','#765F70','#6E7455','#756448','#516481','#7A6252'][ruler.portraitSeed%6]}]}><Text style={styles.rulerInitials}>{ruler.name.split(/\s+/).map(part=>part[0]).slice(0,2).join('')}</Text></View><View style={{flex:1,minWidth:0}}><Text style={styles.rulerLabel}>ВЫМЫШЛЕННЫЙ ПРАВИТЕЛЬ · {ruler.age}</Text><Text style={styles.rulerName}>{ruler.name}</Text><Text style={styles.rulerDetails}>{ruler.ideology} · {ruler.aiPersonality} · дипломатия {ruler.diplomaticSkill}</Text></View></View>}
+        {ruler && <View style={styles.rulerRow}><LeaderPortrait seed={ruler.portraitSeed}/><View style={{flex:1,minWidth:0}}><Text style={styles.rulerLabel}>ВЫМЫШЛЕННЫЙ ПРАВИТЕЛЬ · {ruler.age}</Text><Text style={styles.rulerName}>{ruler.name}</Text><Text style={styles.rulerDetails}>{ruler.ideology} · {ruler.aiPersonality} · дипломатия {ruler.diplomaticSkill}</Text></View></View>}
         <View style={styles.metrics}>
           <Metric label="Казна" value={state.dataset ? currency(nation.treasury) : `$${compact(nation.treasury)}M`} />
           <Metric label={budget ? 'Баланс / мес.' : 'Доход'} value={budget ? (budget.monthlyBalance >= 0 ? '+' : '')+currency(budget.monthlyBalance) : `+$${compact(nation.income)}M`} />
@@ -90,19 +94,19 @@ export function GamePanel({ focusedArmyId,focusedCityId,state, playerId, selecte
       {section==='Economy'&&budget && <Pressable accessibilityRole="button" onPress={() => { setEconomyOpen(!economyOpen); setGovernmentOpen(false); setReligionOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Экономика {economyOpen ? '▴' : '▾'}</Text></Pressable>}
       {economyOpen && budget && <View style={styles.card}>
         <Text style={styles.eyebrow}>МЕСЯЧНЫЙ БЮДЖЕТ</Text>
-        <Text style={styles.hint}>Налоги: {nation.taxRate}% · {currency(budget.taxIncome)}</Text>
-        <Text style={styles.hint}>Производство зданий: {currency(budget.productionIncome)}</Text>
-        <Text style={styles.hint}>Управление: {currency(budget.administrationMaintenance)}</Text>
-        <Text style={styles.hint}>Торговля: {currency(budget.tradeIncome)}</Text>
+        <Text style={[styles.hint,{paddingVertical:8,borderBottomWidth:1,borderBottomColor:colors.border,fontVariant:['tabular-nums']}]}>Налоги: {nation.taxRate}% · {currency(budget.taxIncome)}</Text>
+        <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Производство зданий: {currency(budget.productionIncome)}</Text>
+        <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Управление: {currency(budget.administrationMaintenance)}</Text>
+        <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Торговля: {currency(budget.tradeIncome)}</Text>
         {state.provinces.some(p => p.resourceDeposit) && <>
           <Text style={styles.hint}>Ресурсы: {currency(budget.resourceIncome)} / мес.</Text>
           {resources.filter(r => r.units > 0).map(r => <Text key={r.type} style={styles.owner}>{RESOURCES[r.type].name}: {r.units.toFixed(1)} ед. · {currency(r.revenue)}/мес.</Text>)}
           <Text style={styles.hint}>Игровые месторождения. Выпуск автоматически продаётся по фиксированным игровым ценам; это не реальные запасы или рыночные котировки.</Text>
         </>}
-        <Text style={styles.hint}>Содержание армии: {currency(budget.armyMaintenance)}</Text>
-        <Text style={styles.hint}>Содержание зданий: {currency(budget.buildingMaintenance)}</Text>
-        <Text style={styles.hint}>Проценты: {currency(budget.interest)} · 0.5% долга / мес.</Text>
-        <Text style={styles.hint}>Баланс: {currency(budget.monthlyBalance)} / мес.</Text>
+        <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Содержание армии: {currency(budget.armyMaintenance)}</Text>
+        <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Содержание зданий: {currency(budget.buildingMaintenance)}</Text>
+        <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Проценты: {currency(budget.interest)} · 0.5% долга / мес.</Text>
+        <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Баланс: {currency(budget.monthlyBalance)} / мес.</Text>
         <View style={styles.recruitRow}>
           {[Math.max(MIN_TAX_RATE, (nation.taxRate ?? 30)-5), Math.min(MAX_TAX_RATE, (nation.taxRate ?? 30)+5)].map((rate,i)=><Pressable accessibilityRole="button" key={i} disabled={!economicActionsEnabled || rate===nation.taxRate} style={[styles.secondaryButton, rate===nation.taxRate && styles.disabled]} onPress={()=>onCommand({type:'SET_TAX_RATE',playerId,taxRate:rate})}><Text style={styles.secondaryText}>Налоги {i===0?'−5':'+5'}%</Text></Pressable>)}
         </View>
@@ -282,30 +286,30 @@ function Metric({ label, value }: { label: string; value: string }) {
 
 const styles = StyleSheet.create({
   wrap: { gap: 12 },
-  govCurrent: { color: '#E5ECF7', fontSize: 14, fontWeight: '800' },
-  govOption: { width: 210, backgroundColor: '#152136', borderRadius: 12, padding: 12, gap: 7, borderWidth: 1, borderColor: '#263650' },
+  govCurrent: { color: colors.parchment, fontSize: 14, fontWeight: '800' },
+  govOption: { width: 210, backgroundColor: '#152136', borderRadius:tokens.radius.panel, padding: 12, gap: 7, borderWidth: 1, borderColor: '#263650' },
   govSelected: { borderColor: '#91B8DE' },
-  govName: { color: '#E5ECF7', fontSize: 12, fontWeight: '800' },
+  govName: { color: colors.parchment, fontSize: 12, fontWeight: '800' },
   govDetails: { color: '#90A0B8', fontSize: 10, lineHeight: 15 },
-  card: { backgroundColor: '#111A2A', borderRadius: 22, padding: 16, borderWidth: 1, borderColor: '#202C40', gap: 13 },
+  card: { backgroundColor: colors.surface, borderRadius:tokens.radius.panel, padding: 16, borderWidth: 1, borderColor: colors.raised, gap: 13 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  rulerRow: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: '#0C1422', borderRadius: 12, padding: 10 },
+  rulerRow: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: colors.inset, borderRadius:tokens.radius.panel, padding: 10 },
   rulerPortrait: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center' },
-  rulerInitials: { color: '#F7F9FC', fontSize: 13, fontWeight: '900' },
-  rulerLabel: { color: '#8290A8', fontSize: 8, fontWeight: '900', letterSpacing: 0.4 },
-  rulerName: { color: '#F7F9FC', fontSize: 13, fontWeight: '800', marginTop: 2 },
-  rulerDetails: { color: '#8290A8', fontSize: 9, marginTop: 2 },
+  rulerInitials: { color: colors.parchment, fontSize: 13, fontWeight: '900' },
+  rulerLabel: { color: colors.muted, fontSize: 8, fontWeight: '900', letterSpacing: 0.4 },
+  rulerName: { color: colors.parchment, fontSize: 13, fontWeight: '800', marginTop: 2 },
+  rulerDetails: { color: colors.muted, fontSize: 9, marginTop: 2 },
   eyebrow: { color: '#7E8DA7', fontSize: 10, letterSpacing: 1.1, fontWeight: '900' },
-  title: { color: '#F7F9FC', fontSize: 20, fontWeight: '900', marginTop: 4 },
-  dateBadge: { backgroundColor: '#18243A', paddingHorizontal: 11, paddingVertical: 8, borderRadius: 12 },
+  title: { fontFamily:tokens.typography.display, color: colors.parchment, fontSize: 20, fontWeight: '900', marginTop: 4 },
+  dateBadge: { backgroundColor: '#18243A', paddingHorizontal: 11, paddingVertical: 8, borderRadius:tokens.radius.panel },
   dateText: { color: '#C7D5ED', fontWeight: '900', fontSize: 11 },
   metrics: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  metric: { width: '47%', backgroundColor: '#0C1422', borderRadius: 14, padding: 12 },
+  metric: { width: '47%', backgroundColor: colors.inset, borderRadius:tokens.radius.panel, padding: 12 },
   metricLabel: { color: '#718199', fontSize: 10, fontWeight: '800' },
-  metricValue: { color: '#F7F9FC', fontSize: 16, fontWeight: '900', marginTop: 4 },
+  metricValue: { fontVariant:['tabular-nums'], color: colors.parchment, fontSize: 16, fontWeight: '900', marginTop: 4 },
   speedRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   speedLabel: { color: '#6F7F99', fontSize: 9, fontWeight: '900', marginRight: 3 },
-  speedButton: { flex: 1, alignItems: 'center', paddingVertical: 9, backgroundColor: '#1B2739', borderRadius: 11 },
+  speedButton: { flex: 1, alignItems: 'center', paddingVertical: 9, backgroundColor: colors.raised, borderRadius: 11 },
   speedActive: { backgroundColor: '#E8EEF8' },
   speedText: { color: '#8191A8', fontWeight: '900', fontSize: 11 },
   speedTextActive: { color: '#111827' },
@@ -314,24 +318,24 @@ const styles = StyleSheet.create({
   owner: { color: '#8494AA', fontSize: 11, marginTop: 3 },
   ownerDot: { width: 14, height: 14, borderRadius: 7 },
   recruitRow: { flexDirection: 'row', gap: 8 },
-  primaryButton: { flex: 1.2, backgroundColor: '#E8EEF8', borderRadius: 13, paddingVertical: 12, minHeight:44, alignItems: 'center' },
+  primaryButton: { flex: 1.2, backgroundColor: '#E8EEF8', borderRadius:tokens.radius.panel, paddingVertical: 12, minHeight:44, alignItems: 'center' },
   primaryText: { color: '#0D1522', fontWeight: '900', fontSize: 11 },
-  secondaryButton: { flex: 1, backgroundColor: '#1B2739', borderRadius: 13, paddingVertical: 12, minHeight:44, alignItems: 'center' },
+  secondaryButton: { flex: 1, backgroundColor: colors.raised, borderRadius:tokens.radius.panel, paddingVertical: 12, minHeight:44, alignItems: 'center' },
   secondaryText: { color: '#C2D0E6', fontWeight: '900', fontSize: 11 },
   sectionTitle: { color: '#687991', fontSize: 9, fontWeight: '900', letterSpacing: 0.8, marginTop: 2 },
   muted: { color: '#65758B', fontSize: 12 },
   buildingList: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   buildingPill: { backgroundColor: '#142237', borderRadius: 10, paddingHorizontal: 9, paddingVertical: 6, borderWidth: 1, borderColor: '#263650' },
   buildingPillText: { color: '#B9C9E1', fontSize: 10, fontWeight: '800' },
-  buildOption: { width: 150, backgroundColor: '#152136', borderRadius: 13, padding: 11, borderWidth: 1, borderColor: '#263650', gap: 4 },
-  armyRow: { backgroundColor: '#0C1422', borderRadius: 12, padding: 11, flexDirection: 'row', justifyContent: 'space-between' },
+  buildOption: { width: 150, backgroundColor: '#152136', borderRadius:tokens.radius.panel, padding: 11, borderWidth: 1, borderColor: '#263650', gap: 4 },
+  armyRow: { backgroundColor: colors.inset, borderRadius:tokens.radius.panel, padding: 11, flexDirection: 'row', justifyContent: 'space-between' },
   armyOwner: { color: '#A9BAD2', fontSize: 11, fontWeight: '900' },
-  armyTroops: { color: '#F7F9FC', fontWeight: '900' },
+  armyTroops: { color: colors.parchment, fontWeight: '900' },
   routes: { gap: 8, paddingRight: 4 },
-  route: { width: 145, backgroundColor: '#152136', borderRadius: 13, padding: 11, borderWidth: 1, borderColor: '#263650' },
+  route: { width: 145, backgroundColor: '#152136', borderRadius:tokens.radius.panel, padding: 11, borderWidth: 1, borderColor: '#263650' },
   routeEnemy: { backgroundColor: '#28171C', borderColor: '#5A2932' },
   disabled: { opacity: 0.45 },
-  routeName: { color: '#E5ECF7', fontSize: 11, fontWeight: '800' },
+  routeName: { color: colors.parchment, fontSize: 11, fontWeight: '800' },
   routeAction: { color: '#8EB7EA', fontSize: 9, fontWeight: '900', marginTop: 6 },
   attackText: { color: '#F39AA7' },
   logRow: { borderTopWidth: 1, borderTopColor: '#1D293C', paddingTop: 10 },

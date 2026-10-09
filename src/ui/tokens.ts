@@ -1,0 +1,3 @@
+/** Dominion historical atlas. No runtime blur, mandatory animation or bitmap texture. */
+export const colors={navy:'#101B26',graphite:'#0B1118',surface:'#17222D',inset:'#101821',raised:'#25313C',border:'#61563E',gold:'#C6A76A',parchment:'#E8DCC5',muted:'#ADA58F',burgundy:'#69383E',green:'#91AD92',red:'#C78778',water:'#203B48'} as const;
+export const tokens={colors,spacing:{xs:4,sm:8,md:12,lg:16,xl:24},radius:{panel:4,control:3},typography:{display:'serif',body:'sans-serif',numeric:'sans-serif-medium'},panel:{backgroundColor:colors.surface,borderColor:colors.border,borderWidth:1,borderRadius:4},button:{minHeight:44,borderRadius:3,paddingHorizontal:12,paddingVertical:10},shadow:{color:'#000000',opacity:.18,radius:4},transition:{pressOpacity:.72,duration:140}} as const;

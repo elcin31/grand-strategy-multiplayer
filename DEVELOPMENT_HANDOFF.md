@@ -1,3 +1,15 @@
+# VISUAL UPDATE — IN PROGRESS, 2026-10-09
+
+Recovery from origin/main 9dc0dec completed. Original v4 optimizations retained. Block 0 research and host baseline complete; base 195 countries / 2,924 provinces / 7,214 cities. Raw paired fixture baseline is being recorded under BENCHMARK_VISUAL_BASELINE.json before city data changes.
+
+Block 1/2 implemented: isolated lazy campaign shell, original six WebP paintings, historical menu/pages, unified tokens, compact panels/banner art, vector rulers/heraldry, political palette/army/label redesign. Typecheck and original 161 JS tests pass. Native visual acceptance remains pending; do not describe update as released.
+
+Next exact operation: deterministic 7,214 → 5,411 city selection and schema-12 migration retaining province/country/urban population; then viewport city indexing, paired benchmarks, regression, dedicated backend deployment/QA, Android release and APK download.
+
+Only elcin31/grand-strategy-multiplayer and existing dedicated backend dfjsnjxnyjspwugjguhq authorized; AssetMind untouched. No new game mechanics or backend. CI has not yet run for visual update.
+
+---
+
 # COMPLETED PASS 3 — optimized v4, 2026-10-08
 
 Only elcin31/grand-strategy-multiplayer and dedicated backend dfjsnjxnyjspwugjguhq used. AssetMind untouched. Runtime source a9df2395800d4ec09fdac25fea4cd35975221893; later QA/report changes do not change the accepted APK runtime. All requested v4 changes are summarized in PERFORMANCE_REPORT.md and RELEASE_REPORT.md.

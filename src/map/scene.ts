@@ -1,3 +1,4 @@
+import {politicalColor} from './politicalPalette';
 import {pointsInBounds} from './pointIndex';
 import {visibleEdges,edgeLine} from './edgeIndex';
 import {DIPLOMATIC_COLORS,TERRAIN_COLORS,GOVERNMENT_COLORS,diplomaticCategory,relationColor} from './modes';
@@ -55,7 +56,7 @@ export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map
     const colors = new Map(Object.values(state.countries).map(c => [c.id, palette[GOVERNMENT_TYPES.indexOf(c.governmentType ?? 'Parliamentary Republic')] ?? palette[0]!]));
     return new Map(state.provinces.map(p => [p.id, colors.get(p.ownerId) ?? palette[0]!]));
   }
-  if (mode === 'Political') return new Map(state.provinces.map(p => [p.id, countryFor(state, p.ownerId).color]));
+  if (mode === 'Political') return new Map(state.provinces.map(p => [p.id, politicalColor(countryFor(state, p.ownerId).color)]));
   const values = new Map(state.provinces.map(p => [p.id, mode === 'Development' ? p.development??40 : mode === 'Economy' ? p.income*(1+(p.development??40)/100) : mode === 'Population' ? p.population : mode === 'Military' ? troops.get(p.id) ?? 0 : (countryFor(state,p.ownerId).stability+100-(p.unrest??0))/2]));
   const all = [...values.values()], max = Math.max(1, ...all), min = Math.min(...all);
   const low = [66, 77, 91], high = [197, 161, 89];

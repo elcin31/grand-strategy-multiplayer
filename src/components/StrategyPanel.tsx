@@ -1,3 +1,4 @@
+import {colors,tokens} from '../ui/tokens';
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import type { GameCommand, GameState } from '../types/game';
@@ -22,4 +23,4 @@ export function StrategyPanel({ state, playerId, onCommand, initialOpen }: Strat
     </View>}
   </View>;
 }
-export const styles = StyleSheet.create({wrap:{gap:8}, card:{backgroundColor:'#111A2A',borderRadius:16,padding:14,gap:10},button:{backgroundColor:'#1B2739',borderRadius:13,padding:13,minHeight:44,alignItems:'center'},row:{gap:8},option:{backgroundColor:'#1B2739',padding:12,borderRadius:12,width:200,flexShrink:0,gap:8},title:{color:'#E5ECF7',fontSize:12,fontWeight:'800'},text:{color:'#A0AEC3',fontSize:12,lineHeight:18},disabled:{opacity:.4}});
+export const styles = StyleSheet.create({wrap:{gap:8}, card:{backgroundColor:colors.surface,borderRadius:tokens.radius.panel,padding:14,gap:10},button:{backgroundColor:colors.raised,borderRadius:tokens.radius.panel,padding:13,minHeight:44,alignItems:'center'},row:{gap:8},option:{backgroundColor:colors.raised,padding:12,borderRadius:tokens.radius.panel,width:200,flexShrink:0,gap:8},title: { fontFamily:tokens.typography.display,color:colors.parchment,fontSize:12,fontWeight:'800'},text:{color:colors.muted,fontSize:12,lineHeight:18},disabled:{opacity:.4}});
