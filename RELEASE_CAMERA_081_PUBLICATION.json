@@ -1,0 +1,93 @@
+{
+  "source": "47b0db4f8b220e9ea89998afaac035239b64f5e0",
+  "run": 37971350100,
+  "runConclusion": "success",
+  "publicationJob": 113985697002,
+  "jobs": [
+    {
+      "id": 113958490313,
+      "name": "build-apk",
+      "conclusion": "success"
+    },
+    {
+      "id": 113958490336,
+      "name": "long-simulation",
+      "conclusion": "success"
+    },
+    {
+      "id": 113966823910,
+      "name": "camera-comparison",
+      "conclusion": "success"
+    },
+    {
+      "id": 113966823944,
+      "name": "android-smoke",
+      "conclusion": "success"
+    },
+    {
+      "id": 113985697002,
+      "name": "publish-release",
+      "conclusion": "success"
+    }
+  ],
+  "tag": "v0.8.1-camera-illustrated",
+  "releaseUrl": "https://github.com/elcin31/grand-strategy-multiplayer/releases/tag/v0.8.1-camera-illustrated",
+  "draft": false,
+  "publishedAt": "2026-10-09T19:19:16Z",
+  "publicApkByteComparison": "Publisher unauthenticated curl and cmp against built APK PASS",
+  "assets": [
+    {
+      "name": "camera-native-evidence.zip",
+      "bytes": 6050786,
+      "digest": "sha256:14bc5235ffa720f11f49c03654f7a4ef954e00b735ff99b7549885c8bd4631aa",
+      "url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.8.1-camera-illustrated/camera-native-evidence.zip"
+    },
+    {
+      "name": "camera-release-checksums.txt",
+      "bytes": 216,
+      "digest": "sha256:80bdb7a9e8d926054190a38087753c0180253f1084d77a13903b18be3865b6dc",
+      "url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.8.1-camera-illustrated/camera-release-checksums.txt"
+    },
+    {
+      "name": "CAMERA_NATIVE_PAIRED.json",
+      "bytes": 90472,
+      "digest": "sha256:9b69e8763313c31b408f0005875f57c0f7891153bc45fd5eb30a5447be5c8b4e",
+      "url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.8.1-camera-illustrated/CAMERA_NATIVE_PAIRED.json"
+    },
+    {
+      "name": "Dominion-camera-optimized-illustrated.apk",
+      "bytes": 140949889,
+      "digest": "sha256:7d27c4f7c3e5e6a9ad14549e435559baad960d48d3b84bab9cc264b30436b060",
+      "url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.8.1-camera-illustrated/Dominion-camera-optimized-illustrated.apk"
+    },
+    {
+      "name": "Dominion-camera-optimized-illustrated.zip",
+      "bytes": 59516745,
+      "digest": "sha256:7fdb490f19ef0de42e3c83800b6f4fb4bc721fad5de36dcd62bb4ec7c7e930fb",
+      "url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.8.1-camera-illustrated/Dominion-camera-optimized-illustrated.zip"
+    },
+    {
+      "name": "release-integrity.txt",
+      "bytes": 6513,
+      "digest": "sha256:296b8bd04a78cb118a2b5fd065e6b1aa25a3a8289104eb8d4b4d15d2a3260d0a",
+      "url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.8.1-camera-illustrated/release-integrity.txt"
+    }
+  ],
+  "chatFiles": [
+    {
+      "path": "/workspace/scratch/5dfbb8019a0d/Dominion-camera-optimized-illustrated.apk",
+      "bytes": 140949889,
+      "sha256": "7d27c4f7c3e5e6a9ad14549e435559baad960d48d3b84bab9cc264b30436b060",
+      "saved": true,
+      "verified": "Downloaded build artifact, ZIP CRC, APK extraction, SHA, embedded manifest/Hermes/native/art; exact public asset digest."
+    },
+    {
+      "path": "/workspace/scratch/5dfbb8019a0d/Dominion-camera-optimized-illustrated.zip",
+      "bytes": 60873762,
+      "sha256": "ab7b0524ac9d53ffddee288fac2b9f3b548c848dcae3431b00acee30c50025fb",
+      "saved": true,
+      "verified": "Outer build artifact ZIP CRC/SHA and exact enclosed APK bytes; includes small benchmark/integrity files."
+    }
+  ],
+  "limits": "Public APK-only ZIP differs from the chat build-artifact ZIP; its digest/size are release metadata. User download/installation and physical Redmi smoothness are not yet verified."
+}

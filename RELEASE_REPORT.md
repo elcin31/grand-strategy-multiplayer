@@ -1,4 +1,4 @@
-# Dominion 0.8.1 (9) — binary verified; full native release acceptance in progress
+# Dominion 0.8.1 (9) — verified standalone camera and illustrated release
 
 Only `elcin31/grand-strategy-multiplayer` and its existing dedicated backend. Tested source/main commit `47b0db4f8b220e9ea89998afaac035239b64f5e0`; final workflow **37971350100**. Recovery checkpoint `0a23da0`, illustration integration `6c292db`, release/QA `47b0db4` are separate logical commits. The saved camera implementation `61b77f4` and all earlier optimization/game systems were continued rather than replaced.
 
@@ -17,21 +17,28 @@ Final paired camera job **113966823910 PASS**, evidence **11638014235**; actual 
 
 Original painting reuse completes commander choices/assigned portraits, real technology branches and the open war panel. All ruler/religion/government/building/army/economy/diplomacy/menu/campaign/loading integrations retained; **15 WebPs / 2,188,634 bytes**, lazy active-panel mounting outside map Canvas. No duplicate art generation or added compressed image bytes.
 
-FINAL_081_RELEASE_NATIVE_PENDING
+Final native job **113966823944 PASS**, artifact **11639851749** (28,964,864 bytes, SHA256 `aa2888c401af7f1556a2dba4418030b607aa2137c3643d4f5a3dbd7ca27605a3`) downloaded/CRC/hash checked. Actual commander assignment/painted portrait, university and technology branch images/research, ruler/religion/government/construction/menu/diplomacy/map/layout PNGs independently reviewed. Standalone network-disabled launch, first Singleplayer/Start tap, gameplay commands, four presets/twelve modes/five layouts, density/cutout, detached benchmark and save/process/reboot recovery PASS. Continuous native soak **1,867.83 seconds**, **31 PSS samples / 441,449–525,094 KiB**, zero matched fatal JS/native / ANR / OOM logs. Samples are not continuous memory peaks or proof of universal leak absence. Review: `NATIVE_CAMERA_081_SMOKE_REVIEW.json`. Full distant-target click-to-move combat and a fresh live two-player session are not independently automated by this native harness; shared command/path/combat/authority regressions, the long simulation and inherited accepted unchanged-backend live QA retain that coverage.
 
-FINAL_081_PUBLICATION_DELIVERY_PENDING
+Workflow **37971350100 concluded SUCCESS**: build `113958490313`, long simulation `113958490336`, paired camera `113966823910`, native smoke `113966823944`, publication `113985697002`. Published tag **v0.8.1-camera-illustrated** targets tested runtime `47b0db4`; publication independently downloads the public APK without authentication and compares its bytes with the built binary. Public APK size/digest match the verified local APK. Release: https://github.com/elcin31/grand-strategy-multiplayer/releases/tag/v0.8.1-camera-illustrated . Metadata: `RELEASE_CAMERA_081_PUBLICATION.json`.
 
-Physical Redmi Note12 acceptance stays OPEN: install this exact APK, compare Balanced pan/rapid pan/pinch/world/local/modes and inspect panels. No game-rule or backend rewrite for frame rate. Finish direct APK delivery and await the user's device result.
+Both final files are successfully saved for direct chat attachment:
+
+- `/workspace/scratch/5dfbb8019a0d/Dominion-camera-optimized-illustrated.apk` — 140,949,889 bytes, SHA256 `7d27c4f7c3e5e6a9ad14549e435559baad960d48d3b84bab9cc264b30436b060`.
+- `/workspace/scratch/5dfbb8019a0d/Dominion-camera-optimized-illustrated.zip` — verified outer build artifact, 60,873,762 bytes, SHA256 `ab7b0524ac9d53ffddee288fac2b9f3b548c848dcae3431b00acee30c50025fb`; CRC checked, includes the exact APK plus small integrity/benchmark files. Extract/open the APK as the alternative to the direct APK download.
+
+Permanent public APK: https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.8.1-camera-illustrated/Dominion-camera-optimized-illustrated.apk . The separate public **APK-only ZIP** is https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.8.1-camera-illustrated/Dominion-camera-optimized-illustrated.zip — **59,516,745 bytes**, GitHub digest `7fdb490f19ef0de42e3c83800b6f4fb4bc721fad5de36dcd62bb4ec7c7e930fb`. Its size/digest are release metadata; local CRC review applies to the chat artifact ZIP. These ZIPs contain the same APK but different additional files/compression and must not be compared as identical ZIP bytes. User-side download/installation acceptance remains unverified.
+
+Physical Redmi Note12 acceptance stays OPEN: install this exact APK, compare Balanced pan/rapid pan/pinch/world/local/modes and inspect panels. No game-rule or backend rewrite for frame rate. The final chat response delivers both saved files; next work depends on the user's device result.
 
 ---
 
-# Dominion 0.8.0 (8) — camera fix and illustrated panels (acceptance pending)
+# Dominion 0.8.0 (8) — archived accepted intermediate release
 
 Candidate runtime `61b77f4f4eb03fa01b710c9d34ee306a5359012d`, release workflow `37962664267`. Required standalone release name: `Dominion-camera-fix-illustrated-release.apk`. No Metro/Expo dev server dependency. Main recovery source `0ea39eca80dac8d68d379968f3a7275b874b56ae`; prior comparison APK source `c758ed78f586268809a2184a064ae7fdadc5156e`.
 
 Camera/rendering changes: retained transferable map rasters, cached native paths/border chunks, conservative pre-render coverage/culling, prepared pinch detail, stable selection delegate, label and army budgets/stacking, separate dynamic overlays. Original ruler/building/government/religion cards and additional loading painting; full existing army/economy/diplomacy/campaign/menu illustrations retained. GameState/schema/world/server/transport/gameplay unchanged.
 
-FINAL_BINARY_IDENTITY_PENDING
+Historical acceptance completed: all five jobs in workflow **37962664267** passed, including native smoke/soak and publication. Verified intermediate APK 140,948,773 bytes, SHA256 `097601520271591ef123cd708c2536c3927c70eae6906c8fe087bc31c90c47ee`, embedded Hermes 10,462,624 bytes, non-debuggable 0.8.0(8). Historical evidence: `RELEASE_CAMERA_080_INTEGRITY.txt`, `NATIVE_CAMERA_080_SMOKE_REVIEW.json`, `CAMERA_NATIVE_PAIRED_080.json`. Final delivery is 0.8.1 above, not this intermediate APK.
 
 Required gates: TS, 175 JS, 10 Python, map/world/host camera/visual checks, 15 exact WebP checks, 10,000 ticks and ten exact restores, native API35 smoke/paint/pan/pinch/modes/presets/layout/save/reboot/art checks and 30-minute soak. Final paired native camera quantiles and actual PNGs must be reviewed. Failed intermediate releases are excluded.
 

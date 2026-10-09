@@ -1,0 +1,144 @@
+{
+  "source": "47b0db4f8b220e9ea89998afaac035239b64f5e0",
+  "run": 37971350100,
+  "nativeJob": 113966823944,
+  "artifact": 11639851749,
+  "artifactBytes": 28964864,
+  "artifactSha256": "aa2888c401af7f1556a2dba4418030b607aa2137c3643d4f5a3dbd7ca27605a3",
+  "stressSeconds": 1867.8317611600003,
+  "stressPssSamples": [
+    {
+      "capture": "stress-memory-00",
+      "pssKiB": 490445
+    },
+    {
+      "capture": "stress-memory-01",
+      "pssKiB": 486409
+    },
+    {
+      "capture": "stress-memory-02",
+      "pssKiB": 450649
+    },
+    {
+      "capture": "stress-memory-03",
+      "pssKiB": 455677
+    },
+    {
+      "capture": "stress-memory-04",
+      "pssKiB": 505005
+    },
+    {
+      "capture": "stress-memory-05",
+      "pssKiB": 491624
+    },
+    {
+      "capture": "stress-memory-06",
+      "pssKiB": 474201
+    },
+    {
+      "capture": "stress-memory-07",
+      "pssKiB": 496339
+    },
+    {
+      "capture": "stress-memory-08",
+      "pssKiB": 496265
+    },
+    {
+      "capture": "stress-memory-09",
+      "pssKiB": 489240
+    },
+    {
+      "capture": "stress-memory-10",
+      "pssKiB": 518294
+    },
+    {
+      "capture": "stress-memory-11",
+      "pssKiB": 496346
+    },
+    {
+      "capture": "stress-memory-12",
+      "pssKiB": 466253
+    },
+    {
+      "capture": "stress-memory-13",
+      "pssKiB": 441449
+    },
+    {
+      "capture": "stress-memory-14",
+      "pssKiB": 461692
+    },
+    {
+      "capture": "stress-memory-15",
+      "pssKiB": 502713
+    },
+    {
+      "capture": "stress-memory-16",
+      "pssKiB": 458436
+    },
+    {
+      "capture": "stress-memory-17",
+      "pssKiB": 474269
+    },
+    {
+      "capture": "stress-memory-18",
+      "pssKiB": 477236
+    },
+    {
+      "capture": "stress-memory-19",
+      "pssKiB": 459363
+    },
+    {
+      "capture": "stress-memory-20",
+      "pssKiB": 469719
+    },
+    {
+      "capture": "stress-memory-21",
+      "pssKiB": 442585
+    },
+    {
+      "capture": "stress-memory-22",
+      "pssKiB": 480919
+    },
+    {
+      "capture": "stress-memory-23",
+      "pssKiB": 509337
+    },
+    {
+      "capture": "stress-memory-24",
+      "pssKiB": 471311
+    },
+    {
+      "capture": "stress-memory-25",
+      "pssKiB": 472241
+    },
+    {
+      "capture": "stress-memory-26",
+      "pssKiB": 475830
+    },
+    {
+      "capture": "stress-memory-27",
+      "pssKiB": 522602
+    },
+    {
+      "capture": "stress-memory-28",
+      "pssKiB": 514808
+    },
+    {
+      "capture": "stress-memory-29",
+      "pssKiB": 525094
+    },
+    {
+      "capture": "stress-memory-30",
+      "pssKiB": 503012
+    }
+  ],
+  "activityStartTotalTimeMs": [
+    2029,
+    969,
+    1847
+  ],
+  "menuToCampaignHarnessSeconds": "17.859134866000034\nIncludes UI dump/screenshot and fixed smoke wait; not startup latency.",
+  "fatalLogMatches": [],
+  "nativeChecks": "Network-disabled launch; exactly one Singleplayer and Start tap; actual recruitment/commander assignment/painted portrait, construction, economy, government/religion, research/art, modes/presets/layout/density/cutout, detached benchmark, process/reboot saves and soak PASS.",
+  "limits": "Software API35 SwiftShader; PSS samples are not continuous peaks or proof of leak absence. Activity TotalTime is not full menu/campaign readiness; menu-to-campaign duration includes fixed waits/hierarchy/screenshot overhead. Native does not independently automate full distant-target click-to-move combat or a live two-player server session; reducer/long/live inherited evidence covers those systems."
+}

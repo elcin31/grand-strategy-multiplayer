@@ -2,9 +2,9 @@
 
 Tested runtime `47b0db4f8b220e9ea89998afaac035239b64f5e0`, workflow `37971350100`. Recovery continued the saved implementation and preserved all prior successful performance/gameplay work. The caught pooled-layout crash, missing-map GPU snapshot defect and cold-pinch regression are fixed in the recovered source; failed/missing-geography candidates were not accepted as performance improvements. Final broad map-paint checks and actual political/global/local/pinch/terrain/military/panel PNGs PASS.
 
-Strict TS / 175 JS / 10 Python / 15-art / host benchmarks / 10,000 ticks / ten exact restores / final paired native camera comparison PASS. Final 0.8.1 native gameplay/layout/portrait/technology/30-minute acceptance is tracked below. Commander-ID portrait seeds are visual only: no new save fields, permission/command changes or backend deployment. Existing online protocol/reducer regressions and the accepted unchanged-backend live QA evidence are retained; no fresh online production-room test is claimed for this client-only pass.
+Strict TS / 175 JS / 10 Python / 15-art / host benchmarks / 10,000 ticks / ten exact restores / final paired native camera comparison PASS. Final 0.8.1 native gameplay/layout/portrait/technology/soak and publication also PASS; all five workflow jobs succeeded. Commander-ID portrait seeds are visual only: no new save fields, permission/command changes or backend deployment. Existing online protocol/reducer regressions and the accepted unchanged-backend live QA evidence are retained; no fresh online production-room test is claimed for this client-only pass.
 
-FINAL_081_BUG_ACCEPTANCE_PENDING
+Native job **113966823944** and artifact **11639851749** independently reviewed: exactly one Singleplayer/Start tap, network-disabled standalone launch, real recruitment/commander assignment and visible assigned/free portraits, real technology art/research, economy/construction/government/religion, four presets/twelve modes/five layouts, density/cutout, save/process/reboot and **1,867.83-second soak** PASS. Actual PNGs and both logcat files reviewed; zero matched fatal JS/native / ANR / OOM patterns. Soak has **31 PSS samples, 441,449–525,094 KiB**; no continuous peak or universal leak claim. `NATIVE_CAMERA_081_SMOKE_REVIEW.json` records provenance and limits. Native harness does not independently automate a full distant-target click-to-move battle or a live two-player production session; reducer/shared/long-simulation and inherited live evidence remain explicit coverage. Public APK byte comparison passed and exact standalone APK plus ZIP fallback are saved for direct chat attachment. No introduced unresolved BLOCKER/CRITICAL/HIGH was detected by these gates; physical camera acceptance remains open below.
 
 **Physical camera lag remains OPEN for hardware validation.** Final software-emulator pinch histogram p95 **600 → 350ms**, raw p95 **624.92 → 375.47ms**, but candidate jank remains **80.22–92.92%**. Native pinch JS mean **19.55% → 21.45%** and main UI mean **73.73%** remain documented bottlenecks. Passing the no-regression gate is not physical smoothness acceptance. No exact FPS, thermal/battery improvement or universally leak-free result is inferred. Detailed paired and memory evidence: PERFORMANCE_REPORT.md.
 
@@ -12,7 +12,7 @@ No new BLOCKER/CRITICAL/HIGH detected by completed gates; original real-device s
 
 ---
 
-# Camera / map pass — regression status (2026-10-09; native validation pending)
+# Camera / map pass — archived 0.8.0 regression evidence (2026-10-09)
 
 Primary physical defect: severe camera pan/zoom/navigation lag. Paused old-release native captures isolate a renderer/input contribution without assuming AI/economy is the main bottleneck. Coverage churn, repeated geometry/path materialization and unbounded glyph nodes are addressed with retained transferable raster tiles, stable native paths/border chunks, prepared pinch detail and hard label/army budgets. Gameplay/world/schema/backend are unchanged.
 
@@ -24,9 +24,9 @@ Introduced defects caught before delivery:
 
 The rejected native candidate's faster pan timings are excluded because its geography did not paint correctly. Failed/cancelled candidates were not delivered or published as the accepted release.
 
-FINAL_BUG_ACCEPTANCE_PENDING
+Historical 0.8.0 acceptance completed: workflow **37962664267**, all five jobs PASS, actual native images and 1,839.26-second soak / 30 PSS samples reviewed (`NATIVE_CAMERA_080_SMOKE_REVIEW.json`). That checked intermediate binary is superseded by final 0.8.1 above.
 
-175 JS / strict TS / 10 Python tests pass locally. Fifteen asset checks pass. Full native screenshots, portrait/construction/government/religion assertions, paired camera timings, ten thousand authoritative ticks, save/process/reboot/layout/preset checks and 30-minute soak must pass before delivery. Real online multiplayer/reconnect are covered by protocol/reducer tests and prior unchanged-backend live evidence; no new production rooms or gameplay backend writes are made in this pass.
+175 JS / strict TS / 10 Python tests and fifteen asset checks passed. Historical 0.8.0 full native screenshots, portrait/construction/government/religion assertions, paired camera timings, ten thousand authoritative ticks, save/process/reboot/layout/preset checks and 30-minute soak also passed. Real online multiplayer/reconnect are covered by protocol/reducer tests and prior unchanged-backend live evidence; no new production rooms or gameplay backend writes were made in this pass.
 
 Physical Redmi Note12 pan/zoom acceptance remains **OPEN** for the user's new APK test; no exact hardware FPS or completely eliminated lag claim.
 
