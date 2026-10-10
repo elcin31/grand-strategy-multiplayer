@@ -1,0 +1,174 @@
+{
+  "pairedRun": 37995443161,
+  "candidate": "efd1f3d4b63d737001ab6301b65bd151609b76af",
+  "status": "REJECTED; auxiliary attribution of captured recent frame ring",
+  "rows": [
+    {
+      "scenario": "03-pinch",
+      "before": {
+        "rawMaxMs": 881.223949,
+        "rawOver50Ms": 97,
+        "rawOver100Ms": 80,
+        "frames": 100,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 100,
+            "p50": 49.999998,
+            "p95": 266.666656,
+            "p99": 716.666638
+          },
+          "uiWorkMs": {
+            "samples": 100,
+            "p50": 52.153077,
+            "p95": 154.942124,
+            "p99": 311.726185
+          },
+          "syncWaitMs": {
+            "samples": 100,
+            "p50": 3.321137,
+            "p95": 11.352276,
+            "p99": 18.260092
+          },
+          "renderCompletionMs": {
+            "samples": 100,
+            "p50": 20.387051,
+            "p95": 36.448107,
+            "p99": 51.01073
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 82,
+          "High input latency": 8,
+          "Slow UI thread": 91,
+          "Slow bitmap uploads": 1,
+          "Slow issue draw commands": 81,
+          "Frame deadline missed": 96
+        }
+      },
+      "after": {
+        "rawMaxMs": 1051.442654,
+        "rawOver50Ms": 83,
+        "rawOver100Ms": 68,
+        "frames": 87,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 87,
+            "p50": 33.333332,
+            "p95": 216.666658,
+            "p99": 949.999962
+          },
+          "uiWorkMs": {
+            "samples": 87,
+            "p50": 49.379135,
+            "p95": 196.587896,
+            "p99": 368.558278
+          },
+          "syncWaitMs": {
+            "samples": 87,
+            "p50": 3.08299,
+            "p95": 12.080369,
+            "p99": 21.641482
+          },
+          "renderCompletionMs": {
+            "samples": 87,
+            "p50": 21.505416,
+            "p95": 42.27323,
+            "p99": 71.780673
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 67,
+          "High input latency": 9,
+          "Slow UI thread": 77,
+          "Slow bitmap uploads": 1,
+          "Slow issue draw commands": 66,
+          "Frame deadline missed": 82
+        }
+      }
+    },
+    {
+      "scenario": "09-panel-closed",
+      "before": {
+        "rawMaxMs": 133.479753,
+        "rawOver50Ms": 113,
+        "rawOver100Ms": 63,
+        "frames": 118,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 118,
+            "p50": 16.666666,
+            "p95": 49.999998,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 118,
+            "p50": 36.464046,
+            "p95": 53.043124,
+            "p99": 55.126398
+          },
+          "syncWaitMs": {
+            "samples": 118,
+            "p50": 3.686316,
+            "p95": 15.493046,
+            "p99": 18.308344
+          },
+          "renderCompletionMs": {
+            "samples": 118,
+            "p50": 23.376706,
+            "p95": 41.39147,
+            "p99": 49.46288
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 180,
+          "High input latency": 56,
+          "Slow UI thread": 199,
+          "Slow bitmap uploads": 3,
+          "Slow issue draw commands": 193,
+          "Frame deadline missed": 204
+        }
+      },
+      "after": {
+        "rawMaxMs": 250.152684,
+        "rawOver50Ms": 113,
+        "rawOver100Ms": 83,
+        "frames": 120,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 33.333332,
+            "p95": 83.33333,
+            "p99": 99.999996
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 37.886982,
+            "p95": 100.227066,
+            "p99": 110.583701
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.686733,
+            "p95": 17.010302,
+            "p99": 26.425305
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 25.630563,
+            "p95": 44.671751,
+            "p99": 77.462374
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 164,
+          "High input latency": 46,
+          "Slow UI thread": 175,
+          "Slow bitmap uploads": 1,
+          "Slow issue draw commands": 170,
+          "Frame deadline missed": 181
+        }
+      }
+    }
+  ],
+  "note": "Same unmodified paired raw captures; stage decomposition describes timestamps, not confirmed causal attribution or physical device performance. Missed-vsync/event counts overlap and must not be summed as display drops."
+}

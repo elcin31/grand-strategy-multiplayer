@@ -30,9 +30,27 @@ class CameraFrameStatsTest(unittest.TestCase):
     def test_original_header_filters_flagged_or_invalid_samples(self):
         result = module.frame_stats('Flags,IntendedVsync,FrameCompleted,\n'
                                     '0,1000000,17000000,\n1,1000000,20000000,\n'
-                                    '0,1000000,0,\n0,1000000,6001000000,\n')
+                                    '0,1000000,0,\n0,1000000,9223372036854775807,\n')
         self.assertEqual(result['frames'], 1)
         self.assertEqual(result['p95Ms'], 16)
+
+    def test_real_long_stall_and_pipeline_delays_remain_visible(self):
+        result = module.frame_stats('Total frames rendered: 200\nNumber Missed Vsync: 170\n'
+                                    'Number Slow UI thread: 150\nNumber Frame deadline missed: 180\n'
+                                    'Flags,IntendedVsync,Vsync,HandleInputStart,SyncQueued,SyncStart,FrameCompleted,\n'
+                                    '0,1000000,21000000,26000000,101000000,111000000,151000000,\n'
+                                    '0,1000000,21000000,26000000,6001000000,6001000000,6001000000,\n')
+        self.assertEqual(result['frames'], 2)
+        self.assertTrue(result['rawWindowTruncated'])
+        self.assertEqual(result['p99Ms'], 6000)
+        self.assertEqual(result['rawMaxMs'], 6000)
+        self.assertEqual(result['rawOver100Ms'], 2)
+        self.assertEqual(result['rawOver5000Ms'], 1)
+        self.assertEqual(result['rawStageMs']['vsyncDelayMs']['p95'], 20)
+        self.assertEqual(result['rawStageMs']['uiWorkMs']['p50'], 5975)
+        self.assertEqual(result['rawStageMs']['syncWaitMs']['p95'], 10)
+        self.assertEqual(result['hwuiEvents']['Missed Vsync'], 170)
+        self.assertEqual(result['hwuiEvents']['Frame deadline missed'], 180)
 
     def test_empty_idle_is_not_4950ms(self):
         result = module.frame_stats('Total frames rendered: 0\n50th percentile: 4950ms\n95th percentile: 4950ms')

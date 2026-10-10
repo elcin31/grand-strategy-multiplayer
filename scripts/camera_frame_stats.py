@@ -35,6 +35,7 @@ def frame_stats(raw):
     total = re.search(r'Total frames rendered:\s*(\d+)', raw)
     reported = int(total[1]) if total else None
     frames = []
+    stages = {name: [] for name in ('vsyncDelayMs', 'uiWorkMs', 'syncWaitMs', 'renderCompletionMs')}
     lines = [line.strip() for line in raw.splitlines()]
     for i, line in enumerate(lines):
         fields = line.split(',')
@@ -48,11 +49,28 @@ def frame_stats(raw):
             try:
                 if int(values[0]) != 0:
                     continue
-                ms = (int(values[end]) - int(values[start])) / 1e6
+                intended, completed = int(values[start]), int(values[end])
+                # Zero/uncompleted and INT64_MAX sentinel timestamps are not
+                # frames. A real multi-second stall must remain in the tail.
+                if not 0 < intended < completed < 9223372036854775807:
+                    continue
+                ms = (completed - intended) / 1e6
             except (ValueError, IndexError):
                 continue
-            if 0 < ms < 5000:
-                frames.append(ms)
+            frames.append(ms)
+            timestamps = dict(zip(fields, values))
+            for name, a, b in (
+                ('vsyncDelayMs', 'IntendedVsync', 'Vsync'),
+                ('uiWorkMs', 'HandleInputStart', 'SyncQueued'),
+                ('syncWaitMs', 'SyncQueued', 'SyncStart'),
+                ('renderCompletionMs', 'SyncStart', 'FrameCompleted'),
+            ):
+                try:
+                    t0, t1 = int(timestamps[a]), int(timestamps[b])
+                    if intended <= t0 <= t1 <= completed:
+                        stages[name].append((t1 - t0) / 1e6)
+                except (KeyError, ValueError):
+                    pass
     frames.sort()
 
     def histogram(p):
@@ -67,6 +85,19 @@ def frame_stats(raw):
         return histogram(p)
 
     jank = re.search(r'Janky frames:\s*(\d+)\s*\(([\d.]+)%\)', raw)
+    events = {}
+    for label in ('Missed Vsync', 'High input latency', 'Slow UI thread',
+                  'Slow bitmap uploads', 'Slow issue draw commands', 'Frame deadline missed'):
+        match = re.search(r'Number ' + label + r':\s*(\d+)', raw)
+        events[label] = int(match[1]) if match else None
+    stage_quantiles = {}
+    for name, values in stages.items():
+        values.sort()
+        stage_quantiles[name] = {
+            'samples': len(values),
+            **{'p' + str(int(p * 100)): values[min(len(values) - 1, int(len(values) * p))] if values else None
+               for p in (.5, .95, .99)},
+        }
     return {
         'reportedFrames': reported,
         'frames': len(frames),
@@ -79,4 +110,11 @@ def frame_stats(raw):
         'p95Ms': percentile(.95),
         'p99Ms': percentile(.99),
         'jankPercent': float(jank[2]) if jank else None,
+        'rawMaxMs': max(frames) if frames else None,
+        'rawOver50Ms': sum(ms > 50 for ms in frames),
+        'rawOver100Ms': sum(ms > 100 for ms in frames),
+        'rawOver5000Ms': sum(ms >= 5000 for ms in frames),
+        'hwuiEvents': events,
+        'rawStageMs': stage_quantiles,
+        'stageNote': 'Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.',
     }

@@ -1,0 +1,15 @@
+{
+  "snapshotBytes": 3298611,
+  "compressedBase64Bytes": 596324,
+  "heapUsed": 71263360,
+  "serializeMs": 96.42293799999993,
+  "checksumMs": 145.98989500000016,
+  "packMs": 487.48332099999993,
+  "unpackMs": 429.91793000000007,
+  "saveValidationMs": 618.5771,
+  "note": "Node CPU baseline; unchanged online responses omit state; no physical-device FPS claim",
+  "runtime": "d7c3d593802f2edf27894f92fe10928341df0080",
+  "workload": "Existing scripts/benchmark-persistence.ts: cold initial modern world, 195/2924/5411, encode plus decode validation; single sample, not a before/after speed claim.",
+  "phase": "host profiling only; no Android foreground trace or physical measurements",
+  "dateUtc": "2026-10-10"
+}

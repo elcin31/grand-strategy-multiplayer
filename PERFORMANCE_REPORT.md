@@ -2,6 +2,10 @@
 
 Runtime `efd1f3d` passes build / 10,000 ticks / full Android touch smoke + 1835.67s stress. Same-APK camera replay 37995443161 **REJECTED**: panel-closed histogram P95 117 -> 200ms; pinch P95 500 -> 400ms does not override the failed scenario or worse raw P99. Verified paired/native/APK hashes, all quantiles and sampled PSS in EXPANSION_NATIVE_EFD1F3D_REVIEW.json; long simulation EXPANSION_LONG_EFD1F3D.json. Current UI-host private-counter revision needs fresh native acceptance. No physical Redmi FPS, no completed Expansion 2.0, no final v2 APK claimed. Stages 3–11 remain fully authorized and pending.
 
+Auxiliary CSV re-analysis (EXPANSION_CAMERA_STAGE_TIMINGS_EFD1F3D.json) locates panel-closed raw UI-work P95 **53.04 -> 100.23ms**, vsync-delay P95 **50.00 -> 83.33ms**, render-completion P95 **41.39 -> 44.67ms**. No new rasters built in that scenario; sampled JS CPU 3.45 -> 3.54%, native main UI 47.13 -> 53.32%. This describes a UI-path stall; exact attribution to new counters is a hypothesis under native test. Recent CSV counts are bounded samples, not whole-capture unique dropped display frames. Genuine >=5s non-flagged frames are now retained rather than silently filtered; sentinel/uncompleted rows remain excluded. Official Android timestamp definitions reviewed: https://android.googlesource.com/platform/frameworks/base/+/562ae3a/docs/html/training/testing/performance.jd and https://developer.android.com/tools/dumpsys.
+
+Cold host persistence probe of the unchanged existing codec: 3,298,611-byte initial snapshot, serialize 96.42ms / checksum 145.99ms / encode+decode validation 618.58ms. One cold sample, not an Android result or paired improvement (EXPANSION_PERSISTENCE_BASELINE_D7C3D59.json). Quiet-camera scheduling reduces overlap at save start, but filesystem-read continuations still run synchronous validation; investigate staged/cooperative save processing while retaining checksums, corrupt-save refusal and atomic generations. No validation was removed.
+
 ---
 
 # Expansion 2.0 — stage 1 implementation / native validation pending
