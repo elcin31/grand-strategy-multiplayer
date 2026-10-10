@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
-      CAMERA_CANDIDATE_RUNTIME: d7c3d593802f2edf27894f92fe10928341df0080
+      CAMERA_CANDIDATE_RUNTIME: 3cfd43f16678345ce0e55016775c7efb95d0e8cf
       CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-      CAMERA_CANDIDATE_RUN: '38021043667'
+      CAMERA_CANDIDATE_RUN: '38025683396'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,10 +26,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git diff --exit-code d7c3d593802f2edf27894f92fe10928341df0080 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38021043667 > source-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38021043667/jobs > source-jobs.json
-          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='d7c3d593802f2edf27894f92fe10928341df0080';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
+          git diff --exit-code 3cfd43f16678345ce0e55016775c7efb95d0e8cf HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38025683396 > source-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38025683396/jobs > source-jobs.json
+          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='3cfd43f16678345ce0e55016775c7efb95d0e8cf';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -37,7 +37,7 @@ jobs:
       - run: npm ci --include=dev --no-audit --no-fund
       - name: Generate one authoritative paused schema12 fixture for both APKs
         run: |
-          git diff --exit-code 47b0db4f8b220e9ea89998afaac035239b64f5e0 d7c3d593802f2edf27894f92fe10928341df0080 -- supabase/functions/_shared src/persistence/campaignCodec.ts
+          git diff --exit-code 47b0db4f8b220e9ea89998afaac035239b64f5e0 3cfd43f16678345ce0e55016775c7efb95d0e8cf -- supabase/functions/_shared src/persistence/campaignCodec.ts
           node --import tsx scripts/make-camera-fixture.ts camera-fixture
       - uses: actions/setup-java@v4
         with:
@@ -49,7 +49,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38021043667
+          run-id: 38025683396
           name: dominion-camera-illustrated-release
       - uses: actions/download-artifact@v4
         with:
