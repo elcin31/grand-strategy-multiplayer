@@ -1,3 +1,34 @@
+# Recovery continuation — opaque Android map candidate, 2026-10-10
+
+Recovered remote main **dbb354ab038713c3e54b969b34a6fc88bf2de11f** and expansion-v2 **26c300f1ff2195d1e21b0a39282cc04ccfc2ec4c**. All 50 recent main commits, 30 expansion commits, feature refs, open PRs (none), workflows, actual shared reducer/server paths and existing scope/contracts were inspected. Source remains this repository and dedicated Dominion backend; no production data/deployment change or AssetMind access. No lost/uncommitted workspace changes recovered.
+
+Fresh previously pending run **38045172996 is FAILURE**: all nine forward workloads captured; pinch histogramP95 **150→200ms**, rawP95 **200.12→262.29ms**, rawP99 **316.77→350.16ms**. Reverse did not run after the original forward assertion. Paired artifact11666948507 **18,371,542 bytes**, SHAfff76e04864c6592345e7a0b20abe8ecdfa10dba416117fdc4093bd45f7c5f1e, CRC verified. Do not substitute earlier P95 passes. Separate trace38045173001 SUCCESS means capture/analyzer ran, not performance acceptance; artifact11666742888 **10,844,175 bytes**, SHA5e6c147e9b6a572775a2cdb37dc8b8a001f0bee1eaa31e957d70912a4c839025, CRC verified. Both actual game markers and scheduler states exist, no overwritten chunks reported; **36 ftrace setup warnings remain**, so complete attribution is false. Actual inclusive eglSwapBuffers slices are 7069.65/7159.17ms across 11.36/11.38s markers. Nested slices overlap; never sum them. Compact exact evidence: EXPANSION_RECOVERY_2026-10-10.json.
+
+**Local experiment:** use Skia2.6.2's existing opaque Android SurfaceView for the map's full-frame ocean background instead of transparent TextureView. One Canvas property; no geometry, tile/cache/marker/gesture/engine/schema/world changes. Installed Skia native source confirms the transparent backend's SurfaceTexture update and extra composition path. This is a hypothesis to test, not an established speedup. SurfaceView bypasses HWUI composition: lower gfxinfo timings alone cannot establish improved map presentation. New same-workload profiler retains separately selected actual map/window SurfaceFlinger latency, unavailable/ambiguous outputs, recent-ring truncation and completed long stalls. Original P95/paint gates remain unchanged. Full native smoke additionally requires the actual map SurfaceView to mount; its panel/touch/Back/layout/save/reboot/30-minute assertions remain.
+
+Existing Android workflow now runs fixed-save-reset-v2 forward/reverse with one schema12 seed101 fixture and persists **both results even if a forward performance assertion fails**; final job still fails on either original gate. It checks shared-engine/codec equality before generating fixture. Extended comparison timeout permits all four complete captures, not shortened scenarios. No main publication is authorized by this intermediate candidate; expansion branch only. No version/signing/backend change.
+
+Recovery source baseline: strict TS / **194 JS PASS**. Candidate strict TS and added compositor parser regressions PASS; full CI build/10k/native/paired acceptance pending. Parser tests cannot establish Android frame speed. Previous exact9c full smoke38044397912 was still in progress at recovery; collect its final evidence separately, do not reuse it for this new candidate.
+
+| Stage | Current status against full authorized scope |
+|---|---|
+| 0 Recovery | DONE |
+| 1 Camera/frame pacing | PARTIAL; prior9c rejected, opaque candidate requires native acceptance |
+| 2 Army selection | PARTIAL; implemented/prior native touch passes; exact latest source QA pending |
+| 3 Diplomacy2.0 | PARTIAL; inherited subset only, full18 actions pending |
+| 4 Espionage/diplomaticAI | PARTIAL; inherited AI, espionage NOT STARTED |
+| 5 Economy/buildings | PARTIAL; inherited budgets/10 buildings, funding/queues/unlocks pending |
+| 6 Military/supply | PARTIAL; inherited combat/types, graph supply/reinforcement/retreat pending |
+| 7 Technology tree | PARTIAL; inherited level research, named DAG/era/unlocks pending |
+| 8 National Course | NOT STARTED |
+| 9 New paintings/polish | PARTIAL; inherited15 WebPs,19NEW paintings pending |
+| 10 Expansion integration/balance | NOT STARTED; inherited 10k harness remains |
+| 11 Final v2 Android | NOT STARTED; no final v2 APK exists |
+
+**Exact next operation:** collect candidate build/10000ticks, both fixed-world paired camera captures and full native smoke including actual SurfaceView/panels. Check recent compositor presentations separately from HWUI; unavailable latency is unavailable evidence. Correct real regressions before accepting Stage1. Finish latest Stage2 exact-source verification, then implement full diplomacy contract on existing authoritative reducer/CAS/save/order paths. Scope stays EXPANSION_SCOPE.md. Physical Redmi remains unmeasured; country/province/city counts195/2924/5411/schema12 retained.
+
+---
+
 # Active exact-source gates and durable continuation — 2026-10-10
 
 Current game source **9c3da342cf9e9d83252a58278f3fe1f842ced3d9**, build/194JS/25Python/10k38041251527 PASS, APK0.8.1 SHA88be9d431bdf72022b25220747114b3477ead8d1cd4dfd88e438a61ab2b8ee53. Native harness **7f57ab3ff6d0a089b75d8cfb2589ca446fcf4483** is pushed; exact-source full menu/army/order/Back/flag/save/reboot/30min stress run **38044397912**, smoke **114190884722**, in progress. Auxiliary trace/evidence **a5555024d8dbbb637734fe6327239db320e4c1c1** is pushed; trace-only run **38045173001**, diagnostic **114193130923**, and unchanged paired repeat **38045172996** in progress. Both new workflow source guards enforce byte-identical9c and successful build/10k; no gameplay source/schema/assets/signing/threshold change in this QA commit. New host tests **34Python,33PASS/1SDK-dependentSKIP**, actual pinned synthetic Android async parser10ms/foreignPID exclusion PASS; synthetic input is not an Android frame benchmark. Actual old trace correctly remains INCOMPLETE with6152192 overwritten bytes/193chunks and no completed gesture interval.

@@ -4,9 +4,7 @@ Original Android-first global strategy, built with Expo 57, React Native 0.86, T
 
 ## Current checkpoint
 
-Main contains 195 playable UN member/observer states, 4,386 provinces and 7,214 cities; seeded fictional rulers; ten government forms; religion and Religious Unity; population; economy/debt/default; ten resources and ten building types.
-
-The 2026-10-05 session adds **Phases 17–21 only** to the completed technology/military/diplomacy/war/stability systems: strategic AI, durable multiplayer sessions and atomic commands, campaign saves/migrations, landscape HUD/navigation, and all twelve map modes. **Next: Phase 22 Performance.** Final gate evidence is in the handoff; the roadmap is not finished.
+Main contains the verified **0.8.1 (9)** camera/illustrated release: **195 countries, 2,924 provinces, 5,411 cities, schema12**. The continuing **Expansion 2.0** work is on `expansion-v2`; it is not yet merged or a final v2 release. Recovery and army-selection fixes exist, while current camera acceptance and the full diplomacy/espionage/economy/military/technology/focus/art expansion remain open. Existing systems and optimized map caches are retained.
 
 Read [DEVELOPMENT_HANDOFF.md](DEVELOPMENT_HANDOFF.md) for exact implementation, commits, CI evidence, remaining gates and next five phases. [RECOVERY_AUDIT.md](RECOVERY_AUDIT.md) records the recovered 26-phase matrix. [BUG_REPORT.md](BUG_REPORT.md) tracks current defects/limitations; [WORLD_UPDATE_STATUS.md](WORLD_UPDATE_STATUS.md) is mostly historical evidence.
 
@@ -29,7 +27,7 @@ The live QA script creates only an isolated test campaign in the dedicated game 
 
 Clients send intent. A shared pure reducer implements local/server rules; the authenticated server boundary rejects actor spoofing. Edge Functions price and validate recruitment, movement/combat, research/buildings, government/resources, diplomacy/war/peace. Hashed room bearer tokens, RLS denial of direct client table access and compare-and-swap version updates remain intact.
 
-Modern snapshots use `stateVersion: 10`, ordered migrations and compressed persistence with legacy JSONB fallback. Offline campaigns use validated atomic save generations; multiplayer credentials/pending commands persist in native SecureStore. Reconnect recovers server state, versioned transactional receipts prevent duplicate effects, and server time can progress through any connected member. All-offline campaigns are dormant with bounded catch-up. Strategic AI takes over a timed-out country and yields on authenticated return.
+Modern snapshots use `stateVersion: 12`, ordered migrations and compressed persistence with legacy JSONB fallback. Offline campaigns use validated atomic save generations; multiplayer credentials/pending commands persist in native SecureStore. Reconnect recovers server state, versioned transactional receipts prevent duplicate effects, and server time can progress through any connected member. All-offline campaigns are dormant with bounded catch-up. Strategic AI takes over a timed-out country and yields on authenticated return.
 
 Dedicated backend: `dfjsnjxnyjspwugjguhq`.
 Endpoint: `https://dfjsnjxnyjspwugjguhq.supabase.co/functions/v1`.
@@ -37,6 +35,6 @@ Only this backend is used; AssetMind projects/data/auth/storage are excluded. Bo
 
 ## Android
 
-GitHub Actions builds an **assembleRelease standalone checkpoint APK**, checks `assets/index.android.bundle` and Hermes/Skia libraries, then exercises offline gameplay, landscape layouts and restart without Metro. Download `dominion-world-checkpoint` from a **successful** Android APK run. It is not the final completed-roadmap release; physical-device FPS/thermal acceptance is outstanding. Do not distribute a debug/Metro-dependent APK.
+GitHub Actions builds an **assembleRelease standalone checkpoint APK**, checks `assets/index.android.bundle` and Hermes/Skia libraries, then exercises offline gameplay, landscape layouts and restart without Metro. The current checkpoint artifact is `dominion-camera-illustrated-release`. Use the exact runtime/build IDs in the handoff; artifact presence alone is not native QA acceptance. It is not the final completed-roadmap release; physical-device FPS/thermal acceptance is outstanding. Do not distribute a debug/Metro-dependent APK.
 
 Natural Earth geometry/data and licensed flag assets have provenance in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Population allocation, resources, combat terrain and policies are original game abstractions rather than census, geological or political claims.

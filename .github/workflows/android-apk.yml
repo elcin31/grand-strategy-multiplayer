@@ -130,7 +130,7 @@ jobs:
           arch: x86_64
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: DOMINION_STRESS_SECONDS=1800 python scripts/android-smoke.py Dominion-camera-optimized-illustrated.apk
+          script: DOMINION_EXPECT_OPAQUE_MAP=1 DOMINION_STRESS_SECONDS=1800 python scripts/android-smoke.py Dominion-camera-optimized-illustrated.apk
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -141,12 +141,23 @@ jobs:
   camera-comparison:
     needs: build-apk
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     permissions:
       contents: read
       actions: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --include=dev --no-audit --no-fund
+      - name: Generate the same paused schema12 campaign for both APKs
+        run: |
+          git diff --exit-code 47b0db4f8b220e9ea89998afaac035239b64f5e0 HEAD -- supabase/functions/_shared src/persistence/campaignCodec.ts
+          node --import tsx scripts/make-camera-fixture.ts camera-fixture
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -173,6 +184,8 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - uses: reactivecircus/android-emulator-runner@v2
+        env:
+          CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
         with:
           api-level: 35
           arch: x86_64
@@ -182,7 +195,16 @@ jobs:
             adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar
             CAMERA_PROFILE_OUT=camera-before python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
             CAMERA_PROFILE_OUT=camera-after python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
-            python scripts/compare-camera-native.py camera-before/results.json camera-after/results.json
+            forward_ok=0
+            if python scripts/compare-camera-native.py camera-before/results.json camera-after/results.json; then forward_ok=1; fi
+            cp CAMERA_NATIVE_PAIRED.json CAMERA_NATIVE_PAIRED_FORWARD.json
+            CAMERA_PROFILE_OUT=camera-after-reverse python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
+            CAMERA_PROFILE_OUT=camera-before-reverse python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
+            reverse_ok=0
+            if python scripts/compare-camera-native.py camera-before-reverse/results.json camera-after-reverse/results.json; then reverse_ok=1; fi
+            cp CAMERA_NATIVE_PAIRED.json CAMERA_NATIVE_PAIRED_REVERSE.json
+            cp CAMERA_NATIVE_PAIRED_FORWARD.json CAMERA_NATIVE_PAIRED.json
+            test "$forward_ok" = 1 && test "$reverse_ok" = 1
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -190,7 +212,12 @@ jobs:
           path: |
             camera-before/
             camera-after/
+            camera-before-reverse/
+            camera-after-reverse/
             CAMERA_NATIVE_PAIRED.json
+            CAMERA_NATIVE_PAIRED_FORWARD.json
+            CAMERA_NATIVE_PAIRED_REVERSE.json
+            camera-fixture/manifest.json
           retention-days: 14
   publish-release:
     needs: [build-apk, long-simulation, android-smoke, camera-comparison]

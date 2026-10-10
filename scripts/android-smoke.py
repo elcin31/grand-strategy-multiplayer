@@ -169,6 +169,10 @@ time.sleep(15)
 (OUT/'menu-to-campaign-seconds.txt').write_text(str(time.monotonic()-launch_time)+'\nIncludes UI dump/screenshot and fixed smoke wait; not startup latency.\n')
 root = hierarchy('02-map'); screenshot('02-map')
 assert_map_painted(OUT/'02-map.png')
+if os.environ.get('DOMINION_EXPECT_OPAQUE_MAP') == '1':
+    layers = adb('shell','dumpsys','SurfaceFlinger','--list')
+    (OUT/'map-surface-layers.txt').write_text(layers)
+    assert any('SurfaceView' in line and PACKAGE in line for line in layers.splitlines()), 'Opaque map SurfaceView did not mount'
 assert any('Политическая' in n.get('text','') for n in root.iter('node')), 'GPU map screen did not mount'
 # Exercise real offline commands in the release bundle, not only a mounted canvas.
 # Select through the real searchable picker; no dependency on synthetic demo geometry.

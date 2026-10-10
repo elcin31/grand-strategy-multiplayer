@@ -7,6 +7,7 @@ import atexit,hashlib,json,os,re,subprocess,sys,time,xml.etree.ElementTree as ET
 from pathlib import Path
 from camera_frame_stats import frame_stats,thread_stats
 from camera_telemetry import camera_telemetry
+from camera_surface_stats import map_surface_layer, surface_frame_stats
 from map_paint_check import assert_map_painted
 from android_accessibility import dump_hierarchy
 PACKAGE='com.elcin31.grandstrategymultiplayer'
@@ -74,6 +75,11 @@ def reset_camera(local=False,world=False):
     time.sleep(2)
 def sample(name,kind=None):
     adb('shell','dumpsys','gfxinfo',PACKAGE,'reset');adb('logcat','-c')
+    layers=adb('shell','dumpsys','SurfaceFlinger','--list')
+    (OUT/(name+'-surface-layers.txt')).write_text(layers)
+    map_layer=map_surface_layer(layers,PACKAGE)
+    clear=adb('shell','dumpsys','SurfaceFlinger','--latency-clear')
+    (OUT/(name+'-surface-clear.txt')).write_text(clear)
     pid=adb('shell','pidof',PACKAGE).strip()
     thread_file=(OUT/(name+'-threads-active.txt')).open('w')
     sampler=subprocess.Popen(['adb','shell','top','-H','-b','-d','1','-n','12','-p',pid],stdout=thread_file,stderr=subprocess.STDOUT)
@@ -85,6 +91,9 @@ def sample(name,kind=None):
     except subprocess.TimeoutExpired:sampler.terminate();sampler.wait(timeout=5)
     thread_file.close()
     raw=adb('shell','dumpsys','gfxinfo',PACKAGE,'framestats');(OUT/(name+'-frames.txt')).write_text(raw)
+    latency=adb('shell','dumpsys','SurfaceFlinger','--latency',map_layer) if map_layer else ''
+    (OUT/(name+'-surface-latency.txt')).write_text(latency)
+    surface={**surface_frame_stats(latency),'layer':map_layer}
     cpu=adb('shell','dumpsys','cpuinfo');(OUT/(name+'-cpu.txt')).write_text(cpu)
     mem=adb('shell','dumpsys','meminfo',PACKAGE);(OUT/(name+'-memory.txt')).write_text(mem)
     logs=adb('logcat','-d');(OUT/(name+'-logcat.txt')).write_text(logs)
@@ -98,7 +107,7 @@ def sample(name,kind=None):
     (OUT/(name+'-threads.txt')).write_text(adb('shell','top','-H','-b','-n','1','-p',pid))
     pss=re.search(r'TOTAL PSS:\s*(\d+)',mem)
     fallback=re.findall(r'DOMINION_CAMERA[^\n]*',logs)[-1:]
-    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,**frame_stats(raw),'cpuThreads':thread_stats((OUT/(name+'-threads-active.txt')).read_text(),pid),'mapPaint':painted,'cameraTrace':fallback,'cameraTelemetry':camera_telemetry(logs),'diagnosticError':None}
+    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,**frame_stats(raw),'surfacePresentation':surface,'cpuThreads':thread_stats((OUT/(name+'-threads-active.txt')).read_text(),pid),'mapPaint':painted,'cameraTrace':fallback,'cameraTelemetry':camera_telemetry(logs),'diagnosticError':None}
     results.append(result)
     def persist(): (OUT/'results.json').write_text(json.dumps({'protocol':'fixed-save-reset-v2' if fixture else 'independent-campaign-v1','fixtureSha256':fixture_sha,'fixtureStateChecksum':fixture['checksum'] if fixture else None,'note':'Software SwiftShader API35 native frames, offline paused campaign. Same gestures for both builds; not physical Redmi FPS. Accessibility diagnostics are auxiliary to the completed-frame capture.','results':results},indent=2))
     persist()
