@@ -21,6 +21,8 @@ class SurfaceStatsTest(unittest.TestCase):
         self.assertEqual(shlex.split(surface_latency_args(layer)[-1]),[layer])
         window='RequestedLayerState{app/app.MainActivity#52 parentId=40}'
         self.assertEqual(map_surface_layer(window,'app'),'app/app.MainActivity#52')
+        actual='\n'.join(['RequestedLayerState{ActivityRecord{123 u0 app/.MainActivity#124 parentId=123}', 'RequestedLayerState{abc app/app.MainActivity#133 parentId=124 z=1}', 'RequestedLayerState{app/app.MainActivity#134 parentId=133 z=1}'])
+        self.assertEqual(map_surface_layer(actual,'app'),'app/app.MainActivity#134')
 
     def test_only_actual_present_times_and_long_stalls_are_retained(self):
         raw = '16666667\n1 1000000000 5\n2 1016666667 6\n3 7016666667 7\n0 0 0\n4 9223372036854775807 8'

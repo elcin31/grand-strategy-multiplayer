@@ -16,7 +16,7 @@ def map_surface_layer(layers, package):
     candidates = []
     for line in layers.splitlines():
         s=line.strip()
-        wrapper=re.fullmatch(r'RequestedLayerState\{(.+) parentId=-?\d+\}',s)
+        wrapper=re.fullmatch(r'RequestedLayerState\{(.+?) parentId=-?\d+(?: [^}]*)?\}',s)
         if wrapper:s=wrapper[1]
         if package in s:candidates.append(s)
     surface = [s for s in candidates if 'SurfaceView' in s and '(BLAST)' in s]
@@ -26,7 +26,7 @@ def map_surface_layer(layers, package):
         return surface[0] if len(surface) == 1 else None
     window = [s for s in candidates if 'SurfaceView' not in s and '(BLAST)' in s]
     if not window:
-        window=[s for s in candidates if 'SurfaceView' not in s and re.search(r'/[^/]*\.MainActivity#\d+$',s)]
+        window=[s for s in candidates if s.startswith(package+'/') and re.search(r'/[^/]*\.MainActivity#\d+$',s)]
     return window[0] if len(window) == 1 else None
 
 
