@@ -14,3 +14,48 @@ test('interrupted write preserves prior generation; concurrent saves are seriali
 test('indexed city ownership validation still rejects a mismatched country',()=>{const s=world();s.cities![0]!.countryId='germany';if(s.provinces.find(p=>p.id===s.cities![0]!.provinceId)!.ownerId==='germany')s.cities![0]!.countryId='france';assert.throws(()=>validateCampaign(s),/владение городом/);});
 
 test('menu listing reads only the current metadata sidecar, while stale sidecars fall back to the snapshot',async()=>{const{files,store,map}=storage(),s=world();await store.save(s);const reads:string[]=[];const restarted=new CampaignStore({...files,read:async n=>{reads.push(n);return files.read(n);}});assert.equal((await restarted.list())[0]!.metadata!.id,s.id);assert.deepEqual(reads,[s.id+'.index.json']);map.set(s.id+'.index.json','{broken');reads.length=0;assert.equal((await restarted.list())[0]!.metadata!.id,s.id);assert.ok(reads.includes(s.id+'.1.json'));});
+
+test('autosave resumes validation only after camera quiet when either file read finishes during a gesture',{timeout:30000},async()=>{
+  for(const interruptedRead of ['saveqa.1.json','saveqa.2.json.pending']){
+    const {files,store,map}=storage(),s=world();await store.save(s);
+    const durable=map.get('saveqa.1.json');
+    let resumed!:()=>void,readDone!:()=>void,parked=false,active=false,outcome='pending';
+    const quiet=new Promise<void>(resolve=>{resumed=resolve;});
+    const readReached=new Promise<void>(resolve=>{readDone=resolve;});
+    const background=new CampaignStore({...files,read:async name=>{
+      const text=await files.read(name);
+      if(name===interruptedRead){active=true;readDone();return '{corrupt';}
+      return text;
+    }});
+    const saving=background.save({...s,tick:1},undefined,{beforeWork:async()=>{
+      if(active){parked=true;await quiet;}
+    }});
+    void saving.then(()=>{outcome='complete';},()=>{outcome='rejected';});
+    await readReached;await new Promise<void>(resolve=>setImmediate(resolve));
+    assert.equal(parked,true);assert.equal(outcome,'pending');
+    assert.equal(map.has('saveqa.2.json'),false);
+    active=false;resumed();await assert.rejects(saving);
+    assert.equal(map.get('saveqa.1.json'),durable);
+    assert.equal((await store.load(s.id)).tick,0);
+  }
+});
+
+test('manual and lifecycle flushes release parked autosaves without cancelling their captured snapshot',{timeout:30000},async()=>{
+  for(const manual of [true,false]){
+    const {files,store,map}=storage(),s=world();await store.save(s);
+    let parked!:()=>void,isUrgent:()=>boolean=()=>false;
+    const reached=new Promise<void>(resolve=>{parked=resolve;});
+    const input={...s,tick:1};
+    const auto=store.save(input,undefined,{beforeWork:async urgent=>{
+      isUrgent=urgent;parked();await new Promise<void>(()=>{});
+    }});
+    await reached;input.tick=9;
+    assert.equal(map.has('saveqa.2.json'),false);
+    const foreground=manual?store.save({...s,tick:2}):undefined;
+    if(!manual)store.flushBackgroundWork();
+    await auto;assert.equal(isUrgent(),true);
+    assert.equal(decodeCampaign(map.get('saveqa.2.json')!).state.tick,1);
+    if(foreground)await foreground;
+    assert.equal((await new CampaignStore(files).load(s.id)).tick,manual?2:1);
+  }
+});

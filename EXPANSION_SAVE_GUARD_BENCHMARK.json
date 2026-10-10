@@ -1,0 +1,116 @@
+{
+  "baselineStoreRuntime": "d7c3d593802f2edf27894f92fe10928341df0080",
+  "candidate": "Autosave continuation guard, urgent flush and metadata-only extraction before file awaits; resolve runtime from git after commit.",
+  "isolatedFinal": {
+    "baselineRuntime": "d7c3d593802f2edf27894f92fe10928341df0080",
+    "snapshotBytes": 3297039,
+    "beforeMs": {
+      "samples": [
+        398.9616040000001,
+        380.43802400000004,
+        430.45990399999937,
+        361.89433499999905,
+        343.59096899999895
+      ],
+      "median": 380.43802400000004,
+      "max": 430.45990399999937
+    },
+    "afterMs": {
+      "samples": [
+        393.86139000000003,
+        321.82470400000057,
+        343.0210130000014,
+        336.7513229999986,
+        400.53536500000155
+      ],
+      "median": 343.0210130000014,
+      "max": 400.53536500000155
+    },
+    "note": "Paired alternating host memory-file saves of identical validated paused world; one warmup per implementation, five timed existing-generation saves each. Integrity and metadata verified every trial. No filesystem IO/native-device latency or achieved FPS claim; neither implementation uses a camera guard in this CPU-only probe."
+  },
+  "exploratoryUnisolated": {
+    "baselineRuntime": "d7c3d593802f2edf27894f92fe10928341df0080",
+    "snapshotBytes": 3297039,
+    "beforeMs": {
+      "samples": [
+        454.6858259999999,
+        381.2877660000013,
+        407.33854000000065,
+        449.516348000001,
+        441.3854969999993
+      ],
+      "median": 441.3854969999993,
+      "max": 454.6858259999999
+    },
+    "afterMs": {
+      "samples": [
+        364.18220100000053,
+        4254.703795000001,
+        553.819336999999,
+        577.2815819999996,
+        4349.222065999998
+      ],
+      "median": 577.2815819999996,
+      "max": 4349.222065999998
+    },
+    "note": "Paired alternating host memory-file saves of identical validated paused world; one warmup per implementation, five timed existing-generation saves each. Integrity and metadata verified every trial. No filesystem IO/native-device latency or achieved FPS claim; neither implementation uses a camera guard in this CPU-only probe."
+  },
+  "limitation": "Initial exploratory probe overlapped full JS tests and Metro/Hermes export and retained a decoded state reference across awaits. It is not used for a clean performance claim. Final probe ran after those processes ended and after retaining only verified metadata. These runs do not isolate the cause of earlier ~4s outliers, establish physical memory peaks or measure Android FPS.",
+  "behavior": "Before heavy validation/serialization after asynchronous IO, autosave awaits camera quiet again. Manual save/lifecycle flush releases waits; all checksum, corruption, backup and atomic-generation checks remain. Index uses already verified metadata, eliminating an extra full-file JSON.parse without retaining decoded GameState across file awaits. Initial private snapshot capture remains synchronous; validation phases are still synchronous once begun.",
+  "reproducibleScriptRunBeforeManualFastPath": {
+    "baselineStoreRuntime": "d7c3d593802f2edf27894f92fe10928341df0080",
+    "snapshotBytes": 3297039,
+    "beforeMs": {
+      "samples": [
+        599.7375780000002,
+        937.8538249999983,
+        609.7893829999994,
+        656.3443960000004,
+        674.5622379999986
+      ],
+      "median": 656.3443960000004,
+      "max": 937.8538249999983
+    },
+    "afterMs": {
+      "samples": [
+        454.4677920000004,
+        1002.98567,
+        1180.955609999999,
+        952.8738720000001,
+        676.6900629999982
+      ],
+      "median": 952.8738720000001,
+      "max": 1180.955609999999
+    },
+    "note": "Paired alternating host memory-file saves of identical validated paused world; one warmup and five timed existing-generation saves each. Integrity and metadata verified every trial. No filesystem IO/native latency or Android FPS claim; no camera guard in this CPU-only probe. Historical store implementation loaded from git; shared codec/engine current."
+  },
+  "performanceAcceptance": "Host samples change direction across runs; no stable speedup is established. Reproducible pre-fastpath median656.34 ->952.87ms raised a concern. Manual save now avoids added scheduling awaits entirely. Native camera/save/stress acceptance required on the new APK; original validation/serialization CPU phases remain synchronous.",
+  "finalManualFastPath": {
+    "baselineStoreRuntime": "d7c3d593802f2edf27894f92fe10928341df0080",
+    "snapshotBytes": 3297039,
+    "beforeMs": {
+      "samples": [
+        376.20873700000084,
+        330.27129799999966,
+        1105.3038039999992,
+        307.3638370000008,
+        316.06178499999805
+      ],
+      "median": 330.27129799999966,
+      "max": 1105.3038039999992
+    },
+    "afterMs": {
+      "samples": [
+        358.903241,
+        290.7534179999984,
+        303.8820319999977,
+        306.091755999998,
+        333.83624500000224
+      ],
+      "median": 306.091755999998,
+      "max": 358.903241
+    },
+    "note": "Paired alternating host memory-file saves of identical validated paused world; one warmup and five timed existing-generation saves each. Integrity and metadata verified every trial. No filesystem IO/native latency or Android FPS claim; no camera guard in this CPU-only probe. Historical store implementation loaded from git; shared codec/engine current."
+  },
+  "finalProbeLimit": "Final fastpath trial overlapped Metro export, so its median330.27 ->306.09ms and max1105.30 ->358.90ms are exploratory host observations, not controlled native improvement. Keep all contradictory runs; fresh Android gates decide acceptance."
+}

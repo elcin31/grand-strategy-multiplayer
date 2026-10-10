@@ -48,7 +48,27 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   const [state, setState] = useState<GameState | null>(null);
   latestState.current=state;
   useEffect(()=>{if(state&&launchTapAt.current){traceStartup("campaign screen committed");recordMetrics({tapToScreenMs:performance.now()-launchTapAt.current});launchTapAt.current=0;}},[state?.id,state?.phase]);
-  useEffect(()=>{if(!(transport instanceof LocalTransport)||!state)return;let busy=false,pending=false,lastSaved:GameState|null=null;const save=()=>{const current=latestState.current;if(!current||current.id!==state.id||current===lastSaved)return;if(busy){pending=true;return;}busy=true;void campaignStore.save(current).then(()=>{lastSaved=current;setSaveStatus('Автосохранено');}).catch(e=>setSaveStatus(e.message)).finally(()=>{busy=false;if(pending){pending=false;save();}});};const timer=setInterval(()=>{if(!cameraWork.current.defer(performance.now(),750))save();},10000);const sub=AppState.addEventListener('change',status=>{if(status!=='active')save();});return()=>{clearInterval(timer);sub.remove();};},[state?.id,transport]);
+  useEffect(()=>{
+    if(!(transport instanceof LocalTransport)||!state)return;
+    let alive=true,busy=false,pending=false,lastSaved:GameState|null=null;
+    const scheduling={beforeWork:async(isUrgent:()=>boolean)=>{
+      while(alive&&AppState.currentState==='active'&&!isUrgent()&&cameraWork.current.defer(performance.now(),750))
+        await new Promise<void>(resolve=>setTimeout(resolve,100));
+    }};
+    const save=(urgent=false)=>{
+      if(urgent)campaignStore.flushBackgroundWork();
+      const current=latestState.current;if(!current||current.id!==state.id||current===lastSaved)return;
+      if(busy){pending=true;return;}busy=true;
+      void campaignStore.save(current,undefined,urgent?undefined:scheduling).then(()=>{
+        lastSaved=current;if(alive)setSaveStatus('Автосохранено');
+      }).catch(e=>{if(alive)setSaveStatus(e.message);}).finally(()=>{
+        busy=false;if(alive&&pending){pending=false;save(AppState.currentState!=='active');}
+      });
+    };
+    const timer=setInterval(()=>{if(!cameraWork.current.defer(performance.now(),750))save();},10000);
+    const sub=AppState.addEventListener('change',status=>{if(status!=='active')save(true);});
+    return()=>{alive=false;clearInterval(timer);sub.remove();};
+  },[state?.id,transport]);
   const [previewCountryId, setPreviewCountryId] = useState<CountryId | null>(null);
   const [selectedArmyId,setSelectedArmyId]=useState<string|null>(null);
   const [selectedCityId,setSelectedCityId]=useState<string|null>(null);
