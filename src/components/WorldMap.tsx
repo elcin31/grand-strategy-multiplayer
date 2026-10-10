@@ -8,7 +8,7 @@ import {countryRenderFeatures,renderFeaturesFor} from '../map/countryRender';
 import {loadPreferences,savePreferences} from '../performance/preferences';
 import {clusterArmies} from '../map/armyClusters';
 import {PerformanceControls,PerformanceOverlay} from './PerformancePanel';
-import {recordMetrics,getMetrics,resetMetricSamples} from '../performance/telemetry';
+import {recordMetrics,getMetrics,resetMetricSamples,cameraMetrics} from '../performance/telemetry';
 import {adaptQuality,initialQuality,targetFrameRate,type FrameRate,type QualityState} from '../performance/quality';
 import {geometryForLod,selectGeometryLod,type GeometryLod} from '../map/geometryLod';
 import {preparedCountryLabels} from '../map/labelIndex';
@@ -102,7 +102,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   const acceptFrameSample=useCallback((fps:number,ms:number,slow:number,updates:number,histogram?:number[])=>{
     const distribution=histogram?{frameP50Ms:frameQuantile(histogram,.5),frameP95Ms:frameQuantile(histogram,.95),frameP99Ms:frameQuantile(histogram,.99),frameSamples:histogram.reduce((n,x)=>n+x,0),over50Ms:histogram.slice(frameBucket(50)+1).reduce((n,x)=>n+x,0),over100Ms:histogram.slice(frameBucket(100)+1).reduce((n,x)=>n+x,0)}:{};
     recordMetrics({uiFps:fps,frameMs:ms,slowFrames:slow,cameraUpdates:updates,...distribution},true);
-    if(overlay)console.info('DOMINION_CAMERA '+JSON.stringify(getMetrics()));
+    if(overlay)console.info('DOMINION_CAMERA '+JSON.stringify(cameraMetrics(getMetrics())));
     if(adaptive){quality.current=adaptQuality(quality.current,ceiling,fps,frameBudget,Date.now(),updates>3);if(quality.current.tier!==preset)setPreset(quality.current.tier);}
   },[adaptive,ceiling,frameBudget,preset,overlay]);
   const pulse=useSharedValue(.9);

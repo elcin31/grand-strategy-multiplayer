@@ -1,0 +1,969 @@
+{
+  "runtime": "7897d1c260a650818edfb792f5767071b0a42233",
+  "comparisonRun": 38030634658,
+  "artifactId": 11662840632,
+  "artifactZipSha256": "7c30803c27ad120553d502d5348052cd5d5ab80188a75462f85d422e7564f287",
+  "rows": [
+    {
+      "workload": "camera-before/01-idle-logcat.txt",
+      "logPayloadLengths": [
+        583,
+        584
+      ],
+      "completeSamples": 11,
+      "retainedSamples": 11,
+      "malformedSamples": 0,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 0,
+        "mapRenders": 0,
+        "geographyRenders": 0,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before/02-medium-pan-logcat.txt",
+      "logPayloadLengths": [
+        583,
+        585,
+        587,
+        588
+      ],
+      "completeSamples": 12,
+      "retainedSamples": 12,
+      "malformedSamples": 0,
+      "activeSamples": 11,
+      "activeUiCallbackFpsRange": {
+        "min": 12.380952876190491,
+        "max": 48.196723239344074
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 7,
+        "mapRenders": 6,
+        "geographyRenders": 6,
+        "pathBuilds": 34,
+        "pathBuildMs": 6.032477000000654,
+        "rasterBuilds": 4,
+        "rasterMs": 35.208425000018906,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before/03-pinch-logcat.txt",
+      "logPayloadLengths": [
+        586,
+        587,
+        588,
+        589,
+        591
+      ],
+      "completeSamples": 10,
+      "retainedSamples": 10,
+      "malformedSamples": 0,
+      "activeSamples": 9,
+      "activeUiCallbackFpsRange": {
+        "min": 1.2244898448979704,
+        "max": 25.1612913290324
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 16,
+        "mapRenders": 16,
+        "geographyRenders": 16,
+        "pathBuilds": 76,
+        "pathBuildMs": 23.05750399993849,
+        "rasterBuilds": 22,
+        "rasterMs": 184.42927499994403,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before/04-world-pan-logcat.txt",
+      "logPayloadLengths": [
+        588,
+        589,
+        590
+      ],
+      "completeSamples": 11,
+      "retainedSamples": 11,
+      "malformedSamples": 0,
+      "activeSamples": 10,
+      "activeUiCallbackFpsRange": {
+        "min": 16.05633867042245,
+        "max": 26.129033303225956
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 5,
+        "mapRenders": 5,
+        "geographyRenders": 5,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before/05-local-labels-armies-logcat.txt",
+      "logPayloadLengths": [
+        592,
+        593,
+        594
+      ],
+      "completeSamples": 12,
+      "retainedSamples": 12,
+      "malformedSamples": 0,
+      "activeSamples": 11,
+      "activeUiCallbackFpsRange": {
+        "min": 24.761905752380983,
+        "max": 47.21311664262344
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 7,
+        "mapRenders": 6,
+        "geographyRenders": 6,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before/06-terrain-pan-logcat.txt",
+      "logPayloadLengths": [
+        592,
+        593,
+        594
+      ],
+      "completeSamples": 11,
+      "retainedSamples": 11,
+      "malformedSamples": 0,
+      "activeSamples": 10,
+      "activeUiCallbackFpsRange": {
+        "min": 25.714286742857176,
+        "max": 32.90322712258084
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 7,
+        "mapRenders": 7,
+        "geographyRenders": 6,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before/07-military-overlay-logcat.txt",
+      "logPayloadLengths": [
+        592,
+        593,
+        594,
+        595
+      ],
+      "completeSamples": 11,
+      "retainedSamples": 11,
+      "malformedSamples": 0,
+      "activeSamples": 10,
+      "activeUiCallbackFpsRange": {
+        "min": 23.823530364706652,
+        "max": 30.967743174193725
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 7,
+        "mapRenders": 7,
+        "geographyRenders": 6,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before/08-panel-open-logcat.txt",
+      "logPayloadLengths": [
+        590,
+        591,
+        592,
+        593,
+        594
+      ],
+      "completeSamples": 11,
+      "retainedSamples": 11,
+      "malformedSamples": 0,
+      "activeSamples": 11,
+      "activeUiCallbackFpsRange": {
+        "min": 22.258065406451742,
+        "max": 45.2459034491795
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 7,
+        "mapRenders": 7,
+        "geographyRenders": 7,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before/09-panel-closed-logcat.txt",
+      "logPayloadLengths": [
+        591,
+        593,
+        594
+      ],
+      "completeSamples": 11,
+      "retainedSamples": 11,
+      "malformedSamples": 0,
+      "activeSamples": 11,
+      "activeUiCallbackFpsRange": {
+        "min": 25.1612913290324,
+        "max": 45.2459034491795
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 11,
+        "mapRenders": 10,
+        "geographyRenders": 9,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after/01-idle-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 11,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after/02-medium-pan-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 12,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after/03-pinch-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 10,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after/04-world-pan-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 12,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after/05-local-labels-armies-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 11,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after/06-terrain-pan-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 11,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after/07-military-overlay-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 11,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after/08-panel-open-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 11,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after/09-panel-closed-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 12,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before-reverse/01-idle-logcat.txt",
+      "logPayloadLengths": [
+        585,
+        587
+      ],
+      "completeSamples": 11,
+      "retainedSamples": 11,
+      "malformedSamples": 0,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 0,
+        "mapRenders": 0,
+        "geographyRenders": 0,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before-reverse/02-medium-pan-logcat.txt",
+      "logPayloadLengths": [
+        584,
+        585,
+        586
+      ],
+      "completeSamples": 11,
+      "retainedSamples": 11,
+      "malformedSamples": 0,
+      "activeSamples": 10,
+      "activeUiCallbackFpsRange": {
+        "min": 12.380952876191522,
+        "max": 27.187501087498433
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 7,
+        "mapRenders": 6,
+        "geographyRenders": 6,
+        "pathBuilds": 34,
+        "pathBuildMs": 5.8349649999290705,
+        "rasterBuilds": 4,
+        "rasterMs": 32.59798299986869,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before-reverse/03-pinch-logcat.txt",
+      "logPayloadLengths": [
+        583,
+        585,
+        586,
+        587,
+        589,
+        590
+      ],
+      "completeSamples": 10,
+      "retainedSamples": 10,
+      "malformedSamples": 0,
+      "activeSamples": 7,
+      "activeUiCallbackFpsRange": {
+        "min": 3.000000119999871,
+        "max": 23.60655832130969
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 14,
+        "mapRenders": 14,
+        "geographyRenders": 14,
+        "pathBuilds": 76,
+        "pathBuildMs": 29.512169000227004,
+        "rasterBuilds": 20,
+        "rasterMs": 165.12862699991092,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before-reverse/04-world-pan-logcat.txt",
+      "logPayloadLengths": [
+        586,
+        587,
+        588,
+        589,
+        590
+      ],
+      "completeSamples": 12,
+      "retainedSamples": 12,
+      "malformedSamples": 0,
+      "activeSamples": 10,
+      "activeUiCallbackFpsRange": {
+        "min": 16.45161356129042,
+        "max": 25.1612913290324
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 5,
+        "mapRenders": 5,
+        "geographyRenders": 5,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before-reverse/05-local-labels-armies-logcat.txt",
+      "logPayloadLengths": [
+        594,
+        595,
+        596
+      ],
+      "completeSamples": 12,
+      "retainedSamples": 12,
+      "malformedSamples": 0,
+      "activeSamples": 11,
+      "activeUiCallbackFpsRange": {
+        "min": 25.573771514752167,
+        "max": 50.163936432783096
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 9,
+        "mapRenders": 9,
+        "geographyRenders": 8,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before-reverse/06-terrain-pan-logcat.txt",
+      "logPayloadLengths": [
+        593,
+        594,
+        595
+      ],
+      "completeSamples": 11,
+      "retainedSamples": 11,
+      "malformedSamples": 0,
+      "activeSamples": 11,
+      "activeUiCallbackFpsRange": {
+        "min": 26.557378111479487,
+        "max": 45.245903449176915
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 7,
+        "mapRenders": 7,
+        "geographyRenders": 6,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before-reverse/07-military-overlay-logcat.txt",
+      "logPayloadLengths": [
+        592,
+        594,
+        595,
+        596
+      ],
+      "completeSamples": 11,
+      "retainedSamples": 11,
+      "malformedSamples": 0,
+      "activeSamples": 10,
+      "activeUiCallbackFpsRange": {
+        "min": 24.76190575237755,
+        "max": 29.508197901637118
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 13,
+        "mapRenders": 10,
+        "geographyRenders": 10,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before-reverse/08-panel-open-logcat.txt",
+      "logPayloadLengths": [
+        591,
+        592,
+        593,
+        594
+      ],
+      "completeSamples": 12,
+      "retainedSamples": 12,
+      "malformedSamples": 0,
+      "activeSamples": 11,
+      "activeUiCallbackFpsRange": {
+        "min": 23.809524761906772,
+        "max": 49.18032983606186
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 7,
+        "mapRenders": 7,
+        "geographyRenders": 7,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-before-reverse/09-panel-closed-logcat.txt",
+      "logPayloadLengths": [
+        594,
+        595,
+        596,
+        598
+      ],
+      "completeSamples": 11,
+      "retainedSamples": 11,
+      "malformedSamples": 0,
+      "activeSamples": 11,
+      "activeUiCallbackFpsRange": {
+        "min": 25.1612913290324,
+        "max": 60.000002399995466
+      },
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": 13,
+        "mapRenders": 10,
+        "geographyRenders": 10,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after-reverse/01-idle-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 11,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after-reverse/02-medium-pan-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 12,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after-reverse/03-pinch-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 10,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after-reverse/04-world-pan-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 12,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after-reverse/05-local-labels-armies-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 12,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after-reverse/06-terrain-pan-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 11,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after-reverse/07-military-overlay-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 11,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after-reverse/08-panel-open-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 11,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    },
+    {
+      "workload": "camera-after-reverse/09-panel-closed-logcat.txt",
+      "logPayloadLengths": [
+        4036
+      ],
+      "completeSamples": 0,
+      "retainedSamples": 0,
+      "malformedSamples": 11,
+      "activeSamples": 0,
+      "activeUiCallbackFpsRange": null,
+      "activeUiCallbackP95MsRange": null,
+      "activeUiCallbackP99MsRange": null,
+      "counterDeltasBetweenSamples": {
+        "cullCommits": null,
+        "mapRenders": null,
+        "geographyRenders": null,
+        "pathBuilds": null,
+        "pathBuildMs": null,
+        "rasterBuilds": null,
+        "rasterMs": null,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      }
+    }
+  ],
+  "note": "Original logs retained in the verified artifact. Active candidate telemetry missing/truncated, never invented from idle HUD. Compact log change has only local tests/export so far; native measurements/gates still pending. Native camera P95 rejection remains valid."
+}
