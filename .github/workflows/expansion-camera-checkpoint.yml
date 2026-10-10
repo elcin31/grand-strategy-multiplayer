@@ -13,7 +13,11 @@ concurrency:
 jobs:
   camera-comparison:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
+    env:
+      CAMERA_CANDIDATE_RUNTIME: d7c3d593802f2edf27894f92fe10928341df0080
+      CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
+      CAMERA_CANDIDATE_RUN: '38021043667'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -41,6 +45,7 @@ jobs:
           java-version: '17'
       - run: python -m pip install -r scripts/camera-profile-requirements.txt
       - run: python -m py_compile scripts/android-camera-profile.py scripts/compare-camera-native.py scripts/export-camera-evidence.py
+      - run: python -m unittest discover -s tests -p 'camera_*_test.py'
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
@@ -68,10 +73,6 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - uses: reactivecircus/android-emulator-runner@v2
-        env:
-          CAMERA_CANDIDATE_RUNTIME: d7c3d593802f2edf27894f92fe10928341df0080
-          CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-          CAMERA_CANDIDATE_RUN: '38021043667'
         with:
           api-level: 35
           arch: x86_64
@@ -82,6 +83,12 @@ jobs:
             CAMERA_PROFILE_OUT=camera-before python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
             CAMERA_PROFILE_OUT=camera-after python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
             python scripts/compare-camera-native.py camera-before/results.json camera-after/results.json
+            cp CAMERA_NATIVE_PAIRED.json CAMERA_NATIVE_PAIRED_FORWARD.json
+            CAMERA_PROFILE_OUT=camera-after-reverse python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
+            CAMERA_PROFILE_OUT=camera-before-reverse python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
+            python scripts/compare-camera-native.py camera-before-reverse/results.json camera-after-reverse/results.json
+            mv CAMERA_NATIVE_PAIRED.json CAMERA_NATIVE_PAIRED_REVERSE.json
+            cp CAMERA_NATIVE_PAIRED_FORWARD.json CAMERA_NATIVE_PAIRED.json
       - name: Export verified native frames and original screenshots for remote review
         if: always()
         run: python scripts/export-camera-evidence.py
@@ -92,7 +99,11 @@ jobs:
           path: |
             camera-before/
             camera-after/
+            camera-before-reverse/
+            camera-after-reverse/
             CAMERA_NATIVE_PAIRED.json
+            CAMERA_NATIVE_PAIRED_FORWARD.json
+            CAMERA_NATIVE_PAIRED_REVERSE.json
             EXPANSION_CAMERA_REVIEW.json
             checkpoint-integrity.txt
             camera-fixture/manifest.json
