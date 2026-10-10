@@ -156,8 +156,11 @@ jobs:
       - run: npm ci --include=dev --no-audit --no-fund
       - name: Generate the same paused schema12 campaign for both APKs
         run: |
-          git diff --exit-code 47b0db4f8b220e9ea89998afaac035239b64f5e0 HEAD -- supabase/functions/_shared src/persistence/campaignCodec.ts
-          node --import tsx scripts/make-camera-fixture.ts camera-fixture
+          git diff --exit-code 47b0db4f8b220e9ea89998afaac035239b64f5e0 HEAD -- supabase/functions/_shared/worldDefinitions.ts supabase/functions/_shared/worldData
+          fixture_source="$RUNNER_TEMP/dominion-accepted-fixture"
+          git worktree add --detach "$fixture_source" 47b0db4f8b220e9ea89998afaac035239b64f5e0
+          cp scripts/make-camera-fixture.ts "$fixture_source/scripts/make-camera-fixture.ts"
+          node --import tsx "$fixture_source/scripts/make-camera-fixture.ts" "$GITHUB_WORKSPACE/camera-fixture"
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -186,6 +189,8 @@ jobs:
       - uses: reactivecircus/android-emulator-runner@v2
         env:
           CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
+          CAMERA_ALLOWED_STATE_VERSION: '13'
+          CAMERA_REQUIRE_SURFACE_PRESENTATION: '1'
         with:
           api-level: 35
           arch: x86_64

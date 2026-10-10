@@ -1,11 +1,12 @@
 import type {Army,GameState,Province} from './gameTypes.ts';
 import {warBetween} from './diplomacySystem.ts';
+import {canEnterTerritory} from './diplomacy2System.ts';
 export interface ArmyOrder { type:'MOVE'|'ATTACK'; targetProvinceId:string; route:string[]; issuedTick:number }
 /** Uniform-cost graph: BFS is optimal in monthly steps. Once per order, never per frame. */
 export function findArmyRoute(state:GameState,army:Army,targetId:string):string[] {
  const provinces=new Map(state.provinces.map(p=>[p.id,p]));
  const target=provinces.get(targetId);if(!target)throw Error('Провинция не найдена');
- const passable=(p:Province)=>{const owner=p.controllerId??p.ownerId;return owner===army.ownerId||!state.dataset||!!warBetween(state,army.ownerId,owner);};
+ const passable=(p:Province)=>canEnterTerritory(state,army.ownerId,p.controllerId??p.ownerId);
  if(!passable(target))throw Error('Нет права прохода: сначала объявите войну через дипломатию');
  if(targetId===army.provinceId)return [];
  const queue=[army.provinceId],previous=new Map<string,string|null>([[army.provinceId,null]]);
@@ -23,7 +24,7 @@ export function findArmyRoute(state:GameState,army:Army,targetId:string):string[
 export function setArmyOrder(state:GameState,ownerId:string,armyId:string,targetId:string):void {
  const army=state.armies.find(a=>a.id===armyId);if(!army||army.ownerId!==ownerId)throw Error('Можно отдавать приказы только своей армии');
  const route=findArmyRoute(state,army,targetId),target=state.provinces.find(p=>p.id===targetId)!;
- army.order=route.length?{type:(target.controllerId??target.ownerId)===ownerId?'MOVE':'ATTACK',targetProvinceId:targetId,route,issuedTick:state.tick}:undefined;
+ army.order=route.length?{type:warBetween(state,ownerId,target.controllerId??target.ownerId)||!state.dataset&&(target.controllerId??target.ownerId)!==ownerId?'ATTACK':'MOVE',targetProvinceId:targetId,route,issuedTick:state.tick}:undefined;
 }
 export function advanceArmyOrders(state:GameState,move:(state:GameState,owner:string,army:string,target:string)=>void):void {
  const provinces=new Map(state.provinces.map(p=>[p.id,p]));
@@ -31,7 +32,7 @@ export function advanceArmyOrders(state:GameState,move:(state:GameState,owner:st
   const order=army.order;if(!order||!state.armies.includes(army))continue;
   const next=provinces.get(order.route[0]??''),origin=provinces.get(army.provinceId);
   // Recheck every step against authoritative control and diplomacy. Never follow stale permissions.
-  if(!next||!origin?.neighbors.includes(next.id)||((next.controllerId??next.ownerId)!==army.ownerId&&state.dataset&&!warBetween(state,army.ownerId,next.controllerId??next.ownerId))){delete army.order;continue;}
+  if(!next||!origin?.neighbors.includes(next.id)||!canEnterTerritory(state,army.ownerId,next.controllerId??next.ownerId,army.id,next.id)){delete army.order;continue;}
   move(state,army.ownerId,army.id,next.id);
   if(army.provinceId!==next.id){delete army.order;continue;} // failed assault stops the order
   order.route.shift();if(!order.route.length)delete army.order;

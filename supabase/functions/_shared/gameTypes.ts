@@ -50,6 +50,7 @@ export interface Country {
 
 /** Monetary values are millions, with precision to $1,000. Derived forecast. */
 export interface EconomyBudget {
+  diplomaticMaintenance?: number;
   productionIncome: number;
   administrationMaintenance: number;
   taxIncome: number;
@@ -170,6 +171,10 @@ export interface Leader {
 }
 
 export interface GameState {
+  relationMissions?: import('./diplomacyTypes.ts').RelationMission[];
+  diplomaticOffers?: import('./diplomacyTypes.ts').DiplomaticOffer[];
+  diplomaticHistory?: import('./diplomacyTypes.ts').DiplomaticEvent[];
+  politicalUnions?: import('./diplomacyTypes.ts').PoliticalUnion[];
   movements?: import("./movementHistory.ts").MovementEvent[];
   rebellionLog?: RebellionEvent[];
   warHistory?: WarSummary[];
@@ -199,6 +204,13 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'START_RELATION_MISSION';playerId:string;targetId:string;kind:import('./diplomacyTypes.ts').RelationMissionKind}
+  | {type:'CANCEL_RELATION_MISSION';playerId:string;missionId:string}
+  | {type:'SEND_GIFT';playerId:string;targetId:string;amount:number}
+  | {type:'SEND_INSULT';playerId:string;targetId:string}
+  | {type:'OFFER_DIPLOMACY';playerId:string;targetId:string;terms:import('./diplomacyTypes.ts').DiplomaticTerms}
+  | {type:'RESPOND_DIPLOMACY';playerId:string;offerId:string;accept:boolean}
+  | {type:'TERMINATE_TREATY';playerId:string;targetId:string;treatyId:string}
   | { type: 'PACIFY_PROVINCE'; playerId: string; provinceId: string }
   | { type: 'SUPPRESS_REBELLION'; playerId: string; provinceId: string }
   | { type: 'PROPOSE_PEACE'; playerId: string; warId: string; terms: PeaceTerms }

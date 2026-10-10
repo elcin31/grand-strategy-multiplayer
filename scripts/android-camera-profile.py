@@ -7,7 +7,9 @@ import atexit,hashlib,json,os,re,subprocess,sys,time,xml.etree.ElementTree as ET
 from pathlib import Path
 from camera_frame_stats import frame_stats,thread_stats
 from camera_telemetry import camera_telemetry
-from camera_surface_stats import map_surface_layer, surface_frame_stats
+from camera_surface_stats import map_surface_layer, SurfaceSampler, surface_latency_args
+from android_fixture import root_test_device
+from camera_fixture_projection import assert_paused_fixture
 from map_paint_check import assert_map_painted
 from android_accessibility import dump_hierarchy
 PACKAGE='com.elcin31.grandstrategymultiplayer'
@@ -51,8 +53,7 @@ fixture_sha=hashlib.sha256(Path(fixture_path).read_bytes()).hexdigest() if fixtu
 def load_fixed_fixture():
     # Ephemeral AOSP QA emulator only. No debuggable APK, app backdoor, or
     # production data. Install the same normal, checksum-validated old save.
-    adb('root');adb('wait-for-device')
-    assert adb('shell','id','-u').strip()=='0', 'Fixed-save native QA requires the rootable test emulator'
+    root_test_device(adb,OUT/'fixture-root-diagnostic.txt')
     uid=re.search(r'(?:userId|appId)=(\d+)',adb('shell','dumpsys','package',PACKAGE))
     assert uid, 'Test app UID unavailable'
     directory='/data/user/0/'+PACKAGE+'/files/dominion-campaigns'
@@ -60,6 +61,7 @@ def load_fixed_fixture():
     adb('push',fixture_path,directory+'/'+fixture['state']['id']+'.1.json')
     adb('shell','chown',uid[1]+':'+uid[1],'/data/user/0/'+PACKAGE+'/files')
     adb('shell','chown','-R',uid[1]+':'+uid[1],directory)
+    adb('shell','restorecon','-RF',directory)
     assert_fixture_campaign()
 def assert_fixture_campaign():
     directory='/data/user/0/'+PACKAGE+'/files/dominion-campaigns'
@@ -67,8 +69,11 @@ def assert_fixture_campaign():
     saves=[n for n in names if re.fullmatch(re.escape(fixture['state']['id'])+r'\.\d+\.json',n)]
     assert saves, 'Fixed campaign snapshot missing'
     newest=max(saves,key=lambda n:int(n.rsplit('.',2)[1]))
-    actual=json.loads(adb('shell','cat',directory+'/'+newest))
-    assert actual['checksum']==fixture['checksum'] and actual['state']==fixture['state'], 'Camera workload changed its paused campaign state'
+    raw=adb('shell','cat',directory+'/'+newest)
+    captured=OUT/('fixture-native-'+newest);captured.write_text(raw)
+    subprocess.run(['node','--import','tsx',str(Path(__file__).with_name('verify-camera-checksum.ts')),str(captured)],check=True)
+    actual=json.loads(raw)
+    assert_paused_fixture(actual,fixture,int(os.environ.get('CAMERA_ALLOWED_STATE_VERSION','13')))
 def reset_camera(local=False,world=False):
     find_click('Обзор мира' if world else 'Европа')
     if local:find_click('Приблизить');find_click('Приблизить')
@@ -83,6 +88,7 @@ def sample(name,kind=None):
     pid=adb('shell','pidof',PACKAGE).strip()
     thread_file=(OUT/(name+'-threads-active.txt')).open('w')
     sampler=subprocess.Popen(['adb','shell','top','-H','-b','-d','1','-n','12','-p',pid],stdout=thread_file,stderr=subprocess.STDOUT)
+    compositor=SurfaceSampler(adb,map_layer,OUT/(name+'-surface-polls.json'));compositor.start()
     t=time.monotonic()
     if kind:gesture(kind)
     else:time.sleep(10)
@@ -90,10 +96,11 @@ def sample(name,kind=None):
     try:sampler.wait(timeout=20)
     except subprocess.TimeoutExpired:sampler.terminate();sampler.wait(timeout=5)
     thread_file.close()
+    surface=compositor.finish()
     raw=adb('shell','dumpsys','gfxinfo',PACKAGE,'framestats');(OUT/(name+'-frames.txt')).write_text(raw)
-    latency=adb('shell','dumpsys','SurfaceFlinger','--latency',map_layer) if map_layer else ''
+    try:latency=adb(*surface_latency_args(map_layer),timeout=5) if map_layer else ''
+    except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as error:latency='Latency diagnostic unavailable: '+str(getattr(error,'output',None) or error)
     (OUT/(name+'-surface-latency.txt')).write_text(latency)
-    surface={**surface_frame_stats(latency),'layer':map_layer}
     cpu=adb('shell','dumpsys','cpuinfo');(OUT/(name+'-cpu.txt')).write_text(cpu)
     mem=adb('shell','dumpsys','meminfo',PACKAGE);(OUT/(name+'-memory.txt')).write_text(mem)
     logs=adb('logcat','-d');(OUT/(name+'-logcat.txt')).write_text(logs)

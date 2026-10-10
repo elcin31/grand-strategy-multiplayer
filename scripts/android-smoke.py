@@ -394,8 +394,16 @@ click_scrolling('Дипломатия ▾')
 click_scrolling('Поиск страны для дипломатии')
 adb('shell','input','text','bra'); adb('shell','input','keyevent','4')
 click_scrolling('Бразилия')
+before_relations=int(re.search(r'отношения (-?\d+)',read_scrolling('Бразилия · отношения ')).group(1))
 click_scrolling('Улучшить отношения · 10 PP')
-assert 'отношения 15' in read_scrolling('Бразилия · отношения ')
+assert int(re.search(r'отношения (-?\d+)',read_scrolling('Бразилия · отношения ')).group(1))==before_relations, 'Relations mission applied an instant reward'
+assert '0/12 мес.' in read_scrolling('Улучшение отношений: '), 'Diplomatic mission did not start while paused'
+advance_campaign_months(6)
+navigate('Дипломатия')
+click_scrolling('Поиск страны для дипломатии')
+adb('shell','input','text','bra'); adb('shell','input','keyevent','4')
+click_scrolling('Бразилия')
+assert int(re.search(r'отношения (-?\d+)',read_scrolling('Бразилия · отношения ')).group(1))>=before_relations+18, 'Diplomacy mission did not progress through the real clock'
 click_scrolling('Предложить: Ненападение')
 assert 'Ненападение' in read_scrolling('Договоры: ')
 screenshot('diplomacy-treaty')

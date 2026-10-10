@@ -38,7 +38,7 @@ export function createWorldState(gameId: string, roomCode: string, playerId: str
     country.income = governmentIncome(monthly, country.governmentType);
     if (troops) armies.push({ id: 'army-capital-'+definition.id, ownerId: definition.id, provinceId: capital.provinceId, troops });
   }
-  const state: GameState = { stateVersion: CURRENT_STATE_VERSION, dataset: 'modern-world-v2', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, leaders, constructions: [], armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };
+  const state: GameState = { stateVersion: CURRENT_STATE_VERSION, dataset: 'modern-world-v2', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, leaders, constructions: [], relationMissions: [], diplomaticOffers: [], diplomaticHistory: [], politicalUnions: [], armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };
   if(deferred)return state;
   initializePopulation(state);
   initializeReligions(state);

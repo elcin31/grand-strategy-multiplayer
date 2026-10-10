@@ -1,9 +1,12 @@
 import assert from 'node:assert/strict';
 import type {GameState} from '../../supabase/functions/_shared/gameTypes';
+import {initializeDiplomacy2} from '../../supabase/functions/_shared/diplomacy2System';
 export function assertInvariants(s:GameState):void {
  const numbers=(v:unknown):void=>{if(typeof v==='number')assert.ok(Number.isFinite(v),'Non-finite state');else if(v&&typeof v==='object')for(const x of Object.values(v))numbers(x);};numbers(s);
  const unique=(rows:{id:string}[])=>assert.equal(new Set(rows.map(x=>x.id)).size,rows.length,'Duplicate entity');
  unique(s.provinces);unique(s.armies);unique(s.players);unique(s.cities??[]);
+ unique(s.relationMissions??[]);unique(s.diplomaticOffers??[]);unique(s.diplomaticHistory??[]);unique(s.politicalUnions??[]);
+ if(s.dataset)initializeDiplomacy2(s,false);
  const provinces=new Map(s.provinces.map(p=>[p.id,p])),population=new Map<string,number>(),armies=new Map<string,number>(),urban=new Map<string,number>();
  for(const p of s.provinces){assert.ok(Object.hasOwn(s.countries,p.ownerId));assert.ok(Object.hasOwn(s.countries,p.controllerId??p.ownerId));assert.ok(Number.isSafeInteger(p.population)&&p.population>=0);assert.ok(p.neighbors.every(n=>provinces.has(n)));population.set(p.ownerId,(population.get(p.ownerId)??0)+p.population);}
  for(const city of s.cities??[]){assert.equal(city.countryId,provinces.get(city.provinceId)?.ownerId);assert.ok(Number.isSafeInteger(city.population)&&city.population>=0);urban.set(city.provinceId,(urban.get(city.provinceId)??0)+city.population);}

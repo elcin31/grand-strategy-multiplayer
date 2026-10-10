@@ -6,6 +6,8 @@ Original Android-first global strategy, built with Expo 57, React Native 0.86, T
 
 Main contains the verified **0.8.1 (9)** camera/illustrated release: **195 countries, 2,924 provinces, 5,411 cities, schema12**. The continuing **Expansion 2.0** work is on `expansion-v2`; it is not yet merged or a final v2 release. Recovery and army-selection fixes exist, while current camera acceptance and the full diplomacy/espionage/economy/military/technology/focus/art expansion remain open. Existing systems and optimized map caches are retained.
 
+Expansion now includes an authoritative Diplomacy 2.0 core and additive schema13 migration: missions, gifts, timed/consented treaties, directional neutral access, trade, technology/province exchange, ultimatums, multi-party summits, federations and a persistent journal. 210 host regressions, a Hermes Android export and a 10,000-tick/ten-restore run pass. Native interface/camera acceptance, final backend compatibility rollout and the remaining Expansion systems are pending; this feature branch is not a finished release. See `DIPLOMACY_2_HOST_QA_2026-10-10.json` and the latest handoff entry.
+
 Read [DEVELOPMENT_HANDOFF.md](DEVELOPMENT_HANDOFF.md) for exact implementation, commits, CI evidence, remaining gates and next five phases. [RECOVERY_AUDIT.md](RECOVERY_AUDIT.md) records the recovered 26-phase matrix. [BUG_REPORT.md](BUG_REPORT.md) tracks current defects/limitations; [WORLD_UPDATE_STATUS.md](WORLD_UPDATE_STATUS.md) is mostly historical evidence.
 
 ## Run and verify

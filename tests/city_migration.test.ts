@@ -1,6 +1,7 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
 import oldCities from './fixtures/cities-v4.json';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
+import {CURRENT_STATE_VERSION} from '../supabase/functions/_shared/stateMigrations';
 import {migrateCityCatalogue} from '../supabase/functions/_shared/cityMigration';
 import {validateCampaign,decodeCampaign} from '../src/persistence/campaignCodec';
 import {CampaignStore,type CampaignFiles} from '../src/persistence/campaignStore';
@@ -11,7 +12,7 @@ const oldWorld=()=>{const s=createWorldState('city-migration','CITIES','host','Q
 const urban=(s:ReturnType<typeof oldWorld>)=>s.cities!.reduce((n,c)=>n+c.population,0);
 test('real v4 campaign migrates every removed reference preserving protected centers/capitals/urban and province population',()=>{
  const old=oldWorld(),original=structuredClone(old),migrated=validateCampaign(old),ids=new Set(migrated.cities!.map(c=>c.id));
- assert.equal(old.cities!.length,7214);assert.equal(migrated.cities!.length,5411);assert.equal(migrated.stateVersion,12);assert.deepEqual(old,original);assert.equal(urban(old),urban(migrated));assert.equal(migrated.cities!.filter(c=>c.isCapital).length,195);assert.equal(migrated.cities!.filter(c=>c.isRegionalCapital).length,2225);
+ assert.equal(old.cities!.length,7214);assert.equal(migrated.cities!.length,5411);assert.equal(migrated.stateVersion,CURRENT_STATE_VERSION);assert.deepEqual(old,original);assert.equal(urban(old),urban(migrated));assert.equal(migrated.cities!.filter(c=>c.isCapital).length,195);assert.equal(migrated.cities!.filter(c=>c.isRegionalCapital).length,2225);
  for(const p of migrated.provinces){assert.ok(p.cityIds!.every(id=>ids.has(id)));assert.equal(p.population,old.provinces.find(q=>q.id===p.id)!.population);assert.equal(migrated.cities!.filter(c=>c.provinceId===p.id).reduce((n,c)=>n+c.population,0),old.cities!.filter(c=>c.provinceId===p.id).reduce((n,c)=>n+c.population,0));}
  assert.deepEqual(migrated.countries,old.countries);assert.deepEqual(migrated.armies,old.armies);const again=validateCampaign(migrated);assert.deepEqual(again,migrated);
 });

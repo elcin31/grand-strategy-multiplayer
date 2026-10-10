@@ -2,7 +2,8 @@ import type { Army, BuildingType, GameState, Province } from './gameTypes.ts';
 import { BUILDINGS, buildingQuote, provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
 import { combatMultiplier } from './militarySystem.ts';
 import { researchQuote, startResearch, techLevel, type TechnologyBranch } from './technologySystem.ts';
-import { declareWar, diplomaticAction, pairKey, offerTreaty, respondTreaty, treatyAcceptance, warBetween } from './diplomacySystem.ts';
+import { declareWar, diplomaticAction, pairKey, offerTreaty, warBetween } from './diplomacySystem.ts';
+import {missionAvailability,diplomacyAcceptance,diplomacyQuote,respondDiplomacy} from './diplomacy2System.ts';
 import { isWarLeader, opponentSide, peaceCost, proposePeace, respondPeace, scoreFor, type PeaceTerms } from './warSystem.ts';
 import { pacifyProvince } from './stabilitySystem.ts';
 
@@ -25,7 +26,7 @@ export interface AIStrategicContext {
 }
 export function strategicContext(s:GameState,id:string,neighbours:string[]):AIStrategicContext {
   const c=s.countries[id]!,w=s.wars?.find(w=>[...w.attackers,...w.defenders].includes(id));
-  const allies=Object.values(s.diplomacy??{}).filter(l=>(l.a===id||l.b===id)&&l.treaties.includes('Alliance')).map(l=>l.a===id?l.b:l.a);
+  const allies=Object.values(s.diplomacy??{}).filter(l=>(l.a===id||l.b===id)&&l.treaties.some(t=>t==='Alliance'||t==='PoliticalUnion')).map(l=>l.a===id?l.b:l.a);
   return {militaryStrength:c.army,enemyStrength:w?opponentSide(w,id).reduce((n,i)=>n+s.countries[i]!.army,0):0,
     neighbourThreat:Math.max(0,...neighbours.map(i=>s.countries[i]!.army)),treasuryReserve:Math.max(150,((c.economy?.armyMaintenance??0)+(c.economy?.buildingMaintenance??0)+(c.economy?.interest??0)+20)*6),
     incomeBalance:c.economy?.monthlyBalance??0,stability:c.stability,warExhaustion:c.warExhaustion??0,
@@ -34,7 +35,7 @@ export function strategicContext(s:GameState,id:string,neighbours:string[]):AISt
 export function warDecisionScore(s:GameState,id:string,target:string,context:AIStrategicContext):number {
   const c=s.countries[id]!,e=s.countries[target]!,l=s.diplomacy?.[pairKey(id,target)];
   if(c.overlordId||e.overlordId||!e.provinceIds?.length||s.wars?.some(w=>[...w.attackers,...w.defenders].some(i=>i===id||i===target))||l?.treaties.length||l?.guarantors.includes(id)||s.tick<(l?.truceUntilTick??0)||c.politicalPower!<25||c.stability<55||c.warExhaustion!>30||c.treasury<context.treasuryReserve+100)return -Infinity;
-  const defenders=new Set([target,...Object.values(s.diplomacy??{}).filter(x=>(x.a===target||x.b===target)&&(x.treaties.some(t=>t==='Alliance'||t==='DefensivePact')||x.guarantors.includes(x.a===target?x.b:x.a))).map(x=>x.a===target?x.b:x.a),...Object.values(s.countries).filter(x=>x.overlordId===target).map(x=>x.id)]);
+  const defenders=new Set([target,...Object.values(s.diplomacy??{}).filter(x=>(x.a===target||x.b===target)&&(x.treaties.some(t=>t==='Alliance'||t==='DefensivePact'||t==='PoliticalUnion')||x.guarantors.includes(x.a===target?x.b:x.a))).map(x=>x.a===target?x.b:x.a),...Object.values(s.countries).filter(x=>x.overlordId===target).map(x=>x.id)]);
   if([...defenders].some(d=>{const link=s.diplomacy?.[pairKey(id,d)];return link?.treaties.length||s.tick<(link?.truceUntilTick??0);}))return -Infinity;
   const power=[...defenders].reduce((n,i)=>n+s.countries[i]!.army,0);
   const ratio=context.militaryStrength/Math.max(10000,power);
@@ -65,14 +66,18 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
   const ids=Object.keys(s.countries).sort();
   for(let index=0;index<ids.length;index++){
     const id=ids[index]!,c=s.countries[id]!;if(!aiControls(s,id))continue;
-    const home=(owned.get(id)??[]).filter(p=>(p.controllerId??p.ownerId)===id);if(!home.length)continue;
+    const home=(owned.get(id)??[]).filter(p=>(p.controllerId??p.ownerId)===id);
     const adjacent=[...(neighbours.get(id)??[])].sort(),style=personality(s,id);
     let cachedContext:AIStrategicContext|undefined;
     const context=()=>cachedContext??=strategicContext(s,id,adjacent);
-    const capital=capitals.get(c.capitalCityId??'')??home[0]!.id;
     const w=s.wars?.find(w=>[...w.attackers,...w.defenders].includes(id));
     // Event-driven responses do not wait for the country's strategic slot.
-    for(const l of Object.values(s.diplomacy??{}))if(l.proposal&&l.proposal.from!==id&&(l.a===id||l.b===id))respondTreaty(s,id,l.proposal.from,treatyAcceptance(s,l.proposal.from,id)>=20);
+    for(const offer of [...s.diplomaticOffers??[]]){
+      const members=offer.terms.kind==='Summit'?offer.terms.participants:[offer.from,offer.to];
+      if(offer.from===id||!members.includes(id)||offer.acceptedBy.includes(id)||offer.expiresTick<=s.tick)continue;
+      const rating=diplomacyAcceptance(s,offer.from,id,offer.terms);
+      try{respondDiplomacy(s,id,offer.id,rating.score>=rating.required);}catch{respondDiplomacy(s,id,offer.id,false);}
+    }
     if(w&&isWarLeader(w,id)&&w.peaceOffer&&w.peaceOffer.from!==id){
       const offer=w.peaceOffer;let accept=false;
       // A pending human offer can become unaffordable or lose its occupied provinces
@@ -80,6 +85,10 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
       try {accept=offer.terms.kind==='WhitePeace'?(s.tick-w.startedTick>=12||context().warExhaustion>50||context().incomeBalance<0):scoreFor(w,offer.from)>=peaceCost(s,w,offer.from,offer.terms);} catch {accept=false;}
       respondPeace(s,id,w.id,accept);
     }
+    // Occupation cannot suppress consent or peace responses. Productive and
+    // tactical work requires a controlled home province after those responses.
+    if(!home.length)continue;
+    const capital=capitals.get(c.capitalCityId??'')??home[0]!.id;
     if(s.tick%6===index%6){
       const affordable=(cost:number)=>c.treasury-cost>=context().treasuryReserve&&s.tick>=c.bankruptcyUntilTick!;
       const unrest=[...home].sort((a,b)=>(b.unrest??0)-(a.unrest??0))[0]!;
@@ -109,7 +118,7 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
       if(!s.wars?.some(w=>[...w.attackers,...w.defenders].includes(id))){
         const enemy=adjacent.map(target=>({target,score:warDecisionScore(s,id,target,context())})).sort((a,b)=>b.score-a.score)[0];
         if(enemy&&enemy.score>=65){try{declareWar(s,id,enemy.target);}catch{/* Coalition may have changed earlier in this scheduled tick; authoritative guard wins. */}}
-        else {const friend=adjacent.filter(t=>!warBetween(s,id,t)).sort((a,b)=>(s.diplomacy?.[pairKey(id,b)]?.relation??0)-(s.diplomacy?.[pairKey(id,a)]?.relation??0))[0];if(friend){const l=s.diplomacy?.[pairKey(id,friend)];if(!l?.rivals.length&&c.politicalPower!>=35&&s.tick>=(l?.improveAfter??0))diplomaticAction(s,id,friend,'Improve');const treaty=style==='Diplomatic'?'Alliance':'NonAggression';if(!l?.proposal&&!l?.treaties.includes(treaty)&&!l?.rivals.length&&treatyAcceptance(s,id,friend)>=20)offerTreaty(s,id,friend,treaty);}
+        else {const friend=adjacent.filter(t=>!warBetween(s,id,t)).sort((a,b)=>(s.diplomacy?.[pairKey(id,b)]?.relation??0)-(s.diplomacy?.[pairKey(id,a)]?.relation??0))[0];if(friend){const l=s.diplomacy?.[pairKey(id,friend)];if(!l?.rivals.length&&c.politicalPower!>=35&&affordable(29)&&!missionAvailability(s,id,friend,'Improve'))diplomaticAction(s,id,friend,'Improve');const treaty=style==='Diplomatic'?'Alliance':style==='Economic'?'TradeAgreement':'NonAggression',terms={kind:'Treaty',treaty} as const,rating=diplomacyAcceptance(s,id,friend,terms);if(affordable(25)&&rating.score>=rating.required&&!diplomacyQuote(s,id,friend,terms).reason)offerTreaty(s,id,friend,treaty);}
           if((style==='Expansionist'||style==='Militarist')&&enemy&&s.countries[enemy.target]!.army>c.army){const l=s.diplomacy?.[pairKey(id,enemy.target)];if(!l?.treaties.length&&!l?.rivals.includes(id))diplomaticAction(s,id,enemy.target,'Rival');}}
       }
     }

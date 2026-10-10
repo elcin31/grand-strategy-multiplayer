@@ -5,6 +5,7 @@ import { runStrategicAI } from './aiSystem.ts';
 import { monthlyStability, pacifyProvince, suppressRebellion } from './stabilitySystem.ts';
 import { monthlyWar, proposePeace, recordWarBattle, respondPeace } from './warSystem.ts';
 import { declareWar, diplomaticAction, monthlyDiplomacy, offerTreaty, respondTreaty, warBetween } from './diplomacySystem.ts';
+import {startRelationMission,cancelRelationMission,sendGift,sendInsult,offerDiplomacy,respondDiplomacy,terminateTreaty,monthlyDiplomacy2,canEnterTerritory} from './diplomacy2System.ts';
 import { assignCommander, battleFatigue, combatMultiplier, recoverMilitary, UNITS, type UnitType } from './militarySystem.ts';
 import { monthlyResearch, startResearch, techLevel } from './technologySystem.ts';
 import { buildingModifierTotals, cancelConstructionInProvince, completeConstructions, provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
@@ -66,7 +67,7 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
   if (!origin || !destination) throw new Error('Провинция не найдена');
   if (!origin.neighbors.includes(destination.id)) throw new Error('Провинции не соседствуют');
   const controller = state.dataset ? destination.controllerId ?? destination.ownerId : destination.ownerId;
-  if (controller === ownerId) { recordMovement(state,{armyId,ownerId,from:origin.id,to:destination.id,tick:state.tick}); army.provinceId = destination.id; return; }
+  if (controller === ownerId || state.dataset && !warBetween(state,ownerId,controller) && canEnterTerritory(state,ownerId,controller,army.id,destination.id)) { recordMovement(state,{armyId,ownerId,from:origin.id,to:destination.id,tick:state.tick}); army.provinceId = destination.id; return; }
   if (state.dataset && !warBetween(state, ownerId, controller)) throw new Error('Сначала объявите войну');
   recordMovement(state,{armyId,ownerId,from:origin.id,to:destination.id,tick:state.tick});
   const defenderId = controller, defenders = armiesIn(state, destination.id, defenderId), defenderTroops = totalTroops(defenders);
@@ -169,16 +170,30 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
       recalcCountryStats(next);recalcPopulationTotals(next);recalcReligiousUnity(next);recalcEconomy(next);checkWinner(next);return next;
     }
     case 'DIPLOMATIC_ACTION':
+    case 'START_RELATION_MISSION':
+    case 'CANCEL_RELATION_MISSION':
+    case 'SEND_GIFT':
+    case 'SEND_INSULT':
+    case 'OFFER_DIPLOMACY':
+    case 'RESPOND_DIPLOMACY':
+    case 'TERMINATE_TREATY':
     case 'OFFER_TREATY':
     case 'RESPOND_TREATY':
     case 'DECLARE_WAR': {
       if (!next.dataset || !['running','paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');
       const player=getPlayer(next,command.playerId);if(!player.countryId)throw new Error('Страна не выбрана');
       if(command.type==='DIPLOMATIC_ACTION')diplomaticAction(next,player.countryId,command.targetId,command.action);
+      if(command.type==='START_RELATION_MISSION')startRelationMission(next,player.countryId,command.targetId,command.kind);
+      if(command.type==='CANCEL_RELATION_MISSION')cancelRelationMission(next,player.countryId,command.missionId);
+      if(command.type==='SEND_GIFT')sendGift(next,player.countryId,command.targetId,command.amount);
+      if(command.type==='SEND_INSULT')sendInsult(next,player.countryId,command.targetId);
+      if(command.type==='OFFER_DIPLOMACY')offerDiplomacy(next,player.countryId,command.targetId,command.terms);
+      if(command.type==='RESPOND_DIPLOMACY')respondDiplomacy(next,player.countryId,command.offerId,command.accept);
+      if(command.type==='TERMINATE_TREATY')terminateTreaty(next,player.countryId,command.targetId,command.treatyId);
       if(command.type==='OFFER_TREATY')offerTreaty(next,player.countryId,command.targetId,command.treaty);
       if(command.type==='RESPOND_TREATY')respondTreaty(next,player.countryId,command.targetId,command.accept);
       if(command.type==='DECLARE_WAR')declareWar(next,player.countryId,command.targetId);
-      return next;
+      recalcCountryStats(next);recalcPopulationTotals(next);recalcReligiousUnity(next);return next;
     }
     case 'START_RESEARCH': {
       if (!next.dataset || !['running', 'paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');
@@ -239,7 +254,12 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
     case 'MOVE_ARMY': {
       if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId); if (!player.countryId) throw new Error('Страна не выбрана');
-      resolveMovement(next, player.countryId, command.armyId, command.provinceId); checkWinner(next); return next;
+      const army=next.armies.find(a=>a.id===command.armyId),order=army?.order;
+      resolveMovement(next, player.countryId, command.armyId, command.provinceId);
+      // Legacy one-step clients may complete the first waypoint of a saved
+      // route. Consume it once; a different manual destination replaces it.
+      if(army&&order){if(army.provinceId===command.provinceId&&order.route[0]===command.provinceId){order.route.shift();if(!order.route.length)delete army.order;}else delete army.order;}
+      checkWinner(next); return next;
     }
     case 'CHANGE_RELIGION': {
       if (!next.dataset) throw new Error('Смена религии доступна в кампании современного мира');
@@ -270,10 +290,12 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
     }
     case 'ADVANCE_TICK': {
       if (next.phase !== 'running' || next.speed === 0) return next;
+      if(!Number.isSafeInteger(next.tick+1)||!Number.isSafeInteger(next.year+(next.month===12?1:0)))throw new Error('Campaign clock overflow');
       next.tick += 1; next.month += 1; if (next.month > 12) { next.month = 1; next.year += 1; }
       advanceArmyOrders(next,resolveMovement);
       completeConstructions(next);
       monthlyDiplomacy(next);
+      monthlyDiplomacy2(next);
       monthlyResearch(next);
       recoverMilitary(next);
       monthlyPopulationGrowth(next); recalcCountryStats(next);
