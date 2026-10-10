@@ -91,7 +91,9 @@ jobs:
           cd android
           NODE_ENV=production ./gradlew assembleRelease --no-daemon
       - name: Verify bundled JavaScript and native libraries
-        run: python scripts/verify-apk.py android/app/build/outputs/apk/release/app-release.apk
+        run: |
+          python scripts/verify-apk.py android/app/build/outputs/apk/release/app-release.apk
+          python scripts/verify-packaged-art.py android/app/build/outputs/apk/release/app-release.apk > art-packaging.txt
       - name: Verify release manifest, signature and production backend
         run: |
           python scripts/verify-release.py android/app/build/outputs/apk/release/app-release.apk > release-integrity.txt
@@ -104,6 +106,7 @@ jobs:
           path: |
             Dominion-camera-optimized-illustrated.apk
             release-integrity.txt
+            art-packaging.txt
             paired-visual-ci.json
             paired-camera-ci.json
             CAMERA_HOST_PAIRED.json

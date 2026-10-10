@@ -5,6 +5,7 @@ import {colors} from '../ui/tokens';
 import {BUILDING_ART} from '../ui/artCatalogue';
 import {styles} from './strategyStyles';
 import {AtlasArt} from './AtlasArt';
+import {ExpansionArt} from './ExpansionArt';
 import type {StrategyProps} from './StrategyPanel';
 import {FOCUS_BRANCHES,FOCUS_IDS,FOCUS_NODES,focusBelongsTo,focusNode,hasFocus,focusRewardLines,type FocusBranch,type FocusId} from '../../supabase/functions/_shared/focusCatalogue';
 import {focusAvailability} from '../../supabase/functions/_shared/focusSystem';
@@ -23,7 +24,7 @@ export function NationalFocusPanel({state,playerId,onCommand}:StrategyProps){
  const width=tab==='Regional'?190:tab==='Unique'?nodes.length*190:760,height=tab==='Regional'||tab==='Unique'?150:300;
  return <View style={styles.card}>
   <Text style={[styles.title,{fontSize:17}]}>DOMINION — НАЦИОНАЛЬНЫЙ КУРС</Text>
-  <AtlasArt atlas="buildings" index={BUILDING_ART.Administration} height={84} label="Иллюстрация национального курса"/>
+  <ExpansionArt name="theme-focus" label="Иллюстрация национального курса"/>
   <Text style={styles.text}>Одна программа одновременно. Цена оплачивается при выборе, результаты действуют после завершения. Альтернативные программы исключают друг друга; прерывание теряет вложения и прогресс.</Text>
   <Text style={styles.title}>Завершено курсов: {c.completedFocuses?.length??0}</Text>
   {project&&<View style={styles.card}><Text accessibilityLiveRegion="polite" style={styles.title}>Национальный курс: {FOCUS_NODES[project.focusId].name} · {project.progress}/{FOCUS_NODES[project.focusId].duration} мес.</Text>{state.tick<(c.bankruptcyUntilTick??0)&&<Text style={styles.text}>Работа приостановлена до выхода из банкротства.</Text>}<Pressable accessibilityRole="button" accessibilityLabel="Прервать национальный курс" accessibilityState={{disabled:!enabled}} disabled={!enabled} style={styles.button} onPress={()=>onCommand({type:'CANCEL_NATIONAL_FOCUS',playerId})}><Text style={styles.title}>Прервать курс</Text></Pressable></View>}

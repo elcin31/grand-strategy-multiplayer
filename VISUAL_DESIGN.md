@@ -1,3 +1,13 @@
+# Expansion2.0 original illustration integration — 2026-10-10
+
+27 separate NEW paintings meet the full19-category request plus8 themes; all inherited15 files retain their bytes. The navy/burgundy/gold/parchment oil-painted Dominion identity remains. `src/ui/expansionArt.ts` selects contextual scenes and `ExpansionArt` mounts a packaged Image only in the active panel, with accessible descriptions. No eager image prefetch, camera asset, frame-driven selection or gameplay substitution.
+
+Diplomacy has embassy/treaty/trade/peace/summit scenes on real controls; military staff/supply/training/fortress scenes follow the existing panel/army/logistics; four real construction cards use new farm/mine/factory/infrastructure images and the other six keep accepted miniatures. Three institution banners follow actual government type; Christian/Islamic/Buddhist architecture follows actual religion, with other accepted faith tiles preserved. Real espionage, budget, ruler/general context, technology graph, National Course, battle history and loading use the eight new themes. Existing individual fictional portraits remain stable.
+
+640×360 panels and960×540 loading WebPs; each new decoded image is at most2,073,600 RGBA bytes. All42 compressed files3,479,060bytes preserve the existing3.5MB asset budget. Actual source/derivative hashes, full prompts and subject provenance in manifest/expansion-prompts/ASSET_CREDITS. Reviewed all27 originals and optimized contact sheet;269JS/52Python(51pass1pinned-Perfetto skip)/TS/art integrity and Hermes Android export PASS. Candidate-only packaged APK verification and full native screenshot/layout/memory/frame gates pending. No physical-device FPS claim.
+
+---
+
 # Dominion — historical atlas visual update
 
 ## Camera-pass illustration coverage (2026-10-09)

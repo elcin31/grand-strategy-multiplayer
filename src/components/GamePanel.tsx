@@ -1,6 +1,7 @@
 import {AtlasArt} from './AtlasArt';
 import {BUILDING_ART,GOVERNMENT_ART,RELIGION_ART} from '../ui/artCatalogue';
-import {HistoricalArt} from './HistoricalArt';
+import {ExpansionArt} from './ExpansionArt';
+import {governmentScene,religionScene,constructionScene} from '../ui/expansionArt';
 import {LeaderPortrait,Crest} from './Heraldry';
 import {colors,tokens} from '../ui/tokens';
 import type {Section} from '../ui/landscape';
@@ -73,7 +74,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
 
   return (
     <View style={styles.wrap}>
-      {(section==='Military'||section==='Diplomacy'||section==='Economy')&&<View style={{overflow:'hidden',borderWidth:1,borderColor:colors.border}}><HistoricalArt name={section==='Military'?'military':section==='Diplomacy'?'diplomacy':'economy'}/><View style={{padding:10,flexDirection:'row',alignItems:'center',gap:10}}><Crest/><Text style={{fontFamily:'serif',fontSize:20,color:colors.parchment}}>{section==='Military'?'Военный совет':section==='Diplomacy'?'Дипломатический корпус':'Государственная казна'}</Text></View></View>}
+      {(section==='Military'||section==='Diplomacy'||section==='Economy')&&<View style={{overflow:'hidden',borderWidth:1,borderColor:colors.border}}><ExpansionArt name={section==='Military'?'military-staff':section==='Diplomacy'?'diplomacy-embassy':'theme-economy'} label={'Иллюстрация Dominion: '+(section==='Military'?'military':section==='Diplomacy'?'diplomacy':'economy')}/><View style={{padding:10,flexDirection:'row',alignItems:'center',gap:10}}><Crest/><Text style={{fontFamily:'serif',fontSize:20,color:colors.parchment}}>{section==='Military'?'Военный совет':section==='Diplomacy'?'Дипломатический корпус':'Государственная казна'}</Text></View></View>}
       {section==='Country'&&<View style={styles.card}>
         <View style={styles.header}>
           <View>
@@ -82,6 +83,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
           </View>
           <View style={styles.dateBadge}><Text style={styles.dateText}>{String(state.month).padStart(2, '0')}/{state.year}</Text></View>
         </View>
+        {ruler&&<ExpansionArt name="theme-ruler" height={72}/>}
         {ruler && <View style={styles.rulerRow}><LeaderPortrait seed={ruler.portraitSeed}/><View style={{flex:1,minWidth:0}}><Text style={styles.rulerLabel}>ВЫМЫШЛЕННЫЙ ПРАВИТЕЛЬ · {ruler.age}</Text><Text style={styles.rulerName}>{ruler.name}</Text><Text style={styles.rulerDetails}>{ruler.ideology} · {ruler.aiPersonality} · дипломатия {ruler.diplomaticSkill}</Text></View></View>}
         <View style={styles.metrics}>
           <Metric label="Казна" value={state.dataset ? currency(nation.treasury) : `$${compact(nation.treasury)}M`} />
@@ -135,7 +137,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
 
       {section==='Government'&&state.dataset && <Pressable accessibilityRole="button" onPress={() => { setGovernmentOpen(!governmentOpen); setReligionOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Правительство {governmentOpen ? '▴' : '▾'}</Text></Pressable>}
       {governmentOpen && state.dataset && <View style={styles.card}>
-        <AtlasArt atlas="government" index={GOVERNMENT_ART[nation.governmentType??'Parliamentary Republic']} height={92} label="Иллюстрация формы правления"/>
+        <ExpansionArt name={governmentScene(nation.governmentType??'Parliamentary Republic')} height={92} label="Иллюстрация формы правления"/>
         <Text style={styles.eyebrow}>ФОРМА ПРАВЛЕНИЯ · {Math.floor(politicalPower)} PP</Text>
         <Text style={styles.govCurrent}>{nation.governmentType}</Text>
         <Text style={styles.hint}>Смена: {GOVERNMENT_CHANGE_COST} PP, −{GOVERNMENT_STABILITY_COST} стабильности; cooldown {GOVERNMENT_COOLDOWN_TICKS} мес.</Text>
@@ -159,7 +161,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
 
       {section==='Religion'&&state.dataset && <Pressable accessibilityRole="button" onPress={() => { setReligionOpen(!religionOpen); setGovernmentOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Религия {religionOpen ? '▴' : '▾'}</Text></Pressable>}
       {religionOpen && state.dataset && <View style={styles.card}>
-        <AtlasArt atlas="religion" index={RELIGION_ART[nation.religion??'secular']??7} height={92} label="Иллюстрация религиозной архитектуры"/>
+        {religionScene(nation.religion??'secular')?<ExpansionArt name={religionScene(nation.religion??'secular')!} height={92} label="Иллюстрация религиозной архитектуры"/>:<AtlasArt atlas="religion" index={RELIGION_ART[nation.religion??'secular']??7} height={92} label="Иллюстрация религиозной архитектуры"/>}
         <Text style={styles.eyebrow}>ГОСУДАРСТВЕННАЯ РЕЛИГИЯ · {Math.floor(politicalPower)} PP</Text>
         <Text style={styles.govCurrent}>{RELIGIONS[nation.religion ?? 'secular']?.name}</Text>
         <Text style={styles.hint}>Religious Unity: {nation.religiousUnity?.toFixed(1)}% · unrest {nation.unrest?.toFixed(1)}</Text>
@@ -231,7 +233,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
                     style={[styles.buildOption, disabled && styles.disabled]}
                     onPress={() => onCommand({ type: queued?'QUEUE_BUILD':'BUILD', playerId, provinceId: selected.id, buildingType: type })}
                   >
-                    <View style={{flexDirection:'row',alignItems:'center',gap:10}}><AtlasArt atlas="buildings" index={BUILDING_ART[type]} width={56} height={56} label={'Иллюстрация здания: '+definition.name}/><View style={{flex:1}}><Text style={styles.govName}>{definition.name}</Text><Text style={styles.govDetails}>Уровень {currentLevel}/{definition.maxLevel}</Text></View></View>
+                    <View style={{flexDirection:'row',alignItems:'center',gap:10}}>{constructionScene(type)?<ExpansionArt name={constructionScene(type)!} width={56} height={56} label={'Иллюстрация здания: '+definition.name}/>:<AtlasArt atlas="buildings" index={BUILDING_ART[type]} width={56} height={56} label={'Иллюстрация здания: '+definition.name}/>}<View style={{flex:1}}><Text style={styles.govName}>{definition.name}</Text><Text style={styles.govDetails}>Уровень {currentLevel}/{definition.maxLevel}</Text></View></View>
                     <Text style={styles.govDetails}>{Object.entries(definition.modifiers).map(([key,value])=>`${({taxPercent:"Налоги, %",tradePercent:"Торговля, %",resourcePercent:"Добыча, %",manpowerPercent:"Резерв, %",researchPercent:"Исследования, %",defensePercent:"Защита, %",populationGrowthPercent:"Рост населения, %",stabilityPerYear:"Стабильность / год",unrestPerYear:"Беспорядки / год"} as Record<string,string>)[key]??key}: ${value!>0?"+":""}${value}`).join(" · ")}</Text>
                     <Text style={styles.govDetails}>Содержание {currency(definition.maintenance)}/мес.</Text>
                     {reason&&<Text style={styles.govDetails}>{reason}</Text>}
@@ -291,6 +293,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
 
       {(section==='Military'||section==='Country')&&<View style={styles.card}>
         <Text style={styles.eyebrow}>ВОЕННАЯ СВОДКА</Text>
+        {state.battleLog.length>0&&<ExpansionArt name="theme-event" height={64}/>}
         {state.battleLog.length === 0 ? <Text style={styles.hint}>Боёв пока не было.</Text> : state.battleLog.slice(0, 6).map((battle) => (
           <View key={battle.id} style={styles.logRow}>
             <View style={styles.logTop}><Text style={styles.logMessage}>{battle.message}</Text><Text style={styles.logTick}>#{battle.tick}</Text></View>

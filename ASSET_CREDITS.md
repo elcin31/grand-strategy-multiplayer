@@ -1,3 +1,13 @@
+# Expansion2.0 original paintings — 2026-10-10
+
+27 NEW original paintings were commissioned with the built-in OpenAI ImageGen tool from separate textual scene descriptions; no external reference image, screenshot, copyrighted game tree/code/art or named-artist imitation was supplied. The19 approved category originals are5 Diplomacy,4 Military,4 Construction,3 Government and3 Religion. Eight additional originals cover espionage, economy, a fictional ruler, a fictional general, university research, national choices, historical chronicles and a loading atlas. The inherited15 accepted WebPs and original atlases remain byte-exact.
+
+Final project assets: `assets/art/expansion/*.webp`; full final prompt set and original PNG identifiers/SHA256: `assets/art/expansion-prompts.json`. Manifest records every derivative/source hash, dimensions, category and subject ID. Original source PNGs remain untouched. Derivatives only resize/compress the complete composition:26 panels at640×360 and loading at960×540, WebP quality76. New bytes1,290,426; all42 WebPs3,479,060bytes, below the existing3,500,000 budget. No stock image, external license or reference-game asset was added; the same commissioned-output use basis described below applies.
+
+Every category/theme has an active-panel consumer. Government/religion and all ten buildings retain their existing complete atlas alternatives. New faith scenes are mapped to their matching architecture; other faiths keep their accepted atlas. Leader/general banners are fictional historical atmosphere; existing stable individual portraits/names retain identity. Assets are registered by Metro and decoded only when their Image mounts, never by the map renderer. Actual WebP verification and42 byte-exact Android-export resources PASS; a candidate-only APK gate now requires all42 packaged hashes, pending actual CI build. Native layout/decoding/memory/frame acceptance remains open.
+
+---
+
 # Dominion asset provenance
 
 The illustration completion pass reuses the same original portrait atlas for fictional commanders and the same building/military paintings for technology branches and open war panels. Commander visual identity derives from the existing stable ID; it does not add a save field. No extra generated artwork or third-party image was introduced by this completion pass.

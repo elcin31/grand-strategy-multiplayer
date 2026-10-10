@@ -1,3 +1,7 @@
+# Stage9 asset budget and decoding — 2026-10-10
+
+27 NEW originals plus inherited15 occupy3,479,060bytes under unchanged3.5MB limit. New panels26×640×360; loading960×540, max2,073,600 RGBA bytes per newly mounted image. No asset imported by the map, eager prefetch, frame selection or new gameplay workload. Actual all42 hashes found in Android export; candidate-only APK gate added. Host Pillow diagnostics are recorded as CPU-only, not Android decoding/PSS/frame proof. Native layout/memory/decoding/loading/camera gates await actual CI. Existing Stage8 sequential240 simulation remains applicable because gameplay/renderer/schema are unchanged. Actual Stage7 10000/P95228.11ms data in the new report; camera acceptance remains OPEN.
+
 # Stage8 course host comparison — 2026-10-10
 
 Same sequential host seed101/240 monthly ticks/four exact saves: schema17 P95/P99=75.34/94.74ms;18=75.01/90.87ms. Snapshot3,916,914->4,146,058;RSS739,651,584->716,468,224. Permanent course bonuses use a WeakMap cache and bounded completions; graph availability only on open panels/strategic slots, monthly country pass/events, no map-frame work. No concurrent heavy local workload. Different actual gameplay outcomes; CPU/data figures do not prove Android frame acceptance. Existing complete Stage6 camera failures remain OPEN. Full report EXPANSION_STAGE8_HOST_QA_2026-10-10.json.

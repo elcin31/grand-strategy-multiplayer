@@ -1,3 +1,7 @@
+# Stage9 evidence — 2026-10-10
+
+269 hostJS/strictTS/51PythonPASS plus1 unavailable pinned Perfetto analyzer. All19 requested category originals and8 themes exist, have27 distinct recorded source hashes and real panel consumers; inherited15 unchanged.42 WebPs actual decode/export checked. Real release APK image hashes, native decoding/layout/memory and camera acceptance pending; no final APK claim. Stage7 actual10000 completed with finite valid restores, but long-run cash scale and latest integrated/native/backend gates still need Stage10. Tests' Node URL import matches the Node filesystem type rather than the RN URL shim; no gameplay assertion was disabled.
+
 # Stage8 validation checkpoint — 2026-10-10
 
 267/267 host tests PASS including13 course/DAG/payment/once-only/default/real-effects/strict-save/AI/overflow regressions and22 lost-response intent kinds. Schema18 course UI/native/10000/backend acceptance is pending. Parentc75 signed checkpoint build PASS; its long/camera still running and native not yet started when recorded. Camera P99 acceptance remains open from actual previous ABBA failure; do not equate host pass or checkpoint APK with final release.19NEW Stage9 originals and final coordinated schema rollout still outstanding.

@@ -1,3 +1,32 @@
+# Continuation — Stage9 original illustrations and lazy UI, 2026-10-10
+
+Verified GitHub/local parent HEAD **9004fddbd13743866ad61eb3c476889b3e5c47e1**, tree413b11fabc4c835de5303b6f3feb552a528a2024. This entry describes the reviewed Stage9 tree above that parent; read branch HEAD for its containing SHA. Earlierc75bf36/3aeb/8cf/5f/b6/4bd/ca retained. Only existing Dominion repo/backend, unchanged main dbb354/accepted47b/world195/2924/5411. No backend deployment, renderer replacement or province/city reduction.
+
+**Stage9 implementation:**27 NEW original built-in ImageGen compositions, one independent call per scene, no external/copied game assets. Required19=5dip/4mil/4construction/3gov/3religion plus8espionage/economy/ruler/general/technology/focus/event/loading. Sources and prompt set recorded in assets/art/expansion-prompts.json;27 optimized finals assets/art/expansion/*.webp. Original PNGs untouched, only complete-composition resizing/compression. All inherited15 accepted files byte-exact. Real active-panel integration: treaty/trade/summit/peace; staff/route/supply/fort/recruiting; four existing building cards; actual-government/faith banners; spies/budget/current leader/general context/research/focus/battle log/loading. All other authoritative catalogues retain their accepted atlas alternatives; stable individual portraits retained. New assets are decoded on Image mount, no eager prefetch or map-frame work.
+
+**Verification:**269/269JS, TS,52Python(51PASS/1 pinned host Perfetto analyzer unavailable), full actual WebP decode/hashes/dimensions/category/source/prompts checks PASS.27 unique source hashes; all42 WebPs3,479,060bytes below unchanged3.5MB cap.26 new640×360 and one960×540 loading image; per-image decoded max2,073,600bytes. Complete27 original/optimized sheet reviewed. Hermes11,468,269bytes/SHA64d6a9270b1228107861f782ef00b735a735d1b4507f4429d90c5136f80edccd/magicc61fbc03c103191f; all42 byte-exact WebPs found in actual Android export. A new candidate-only APK gate verifies all42 image hashes despite resource renaming, with missing/changed/unloadable-path tests; actual packaged APK/native memory/frame acceptance awaits CI. No gameplay/data/schema change beyond Stage8; use its verified identical240-month comparison instead of repeating a heavy benchmark without a new concern. Full report EXPANSION_STAGE9_HOST_QA_2026-10-10.json; credits/design updated.
+
+**Actual parent Stage7CI38079172136:** build114292352941 SUCCESS; long114292353104 SUCCESS for10000ticks/10restores/195/2924/5411. Artifact11679788619 downloaded:1849bytes/SHA39a5549c5ddccc29e719a3d33fe78cbfcb3530c560b178085623d07e331d96bf/ZIP CRC PASS. Max2513armies/4,919,817snapshot/P95228.11ms/maxWarAge11; final cash24.72billionM requires the approved long-term balance review. Camera114296235418 and native114296971249 still IN_PROGRESS when recorded. Stage8CI38080813451 build114297163370 and long114297163585 still IN_PROGRESS. Retain all complete failure evidence and unchanged thresholds; no final APK yet.
+
+| Approved stage | Status and remaining gate |
+|---|---|
+|0 Recovery|DONE; do not repeat|
+|1 Frame pacing|PARTIAL; actual complete ABBA P99 regressions need diagnosis/acceptance|
+|2 Army UX|DONE at ca230dd native; latest integrated acceptance pending|
+|3 Diplomacy2.0|PARTIAL; core/UI/host, latest native/backend/final acceptance pending|
+|4 Espionage/diplomatic AI|PARTIAL; core/UI/host, construction slowdown integration/native/backend pending|
+|5 Economy/buildings|PARTIAL; core/UI/host, sabotage/balance/native/backend final acceptance pending|
+|6 Military/supply|PARTIAL; core/UI/host/actual10000, latest native/backend/balance pending|
+|7 Technology tree|PARTIAL; core/UI/host/actual10000, latest native/backend pending|
+|8 National Course|PARTIAL; core/UI/host267/240/four restores, actual native/10000/backend pending|
+|9 Illustrations/polish|PARTIAL; all27 NEW originals/real UI/export/host verified; actual APK/native layout/decoding/memory pending|
+|10 Whole-expansion integration/balance|PARTIAL; sabotage-construction, numerical limits/long balance, whole-focus/native/frame/backend/reconnect pending|
+|11 Final signed Android release/delivery|NOT STARTED; checkpoint0.8.1 is not final Expansion2.0|
+
+**Exact next operation:** publish this verified logical illustration commit with GitHub-confirmed SHA and keep full normal CI. Continue approved Stage10 real interactions: sabotage must slow dated construction work without free completion/refund exploit; numerical/research date guards and long-term economy/AI balance based on actual10000 evidence; meaningful regression and exact save/network replay tests. Collect live Stage7/8/current native/camera/10000 results; diagnose unresolved camera tails using actual trace attribution without changing gates or renderer architecture. Coordinate existing Dominion backend schema18 rollout/old-client compatibility and actual online reconnect. Only after all approved gates pass, version/sign/build/verify/download/deliver the final standalone Dominion-grand-strategy-v2-release.apk. Do not stop at an illustration report or intermediate APK.
+
+---
+
 # Continuation — Stage8 original National Course, 2026-10-10
 
 Latest verified GitHub/local parent HEAD **c75bf36aa030f07c0291309b4c9a159e48a9b8b6**, tree5209c5e92e10f30ab06a1af80c796f24fd48bee2. This entry describes the Stage8 tree committed above that parent; use the actual branch HEAD for its containing SHA. Main dbb354, accepted47b and all earlier expansion checkpoints retained. Only existing Dominion repository/backend; no AssetMind, backend deployment, renderer replacement or world reduction.195/2924/5411 retained.
