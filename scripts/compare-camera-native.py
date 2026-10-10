@@ -15,6 +15,16 @@ report.update({'protocol':before.get('protocol','independent-campaign-v1'),'fixt
 Path('CAMERA_NATIVE_PAIRED.json').write_text(json.dumps(report,indent=2)+'\n')
 for row in rows:print(row['scenario'],{k:row['before'][k] for k in ('p50Ms','p95Ms','jankPercent','pssKiB')},'->',{k:row['after'][k] for k in ('p50Ms','p95Ms','jankPercent','pssKiB')})
 assert all(r[side]['pssKiB'] is not None and r[side]['pssKiB']>0 for r in rows for side in ('before','after')), 'Native memory capture missing'
+assert all(r['after']['pssKiB']<=r['before']['pssKiB']*1.2 for r in rows), 'Native memory regression'
+if os.environ.get('CAMERA_REQUIRE_SURFACE_PRESENTATION')=='1':
+    # HWUI changes meaning for an opaque SurfaceView. Independently require
+    # complete compositor intervals for both map presentation backends.
+    for row in rows[1:]:
+        b=row['before'].get('surfacePresentation',{});a=row['after'].get('surfacePresentation',{})
+        assert all(s.get('available') and s.get('complete') and s.get('frames',0)>=20 for s in [b,a]), row['scenario']+' complete compositor capture missing'
+        allowance=1.1 if row['scenario']=='03-pinch' else 1.2
+        assert a['p95Ms']<=b['p95Ms']*allowance, row['scenario']+' compositor p95 regression'
+        assert a['p99Ms']<=b['p99Ms']*allowance, row['scenario']+' compositor p99 regression'
 assert all(r['after']['p95Ms'] is not None for r in rows[1:]), 'No native moving-camera frame timings captured'
 pinch=next(r for r in rows if r['scenario']=='03-pinch')
 assert pinch['after']['histogramP95Ms'] <= pinch['before']['histogramP95Ms']*1.1, 'Pinch p95 regression; candidate must not publish'

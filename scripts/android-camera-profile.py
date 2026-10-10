@@ -7,6 +7,8 @@ import atexit,hashlib,json,os,re,subprocess,sys,time,xml.etree.ElementTree as ET
 from pathlib import Path
 from camera_frame_stats import frame_stats,thread_stats
 from camera_telemetry import camera_telemetry
+from camera_surface_stats import map_surface_layer, SurfaceSampler
+from android_fixture import root_test_device
 from map_paint_check import assert_map_painted
 from android_accessibility import dump_hierarchy
 PACKAGE='com.elcin31.grandstrategymultiplayer'
@@ -50,8 +52,7 @@ fixture_sha=hashlib.sha256(Path(fixture_path).read_bytes()).hexdigest() if fixtu
 def load_fixed_fixture():
     # Ephemeral AOSP QA emulator only. No debuggable APK, app backdoor, or
     # production data. Install the same normal, checksum-validated old save.
-    adb('root');adb('wait-for-device')
-    assert adb('shell','id','-u').strip()=='0', 'Fixed-save native QA requires the rootable test emulator'
+    root_test_device(adb,OUT/'fixture-root-diagnostic.txt')
     uid=re.search(r'(?:userId|appId)=(\d+)',adb('shell','dumpsys','package',PACKAGE))
     assert uid, 'Test app UID unavailable'
     directory='/data/user/0/'+PACKAGE+'/files/dominion-campaigns'
@@ -59,6 +60,7 @@ def load_fixed_fixture():
     adb('push',fixture_path,directory+'/'+fixture['state']['id']+'.1.json')
     adb('shell','chown',uid[1]+':'+uid[1],'/data/user/0/'+PACKAGE+'/files')
     adb('shell','chown','-R',uid[1]+':'+uid[1],directory)
+    adb('shell','restorecon','-RF',directory)
     assert_fixture_campaign()
 def assert_fixture_campaign():
     directory='/data/user/0/'+PACKAGE+'/files/dominion-campaigns'
@@ -74,9 +76,15 @@ def reset_camera(local=False,world=False):
     time.sleep(2)
 def sample(name,kind=None):
     adb('shell','dumpsys','gfxinfo',PACKAGE,'reset');adb('logcat','-c')
+    layers=adb('shell','dumpsys','SurfaceFlinger','--list')
+    (OUT/(name+'-surface-layers.txt')).write_text(layers)
+    map_layer=map_surface_layer(layers,PACKAGE)
+    clear=adb('shell','dumpsys','SurfaceFlinger','--latency-clear')
+    (OUT/(name+'-surface-clear.txt')).write_text(clear)
     pid=adb('shell','pidof',PACKAGE).strip()
     thread_file=(OUT/(name+'-threads-active.txt')).open('w')
     sampler=subprocess.Popen(['adb','shell','top','-H','-b','-d','1','-n','12','-p',pid],stdout=thread_file,stderr=subprocess.STDOUT)
+    compositor=SurfaceSampler(adb,map_layer,OUT/(name+'-surface-polls.json'));compositor.start()
     t=time.monotonic()
     if kind:gesture(kind)
     else:time.sleep(10)
@@ -84,7 +92,10 @@ def sample(name,kind=None):
     try:sampler.wait(timeout=20)
     except subprocess.TimeoutExpired:sampler.terminate();sampler.wait(timeout=5)
     thread_file.close()
+    surface=compositor.finish()
     raw=adb('shell','dumpsys','gfxinfo',PACKAGE,'framestats');(OUT/(name+'-frames.txt')).write_text(raw)
+    latency=adb('shell','dumpsys','SurfaceFlinger','--latency',map_layer) if map_layer else ''
+    (OUT/(name+'-surface-latency.txt')).write_text(latency)
     cpu=adb('shell','dumpsys','cpuinfo');(OUT/(name+'-cpu.txt')).write_text(cpu)
     mem=adb('shell','dumpsys','meminfo',PACKAGE);(OUT/(name+'-memory.txt')).write_text(mem)
     logs=adb('logcat','-d');(OUT/(name+'-logcat.txt')).write_text(logs)
@@ -98,7 +109,7 @@ def sample(name,kind=None):
     (OUT/(name+'-threads.txt')).write_text(adb('shell','top','-H','-b','-n','1','-p',pid))
     pss=re.search(r'TOTAL PSS:\s*(\d+)',mem)
     fallback=re.findall(r'DOMINION_CAMERA[^\n]*',logs)[-1:]
-    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,**frame_stats(raw),'cpuThreads':thread_stats((OUT/(name+'-threads-active.txt')).read_text(),pid),'mapPaint':painted,'cameraTrace':fallback,'cameraTelemetry':camera_telemetry(logs),'diagnosticError':None}
+    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,**frame_stats(raw),'surfacePresentation':surface,'cpuThreads':thread_stats((OUT/(name+'-threads-active.txt')).read_text(),pid),'mapPaint':painted,'cameraTrace':fallback,'cameraTelemetry':camera_telemetry(logs),'diagnosticError':None}
     results.append(result)
     def persist(): (OUT/'results.json').write_text(json.dumps({'protocol':'fixed-save-reset-v2' if fixture else 'independent-campaign-v1','fixtureSha256':fixture_sha,'fixtureStateChecksum':fixture['checksum'] if fixture else None,'note':'Software SwiftShader API35 native frames, offline paused campaign. Same gestures for both builds; not physical Redmi FPS. Accessibility diagnostics are auxiliary to the completed-frame capture.','results':results},indent=2))
     persist()
