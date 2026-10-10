@@ -7,6 +7,7 @@ import atexit,hashlib,json,os,re,subprocess,sys,time,xml.etree.ElementTree as ET
 from pathlib import Path
 from camera_frame_stats import frame_stats,thread_stats
 from map_paint_check import assert_map_painted
+from android_accessibility import dump_hierarchy
 PACKAGE='com.elcin31.grandstrategymultiplayer'
 OUT=Path(os.environ.get('CAMERA_PROFILE_OUT','camera-profile'));OUT.mkdir(exist_ok=True)
 def adb(*args,timeout=None):return subprocess.check_output(['adb',*map(str,args)],text=True,stderr=subprocess.STDOUT,timeout=timeout)
@@ -15,9 +16,7 @@ def save_logs():
     except (OSError,subprocess.CalledProcessError):pass
 atexit.register(save_logs)
 def hierarchy(name):
-    adb('shell','uiautomator','dump','/sdcard/camera.xml',timeout=20)
-    text=adb('shell','cat','/sdcard/camera.xml',timeout=10);(OUT/(name+'.xml')).write_text(text)
-    return ET.fromstring(text)
+    return dump_hierarchy(adb,PACKAGE,OUT,name,'/sdcard/camera.xml')
 def click(root,label):
     node=next(n for n in root.iter('node') if n.get('text')==label or n.get('content-desc')==label)
     x1,y1,x2,y2=map(int,re.findall(r'\d+',node.get('bounds')))

@@ -2,7 +2,7 @@ name: Dominion fixed-world native camera checkpoint
 on:
   push:
     branches: [expansion-camera-qa]
-    paths: [.github/workflows/expansion-camera-checkpoint.yml, scripts/android-camera-profile.py, scripts/compare-camera-native.py, scripts/export-camera-evidence.py, scripts/make-camera-fixture.ts, scripts/camera_frame_stats.py, tests/camera_frame_stats_test.py, tests/camera_protocol_test.py]
+    paths: [.github/workflows/expansion-camera-checkpoint.yml, scripts/android-camera-profile.py, scripts/android_accessibility.py, scripts/compare-camera-native.py, scripts/export-camera-evidence.py, scripts/make-camera-fixture.ts, scripts/camera_frame_stats.py, tests/camera_frame_stats_test.py, tests/camera_protocol_test.py, tests/camera_accessibility_test.py]
   workflow_dispatch:
 permissions:
   contents: read

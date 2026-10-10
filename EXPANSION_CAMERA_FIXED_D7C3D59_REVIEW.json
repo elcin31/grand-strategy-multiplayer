@@ -90,7 +90,38 @@
             "p95": null,
             "p99": null
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 1.09,
+              "maxCpuPercent": 2.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            }
+          }
+        },
+        "rawP99IsMaximum": null
       },
       "after": {
         "elapsedSeconds": 10.000089203000016,
@@ -143,7 +174,38 @@
             "p95": null,
             "p99": null
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 0.82,
+              "maxCpuPercent": 1.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 0.09,
+              "maxCpuPercent": 1.0
+            }
+          }
+        },
+        "rawP99IsMaximum": null
       }
     },
     {
@@ -199,7 +261,38 @@
             "p95": 62.566039,
             "p99": 80.577827
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 22.73,
+              "maxCpuPercent": 36.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 61.45,
+              "maxCpuPercent": 74.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 2.36,
+              "maxCpuPercent": 8.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       },
       "after": {
         "elapsedSeconds": 11.350627194000026,
@@ -252,7 +345,38 @@
             "p95": 61.122718,
             "p99": 78.753808
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 23.64,
+              "maxCpuPercent": 37.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 62.64,
+              "maxCpuPercent": 76.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 2.18,
+              "maxCpuPercent": 6.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       }
     },
     {
@@ -308,7 +432,38 @@
             "p95": 50.891494,
             "p99": 65.827084
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 9.82,
+              "maxCpuPercent": 28.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 83.0,
+              "maxCpuPercent": 96.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 7.09,
+              "maxCpuPercent": 12.0
+            }
+          }
+        },
+        "rawP99IsMaximum": true
       },
       "after": {
         "elapsedSeconds": 11.34146667799996,
@@ -361,7 +516,38 @@
             "p95": 41.213539,
             "p99": 57.569954
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 7.27,
+              "maxCpuPercent": 19.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 85.82,
+              "maxCpuPercent": 97.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 6.45,
+              "maxCpuPercent": 17.0
+            }
+          }
+        },
+        "rawP99IsMaximum": true
       }
     },
     {
@@ -417,7 +603,38 @@
             "p95": 60.810606,
             "p99": 66.418775
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 23.18,
+              "maxCpuPercent": 31.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 62.64,
+              "maxCpuPercent": 70.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 1.27,
+              "maxCpuPercent": 3.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       },
       "after": {
         "elapsedSeconds": 11.325582331999954,
@@ -470,7 +687,38 @@
             "p95": 59.662775,
             "p99": 68.017048
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 22.72,
+              "maxCpuPercent": 29.4
+            },
+            "main-ui": {
+              "meanCpuPercent": 60.2,
+              "maxCpuPercent": 71.2
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 1.18,
+              "maxCpuPercent": 3.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       }
     },
     {
@@ -526,7 +774,38 @@
             "p95": 40.421269,
             "p99": 46.735738
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 25.82,
+              "maxCpuPercent": 30.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 43.73,
+              "maxCpuPercent": 54.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 1.64,
+              "maxCpuPercent": 4.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       },
       "after": {
         "elapsedSeconds": 11.333213508999961,
@@ -579,7 +858,38 @@
             "p95": 40.198286,
             "p99": 45.258633
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 25.61,
+              "maxCpuPercent": 31.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 44.76,
+              "maxCpuPercent": 54.4
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 2.9,
+              "maxCpuPercent": 7.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       }
     },
     {
@@ -635,7 +945,38 @@
             "p95": 39.483002,
             "p99": 49.853478
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 24.49,
+              "maxCpuPercent": 29.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 44.08,
+              "maxCpuPercent": 54.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 2.0,
+              "maxCpuPercent": 4.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       },
       "after": {
         "elapsedSeconds": 11.332334874000026,
@@ -688,7 +1029,38 @@
             "p95": 39.5193,
             "p99": 53.844744
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 24.91,
+              "maxCpuPercent": 31.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 43.64,
+              "maxCpuPercent": 51.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 1.91,
+              "maxCpuPercent": 4.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       }
     },
     {
@@ -744,7 +1116,38 @@
             "p95": 44.723715,
             "p99": 48.066862
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 25.97,
+              "maxCpuPercent": 31.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 44.5,
+              "maxCpuPercent": 51.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 1.91,
+              "maxCpuPercent": 5.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       },
       "after": {
         "elapsedSeconds": 11.33453013899998,
@@ -797,7 +1200,38 @@
             "p95": 43.184792,
             "p99": 48.989169
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 25.06,
+              "maxCpuPercent": 29.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 44.76,
+              "maxCpuPercent": 54.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 2.72,
+              "maxCpuPercent": 5.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       }
     },
     {
@@ -853,7 +1287,38 @@
             "p95": 44.896229,
             "p99": 53.920546
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 29.73,
+              "maxCpuPercent": 37.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 44.36,
+              "maxCpuPercent": 51.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 1.82,
+              "maxCpuPercent": 4.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       },
       "after": {
         "elapsedSeconds": 11.356845906999979,
@@ -906,7 +1371,38 @@
             "p95": 48.554202,
             "p99": 52.671587
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 29.96,
+              "maxCpuPercent": 35.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 44.68,
+              "maxCpuPercent": 51.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 2.17,
+              "maxCpuPercent": 6.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       }
     },
     {
@@ -962,7 +1458,38 @@
             "p95": 39.304148,
             "p99": 46.92204
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 25.04,
+              "maxCpuPercent": 30.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 46.27,
+              "maxCpuPercent": 54.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 2.45,
+              "maxCpuPercent": 5.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       },
       "after": {
         "elapsedSeconds": 11.326284476000069,
@@ -1015,10 +1542,61 @@
             "p95": 39.555711,
             "p99": 47.612983
           }
-        }
+        },
+        "cpuThreads": {
+          "samples": 11,
+          "note": "Percent of one emulator CPU core; sums can exceed 100%. Same sampler on both APKs. First top sample excluded when possible.",
+          "threads": {
+            "FrescoDecodeExe": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoIoBoundEx": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "FrescoLightWeig": {
+              "meanCpuPercent": 0.0,
+              "maxCpuPercent": 0.0
+            },
+            "RenderThread": {
+              "meanCpuPercent": 26.55,
+              "maxCpuPercent": 34.0
+            },
+            "main-ui": {
+              "meanCpuPercent": 44.73,
+              "maxCpuPercent": 53.0
+            },
+            "mqt_v_js": {
+              "meanCpuPercent": 1.82,
+              "maxCpuPercent": 4.0
+            }
+          }
+        },
+        "rawP99IsMaximum": false
       }
     }
   ],
   "acceptance": "All nine original P95 gates pass. Fixed-world pinch histogram P99 800 -> 1100ms and raw P99 839.57 -> 1144.85ms; tail regression remains under investigation. Do not infer physical-device FPS or claim complete microstutter elimination.",
-  "sourceMetadataCorrection": "Raw EXPANSION_CAMERA_REVIEW exporter hardcoded the previous efd build in apkVerification; candidateRuntime/source run from CAMERA_NATIVE_PAIRED, downloaded APK hash and checkpoint integrity identify actual d7 runtime/run38021043667. Corrected exporter to use report source fields; original raw evidence retained."
+  "sourceMetadataCorrection": "Raw EXPANSION_CAMERA_REVIEW exporter hardcoded the previous efd build in apkVerification; candidateRuntime/source run from CAMERA_NATIVE_PAIRED, downloaded APK hash and checkpoint integrity identify actual d7 runtime/run38021043667. Corrected exporter to use report source fields; original raw evidence retained.",
+  "sampleLimit": "Fixed-world pinch recent CSV has 97 baseline and 81 candidate samples; raw P99 is the maximum in both. One run cannot establish a stable tail change. Full histograms and raw windows both retained; reverse-order replicates are running.",
+  "javaGcLogReview": {
+    "before": {
+      "distinctJavaGcLines": 9,
+      "rawExamples": [
+        "10-10 03:57:40.790  2261  2273 I tegymultiplayer: Explicit concurrent mark compact GC freed 5048KB AllocSpace bytes, 13(14MB) LOS objects, 49% free, 5813KB/11MB, paused 105us,599us total 16.252ms",
+        "10-10 03:58:00.713  2261  2270 I tegymultiplayer: Explicit concurrent mark compact GC freed 2304KB AllocSpace bytes, 3(60KB) LOS objects, 49% free, 5597KB/10MB, paused 87us,595us total 14.109ms",
+        "10-10 03:58:21.568  2261  2270 I tegymultiplayer: Explicit concurrent mark compact GC freed 424KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 5485KB/10MB, paused 153us,910us total 25.839ms"
+      ]
+    },
+    "after": {
+      "distinctJavaGcLines": 9,
+      "rawExamples": [
+        "10-10 04:03:41.032  3778  3807 I tegymultiplayer: Explicit concurrent mark compact GC freed 4968KB AllocSpace bytes, 13(14MB) LOS objects, 49% free, 5788KB/11MB, paused 76us,411us total 14.319ms",
+        "10-10 04:04:00.934  3778  3807 I tegymultiplayer: Explicit concurrent mark compact GC freed 2512KB AllocSpace bytes, 3(60KB) LOS objects, 49% free, 5609KB/10MB, paused 72us,453us total 12.944ms",
+        "10-10 04:04:21.791  3778  3806 I tegymultiplayer: Explicit concurrent mark compact GC freed 676KB AllocSpace bytes, 1(20KB) LOS objects, 49% free, 5525KB/10MB, paused 123us,865us total 20.696ms"
+      ]
+    }
+  },
+  "javaGcNote": "Distinct ART concurrent-mark-compact lines sampled in app logcat. Explicit GC from meminfo can appear after timed capture; short ART pauses do not establish absence of Hermes GC or native allocation spikes. No instrumented Hermes heap/collector trace is available in this release build."
 }
