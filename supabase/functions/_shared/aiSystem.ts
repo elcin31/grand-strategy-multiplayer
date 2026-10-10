@@ -4,7 +4,8 @@ import {policyAvailability,setEconomicPolicy,fundingAvailability,setFunding,type
 import { combatMultiplier } from './militarySystem.ts';
 import {UNITS,type UnitType} from './unitCatalogue.ts';
 import {retreatArmy,retreatDestination} from './militaryLogistics.ts';
-import { researchQuote, startResearch, techLevel, type TechnologyBranch } from './technologySystem.ts';
+import { startTechnology, techLevel, type TechnologyBranch } from './technologySystem.ts';
+import {TECHNOLOGY_IDS,technologyNode,legacyTechnologyNode,namedResearchQuote,scienceLevel} from './technologyTree.ts';
 import { declareWar, diplomaticAction, pairKey, offerTreaty, warBetween,type DiplomacyLink } from './diplomacySystem.ts';
 import {missionAvailability,diplomacyAcceptance,diplomacyQuote,respondDiplomacy,terminateTreaty,offerDiplomacy} from './diplomacy2System.ts';
 import {espionageQuote,startEspionage,type EspionageKind} from './espionageSystem.ts';
@@ -130,7 +131,12 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
           if(terms.kind!=='WhitePeace'||age>=12||s.countries[opponentSide(active,id)[0]!]!.warExhaustion!>=70)proposePeace(s,id,active.id,terms);
         }
       }
-      if(!c.research){const branches:TechnologyBranch[]=style==='Economic'?['Economy','Industry','Administration','Military','Diplomacy']:style==='Diplomatic'?['Diplomacy','Economy','Administration','Military','Industry']:['Military','Economy','Administration','Industry','Diplomacy'];const branch=branches.filter(b=>techLevel(c,b)<5).sort((a,b)=>techLevel(c,a)-techLevel(c,b))[0];if(branch&&affordable(researchQuote(c,branch).cost))startResearch(s,c,branch);}
+      if(!c.research){
+        const branches:TechnologyBranch[]=style==='Economic'?['Economy','Industry','Administration','Military','Diplomacy']:style==='Diplomatic'?['Diplomacy','Economy','Administration','Military','Industry']:['Military','Economy','Administration','Industry','Diplomacy'];
+        const science= scienceLevel(c)<Math.min(...branches.map(b=>techLevel(c,b)))?TECHNOLOGY_IDS.find(id=>technologyNode(id)!.direction==='Science'&&!namedResearchQuote(s,c,id).reason):undefined;
+        const candidates=[science,...branches.filter(b=>techLevel(c,b)<5).sort((a,b)=>techLevel(c,a)-techLevel(c,b)).map(b=>legacyTechnologyNode(b,techLevel(c,b)+1))];
+        const id=candidates.find(id=>id&&!namedResearchQuote(s,c,id).reason&&affordable(namedResearchQuote(s,c,id).cost));if(id)startTechnology(s,c,id);
+      }
       if(!s.constructions?.some(q=>q.ownerId===id)&&context().incomeBalance>15){
         const site=[...home].filter(p=>!p.rebellion).sort((a,b)=>b.income-a.income)[0];
         if(site){const kinds:BuildingType[]=style==='Defensive'?['Fort','Administration','Farm']:site.resourceDeposit?['Mine','Factory','University','Infrastructure']:['Factory','University','Farm'];const kind=kinds.find(k=>(site.buildings?.[k]??0)<BUILDINGS[k].maxLevel&&!buildingRequirementReason(s,site,k));if(kind){const q=buildingQuote(site,kind);if(affordable(q.cost)&&context().incomeBalance>BUILDINGS[kind].maintenance*3)startConstruction(s,id,site,kind);}}

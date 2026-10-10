@@ -13,7 +13,7 @@ import { assignCommander, battleFatigue, combatMultiplier, recoverMilitary, UNIT
 import {initializeArmyComposition,addArmyRegiment,takeArmyLosses} from './armyComposition.ts';
 import {reinforceArmy,retreatArmy,retreatDestination,monthlyMilitaryLogistics,awardBattleExperience} from './militaryLogistics.ts';
 import {invalidateSupply,refreshSupplyLoads} from './supplySystem.ts';
-import { monthlyResearch, startResearch, techLevel } from './technologySystem.ts';
+import { monthlyResearch, startResearch,startTechnology, techLevel } from './technologySystem.ts';
 import { buildingModifierTotals, cancelConstructionInProvince, completeConstructions, provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
 import { initializeResources } from './resourceSystem.ts';
 import { initializePopulation, monthlyPopulationGrowth, recalcPopulationTotals } from './populationSystem.ts';
@@ -221,6 +221,9 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
       if(command.type==='RESPOND_TREATY')respondTreaty(next,player.countryId,command.targetId,command.accept);
       if(command.type==='DECLARE_WAR')declareWar(next,player.countryId,command.targetId);
       recalcCountryStats(next);recalcPopulationTotals(next);recalcReligiousUnity(next);return next;
+    }
+    case 'START_TECHNOLOGY': {
+      if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');const player=getPlayer(next,command.playerId);if(!player.countryId)throw Error('Страна не выбрана');startTechnology(next,countryFor(next,player.countryId),command.nodeId);return next;
     }
     case 'START_RESEARCH': {
       if (!next.dataset || !['running', 'paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');

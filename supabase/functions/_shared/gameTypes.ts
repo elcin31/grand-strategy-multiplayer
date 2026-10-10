@@ -21,6 +21,7 @@ export interface Country {
   overlordId?: string;
   technologies?: Record<TechnologyBranch, number>;
   research?: Research;
+  scientificDiscoveries?: import('./technologyTree.ts').TechnologyId[];
   taxRate?: number;
   debt?: number;
   bankruptcyUntilTick?: number;
@@ -111,6 +112,8 @@ export interface Construction {
   startedTick: number;
   completeTick: number;
   cost: number;
+  workDone?: number;
+  workTick?: number;
 }
 
 export interface Army {
@@ -252,6 +255,7 @@ export type GameCommand =
   | {type:'SET_REINFORCEMENT';playerId:string;armyId:string;enabled:boolean}
   | {type:'RETREAT_ARMY';playerId:string;armyId:string;provinceId:string}
   | { type: 'ASSIGN_COMMANDER'; playerId: string; armyId: string; commanderId: string }
+  | {type:'START_TECHNOLOGY';playerId:string;nodeId:import('./technologyTree.ts').TechnologyId}
   | { type: 'START_RESEARCH'; playerId: string; branch: TechnologyBranch }
   | { type: 'SET_TAX_RATE'; playerId: string; taxRate: number }
   | { type: 'BORROW'; playerId: string; amount: number }

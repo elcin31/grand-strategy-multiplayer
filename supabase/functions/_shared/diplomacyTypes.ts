@@ -1,4 +1,3 @@
-import type {TechnologyBranch} from './technologySystem.ts';
 export const DIPLOMATIC_TREATIES={Alliance:'Союз',NonAggression:'Ненападение',DefensivePact:'Оборонительный пакт',MilitaryAccess:'Военный проход',TradeAgreement:'Торговое соглашение',PoliticalUnion:'Политическое объединение'} as const;
 export type DiplomaticTreaty=keyof typeof DIPLOMATIC_TREATIES;
 export type RelationMissionKind='Improve'|'Damage';
@@ -9,7 +8,7 @@ export interface AccessWithdrawal {countryId:string;untilTick:number;routes:Reco
 export interface DiplomaticEvent {id:string;tick:number;countries:string[];kind:string;message:string}
 export type DiplomaticTerms=
  | {kind:'Treaty';treaty:Exclude<DiplomaticTreaty,'PoliticalUnion'>}
- | {kind:'TechnologyExchange';give:TechnologyBranch;receive:TechnologyBranch}
+ | {kind:'TechnologyExchange';give:import('./technologyTree.ts').TechnologyToken;receive:import('./technologyTree.ts').TechnologyToken}
  | {kind:'ProvinceTransfer';provinceId:string;price:number}
  | {kind:'Ultimatum';demand:'Payment';amount:number}
  | {kind:'Ultimatum';demand:'Province';provinceId:string}

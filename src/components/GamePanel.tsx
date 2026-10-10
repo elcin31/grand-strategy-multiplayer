@@ -11,7 +11,7 @@ import { MilitaryPanel } from './MilitaryPanel';
 import { StrategyPanel } from './StrategyPanel';
 import {EconomyControls} from './EconomyControls';
 import {queuedBuildingQuote,constructionQueueAvailability} from '../../supabase/functions/_shared/constructionQueueSystem';
-import { BUILDINGS, BUILDING_TYPES, buildingQuote } from '../../supabase/functions/_shared/buildingSystem';
+import { BUILDINGS, BUILDING_TYPES, buildingQuote,constructionProgress } from '../../supabase/functions/_shared/buildingSystem';
 import { RESOURCES, provinceProduction, resourceReport } from '../../supabase/functions/_shared/resourceSystem';
 import { useState } from 'react';
 import { MIN_TAX_RATE, MAX_TAX_RATE, money } from '../../supabase/functions/_shared/economySystem';
@@ -53,6 +53,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
   const neighbors = selected ? selected.neighbors.map((id) => state.provinces.find((province) => province.id === id)).filter(Boolean) : [];
   const selectedCities = selected ? (state.cities ?? []).filter(c => c.provinceId === selected.id).sort((a,b) => Number(b.id===focusedCityId)-Number(a.id===focusedCityId) || Number(b.isCapital)-Number(a.isCapital) || b.population-a.population).slice(0,3) : [];
   const selectedConstruction = selected ? state.constructions?.find(item => item.provinceId === selected.id) ?? null : null;
+  const constructionStatus=selectedConstruction?constructionProgress(state,selectedConstruction):null;
   const selectedQueue=selected?state.constructionQueue?.filter(q=>q.provinceId===selected.id)??[]:[];
   const completedBuildings = selected ? BUILDING_TYPES.filter(type => (selected.buildings?.[type] ?? 0) > 0) : [];
   const isOwnProvince = selected?.ownerId === countryId && (selected.controllerId ?? selected.ownerId) === countryId;
@@ -208,7 +209,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
               <Text style={styles.sectionTitle}>ЗДАНИЯ</Text>
               {isOwnProvince&&<Pressable accessibilityRole="button" accessibilityLabel="Строить" style={styles.secondaryButton} onPress={()=>setBuildOpen(!buildOpen)}><Text style={styles.secondaryText}>СТРОИТЬ {buildOpen?"▴":"▾"}</Text></Pressable>}
               {completedBuildings.length === 0 ? <Text style={styles.muted}>Построенных зданий нет</Text> : <View style={styles.buildingList}>{completedBuildings.map(type => <View key={type} style={[styles.buildingPill,{flexDirection:'row',alignItems:'center',gap:6}]}><AtlasArt atlas="buildings" index={BUILDING_ART[type]} width={26} height={26} label={'Построено: '+BUILDINGS[type].name}/><Text style={styles.buildingPillText}>{BUILDINGS[type].name} · ур. {selected.buildings?.[type]}</Text></View>)}</View>}
-              {selectedConstruction && <Text style={styles.hint}>Строится: {BUILDINGS[selectedConstruction.buildingType].name} ур. {selectedConstruction.targetLevel} · {Math.min(100,Math.round(100*(state.tick-selectedConstruction.startedTick)/(selectedConstruction.completeTick-selectedConstruction.startedTick)))}% · осталось {Math.max(0, selectedConstruction.completeTick-state.tick)} мес.</Text>}
+              {selectedConstruction && <Text style={styles.hint}>Строится: {BUILDINGS[selectedConstruction.buildingType].name} ур. {selectedConstruction.targetLevel} · {constructionStatus!.percent}% · осталось {constructionStatus!.months} мес.</Text>}
               {isOwnProvince&&selectedConstruction&&<Pressable accessibilityRole="button" accessibilityLabel={'Отменить стройку: '+BUILDINGS[selectedConstruction.buildingType].name} disabled={!economicActionsEnabled} style={styles.secondaryButton} onPress={()=>onCommand({type:'CANCEL_CONSTRUCTION',playerId,constructionId:selectedConstruction.id})}><Text style={styles.secondaryText}>Отменить текущую стройку</Text></Pressable>}
               {selectedQueue.map((q,i)=><View key={q.id} style={styles.card}><Text style={styles.hint}>Очередь {i+1}: {BUILDINGS[q.buildingType].name} ур. {q.targetLevel} · оплачено {currency(q.cost)} · {q.buildTime} мес. после предыдущего проекта</Text>{isOwnProvince&&<Pressable accessibilityRole="button" accessibilityLabel={'Отменить проект очереди: '+BUILDINGS[q.buildingType].name} disabled={!economicActionsEnabled} style={styles.secondaryButton} onPress={()=>onCommand({type:'CANCEL_CONSTRUCTION',playerId,constructionId:q.id})}><Text style={styles.secondaryText}>Отменить · возврат {currency(q.cost*.5)}</Text></Pressable>}</View>)}
               {isOwnProvince&&(selectedConstruction||selectedQueue.length>0)&&<Text style={styles.hint}>До 4 проектов на провинцию. Стоимость оплачивается при заказе. Отмена возвращает половину неиспользованной стоимости; последующие улучшения того же здания также отменяются. Захват прекращает стройку без возврата.</Text>}

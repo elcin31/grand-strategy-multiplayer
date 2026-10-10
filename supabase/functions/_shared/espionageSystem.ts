@@ -1,3 +1,4 @@
+import {scienceLevel} from './technologyTree.ts';
 import {countryFor,type GameState} from './gameTypes.ts';
 import {money} from './economySystem.ts';
 import {pairKey} from './diplomacySystem.ts';
@@ -45,7 +46,7 @@ export function espionageQuote(s:GameState,ownerId:string,targetId:string,kind:E
   const counter=espionageModifiers(s,targetId).counterintelligence;
   const skill=c?techLevel(c,'Diplomacy')*4+(s.leaders?.[c.rulerId??'']?.diplomaticSkill??0)/20:0;
   const defense=target?techLevel(target,'Diplomacy')*3:0;
-  const successChance=kind==='Counterintelligence'?100:clamp(Math.round(rule.success+skill-defense-(counter?30:0)),5,95);
+  const successChance=kind==='Counterintelligence'?100:clamp(Math.round(rule.success+skill+(c?scienceLevel(c)*2:0)-defense-(counter?30:0)),5,95);
   const detectionChance=kind==='Counterintelligence'?0:clamp(Math.round(rule.detection-skill/2+defense/2+(counter?25:0)),5,95);
   if(!s.dataset||!c?.provinceIds?.length||!target?.provinceIds?.length)reason='Нужна действующая страна';
   else if(kind==='Counterintelligence'?ownerId!==targetId:ownerId===targetId)reason='Неверная цель операции';

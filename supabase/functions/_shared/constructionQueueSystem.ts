@@ -42,7 +42,7 @@ export function cancelConstruction(s:GameState,owner:string,id:string):void {
   const active=s.constructions!.find(c=>c.id===id&&c.ownerId===owner),queued=s.constructionQueue!.find(c=>c.id===id&&c.ownerId===owner),selected=active??queued;
   if(!selected)throw Error('Проект не найден');
   const affected=s.constructionQueue!.filter(q=>q.ownerId===owner&&q.provinceId===selected.provinceId&&q.buildingType===selected.buildingType&&q.targetLevel>=selected.targetLevel),remove=new Set(affected.map(q=>q.id));
-  const refund=money(affected.reduce((n,q)=>n+q.cost*.5,0)+(active?active.cost*.5*Math.max(0,Math.min(1,(active.completeTick-s.tick)/(active.completeTick-active.startedTick))):0));
+  const refund=money(affected.reduce((n,q)=>n+q.cost*.5,0)+(active?active.cost*.5*Math.max(0,Math.min(1,1-(active.workDone??s.tick-active.startedTick)/(active.completeTick-active.startedTick))):0));
   const c=countryFor(s,owner),cash=money(c.treasury+refund);
   s.constructions=s.constructions!.filter(q=>q.id!==active?.id);s.constructionQueue=s.constructionQueue!.filter(q=>!remove.has(q.id));c.treasury=cash;
   processConstructionQueue(s);

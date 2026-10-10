@@ -14,8 +14,8 @@ class FixtureProjectionTest(unittest.TestCase):
             'cities':[{'id':'c','provinceId':'p','population':30}],
             'armies':[{'id':'a','ownerId':'de','provinceId':'p','troops':1000}],
             'diplomacy':{},'wars':[],'constructions':[],'movements':[]}}
-    def test_only_inactive_additive_schema16_defaults_can_change_the_legacy_workload(self):
-        base=self.fixture();actual=copy.deepcopy(base);actual['state']['stateVersion']=16
+    def test_only_inactive_additive_schema17_defaults_can_change_the_legacy_workload(self):
+        base=self.fixture();actual=copy.deepcopy(base);actual['state']['stateVersion']=17
         for key in ['relationMissions','diplomaticOffers','diplomaticHistory','politicalUnions','spyMissions','spyReports','spyEffects','constructionQueue']:actual['state'][key]=[]
         actual['state']['countries']['de']['spyCooldowns']={}
         actual['state']['countries']['de']['economy']['diplomaticMaintenance']=0
@@ -31,10 +31,12 @@ class FixtureProjectionTest(unittest.TestCase):
         def spy(s):s['spyMissions']=[{'id':'spy'}]
         def spy_effect(s):s['spyEffects']=[{'id':'spy-effect'}]
         def spy_cooldown(s):s['countries']['de']['spyCooldowns']={'de:Counterintelligence':12}
+        def science(s):s['countries']['de']['scientificDiscoveries']=['science-method']
+        def research(s):s['countries']['de']['research']={'nodeId':'eco-ledger'}
         def nan(s):s['extra']=float('nan')
-        for change in [reduced,troops,cash,country,tick,diplomacy,mission,spy,spy_effect,spy_cooldown,nan]:
+        for change in [reduced,troops,cash,country,tick,diplomacy,mission,spy,spy_effect,spy_cooldown,science,research,nan]:
             base=self.fixture();actual=copy.deepcopy(base);change(actual['state'])
             with self.assertRaises(AssertionError):assert_paused_fixture(actual,base)
     def test_future_schema_is_rejected(self):
-        base=self.fixture();actual=copy.deepcopy(base);actual['state']['stateVersion']=17
+        base=self.fixture();actual=copy.deepcopy(base);actual['state']['stateVersion']=18
         with self.assertRaises(AssertionError):assert_paused_fixture(actual,base)

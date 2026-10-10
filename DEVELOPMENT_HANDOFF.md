@@ -1,3 +1,36 @@
+# Continuation — Stage7 original technology graph, 2026-10-10
+
+Latest verified GitHub/local parent HEAD **3aebf887af13903ff7271fe71d957ca4f8769db1**, tree88010cad4531b4879f9c3cfded3fc90c619249ff. This entry describes the reviewed Stage7 tree being committed above that parent; read the branch HEAD for the commit containing it. Earlier8cf992ee/5fdee487/b6abad4c/4bd9d400/ca230dd retained; main dbb354 and accepted47b unchanged. Only existing Dominion repository/backend. No AssetMind, backend deployment, renderer replacement or world reduction.195/2924/5411 retained.
+
+**Stage7 implemented:**30 original named technologies in Economy/Military/Infrastructure/Science/State & Communications. Existing five paid level tracks remain the single source for their25 projected nodes, retaining their prices/durations/effects; no duplicate granted-level ledger. Five real scientific discoveries have cross-direction prerequisites, era/cost/progress and one-time grants. Old paid projects without nodeId continue. Named authenticated START_TECHNOLOGY also supports the existing START_RESEARCH contract. Research funding pays each actual month including completion; default now pauses the actual charge as well as progress. Science accelerates real research/building work and improves spy success. Infrastructure increases actual supply capacity and construction speed. Fractional construction work is dated, saveable and credited once per tick; refunds use unused effective work. Existing quotes/costs/paid queues remain valid.
+
+**Diplomatic adapter:** actual named discoveries and legacy branch tokens resolve to one next eligible node. Sources must already own the discovery, recipients need all prerequisites/era and cannot duplicate an active project. Human consent, cost/cooldown/revalidation retained; repeated acceptance cannot grant again. AI chooses eligible affordable named/scientific research in existing bounded strategic slots. Interactive landscape UI has five accessible direction controls, scrollable linked nodes, size controls, predecessor navigation, era/cost/monthly funding/effects/reasons and historical miniatures. Only an open research panel mounts it; no camera-frame computations. New art still belongs to Stage9.
+
+**Schema17:** additive scientificDiscoveries/nodeId and optional dated fractional construction work; existing technology levels and paid projects preserved. Strict unknown/duplicate/prerequisite/era/active-project/progress validation. Byte-exact before-technology-v17.backup precedes overwrite. Fixed full schema12 camera world ->17 preserves every original field, e8befae1 source checksum and inactive expansion defaults. No active science/research allowed in the camera fixture.
+
+**Verified:**254/254 JS, strict TS,50 Python tests(49 PASS/1 unavailable pinned Perfetto analyzer), final Hermes11,419,589bytes/SHA07c7bc0c77e04787ef235fce6e89295ae68719d0c31e38fab57178e73f482778/magicc61fbc03c103191f. New12 technology tests cover DAG/eras/paid completion/effects/once-only work/real supply/exchange/legacy backup/strict saves/bounded AI;20 critical intent kinds cover lost-response/restart/duplicate delivery. Clean sequential seed101/240-month/4-restore host baseline16 P9576.17ms/P9986.86 ->17 P9584.85/P99104.61; RSS670.5MB ->764.5MB/snapshot3,916,914bytes. Tails/native memory remain open, no hardware FPS claim. Full measurements EXPANSION_STAGE7_HOST_QA_2026-10-10.json.
+
+**Parent CI38066562526:** signed checkpoint build114255285611 and actual10000-tick run114255285734 SUCCESS. Long artifact11676395618/1843bytes/SHA6d5395cbbe527584ba6175febbb460f0c34fde00759d98a5f1fdd0dc05ebc735/ZIP CRC PASS; ten restores/max2176armies/maxWarAge11/P95215.45ms, cash scale still requires Stage10. Native114260181033 stopped at its stale experimental SurfaceView expectation, before military/clock/30min gates. Update the harness to require the restored texture presentation and real painted map, rejecting missing/ambiguous/wrong backend; no gameplay assertion or stress gate removed. Camera114259276775 completed all9 scenarios in both orders and FAILED compositorP99: forward local90.06->112.75ms/closed79.77->98.05; reverse medium163.66->199.70/pinch719.44->901.04. Artifact11676167656/17,897,406bytes/SHA7570fb0737b42fed7268257288481d0954e9d19cb27bcef2e1adc9e60a3b291a/ZIP CRC PASS; all rows EXPANSION_CAMERA_REVIEW_3AEB.json. Camera acceptance is explicitly OPEN; original thresholds/capture/ABBA/paint/PSS gates unchanged.
+
+| Approved stage | Status and remaining gate |
+|---|---|
+|0 Recovery|DONE; do not repeat|
+|1 Frame pacing|PARTIAL; restored accepted texture, both-order P99 regressions require diagnosis/acceptance|
+|2 Army UX|DONE at verified ca230dd; latest integrated native gate pending|
+|3 Diplomacy2.0|PARTIAL; real named exchange now integrated/host tested, latest native/backend final acceptance pending|
+|4 Espionage/diplomatic AI|PARTIAL; science/supply effects real, corrected clock/native/backend final acceptance pending|
+|5 Economy/buildings|PARTIAL; queue/refunds/funding/research pause/progress integrated; latest native/backend acceptance pending|
+|6 Military/supply|PARTIAL; host242 and CI10000 completed; latest military/native/final balance/backend acceptance pending|
+|7 Technology tree|PARTIAL; complete core/UI/host254/export; actual named/science Android and integrated10000 gates next CI|
+|8 National Course|NOT STARTED; next implementation|
+|9 Historical illustrations/polish|NOT STARTED;19 NEW originals beyond inherited15 remain|
+|10 Whole expansion integration/balance|PARTIAL; whole-focus/art/performance/backend/long-run cash scale outstanding|
+|11 Final Android release/delivery|NOT STARTED; intermediate0.8.1 checkpoint is not approved final2.0 APK|
+
+**Exact next operation:** publish this tested technology tree as a logical expansion-v2 commit, record its GitHub-confirmed SHA and retain its complete normal CI. Continue Stage8: original four-branch National Course with prerequisites, duration/progress, real rewards, exclusive choices, events, generic/regional and five major-power trees, bounded AI, strict save/network commands and persistent once-only rewards. Then19NEW original paintings, whole integrated balance/10000/native30min/frame acceptance and coordinated existing-Dominion-backend final signed standaloneAPK delivery. Diagnose both-order camera tails from existing evidence; never weaken gates, treat unavailable as PASS, repeat recovery or deliver an intermediate APK as complete Expansion2.0.
+
+---
+
 # Continuation — Stage6 Military2.0, supply and rejected surface experiment, 2026-10-10
 
 Verified parent HEAD **8cf992ee6443b0396f3742ef5e90a6e4e3f32557** on GitHub expansion-v2/local, tree dcb5c39c1d5d635fdebd8010c589be9f0215ab9a. Earlier expansion checkpoints:5fdee487b821e2efa59be0b36466a3b9e5188b37, b6abad4c7a5ac536817326184f5cd33a6c47d347,4bd9d4000fab1f1130d42c1265b2ef9f21ab356a,ca230dd129f5647d9f1a11fbbc42c78bd2344702. Main dbb354 and accepted47b unchanged. Only existing Dominion repository/backend; no AssetMind, world reduction or cloud deployment. Existing195/2924/5411 retained.

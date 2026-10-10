@@ -74,7 +74,7 @@ export function recalcEconomy(state: GameState): void {
     const armyMaintenance = money(c.militaryUpkeepBase*militaryFundingCost(c));
     const interest = money(c.debt! * MONTHLY_INTEREST);
     const diplomaticMaintenance = diplomatic.costs.get(c.id) ?? 0;
-    const researchMaintenance=researchMonthlyCost(c);
+    const researchMaintenance=researchMonthlyCost(c,state.tick);
     const monthlyBalance = money(monthlyIncome - armyMaintenance - buildingMaintenance - interest - administrationMaintenance - diplomaticMaintenance-researchMaintenance);
     const creditLimit = state.tick < c.bankruptcyUntilTick! ? 0 : money(monthlyIncome * 24);
     c.income = taxIncome;

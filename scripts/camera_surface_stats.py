@@ -36,6 +36,14 @@ def surface_latency_args(layer):
     return ('shell','dumpsys','SurfaceFlinger','--latency',shlex.quote(layer))
 
 
+def assert_map_backend(layers, package, expected):
+    assert expected in ('texture', 'surface'), 'Unknown expected map backend'
+    layer = map_surface_layer(layers, package)
+    assert layer is not None, 'Missing or ambiguous map compositor layer'
+    assert ('SurfaceView' in layer) == (expected == 'surface'), 'Unexpected map presentation backend'
+    return layer
+
+
 def surface_frame_stats(raw):
     lines = raw.strip().splitlines()
     report = {'available': False, 'frames': 0, 'invalidRows': 0,

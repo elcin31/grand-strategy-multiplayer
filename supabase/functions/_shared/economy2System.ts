@@ -14,7 +14,7 @@ export function economicPolicy(c:Country){return ECONOMIC_POLICIES[c.economicPol
 export function researchFunding(c:Country):number{return FUNDING_LEVELS[c.researchFunding??'Standard'].research;}
 export function militaryFundingCost(c:Country):number{return FUNDING_LEVELS[c.militaryFunding??'Standard'].militaryCost*economicPolicy(c).army;}
 export function militaryReadiness(c:Country):number{return FUNDING_LEVELS[c.militaryFunding??'Standard'].militaryReadiness*(c.economicPolicy==='Austerity'?.95:1);}
-export function researchMonthlyCost(c:Country):number{return c.research?money(10*c.research.targetLevel*researchFunding(c)):0;}
+export function researchMonthlyCost(c:Country,tick?:number):number{return c.research&&(tick===undefined||tick>=(c.bankruptcyUntilTick??0))?money((c.research.branch==='Science'?15:10)*c.research.targetLevel*researchFunding(c)):0;}
 export function policyAvailability(s:GameState,id:string,policy:EconomicPolicy):string|null {
   const c=countryFor(s,id);if(!s.dataset||!c.provinceIds?.length||!['running','paused'].includes(s.phase))return 'Нужна начатая кампания';
   if(c.economicPolicy===policy)return 'Эта политика уже действует';if(s.tick<(c.policyCooldownUntilTick??0))return 'Политика на cooldown';

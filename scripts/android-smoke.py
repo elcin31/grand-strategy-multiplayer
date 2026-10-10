@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from map_paint_check import assert_map_painted, map_paint_stats
 from native_campaign_feedback import campaign_feedback
+from camera_surface_stats import assert_map_backend
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 OUT = Path('android-smoke'); OUT.mkdir(exist_ok=True)
 def adb(*args): return subprocess.check_output(['adb', *args], text=True)
@@ -177,10 +178,11 @@ time.sleep(15)
 (OUT/'menu-to-campaign-seconds.txt').write_text(str(time.monotonic()-launch_time)+'\nIncludes UI dump/screenshot and fixed smoke wait; not startup latency.\n')
 root = hierarchy('02-map'); screenshot('02-map')
 assert_map_painted(OUT/'02-map.png')
-if os.environ.get('DOMINION_EXPECT_OPAQUE_MAP') == '1':
+expected_backend=os.environ.get('DOMINION_EXPECT_MAP_BACKEND') or ('surface' if os.environ.get('DOMINION_EXPECT_OPAQUE_MAP')=='1' else None)
+if expected_backend:
     layers = adb('shell','dumpsys','SurfaceFlinger','--list')
     (OUT/'map-surface-layers.txt').write_text(layers)
-    assert any('SurfaceView' in line and PACKAGE in line for line in layers.splitlines()), 'Opaque map SurfaceView did not mount'
+    assert_map_backend(layers,PACKAGE,expected_backend)
 assert any('Политическая' in n.get('text','') for n in root.iter('node')), 'GPU map screen did not mount'
 # Exercise real offline commands in the release bundle, not only a mounted canvas.
 # Select through the real searchable picker; no dependency on synthetic demo geometry.
@@ -419,6 +421,20 @@ advance_campaign_months(7)
 navigate('Технологии')
 assert read_scrolling('Экономика · 1/5'), 'Research did not complete through the real game clock'
 screenshot('research-complete')
+# The original five-direction graph uses real prerequisite navigation and
+# funded scientific research, never a decorative unlocked button.
+for direction in ['Военное дело','Инфраструктура','Государство и связь','Наука']:
+    click_scrolling('Направление: '+direction)
+    screenshot('technology-direction-'+str(len(direction)))
+click_scrolling('Уменьшить дерево технологий')
+click_scrolling('Увеличить дерево технологий')
+click_scrolling('Исследовать: Воспроизводимый научный метод')
+assert '0.0 / 8' in read_scrolling('Наука: '), 'Scientific project did not queue while paused'
+screenshot('science-queued')
+advance_campaign_months(9)
+navigate('Технологии')
+assert read_scrolling('Наука · 1/5'), 'Scientific discovery did not complete through the real game clock'
+screenshot('science-complete')
 click_scrolling('Технологии ▴')
 click_scrolling('Дипломатия ▾')
 click_scrolling('Поиск страны для дипломатии')

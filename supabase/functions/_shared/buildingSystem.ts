@@ -1,3 +1,4 @@
+import {scienceLevel} from './technologyTree.ts';
 import type { BuildingType, Construction, CountryId, GameState, Province } from './gameTypes.ts';
 import {WATER_ACCESS} from './waterAccess.ts';
 const capitalSites=new WeakMap<GameState,Set<string>>();
@@ -107,6 +108,7 @@ function validateConstruction(state: GameState, construction: Construction): voi
   const quote = buildingQuote(province, construction.buildingType);
   if (construction.targetLevel !== quote.targetLevel || construction.cost !== quote.cost) throw new Error('Invalid construction quote');
   if (!Number.isSafeInteger(construction.startedTick) || !Number.isSafeInteger(construction.completeTick) || construction.startedTick < 0 || construction.completeTick !== construction.startedTick + quote.buildTime) throw new Error('Invalid construction timing');
+  if(construction.workDone!==undefined||construction.workTick!==undefined){if(!Number.isFinite(construction.workDone)||construction.workDone!<0||construction.workDone!>=quote.buildTime||!Number.isSafeInteger(construction.workTick)||construction.workTick!<construction.startedTick||construction.workTick!>state.tick)throw Error('Invalid construction progress');}
 }
 /** Modern save migration/validation. Missing building maps stay sparse to avoid inflating 4k-province snapshots. */
 export function initializeBuildings(state: GameState): void {
@@ -145,11 +147,23 @@ export function cancelConstructionInProvince(state: GameState, provinceId: strin
   if(state.constructionQueue?.length)state.constructionQueue=state.constructionQueue.filter(item=>item.provinceId!==provinceId);
   if(state.constructions?.length)state.constructions = state.constructions.filter(item => item.provinceId !== provinceId);
 }
+export function constructionProgress(state:GameState,job:Construction):{percent:number;months:number}{
+  const c=state.countries[job.ownerId]!,duration=job.completeTick-job.startedTick,done=job.workDone??state.tick-job.startedTick,rate=1+(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01;
+  return {percent:Math.min(100,Math.round(100*done/duration)),months:Math.max(0,Math.ceil((duration-done)/rate))};
+}
 export function completeConstructions(state: GameState): void {
   if (!state.dataset || !state.constructions?.length) return;
   const remaining: Construction[] = [];
   for (const construction of state.constructions) {
-    if (construction.completeTick > state.tick) { remaining.push(construction); continue; }
+    const c=state.countries[construction.ownerId]!,bonus=(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01;
+    if(bonus>0||construction.workDone!==undefined){
+      // Old paid jobs retain their quoted duration. A newly opened capability
+      // accelerates this month onwards; previous work is never credited twice.
+      construction.workDone??=Math.max(0,state.tick-construction.startedTick-1);
+      construction.workTick??=Math.max(construction.startedTick,state.tick-1);
+      construction.workDone+=(state.tick-construction.workTick)*(1+bonus);construction.workTick=state.tick;
+    }
+    if (construction.completeTick > state.tick && (construction.workDone??0)+1e-9<construction.completeTick-construction.startedTick) { remaining.push(construction); continue; }
     const province = state.provinces.find(p => p.id === construction.provinceId);
     if (!province || province.rebellion || province.ownerId !== construction.ownerId || (province.controllerId ?? province.ownerId) !== construction.ownerId) continue;
     const current = buildingLevel(province, construction.buildingType);

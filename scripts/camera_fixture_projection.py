@@ -2,7 +2,7 @@
 import math
 
 
-def assert_paused_fixture(actual, expected, allowed_version=16):
+def assert_paused_fixture(actual, expected, allowed_version=17):
     def finite(value):
         if isinstance(value, float):
             assert math.isfinite(value), 'Non-finite benchmark snapshot'
@@ -27,6 +27,8 @@ def assert_paused_fixture(actual, expected, allowed_version=16):
             assert army['composition']=={army.get('unitType','Infantry'):army['troops']} and army.get('template')==army['composition'], 'Changed army recipe in camera fixture'
         assert not army.get('order'), 'Active army route in paused camera fixture'
     for country in state['countries'].values():
+        assert not country.get('scientificDiscoveries'), 'Active science in camera fixture'
+        assert not country.get('research'), 'Active research in camera fixture'
         assert not country.get('spyCooldowns'), 'Active espionage cooldown in camera fixture'
         assert country.get('economicPolicy','Balanced')=='Balanced', 'Active economic policy in camera fixture'
         assert country.get('researchFunding','Standard')==country.get('militaryFunding','Standard')=='Standard', 'Changed funding in camera fixture'

@@ -1,3 +1,4 @@
+import {initializeTechnologyTree} from './technologyTree.ts';
 import {migrateCityCatalogue} from './cityMigration.ts';
 import {validateArmyOrders} from './armyOrders.ts';
 import {initializeMovements} from './movementHistory.ts';
@@ -15,7 +16,7 @@ import { initializeTechnology } from './technologySystem.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
-export const CURRENT_STATE_VERSION = 16;
+export const CURRENT_STATE_VERSION = 17;
 
 /** Ordered schema migrations; every normalizer is also run as validation for current saves. */
 export function migrateV1ToV2(s:GameState){initializeBuildings(s);}
@@ -40,6 +41,7 @@ export function normalizeGameState(state:GameState):void {
  initializeEconomy2(state,version<15);
  initializeConstructionQueue(state,version<15);
  validateArmyComposition(state,version<16);
+ initializeTechnologyTree(state,version<17);
  validateArmyOrders(state);
  state.stateVersion=CURRENT_STATE_VERSION;
 }

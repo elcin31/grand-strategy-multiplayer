@@ -1,13 +1,14 @@
 import {countryFor,type GameState,type Country,type Province} from './gameTypes.ts';
 import {diplomaticLink,pairKey,warBetween,type DiplomacyLink} from './diplomacySystem.ts';
 import {money} from './economySystem.ts';
-import {techLevel,TECHNOLOGIES,type TechnologyBranch} from './technologySystem.ts';
+import {techLevel,TECHNOLOGIES} from './technologySystem.ts';
+import {technologyNode,technologyRequirements,technologyTokenName,resolveExchangeNode,grantTechnology,type TechnologyId,type TechnologyToken} from './technologyTree.ts';
 import {DIPLOMACY_RULES as RULES,DIPLOMATIC_TREATIES,type DiplomaticTerms,type DiplomaticOffer,type RelationMissionKind,type TreatyTerm} from './diplomacyTypes.ts';
 
 const bound=(n:number,min=-100,max=100)=>Math.max(min,Math.min(max,n));
 export function diplomaticTermsLabel(t:DiplomaticTerms):string {
   if(t.kind==='Treaty')return DIPLOMATIC_TREATIES[t.treaty];
-  if(t.kind==='TechnologyExchange')return `Обмен: ${TECHNOLOGIES[t.give].name} ↔ ${TECHNOLOGIES[t.receive].name}`;
+  if(t.kind==='TechnologyExchange')return `Обмен: ${technologyTokenName(t.give)} ↔ ${technologyTokenName(t.receive)}`;
   if(t.kind==='ProvinceTransfer')return `Передача провинции · ${t.price} млн`;
   if(t.kind==='Ultimatum')return t.demand==='Payment'?`Ультиматум · ${t.amount} млн`:'Ультиматум: территориальная претензия';
   if(t.kind==='PoliticalUnion')return DIPLOMATIC_TREATIES.PoliticalUnion;
@@ -116,7 +117,7 @@ export function assertDiplomaticTerms(value:unknown,countries:readonly string[])
   const t=value as Record<string,unknown>;let keys:string[];
   switch(t.kind){
     case 'Treaty':keys=['kind','treaty'];if(typeof t.treaty!=='string'||t.treaty==='PoliticalUnion'||!Object.hasOwn(DIPLOMATIC_TREATIES,t.treaty))throw Error('Некорректный договор');break;
-    case 'TechnologyExchange':keys=['kind','give','receive'];for(const k of ['give','receive'])if(typeof t[k]!=='string'||!Object.hasOwn(TECHNOLOGIES,t[k] as string))throw Error('Некорректная технология');if(t.give===t.receive)throw Error('Нужны разные технологии');break;
+    case 'TechnologyExchange':keys=['kind','give','receive'];for(const k of ['give','receive'])if(typeof t[k]!=='string'||!Object.hasOwn(TECHNOLOGIES,t[k] as string)&&!technologyNode(t[k] as string))throw Error('Некорректная технология');if(t.give===t.receive)throw Error('Нужны разные технологии');break;
     case 'ProvinceTransfer':keys=['kind','provinceId','price'];if(!identifier(t.provinceId))throw Error('Некорректная провинция');assertDiplomaticAmount(t.price,true);break;
     case 'Ultimatum':if(t.demand==='Payment'){keys=['kind','demand','amount'];assertDiplomaticAmount(t.amount,false);}else if(t.demand==='Province'){keys=['kind','demand','provinceId'];if(!identifier(t.provinceId))throw Error('Некорректная провинция');}else throw Error('Некорректный ультиматум');break;
     case 'PoliticalUnion':keys=['kind'];break;
@@ -133,9 +134,12 @@ function provinceTransfer(s:GameState,from:string,to:string,id:string,price:numb
   if(s.countries[to]!.treasury<price)throw Error('Покупатель не может оплатить провинцию');
   money(s.countries[from]!.treasury+price);return p;
 }
-function exchangeEligible(source:Country,recipient:Country,branch:TechnologyBranch):void {
-  const target=techLevel(recipient,branch)+1;
-  if(target>5||techLevel(source,branch)<target||recipient.research?.branch===branch)throw Error('Нельзя пропустить уровень или дублировать активное исследование');
+function exchangeEligible(s:GameState,source:Country,recipient:Country,token:TechnologyToken):TechnologyId {
+  const id=resolveExchangeNode(source,recipient,token);if(!id)throw Error('Источник не открыл требуемую технологию или следующий уровень');
+  const reason=technologyRequirements(s,recipient,id),n=technologyNode(id)!;
+  if(reason)throw Error(reason);
+  if(recipient.research&&(recipient.research.branch===n.legacy||recipient.research.branch==='Science'&&n.direction==='Science'))throw Error('Нельзя дублировать активное исследование');
+  return id;
 }
 function offerMembers(from:string,to:string,terms:DiplomaticTerms):string[]{return terms.kind==='Summit'?[...terms.participants]:[from,to];}
 function validateOffer(s:GameState,from:string,to:string,t:DiplomaticTerms):void {
@@ -147,7 +151,7 @@ function validateOffer(s:GameState,from:string,to:string,t:DiplomaticTerms):void
       if(l?.terms?.some(x=>x.type==='MilitaryAccess'&&x.from===to&&x.to===from&&x.untilTick>s.tick))throw Error('Право прохода уже действует');
     }else if(l?.treaties.includes(t.treaty))throw Error('Договор уже действует');
   }else if(t.kind==='ProvinceTransfer')provinceTransfer(s,from,to,t.provinceId,t.price);
-  else if(t.kind==='TechnologyExchange'){exchangeEligible(a,b,t.give);exchangeEligible(b,a,t.receive);}
+  else if(t.kind==='TechnologyExchange'){exchangeEligible(s,a,b,t.give);exchangeEligible(s,b,a,t.receive);}
   else if(t.kind==='Ultimatum'){
     if(a.army<Math.max(1000,b.army)*1.25||(l?.treaties.length??0)>0)throw Error('Недостаточная военная сила или действующий договор');
     if(t.demand==='Payment'){if(b.treasury<t.amount)throw Error('Требование превышает доступные средства');money(a.treasury+t.amount);}
@@ -216,8 +220,9 @@ function settleOffer(s:GameState,o:DiplomaticOffer):void {
   validateOffer(s,o.from,o.to,o.terms);const t=o.terms;
   if(t.kind==='Treaty')addTreaty(s,t.treaty==='MilitaryAccess'?o.to:o.from,t.treaty==='MilitaryAccess'?o.from:o.to,t.treaty);
   else if(t.kind==='TechnologyExchange'){
-    const a=countryFor(s,o.from),b=countryFor(s,o.to);b.technologies![t.give]++;a.technologies![t.receive]++;
-    logDiplomacy(s,[o.from,o.to],'TechnologyExchange','Согласован обмен одним следующим уровнем каждой технологии');
+    const a=countryFor(s,o.from),b=countryFor(s,o.to),give=exchangeEligible(s,a,b,t.give),receive=exchangeEligible(s,b,a,t.receive);
+    grantTechnology(s,b,give);grantTechnology(s,a,receive);
+    logDiplomacy(s,[o.from,o.to],'TechnologyExchange',`Открыты по соглашению: ${technologyTokenName(give)} ↔ ${technologyTokenName(receive)}`);
   }else if(t.kind==='ProvinceTransfer')transferProvince(s,o.from,o.to,t.provinceId,t.price);
   else if(t.kind==='Ultimatum'){
     if(t.demand==='Province')transferProvince(s,o.to,o.from,t.provinceId,0);

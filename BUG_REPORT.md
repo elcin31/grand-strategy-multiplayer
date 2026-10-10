@@ -1,3 +1,11 @@
+# Stage7 continuation findings — 2026-10-10
+
+Fixed and host-tested: bankrupt projects previously paused progress while retaining monthly research charges; active fractional building work must be dated/idempotent and cancel only unused cost; named scientific exchanges must enforce source discovery, era, prerequisite and active-project restrictions. Unknown/prototype identifiers/duplicate discoveries/replayed technology commands reject.254JS/TS/49Python tests and Hermes export pass.
+
+Still open: Android ABBA compositorP99 regression at3aeb, native military/research/30min verification after corrected stale surface assertion, final backend/schema rollout, integrated National Course/newart/long-run money balance. No native performance or finalAPK acceptance claimed.
+
+---
+
 # Stage6 current open gates — 2026-10-10
 
 - Rejected opaque SurfaceView removed after complete Stage5 ABBA regression. Current transparent-surface candidate still requires native acceptance; host tick tails remain variable and require final profiling/balance/native QA.

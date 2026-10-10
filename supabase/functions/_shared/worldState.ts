@@ -33,7 +33,7 @@ export function createWorldState(gameId: string, roomCode: string, playerId: str
     const troops = definition.populationEstimate >= 100000 ? Math.min(120000, Math.max(1000, Math.floor(definition.populationEstimate * .003 / 1000) * 1000)) : 0;
     const ruler = generateLeader(definition.id, campaignSeed, definition.region);
     leaders[ruler.id] = ruler;
-    countries[definition.id] = { ...definition, economicPolicy:'Balanced',researchFunding:'Standard',militaryFunding:'Standard',policyCooldownUntilTick:0,budgetCooldownUntilTick:0,spyCooldowns: {}, rulerId: ruler.id, provinceIds: [...definition.provinceIds], income: monthly, population: definition.populationEstimate, treasury: monthly * 12 + 400, manpower: Math.max(0, Math.floor(definition.populationEstimate * .012) - troops), army: troops, technology: 60, stability: 75 };
+    countries[definition.id] = { ...definition, economicPolicy:'Balanced',researchFunding:'Standard',militaryFunding:'Standard',policyCooldownUntilTick:0,budgetCooldownUntilTick:0,spyCooldowns: {},scientificDiscoveries:[], rulerId: ruler.id, provinceIds: [...definition.provinceIds], income: monthly, population: definition.populationEstimate, treasury: monthly * 12 + 400, manpower: Math.max(0, Math.floor(definition.populationEstimate * .012) - troops), army: troops, technology: 60, stability: 75 };
     const country = countries[definition.id]!;
     initializeGovernment(country);
     country.income = governmentIncome(monthly, country.governmentType);

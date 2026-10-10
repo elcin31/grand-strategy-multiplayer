@@ -1,3 +1,4 @@
+import {techLevel} from './technologySystem.ts';
 import type {Army,GameState,Province} from './gameTypes.ts';
 import {canEnterTerritory} from './diplomacy2System.ts';
 import {warBetween} from './diplomacySystem.ts';
@@ -51,7 +52,7 @@ export function supplyAt(s:GameState,owner:string,provinceId:string):SupplyQuote
   // is known without traversing its entire country. Distal/occupied armies
   // still use the complete controlled-route graph and port interdiction.
   const node=capital&&(p.controllerId??p.ownerId)===owner&&!p.rebellion?{score:100,sourceId:p.id,sea:false}:networkFor(s,owner,i).get(p.id);
-  const capacity=Math.floor(8000+(p.development??40)*200+(p.buildings?.Infrastructure??0)*10000+(p.buildings?.Barracks??0)*6000+(p.buildings?.Port??0)*12000+(capital?150000:0));
+  const capacity=Math.floor((8000+(p.development??40)*200+(p.buildings?.Infrastructure??0)*10000+(p.buildings?.Barracks??0)*6000+(p.buildings?.Port??0)*12000+(capital?150000:0))*(1+techLevel(c,'Industry')*.04));
   const load=i.loads.get(owner+':'+p.id)??0,overload=load>capacity?capacity/load:1;
   const score=Math.max(0,Math.min(100,Math.round((node?.score??0)*overload*militaryReadiness(c)*(s.tick<(c.bankruptcyUntilTick??0)?.65:1)-espionageModifiers(s,owner).supplyPenalty)));
   return {score,capacity,load,sourceId:node?.sourceId,sea:node?.sea??false,reason:!node?'Нет пути от контролируемой столицы или резервного узла':overload<1?'Превышена пропускная способность':score<50?'Недостаточное снабжение':null};

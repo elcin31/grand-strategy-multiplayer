@@ -1,3 +1,11 @@
+# Stage7 continuation host/camera evidence — 2026-10-10
+
+Clean identical host seed101/240 monthly ticks/4 restores: schema16 P50/P95/P99=53.85/76.17/86.86ms;17=50.39/84.85/104.61ms. Genuine research/war outcomes differ, world195/2924/5411 stays fixed. Snapshot3,902,933->3,916,914;RSS670,461,952->764,530,688. No concurrent heavy process. These CPU/data figures do not establish Android FPS or frame acceptance. Full results EXPANSION_STAGE7_HOST_QA_2026-10-10.json.
+
+Schema16 CI38066562526 actual10000ticks/10restores passes, P95215.45ms/max2176armies/4,772,761bytes; complete native camera ABBA fails P99 in both orders, raw verified rows EXPANSION_CAMERA_REVIEW_3AEB.json. Accepted texture Canvas remains restored, no world/renderer/cache/input reduction. Native stopped at stale experimental surface expectation; backend check now explicitly requires correct texture plus unchanged painted-map/UX/restart/stress gates. Final camera/native memory/whole-focus-art acceptance remains open.
+
+---
+
 # Stage6 measured supply work and rejected surface experiment — 2026-10-10
 
 Parent8cf: actual ABBA camera job114247121076/run38062913884 fails forward compositorP99 terrain and reverse pinch histogramP95 (650→1200ms). Artifact11675267082 verified ZIP17,653,590bytes/SHA d013ce386ff602d55c5bed1a3fe179ee2f80183e070ce8141a00d1629cdee184/CRC PASS. Remove only the unaccepted Android opaque Canvas experiment; retain every established cache/world/input optimization and original gate. Re-run native comparison; no camera acceptance yet.
