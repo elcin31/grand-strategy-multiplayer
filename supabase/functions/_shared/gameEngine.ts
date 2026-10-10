@@ -5,7 +5,7 @@ import { runStrategicAI } from './aiSystem.ts';
 import { monthlyStability, pacifyProvince, suppressRebellion } from './stabilitySystem.ts';
 import { monthlyWar, proposePeace, recordWarBattle, respondPeace } from './warSystem.ts';
 import { declareWar, diplomaticAction, monthlyDiplomacy, offerTreaty, respondTreaty, warBetween } from './diplomacySystem.ts';
-import {startRelationMission,cancelRelationMission,sendGift,sendInsult,offerDiplomacy,respondDiplomacy,terminateTreaty,monthlyDiplomacy2,canEnterTerritory} from './diplomacy2System.ts';
+import {startRelationMission,cancelRelationMission,sendGift,sendInsult,offerDiplomacy,respondDiplomacy,terminateTreaty,monthlyDiplomacy2,canEnterTerritory,pruneAccessWithdrawals} from './diplomacy2System.ts';
 import { assignCommander, battleFatigue, combatMultiplier, recoverMilitary, UNITS, type UnitType } from './militarySystem.ts';
 import { monthlyResearch, startResearch, techLevel } from './technologySystem.ts';
 import { buildingModifierTotals, cancelConstructionInProvince, completeConstructions, provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
@@ -38,6 +38,7 @@ function recalcCountryStats(state: GameState) {
   }
   if (state.dataset) for (const nation of Object.values(state.countries)) nation.income = governmentIncome(nation.income, nation.governmentType);
   for (const army of state.armies) countryFor(state, army.ownerId).army += army.troops;
+  pruneAccessWithdrawals(state);
   recalcEconomy(state);
 }
 function entityId(state: GameState, kind: string): string {

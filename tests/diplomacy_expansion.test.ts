@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
 import {applyServerCommand} from '../supabase/functions/_shared/serverCommand';
 import {diplomaticLink,pairKey,declareWar,warBetween} from '../supabase/functions/_shared/diplomacySystem';
-import {monthlyDiplomacy2,relationChange,canEnterTerritory,diplomacyAcceptance,diplomacyQuote,initializeDiplomacy2,refreshRelationFactors} from '../supabase/functions/_shared/diplomacy2System';
+import {monthlyDiplomacy2,relationChange,canEnterTerritory,diplomacyAcceptance,diplomacyQuote,initializeDiplomacy2,refreshRelationFactors,pruneAccessWithdrawals,diplomacyBudget} from '../supabase/functions/_shared/diplomacy2System';
 import {startResearch} from '../supabase/functions/_shared/technologySystem';
 import {monthlyEconomy,money,recalcEconomy} from '../supabase/functions/_shared/economySystem';
 import {advanceArmyOrders} from '../supabase/functions/_shared/armyOrders';
@@ -103,4 +103,21 @@ test('legacy schema12 pending diplomacy migrates with deadline/relations intact 
 test('schema13 validation rejects missing arrays, contradictory relations, duplicated treaties and malicious mission references',()=>{
   let s=accepted(world(),{kind:'Treaty',treaty:'NonAggression'});s.diplomacy!['france|germany']!.terms!.push(structuredClone(s.diplomacy!['france|germany']!.terms![0]!));assert.throws(()=>initializeDiplomacy2(s,false));s=world();delete s.diplomaticHistory;assert.throws(()=>validateCampaign(s));s=world();diplomaticLink(s,'germany','france').relation=70;assert.throws(()=>validateCampaign(s),/relation/);
   s=command(world(),{type:'START_RELATION_MISSION',playerId:'host',targetId:'france',kind:'Improve'});s.relationMissions![0]!.to='missing';assert.throws(()=>validateCampaign(s));
+});
+test('expired alliance/access permissions and trade cannot leak into the next movement or budget tick',()=>{
+  for(const treaty of ['Alliance','MilitaryAccess'] as const){const s=accepted(world(),{kind:'Treaty',treaty});assert.ok(canEnterTerritory(s,'germany','france'));s.tick=60;assert.equal(canEnterTerritory(s,'germany','france'),false);}
+  let s=accepted(world(),{kind:'Treaty',treaty:'TradeAgreement'});assert.equal(diplomacyBudget(s).tradeBonus.get('germany'),.03);s.tick=60;assert.equal(diplomacyBudget(s).tradeBonus.has('germany'),false);
+  s=command(world(),{type:'START_RELATION_MISSION',playerId:'host',targetId:'france',kind:'Improve'});assert.equal(diplomacyBudget(s).costs.get('germany'),3);declareWar(s,'germany','france');assert.equal(diplomacyBudget(s).costs.has('germany'),false);
+});
+test('summit treaties cannot bypass rivalries and NPC evaluation includes all participants',()=>{
+  const s=world(),t={kind:'Summit',participants:['germany','france','poland'],agenda:'TradeAgreement'} as const;
+  diplomaticLink(s,'france','poland').rivals=['poland'];assert.throws(()=>command(s,{type:'OFFER_DIPLOMACY',playerId:'host',targetId:'france',terms:{...t,participants:[...t.participants]}}),/Соперничество/);
+  const terms:DiplomaticTerms={...t,participants:[...t.participants],agenda:'Relations'},copy=structuredClone(s),rating=diplomacyAcceptance(s,'germany','france',terms);assert.ok(rating.reasons.some(r=>r.value===-50));assert.deepEqual(s,copy);
+  assert.equal(diplomacyQuote(s,'germany','france',terms).reason,null);
+});
+test('withdrawal corridors disappear when the army is destroyed or safely exits; orphaned routes are rejected',()=>{
+  const s=world(),{army,foreign}=border(s);let n=accepted(s,{kind:'Treaty',treaty:'MilitaryAccess'});n.armies.find(a=>a.id===army.id)!.provinceId=foreign.id;
+  n=command(n,{type:'TERMINATE_TREATY',playerId:'guest',targetId:'germany',treatyId:n.diplomacy!['france|germany']!.terms![0]!.id},'guest');assert.ok(n.diplomacy!['france|germany']!.withdrawals!.length);
+  const invalid=structuredClone(n);invalid.armies=invalid.armies.filter(a=>a.id!==army.id);assert.throws(()=>initializeDiplomacy2(invalid,false),/withdrawal/);pruneAccessWithdrawals(invalid);assert.equal(invalid.diplomacy!['france|germany']!.withdrawals!.length,0);initializeDiplomacy2(invalid,false);
+  const a=n.armies.find(a=>a.id===army.id)!;a.provinceId=a.order!.targetProvinceId;delete a.order;pruneAccessWithdrawals(n);assert.equal(n.diplomacy!['france|germany']!.withdrawals!.length,0);assert.equal(canEnterTerritory(n,'germany','france',a.id,foreign.id),false);assert.deepEqual(n,decodeCampaign(encodeCampaign(n,1)).state);
 });

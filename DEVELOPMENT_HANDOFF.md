@@ -1,3 +1,19 @@
+# Continuation — Stage3 boundary regressions and exact Android evidence, 2026-10-10
+
+Parent runtime **4bd9d4000fab1f1130d42c1265b2ef9f21ab356a** is confirmed on GitHub expansion-v2 and locally. Remote main/accepted47b, world195/2924/5411, dedicated Dominion backend and full EXPANSION_SCOPE remain unchanged. No cloud deployment, AssetMind access, new repository or final APK delivery. This commit triggers normal APK CI; the earlier skip preserved completed ca native QA.
+
+Stage3 fixes: treaty dates are checked before army movement and budget collection, summit treaty agendas cannot bypass participant rivalries, NPC summit evaluation includes every participant, and destroyed/safely exited armies lose withdrawal corridors after authoritative mutations. Missing army references in withdrawal saves are rejected. Three new boundary regressions plus existing suite: strict TS PASS, **213/213 JS PASS**, camera Python **40 PASS/1 SDK-dependent SKIP**, Hermes Android export PASS. See previous exact10k diplomacy result; another10k is scheduled by normal CI, not claimed from this smaller host verification.
+
+**ca230dd native run38047057931 is completed:** build/long-simulation/android-smoke SUCCESS. Actual logs show offline cold launch, selection/deselect/order/diplomacy/Back/menus/layout/save/reboot gates and **1800-second continuous render/simulation/autosave stress PASS** (duration1825.665s). Downloaded artifact11669745126 has25322083bytes, SHAa177d3772b58cd525fdd29aaa23f722daa825c56ef55dea410cf5c67c3efa2a9, ZIP CRC PASS; repeated-tap deselection screenshot inspected. This verifies ca runtime army UX, not the later13 diplomacy UI or hardware FPS.
+
+**Camera remains PARTIAL, candidate unaccepted.** ca first comparison failed adb setup. Retried exact-ca run38050863017 at QA10278 completed FAILURE: forward9 scenarios captured, candidate surface presentations available, baseline window unavailable; forward gate detects panel-open memory349119→422849KiB (>20%). Reverse capture stopped during scenario6 on uiautomator137/fatal accessibility; no complete ABBA acceptance. Downloaded artifact11669669421 has22637172bytes, SHA827812faf4739ab494615c86b430bd91c3a1365c902ae2e958f4ea77b1260169, CRC PASS. Actual baseline layer list contains both hashed parent window and unprefixed buffer window; parser now selects the exact buffer name and tolerates wrapper z metadata. Existing frame/paint/PSS/P95/P99 gates are retained. Opaque presentation is an experiment, not an accepted optimization. Do not claim faster camera or finalize release from these results.
+
+Statuses:0 DONE;1 PARTIAL;2 DONE for ca native, regression gate retained for subsequent integrated runtime;3 PARTIAL (core/host/boundaries done; new native/backend rollout/named-DAG adapter pending);4 PARTIAL (spy missions next);5/6/7 PARTIAL;8 NOT STARTED;9 PARTIAL (19NEW originals pending);10 PARTIAL;11 NOT STARTED.
+
+**Exact next operation:** collect this new schema13 build/native/paired/10k CI while implementing Stage4's four real deterministic espionage missions, effects/counterintelligence and bounded autonomous AI, with commands, persistence and tests. Continue approved stages5–11. Final client and existing shared backend must migrate together; no old-room destructive rollout. Do not restart recovery or deliver the intermediate ca APK.
+
+---
+
 # Expansion continuation — Diplomacy 2.0 schema13 checkpoint, 2026-10-10
 
 **Repository only:** elcin31/grand-strategy-multiplayer. Remote main remains **dbb354ab038713c3e54b969b34a6fc88bf2de11f**; accepted standalone runtime47b remains intact. Runtime parent **ca230dd129f5647d9f1a11fbbc42c78bd2344702** introduced only the existing Skia opaque Android Canvas presentation. This checkpoint extends the existing shared reducer, client panels and codecs; no production backend/cloud write, AssetMind access, new repository, new backend, world/topology reduction or replacement renderer.

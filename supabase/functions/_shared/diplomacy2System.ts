@@ -158,7 +158,10 @@ function validateOffer(s:GameState,from:string,to:string,t:DiplomaticTerms):void
   }else if(t.kind==='Summit'){
     if(!t.participants.includes(from)||!t.participants.includes(to))throw Error('Организатор и адресат должны участвовать');
     for(const id of t.participants)living(s,id);
-    for(let i=0;i<t.participants.length;i++)for(const other of t.participants.slice(i+1))if(warBetween(s,t.participants[i]!,other))throw Error('Участники саммита воюют друг с другом');
+    for(let i=0;i<t.participants.length;i++)for(const other of t.participants.slice(i+1)){
+      if(warBetween(s,t.participants[i]!,other))throw Error('Участники саммита воюют друг с другом');
+      if(t.agenda!=='Relations'&&s.diplomacy?.[pairKey(t.participants[i]!,other)]?.rivals.length)throw Error('Соперничество участников блокирует договор саммита');
+    }
   }
 }
 /** Read-only strategic evaluation; rejected NPC offers still commit their
@@ -180,7 +183,16 @@ export function diplomacyAcceptance(s:GameState,from:string,to:string,terms:Dipl
   }
   if(terms.kind==='Ultimatum'){required=25;reasons.push({label:'Военная угроза',value:Math.min(100,Math.round((a.army/Math.max(1000,b.army)-1)*35))});}
   if(terms.kind==='PoliticalUnion')required=85;
-  if(terms.kind==='Summit')reasons.push({label:'Многостороннее сотрудничество',value:10});
+  if(terms.kind==='Summit'){
+    reasons.push({label:'Многостороннее сотрудничество',value:10});
+    const others=terms.participants.filter(id=>id!==from&&id!==to);
+    for(const id of others){
+      const link=s.diplomacy?.[pairKey(id,to)];
+      reasons.push({label:'Отношения с участником: '+s.countries[id]!.name,value:Math.round((link?.relation??0)/others.length*.5)});
+      if(link?.rivals.length)reasons.push({label:'Соперничество с участником: '+s.countries[id]!.name,value:-50});
+      if(warBetween(s,id,to))reasons.push({label:'Война с участником',value:-100});
+    }
+  }
   return{score:reasons.reduce((n,r)=>n+r.value,0),required,reasons};
 }
 function addTreaty(s:GameState,from:string,to:string,type:TreatyTerm['type'],untilTick=s.tick+RULES.treatyMonths):void {
@@ -270,7 +282,7 @@ export function diplomacyResponseAvailability(s:GameState,actor:string,o:Diploma
 export function canEnterTerritory(s:GameState,owner:string,controller:string,armyId?:string,targetProvinceId?:string):boolean {
   if(!s.dataset||owner===controller||warBetween(s,owner,controller))return true;
   const l=s.diplomacy?.[pairKey(owner,controller)];
-  if(l?.treaties.includes('Alliance')||l?.treaties.includes('PoliticalUnion'))return true;
+  if(l?.terms?.some(t=>['Alliance','PoliticalUnion'].includes(t.type)&&t.untilTick>s.tick))return true;
   if(l?.terms?.some(t=>t.type==='MilitaryAccess'&&t.from===controller&&t.to===owner&&t.untilTick>s.tick))return true;
   if(!armyId||!targetProvinceId)return false;
   const army=s.armies.find(a=>a.id===armyId),order=army?.order;
@@ -299,6 +311,23 @@ function removeTreaty(s:GameState,l:DiplomacyLink,term:TreatyTerm):void {
   if(term.type==='MilitaryAccess')revokeAccess(s,term);
   if(term.type==='PoliticalUnion')s.politicalUnions=s.politicalUnions!.filter(u=>!u.members.includes(l.a)||!u.members.includes(l.b));
 }
+/** Remove corridors for destroyed armies or armies that already left the
+ * granting country. Call after simulation/command mutations, never in render. */
+export function pruneAccessWithdrawals(s:GameState):void {
+  const links=Object.values(s.diplomacy??{}).filter(l=>l.withdrawals?.length);
+  if(!links.length)return;
+  const armies=new Map(s.armies.map(a=>[a.id,a])),provinces=new Map(s.provinces.map(p=>[p.id,p]));
+  for(const l of links){
+    for(const w of l.withdrawals!){
+      const grantor=w.countryId===l.a?l.b:l.a;
+      for(const id of Object.keys(w.routes)){
+        const a=armies.get(id),p=a&&provinces.get(a.provinceId);
+        if(!a||a.ownerId!==w.countryId||!p||(p.controllerId??p.ownerId)!==grantor)delete w.routes[id];
+      }
+    }
+    l.withdrawals=l.withdrawals!.filter(w=>w.untilTick>s.tick&&Object.keys(w.routes).length);
+  }
+}
 export function terminateTreaty(s:GameState,actor:string,target:string,id:string):void {
   const l=diplomaticLink(s,actor,target),term=l.terms!.find(t=>t.id===id);
   if(!term)throw Error('Договор не найден');
@@ -321,18 +350,18 @@ export function monthlyDiplomacy2(s:GameState):void {
   for(const o of [...s.diplomaticOffers!])if(o.expiresTick<=s.tick){s.diplomaticOffers=s.diplomaticOffers!.filter(x=>x.id!==o.id);delete s.diplomacy?.[pairKey(o.from,o.to)]?.proposal;logDiplomacy(s,offerMembers(o.from,o.to,o.terms),'OfferExpired','Срок ответа истёк');}
   for(const l of Object.values(s.diplomacy!)){
     for(const term of [...l.terms!])if(term.untilTick<=s.tick){removeTreaty(s,l,term);logDiplomacy(s,[l.a,l.b],'TreatyExpired',`Истёк срок: ${DIPLOMATIC_TREATIES[term.type]}`);}
-    for(const w of l.withdrawals!)for(const armyId of Object.keys(w.routes))if(!s.armies.some(a=>a.id===armyId&&a.ownerId===w.countryId))delete w.routes[armyId];
-    l.withdrawals=l.withdrawals!.filter(w=>w.untilTick>s.tick&&Object.keys(w.routes).length);
     for(const id of [...l.guarantors])if((l.guaranteeUntil?.[id]??Number.MAX_SAFE_INTEGER)<=s.tick){l.guarantors=l.guarantors.filter(x=>x!==id);delete l.guaranteeUntil![id];logDiplomacy(s,[l.a,l.b],'GuaranteeExpired','Истёк срок гарантии независимости');}
     if(l.treaties.includes('TradeAgreement')&&warBetween(s,l.a,l.b))for(const term of l.terms!.filter(t=>t.type==='TradeAgreement'))removeTreaty(s,l,term);
   }
+  pruneAccessWithdrawals(s);
   if(s.tick%6===0)refreshRelationFactors(s);
 }
 export function diplomacyBudget(s:GameState):{costs:Map<string,number>;tradeBonus:Map<string,number>} {
   const costs=new Map<string,number>(),tradeBonus=new Map<string,number>();
-  for(const m of s.relationMissions??[])if(m.untilTick>=s.tick)costs.set(m.from,money((costs.get(m.from)??0)+m.monthlyCost));
+  for(const m of s.relationMissions??[])if(m.untilTick>=s.tick&&!warBetween(s,m.from,m.to)&&s.countries[m.from]?.provinceIds?.length&&s.countries[m.to]?.provinceIds?.length)costs.set(m.from,money((costs.get(m.from)??0)+m.monthlyCost));
   for(const l of Object.values(s.diplomacy??{}))if(!warBetween(s,l.a,l.b)){
-    const bonus=(l.treaties.includes('TradeAgreement') ? .03 : 0)+(l.treaties.includes('PoliticalUnion') ? .04 : 0);
+    const active=(type:TreatyTerm['type'])=>l.terms?.some(t=>t.type===type&&t.untilTick>s.tick);
+    const bonus=(active('TradeAgreement') ? .03 : 0)+(active('PoliticalUnion') ? .04 : 0);
     if(bonus)for(const id of [l.a,l.b])tradeBonus.set(id,Math.min(.2,(tradeBonus.get(id)??0)+bonus));
   }
   return{costs,tradeBonus};
@@ -370,7 +399,7 @@ export function initializeDiplomacy2(s:GameState,migrate:boolean):void {
     if(typeof l.cooldowns!=='object'||Array.isArray(l.cooldowns)||Object.keys(l.cooldowns).length>24||typeof l.guaranteeUntil!=='object'||Array.isArray(l.guaranteeUntil)||Object.keys(l.guaranteeUntil).length>2||l.guarantors.some(g=>!tick(l.guaranteeUntil![g])))throw Error('Invalid diplomatic ledgers');
     for(const [key,value]of Object.entries(l.cooldowns))if(!key.startsWith(l.a+':')&&!key.startsWith(l.b+':')||!tick(value))throw Error('Invalid diplomacy cooldown');
     for(const [key,value]of Object.entries(l.guaranteeUntil))if(!l.guarantors.includes(key)||!tick(value))throw Error('Invalid independence guarantee');
-    for(const w of l.withdrawals){if(![l.a,l.b].includes(w.countryId)||!tick(w.untilTick)||!w.routes||typeof w.routes!=='object')throw Error('Invalid access withdrawal');for(const [armyId,route]of Object.entries(w.routes)){const army=s.armies.find(a=>a.id===armyId);if(!Array.isArray(route)||!route.length||route.length>s.provinces.length||new Set(route).size!==route.length||route.some(id=>!s.provinces.some(p=>p.id===id))||army&&army.ownerId!==w.countryId)throw Error('Invalid withdrawal route');}}
+    for(const w of l.withdrawals){if(![l.a,l.b].includes(w.countryId)||!tick(w.untilTick)||!w.routes||typeof w.routes!=='object')throw Error('Invalid access withdrawal');for(const [armyId,route]of Object.entries(w.routes)){const army=s.armies.find(a=>a.id===armyId);if(!army||!Array.isArray(route)||!route.length||route.length>s.provinces.length||new Set(route).size!==route.length||route.some(id=>!s.provinces.some(p=>p.id===id))||army.ownerId!==w.countryId)throw Error('Invalid withdrawal route');}}
     if(l.treaties.includes('PoliticalUnion')&&(!unionOf(s,l.a)||unionOf(s,l.a)!==unionOf(s,l.b)))throw Error('Union treaty has no federation');
   }
   for(const u of s.politicalUnions)for(let i=0;i<u.members.length;i++)for(const other of u.members.slice(i+1))if(!s.diplomacy![pairKey(u.members[i]!,other)]?.treaties.includes('PoliticalUnion'))throw Error('Federation has no union treaty');
