@@ -1,0 +1,1409 @@
+{
+  "runtime": "d7c3d593802f2edf27894f92fe10928341df0080",
+  "run": 38021043667,
+  "job": 114125259515,
+  "status": "PASS: original paired protocol, all nine P95 gates. New fixed-world protocol + full native smoke pending.",
+  "baselineRuntime": "47b0db4f8b220e9ea89998afaac035239b64f5e0",
+  "baselineRun": "37971350100",
+  "protocol": "independent-campaign-v1",
+  "note": "Paired one-emulator API35/SwiftShader, Balanced adaptive off, same pointers; separate random campaign seeds, not byte-identical state. New stronger fixed-world/reset protocol pending. Raw 120-frame ring vs whole-capture histograms kept separate. No physical Redmi FPS or universal microstutter elimination.",
+  "artifactId": 11658983899,
+  "zipSha256": "9c5e7dac2cb94f7bd3b195d20f58ff6a357244e0484a6c5f2787c81d2dfe3647",
+  "rows": [
+    {
+      "scenario": "01-idle",
+      "before": {
+        "reportedFrames": 0,
+        "frames": 0,
+        "timingSource": "idle-no-frames",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": null,
+        "histogramP95Ms": null,
+        "histogramP99Ms": null,
+        "p50Ms": null,
+        "p95Ms": null,
+        "p99Ms": null,
+        "jankPercent": 0.0,
+        "rawMaxMs": null,
+        "rawOver50Ms": 0,
+        "rawOver100Ms": 0,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 0,
+          "High input latency": 0,
+          "Slow UI thread": 0,
+          "Slow bitmap uploads": 0,
+          "Slow issue draw commands": 0,
+          "Frame deadline missed": 0
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "uiWorkMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "syncWaitMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "renderCompletionMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 392202,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 0.45,
+            "maxCpuPercent": 1.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 0.09,
+            "maxCpuPercent": 1.0
+          }
+        },
+        "diagnosticError": null
+      },
+      "after": {
+        "reportedFrames": 0,
+        "frames": 0,
+        "timingSource": "idle-no-frames",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": null,
+        "histogramP95Ms": null,
+        "histogramP99Ms": null,
+        "p50Ms": null,
+        "p95Ms": null,
+        "p99Ms": null,
+        "jankPercent": 0.0,
+        "rawMaxMs": null,
+        "rawOver50Ms": 0,
+        "rawOver100Ms": 0,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 0,
+          "High input latency": 0,
+          "Slow UI thread": 0,
+          "Slow bitmap uploads": 0,
+          "Slow issue draw commands": 0,
+          "Frame deadline missed": 0
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "uiWorkMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "syncWaitMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "renderCompletionMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 403051,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 0.73,
+            "maxCpuPercent": 1.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 0.09,
+            "maxCpuPercent": 1.0
+          }
+        },
+        "diagnosticError": null
+      }
+    },
+    {
+      "scenario": "02-medium-pan",
+      "before": {
+        "reportedFrames": 246,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 85.0,
+        "histogramP95Ms": 113.0,
+        "histogramP99Ms": 133.0,
+        "p50Ms": 95.64582,
+        "p95Ms": 125.726689,
+        "p99Ms": 167.9787,
+        "jankPercent": 83.33,
+        "rawMaxMs": 183.484852,
+        "rawOver50Ms": 114,
+        "rawOver100Ms": 54,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 186,
+          "High input latency": 80,
+          "Slow UI thread": 194,
+          "Slow bitmap uploads": 3,
+          "Slow issue draw commands": 172,
+          "Frame deadline missed": 205
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 34.981318,
+            "p95": 47.843492,
+            "p99": 53.423485
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.02736,
+            "p95": 11.45861,
+            "p99": 15.441213
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 19.733258,
+            "p95": 45.749412,
+            "p99": 50.923503
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 390107,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 21.97,
+            "maxCpuPercent": 29.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.45,
+            "maxCpuPercent": 4.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 61.12,
+            "maxCpuPercent": 74.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 3.36,
+            "maxCpuPercent": 7.0
+          }
+        },
+        "diagnosticError": null
+      },
+      "after": {
+        "reportedFrames": 248,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 89.0,
+        "histogramP95Ms": 117.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 100.105453,
+        "p95Ms": 133.449072,
+        "p99Ms": 148.499752,
+        "jankPercent": 83.06,
+        "rawMaxMs": 161.076391,
+        "rawOver50Ms": 115,
+        "rawOver100Ms": 63,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 188,
+          "High input latency": 81,
+          "Slow UI thread": 196,
+          "Slow bitmap uploads": 5,
+          "Slow issue draw commands": 180,
+          "Frame deadline missed": 206
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 66.666664
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 35.718422,
+            "p95": 52.469727,
+            "p99": 70.806515
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 3.756295,
+            "p95": 10.765591,
+            "p99": 17.292876
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 23.28947,
+            "p95": 45.692137,
+            "p99": 48.815011
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 401636,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 24.0,
+            "maxCpuPercent": 31.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.55,
+            "maxCpuPercent": 5.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 63.18,
+            "maxCpuPercent": 72.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 3.27,
+            "maxCpuPercent": 9.0
+          }
+        },
+        "diagnosticError": null
+      }
+    },
+    {
+      "scenario": "03-pinch",
+      "before": {
+        "reportedFrames": 125,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 97.0,
+        "histogramP95Ms": 350.0,
+        "histogramP99Ms": 450.0,
+        "p50Ms": 100.638075,
+        "p95Ms": 371.121874,
+        "p99Ms": 490.828711,
+        "jankPercent": 92.0,
+        "rawMaxMs": 516.863303,
+        "rawOver50Ms": 113,
+        "rawOver100Ms": 67,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 98,
+          "High input latency": 20,
+          "Slow UI thread": 110,
+          "Slow bitmap uploads": 4,
+          "Slow issue draw commands": 76,
+          "Frame deadline missed": 115
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 33.333332,
+            "p95": 233.333324,
+            "p99": 416.66665
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 39.374648,
+            "p95": 148.405687,
+            "p99": 166.295959
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 2.157245,
+            "p95": 8.599483,
+            "p99": 10.981348
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 17.602388,
+            "p95": 44.865334,
+            "p99": 62.981147
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 424767,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 8.59,
+            "maxCpuPercent": 19.0
+          },
+          "hades": {
+            "meanCpuPercent": 1.89,
+            "maxCpuPercent": 5.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 81.88,
+            "maxCpuPercent": 93.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 11.52,
+            "maxCpuPercent": 22.0
+          }
+        },
+        "diagnosticError": null
+      },
+      "after": {
+        "reportedFrames": 137,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 93.0,
+        "histogramP95Ms": 250.0,
+        "histogramP99Ms": 350.0,
+        "p50Ms": 100.172061,
+        "p95Ms": 316.764224,
+        "p99Ms": 394.027406,
+        "jankPercent": 85.4,
+        "rawMaxMs": 466.823874,
+        "rawOver50Ms": 110,
+        "rawOver100Ms": 64,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 96,
+          "High input latency": 39,
+          "Slow UI thread": 113,
+          "Slow bitmap uploads": 3,
+          "Slow issue draw commands": 81,
+          "Frame deadline missed": 117
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 183.333326,
+            "p99": 233.333324
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 34.71857,
+            "p95": 117.770268,
+            "p99": 146.321823
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 2.448344,
+            "p95": 9.365582,
+            "p99": 15.870569
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 18.114862,
+            "p95": 40.573559,
+            "p99": 48.914355
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 435268,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 9.78,
+            "maxCpuPercent": 19.0
+          },
+          "hades": {
+            "meanCpuPercent": 2.09,
+            "maxCpuPercent": 6.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 80.41,
+            "maxCpuPercent": 94.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 13.04,
+            "maxCpuPercent": 33.0
+          }
+        },
+        "diagnosticError": null
+      }
+    },
+    {
+      "scenario": "04-world-pan",
+      "before": {
+        "reportedFrames": 235,
+        "frames": 118,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 93.0,
+        "histogramP95Ms": 117.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 100.175243,
+        "p95Ms": 127.496752,
+        "p99Ms": 154.866075,
+        "jankPercent": 87.66,
+        "rawMaxMs": 159.493599,
+        "rawOver50Ms": 115,
+        "rawOver100Ms": 72,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 197,
+          "High input latency": 57,
+          "Slow UI thread": 203,
+          "Slow bitmap uploads": 5,
+          "Slow issue draw commands": 179,
+          "Frame deadline missed": 206
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 118,
+            "p50": 33.333332,
+            "p95": 49.999998,
+            "p99": 83.33333
+          },
+          "uiWorkMs": {
+            "samples": 118,
+            "p50": 35.913014,
+            "p95": 49.434061,
+            "p99": 53.08875
+          },
+          "syncWaitMs": {
+            "samples": 118,
+            "p50": 4.265571,
+            "p95": 10.545532,
+            "p99": 14.735135
+          },
+          "renderCompletionMs": {
+            "samples": 118,
+            "p50": 21.323397,
+            "p95": 48.805603,
+            "p99": 52.313353
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 429983,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 20.55,
+            "maxCpuPercent": 28.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 62.18,
+            "maxCpuPercent": 71.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 0.82,
+            "maxCpuPercent": 2.0
+          }
+        },
+        "diagnosticError": null
+      },
+      "after": {
+        "reportedFrames": 246,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 85.0,
+        "histogramP95Ms": 109.0,
+        "histogramP99Ms": 121.0,
+        "p50Ms": 85.683752,
+        "p95Ms": 111.805324,
+        "p99Ms": 119.413229,
+        "jankPercent": 87.4,
+        "rawMaxMs": 119.600335,
+        "rawOver50Ms": 115,
+        "rawOver100Ms": 40,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 201,
+          "High input latency": 62,
+          "Slow UI thread": 212,
+          "Slow bitmap uploads": 1,
+          "Slow issue draw commands": 179,
+          "Frame deadline missed": 215
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 66.666664
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 33.428215,
+            "p95": 47.108164,
+            "p99": 50.283508
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.379283,
+            "p95": 9.316228,
+            "p99": 12.889855
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 19.599218,
+            "p95": 36.883091,
+            "p99": 44.593011
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 433200,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 21.27,
+            "maxCpuPercent": 27.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 64.55,
+            "maxCpuPercent": 73.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 0.82,
+            "maxCpuPercent": 2.0
+          }
+        },
+        "diagnosticError": null
+      }
+    },
+    {
+      "scenario": "05-local-labels-armies",
+      "before": {
+        "reportedFrames": 314,
+        "frames": 118,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 65.0,
+        "histogramP95Ms": 85.0,
+        "histogramP99Ms": 101.0,
+        "p50Ms": 71.301867,
+        "p95Ms": 98.076696,
+        "p99Ms": 116.802219,
+        "jankPercent": 71.66,
+        "rawMaxMs": 117.167697,
+        "rawOver50Ms": 110,
+        "rawOver100Ms": 4,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 142,
+          "High input latency": 173,
+          "Slow UI thread": 218,
+          "Slow bitmap uploads": 2,
+          "Slow issue draw commands": 200,
+          "Frame deadline missed": 225
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 118,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 118,
+            "p50": 24.174176,
+            "p95": 38.524741,
+            "p99": 46.422927
+          },
+          "syncWaitMs": {
+            "samples": 118,
+            "p50": 3.418101,
+            "p95": 10.479108,
+            "p99": 12.639237
+          },
+          "renderCompletionMs": {
+            "samples": 118,
+            "p50": 22.202513,
+            "p95": 35.307871,
+            "p99": 43.628833
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 411282,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 22.73,
+            "maxCpuPercent": 28.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.55,
+            "maxCpuPercent": 6.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 49.45,
+            "maxCpuPercent": 55.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 2.82,
+            "maxCpuPercent": 9.0
+          }
+        },
+        "diagnosticError": null
+      },
+      "after": {
+        "reportedFrames": 337,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 65.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 93.0,
+        "p50Ms": 68.322075,
+        "p95Ms": 85.431764,
+        "p99Ms": 89.529184,
+        "jankPercent": 62.91,
+        "rawMaxMs": 94.921601,
+        "rawOver50Ms": 110,
+        "rawOver100Ms": 0,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 128,
+          "High input latency": 241,
+          "Slow UI thread": 205,
+          "Slow bitmap uploads": 1,
+          "Slow issue draw commands": 187,
+          "Frame deadline missed": 212
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 22.788628,
+            "p95": 33.291275,
+            "p99": 36.864292
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 3.874231,
+            "p95": 12.04166,
+            "p99": 22.765713
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 21.280718,
+            "p95": 35.71028,
+            "p99": 37.536626
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 424680,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 24.0,
+            "maxCpuPercent": 32.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 49.55,
+            "maxCpuPercent": 59.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 2.64,
+            "maxCpuPercent": 5.0
+          }
+        },
+        "diagnosticError": null
+      }
+    },
+    {
+      "scenario": "06-terrain-pan",
+      "before": {
+        "reportedFrames": 327,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 65.0,
+        "histogramP95Ms": 85.0,
+        "histogramP99Ms": 93.0,
+        "p50Ms": 69.698668,
+        "p95Ms": 94.167703,
+        "p99Ms": 100.117858,
+        "jankPercent": 69.72,
+        "rawMaxMs": 100.206093,
+        "rawOver50Ms": 110,
+        "rawOver100Ms": 2,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 144,
+          "High input latency": 191,
+          "Slow UI thread": 218,
+          "Slow bitmap uploads": 4,
+          "Slow issue draw commands": 206,
+          "Frame deadline missed": 228
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 23.883802,
+            "p95": 33.820727,
+            "p99": 36.510475
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.31026,
+            "p95": 12.399414,
+            "p99": 15.50283
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 21.917888,
+            "p95": 37.37872,
+            "p99": 39.928315
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 345673,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 23.34,
+            "maxCpuPercent": 29.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 50.04,
+            "maxCpuPercent": 58.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 1.99,
+            "maxCpuPercent": 5.0
+          }
+        },
+        "diagnosticError": null
+      },
+      "after": {
+        "reportedFrames": 341,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 65.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 97.0,
+        "p50Ms": 67.330914,
+        "p95Ms": 85.343479,
+        "p99Ms": 89.204774,
+        "jankPercent": 68.04,
+        "rawMaxMs": 91.921403,
+        "rawOver50Ms": 108,
+        "rawOver100Ms": 0,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 120,
+          "High input latency": 216,
+          "Slow UI thread": 217,
+          "Slow bitmap uploads": 1,
+          "Slow issue draw commands": 201,
+          "Frame deadline missed": 232
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 22.904851,
+            "p95": 33.162899,
+            "p99": 38.469487
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 2.88107,
+            "p95": 12.224413,
+            "p99": 20.965301
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 20.453618,
+            "p95": 36.358218,
+            "p99": 38.201589
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 431243,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 24.45,
+            "maxCpuPercent": 29.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 51.27,
+            "maxCpuPercent": 59.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 2.09,
+            "maxCpuPercent": 5.0
+          }
+        },
+        "diagnosticError": null
+      }
+    },
+    {
+      "scenario": "07-military-overlay",
+      "before": {
+        "reportedFrames": 327,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 65.0,
+        "histogramP95Ms": 89.0,
+        "histogramP99Ms": 97.0,
+        "p50Ms": 74.364154,
+        "p95Ms": 85.629357,
+        "p99Ms": 100.198324,
+        "jankPercent": 68.81,
+        "rawMaxMs": 101.108413,
+        "rawOver50Ms": 106,
+        "rawOver100Ms": 2,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 129,
+          "High input latency": 197,
+          "Slow UI thread": 216,
+          "Slow bitmap uploads": 7,
+          "Slow issue draw commands": 205,
+          "Frame deadline missed": 225
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 23.806807,
+            "p95": 36.106301,
+            "p99": 41.01735
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 2.912836,
+            "p95": 11.248686,
+            "p99": 14.451256
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 22.719184,
+            "p95": 35.46482,
+            "p99": 40.817898
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 349239,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 23.55,
+            "maxCpuPercent": 31.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.45,
+            "maxCpuPercent": 5.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 50.27,
+            "maxCpuPercent": 59.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 2.36,
+            "maxCpuPercent": 5.0
+          }
+        },
+        "diagnosticError": null
+      },
+      "after": {
+        "reportedFrames": 331,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 65.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 97.0,
+        "p50Ms": 67.515143,
+        "p95Ms": 95.536222,
+        "p99Ms": 100.825294,
+        "jankPercent": 68.58,
+        "rawMaxMs": 101.347023,
+        "rawOver50Ms": 112,
+        "rawOver100Ms": 5,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 132,
+          "High input latency": 203,
+          "Slow UI thread": 218,
+          "Slow bitmap uploads": 1,
+          "Slow issue draw commands": 208,
+          "Frame deadline missed": 227
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 22.623626,
+            "p95": 37.261671,
+            "p99": 41.076549
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.751138,
+            "p95": 11.794041,
+            "p99": 18.591854
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 21.16165,
+            "p95": 34.794494,
+            "p99": 36.348649
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 443230,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 24.73,
+            "maxCpuPercent": 33.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.45,
+            "maxCpuPercent": 3.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 51.18,
+            "maxCpuPercent": 59.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 2.0,
+            "maxCpuPercent": 5.0
+          }
+        },
+        "diagnosticError": null
+      }
+    },
+    {
+      "scenario": "08-panel-open",
+      "before": {
+        "reportedFrames": 307,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 73.0,
+        "histogramP95Ms": 93.0,
+        "histogramP99Ms": 97.0,
+        "p50Ms": 74.26222,
+        "p95Ms": 98.539949,
+        "p99Ms": 101.058139,
+        "jankPercent": 74.59,
+        "rawMaxMs": 116.823161,
+        "rawOver50Ms": 117,
+        "rawOver100Ms": 5,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 143,
+          "High input latency": 154,
+          "Slow UI thread": 224,
+          "Slow bitmap uploads": 4,
+          "Slow issue draw commands": 213,
+          "Frame deadline missed": 229
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 26.773485,
+            "p95": 38.079867,
+            "p99": 43.180413
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 2.809893,
+            "p95": 11.163565,
+            "p99": 18.353147
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 22.02261,
+            "p95": 37.642935,
+            "p99": 46.774432
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 368637,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 27.34,
+            "maxCpuPercent": 33.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.45,
+            "maxCpuPercent": 3.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 50.13,
+            "maxCpuPercent": 57.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 1.99,
+            "maxCpuPercent": 5.0
+          }
+        },
+        "diagnosticError": null
+      },
+      "after": {
+        "reportedFrames": 300,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 97.0,
+        "histogramP99Ms": 101.0,
+        "p50Ms": 83.457468,
+        "p95Ms": 102.074437,
+        "p99Ms": 105.570293,
+        "jankPercent": 76.0,
+        "rawMaxMs": 119.588612,
+        "rawOver50Ms": 111,
+        "rawOver100Ms": 17,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 152,
+          "High input latency": 141,
+          "Slow UI thread": 221,
+          "Slow bitmap uploads": 2,
+          "Slow issue draw commands": 210,
+          "Frame deadline missed": 228
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 26.837915,
+            "p95": 37.936503,
+            "p99": 43.635688
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 2.856072,
+            "p95": 11.306127,
+            "p99": 22.8405
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 24.152532,
+            "p95": 37.50232,
+            "p99": 39.264204
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 348867,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 27.18,
+            "maxCpuPercent": 34.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 52.36,
+            "maxCpuPercent": 60.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 2.18,
+            "maxCpuPercent": 5.0
+          }
+        },
+        "diagnosticError": null
+      }
+    },
+    {
+      "scenario": "09-panel-closed",
+      "before": {
+        "reportedFrames": 321,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 65.0,
+        "histogramP95Ms": 89.0,
+        "histogramP99Ms": 97.0,
+        "p50Ms": 69.805781,
+        "p95Ms": 100.177763,
+        "p99Ms": 102.924345,
+        "jankPercent": 67.91,
+        "rawMaxMs": 116.800753,
+        "rawOver50Ms": 114,
+        "rawOver100Ms": 8,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 137,
+          "High input latency": 203,
+          "Slow UI thread": 211,
+          "Slow bitmap uploads": 5,
+          "Slow issue draw commands": 199,
+          "Frame deadline missed": 218
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 24.790975,
+            "p95": 38.141309,
+            "p99": 41.060625
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 3.98691,
+            "p95": 11.139943,
+            "p99": 14.3545
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 22.27759,
+            "p95": 36.349124,
+            "p99": 39.675458
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 365265,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 23.09,
+            "maxCpuPercent": 27.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 50.73,
+            "maxCpuPercent": 59.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 2.91,
+            "maxCpuPercent": 7.0
+          }
+        },
+        "diagnosticError": null
+      },
+      "after": {
+        "reportedFrames": 329,
+        "frames": 118,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 61.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 89.0,
+        "p50Ms": 67.30252,
+        "p95Ms": 84.72596,
+        "p99Ms": 91.064796,
+        "jankPercent": 67.17,
+        "rawMaxMs": 95.99952,
+        "rawOver50Ms": 103,
+        "rawOver100Ms": 0,
+        "rawOver5000Ms": 0,
+        "hwuiEvents": {
+          "Missed Vsync": 116,
+          "High input latency": 210,
+          "Slow UI thread": 214,
+          "Slow bitmap uploads": 0,
+          "Slow issue draw commands": 191,
+          "Frame deadline missed": 221
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 118,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 118,
+            "p50": 22.555199,
+            "p95": 32.146553,
+            "p99": 41.295661
+          },
+          "syncWaitMs": {
+            "samples": 118,
+            "p50": 3.014523,
+            "p95": 12.114578,
+            "p99": 14.912899
+          },
+          "renderCompletionMs": {
+            "samples": 118,
+            "p50": 20.817076,
+            "p95": 33.951226,
+            "p99": 35.086099
+          }
+        },
+        "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+        "pssKiB": 336494,
+        "cpuThreads": {
+          "FrescoDecodeExe": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "RenderThread": {
+            "meanCpuPercent": 23.15,
+            "maxCpuPercent": 30.6
+          },
+          "hades": {
+            "meanCpuPercent": 0.55,
+            "maxCpuPercent": 5.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 48.41,
+            "maxCpuPercent": 57.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 2.54,
+            "maxCpuPercent": 5.9
+          }
+        },
+        "diagnosticError": null
+      }
+    }
+  ]
+}

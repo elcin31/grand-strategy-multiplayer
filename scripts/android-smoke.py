@@ -12,7 +12,7 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from map_paint_check import assert_map_painted
+from map_paint_check import assert_map_painted, map_paint_stats
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 OUT = Path('android-smoke'); OUT.mkdir(exist_ok=True)
 def adb(*args): return subprocess.check_output(['adb', *args], text=True)
@@ -428,7 +428,13 @@ time.sleep(1)
 adb('shell','input','tap','500','320'); adb('shell','input','tap','500','320')
 time.sleep(1)
 screenshot('03-camera')
-assert_map_painted(OUT/'03-camera.png')
+# Gestures and country/province previews can leave the crop over the Pacific.
+# Retain that raw evidence, then check geography at a known camera position.
+# Keep the existing land threshold: labels on a transparent map must still fail.
+(OUT/'03-camera-paint-stats.json').write_text(json.dumps(map_paint_stats(OUT/'03-camera.png')))
+click_text(hierarchy('03-camera-reset'),'Обзор мира');time.sleep(3)
+screenshot('03-camera-world-reset')
+assert_map_painted(OUT/'03-camera-world-reset.png')
 # GPU surface resize/layout across target widths.
 for width, height in [(1600,720),(1920,1080),(2340,1080),(1280,800)]:
     adb('shell','wm','size',f'{height}x{width}')

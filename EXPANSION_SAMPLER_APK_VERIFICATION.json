@@ -1,0 +1,21 @@
+{
+  "runtime": "d7c3d593802f2edf27894f92fe10928341df0080",
+  "sourceBuildRun": 38021043667,
+  "artifactId": 11658353313,
+  "artifactZipBytes": 60879691,
+  "artifactSha256": "54ac38966a0f63505fe49c6cf8ae95ce4efee1f13a154d5497a8d675fee31a9b",
+  "apkBytes": 140961717,
+  "apkSha256": "9b1346892404fb11d51cc4232afe0c8d3165e9944603d10da41fec9e8a3f96c9",
+  "embeddedHermesBytes": 10475572,
+  "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "version": "0.8.1 (9)",
+  "standalone": "assembleRelease; embedded bundle/4 ABI Hermes/Skia; non-debuggable release manifest; production Dominion backend; landscape; same historical sideload certificate",
+  "checks": [
+    "artifact SHA256 and ZIP CRC",
+    "APK ZIP CRC",
+    "embedded bundle Hermes magic",
+    "CI native manifest and apksigner",
+    "local embedded bundle/native library verifier"
+  ],
+  "acceptance": "Intermediate only; latest camera/army smoke native gates pending, all Expansion 2.0 stages3-11 still pending. Must not be delivered as completed v2."
+}

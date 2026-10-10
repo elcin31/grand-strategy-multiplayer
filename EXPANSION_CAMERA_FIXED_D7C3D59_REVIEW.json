@@ -1,0 +1,1024 @@
+{
+  "baselineRuntime": "47b0db4f8b220e9ea89998afaac035239b64f5e0",
+  "baselineRun": "37971350100",
+  "candidateRuntime": "d7c3d593802f2edf27894f92fe10928341df0080",
+  "candidateRun": "38021043667",
+  "comparisonRuntime": "dbe8a1e1927c16f97378a17f80bf1d637cd53766",
+  "comparisonRun": "38022207120",
+  "note": "Paired baseline/candidate on one SwiftShader API35 emulator with identical real-pointer gesture driver, offline paused campaign, Balanced and adaptive off. Native frame completion and host software rendering only; physical Redmi acceptance remains pending. gfxinfo histogram percentiles are used when raw timestamps are unavailable.",
+  "protocol": "fixed-save-reset-v2",
+  "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+  "fixtureStateChecksum": "e8befae1",
+  "artifact": {
+    "id": 11658709526,
+    "bytes": 6970437,
+    "sha256": "2b1fb9aa9456468f51818b29e49b2b8db756367b0b8adbfda1b414093163f08c",
+    "verified": "Downloaded, SHA256/ZIP CRC checked; original pinch PNG visually reviewed."
+  },
+  "apkVerification": {
+    "runtime": "d7c3d593802f2edf27894f92fe10928341df0080",
+    "sourceBuildRun": 38021043667,
+    "artifactId": 11658353313,
+    "artifactZipBytes": 60879691,
+    "artifactSha256": "54ac38966a0f63505fe49c6cf8ae95ce4efee1f13a154d5497a8d675fee31a9b",
+    "apkBytes": 140961717,
+    "apkSha256": "9b1346892404fb11d51cc4232afe0c8d3165e9944603d10da41fec9e8a3f96c9",
+    "embeddedHermesBytes": 10475572,
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "version": "0.8.1 (9)",
+    "standalone": "assembleRelease; embedded bundle/4 ABI Hermes/Skia; non-debuggable release manifest; production Dominion backend; landscape; same historical sideload certificate",
+    "checks": [
+      "artifact SHA256 and ZIP CRC",
+      "APK ZIP CRC",
+      "embedded bundle Hermes magic",
+      "CI native manifest and apksigner",
+      "local embedded bundle/native library verifier"
+    ],
+    "acceptance": "Intermediate only; latest camera/army smoke native gates pending, all Expansion 2.0 stages3-11 still pending. Must not be delivered as completed v2."
+  },
+  "rows": [
+    {
+      "scenario": "01-idle",
+      "before": {
+        "elapsedSeconds": 10.000089261999989,
+        "reportedFrames": 0,
+        "frames": 0,
+        "timingSource": "idle-no-frames",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": null,
+        "histogramP95Ms": null,
+        "histogramP99Ms": null,
+        "p50Ms": null,
+        "p95Ms": null,
+        "p99Ms": null,
+        "jankPercent": 0.0,
+        "rawMaxMs": null,
+        "rawOver50Ms": 0,
+        "rawOver100Ms": 0,
+        "rawOver5000Ms": 0,
+        "pssKiB": 339812,
+        "hwuiEvents": {
+          "Missed Vsync": 0,
+          "High input latency": 0,
+          "Slow UI thread": 0,
+          "Slow bitmap uploads": 0,
+          "Slow issue draw commands": 0,
+          "Frame deadline missed": 0
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "uiWorkMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "syncWaitMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "renderCompletionMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          }
+        }
+      },
+      "after": {
+        "elapsedSeconds": 10.000089203000016,
+        "reportedFrames": 0,
+        "frames": 0,
+        "timingSource": "idle-no-frames",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": null,
+        "histogramP95Ms": null,
+        "histogramP99Ms": null,
+        "p50Ms": null,
+        "p95Ms": null,
+        "p99Ms": null,
+        "jankPercent": 0.0,
+        "rawMaxMs": null,
+        "rawOver50Ms": 0,
+        "rawOver100Ms": 0,
+        "rawOver5000Ms": 0,
+        "pssKiB": 346711,
+        "hwuiEvents": {
+          "Missed Vsync": 0,
+          "High input latency": 0,
+          "Slow UI thread": 0,
+          "Slow bitmap uploads": 0,
+          "Slow issue draw commands": 0,
+          "Frame deadline missed": 0
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "uiWorkMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "syncWaitMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "renderCompletionMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          }
+        }
+      }
+    },
+    {
+      "scenario": "02-medium-pan",
+      "before": {
+        "elapsedSeconds": 11.384845437999985,
+        "reportedFrames": 180,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 117.0,
+        "histogramP95Ms": 150.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 129.832971,
+        "p95Ms": 161.368685,
+        "p99Ms": 166.901351,
+        "jankPercent": 88.89,
+        "rawMaxMs": 167.787224,
+        "rawOver50Ms": 117,
+        "rawOver100Ms": 109,
+        "rawOver5000Ms": 0,
+        "pssKiB": 329162,
+        "hwuiEvents": {
+          "Missed Vsync": 152,
+          "High input latency": 32,
+          "Slow UI thread": 155,
+          "Slow bitmap uploads": 3,
+          "Slow issue draw commands": 137,
+          "Frame deadline missed": 160
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 33.333332,
+            "p95": 49.999998,
+            "p99": 116.666662
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 45.657974,
+            "p95": 58.566157,
+            "p99": 68.692947
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 5.551844,
+            "p95": 13.822958,
+            "p99": 15.232787
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 28.665725,
+            "p95": 62.566039,
+            "p99": 80.577827
+          }
+        }
+      },
+      "after": {
+        "elapsedSeconds": 11.350627194000026,
+        "reportedFrames": 172,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 117.0,
+        "histogramP95Ms": 150.0,
+        "histogramP99Ms": 200.0,
+        "p50Ms": 121.460044,
+        "p95Ms": 168.828877,
+        "p99Ms": 251.261471,
+        "jankPercent": 90.7,
+        "rawMaxMs": 266.827459,
+        "rawOver50Ms": 120,
+        "rawOver100Ms": 111,
+        "rawOver5000Ms": 0,
+        "pssKiB": 336089,
+        "hwuiEvents": {
+          "Missed Vsync": 149,
+          "High input latency": 30,
+          "Slow UI thread": 152,
+          "Slow bitmap uploads": 5,
+          "Slow issue draw commands": 140,
+          "Frame deadline missed": 156
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 33.333332,
+            "p95": 49.999998,
+            "p99": 133.333328
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 47.598807,
+            "p95": 63.109279,
+            "p99": 67.662467
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 5.529442,
+            "p95": 18.237926,
+            "p99": 24.008783
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 25.938482,
+            "p95": 61.122718,
+            "p99": 78.753808
+          }
+        }
+      }
+    },
+    {
+      "scenario": "03-pinch",
+      "before": {
+        "elapsedSeconds": 11.425669161000002,
+        "reportedFrames": 97,
+        "frames": 97,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 113.0,
+        "histogramP95Ms": 550.0,
+        "histogramP99Ms": 800.0,
+        "p50Ms": 116.899647,
+        "p95Ms": 600.183158,
+        "p99Ms": 839.566768,
+        "jankPercent": 96.91,
+        "rawMaxMs": 839.566768,
+        "rawOver50Ms": 93,
+        "rawOver100Ms": 69,
+        "rawOver5000Ms": 0,
+        "pssKiB": 387800,
+        "hwuiEvents": {
+          "Missed Vsync": 73,
+          "High input latency": 5,
+          "Slow UI thread": 88,
+          "Slow bitmap uploads": 1,
+          "Slow issue draw commands": 76,
+          "Frame deadline missed": 94
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 97,
+            "p50": 33.333332,
+            "p95": 433.333316,
+            "p99": 683.333306
+          },
+          "uiWorkMs": {
+            "samples": 97,
+            "p50": 42.797683,
+            "p95": 174.272531,
+            "p99": 299.945348
+          },
+          "syncWaitMs": {
+            "samples": 97,
+            "p50": 2.398358,
+            "p95": 11.096955,
+            "p99": 19.1858
+          },
+          "renderCompletionMs": {
+            "samples": 97,
+            "p50": 21.376877,
+            "p95": 50.891494,
+            "p99": 65.827084
+          }
+        }
+      },
+      "after": {
+        "elapsedSeconds": 11.34146667799996,
+        "reportedFrames": 81,
+        "frames": 81,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 117.0,
+        "histogramP95Ms": 550.0,
+        "histogramP99Ms": 1100.0,
+        "p50Ms": 119.494692,
+        "p95Ms": 594.778063,
+        "p99Ms": 1144.849906,
+        "jankPercent": 86.42,
+        "rawMaxMs": 1144.849906,
+        "rawOver50Ms": 78,
+        "rawOver100Ms": 61,
+        "rawOver5000Ms": 0,
+        "pssKiB": 369889,
+        "hwuiEvents": {
+          "Missed Vsync": 61,
+          "High input latency": 22,
+          "Slow UI thread": 67,
+          "Slow bitmap uploads": 1,
+          "Slow issue draw commands": 51,
+          "Frame deadline missed": 70
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 81,
+            "p50": 33.333332,
+            "p95": 299.999988,
+            "p99": 1116.666622
+          },
+          "uiWorkMs": {
+            "samples": 81,
+            "p50": 44.407255,
+            "p95": 225.62685,
+            "p99": 338.659627
+          },
+          "syncWaitMs": {
+            "samples": 81,
+            "p50": 2.773632,
+            "p95": 9.31433,
+            "p99": 28.027189
+          },
+          "renderCompletionMs": {
+            "samples": 81,
+            "p50": 20.513395,
+            "p95": 41.213539,
+            "p99": 57.569954
+          }
+        }
+      }
+    },
+    {
+      "scenario": "04-world-pan",
+      "before": {
+        "elapsedSeconds": 11.340170355999987,
+        "reportedFrames": 185,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 117.0,
+        "histogramP95Ms": 150.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 125.720035,
+        "p95Ms": 163.039035,
+        "p99Ms": 167.761997,
+        "jankPercent": 88.65,
+        "rawMaxMs": 174.059687,
+        "rawOver50Ms": 120,
+        "rawOver100Ms": 114,
+        "rawOver5000Ms": 0,
+        "pssKiB": 393527,
+        "hwuiEvents": {
+          "Missed Vsync": 159,
+          "High input latency": 36,
+          "Slow UI thread": 161,
+          "Slow bitmap uploads": 4,
+          "Slow issue draw commands": 151,
+          "Frame deadline missed": 164
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 33.333332,
+            "p95": 49.999998,
+            "p99": 116.666662
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 46.953117,
+            "p95": 60.931471,
+            "p99": 63.934068
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.701278,
+            "p95": 12.235699,
+            "p99": 20.141562
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 26.036716,
+            "p95": 60.810606,
+            "p99": 66.418775
+          }
+        }
+      },
+      "after": {
+        "elapsedSeconds": 11.325582331999954,
+        "reportedFrames": 183,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 113.0,
+        "histogramP95Ms": 150.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 118.89865,
+        "p95Ms": 161.392523,
+        "p99Ms": 166.989462,
+        "jankPercent": 91.8,
+        "rawMaxMs": 167.332455,
+        "rawOver50Ms": 119,
+        "rawOver100Ms": 105,
+        "rawOver5000Ms": 0,
+        "pssKiB": 376853,
+        "hwuiEvents": {
+          "Missed Vsync": 161,
+          "High input latency": 25,
+          "Slow UI thread": 165,
+          "Slow bitmap uploads": 0,
+          "Slow issue draw commands": 157,
+          "Frame deadline missed": 168
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 33.333332,
+            "p95": 49.999998,
+            "p99": 99.999996
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 46.10792,
+            "p95": 58.676839,
+            "p99": 61.042578
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 5.756676,
+            "p95": 13.785348,
+            "p99": 27.819661
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 24.006619,
+            "p95": 59.662775,
+            "p99": 68.017048
+          }
+        }
+      }
+    },
+    {
+      "scenario": "05-local-labels-armies",
+      "before": {
+        "elapsedSeconds": 11.352473895999992,
+        "reportedFrames": 275,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 81.0,
+        "histogramP95Ms": 109.0,
+        "histogramP99Ms": 125.0,
+        "p50Ms": 84.043431,
+        "p95Ms": 114.032737,
+        "p99Ms": 116.9587,
+        "jankPercent": 77.45,
+        "rawMaxMs": 117.073098,
+        "rawOver50Ms": 114,
+        "rawOver100Ms": 32,
+        "rawOver5000Ms": 0,
+        "pssKiB": 415654,
+        "hwuiEvents": {
+          "Missed Vsync": 160,
+          "High input latency": 115,
+          "Slow UI thread": 210,
+          "Slow bitmap uploads": 3,
+          "Slow issue draw commands": 206,
+          "Frame deadline missed": 213
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 28.900105,
+            "p95": 40.732732,
+            "p99": 46.475409
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.973044,
+            "p95": 15.765577,
+            "p99": 20.056675
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 26.263068,
+            "p95": 40.421269,
+            "p99": 46.735738
+          }
+        }
+      },
+      "after": {
+        "elapsedSeconds": 11.333213508999961,
+        "reportedFrames": 269,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 101.0,
+        "histogramP99Ms": 125.0,
+        "p50Ms": 84.733609,
+        "p95Ms": 116.801784,
+        "p99Ms": 132.947547,
+        "jankPercent": 79.55,
+        "rawMaxMs": 183.572725,
+        "rawOver50Ms": 116,
+        "rawOver100Ms": 31,
+        "rawOver5000Ms": 0,
+        "pssKiB": 406038,
+        "hwuiEvents": {
+          "Missed Vsync": 150,
+          "High input latency": 108,
+          "Slow UI thread": 209,
+          "Slow bitmap uploads": 6,
+          "Slow issue draw commands": 197,
+          "Frame deadline missed": 214
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 116.666662
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 27.031817,
+            "p95": 41.312924,
+            "p99": 44.874646
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.526625,
+            "p95": 12.514739,
+            "p99": 21.474518
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 26.079378,
+            "p95": 40.198286,
+            "p99": 45.258633
+          }
+        }
+      }
+    },
+    {
+      "scenario": "06-terrain-pan",
+      "before": {
+        "elapsedSeconds": 11.327781903000016,
+        "reportedFrames": 275,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 101.0,
+        "histogramP99Ms": 117.0,
+        "p50Ms": 83.585166,
+        "p95Ms": 105.876932,
+        "p99Ms": 117.536295,
+        "jankPercent": 76.36,
+        "rawMaxMs": 119.85908,
+        "rawOver50Ms": 115,
+        "rawOver100Ms": 28,
+        "rawOver5000Ms": 0,
+        "pssKiB": 337902,
+        "hwuiEvents": {
+          "Missed Vsync": 160,
+          "High input latency": 123,
+          "Slow UI thread": 207,
+          "Slow bitmap uploads": 5,
+          "Slow issue draw commands": 197,
+          "Frame deadline missed": 210
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 66.666664
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 28.172899,
+            "p95": 40.483828,
+            "p99": 45.206316
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.30014,
+            "p95": 15.752698,
+            "p99": 18.694647
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 24.563097,
+            "p95": 39.483002,
+            "p99": 49.853478
+          }
+        }
+      },
+      "after": {
+        "elapsedSeconds": 11.332334874000026,
+        "reportedFrames": 273,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 101.0,
+        "histogramP99Ms": 117.0,
+        "p50Ms": 83.631103,
+        "p95Ms": 108.89017,
+        "p99Ms": 116.583796,
+        "jankPercent": 80.22,
+        "rawMaxMs": 147.74108,
+        "rawOver50Ms": 113,
+        "rawOver100Ms": 27,
+        "rawOver5000Ms": 0,
+        "pssKiB": 367514,
+        "hwuiEvents": {
+          "Missed Vsync": 161,
+          "High input latency": 106,
+          "Slow UI thread": 215,
+          "Slow bitmap uploads": 7,
+          "Slow issue draw commands": 211,
+          "Frame deadline missed": 219
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 29.058574,
+            "p95": 41.785614,
+            "p99": 50.467326
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.907998,
+            "p95": 13.531415,
+            "p99": 22.040505
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 23.378751,
+            "p95": 39.5193,
+            "p99": 53.844744
+          }
+        }
+      }
+    },
+    {
+      "scenario": "07-military-overlay",
+      "before": {
+        "elapsedSeconds": 11.37522364199998,
+        "reportedFrames": 274,
+        "frames": 118,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 81.0,
+        "histogramP95Ms": 109.0,
+        "histogramP99Ms": 117.0,
+        "p50Ms": 84.15228,
+        "p95Ms": 116.878868,
+        "p99Ms": 119.081247,
+        "jankPercent": 74.45,
+        "rawMaxMs": 121.760161,
+        "rawOver50Ms": 110,
+        "rawOver100Ms": 39,
+        "rawOver5000Ms": 0,
+        "pssKiB": 376119,
+        "hwuiEvents": {
+          "Missed Vsync": 158,
+          "High input latency": 137,
+          "Slow UI thread": 200,
+          "Slow bitmap uploads": 3,
+          "Slow issue draw commands": 191,
+          "Frame deadline missed": 204
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 118,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 118,
+            "p50": 29.218139,
+            "p95": 42.746775,
+            "p99": 49.035454
+          },
+          "syncWaitMs": {
+            "samples": 118,
+            "p50": 4.757502,
+            "p95": 15.296867,
+            "p99": 21.211702
+          },
+          "renderCompletionMs": {
+            "samples": 118,
+            "p50": 25.795559,
+            "p95": 44.723715,
+            "p99": 48.066862
+          }
+        }
+      },
+      "after": {
+        "elapsedSeconds": 11.33453013899998,
+        "reportedFrames": 268,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 109.0,
+        "histogramP99Ms": 117.0,
+        "p50Ms": 85.440881,
+        "p95Ms": 110.844404,
+        "p99Ms": 116.8859,
+        "jankPercent": 77.61,
+        "rawMaxMs": 116.897533,
+        "rawOver50Ms": 113,
+        "rawOver100Ms": 37,
+        "rawOver5000Ms": 0,
+        "pssKiB": 384547,
+        "hwuiEvents": {
+          "Missed Vsync": 142,
+          "High input latency": 113,
+          "Slow UI thread": 204,
+          "Slow bitmap uploads": 4,
+          "Slow issue draw commands": 192,
+          "Frame deadline missed": 208
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 28.689713,
+            "p95": 46.368793,
+            "p99": 49.643854
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.342868,
+            "p95": 14.56043,
+            "p99": 21.899584
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 26.996747,
+            "p95": 43.184792,
+            "p99": 48.989169
+          }
+        }
+      }
+    },
+    {
+      "scenario": "08-panel-open",
+      "before": {
+        "elapsedSeconds": 11.33714583799997,
+        "reportedFrames": 259,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 85.0,
+        "histogramP95Ms": 113.0,
+        "histogramP99Ms": 133.0,
+        "p50Ms": 90.80721,
+        "p95Ms": 116.785491,
+        "p99Ms": 118.0058,
+        "jankPercent": 83.01,
+        "rawMaxMs": 133.554494,
+        "rawOver50Ms": 111,
+        "rawOver100Ms": 50,
+        "rawOver5000Ms": 0,
+        "pssKiB": 426706,
+        "hwuiEvents": {
+          "Missed Vsync": 169,
+          "High input latency": 85,
+          "Slow UI thread": 208,
+          "Slow bitmap uploads": 4,
+          "Slow issue draw commands": 206,
+          "Frame deadline missed": 215
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 30.590569,
+            "p95": 41.640536,
+            "p99": 46.910383
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 4.069389,
+            "p95": 17.979281,
+            "p99": 25.133672
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 28.247318,
+            "p95": 44.896229,
+            "p99": 53.920546
+          }
+        }
+      },
+      "after": {
+        "elapsedSeconds": 11.356845906999979,
+        "reportedFrames": 259,
+        "frames": 119,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 89.0,
+        "histogramP95Ms": 113.0,
+        "histogramP99Ms": 117.0,
+        "p50Ms": 95.546052,
+        "p95Ms": 117.428008,
+        "p99Ms": 119.353391,
+        "jankPercent": 81.47,
+        "rawMaxMs": 119.486868,
+        "rawOver50Ms": 114,
+        "rawOver100Ms": 51,
+        "rawOver5000Ms": 0,
+        "pssKiB": 338785,
+        "hwuiEvents": {
+          "Missed Vsync": 175,
+          "High input latency": 91,
+          "Slow UI thread": 204,
+          "Slow bitmap uploads": 5,
+          "Slow issue draw commands": 203,
+          "Frame deadline missed": 211
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 30.7236,
+            "p95": 41.382067,
+            "p99": 44.696608
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.851716,
+            "p95": 16.807618,
+            "p99": 25.441042
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 27.469959,
+            "p95": 48.554202,
+            "p99": 52.671587
+          }
+        }
+      }
+    },
+    {
+      "scenario": "09-panel-closed",
+      "before": {
+        "elapsedSeconds": 11.338600052000004,
+        "reportedFrames": 271,
+        "frames": 118,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 101.0,
+        "histogramP99Ms": 117.0,
+        "p50Ms": 83.610277,
+        "p95Ms": 105.608497,
+        "p99Ms": 113.285944,
+        "jankPercent": 80.81,
+        "rawMaxMs": 120.062959,
+        "rawOver50Ms": 113,
+        "rawOver100Ms": 27,
+        "rawOver5000Ms": 0,
+        "pssKiB": 345560,
+        "hwuiEvents": {
+          "Missed Vsync": 167,
+          "High input latency": 104,
+          "Slow UI thread": 216,
+          "Slow bitmap uploads": 4,
+          "Slow issue draw commands": 204,
+          "Frame deadline missed": 219
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 118,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 66.666664
+          },
+          "uiWorkMs": {
+            "samples": 118,
+            "p50": 27.00643,
+            "p95": 42.724887,
+            "p99": 50.323199
+          },
+          "syncWaitMs": {
+            "samples": 118,
+            "p50": 4.393584,
+            "p95": 14.809017,
+            "p99": 18.632601
+          },
+          "renderCompletionMs": {
+            "samples": 118,
+            "p50": 24.822815,
+            "p95": 39.304148,
+            "p99": 46.92204
+          }
+        }
+      },
+      "after": {
+        "elapsedSeconds": 11.326284476000069,
+        "reportedFrames": 271,
+        "frames": 120,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 81.0,
+        "histogramP95Ms": 101.0,
+        "histogramP99Ms": 105.0,
+        "p50Ms": 84.224995,
+        "p95Ms": 101.338226,
+        "p99Ms": 108.154511,
+        "jankPercent": 81.18,
+        "rawMaxMs": 116.954836,
+        "rawOver50Ms": 115,
+        "rawOver100Ms": 29,
+        "rawOver5000Ms": 0,
+        "pssKiB": 340368,
+        "hwuiEvents": {
+          "Missed Vsync": 175,
+          "High input latency": 100,
+          "Slow UI thread": 217,
+          "Slow bitmap uploads": 1,
+          "Slow issue draw commands": 210,
+          "Frame deadline missed": 220
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 28.009223,
+            "p95": 41.439684,
+            "p99": 45.485486
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.736523,
+            "p95": 14.569822,
+            "p99": 19.190137
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 25.854315,
+            "p95": 39.555711,
+            "p99": 47.612983
+          }
+        }
+      }
+    }
+  ],
+  "acceptance": "All nine original P95 gates pass. Fixed-world pinch histogram P99 800 -> 1100ms and raw P99 839.57 -> 1144.85ms; tail regression remains under investigation. Do not infer physical-device FPS or claim complete microstutter elimination.",
+  "sourceMetadataCorrection": "Raw EXPANSION_CAMERA_REVIEW exporter hardcoded the previous efd build in apkVerification; candidateRuntime/source run from CAMERA_NATIVE_PAIRED, downloaded APK hash and checkpoint integrity identify actual d7 runtime/run38021043667. Corrected exporter to use report source fields; original raw evidence retained."
+}
