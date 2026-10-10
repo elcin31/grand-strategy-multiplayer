@@ -1,3 +1,11 @@
+# Exact continuation anchors — 2026-10-10
+
+Latest candidate runtime **9c3da342cf9e9d83252a58278f3fe1f842ced3d9**, committed/pushed on existing expansion-qa. Fresh complete build/10k/camera/full-native run **38041251527**: https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/38041251527 , in progress. Source tree **27cb999fd6158c5d39211488d9387332fd7b01f2**. Compact diagnostic/evidence predecessor **ee4b6d3d9ffd0cd67a18f7ea5488637f219c194a**. This docs-only [skip ci] continuation commit carries the candidate source onto expansion-v2 while preserving the active7897 exact-APK retry; do not substitute its older APK for9c source. Main **dbb354ab038713c3e54b969b34a6fc88bf2de11f** unchanged; schema12 and world195/2924/5411 unchanged. No finalv2 APK; all stages3–11 pending.
+
+**Next exact action:** require successful build-apk/long-simulation in38041251527; verify artifact ZIP/digest/CRC, embedded Hermes/signing/landscape/dedicated backend. Then fixed-save A/B/B/A on expansion-camera-qa must target exact9c runtime/run; include its existing8e6ef22 parent in a forward merge if needed rather than force-resetting the QA branch. Compare all9 scenarios, new active telemetry and gesture commits, native phase tails/CPU/PSS/paint. Full native/army/saves/30min stress for9c remains required. Old7897 retry job114178493419 in38029758673 is separate and still in progress. Do not weaken gates or begin stage3 until actual candidate acceptance. Earlier failures and accepted d7 evidence remain preserved below.
+
+---
+
 # Expansion 2.0 — camera pointer coalescing candidate, 2026-10-10
 
 Source correction titled **perf: coalesce pointer camera updates on the UI frame** follows compact-diagnostic checkpoint **ee4b6d3d9ffd0cd67a18f7ea5488637f219c194a**. Main remains **dbb354ab038713c3e54b969b34a6fc88bf2de11f**. Stage0 DONE; stage1/2 require this source's fresh native acceptance; stages3–11 pending in full. No finalv2 APK. Earlier7897 reverse fixed-world pinch rejection below remains valid and is not overridden by source tests.
