@@ -1,0 +1,34 @@
+{
+  "runtime": "3cfd43f16678345ce0e55016775c7efb95d0e8cf",
+  "engineUnchangedSince": "d7c3d593802f2edf27894f92fe10928341df0080",
+  "scope": "Recovery baseline reproduction for the inherited AI; no gameplay change or production write.",
+  "seed": 101,
+  "setup": [
+    "create ordinary modern-world-v2 world occupied-ai-probe/AUDIT1, host Germany and human guest France",
+    "phase running/speed1; declare legal Germany-France war; set tick12/year2027",
+    "variant: either keep France controlling its64 provinces, or set all French controllers to Germany",
+    "host submits ordinary WhitePeace offer through applyServerCommand, so human guest consent remains pending",
+    "set guest.aiControlled=true to model existing disconnected-player handoff",
+    "advance exactly one authoritative tick; assert input state remains byte-identical"
+  ],
+  "results": [
+    {
+      "occupied": false,
+      "home": 64,
+      "afterTick": 13,
+      "warRemains": false,
+      "proposalRemains": false
+    },
+    {
+      "occupied": true,
+      "home": 0,
+      "afterTick": 13,
+      "warRemains": true,
+      "proposalRemains": true,
+      "offerDeadline": 18
+    }
+  ],
+  "sourceCause": "runStrategicAI checks !home.length and continues before its event-driven pending treaty/peace response path.",
+  "status": "BROKEN inherited disconnected-player peace response under full occupation; correction and negative/stale-offer regressions reserved for stage4.",
+  "limitations": "This proves the handoff/occupation response defect. It does not prove this is the cause of maxWarAge5871 in the10000-tick run, whose final state was not downloaded."
+}

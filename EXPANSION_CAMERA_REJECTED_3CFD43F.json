@@ -1,0 +1,1650 @@
+{
+  "baselineRuntime": "47b0db4f8b220e9ea89998afaac035239b64f5e0",
+  "baselineRun": "37971350100",
+  "candidateRuntime": "3cfd43f16678345ce0e55016775c7efb95d0e8cf",
+  "candidateRun": "38025683396",
+  "comparisonRuntime": "3cfd43f16678345ce0e55016775c7efb95d0e8cf",
+  "comparisonRun": "38025683396",
+  "note": "Paired baseline/candidate on one SwiftShader API35 emulator with identical real-pointer gesture driver, offline paused campaign, Balanced and adaptive off. Native frame completion and host software rendering only; physical Redmi acceptance remains pending. gfxinfo histogram percentiles are used when raw timestamps are unavailable.",
+  "protocol": "independent-campaign-v1",
+  "fixtureSha256": null,
+  "fixtureStateChecksum": null,
+  "runtime": "3cfd43f16678345ce0e55016775c7efb95d0e8cf",
+  "run": 38025683396,
+  "job": 114138817610,
+  "artifact": 11661305336,
+  "artifactSha256": "957585d698620e64cc584a0bd578b7ed9d7c112ab48a6b3bcd542864215a3c21",
+  "verification": "ZIP hash/CRC verified; both pinch PNGs and raw stages reviewed. Original independent-campaign-v1 pinch gate REJECTED. Not accepted or published.",
+  "rows": [
+    {
+      "scenario": "01-idle",
+      "before": {
+        "pssKiB": 390647,
+        "frames": 0,
+        "reportedFrames": 0,
+        "timingSource": "idle-no-frames",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": null,
+        "histogramP95Ms": null,
+        "histogramP99Ms": null,
+        "p50Ms": null,
+        "p95Ms": null,
+        "p99Ms": null,
+        "rawMaxMs": null,
+        "rawOver50Ms": 0,
+        "rawOver100Ms": 0,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "uiWorkMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "syncWaitMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "renderCompletionMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 0,
+          "High input latency": 0,
+          "Slow UI thread": 0,
+          "Slow bitmap uploads": 0,
+          "Slow issue draw commands": 0,
+          "Frame deadline missed": 0
+        },
+        "mapPaint": {
+          "landFraction": 0.345,
+          "samplePixels": 287232
+        },
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 0.82,
+            "maxCpuPercent": 2.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 0.09,
+            "maxCpuPercent": 1.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 2,
+            "pathBuilds": 1633,
+            "pathBuildMs": 110.07249699973909,
+            "rasterBuilds": 52,
+            "rasterMs": 238.14785499998834,
+            "rasterBytes": 31313152,
+            "rasterTiles": 12,
+            "mapRenders": 22,
+            "geographyRenders": 6,
+            "visibleProvinces": 1363,
+            "visibleArmies": 28,
+            "simulationMs": 142.19907400000375,
+            "networkBytes": 0
+          }
+        ]
+      },
+      "after": {
+        "pssKiB": 423339,
+        "frames": 0,
+        "reportedFrames": 0,
+        "timingSource": "idle-no-frames",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": null,
+        "histogramP95Ms": null,
+        "histogramP99Ms": null,
+        "p50Ms": null,
+        "p95Ms": null,
+        "p99Ms": null,
+        "rawMaxMs": null,
+        "rawOver50Ms": 0,
+        "rawOver100Ms": 0,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "uiWorkMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "syncWaitMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "renderCompletionMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 0,
+          "High input latency": 0,
+          "Slow UI thread": 0,
+          "Slow bitmap uploads": 0,
+          "Slow issue draw commands": 0,
+          "Frame deadline missed": 0
+        },
+        "mapPaint": {
+          "landFraction": 0.345,
+          "samplePixels": 287232
+        },
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 0.82,
+            "maxCpuPercent": 2.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 0.09,
+            "maxCpuPercent": 1.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 2,
+            "pathBuilds": 1633,
+            "pathBuildMs": 92.09389200055739,
+            "rasterBuilds": 52,
+            "rasterMs": 258.24986200011335,
+            "rasterBytes": 31313152,
+            "rasterTiles": 12,
+            "mapRenders": 20,
+            "geographyRenders": 6,
+            "visibleProvinces": 1363,
+            "visibleArmies": 28,
+            "simulationMs": 96.85542099998565,
+            "networkBytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "02-medium-pan",
+      "before": {
+        "pssKiB": 388103,
+        "frames": 119,
+        "reportedFrames": 221,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 93.0,
+        "histogramP95Ms": 121.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 100.150295,
+        "p95Ms": 118.897336,
+        "p99Ms": 124.871584,
+        "rawMaxMs": 150.739027,
+        "rawOver50Ms": 115,
+        "rawOver100Ms": 63,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 49.999998,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 34.134775,
+            "p95": 54.274561,
+            "p99": 57.80748
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 4.93284,
+            "p95": 12.244505,
+            "p99": 18.52275
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 20.613944,
+            "p95": 43.685073,
+            "p99": 48.03586
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 170,
+          "High input latency": 63,
+          "Slow UI thread": 182,
+          "Slow bitmap uploads": 4,
+          "Slow issue draw commands": 151,
+          "Frame deadline missed": 188
+        },
+        "mapPaint": null,
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 19.62,
+            "maxCpuPercent": 28.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.64,
+            "maxCpuPercent": 3.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 59.48,
+            "maxCpuPercent": 77.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 4.54,
+            "maxCpuPercent": 11.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 9,
+            "pathBuilds": 1633,
+            "pathBuildMs": 110.07249699973909,
+            "rasterBuilds": 80,
+            "rasterMs": 370.19510700006504,
+            "rasterBytes": 33119680,
+            "rasterTiles": 24,
+            "mapRenders": 28,
+            "geographyRenders": 12,
+            "visibleProvinces": 1746,
+            "visibleArmies": 34,
+            "simulationMs": 142.19907400000375,
+            "networkBytes": 0
+          }
+        ]
+      },
+      "after": {
+        "pssKiB": 413547,
+        "frames": 120,
+        "reportedFrames": 196,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 97.0,
+        "histogramP95Ms": 129.0,
+        "histogramP99Ms": 200.0,
+        "p50Ms": 100.405941,
+        "p95Ms": 120.419631,
+        "p99Ms": 134.100182,
+        "rawMaxMs": 138.455883,
+        "rawOver50Ms": 114,
+        "rawOver100Ms": 82,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 33.333332,
+            "p95": 49.999998,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 38.874282,
+            "p95": 50.271286,
+            "p99": 61.227616
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 5.013691,
+            "p95": 11.25391,
+            "p99": 15.615181
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 22.120817,
+            "p95": 42.070524,
+            "p99": 48.141301
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 162,
+          "High input latency": 36,
+          "Slow UI thread": 172,
+          "Slow bitmap uploads": 2,
+          "Slow issue draw commands": 141,
+          "Frame deadline missed": 177
+        },
+        "mapPaint": null,
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 17.97,
+            "maxCpuPercent": 32.0
+          },
+          "hades": {
+            "meanCpuPercent": 1.18,
+            "maxCpuPercent": 7.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 61.85,
+            "maxCpuPercent": 86.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 4.99,
+            "maxCpuPercent": 13.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 9,
+            "pathBuilds": 1633,
+            "pathBuildMs": 92.09389200055739,
+            "rasterBuilds": 80,
+            "rasterMs": 407.5917370003881,
+            "rasterBytes": 33119680,
+            "rasterTiles": 24,
+            "mapRenders": 26,
+            "geographyRenders": 12,
+            "visibleProvinces": 1763,
+            "visibleArmies": 34,
+            "simulationMs": 96.85542099998565,
+            "networkBytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "03-pinch",
+      "before": {
+        "pssKiB": 414995,
+        "frames": 101,
+        "reportedFrames": 101,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 97.0,
+        "histogramP95Ms": 400.0,
+        "histogramP99Ms": 550.0,
+        "p50Ms": 100.238453,
+        "p95Ms": 450.665012,
+        "p99Ms": 592.72838,
+        "rawMaxMs": 775.105772,
+        "rawOver50Ms": 94,
+        "rawOver100Ms": 59,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 101,
+            "p50": 33.333332,
+            "p95": 316.666654,
+            "p99": 499.99998
+          },
+          "uiWorkMs": {
+            "samples": 101,
+            "p50": 36.573284,
+            "p95": 171.393693,
+            "p99": 203.809117
+          },
+          "syncWaitMs": {
+            "samples": 101,
+            "p50": 2.332778,
+            "p95": 11.85502,
+            "p99": 13.878139
+          },
+          "renderCompletionMs": {
+            "samples": 101,
+            "p50": 16.554157,
+            "p95": 33.071318,
+            "p99": 41.937026
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 78,
+          "High input latency": 16,
+          "Slow UI thread": 88,
+          "Slow bitmap uploads": 0,
+          "Slow issue draw commands": 57,
+          "Frame deadline missed": 91
+        },
+        "mapPaint": null,
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 7.27,
+            "maxCpuPercent": 18.0
+          },
+          "hades": {
+            "meanCpuPercent": 1.82,
+            "maxCpuPercent": 7.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 80.45,
+            "maxCpuPercent": 94.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 12.36,
+            "maxCpuPercent": 20.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 26,
+            "pathBuilds": 1743,
+            "pathBuildMs": 124.36361599978409,
+            "rasterBuilds": 116,
+            "rasterMs": 586.8033610000857,
+            "rasterBytes": 33308736,
+            "rasterTiles": 45,
+            "mapRenders": 43,
+            "geographyRenders": 25,
+            "visibleProvinces": 2924,
+            "visibleArmies": 19,
+            "simulationMs": 142.19907400000375,
+            "networkBytes": 0
+          }
+        ]
+      },
+      "after": {
+        "pssKiB": 439866,
+        "frames": 92,
+        "reportedFrames": 92,
+        "timingSource": "framestats",
+        "rawWindowTruncated": false,
+        "histogramP50Ms": 97.0,
+        "histogramP95Ms": 600.0,
+        "histogramP99Ms": 850.0,
+        "p50Ms": 106.892827,
+        "p95Ms": 633.536277,
+        "p99Ms": 887.492485,
+        "rawMaxMs": 887.492485,
+        "rawOver50Ms": 85,
+        "rawOver100Ms": 68,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 92,
+            "p50": 33.333332,
+            "p95": 333.33332,
+            "p99": 733.333304
+          },
+          "uiWorkMs": {
+            "samples": 92,
+            "p50": 39.505497,
+            "p95": 190.872354,
+            "p99": 315.039063
+          },
+          "syncWaitMs": {
+            "samples": 92,
+            "p50": 2.679947,
+            "p95": 12.19643,
+            "p99": 23.982612
+          },
+          "renderCompletionMs": {
+            "samples": 92,
+            "p50": 17.003575,
+            "p95": 37.613837,
+            "p99": 70.863908
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 69,
+          "High input latency": 11,
+          "Slow UI thread": 78,
+          "Slow bitmap uploads": 4,
+          "Slow issue draw commands": 55,
+          "Frame deadline missed": 85
+        },
+        "mapPaint": null,
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 7.09,
+            "maxCpuPercent": 19.0
+          },
+          "hades": {
+            "meanCpuPercent": 2.0,
+            "maxCpuPercent": 8.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 81.55,
+            "maxCpuPercent": 95.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 12.18,
+            "maxCpuPercent": 27.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 23,
+            "pathBuilds": 1743,
+            "pathBuildMs": 118.64576200052397,
+            "rasterBuilds": 129,
+            "rasterMs": 647.1375910004717,
+            "rasterBytes": 33288192,
+            "rasterTiles": 45,
+            "mapRenders": 40,
+            "geographyRenders": 25,
+            "visibleProvinces": 2924,
+            "visibleArmies": 19,
+            "simulationMs": 96.85542099998565,
+            "networkBytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "04-world-pan",
+      "before": {
+        "pssKiB": 421897,
+        "frames": 120,
+        "reportedFrames": 235,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 89.0,
+        "histogramP95Ms": 109.0,
+        "histogramP99Ms": 117.0,
+        "p50Ms": 96.320081,
+        "p95Ms": 116.822716,
+        "p99Ms": 117.602967,
+        "rawMaxMs": 121.088116,
+        "rawOver50Ms": 117,
+        "rawOver100Ms": 55,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 66.666664
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 36.254366,
+            "p95": 51.335809,
+            "p99": 55.970711
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 5.084071,
+            "p95": 14.199547,
+            "p99": 15.847614
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 17.752498,
+            "p95": 32.994701,
+            "p99": 40.653675
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 199,
+          "High input latency": 41,
+          "Slow UI thread": 212,
+          "Slow bitmap uploads": 2,
+          "Slow issue draw commands": 168,
+          "Frame deadline missed": 213
+        },
+        "mapPaint": {
+          "landFraction": 0.2708,
+          "samplePixels": 287232
+        },
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 19.55,
+            "maxCpuPercent": 23.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 59.45,
+            "maxCpuPercent": 66.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 1.09,
+            "maxCpuPercent": 2.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 33,
+            "pathBuilds": 1743,
+            "pathBuildMs": 124.36361599978409,
+            "rasterBuilds": 129,
+            "rasterMs": 603.6332210001128,
+            "rasterBytes": 33288192,
+            "rasterTiles": 45,
+            "mapRenders": 49,
+            "geographyRenders": 31,
+            "visibleProvinces": 2924,
+            "visibleArmies": 23,
+            "simulationMs": 142.19907400000375,
+            "networkBytes": 0
+          }
+        ]
+      },
+      "after": {
+        "pssKiB": 449126,
+        "frames": 119,
+        "reportedFrames": 221,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 93.0,
+        "histogramP95Ms": 117.0,
+        "histogramP99Ms": 133.0,
+        "p50Ms": 100.191921,
+        "p95Ms": 122.598671,
+        "p99Ms": 133.504112,
+        "rawMaxMs": 150.24843,
+        "rawOver50Ms": 118,
+        "rawOver100Ms": 73,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 33.333332,
+            "p95": 49.999998,
+            "p99": 99.999996
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 39.161214,
+            "p95": 52.670892,
+            "p99": 54.478813
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 4.605828,
+            "p95": 13.898935,
+            "p99": 21.361232
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 18.704239,
+            "p95": 35.369709,
+            "p99": 51.663556
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 192,
+          "High input latency": 41,
+          "Slow UI thread": 198,
+          "Slow bitmap uploads": 2,
+          "Slow issue draw commands": 163,
+          "Frame deadline missed": 200
+        },
+        "mapPaint": {
+          "landFraction": 0.2778,
+          "samplePixels": 287232
+        },
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 19.09,
+            "maxCpuPercent": 24.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.18,
+            "maxCpuPercent": 2.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 60.0,
+            "maxCpuPercent": 68.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 1.27,
+            "maxCpuPercent": 3.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 30,
+            "pathBuilds": 1743,
+            "pathBuildMs": 118.64576200052397,
+            "rasterBuilds": 129,
+            "rasterMs": 647.1375910004717,
+            "rasterBytes": 33288192,
+            "rasterTiles": 45,
+            "mapRenders": 46,
+            "geographyRenders": 31,
+            "visibleProvinces": 2924,
+            "visibleArmies": 23,
+            "simulationMs": 96.85542099998565,
+            "networkBytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "05-local-labels-armies",
+      "before": {
+        "pssKiB": 403809,
+        "frames": 120,
+        "reportedFrames": 288,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 69.0,
+        "histogramP95Ms": 97.0,
+        "histogramP99Ms": 133.0,
+        "p50Ms": 79.742202,
+        "p95Ms": 99.542232,
+        "p99Ms": 100.224894,
+        "rawMaxMs": 100.700335,
+        "rawOver50Ms": 114,
+        "rawOver100Ms": 5,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 26.635297,
+            "p95": 40.709121,
+            "p99": 44.27509
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.548694,
+            "p95": 13.096209,
+            "p99": 15.465397
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 19.958681,
+            "p95": 34.492746,
+            "p99": 38.859564
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 158,
+          "High input latency": 139,
+          "Slow UI thread": 212,
+          "Slow bitmap uploads": 0,
+          "Slow issue draw commands": 183,
+          "Frame deadline missed": 216
+        },
+        "mapPaint": {
+          "landFraction": 0.7266,
+          "samplePixels": 287232
+        },
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 22.88,
+            "maxCpuPercent": 29.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.64,
+            "maxCpuPercent": 5.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 46.32,
+            "maxCpuPercent": 54.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 3.54,
+            "maxCpuPercent": 6.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 48,
+            "pathBuilds": 3227,
+            "pathBuildMs": 189.75043499976164,
+            "rasterBuilds": 164,
+            "rasterMs": 798.3934520000766,
+            "rasterBytes": 33438464,
+            "rasterTiles": 15,
+            "mapRenders": 60,
+            "geographyRenders": 41,
+            "visibleProvinces": 1262,
+            "visibleArmies": 46,
+            "simulationMs": 142.19907400000375,
+            "networkBytes": 0
+          }
+        ]
+      },
+      "after": {
+        "pssKiB": 435478,
+        "frames": 120,
+        "reportedFrames": 274,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 97.0,
+        "histogramP99Ms": 109.0,
+        "p50Ms": 83.597602,
+        "p95Ms": 101.259988,
+        "p99Ms": 104.580106,
+        "rawMaxMs": 104.616139,
+        "rawOver50Ms": 113,
+        "rawOver100Ms": 17,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 28.919018,
+            "p95": 41.567232,
+            "p99": 46.295027
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.977768,
+            "p95": 15.912657,
+            "p99": 19.61769
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 20.83676,
+            "p95": 35.055118,
+            "p99": 40.311978
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 162,
+          "High input latency": 123,
+          "Slow UI thread": 206,
+          "Slow bitmap uploads": 6,
+          "Slow issue draw commands": 184,
+          "Frame deadline missed": 212
+        },
+        "mapPaint": {
+          "landFraction": 0.748,
+          "samplePixels": 287232
+        },
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 22.55,
+            "maxCpuPercent": 26.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 47.0,
+            "maxCpuPercent": 54.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 3.55,
+            "maxCpuPercent": 11.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 43,
+            "pathBuilds": 3227,
+            "pathBuildMs": 201.40269700012868,
+            "rasterBuilds": 164,
+            "rasterMs": 921.1897080005729,
+            "rasterBytes": 33438464,
+            "rasterTiles": 15,
+            "mapRenders": 56,
+            "geographyRenders": 40,
+            "visibleProvinces": 1228,
+            "visibleArmies": 44,
+            "simulationMs": 96.85542099998565,
+            "networkBytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "06-terrain-pan",
+      "before": {
+        "pssKiB": 419611,
+        "frames": 119,
+        "reportedFrames": 298,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 73.0,
+        "histogramP95Ms": 97.0,
+        "histogramP99Ms": 109.0,
+        "p50Ms": 83.478762,
+        "p95Ms": 100.347632,
+        "p99Ms": 104.671725,
+        "rawMaxMs": 111.367294,
+        "rawOver50Ms": 110,
+        "rawOver100Ms": 15,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 26.5881,
+            "p95": 41.022128,
+            "p99": 46.960356
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.934458,
+            "p95": 13.32794,
+            "p99": 16.167938
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 22.693575,
+            "p95": 37.037532,
+            "p99": 44.036425
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 158,
+          "High input latency": 136,
+          "Slow UI thread": 219,
+          "Slow bitmap uploads": 4,
+          "Slow issue draw commands": 210,
+          "Frame deadline missed": 227
+        },
+        "mapPaint": null,
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 23.36,
+            "maxCpuPercent": 28.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.73,
+            "maxCpuPercent": 8.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 46.64,
+            "maxCpuPercent": 58.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 2.82,
+            "maxCpuPercent": 6.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 53,
+            "pathBuilds": 3227,
+            "pathBuildMs": 189.75043499976164,
+            "rasterBuilds": 179,
+            "rasterMs": 935.9941730000719,
+            "rasterBytes": 33155072,
+            "rasterTiles": 15,
+            "mapRenders": 67,
+            "geographyRenders": 47,
+            "visibleProvinces": 1220,
+            "visibleArmies": 44,
+            "simulationMs": 142.19907400000375,
+            "networkBytes": 0
+          }
+        ]
+      },
+      "after": {
+        "pssKiB": 446605,
+        "frames": 120,
+        "reportedFrames": 276,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 73.0,
+        "histogramP95Ms": 97.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 83.48482,
+        "p95Ms": 100.915139,
+        "p99Ms": 124.901568,
+        "rawMaxMs": 139.823963,
+        "rawOver50Ms": 114,
+        "rawOver100Ms": 11,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 27.263976,
+            "p95": 43.906064,
+            "p99": 46.729498
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 5.064193,
+            "p95": 14.298241,
+            "p99": 22.665865
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 21.352216,
+            "p95": 35.40415,
+            "p99": 37.638131
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 159,
+          "High input latency": 114,
+          "Slow UI thread": 214,
+          "Slow bitmap uploads": 5,
+          "Slow issue draw commands": 187,
+          "Frame deadline missed": 219
+        },
+        "mapPaint": null,
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 22.27,
+            "maxCpuPercent": 29.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.73,
+            "maxCpuPercent": 8.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 48.46,
+            "maxCpuPercent": 74.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 3.18,
+            "maxCpuPercent": 7.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 48,
+            "pathBuilds": 3227,
+            "pathBuildMs": 201.40269700012868,
+            "rasterBuilds": 179,
+            "rasterMs": 1051.4295810007025,
+            "rasterBytes": 33155072,
+            "rasterTiles": 12,
+            "mapRenders": 63,
+            "geographyRenders": 46,
+            "visibleProvinces": 1191,
+            "visibleArmies": 44,
+            "simulationMs": 96.85542099998565,
+            "networkBytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "07-military-overlay",
+      "before": {
+        "pssKiB": 338501,
+        "frames": 120,
+        "reportedFrames": 288,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 73.0,
+        "histogramP95Ms": 97.0,
+        "histogramP99Ms": 129.0,
+        "p50Ms": 77.390817,
+        "p95Ms": 98.899251,
+        "p99Ms": 101.079907,
+        "rawMaxMs": 111.908344,
+        "rawOver50Ms": 112,
+        "rawOver100Ms": 5,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 25.769125,
+            "p95": 39.865423,
+            "p99": 41.584769
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.716122,
+            "p95": 12.503329,
+            "p99": 17.755804
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 22.721167,
+            "p95": 35.792978,
+            "p99": 43.224831
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 143,
+          "High input latency": 140,
+          "Slow UI thread": 205,
+          "Slow bitmap uploads": 5,
+          "Slow issue draw commands": 190,
+          "Frame deadline missed": 215
+        },
+        "mapPaint": null,
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 23.27,
+            "maxCpuPercent": 29.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.64,
+            "maxCpuPercent": 5.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 46.91,
+            "maxCpuPercent": 67.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 3.09,
+            "maxCpuPercent": 8.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 58,
+            "pathBuilds": 3227,
+            "pathBuildMs": 189.75043499976164,
+            "rasterBuilds": 194,
+            "rasterMs": 1165.3945360000944,
+            "rasterBytes": 33015744,
+            "rasterTiles": 12,
+            "mapRenders": 74,
+            "geographyRenders": 53,
+            "visibleProvinces": 1104,
+            "visibleArmies": 44,
+            "simulationMs": 142.19907400000375,
+            "networkBytes": 0
+          }
+        ]
+      },
+      "after": {
+        "pssKiB": 461607,
+        "frames": 120,
+        "reportedFrames": 283,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 97.0,
+        "histogramP99Ms": 101.0,
+        "p50Ms": 84.633382,
+        "p95Ms": 102.590897,
+        "p99Ms": 105.414326,
+        "rawMaxMs": 106.470789,
+        "rawOver50Ms": 113,
+        "rawOver100Ms": 24,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 29.264379,
+            "p95": 43.134017,
+            "p99": 47.546481
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 5.32786,
+            "p95": 13.586187,
+            "p99": 16.213687
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 21.028425,
+            "p95": 36.027659,
+            "p99": 41.738347
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 171,
+          "High input latency": 97,
+          "Slow UI thread": 222,
+          "Slow bitmap uploads": 7,
+          "Slow issue draw commands": 213,
+          "Frame deadline missed": 233
+        },
+        "mapPaint": null,
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 21.61,
+            "maxCpuPercent": 24.7
+          },
+          "hades": {
+            "meanCpuPercent": 0.36,
+            "maxCpuPercent": 4.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 45.31,
+            "maxCpuPercent": 50.4
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 2.91,
+            "maxCpuPercent": 9.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 54,
+            "pathBuilds": 3227,
+            "pathBuildMs": 201.40269700012868,
+            "rasterBuilds": 191,
+            "rasterMs": 1180.8290970007656,
+            "rasterBytes": 33015744,
+            "rasterTiles": 12,
+            "mapRenders": 71,
+            "geographyRenders": 52,
+            "visibleProvinces": 1097,
+            "visibleArmies": 44,
+            "simulationMs": 96.85542099998565,
+            "networkBytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "08-panel-open",
+      "before": {
+        "pssKiB": 348116,
+        "frames": 119,
+        "reportedFrames": 268,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 101.0,
+        "histogramP99Ms": 109.0,
+        "p50Ms": 84.025666,
+        "p95Ms": 107.472193,
+        "p99Ms": 114.555684,
+        "rawMaxMs": 118.265577,
+        "rawOver50Ms": 111,
+        "rawOver100Ms": 29,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 27.809716,
+            "p95": 42.625494,
+            "p99": 48.710023
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 5.02642,
+            "p95": 15.440836,
+            "p99": 19.97479
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 21.846827,
+            "p95": 38.347718,
+            "p99": 45.747795
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 149,
+          "High input latency": 111,
+          "Slow UI thread": 205,
+          "Slow bitmap uploads": 4,
+          "Slow issue draw commands": 186,
+          "Frame deadline missed": 211
+        },
+        "mapPaint": null,
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 25.88,
+            "maxCpuPercent": 31.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 43.77,
+            "maxCpuPercent": 53.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 3.17,
+            "maxCpuPercent": 7.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 64,
+            "pathBuilds": 3295,
+            "pathBuildMs": 199.59082400001353,
+            "rasterBuilds": 209,
+            "rasterMs": 1334.7190500000725,
+            "rasterBytes": 33015744,
+            "rasterTiles": 15,
+            "mapRenders": 82,
+            "geographyRenders": 59,
+            "visibleProvinces": 1035,
+            "visibleArmies": 43,
+            "simulationMs": 142.19907400000375,
+            "networkBytes": 0
+          }
+        ]
+      },
+      "after": {
+        "pssKiB": 359500,
+        "frames": 119,
+        "reportedFrames": 257,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 81.0,
+        "histogramP95Ms": 109.0,
+        "histogramP99Ms": 117.0,
+        "p50Ms": 85.567833,
+        "p95Ms": 116.854864,
+        "p99Ms": 117.550164,
+        "rawMaxMs": 119.284406,
+        "rawOver50Ms": 109,
+        "rawOver100Ms": 36,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 29.242611,
+            "p95": 45.180716,
+            "p99": 50.02908
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 4.43485,
+            "p95": 16.045731,
+            "p99": 22.969353
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 23.901278,
+            "p95": 40.015938,
+            "p99": 50.257644
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 155,
+          "High input latency": 91,
+          "Slow UI thread": 203,
+          "Slow bitmap uploads": 8,
+          "Slow issue draw commands": 193,
+          "Frame deadline missed": 209
+        },
+        "mapPaint": null,
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 25.0,
+            "maxCpuPercent": 31.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.91,
+            "maxCpuPercent": 5.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 47.09,
+            "maxCpuPercent": 56.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 4.18,
+            "maxCpuPercent": 11.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 61,
+            "pathBuilds": 3295,
+            "pathBuildMs": 221.5243350007804,
+            "rasterBuilds": 209,
+            "rasterMs": 1324.2830150002846,
+            "rasterBytes": 33015744,
+            "rasterTiles": 15,
+            "mapRenders": 80,
+            "geographyRenders": 59,
+            "visibleProvinces": 1029,
+            "visibleArmies": 43,
+            "simulationMs": 96.85542099998565,
+            "networkBytes": 0
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "09-panel-closed",
+      "before": {
+        "pssKiB": 341333,
+        "frames": 120,
+        "reportedFrames": 286,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 73.0,
+        "histogramP95Ms": 93.0,
+        "histogramP99Ms": 101.0,
+        "p50Ms": 83.496875,
+        "p95Ms": 101.167714,
+        "p99Ms": 101.908039,
+        "rawMaxMs": 102.550674,
+        "rawOver50Ms": 111,
+        "rawOver100Ms": 14,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 27.131915,
+            "p95": 42.592992,
+            "p99": 46.889782
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 3.79329,
+            "p95": 15.585091,
+            "p99": 25.042488
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 22.745359,
+            "p95": 37.018872,
+            "p99": 40.201718
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 150,
+          "High input latency": 120,
+          "Slow UI thread": 221,
+          "Slow bitmap uploads": 7,
+          "Slow issue draw commands": 202,
+          "Frame deadline missed": 225
+        },
+        "mapPaint": null,
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 23.0,
+            "maxCpuPercent": 28.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.55,
+            "maxCpuPercent": 4.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 44.82,
+            "maxCpuPercent": 51.0
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 2.64,
+            "maxCpuPercent": 6.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 69,
+            "pathBuilds": 3295,
+            "pathBuildMs": 199.59082400001353,
+            "rasterBuilds": 209,
+            "rasterMs": 1334.7190500000725,
+            "rasterBytes": 33015744,
+            "rasterTiles": 15,
+            "mapRenders": 87,
+            "geographyRenders": 64,
+            "visibleProvinces": 1006,
+            "visibleArmies": 47,
+            "simulationMs": 142.19907400000375,
+            "networkBytes": 0
+          }
+        ]
+      },
+      "after": {
+        "pssKiB": 351022,
+        "frames": 120,
+        "reportedFrames": 279,
+        "timingSource": "framestats",
+        "rawWindowTruncated": true,
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 97.0,
+        "histogramP99Ms": 113.0,
+        "p50Ms": 83.518529,
+        "p95Ms": 100.90295,
+        "p99Ms": 109.368544,
+        "rawMaxMs": 112.963486,
+        "rawOver50Ms": 113,
+        "rawOver100Ms": 18,
+        "rawOver5000Ms": 0,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 27.591132,
+            "p95": 41.970624,
+            "p99": 48.619794
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.557939,
+            "p95": 12.023006,
+            "p99": 19.492131
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 22.544656,
+            "p95": 36.02621,
+            "p99": 43.616166
+          }
+        },
+        "hwuiEvents": {
+          "Missed Vsync": 158,
+          "High input latency": 119,
+          "Slow UI thread": 213,
+          "Slow bitmap uploads": 5,
+          "Slow issue draw commands": 193,
+          "Frame deadline missed": 217
+        },
+        "mapPaint": null,
+        "diagnosticError": null,
+        "cpuThreads": {
+          "RenderThread": {
+            "meanCpuPercent": 23.61,
+            "maxCpuPercent": 31.0
+          },
+          "hades": {
+            "meanCpuPercent": 0.0,
+            "maxCpuPercent": 0.0
+          },
+          "main-ui": {
+            "meanCpuPercent": 46.04,
+            "maxCpuPercent": 56.4
+          },
+          "mqt_v_js": {
+            "meanCpuPercent": 2.73,
+            "maxCpuPercent": 7.0
+          }
+        },
+        "cameraTraceSummary": [
+          {
+            "cullCommits": 66,
+            "pathBuilds": 3295,
+            "pathBuildMs": 221.5243350007804,
+            "rasterBuilds": 209,
+            "rasterMs": 1324.2830150002846,
+            "rasterBytes": 33015744,
+            "rasterTiles": 15,
+            "mapRenders": 85,
+            "geographyRenders": 64,
+            "visibleProvinces": 996,
+            "visibleArmies": 47,
+            "simulationMs": 96.85542099998565,
+            "networkBytes": 0
+          }
+        ]
+      }
+    }
+  ],
+  "investigation": "Pinch rawP95 450.665\u2192633.536ms (histogram400\u2192600), rawP99 592.728\u2192887.492. UI workP95 171.394\u2192190.872/P99 203.809\u2192315.039; vsyncP95 316.667\u2192333.333; renderCompletionP95 33.071\u219237.614. MainUI mean80.45\u219281.55%, JS12.36\u219212.18%, hades1.82\u21922%. Geometry count1743 both, cache\u224832MiB both, rasterbuilds116\u2192129. Both use independently generated campaigns and pinch inherits prior pan transform without reset. Actual campaign income/troops differ in screenshots. Root cause of rejection has NOT been established; no attribution to autosave or dismissal as noise. Stronger fixed-world forward/reverse run38027062613 is still pending. Native traces are sampled/recent-ring, not isolated GPU time or physical Redmi performance."
+}
