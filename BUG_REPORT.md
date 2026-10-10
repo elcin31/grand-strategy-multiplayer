@@ -1,3 +1,7 @@
+# HUD repeated-payload correction — 2026-10-10
+
+Actual dense native HUD sent8702bytes of timing+unchanged country/clustered army targets at every sample. Local fix preserves complete geometry in an independent stable snapshot/node and complete timing metrics in an800byte node; visual footprint and real target-driven UX checks remain. Exact saved native XML reconstructs byte/value-identical target arrays; corrupt/missing/ambiguous/nonfinite/identity-less captures reject.285JS/TS/61Python/Hermes/42assets PASS. Actual new native accessibility/ABBA/full1800-second acceptance is pending; do not call remaining camera P99/pinch failures solved. Production rollout and final2.0 APK still pending as recorded below.
+
 # Stage10 actual native ledger and compatibility — 2026-10-10
 
 Actual strengthened10000/ten restores PASS atd5: maximum451 armies,3.249× initial population,2849 AI courses/806 science discoveries, finite valid state andP95100.742ms. Full raw results/digest EXPANSION_STAGE10_COMPAT_QA_2026-10-10.json.

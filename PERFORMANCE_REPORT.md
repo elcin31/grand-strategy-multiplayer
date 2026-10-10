@@ -1,3 +1,9 @@
+# Bounded diagnostic HUD publication — 2026-10-10
+
+Actual Stage9 world-pan hierarchy:8702 UTF8 bytes per timing HUD refresh,329chars/five country targets plus6538chars/23 army markers; every clustered army identity remains. Candidate timing node uses800bytes for the same compact timing metrics;7920bytes of full target geometry are published separately only when actual targets/selection change, through a stable external-store snapshot and memoized native node. Same visual overlay footprint, overlay still enabled and strict original ABBA/compositor/pinch/PSS gates retained.285JS/TS/61Python, actual-capture reconstruction/corruption tests,120 changed timing samples/stable target identity and changed selection/position PASS; Hermes/all42asset hashes PASS. Full evidence EXPANSION_CAMERA_TARGET_PUBLISH_QA.json.
+
+This is a verified encoding/allocation reduction, not completed native attribution/FPS/microstutter acceptance. No map renderer/world/geography/label/army budget/engine/cache change. Latest strict Android result is pending; every previous complete camera failure remains preserved. Do not rerun isolated CPU simulation benchmarks for a HUD-only change or substitute them for native acceptance.
+
 # Stage10 actual full-world stability and latest native evidence — 2026-10-10
 
 Currentd5 CI10000/ten exact restores SUCCESS: maximum451 armies/4,487,736snapshot/P95100.742ms, final population3.249×/2849 actual AI courses/806 science discoveries. The demographic interaction fix reduced runaway recruitment/world work while preserving initial world195/2924/5411 and growth. This is actual CI CPU/data simulation, not handset FPS. Full raw/digest EXPANSION_STAGE10_COMPAT_QA_2026-10-10.json.

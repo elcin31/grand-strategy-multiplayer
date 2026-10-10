@@ -15,6 +15,7 @@ from pathlib import Path
 from map_paint_check import assert_map_painted, map_paint_stats
 from native_campaign_feedback import campaign_feedback
 from native_diplomacy_feedback import relation_snapshot, assert_relation_mission
+from camera_hud_data import camera_hud_data
 from camera_surface_stats import assert_map_backend
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 OUT = Path('android-smoke'); OUT.mkdir(exist_ok=True)
@@ -296,8 +297,7 @@ def set_overlay(wanted):
 set_overlay(True);time.sleep(2)
 def camera_targets():
     root=hierarchy('map-touch-targets')
-    raw=next(n.get('content-desc') for n in root.iter('node') if n.get('content-desc','').startswith('DOMINION_CAMERA '))
-    metrics=json.loads(raw.removeprefix('DOMINION_CAMERA '))
+    metrics=camera_hud_data(root)
     canvas=next(n for n in root.iter('node') if n.get('content-desc')=='Карта Dominion')
     bounds=list(map(int,re.findall(r'\d+',canvas.get('bounds',''))))
     assert len(bounds)==4, 'Canvas touch bounds missing'
