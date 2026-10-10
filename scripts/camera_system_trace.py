@@ -13,7 +13,9 @@ import time
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 DEVICE_TRACE = '/data/misc/perfetto-traces/dominion-camera.pftrace'
 MARKER = '/sys/kernel/tracing/trace_marker'
-CONFIG = '''buffers { size_kb: 16384 fill_policy: RING_BUFFER }
+# The first real 20s capture wrote 22.9MiB and overwrote its start marker in
+# the old 16MiB ring. This is a separate diagnostic launch, never the benchmark.
+CONFIG = '''buffers { size_kb: 65536 fill_policy: RING_BUFFER }
 duration_ms: 20000
 data_sources { config { name: "linux.ftrace" ftrace_config {
   ftrace_events: "sched/sched_switch"

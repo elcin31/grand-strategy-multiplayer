@@ -1,0 +1,45 @@
+{
+  "diagnosticOnly": true,
+  "traceSha256": "3b5d9c8f825f4231fe1da33f913c4694f1a606586fec4ca20da4abc947c86b1a",
+  "markerCandidates": [],
+  "traceLossOrErrors": [
+    {
+      "name": "ftrace_setup_errors",
+      "index": null,
+      "value": 36,
+      "severity": "info"
+    },
+    {
+      "name": "traced_buf_bytes_overwritten",
+      "index": 0,
+      "value": 6152192,
+      "severity": "info"
+    },
+    {
+      "name": "traced_buf_chunks_overwritten",
+      "index": 0,
+      "value": 193,
+      "severity": "info"
+    }
+  ],
+  "markerValid": false,
+  "schedulerCoveragePresent": false,
+  "attributionComplete": false,
+  "threadStates": [],
+  "completedNestedSlices": [],
+  "error": "Missing/ambiguous completed real-gesture marker; no time interval invented",
+  "note": "20s capture wrote22900736bytes into16777216byte ring; trace bounds93002242758..110018248711ns, beginning unavailable.6152192bytes/193chunks overwritten (stats severity info), no completed real gesture marker. CPU interval or speedup cannot be invented. Capture/config/raw trace are in the verified original artifact. New diagnostic raises only buffer to64MiB and includes info-level overwrite/setup diagnostics; original completed-frame thresholds/data are unchanged.",
+  "run": 38042596102,
+  "job": 114185647820,
+  "source": "baseline47b only; candidate trace was not reached after analyzer failure",
+  "originalCapture": {
+    "diagnosticOnly": true,
+    "pid": 2248,
+    "traceBytes": 16649286,
+    "traceSha256": "3b5d9c8f825f4231fe1da33f913c4694f1a606586fec4ca20da4abc947c86b1a",
+    "configSha256": "bba0866a1556a0e209d175586350d2a76b3c3a186571d5bd30d87c64fd55f31c",
+    "gestureMarker": "DOMINION_PINCH_TRACE",
+    "note": "Separate trace-only launch AFTER gated comparisons, not their workload. No FPS, CPU attribution or performance acceptance inferred from file presence. Analyze actual async marker interval and trace loss/coverage before attribution. Software emulator only; physical Redmi unmeasured."
+  },
+  "verifiedArtifactId": 11667455991
+}
