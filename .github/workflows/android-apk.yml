@@ -1,7 +1,7 @@
 name: Android Dominion Expansion 2.0 checkpoint
 on:
   push:
-    branches: [main, world-update, performance-pass-2, performance-pass-3, visual-update, camera-fix, expansion-v2]
+    branches: [main, world-update, performance-pass-2, performance-pass-3, visual-update, camera-fix, expansion-v2, expansion-qa]
     paths-ignore:
       - "**/*.md"
       - .github/workflows/android-checkpoint-smoke.yml

@@ -1,5 +1,6 @@
 import {countryGlyph,hitCountryGlyph,type CountryGlyph} from '../map/countryTargets';
 import {CameraWorkGate,nextFrameDeadline,frameBucket,frameQuantile,createFrameAccumulator,recordFrameInterval,finishFrameSample} from '../performance/framePacing';
+import {createCameraInput,queueCameraInput,takeCameraInput} from '../performance/cameraInput';
 import {MapRasterLayer} from './MapRasterLayer';
 import {MapMarkerLayer} from './MapMarkerLayer';
 import {cameraCoverage,cameraNeedsCoverage,viewportLayoutUpdate,interactionDetailZoom} from '../map/cameraCoverage';
@@ -99,9 +100,15 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   // animation cancellation, listeners or guest serialization on each increment.
   // Web runs the callback on its single JS runtime and needs no native host.
   const frameSampler=useMemo(()=>Platform.OS==='web'?{value:createFrameAccumulator()}:createShareable(UIRuntimeId,createFrameAccumulator()),[]);
-  const acceptFrameSample=useCallback((fps:number,ms:number,slow:number,updates:number,histogram?:number[])=>{
+  const gestureInput=useMemo(()=>Platform.OS==='web'?{value:createCameraInput(defaults)}:createShareable(UIRuntimeId,createCameraInput(defaults)),[]);
+  const flushGestureCamera=useCallback(()=>{
+    'worklet';
+    const pending=takeCameraInput(gestureInput.value!);
+    if(pending){x.value=pending.x;y.value=pending.y;if(pending.updateZoom)zoom.value=pending.zoom;}
+  },[gestureInput,x,y,zoom]);
+  const acceptFrameSample=useCallback((fps:number,ms:number,slow:number,updates:number,histogram: number[]|undefined,events:number,commits:number)=>{
     const distribution=histogram?{frameP50Ms:frameQuantile(histogram,.5),frameP95Ms:frameQuantile(histogram,.95),frameP99Ms:frameQuantile(histogram,.99),frameSamples:histogram.reduce((n,x)=>n+x,0),over50Ms:histogram.slice(frameBucket(50)+1).reduce((n,x)=>n+x,0),over100Ms:histogram.slice(frameBucket(100)+1).reduce((n,x)=>n+x,0)}:{};
-    recordMetrics({uiFps:fps,frameMs:ms,slowFrames:slow,cameraUpdates:updates,...distribution},true);
+    recordMetrics({uiFps:fps,frameMs:ms,slowFrames:slow,cameraUpdates:updates,gestureEvents:events,gestureCommits:commits,...distribution},true);
     if(overlay)console.info('DOMINION_CAMERA '+JSON.stringify(cameraMetrics(getMetrics())));
     if(adaptive){quality.current=adaptQuality(quality.current,ceiling,fps,frameBudget,Date.now(),updates>3);if(quality.current.tier!==preset)setPreset(quality.current.tier);}
   },[adaptive,ceiling,frameBudget,preset,overlay]);
@@ -121,6 +128,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
     recordFrameInterval(sample,dt,frameBudget,sampleDistribution);
     if(frame.timestamp>=sample.deadline-.5){
       sample.deadline=nextFrameDeadline(frame.timestamp,sample.deadline,frameBudget);
+      flushGestureCamera();
       if(animateEffects)pulse.value=.8+.2*Math.sin(frame.timestamp/900);
       if(renderX.value!==x.value||renderY.value!==y.value||renderZoom.value!==zoom.value){
         renderX.value=x.value;renderY.value=y.value;renderZoom.value=zoom.value;sample.updates++;sample.lastMotion=frame.timestamp;
@@ -134,7 +142,8 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
     const elapsed=frame.timestamp-sample.sampleClock;
     if(elapsed>=1000){
       const result=finishFrameSample(sample,frame.timestamp,sampleDistribution);
-      runOnJS(acceptFrameSample)(result.fps,result.ms,result.slow,result.updates,result.histogram);
+      const input=gestureInput.value!;
+      runOnJS(acceptFrameSample)(result.fps,result.ms,result.slow,result.updates,result.histogram,input.events,input.commits);
     }
   });
   const startX = useSharedValue(0), startY = useSharedValue(0), startZoom = useSharedValue(1);
@@ -142,7 +151,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   const publishSnapshot=useCallback((camera:Camera,settled=false)=>{setSnapshot(previous=>previous.x===camera.x&&previous.y===camera.y&&previous.zoom===camera.zoom?previous:camera);setDetailZoom(previous=>interactionDetailZoom(previous,camera.zoom,settled));recordMetrics({cullCommits:getMetrics().cullCommits+1});},[]);
   const lastCull = useSharedValue(0), cullX = useSharedValue(defaults.x), cullY = useSharedValue(defaults.y), cullZoom = useSharedValue(defaults.zoom);
   useEffect(()=>()=>{cancelAnimation(x);cancelAnimation(y);cancelAnimation(zoom);if(moving.value){moving.value=false;cameraActivity(false);}},[x,y,zoom,moving,cameraActivity]);
-  useAnimatedReaction(() => ({ x: x.value, y: y.value, zoom: zoom.value }), camera => {
+  useAnimatedReaction(() => ({ x: renderX.value, y: renderY.value, zoom: renderZoom.value }), camera => {
     const now = Date.now();
     const needsCoverage=cameraNeedsCoverage(camera,{x:cullX.value,y:cullY.value,zoom:cullZoom.value},viewport);
     if (needsCoverage && now - lastCull.value > 160) {
@@ -204,18 +213,17 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   const selectionRef=useRef(selectAt);selectionRef.current=selectAt;
   const selectCurrent=useCallback((px:number,py:number,cx:number,cy:number,z:number,long:boolean)=>selectionRef.current(px,py,cx,cy,z,long),[]);
   const gestures = useMemo(() => {
-    const pan = Gesture.Pan().minDistance(5).maxPointers(1).onStart(() => { panning.value=true;runOnJS(cameraActivity)(true); cancelAnimation(x); cancelAnimation(y); startX.value = x.value; startY.value = y.value; })
-      .onUpdate(e => { if (pinching.value) return; x.value = clamp(startX.value - e.translationX / zoom.value, 0, 1440); y.value = clamp(startY.value - e.translationY / (zoom.value * TILT), 0, 720); })
-      .onEnd(e => { if (pinching.value) return; x.value = withDecay({ velocity: -e.velocityX / zoom.value, clamp: [0, 1440] }); y.value = withDecay({ velocity: -e.velocityY / (zoom.value * TILT), clamp: [0, 720] }); }).onFinalize(()=>{if(panning.value)runOnJS(cameraActivity)(false);panning.value=false;});
+    const pan = Gesture.Pan().minDistance(5).maxPointers(1).onStart(() => { flushGestureCamera();panning.value=true;runOnJS(cameraActivity)(true); cancelAnimation(x); cancelAnimation(y); startX.value = x.value; startY.value = y.value; })
+      .onUpdate(e => { if (pinching.value) return; queueCameraInput(gestureInput.value!,clamp(startX.value - e.translationX / zoom.value, 0, 1440),clamp(startY.value - e.translationY / (zoom.value * TILT), 0, 720),zoom.value,false); })
+      .onEnd(e => { if (pinching.value) return; flushGestureCamera();x.value = withDecay({ velocity: -e.velocityX / zoom.value, clamp: [0, 1440] }); y.value = withDecay({ velocity: -e.velocityY / (zoom.value * TILT), clamp: [0, 720] }); }).onFinalize(()=>{if(panning.value){if(!pinching.value)flushGestureCamera();runOnJS(cameraActivity)(false);}panning.value=false;});
     const pinch = Gesture.Pinch().onStart(e => {
-      runOnJS(cameraActivity)(true); cancelAnimation(x); cancelAnimation(y); cancelAnimation(zoom); pinching.value = true; startZoom.value = zoom.value;
+      flushGestureCamera();runOnJS(cameraActivity)(true); cancelAnimation(x); cancelAnimation(y); cancelAnimation(zoom); pinching.value = true; startZoom.value = zoom.value;
       pinchX.value = (e.focalX - viewport.width / 2) / zoom.value + x.value;
       pinchY.value = (e.focalY - viewport.height / 2) / (zoom.value * TILT) + y.value;
     }).onUpdate(e => {
-      zoom.value = clamp(startZoom.value * e.scale, 0.5, 18);
-      x.value = clamp(pinchX.value - (e.focalX - viewport.width / 2) / zoom.value, 0, 1440);
-      y.value = clamp(pinchY.value - (e.focalY - viewport.height / 2) / (zoom.value * TILT), 0, 720);
-    }).onFinalize(() => { if(pinching.value)runOnJS(cameraActivity)(false); pinching.value = false; runOnJS(publishSnapshot)({ x: x.value, y: y.value, zoom: zoom.value },true); });
+      const nextZoom=clamp(startZoom.value * e.scale, 0.5, 18);
+      queueCameraInput(gestureInput.value!,clamp(pinchX.value - (e.focalX - viewport.width / 2) / nextZoom, 0, 1440),clamp(pinchY.value - (e.focalY - viewport.height / 2) / (nextZoom * TILT), 0, 720),nextZoom);
+    }).onFinalize(() => { if(pinching.value){flushGestureCamera();runOnJS(cameraActivity)(false);runOnJS(publishSnapshot)({ x: x.value, y: y.value, zoom: zoom.value },true);}pinching.value = false; });
     const doubleTap = Gesture.Tap().numberOfTaps(2).maxDelay(260).onEnd((e, ok) => {
       if (!ok) return;
       const target = zoomAt({ x: x.value, y: y.value, zoom: zoom.value }, 1.7, { x: e.x, y: e.y }, viewport);
@@ -224,7 +232,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
     const tap = Gesture.Tap().onEnd((e, ok) => { if (ok) runOnJS(selectCurrent)(e.x, e.y, x.value, y.value, zoom.value, false); });
     const long = Gesture.LongPress().minDuration(500).onStart(e => runOnJS(selectCurrent)(e.x, e.y, x.value, y.value, zoom.value, true));
     return Gesture.Race(Gesture.Simultaneous(pan, pinch), long, Gesture.Exclusive(doubleTap, tap));
-  }, [viewport, selectCurrent,publishSnapshot,cameraActivity, x, y, zoom, startX, startY, startZoom, pinching, panning, pinchX, pinchY]);
+  }, [viewport, selectCurrent,publishSnapshot,cameraActivity,flushGestureCamera,gestureInput, x, y, zoom, startX, startY, startZoom, pinching, panning, pinchX, pinchY]);
 
   const animateCamera = (camera: Camera) => {
     const c = boundedCamera(camera);

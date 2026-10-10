@@ -7,11 +7,11 @@ import math
 
 FIELDS = ('uiFps', 'frameMs', 'frameP50Ms', 'frameP95Ms', 'frameP99Ms',
           'frameSamples', 'slowFrames', 'over50Ms', 'over100Ms', 'cameraUpdates',
-          'cullCommits', 'mapRenders', 'geographyRenders', 'pathBuilds', 'pathBuildMs',
+          'gestureEvents', 'gestureCommits', 'cullCommits', 'mapRenders', 'geographyRenders', 'pathBuilds', 'pathBuildMs',
           'rasterBuilds', 'rasterMs', 'rasterBytes', 'rasterTiles',
           'rasterPrewarmBuilds', 'rasterPrewarmMs', 'visibleProvinces',
           'visibleArmies', 'visibleLabels', 'simulationMs', 'networkMs')
-COUNTERS = ('cullCommits', 'mapRenders', 'geographyRenders', 'pathBuilds',
+COUNTERS = ('gestureEvents', 'gestureCommits', 'cullCommits', 'mapRenders', 'geographyRenders', 'pathBuilds',
             'pathBuildMs', 'rasterBuilds', 'rasterMs', 'rasterPrewarmBuilds',
             'rasterPrewarmMs')
 
