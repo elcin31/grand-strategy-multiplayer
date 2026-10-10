@@ -1,3 +1,7 @@
+# Stage8 validation checkpoint — 2026-10-10
+
+267/267 host tests PASS including13 course/DAG/payment/once-only/default/real-effects/strict-save/AI/overflow regressions and22 lost-response intent kinds. Schema18 course UI/native/10000/backend acceptance is pending. Parentc75 signed checkpoint build PASS; its long/camera still running and native not yet started when recorded. Camera P99 acceptance remains open from actual previous ABBA failure; do not equate host pass or checkpoint APK with final release.19NEW Stage9 originals and final coordinated schema rollout still outstanding.
+
 # Stage7 continuation findings — 2026-10-10
 
 Fixed and host-tested: bankrupt projects previously paused progress while retaining monthly research charges; active fractional building work must be dated/idempotent and cancel only unused cost; named scientific exchanges must enforce source discovery, era, prerequisite and active-project restrictions. Unknown/prototype identifiers/duplicate discoveries/replayed technology commands reject.254JS/TS/49Python tests and Hermes export pass.

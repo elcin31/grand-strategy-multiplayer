@@ -11,6 +11,8 @@ import {missionAvailability,diplomacyAcceptance,diplomacyQuote,respondDiplomacy,
 import {espionageQuote,startEspionage,type EspionageKind} from './espionageSystem.ts';
 import { isWarLeader, opponentSide, peaceCost, proposePeace, respondPeace, scoreFor, type PeaceTerms } from './warSystem.ts';
 import { pacifyProvince } from './stabilitySystem.ts';
+import {FOCUS_IDS,FOCUS_NODES,focusBelongsTo} from './focusCatalogue.ts';
+import {focusAvailability,startFocus} from './focusSystem.ts';
 
 export const AI_PERSONALITIES = ['Defensive','Diplomatic','Expansionist','Economic','Militarist'] as const;
 export type AIPersonality = typeof AI_PERSONALITIES[number];
@@ -136,6 +138,12 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
         const science= scienceLevel(c)<Math.min(...branches.map(b=>techLevel(c,b)))?TECHNOLOGY_IDS.find(id=>technologyNode(id)!.direction==='Science'&&!namedResearchQuote(s,c,id).reason):undefined;
         const candidates=[science,...branches.filter(b=>techLevel(c,b)<5).sort((a,b)=>techLevel(c,a)-techLevel(c,b)).map(b=>legacyTechnologyNode(b,techLevel(c,b)+1))];
         const id=candidates.find(id=>id&&!namedResearchQuote(s,c,id).reason&&affordable(namedResearchQuote(s,c,id).cost));if(id)startTechnology(s,c,id);
+      }
+      if(!c.nationalFocus){
+        const branch=style==='Economic'?'Economic':style==='Diplomatic'?'Diplomatic':style==='Defensive'?'Political':'Military';
+        const candidates=FOCUS_IDS.filter(id=>focusBelongsTo(c,FOCUS_NODES[id])&&!focusAvailability(s,c.id,id));
+        candidates.sort((a,b)=>Number(FOCUS_NODES[b].branch===branch)-Number(FOCUS_NODES[a].branch===branch)||Number(FOCUS_NODES[b].category==='Unique')-Number(FOCUS_NODES[a].category==='Unique')||FOCUS_NODES[a].cost-FOCUS_NODES[b].cost);
+        const id=candidates.find(id=>affordable(FOCUS_NODES[id].cost));if(id)startFocus(s,c.id,id);
       }
       if(!s.constructions?.some(q=>q.ownerId===id)&&context().incomeBalance>15){
         const site=[...home].filter(p=>!p.rebellion).sort((a,b)=>b.income-a.income)[0];

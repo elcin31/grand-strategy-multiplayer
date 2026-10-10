@@ -1,3 +1,4 @@
+import {focusBonuses} from './focusCatalogue.ts';
 import type { Country, GameState } from './gameTypes.ts';
 import { buildingModifierTotals } from './buildingSystem.ts';
 import { governmentModifiers } from './governmentSystem.ts';
@@ -49,7 +50,7 @@ export function monthlyResearch(state: GameState): void {
   for (const c of Object.values(state.countries)) {
     const r = c.research;
     if (!r || !c.provinceIds?.length || state.tick < c.bankruptcyUntilTick!) continue;
-    r.progress += (1 + (governmentModifiers(c.governmentType).researchPercent + (totals.get(c.id)?.researchPercent ?? 0)+scienceLevel(c)*5) / 100)*researchFunding(c)*economicPolicy(c).research;
+    r.progress += (1 + (governmentModifiers(c.governmentType).researchPercent + (totals.get(c.id)?.researchPercent ?? 0)+scienceLevel(c)*5+focusBonuses(c).research*100) / 100)*researchFunding(c)*economicPolicy(c).research;
     if (r.progress + 1e-9 >= r.required) {delete c.research; if(r.branch==='Science')grantTechnology(state,c,r.nodeId!);else c.technologies![r.branch]=r.targetLevel;refreshResearchBudget(c); }
   }
 }

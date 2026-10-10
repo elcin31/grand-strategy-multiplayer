@@ -1,3 +1,36 @@
+# Continuation — Stage8 original National Course, 2026-10-10
+
+Latest verified GitHub/local parent HEAD **c75bf36aa030f07c0291309b4c9a159e48a9b8b6**, tree5209c5e92e10f30ab06a1af80c796f24fd48bee2. This entry describes the Stage8 tree committed above that parent; use the actual branch HEAD for its containing SHA. Main dbb354, accepted47b and all earlier expansion checkpoints retained. Only existing Dominion repository/backend; no AssetMind, backend deployment, renderer replacement or world reduction.195/2924/5411 retained.
+
+**Stage8 implemented:**40 original courses:20 generic nodes across Economic/Military/Diplomatic/Political, five regional branches and three-node unique programs for USA/Russia/China(chn)/Germany/UK. Graph prerequisites, common successors after alternative choices, science gates, fixed upfront money/political cost, monthly progress, default pause without catch-up, separate cancellation without refund, mutually exclusive choices and bounded actual events. Completed ledger is appended and active project removed before rewards; duplicate receipt/monthly invocation/restore cannot pay again. Permanent effects are derived from unique completions, not a second mutable bonus ledger. Actual rewards affect tax/production/resources/trade/administration/upkeep/research/construction/supply/combat/reserve growth/diplomatic acceptance, existing army experience and peaceful neighbor relations. AI selects affordable eligible original courses in existing bounded strategic slots.
+
+**Schema18 additive:** country completedFocuses/nationalFocus and game focusEvents(256 total with128 recent human slots). Strict catalogue/country/region/DAG/exclusive/timing/progress/unknown field/repeated reward/orphan event validation. Safe future dates and actual reserve grants checked before payment/reward. Byte-exact before-focus-v18.backup before overwrite. Authenticated START_NATIONAL_FOCUS/CANCEL_NATIONAL_FOCUS use existing actor/CAS/receipt/reconnect paths;22 lost-response intent kinds verified. Five legacy technology level tracks and all prior gameplay retained. Camera schema12->18 preserves every original field/checksum with inactive new defaults.
+
+**UI:** actual landscape National Course section, four branches plus regional/major tabs, scrollable original linked graph, prerequisites navigation, active progress, real rewards/reasons/costs, cancellation and dated history. Only mounted while its section is open; no render-frame gameplay/AI. Historical inherited miniatures are retained pending19NEW Stage9 paintings. Android smoke now requires paid audit start, observed real-month completion and once-only completed state after science; native pass is not yet established.
+
+**Verified:**267/267 JS, strict TS,50 Python(49PASS/1 unavailable pinned host Perfetto analyzer), Hermes11,456,889bytes/SHA2816bcef9fb3a6ca43fb52e1396f6735c98b198883428e823905f42b5427ac94/magicc61fbc03c103191f. Thirteen new course behavior tests cover actual effects/DAG/AI/default/save/exclusivity/payment/reward/overflow;22 replay intents. Fixed full schema12 migration original e8befae1 ->18 3513900c original fields/inactive defaults PASS. Sequential same host seed101/240 months/four strict restores:17 P95/P99=75.34/94.74ms ->18 75.01/90.87ms; snapshot3,916,914->4,146,058;RSS739,651,584->716,468,224. Different actual gameplay outcomes, no hardware FPS/native acceptance claim. Full evidence EXPANSION_STAGE8_HOST_QA_2026-10-10.json.
+
+**Parent actual CI38079172136:** build114292352941 SUCCESS, long114292353104 and camera114296235418 IN_PROGRESS at this checkpoint; native not yet started. Stage6 complete paired camera P99 FAIL remains open; all original thresholds/orders/paint/memory gates retained. Latest backend is still schema12; coordinate final rollout with old-client compatibility before multiplayer/final delivery.
+
+| Approved stage | Status and remaining gate |
+|---|---|
+|0 Recovery|DONE; do not repeat|
+|1 Frame pacing|PARTIAL; complete actual ABBA P99 regressions require diagnosis/acceptance|
+|2 Army UX|DONE at ca230dd native; latest integrated gate pending|
+|3 Diplomacy2.0|PARTIAL; core/host verified, latest native/backend/final acceptance pending|
+|4 Espionage/diplomatic AI|PARTIAL; core/host verified, latest native/backend/final acceptance pending|
+|5 Economy/buildings|PARTIAL; core/host verified, latest native/backend/final acceptance pending|
+|6 Military/supply|PARTIAL; core/host and actual10000 verified, latest native/backend/balance pending|
+|7 Technology tree|PARTIAL; core/UI/host254 verified; current integrated CI/native pending|
+|8 National Course|PARTIAL; core/UI/host267/240/restores verified; actual native/10000/backend pending|
+|9 Historical illustrations/polish|NOT STARTED in this commit;19NEW originals beyond inherited15 plus themes next|
+|10 Whole-expansion integration/balance|PARTIAL; all-focus/art/performance/backend and long-run balance pending|
+|11 Final signed Android release/delivery|NOT STARTED; checkpoint0.8.1 is not final Expansion2.0|
+
+**Exact next operation:** confirm this logical Stage8 commit SHA on GitHub and preserve its normal full CI; continue Stage9 with19NEW original paintings(5diplomacy/4military/4construction/3government/3religion) plus espionage/economy/ruler/general/technology/focus/event/loading themes, optimized lazy WebPs and credits. Collect actual parent/current native/camera/10000 evidence; diagnose frame pacing without weakening gates. Then whole-scope balance/sabotage-construction/numerical integration, coordinated existing-Dominion-backend rollout/reconnect and final versioned signed standalone Android APK. Do not repeat recovery, call pending gates DONE or end with an intermediate APK.
+
+---
+
 # Continuation — Stage7 original technology graph, 2026-10-10
 
 Latest verified GitHub/local parent HEAD **3aebf887af13903ff7271fe71d957ca4f8769db1**, tree88010cad4531b4879f9c3cfded3fc90c619249ff. This entry describes the reviewed Stage7 tree being committed above that parent; read the branch HEAD for the commit containing it. Earlier8cf992ee/5fdee487/b6abad4c/4bd9d400/ca230dd retained; main dbb354 and accepted47b unchanged. Only existing Dominion repository/backend. No AssetMind, backend deployment, renderer replacement or world reduction.195/2924/5411 retained.

@@ -1,3 +1,4 @@
+import {focusBonuses} from './focusCatalogue.ts';
 import {scienceLevel} from './technologyTree.ts';
 import type { BuildingType, Construction, CountryId, GameState, Province } from './gameTypes.ts';
 import {WATER_ACCESS} from './waterAccess.ts';
@@ -148,14 +149,14 @@ export function cancelConstructionInProvince(state: GameState, provinceId: strin
   if(state.constructions?.length)state.constructions = state.constructions.filter(item => item.provinceId !== provinceId);
 }
 export function constructionProgress(state:GameState,job:Construction):{percent:number;months:number}{
-  const c=state.countries[job.ownerId]!,duration=job.completeTick-job.startedTick,done=job.workDone??state.tick-job.startedTick,rate=1+(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01;
+  const c=state.countries[job.ownerId]!,duration=job.completeTick-job.startedTick,done=job.workDone??state.tick-job.startedTick,rate=1+(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01+focusBonuses(c).construction;
   return {percent:Math.min(100,Math.round(100*done/duration)),months:Math.max(0,Math.ceil((duration-done)/rate))};
 }
 export function completeConstructions(state: GameState): void {
   if (!state.dataset || !state.constructions?.length) return;
   const remaining: Construction[] = [];
   for (const construction of state.constructions) {
-    const c=state.countries[construction.ownerId]!,bonus=(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01;
+    const c=state.countries[construction.ownerId]!,bonus=(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01+focusBonuses(c).construction;
     if(bonus>0||construction.workDone!==undefined){
       // Old paid jobs retain their quoted duration. A newly opened capability
       // accelerates this month onwards; previous work is never credited twice.

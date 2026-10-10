@@ -10,6 +10,7 @@ import { DiplomacyPanel } from './DiplomacyPanel';
 import { MilitaryPanel } from './MilitaryPanel';
 import { StrategyPanel } from './StrategyPanel';
 import {EconomyControls} from './EconomyControls';
+import {NationalFocusPanel} from './NationalFocusPanel';
 import {queuedBuildingQuote,constructionQueueAvailability} from '../../supabase/functions/_shared/constructionQueueSystem';
 import { BUILDINGS, BUILDING_TYPES, buildingQuote,constructionProgress } from '../../supabase/functions/_shared/buildingSystem';
 import { RESOURCES, provinceProduction, resourceReport } from '../../supabase/functions/_shared/resourceSystem';
@@ -183,6 +184,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
       {section==='Diplomacy'&&<WarPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
       {section==='Diplomacy'&&<DiplomacyPanel initialOpen initialTargetId={diplomacyCountryId??undefined} state={state} playerId={playerId} onCommand={onCommand} />}
       {section==='Technology'&&<StrategyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
+      {section==='Focus'&&<NationalFocusPanel state={state} playerId={playerId} onCommand={onCommand}/>}
 
       {section==='Military'&&<View style={styles.card}><Text style={styles.eyebrow}>АРМИИ · {compact(nation.army)}</Text>{state.armies.filter(a=>a.ownerId===countryId).map(a=><Pressable key={a.id} style={styles.secondaryButton} onPress={()=>onFocusProvince?.(a.provinceId)}><Text style={styles.secondaryText}>{state.provinces.find(p=>p.id===a.provinceId)?.name} · {compact(a.troops)}</Text><Text style={styles.hint}>Мораль {a.morale?.toFixed(0)} · организация {a.organization?.toFixed(0)}</Text></Pressable>)}</View>}
       {section==='Context'&&<View style={styles.card}>

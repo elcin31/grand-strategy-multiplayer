@@ -14,6 +14,8 @@ import {initializeArmyComposition,addArmyRegiment,takeArmyLosses} from './armyCo
 import {reinforceArmy,retreatArmy,retreatDestination,monthlyMilitaryLogistics,awardBattleExperience} from './militaryLogistics.ts';
 import {invalidateSupply,refreshSupplyLoads} from './supplySystem.ts';
 import { monthlyResearch, startResearch,startTechnology, techLevel } from './technologySystem.ts';
+import {startFocus,cancelFocus,monthlyFocus} from './focusSystem.ts';
+import {focusBonuses} from './focusCatalogue.ts';
 import { buildingModifierTotals, cancelConstructionInProvince, completeConstructions, provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
 import { initializeResources } from './resourceSystem.ts';
 import { initializePopulation, monthlyPopulationGrowth, recalcPopulationTotals } from './populationSystem.ts';
@@ -225,6 +227,10 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
     case 'START_TECHNOLOGY': {
       if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');const player=getPlayer(next,command.playerId);if(!player.countryId)throw Error('Страна не выбрана');startTechnology(next,countryFor(next,player.countryId),command.nodeId);return next;
     }
+    case 'START_NATIONAL_FOCUS':case 'CANCEL_NATIONAL_FOCUS':{
+      if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');const player=getPlayer(next,command.playerId);if(!player.countryId)throw Error('Страна не выбрана');
+      if(command.type==='START_NATIONAL_FOCUS')startFocus(next,player.countryId,command.focusId);else cancelFocus(next,player.countryId);return next;
+    }
     case 'START_RESEARCH': {
       if (!next.dataset || !['running', 'paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId); if (!player.countryId) throw new Error('Страна не выбрана');
@@ -353,7 +359,7 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
         if (!next.dataset) nation.treasury += nation.income;
         const government = next.dataset ? governmentModifiers(nation.governmentType) : undefined;
         const buildings = buildingTotals.get(id);
-        nation.manpower += Math.max(500, Math.round(nation.population * .00004 * (1 + ((government?.manpowerPercent ?? 0) + (buildings?.manpowerPercent ?? 0)) / 100)*(next.dataset?economicPolicy(nation).manpower:1)));
+        nation.manpower += Math.max(500, Math.round(nation.population * .00004 * (1 + ((government?.manpowerPercent ?? 0) + (buildings?.manpowerPercent ?? 0)) / 100)*(next.dataset?economicPolicy(nation).manpower*(1+focusBonuses(nation).manpower):1)));
         if (government) {
           nation.politicalPower = Math.min(500, nation.politicalPower! + POLITICAL_POWER_MONTHLY);
           nation.technology = Math.min(100, nation.technology + .025 * (1 + (government.researchPercent + (buildings?.researchPercent ?? 0)) / 100));
@@ -361,7 +367,7 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }
-      monthlyReligionEffects(next); monthlyEconomy(next); monthlyResearch(next);monthlyMilitaryLogistics(next);monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
+      monthlyReligionEffects(next); monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
     }
   }
 }

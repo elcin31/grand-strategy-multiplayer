@@ -1,3 +1,7 @@
+# Stage8 course host comparison — 2026-10-10
+
+Same sequential host seed101/240 monthly ticks/four exact saves: schema17 P95/P99=75.34/94.74ms;18=75.01/90.87ms. Snapshot3,916,914->4,146,058;RSS739,651,584->716,468,224. Permanent course bonuses use a WeakMap cache and bounded completions; graph availability only on open panels/strategic slots, monthly country pass/events, no map-frame work. No concurrent heavy local workload. Different actual gameplay outcomes; CPU/data figures do not prove Android frame acceptance. Existing complete Stage6 camera failures remain OPEN. Full report EXPANSION_STAGE8_HOST_QA_2026-10-10.json.
+
 # Stage7 continuation host/camera evidence — 2026-10-10
 
 Clean identical host seed101/240 monthly ticks/4 restores: schema16 P50/P95/P99=53.85/76.17/86.86ms;17=50.39/84.85/104.61ms. Genuine research/war outcomes differ, world195/2924/5411 stays fixed. Snapshot3,902,933->3,916,914;RSS670,461,952->764,530,688. No concurrent heavy process. These CPU/data figures do not establish Android FPS or frame acceptance. Full results EXPANSION_STAGE7_HOST_QA_2026-10-10.json.

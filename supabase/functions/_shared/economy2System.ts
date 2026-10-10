@@ -1,3 +1,4 @@
+import {focusBonuses} from './focusCatalogue.ts';
 import {countryFor,type Country,type GameState} from './gameTypes.ts';
 import {money} from './economySystem.ts';
 export const ECONOMIC_POLICIES={
@@ -12,7 +13,7 @@ export const FUNDING_LEVELS={Low:{name:'Ограниченное',research:.5,mi
 export type FundingLevel=keyof typeof FUNDING_LEVELS;
 export function economicPolicy(c:Country){return ECONOMIC_POLICIES[c.economicPolicy??'Balanced'];}
 export function researchFunding(c:Country):number{return FUNDING_LEVELS[c.researchFunding??'Standard'].research;}
-export function militaryFundingCost(c:Country):number{return FUNDING_LEVELS[c.militaryFunding??'Standard'].militaryCost*economicPolicy(c).army;}
+export function militaryFundingCost(c:Country):number{return FUNDING_LEVELS[c.militaryFunding??'Standard'].militaryCost*economicPolicy(c).army*(1-focusBonuses(c).armyUpkeep);}
 export function militaryReadiness(c:Country):number{return FUNDING_LEVELS[c.militaryFunding??'Standard'].militaryReadiness*(c.economicPolicy==='Austerity'?.95:1);}
 export function researchMonthlyCost(c:Country,tick?:number):number{return c.research&&(tick===undefined||tick>=(c.bankruptcyUntilTick??0))?money((c.research.branch==='Science'?15:10)*c.research.targetLevel*researchFunding(c)):0;}
 export function policyAvailability(s:GameState,id:string,policy:EconomicPolicy):string|null {

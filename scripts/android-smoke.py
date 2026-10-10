@@ -436,6 +436,18 @@ navigate('Технологии')
 assert read_scrolling('Наука · 1/5'), 'Scientific discovery did not complete through the real game clock'
 screenshot('science-complete')
 click_scrolling('Технологии ▴')
+navigate('Нац. курс')
+root=hierarchy('focus-art');screenshot('focus-art')
+assert any(n.get('content-desc')=='Иллюстрация национального курса' for n in root.iter('node')), 'National course painting missing'
+click_scrolling('Взять курс: Хозяйственная ревизия')
+assert '0/6 мес.' in read_scrolling('Национальный курс: Хозяйственная ревизия'), 'National course did not start paused'
+screenshot('focus-started')
+advance_campaign_months(7)
+navigate('Нац. курс')
+assert read_scrolling('Завершено курсов: 1'), 'National course did not complete through the real clock'
+assert read_scrolling('Курс уже завершён'), 'Completed course can grant rewards again'
+screenshot('focus-completed')
+navigate('Страна')
 click_scrolling('Дипломатия ▾')
 click_scrolling('Поиск страны для дипломатии')
 adb('shell','input','text','bra'); adb('shell','input','keyevent','4')

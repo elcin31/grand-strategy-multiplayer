@@ -1,3 +1,4 @@
+import {focusBonuses} from './focusCatalogue.ts';
 import { techLevel } from './technologySystem.ts';
 import { provinceBuildingMaintenance, provinceBuildingModifiers } from './buildingSystem.ts';
 import { provinceProduction } from './resourceSystem.ts';
@@ -61,14 +62,14 @@ export function recalcEconomy(state: GameState): void {
   }
   for (const c of Object.values(state.countries)) {
     const rawTax = taxBase.get(c.id) ?? 0, rawTrade = tradeBase.get(c.id) ?? 0;
-    const policy=economicPolicy(c);
-    const taxIncome = money(governmentIncome(rawTax, c.governmentType) * c.taxRate! / DEFAULT_TAX_RATE * (1 + techLevel(c, 'Economy') * .04)*policy.tax);
+    const policy=economicPolicy(c),course=focusBonuses(c);
+    const taxIncome = money(governmentIncome(rawTax, c.governmentType) * c.taxRate! / DEFAULT_TAX_RATE * (1 + techLevel(c, 'Economy') * .04)*policy.tax*(1+course.tax));
     const people = population.get(c.id) ?? 0;
     const meanDevelopment = people > 0 ? (development.get(c.id) ?? 0) / people : 0;
-    const tradeIncome = money(rawTrade * (.1 + (diplomatic.tradeBonus.get(c.id) ?? 0)) * meanDevelopment / 100 * (.5 + c.stability / 200)*policy.trade);
+    const tradeIncome = money(rawTrade * (.1 + (diplomatic.tradeBonus.get(c.id) ?? 0)) * meanDevelopment / 100 * (.5 + c.stability / 200)*policy.trade*(1+course.trade));
     const sabotage=espionageModifiers(state,c.id).productionMultiplier;
-    const resourceIncome = money((resources.get(c.id) ?? 0)*sabotage*policy.production), buildingMaintenance = buildingCosts.get(c.id) ?? 0;
-    const productionIncome=money((production.get(c.id)??0)*sabotage*policy.production),administrationMaintenance=money((administration.get(c.id)??0)*policy.administration);
+    const resourceIncome = money((resources.get(c.id) ?? 0)*sabotage*policy.production*(1+course.production)), buildingMaintenance = buildingCosts.get(c.id) ?? 0;
+    const productionIncome=money((production.get(c.id)??0)*sabotage*policy.production*(1+course.production)),administrationMaintenance=money((administration.get(c.id)??0)*policy.administration*(1-course.administration));
     const monthlyIncome = money(taxIncome + tradeIncome + resourceIncome + productionIncome);
     c.militaryUpkeepBase=money(militaryCosts.get(c.id)??0);
     const armyMaintenance = money(c.militaryUpkeepBase*militaryFundingCost(c));

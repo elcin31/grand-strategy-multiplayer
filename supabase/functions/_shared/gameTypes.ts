@@ -22,6 +22,8 @@ export interface Country {
   technologies?: Record<TechnologyBranch, number>;
   research?: Research;
   scientificDiscoveries?: import('./technologyTree.ts').TechnologyId[];
+  completedFocuses?:import('./focusCatalogue.ts').FocusCompletion[];
+  nationalFocus?:import('./focusCatalogue.ts').FocusProject;
   taxRate?: number;
   debt?: number;
   bankruptcyUntilTick?: number;
@@ -191,6 +193,7 @@ export interface Leader {
 }
 
 export interface GameState {
+  focusEvents?:import('./focusSystem.ts').FocusEvent[];
   constructionQueue?: import('./constructionQueueSystem.ts').QueuedConstruction[];
   spyMissions?: import('./espionageSystem.ts').SpyMission[];
   spyReports?: import('./espionageSystem.ts').SpyReport[];
@@ -256,6 +259,8 @@ export type GameCommand =
   | {type:'RETREAT_ARMY';playerId:string;armyId:string;provinceId:string}
   | { type: 'ASSIGN_COMMANDER'; playerId: string; armyId: string; commanderId: string }
   | {type:'START_TECHNOLOGY';playerId:string;nodeId:import('./technologyTree.ts').TechnologyId}
+  | {type:'START_NATIONAL_FOCUS';playerId:string;focusId:import('./focusCatalogue.ts').FocusId}
+  | {type:'CANCEL_NATIONAL_FOCUS';playerId:string}
   | { type: 'START_RESEARCH'; playerId: string; branch: TechnologyBranch }
   | { type: 'SET_TAX_RATE'; playerId: string; taxRate: number }
   | { type: 'BORROW'; playerId: string; amount: number }

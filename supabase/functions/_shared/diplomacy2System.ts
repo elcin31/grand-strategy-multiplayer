@@ -1,3 +1,4 @@
+import {focusBonuses} from './focusCatalogue.ts';
 import {countryFor,type GameState,type Country,type Province} from './gameTypes.ts';
 import {diplomaticLink,pairKey,warBetween,type DiplomacyLink} from './diplomacySystem.ts';
 import {money} from './economySystem.ts';
@@ -175,7 +176,7 @@ export function diplomacyAcceptance(s:GameState,from:string,to:string,terms:Dipl
   const enemies=(id:string)=>new Set(s.wars?.flatMap(w=>w.attackers.includes(id)?w.defenders:w.defenders.includes(id)?w.attackers:[])??[]);
   const ae=enemies(from),be=enemies(to),common=[...ae].filter(id=>be.has(id)).length;
   const reasons=[{label:'Отношения',value:l?.relation??0},{label:'Доверие',value:((l?.trust??50)-50)*.5},
-    {label:'Репутация отправителя',value:(a.diplomaticReputation??50)/10},{label:'Дипломатические технологии',value:techLevel(a,'Diplomacy')*4},
+    {label:'Репутация отправителя',value:(a.diplomaticReputation??50)/10},{label:'Дипломатические технологии',value:techLevel(a,'Diplomacy')*4},{label:'Национальный дипломатический курс',value:focusBonuses(a).diplomacy},
     {label:'Общие враги',value:Math.min(30,common*15)},{label:'Агрессивная экспансия',value:-(a.aggressiveExpansion??0)},
     {label:'Соперничество',value:l?.rivals.length?-100:0},{label:'Военное сотрудничество',value:terms.kind==='Treaty'&&terms.treaty==='Alliance'?Math.min(15,Math.round(5*a.army/Math.max(1000,b.army))):0}];
   let required=20;
