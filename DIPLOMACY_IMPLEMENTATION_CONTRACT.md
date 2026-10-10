@@ -1,6 +1,6 @@
 # Diplomacy 2.0 implementation contract — preparation after stage 0 audit
 
-This document records implementation decisions for the authorized next stage. It is not implemented gameplay or a completed stage. Do not deploy an incomplete schema to the existing production backend. Main remains dbb354ab; engine/save remain schema12 until stage3 implementation and migration tests are complete. Stage1/2 runtime d7c3d59 is undergoing same-APK full native smoke 38023398108 and forward/reverse fixed-world camera comparison 38023545936.
+This document records implementation decisions for the authorized next stage. It is not implemented gameplay or a completed stage. Do not deploy an incomplete schema to the existing production backend. Main remains dbb354ab; engine/save remain schema12 until stage3 implementation and migration tests are complete. Stage1/2 runtime d7c3d59 passed same-APK full native smoke38023398108 and forward/reverse fixed-world camera38024943471. New autosave runtime3cfd43f build/10k gates passed; its fresh native/camera acceptance is pending in38025683396.
 
 ## Preserve and extend
 

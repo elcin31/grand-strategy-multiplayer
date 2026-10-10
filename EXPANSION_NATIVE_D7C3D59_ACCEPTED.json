@@ -1,0 +1,34 @@
+{
+  "runtime": "d7c3d593802f2edf27894f92fe10928341df0080",
+  "apkSourceRun": 38021043667,
+  "qaSource": "38faf70782e82acce96953abc1f4b9525d822e86",
+  "run": 38023398108,
+  "job": 114129029812,
+  "artifact": 11660625545,
+  "artifactSha256": "fa8c99b0683301202d9d057e82851696b013e83adf6d0e364e78f8f48063ea54",
+  "verification": "ZIP hash/CRC verified, successful smoke and full stress; actual PNGs retained and reviewed separately. Source runtime identical to d7 APK.",
+  "stressSeconds": 1866.4343568790002,
+  "sampledPssKiB": {
+    "count": 31,
+    "min": 429059,
+    "max": 536538,
+    "first": 486822,
+    "last": 510244
+  },
+  "fatalPatternMatches": [],
+  "paintGate": {
+    "landFraction": 0.2255,
+    "samplePixels": 287232
+  },
+  "coverage": [
+    "real repeated army marker deselection retains order",
+    "Android Back retains order",
+    "foreign flag opens targeted diplomacy",
+    "reselection and separate Cancel Movement",
+    "recruit/commander/build/research/economy/debt/government/religion/legacy treaty",
+    "4 presets,12 modes,5 landscape layouts,density,cutout",
+    "offline cold launch,process restart,device reboot,ordinary campaign save restore",
+    "1800-second minimum continuous render/simulation/autosave stress"
+  ],
+  "limitations": "Emulator only, no physical Redmi or measured continuous memory peaks; not acceptance of new Diplomacy 2.0 or autosave runtime3c."
+}

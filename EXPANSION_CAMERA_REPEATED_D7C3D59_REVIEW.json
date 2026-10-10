@@ -1,0 +1,3440 @@
+{
+  "runtime": "d7c3d593802f2edf27894f92fe10928341df0080",
+  "comparisonRun": 38024943471,
+  "artifact": 11659019576,
+  "artifactSha256": "92ddd66b1ba4b24893e0f553b61562206760308fd7cc3dc6218c208581f9ce94",
+  "verification": "ZIP hash/CRC verified; both nine-scenario forward and reverse comparisons passed the unchanged gates on fixed byte-identical schema12 world. Physical device unmeasured.",
+  "pairs": {
+    "forward": {
+      "baselineRuntime": "47b0db4f8b220e9ea89998afaac035239b64f5e0",
+      "baselineRun": "37971350100",
+      "candidateRuntime": "d7c3d593802f2edf27894f92fe10928341df0080",
+      "candidateRun": "38021043667",
+      "comparisonRuntime": "d3d3dfd4a39069a4a4e3dc0977ed1aaae30d735f",
+      "comparisonRun": "38024943471",
+      "note": "Paired baseline/candidate on one SwiftShader API35 emulator with identical real-pointer gesture driver, offline paused campaign, Balanced and adaptive off. Native frame completion and host software rendering only; physical Redmi acceptance remains pending. gfxinfo histogram percentiles are used when raw timestamps are unavailable.",
+      "protocol": "fixed-save-reset-v2",
+      "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+      "fixtureStateChecksum": "e8befae1",
+      "rows": [
+        {
+          "scenario": "01-idle",
+          "before": {
+            "pssKiB": 334062,
+            "reportedFrames": 0,
+            "frames": 0,
+            "timingSource": "idle-no-frames",
+            "rawWindowTruncated": false,
+            "histogramP50Ms": null,
+            "histogramP95Ms": null,
+            "histogramP99Ms": null,
+            "p50Ms": null,
+            "p95Ms": null,
+            "p99Ms": null,
+            "rawMaxMs": null,
+            "rawOver50Ms": 0,
+            "rawOver100Ms": 0,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 0,
+              "High input latency": 0,
+              "Slow UI thread": 0,
+              "Slow bitmap uploads": 0,
+              "Slow issue draw commands": 0,
+              "Frame deadline missed": 0
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              },
+              "uiWorkMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              },
+              "syncWaitMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              },
+              "renderCompletionMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": {
+              "landFraction": 0.3676,
+              "samplePixels": 287232
+            },
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 0.64,
+                "maxCpuPercent": 2.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 0.09,
+                "maxCpuPercent": 1.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 254,
+                "rasterBuilds": 56,
+                "rasterBytes": 33119680,
+                "rasterTiles": 28,
+                "mapRenders": 9,
+                "geographyRenders": 4,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 352545,
+            "reportedFrames": 0,
+            "frames": 0,
+            "timingSource": "idle-no-frames",
+            "rawWindowTruncated": false,
+            "histogramP50Ms": null,
+            "histogramP95Ms": null,
+            "histogramP99Ms": null,
+            "p50Ms": null,
+            "p95Ms": null,
+            "p99Ms": null,
+            "rawMaxMs": null,
+            "rawOver50Ms": 0,
+            "rawOver100Ms": 0,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 0,
+              "High input latency": 0,
+              "Slow UI thread": 0,
+              "Slow bitmap uploads": 0,
+              "Slow issue draw commands": 0,
+              "Frame deadline missed": 0
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              },
+              "uiWorkMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              },
+              "syncWaitMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              },
+              "renderCompletionMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": {
+              "landFraction": 0.3663,
+              "samplePixels": 287232
+            },
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 1.0,
+                "maxCpuPercent": 2.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 0.09,
+                "maxCpuPercent": 1.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 254,
+                "rasterBuilds": 56,
+                "rasterBytes": 33119680,
+                "rasterTiles": 28,
+                "mapRenders": 10,
+                "geographyRenders": 4,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "02-medium-pan",
+          "before": {
+            "pssKiB": 322777,
+            "reportedFrames": 177,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 117.0,
+            "histogramP95Ms": 150.0,
+            "histogramP99Ms": 200.0,
+            "p50Ms": 121.304553,
+            "p95Ms": 165.998617,
+            "p99Ms": 200.209398,
+            "rawMaxMs": 216.876512,
+            "rawOver50Ms": 120,
+            "rawOver100Ms": 103,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 160,
+              "High input latency": 21,
+              "Slow UI thread": 162,
+              "Slow bitmap uploads": 3,
+              "Slow issue draw commands": 146,
+              "Frame deadline missed": 165
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 33.333332,
+                "p95": 49.999998,
+                "p99": 99.999996
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 46.664114,
+                "p95": 65.826974,
+                "p99": 75.417316
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 4.696236,
+                "p95": 15.62673,
+                "p99": 20.329199
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 24.230057,
+                "p95": 55.444087,
+                "p99": 63.232274
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 20.83,
+                "maxCpuPercent": 28.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.63,
+                "maxCpuPercent": 5.9
+              },
+              "main-ui": {
+                "meanCpuPercent": 62.74,
+                "maxCpuPercent": 74.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.44,
+                "maxCpuPercent": 8.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 288,
+                "rasterBuilds": 60,
+                "rasterBytes": 33119680,
+                "rasterTiles": 24,
+                "mapRenders": 16,
+                "geographyRenders": 11,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 337377,
+            "reportedFrames": 174,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 117.0,
+            "histogramP95Ms": 150.0,
+            "histogramP99Ms": 200.0,
+            "p50Ms": 127.748312,
+            "p95Ms": 167.589213,
+            "p99Ms": 233.54597,
+            "rawMaxMs": 245.582286,
+            "rawOver50Ms": 119,
+            "rawOver100Ms": 107,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 143,
+              "High input latency": 42,
+              "Slow UI thread": 145,
+              "Slow bitmap uploads": 4,
+              "Slow issue draw commands": 133,
+              "Frame deadline missed": 149
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 33.333332,
+                "p95": 66.666664,
+                "p99": 116.666662
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 45.768901,
+                "p95": 67.424523,
+                "p99": 75.163523
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 5.789838,
+                "p95": 16.940846,
+                "p99": 23.092244
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 23.256962,
+                "p95": 63.027201,
+                "p99": 75.827989
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 22.32,
+                "maxCpuPercent": 35.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.72,
+                "maxCpuPercent": 7.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 62.15,
+                "maxCpuPercent": 73.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.45,
+                "maxCpuPercent": 8.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 288,
+                "rasterBuilds": 60,
+                "rasterBytes": 33119680,
+                "rasterTiles": 24,
+                "mapRenders": 17,
+                "geographyRenders": 11,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "03-pinch",
+          "before": {
+            "pssKiB": 355000,
+            "reportedFrames": 85,
+            "frames": 85,
+            "timingSource": "framestats",
+            "rawWindowTruncated": false,
+            "histogramP50Ms": 129.0,
+            "histogramP95Ms": 600.0,
+            "histogramP99Ms": 900.0,
+            "p50Ms": 133.594597,
+            "p95Ms": 616.860711,
+            "p99Ms": 949.355885,
+            "rawMaxMs": 949.355885,
+            "rawOver50Ms": 82,
+            "rawOver100Ms": 67,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 74,
+              "High input latency": 4,
+              "Slow UI thread": 79,
+              "Slow bitmap uploads": 0,
+              "Slow issue draw commands": 58,
+              "Frame deadline missed": 83
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 85,
+                "p50": 49.999998,
+                "p95": 383.333318,
+                "p99": 799.999968
+              },
+              "uiWorkMs": {
+                "samples": 85,
+                "p50": 45.272628,
+                "p95": 205.726339,
+                "p99": 288.716439
+              },
+              "syncWaitMs": {
+                "samples": 85,
+                "p50": 2.518918,
+                "p95": 11.171561,
+                "p99": 15.833739
+              },
+              "renderCompletionMs": {
+                "samples": 85,
+                "p50": 18.783124,
+                "p95": 37.910462,
+                "p99": 65.193952
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 8.0,
+                "maxCpuPercent": 21.0
+              },
+              "hades": {
+                "meanCpuPercent": 2.18,
+                "maxCpuPercent": 7.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 84.82,
+                "maxCpuPercent": 96.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 6.18,
+                "maxCpuPercent": 13.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 364,
+                "rasterBuilds": 109,
+                "rasterBytes": 33288192,
+                "rasterTiles": 45,
+                "mapRenders": 32,
+                "geographyRenders": 26,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 373414,
+            "reportedFrames": 81,
+            "frames": 81,
+            "timingSource": "framestats",
+            "rawWindowTruncated": false,
+            "histogramP50Ms": 109.0,
+            "histogramP95Ms": 550.0,
+            "histogramP99Ms": 700.0,
+            "p50Ms": 120.798148,
+            "p95Ms": 569.163126,
+            "p99Ms": 750.209423,
+            "rawMaxMs": 750.209423,
+            "rawOver50Ms": 78,
+            "rawOver100Ms": 63,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 63,
+              "High input latency": 12,
+              "Slow UI thread": 72,
+              "Slow bitmap uploads": 2,
+              "Slow issue draw commands": 61,
+              "Frame deadline missed": 75
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 81,
+                "p50": 33.333332,
+                "p95": 416.66665,
+                "p99": 699.999972
+              },
+              "uiWorkMs": {
+                "samples": 81,
+                "p50": 44.75031,
+                "p95": 222.383079,
+                "p99": 274.531223
+              },
+              "syncWaitMs": {
+                "samples": 81,
+                "p50": 2.690788,
+                "p95": 10.522456,
+                "p99": 18.544925
+              },
+              "renderCompletionMs": {
+                "samples": 81,
+                "p50": 20.729068,
+                "p95": 39.789801,
+                "p99": 104.626207
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 7.27,
+                "maxCpuPercent": 19.0
+              },
+              "hades": {
+                "meanCpuPercent": 1.91,
+                "maxCpuPercent": 7.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 84.91,
+                "maxCpuPercent": 95.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 7.0,
+                "maxCpuPercent": 12.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 364,
+                "rasterBuilds": 110,
+                "rasterBytes": 33288192,
+                "rasterTiles": 45,
+                "mapRenders": 34,
+                "geographyRenders": 28,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "04-world-pan",
+          "before": {
+            "pssKiB": 361794,
+            "reportedFrames": 186,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 113.0,
+            "histogramP95Ms": 150.0,
+            "histogramP99Ms": 150.0,
+            "p50Ms": 118.589281,
+            "p95Ms": 152.264462,
+            "p99Ms": 165.994447,
+            "rawMaxMs": 166.842876,
+            "rawOver50Ms": 117,
+            "rawOver100Ms": 108,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 157,
+              "High input latency": 35,
+              "Slow UI thread": 159,
+              "Slow bitmap uploads": 3,
+              "Slow issue draw commands": 151,
+              "Frame deadline missed": 166
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 33.333332,
+                "p95": 49.999998,
+                "p99": 116.666662
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 46.665977,
+                "p95": 58.95862,
+                "p99": 62.39101
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 5.511782,
+                "p95": 17.065733,
+                "p99": 19.009744
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 22.563278,
+                "p95": 57.232583,
+                "p99": 63.777839
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": {
+              "landFraction": 0.2947,
+              "samplePixels": 287232
+            },
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 22.24,
+                "maxCpuPercent": 32.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 60.51,
+                "maxCpuPercent": 73.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.26,
+                "maxCpuPercent": 3.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 364,
+                "rasterBuilds": 109,
+                "rasterBytes": 33288192,
+                "rasterTiles": 45,
+                "mapRenders": 38,
+                "geographyRenders": 32,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 380882,
+            "reportedFrames": 177,
+            "frames": 119,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 121.0,
+            "histogramP95Ms": 150.0,
+            "histogramP99Ms": 150.0,
+            "p50Ms": 122.204143,
+            "p95Ms": 158.710841,
+            "p99Ms": 167.757839,
+            "rawMaxMs": 183.498937,
+            "rawOver50Ms": 116,
+            "rawOver100Ms": 105,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 156,
+              "High input latency": 24,
+              "Slow UI thread": 159,
+              "Slow bitmap uploads": 6,
+              "Slow issue draw commands": 151,
+              "Frame deadline missed": 164
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 119,
+                "p50": 33.333332,
+                "p95": 49.999998,
+                "p99": 66.666664
+              },
+              "uiWorkMs": {
+                "samples": 119,
+                "p50": 48.19941,
+                "p95": 64.518809,
+                "p99": 70.64207
+              },
+              "syncWaitMs": {
+                "samples": 119,
+                "p50": 4.709433,
+                "p95": 17.903989,
+                "p99": 23.970592
+              },
+              "renderCompletionMs": {
+                "samples": 119,
+                "p50": 21.894841,
+                "p95": 62.517112,
+                "p99": 68.104615
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": {
+              "landFraction": 0.2892,
+              "samplePixels": 287232
+            },
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 20.95,
+                "maxCpuPercent": 27.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 62.54,
+                "maxCpuPercent": 75.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.35,
+                "maxCpuPercent": 4.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 364,
+                "rasterBuilds": 110,
+                "rasterBytes": 33288192,
+                "rasterTiles": 45,
+                "mapRenders": 40,
+                "geographyRenders": 34,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "05-local-labels-armies",
+          "before": {
+            "pssKiB": 390558,
+            "reportedFrames": 273,
+            "frames": 119,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 101.0,
+            "histogramP99Ms": 109.0,
+            "p50Ms": 83.809,
+            "p95Ms": 104.757275,
+            "p99Ms": 112.170638,
+            "rawMaxMs": 120.001873,
+            "rawOver50Ms": 115,
+            "rawOver100Ms": 35,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 158,
+              "High input latency": 105,
+              "Slow UI thread": 213,
+              "Slow bitmap uploads": 2,
+              "Slow issue draw commands": 212,
+              "Frame deadline missed": 219
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 119,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 66.666664
+              },
+              "uiWorkMs": {
+                "samples": 119,
+                "p50": 29.282609,
+                "p95": 42.58862,
+                "p99": 46.125723
+              },
+              "syncWaitMs": {
+                "samples": 119,
+                "p50": 4.404297,
+                "p95": 15.819231,
+                "p99": 23.911324
+              },
+              "renderCompletionMs": {
+                "samples": 119,
+                "p50": 25.682936,
+                "p95": 40.056337,
+                "p99": 48.712033
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": {
+              "landFraction": 0.7272,
+              "samplePixels": 287232
+            },
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 25.76,
+                "maxCpuPercent": 32.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.63,
+                "maxCpuPercent": 6.9
+              },
+              "main-ui": {
+                "meanCpuPercent": 44.45,
+                "maxCpuPercent": 53.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.71,
+                "maxCpuPercent": 4.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3227,
+                "rasterBuilds": 148,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 47,
+                "geographyRenders": 41,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 403958,
+            "reportedFrames": 267,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 105.0,
+            "histogramP99Ms": 117.0,
+            "p50Ms": 84.650218,
+            "p95Ms": 108.732588,
+            "p99Ms": 118.003437,
+            "rawMaxMs": 118.92936,
+            "rawOver50Ms": 114,
+            "rawOver100Ms": 31,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 151,
+              "High input latency": 104,
+              "Slow UI thread": 206,
+              "Slow bitmap uploads": 4,
+              "Slow issue draw commands": 205,
+              "Frame deadline missed": 212
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 49.999998
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 28.373884,
+                "p95": 45.272287,
+                "p99": 50.583312
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 4.413215,
+                "p95": 16.622322,
+                "p99": 18.132595
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 23.928697,
+                "p95": 42.552521,
+                "p99": 47.28837
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": {
+              "landFraction": 0.7497,
+              "samplePixels": 287232
+            },
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 25.78,
+                "maxCpuPercent": 33.6
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 45.23,
+                "maxCpuPercent": 51.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.0,
+                "maxCpuPercent": 6.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3227,
+                "rasterBuilds": 150,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 50,
+                "geographyRenders": 43,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "06-terrain-pan",
+          "before": {
+            "pssKiB": 440464,
+            "reportedFrames": 264,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 109.0,
+            "histogramP99Ms": 113.0,
+            "p50Ms": 86.329157,
+            "p95Ms": 116.895704,
+            "p99Ms": 117.764503,
+            "rawMaxMs": 118.378161,
+            "rawOver50Ms": 113,
+            "rawOver100Ms": 44,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 161,
+              "High input latency": 80,
+              "Slow UI thread": 218,
+              "Slow bitmap uploads": 6,
+              "Slow issue draw commands": 211,
+              "Frame deadline missed": 224
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 49.999998
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 29.874694,
+                "p95": 45.470966,
+                "p99": 47.708489
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 4.065282,
+                "p95": 12.12427,
+                "p99": 23.292658
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 27.240821,
+                "p95": 42.556296,
+                "p99": 50.853957
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 25.18,
+                "maxCpuPercent": 32.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.73,
+                "maxCpuPercent": 7.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 44.73,
+                "maxCpuPercent": 53.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.0,
+                "maxCpuPercent": 5.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 213,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 59,
+                "geographyRenders": 51,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 352990,
+            "reportedFrames": 273,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 101.0,
+            "histogramP99Ms": 117.0,
+            "p50Ms": 84.987448,
+            "p95Ms": 102.394427,
+            "p99Ms": 116.327239,
+            "rawMaxMs": 124.420237,
+            "rawOver50Ms": 112,
+            "rawOver100Ms": 28,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 168,
+              "High input latency": 107,
+              "Slow UI thread": 212,
+              "Slow bitmap uploads": 2,
+              "Slow issue draw commands": 205,
+              "Frame deadline missed": 217
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 49.999998
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 28.930943,
+                "p95": 44.063341,
+                "p99": 52.074346
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 3.927872,
+                "p95": 16.337609,
+                "p99": 21.263206
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 24.949692,
+                "p95": 39.045406,
+                "p99": 61.390169
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 25.43,
+                "maxCpuPercent": 33.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.64,
+                "maxCpuPercent": 6.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 44.14,
+                "maxCpuPercent": 51.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.17,
+                "maxCpuPercent": 6.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 216,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 62,
+                "geographyRenders": 54,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "07-military-overlay",
+          "before": {
+            "pssKiB": 349844,
+            "reportedFrames": 270,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 101.0,
+            "histogramP99Ms": 117.0,
+            "p50Ms": 85.898996,
+            "p95Ms": 102.286379,
+            "p99Ms": 117.102035,
+            "rawMaxMs": 117.729179,
+            "rawOver50Ms": 116,
+            "rawOver100Ms": 31,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 156,
+              "High input latency": 96,
+              "Slow UI thread": 216,
+              "Slow bitmap uploads": 4,
+              "Slow issue draw commands": 207,
+              "Frame deadline missed": 221
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 49.999998
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 29.940957,
+                "p95": 43.214029,
+                "p99": 44.679752
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 3.863696,
+                "p95": 12.808496,
+                "p99": 17.675214
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 25.315944,
+                "p95": 41.349516,
+                "p99": 44.300774
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 24.28,
+                "maxCpuPercent": 30.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 45.67,
+                "maxCpuPercent": 54.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.99,
+                "maxCpuPercent": 4.9
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 279,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 71,
+                "geographyRenders": 62,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 367014,
+            "reportedFrames": 268,
+            "frames": 119,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 109.0,
+            "histogramP99Ms": 117.0,
+            "p50Ms": 85.108021,
+            "p95Ms": 113.950763,
+            "p99Ms": 118.188189,
+            "rawMaxMs": 118.336486,
+            "rawOver50Ms": 113,
+            "rawOver100Ms": 28,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 158,
+              "High input latency": 115,
+              "Slow UI thread": 207,
+              "Slow bitmap uploads": 8,
+              "Slow issue draw commands": 202,
+              "Frame deadline missed": 210
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 119,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 49.999998
+              },
+              "uiWorkMs": {
+                "samples": 119,
+                "p50": 29.034885,
+                "p95": 44.969987,
+                "p99": 50.678214
+              },
+              "syncWaitMs": {
+                "samples": 119,
+                "p50": 4.243033,
+                "p95": 14.429036,
+                "p99": 22.610196
+              },
+              "renderCompletionMs": {
+                "samples": 119,
+                "p50": 23.883019,
+                "p95": 39.785053,
+                "p99": 50.995601
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 25.15,
+                "maxCpuPercent": 33.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 44.86,
+                "maxCpuPercent": 52.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.09,
+                "maxCpuPercent": 5.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 282,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 74,
+                "geographyRenders": 65,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "08-panel-open",
+          "before": {
+            "pssKiB": 392984,
+            "reportedFrames": 252,
+            "frames": 118,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 89.0,
+            "histogramP95Ms": 117.0,
+            "histogramP99Ms": 150.0,
+            "p50Ms": 100.122078,
+            "p95Ms": 116.796235,
+            "p99Ms": 118.06509,
+            "rawMaxMs": 132.083984,
+            "rawOver50Ms": 113,
+            "rawOver100Ms": 60,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 171,
+              "High input latency": 76,
+              "Slow UI thread": 203,
+              "Slow bitmap uploads": 8,
+              "Slow issue draw commands": 204,
+              "Frame deadline missed": 211
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 118,
+                "p50": 16.666666,
+                "p95": 49.999998,
+                "p99": 66.666664
+              },
+              "uiWorkMs": {
+                "samples": 118,
+                "p50": 31.105361,
+                "p95": 41.177615,
+                "p99": 47.152352
+              },
+              "syncWaitMs": {
+                "samples": 118,
+                "p50": 3.806608,
+                "p95": 20.328571,
+                "p99": 24.593855
+              },
+              "renderCompletionMs": {
+                "samples": 118,
+                "p50": 31.371505,
+                "p95": 46.357763,
+                "p99": 53.340217
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 29.82,
+                "maxCpuPercent": 36.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.73,
+                "maxCpuPercent": 7.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 43.09,
+                "maxCpuPercent": 49.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.0,
+                "maxCpuPercent": 4.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 345,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 83,
+                "geographyRenders": 73,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 418820,
+            "reportedFrames": 251,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 93.0,
+            "histogramP95Ms": 113.0,
+            "histogramP99Ms": 133.0,
+            "p50Ms": 100.190809,
+            "p95Ms": 117.315464,
+            "p99Ms": 133.516705,
+            "rawMaxMs": 133.519376,
+            "rawOver50Ms": 117,
+            "rawOver100Ms": 67,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 179,
+              "High input latency": 68,
+              "Slow UI thread": 210,
+              "Slow bitmap uploads": 5,
+              "Slow issue draw commands": 208,
+              "Frame deadline missed": 215
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 66.666664
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 30.905248,
+                "p95": 48.623737,
+                "p99": 49.213956
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 4.770314,
+                "p95": 16.961821,
+                "p99": 20.358226
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 29.686783,
+                "p95": 49.758517,
+                "p99": 52.585697
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 30.0,
+                "maxCpuPercent": 35.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.64,
+                "maxCpuPercent": 7.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 46.73,
+                "maxCpuPercent": 55.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.0,
+                "maxCpuPercent": 4.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 348,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 86,
+                "geographyRenders": 76,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "09-panel-closed",
+          "before": {
+            "pssKiB": 349031,
+            "reportedFrames": 274,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 105.0,
+            "histogramP99Ms": 117.0,
+            "p50Ms": 84.332993,
+            "p95Ms": 115.911555,
+            "p99Ms": 117.074415,
+            "rawMaxMs": 118.896991,
+            "rawOver50Ms": 115,
+            "rawOver100Ms": 28,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 160,
+              "High input latency": 115,
+              "Slow UI thread": 207,
+              "Slow bitmap uploads": 9,
+              "Slow issue draw commands": 196,
+              "Frame deadline missed": 213
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 49.999998
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 28.863207,
+                "p95": 43.454443,
+                "p99": 47.163337
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 4.072865,
+                "p95": 12.457472,
+                "p99": 19.521488
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 24.33383,
+                "p95": 42.302002,
+                "p99": 54.579662
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 25.45,
+                "maxCpuPercent": 29.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.73,
+                "maxCpuPercent": 7.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 44.73,
+                "maxCpuPercent": 51.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.09,
+                "maxCpuPercent": 5.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 381,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 93,
+                "geographyRenders": 83,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 360616,
+            "reportedFrames": 270,
+            "frames": 118,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 105.0,
+            "histogramP99Ms": 125.0,
+            "p50Ms": 85.51311,
+            "p95Ms": 105.709157,
+            "p99Ms": 117.096069,
+            "rawMaxMs": 118.098407,
+            "rawOver50Ms": 110,
+            "rawOver100Ms": 39,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 161,
+              "High input latency": 118,
+              "Slow UI thread": 201,
+              "Slow bitmap uploads": 4,
+              "Slow issue draw commands": 199,
+              "Frame deadline missed": 207
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 118,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 49.999998
+              },
+              "uiWorkMs": {
+                "samples": 118,
+                "p50": 29.438623,
+                "p95": 42.870986,
+                "p99": 51.136199
+              },
+              "syncWaitMs": {
+                "samples": 118,
+                "p50": 3.699909,
+                "p95": 13.567853,
+                "p99": 18.942042
+              },
+              "renderCompletionMs": {
+                "samples": 118,
+                "p50": 26.112059,
+                "p95": 42.302967,
+                "p99": 47.336579
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 25.57,
+                "maxCpuPercent": 31.6
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 43.73,
+                "maxCpuPercent": 50.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.98,
+                "maxCpuPercent": 4.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 384,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 96,
+                "geographyRenders": 86,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "reverse": {
+      "baselineRuntime": "47b0db4f8b220e9ea89998afaac035239b64f5e0",
+      "baselineRun": "37971350100",
+      "candidateRuntime": "d7c3d593802f2edf27894f92fe10928341df0080",
+      "candidateRun": "38021043667",
+      "comparisonRuntime": "d3d3dfd4a39069a4a4e3dc0977ed1aaae30d735f",
+      "comparisonRun": "38024943471",
+      "note": "Paired baseline/candidate on one SwiftShader API35 emulator with identical real-pointer gesture driver, offline paused campaign, Balanced and adaptive off. Native frame completion and host software rendering only; physical Redmi acceptance remains pending. gfxinfo histogram percentiles are used when raw timestamps are unavailable.",
+      "protocol": "fixed-save-reset-v2",
+      "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+      "fixtureStateChecksum": "e8befae1",
+      "rows": [
+        {
+          "scenario": "01-idle",
+          "before": {
+            "pssKiB": 363489,
+            "reportedFrames": 0,
+            "frames": 0,
+            "timingSource": "idle-no-frames",
+            "rawWindowTruncated": false,
+            "histogramP50Ms": null,
+            "histogramP95Ms": null,
+            "histogramP99Ms": null,
+            "p50Ms": null,
+            "p95Ms": null,
+            "p99Ms": null,
+            "rawMaxMs": null,
+            "rawOver50Ms": 0,
+            "rawOver100Ms": 0,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 0,
+              "High input latency": 0,
+              "Slow UI thread": 0,
+              "Slow bitmap uploads": 0,
+              "Slow issue draw commands": 0,
+              "Frame deadline missed": 0
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              },
+              "uiWorkMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              },
+              "syncWaitMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              },
+              "renderCompletionMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": {
+              "landFraction": 0.3676,
+              "samplePixels": 287232
+            },
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 0.91,
+                "maxCpuPercent": 2.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 0.09,
+                "maxCpuPercent": 1.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 254,
+                "rasterBuilds": 56,
+                "rasterBytes": 33119680,
+                "rasterTiles": 28,
+                "mapRenders": 10,
+                "geographyRenders": 4,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 347642,
+            "reportedFrames": 0,
+            "frames": 0,
+            "timingSource": "idle-no-frames",
+            "rawWindowTruncated": false,
+            "histogramP50Ms": null,
+            "histogramP95Ms": null,
+            "histogramP99Ms": null,
+            "p50Ms": null,
+            "p95Ms": null,
+            "p99Ms": null,
+            "rawMaxMs": null,
+            "rawOver50Ms": 0,
+            "rawOver100Ms": 0,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 0,
+              "High input latency": 0,
+              "Slow UI thread": 0,
+              "Slow bitmap uploads": 0,
+              "Slow issue draw commands": 0,
+              "Frame deadline missed": 0
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              },
+              "uiWorkMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              },
+              "syncWaitMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              },
+              "renderCompletionMs": {
+                "samples": 0,
+                "p50": null,
+                "p95": null,
+                "p99": null
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": {
+              "landFraction": 0.3663,
+              "samplePixels": 287232
+            },
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 0.82,
+                "maxCpuPercent": 2.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 0.09,
+                "maxCpuPercent": 1.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 254,
+                "rasterBuilds": 56,
+                "rasterBytes": 33119680,
+                "rasterTiles": 28,
+                "mapRenders": 9,
+                "geographyRenders": 4,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "02-medium-pan",
+          "before": {
+            "pssKiB": 344169,
+            "reportedFrames": 173,
+            "frames": 118,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 125.0,
+            "histogramP95Ms": 150.0,
+            "histogramP99Ms": 200.0,
+            "p50Ms": 132.35289,
+            "p95Ms": 165.265768,
+            "p99Ms": 230.825939,
+            "rawMaxMs": 283.659943,
+            "rawOver50Ms": 116,
+            "rawOver100Ms": 108,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 156,
+              "High input latency": 19,
+              "Slow UI thread": 155,
+              "Slow bitmap uploads": 4,
+              "Slow issue draw commands": 147,
+              "Frame deadline missed": 162
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 118,
+                "p50": 33.333332,
+                "p95": 66.666664,
+                "p99": 116.666662
+              },
+              "uiWorkMs": {
+                "samples": 118,
+                "p50": 45.710027,
+                "p95": 62.703155,
+                "p99": 68.970454
+              },
+              "syncWaitMs": {
+                "samples": 118,
+                "p50": 6.071313,
+                "p95": 14.501995,
+                "p99": 21.782742
+              },
+              "renderCompletionMs": {
+                "samples": 118,
+                "p50": 27.017803,
+                "p95": 58.660773,
+                "p99": 63.737684
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 23.97,
+                "maxCpuPercent": 33.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.72,
+                "maxCpuPercent": 7.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 61.33,
+                "maxCpuPercent": 77.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.43,
+                "maxCpuPercent": 9.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 288,
+                "rasterBuilds": 60,
+                "rasterBytes": 33119680,
+                "rasterTiles": 24,
+                "mapRenders": 17,
+                "geographyRenders": 11,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 335794,
+            "reportedFrames": 178,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 117.0,
+            "histogramP95Ms": 150.0,
+            "histogramP99Ms": 150.0,
+            "p50Ms": 125.786951,
+            "p95Ms": 167.096157,
+            "p99Ms": 179.318377,
+            "rawMaxMs": 182.615889,
+            "rawOver50Ms": 119,
+            "rawOver100Ms": 109,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 151,
+              "High input latency": 36,
+              "Slow UI thread": 154,
+              "Slow bitmap uploads": 4,
+              "Slow issue draw commands": 142,
+              "Frame deadline missed": 158
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 33.333332,
+                "p95": 66.666664,
+                "p99": 133.333328
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 45.588999,
+                "p95": 63.612278,
+                "p99": 70.133723
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 4.677152,
+                "p95": 17.638534,
+                "p99": 19.735134
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 27.140724,
+                "p95": 59.292841,
+                "p99": 71.507601
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 24.18,
+                "maxCpuPercent": 31.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.82,
+                "maxCpuPercent": 8.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 61.73,
+                "maxCpuPercent": 71.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.36,
+                "maxCpuPercent": 7.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 288,
+                "rasterBuilds": 60,
+                "rasterBytes": 33119680,
+                "rasterTiles": 24,
+                "mapRenders": 15,
+                "geographyRenders": 10,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "03-pinch",
+          "before": {
+            "pssKiB": 377328,
+            "reportedFrames": 80,
+            "frames": 80,
+            "timingSource": "framestats",
+            "rawWindowTruncated": false,
+            "histogramP50Ms": 113.0,
+            "histogramP95Ms": 650.0,
+            "histogramP99Ms": 1150.0,
+            "p50Ms": 121.269889,
+            "p95Ms": 683.538728,
+            "p99Ms": 1180.416977,
+            "rawMaxMs": 1180.416977,
+            "rawOver50Ms": 76,
+            "rawOver100Ms": 56,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 60,
+              "High input latency": 17,
+              "Slow UI thread": 67,
+              "Slow bitmap uploads": 0,
+              "Slow issue draw commands": 54,
+              "Frame deadline missed": 71
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 80,
+                "p50": 33.333332,
+                "p95": 533.333312,
+                "p99": 1166.66662
+              },
+              "uiWorkMs": {
+                "samples": 80,
+                "p50": 43.492416,
+                "p95": 167.754081,
+                "p99": 297.19564
+              },
+              "syncWaitMs": {
+                "samples": 80,
+                "p50": 3.532458,
+                "p95": 10.973928,
+                "p99": 19.216417
+              },
+              "renderCompletionMs": {
+                "samples": 80,
+                "p50": 20.253764,
+                "p95": 51.304257,
+                "p99": 70.739524
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 7.0,
+                "maxCpuPercent": 20.0
+              },
+              "hades": {
+                "meanCpuPercent": 2.18,
+                "maxCpuPercent": 7.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 85.64,
+                "maxCpuPercent": 99.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 5.64,
+                "maxCpuPercent": 14.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 364,
+                "rasterBuilds": 111,
+                "rasterBytes": 33288192,
+                "rasterTiles": 45,
+                "mapRenders": 31,
+                "geographyRenders": 25,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 368770,
+            "reportedFrames": 81,
+            "frames": 81,
+            "timingSource": "framestats",
+            "rawWindowTruncated": false,
+            "histogramP50Ms": 129.0,
+            "histogramP95Ms": 500.0,
+            "histogramP99Ms": 1150.0,
+            "p50Ms": 133.502865,
+            "p95Ms": 522.385483,
+            "p99Ms": 1183.754895,
+            "rawMaxMs": 1183.754895,
+            "rawOver50Ms": 77,
+            "rawOver100Ms": 58,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 62,
+              "High input latency": 9,
+              "Slow UI thread": 70,
+              "Slow bitmap uploads": 1,
+              "Slow issue draw commands": 57,
+              "Frame deadline missed": 75
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 81,
+                "p50": 49.999998,
+                "p95": 283.333322,
+                "p99": 983.333294
+              },
+              "uiWorkMs": {
+                "samples": 81,
+                "p50": 47.876983,
+                "p95": 182.266349,
+                "p99": 267.261631
+              },
+              "syncWaitMs": {
+                "samples": 81,
+                "p50": 2.685922,
+                "p95": 9.589834,
+                "p99": 14.84452
+              },
+              "renderCompletionMs": {
+                "samples": 81,
+                "p50": 19.051976,
+                "p95": 48.776323,
+                "p99": 65.930126
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 7.91,
+                "maxCpuPercent": 20.0
+              },
+              "hades": {
+                "meanCpuPercent": 2.0,
+                "maxCpuPercent": 7.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 84.55,
+                "maxCpuPercent": 94.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 5.64,
+                "maxCpuPercent": 13.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 364,
+                "rasterBuilds": 92,
+                "rasterBytes": 33253376,
+                "rasterTiles": 45,
+                "mapRenders": 29,
+                "geographyRenders": 24,
+                "frameSamples": 15,
+                "frameP95Ms": 200,
+                "frameP99Ms": 200,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "04-world-pan",
+          "before": {
+            "pssKiB": 383481,
+            "reportedFrames": 182,
+            "frames": 119,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 117.0,
+            "histogramP95Ms": 150.0,
+            "histogramP99Ms": 150.0,
+            "p50Ms": 120.763401,
+            "p95Ms": 156.456354,
+            "p99Ms": 173.384078,
+            "rawMaxMs": 183.545122,
+            "rawOver50Ms": 116,
+            "rawOver100Ms": 101,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 158,
+              "High input latency": 26,
+              "Slow UI thread": 163,
+              "Slow bitmap uploads": 4,
+              "Slow issue draw commands": 149,
+              "Frame deadline missed": 167
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 119,
+                "p50": 33.333332,
+                "p95": 49.999998,
+                "p99": 66.666664
+              },
+              "uiWorkMs": {
+                "samples": 119,
+                "p50": 47.04294,
+                "p95": 62.133511,
+                "p99": 67.934964
+              },
+              "syncWaitMs": {
+                "samples": 119,
+                "p50": 4.329975,
+                "p95": 14.155288,
+                "p99": 17.940487
+              },
+              "renderCompletionMs": {
+                "samples": 119,
+                "p50": 23.927575,
+                "p95": 53.413994,
+                "p99": 63.22763
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": {
+              "landFraction": 0.2932,
+              "samplePixels": 287232
+            },
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 21.47,
+                "maxCpuPercent": 30.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 61.27,
+                "maxCpuPercent": 70.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.35,
+                "maxCpuPercent": 3.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 364,
+                "rasterBuilds": 111,
+                "rasterBytes": 33288192,
+                "rasterTiles": 45,
+                "mapRenders": 37,
+                "geographyRenders": 31,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 373943,
+            "reportedFrames": 183,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 117.0,
+            "histogramP95Ms": 150.0,
+            "histogramP99Ms": 150.0,
+            "p50Ms": 129.176897,
+            "p95Ms": 166.827854,
+            "p99Ms": 178.83544,
+            "rawMaxMs": 184.481391,
+            "rawOver50Ms": 119,
+            "rawOver100Ms": 109,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 163,
+              "High input latency": 21,
+              "Slow UI thread": 164,
+              "Slow bitmap uploads": 2,
+              "Slow issue draw commands": 160,
+              "Frame deadline missed": 171
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 33.333332,
+                "p95": 49.999998,
+                "p99": 116.666662
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 47.731836,
+                "p95": 62.141438,
+                "p99": 69.027549
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 5.593044,
+                "p95": 15.345708,
+                "p99": 20.847673
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 25.625281,
+                "p95": 62.303088,
+                "p99": 68.267645
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": {
+              "landFraction": 0.2967,
+              "samplePixels": 287232
+            },
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 22.23,
+                "maxCpuPercent": 31.6
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 64.0,
+                "maxCpuPercent": 72.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.26,
+                "maxCpuPercent": 4.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 364,
+                "rasterBuilds": 108,
+                "rasterBytes": 33288192,
+                "rasterTiles": 45,
+                "mapRenders": 35,
+                "geographyRenders": 30,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "05-local-labels-armies",
+          "before": {
+            "pssKiB": 412556,
+            "reportedFrames": 274,
+            "frames": 119,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 77.0,
+            "histogramP95Ms": 101.0,
+            "histogramP99Ms": 150.0,
+            "p50Ms": 84.108452,
+            "p95Ms": 103.43131,
+            "p99Ms": 116.842391,
+            "rawMaxMs": 119.557125,
+            "rawOver50Ms": 113,
+            "rawOver100Ms": 30,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 164,
+              "High input latency": 90,
+              "Slow UI thread": 220,
+              "Slow bitmap uploads": 2,
+              "Slow issue draw commands": 214,
+              "Frame deadline missed": 228
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 119,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 33.333332
+              },
+              "uiWorkMs": {
+                "samples": 119,
+                "p50": 27.491228,
+                "p95": 41.236151,
+                "p99": 48.014434
+              },
+              "syncWaitMs": {
+                "samples": 119,
+                "p50": 5.296908,
+                "p95": 15.150537,
+                "p99": 20.195389
+              },
+              "renderCompletionMs": {
+                "samples": 119,
+                "p50": 24.08008,
+                "p95": 41.619363,
+                "p99": 49.668464
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": {
+              "landFraction": 0.7394,
+              "samplePixels": 287232
+            },
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 24.73,
+                "maxCpuPercent": 30.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.82,
+                "maxCpuPercent": 8.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 44.55,
+                "maxCpuPercent": 52.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.82,
+                "maxCpuPercent": 6.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3227,
+                "rasterBuilds": 152,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 47,
+                "geographyRenders": 40,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 399222,
+            "reportedFrames": 271,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 105.0,
+            "histogramP99Ms": 117.0,
+            "p50Ms": 86.204616,
+            "p95Ms": 116.809124,
+            "p99Ms": 117.624295,
+            "rawMaxMs": 118.828525,
+            "rawOver50Ms": 118,
+            "rawOver100Ms": 36,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 170,
+              "High input latency": 98,
+              "Slow UI thread": 217,
+              "Slow bitmap uploads": 5,
+              "Slow issue draw commands": 210,
+              "Frame deadline missed": 221
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 83.33333
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 29.068406,
+                "p95": 44.957158,
+                "p99": 48.009161
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 5.120061,
+                "p95": 14.452037,
+                "p99": 25.765805
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 24.635372,
+                "p95": 38.755861,
+                "p99": 48.818461
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": {
+              "landFraction": 0.7187,
+              "samplePixels": 287232
+            },
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 26.0,
+                "maxCpuPercent": 30.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.73,
+                "maxCpuPercent": 6.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 44.82,
+                "maxCpuPercent": 51.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.91,
+                "maxCpuPercent": 5.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3227,
+                "rasterBuilds": 146,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 44,
+                "geographyRenders": 39,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "06-terrain-pan",
+          "before": {
+            "pssKiB": 453012,
+            "reportedFrames": 266,
+            "frames": 118,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 109.0,
+            "histogramP99Ms": 125.0,
+            "p50Ms": 84.725581,
+            "p95Ms": 116.866042,
+            "p99Ms": 118.961731,
+            "rawMaxMs": 119.829695,
+            "rawOver50Ms": 110,
+            "rawOver100Ms": 32,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 153,
+              "High input latency": 107,
+              "Slow UI thread": 206,
+              "Slow bitmap uploads": 8,
+              "Slow issue draw commands": 198,
+              "Frame deadline missed": 212
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 118,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 33.333332
+              },
+              "uiWorkMs": {
+                "samples": 118,
+                "p50": 27.91732,
+                "p95": 43.871596,
+                "p99": 45.797495
+              },
+              "syncWaitMs": {
+                "samples": 118,
+                "p50": 3.818491,
+                "p95": 18.81051,
+                "p99": 24.186611
+              },
+              "renderCompletionMs": {
+                "samples": 118,
+                "p50": 25.645692,
+                "p95": 49.299458,
+                "p99": 51.408111
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 26.33,
+                "maxCpuPercent": 31.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.73,
+                "maxCpuPercent": 4.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 45.23,
+                "maxCpuPercent": 54.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.26,
+                "maxCpuPercent": 6.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 218,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 60,
+                "geographyRenders": 51,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 359428,
+            "reportedFrames": 271,
+            "frames": 119,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 101.0,
+            "histogramP99Ms": 113.0,
+            "p50Ms": 85.51381,
+            "p95Ms": 106.251217,
+            "p99Ms": 117.694676,
+            "rawMaxMs": 124.753778,
+            "rawOver50Ms": 114,
+            "rawOver100Ms": 37,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 162,
+              "High input latency": 92,
+              "Slow UI thread": 221,
+              "Slow bitmap uploads": 2,
+              "Slow issue draw commands": 213,
+              "Frame deadline missed": 223
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 119,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 49.999998
+              },
+              "uiWorkMs": {
+                "samples": 119,
+                "p50": 28.630781,
+                "p95": 44.305679,
+                "p99": 48.117174
+              },
+              "syncWaitMs": {
+                "samples": 119,
+                "p50": 4.084617,
+                "p95": 16.125986,
+                "p99": 21.700379
+              },
+              "renderCompletionMs": {
+                "samples": 119,
+                "p50": 25.919925,
+                "p95": 43.110877,
+                "p99": 49.33614
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 25.55,
+                "maxCpuPercent": 31.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.73,
+                "maxCpuPercent": 6.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 45.18,
+                "maxCpuPercent": 51.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.36,
+                "maxCpuPercent": 5.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 212,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 57,
+                "geographyRenders": 50,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "07-military-overlay",
+          "before": {
+            "pssKiB": 344559,
+            "reportedFrames": 276,
+            "frames": 118,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 77.0,
+            "histogramP95Ms": 101.0,
+            "histogramP99Ms": 113.0,
+            "p50Ms": 83.644763,
+            "p95Ms": 102.082672,
+            "p99Ms": 115.123935,
+            "rawMaxMs": 116.823217,
+            "rawOver50Ms": 110,
+            "rawOver100Ms": 27,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 143,
+              "High input latency": 120,
+              "Slow UI thread": 210,
+              "Slow bitmap uploads": 0,
+              "Slow issue draw commands": 194,
+              "Frame deadline missed": 213
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 118,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 49.999998
+              },
+              "uiWorkMs": {
+                "samples": 118,
+                "p50": 29.150919,
+                "p95": 42.188077,
+                "p99": 48.912908
+              },
+              "syncWaitMs": {
+                "samples": 118,
+                "p50": 3.974863,
+                "p95": 12.994757,
+                "p99": 16.658815
+              },
+              "renderCompletionMs": {
+                "samples": 118,
+                "p50": 24.500334,
+                "p95": 40.793689,
+                "p99": 43.815982
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 26.25,
+                "maxCpuPercent": 29.7
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 44.67,
+                "maxCpuPercent": 52.4
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.81,
+                "maxCpuPercent": 4.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 284,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 71,
+                "geographyRenders": 61,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 384960,
+            "reportedFrames": 273,
+            "frames": 119,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 101.0,
+            "histogramP99Ms": 117.0,
+            "p50Ms": 85.410446,
+            "p95Ms": 105.676929,
+            "p99Ms": 116.802304,
+            "rawMaxMs": 116.874527,
+            "rawOver50Ms": 115,
+            "rawOver100Ms": 35,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 168,
+              "High input latency": 101,
+              "Slow UI thread": 215,
+              "Slow bitmap uploads": 3,
+              "Slow issue draw commands": 215,
+              "Frame deadline missed": 221
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 119,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 33.333332
+              },
+              "uiWorkMs": {
+                "samples": 119,
+                "p50": 29.532656,
+                "p95": 41.013403,
+                "p99": 47.947146
+              },
+              "syncWaitMs": {
+                "samples": 119,
+                "p50": 3.993049,
+                "p95": 11.964172,
+                "p99": 16.896699
+              },
+              "renderCompletionMs": {
+                "samples": 119,
+                "p50": 27.664341,
+                "p95": 42.718619,
+                "p99": 46.953814
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 25.0,
+                "maxCpuPercent": 30.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.73,
+                "maxCpuPercent": 7.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 44.64,
+                "maxCpuPercent": 53.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 2.0,
+                "maxCpuPercent": 4.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 278,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 69,
+                "geographyRenders": 61,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "08-panel-open",
+          "before": {
+            "pssKiB": 332665,
+            "reportedFrames": 253,
+            "frames": 119,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 89.0,
+            "histogramP95Ms": 113.0,
+            "histogramP99Ms": 133.0,
+            "p50Ms": 100.208485,
+            "p95Ms": 118.981513,
+            "p99Ms": 133.529511,
+            "rawMaxMs": 135.356566,
+            "rawOver50Ms": 114,
+            "rawOver100Ms": 63,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 175,
+              "High input latency": 72,
+              "Slow UI thread": 204,
+              "Slow bitmap uploads": 4,
+              "Slow issue draw commands": 208,
+              "Frame deadline missed": 213
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 119,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 49.999998
+              },
+              "uiWorkMs": {
+                "samples": 119,
+                "p50": 32.76505,
+                "p95": 46.499898,
+                "p99": 53.967096
+              },
+              "syncWaitMs": {
+                "samples": 119,
+                "p50": 4.608566,
+                "p95": 16.328323,
+                "p99": 19.011552
+              },
+              "renderCompletionMs": {
+                "samples": 119,
+                "p50": 29.253993,
+                "p95": 48.787704,
+                "p99": 51.5162
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 30.52,
+                "maxCpuPercent": 40.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.72,
+                "maxCpuPercent": 6.9
+              },
+              "main-ui": {
+                "meanCpuPercent": 45.14,
+                "maxCpuPercent": 55.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.9,
+                "maxCpuPercent": 4.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 350,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 82,
+                "geographyRenders": 71,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 337658,
+            "reportedFrames": 249,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 85.0,
+            "histogramP95Ms": 113.0,
+            "histogramP99Ms": 133.0,
+            "p50Ms": 91.345835,
+            "p95Ms": 118.218683,
+            "p99Ms": 184.630323,
+            "rawMaxMs": 194.936918,
+            "rawOver50Ms": 114,
+            "rawOver100Ms": 51,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 169,
+              "High input latency": 59,
+              "Slow UI thread": 213,
+              "Slow bitmap uploads": 5,
+              "Slow issue draw commands": 208,
+              "Frame deadline missed": 217
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 49.999998
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 31.294413,
+                "p95": 49.25862,
+                "p99": 56.691483
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 4.6583,
+                "p95": 18.588716,
+                "p99": 27.31179
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 24.850466,
+                "p95": 41.095025,
+                "p99": 53.000863
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 28.76,
+                "maxCpuPercent": 33.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 46.17,
+                "maxCpuPercent": 56.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.91,
+                "maxCpuPercent": 4.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 344,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 80,
+                "geographyRenders": 71,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        },
+        {
+          "scenario": "09-panel-closed",
+          "before": {
+            "pssKiB": 362125,
+            "reportedFrames": 278,
+            "frames": 120,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 105.0,
+            "histogramP99Ms": 117.0,
+            "p50Ms": 85.700917,
+            "p95Ms": 109.918737,
+            "p99Ms": 117.036902,
+            "rawMaxMs": 119.367556,
+            "rawOver50Ms": 113,
+            "rawOver100Ms": 34,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 161,
+              "High input latency": 100,
+              "Slow UI thread": 221,
+              "Slow bitmap uploads": 3,
+              "Slow issue draw commands": 216,
+              "Frame deadline missed": 226
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 120,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 66.666664
+              },
+              "uiWorkMs": {
+                "samples": 120,
+                "p50": 28.652622,
+                "p95": 43.312901,
+                "p99": 47.521486
+              },
+              "syncWaitMs": {
+                "samples": 120,
+                "p50": 4.499009,
+                "p95": 13.784066,
+                "p99": 20.288365
+              },
+              "renderCompletionMs": {
+                "samples": 120,
+                "p50": 26.003781,
+                "p95": 42.254951,
+                "p99": 44.586903
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 26.0,
+                "maxCpuPercent": 31.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 44.18,
+                "maxCpuPercent": 52.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.82,
+                "maxCpuPercent": 4.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 386,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 92,
+                "geographyRenders": 80,
+                "frameSamples": null,
+                "frameP95Ms": null,
+                "frameP99Ms": null,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          },
+          "after": {
+            "pssKiB": 366785,
+            "reportedFrames": 264,
+            "frames": 119,
+            "timingSource": "framestats",
+            "rawWindowTruncated": true,
+            "histogramP50Ms": 81.0,
+            "histogramP95Ms": 101.0,
+            "histogramP99Ms": 117.0,
+            "p50Ms": 84.598095,
+            "p95Ms": 108.420178,
+            "p99Ms": 116.894552,
+            "rawMaxMs": 128.050246,
+            "rawOver50Ms": 112,
+            "rawOver100Ms": 33,
+            "rawOver5000Ms": 0,
+            "hwuiEvents": {
+              "Missed Vsync": 161,
+              "High input latency": 101,
+              "Slow UI thread": 207,
+              "Slow bitmap uploads": 3,
+              "Slow issue draw commands": 200,
+              "Frame deadline missed": 212
+            },
+            "rawStageMs": {
+              "vsyncDelayMs": {
+                "samples": 119,
+                "p50": 16.666666,
+                "p95": 33.333332,
+                "p99": 49.999998
+              },
+              "uiWorkMs": {
+                "samples": 119,
+                "p50": 29.718553,
+                "p95": 43.672285,
+                "p99": 49.574632
+              },
+              "syncWaitMs": {
+                "samples": 119,
+                "p50": 3.905867,
+                "p95": 11.736793,
+                "p99": 16.782478
+              },
+              "renderCompletionMs": {
+                "samples": 119,
+                "p50": 26.274587,
+                "p95": 44.146281,
+                "p99": 48.129895
+              }
+            },
+            "stageNote": "Recent CSV ring only; UI work includes native drawing; render completion is not isolated GPU time. HWUI event counts overlap and are not a count of uniquely dropped display frames.",
+            "mapPaint": null,
+            "diagnosticError": null,
+            "cpuThreads": {
+              "FrescoDecodeExe": {
+                "meanCpuPercent": 0.0,
+                "maxCpuPercent": 0.0
+              },
+              "RenderThread": {
+                "meanCpuPercent": 25.54,
+                "maxCpuPercent": 30.0
+              },
+              "hades": {
+                "meanCpuPercent": 0.82,
+                "maxCpuPercent": 4.0
+              },
+              "main-ui": {
+                "meanCpuPercent": 44.71,
+                "maxCpuPercent": 55.0
+              },
+              "mqt_v_js": {
+                "meanCpuPercent": 1.9,
+                "maxCpuPercent": 5.0
+              }
+            },
+            "cameraTraceSummary": [
+              {
+                "pathBuilds": 3870,
+                "rasterBuilds": 380,
+                "rasterBytes": 33438464,
+                "rasterTiles": 15,
+                "mapRenders": 89,
+                "geographyRenders": 80,
+                "frameSamples": 61,
+                "frameP95Ms": 17,
+                "frameP99Ms": 17,
+                "simulationMs": 0,
+                "networkMs": 0,
+                "cameraUpdates": 0
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "limitations": "HWUI histogram covers full reported capture; raw timestamps are a recent CSV ring, frequently <=120 samples, with P99 sometimes equal to maximum. CPU/PSS are sampled on a SwiftShader emulator. Phase timestamps overlap; render completion is not isolated GPU work. No genuine >=5s completed frame discarded. A previous independent fixed-world run had worse candidate pinch P99 and remains recorded; these replications do not prove universal tail improvement."
+}
