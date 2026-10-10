@@ -2,6 +2,7 @@ import {provinceDefinitions} from './worldDefinitions.ts';
 const sourceRegions=new Map(provinceDefinitions.filter(p=>p.sourceRegions).map(p=>[p.id,p.sourceRegions!]));
 import { provinceBuildingModifiers } from './buildingSystem.ts';
 import { techLevel } from './technologySystem.ts';
+import { espionageModifiers } from './espionageSystem.ts';
 import type { Country, GameState, Province } from './gameTypes.ts';
 
 /** Original scenario deposits/prices, not real geological or market data. */
@@ -71,8 +72,8 @@ export function resourceReport(state: GameState, countryId: string): { type: Res
       row.units+=production.units;row.revenue+=production.revenue*(1+provinceBuildingModifiers(p).resourcePercent/100);
     }
   }
-  const result=[...rows.values()];
+  const result=[...rows.values()],sabotage=espionageModifiers(state,countryId).productionMultiplier;
   const total=state.provinces.reduce((sum,p)=>p.ownerId===countryId&&(p.controllerId??p.ownerId)===countryId&&!p.rebellion?Math.round((sum+provinceProduction(p,country).revenue*(1+provinceBuildingModifiers(p).resourcePercent/100))*1000)/1000:sum,0);
   const row=result.find(r=>r.revenue>0);if(row)row.revenue+=total-result.reduce((sum,r)=>sum+r.revenue,0);
-  return result;
+  return result.map(r=>({...r,units:r.units*sabotage,revenue:r.revenue*sabotage}));
 }

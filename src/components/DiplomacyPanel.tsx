@@ -5,6 +5,7 @@ import {HistoricalArt} from './HistoricalArt';
 import {TREATIES,pairKey,warBetween} from '../../supabase/functions/_shared/diplomacySystem';
 import {diplomaticTermsLabel,diplomacyResponseAvailability} from '../../supabase/functions/_shared/diplomacy2System';
 import {DiplomacyActions,DiplomacyButton} from './DiplomacyActions';
+import {EspionagePanel} from './EspionagePanel';
 import {styles,type StrategyProps} from './StrategyPanel';
 export function DiplomacyPanel({state,playerId,onCommand,initialOpen,initialTargetId}:StrategyProps&{initialTargetId?:string}) {
   const [open,setOpen]=useState(initialOpen??false),[query,setQuery]=useState(''),[targetId,setTargetId]=useState(initialTargetId??'');
@@ -20,6 +21,7 @@ export function DiplomacyPanel({state,playerId,onCommand,initialOpen,initialTarg
       <HistoricalArt name="diplomacy"/>
       <TextInput accessibilityLabel="Поиск страны для дипломатии" placeholder="Название страны" placeholderTextColor={colors.muted} value={query} onChangeText={setQuery} style={[styles.button,styles.title]}/>
       <ScrollView horizontal contentContainerStyle={styles.row}>{Object.values(state.countries).filter(c=>c.id!==id&&c.provinceIds?.length&&`${c.name} ${c.id} ${c.shortName}`.toLowerCase().includes(query.toLowerCase())).slice(0,20).map(c=><Pressable accessibilityRole="button" accessibilityState={{selected:targetId===c.id}} key={c.id} style={styles.option} onPress={()=>setTargetId(c.id)}><Text style={styles.title}>{c.name}{targetId===c.id?' ✓':''}</Text></Pressable>)}</ScrollView>
+      <EspionagePanel state={state} playerId={playerId} onCommand={onCommand} from={id} to={target?.id}/>
       {offers.length>0&&<Text style={styles.title}>Дипломатические предложения</Text>}
       {offers.map(o=>{const canRespond=o.from!==id&&!o.acceptedBy.includes(id),reason=diplomacyResponseAvailability(state,id,o),provinceId=o.terms.kind==='ProvinceTransfer'?o.terms.provinceId:null;return <View key={o.id} style={styles.card}>
         <Text style={styles.title}>{state.countries[o.from]!.name}: {diplomaticTermsLabel(o.terms)}</Text>

@@ -6,10 +6,13 @@ import { BUILDING_TYPES } from './buildingSystem.ts';
 import { assertReligion } from './religionSystem.ts';
 import { assertLoanAmount, assertTaxRate } from './economySystem.ts';
 import { assertDiplomaticTerms, assertDiplomaticAmount } from './diplomacy2System.ts';
+import { ESPIONAGE_MISSIONS } from './espionageSystem.ts';
 import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  START_ESPIONAGE: ['type','playerId','targetId','kind'],
+  CANCEL_ESPIONAGE: ['type','playerId','missionId'],
   SET_TAX_RATE: ['type', 'playerId', 'taxRate'],
   BORROW: ['type', 'playerId', 'amount'],
   REPAY_DEBT: ['type', 'playerId', 'amount'],
@@ -60,6 +63,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (allowed.includes('targetId') && (typeof command.targetId !== 'string' || !countryIds.includes(command.targetId))) throw new Error('Unknown target country');
   if (type === 'DIPLOMATIC_ACTION' && !['Improve','Rival','Guarantee','Cancel'].includes(command.action as string)) throw new Error('Invalid diplomacy action');
   if (type === 'START_RELATION_MISSION' && !['Improve','Damage'].includes(command.kind as string)) throw new Error('Invalid relation mission');
+  if (type === 'START_ESPIONAGE' && (typeof command.kind!=='string'||!Object.hasOwn(ESPIONAGE_MISSIONS,command.kind))) throw new Error('Invalid espionage kind');
   if (type === 'SEND_GIFT') assertDiplomaticAmount(command.amount,false);
   if (type === 'OFFER_DIPLOMACY') assertDiplomaticTerms(command.terms,countryIds);
   if (type === 'OFFER_TREATY' && (typeof command.treaty !== 'string' || !Object.hasOwn(TREATIES,command.treaty))) throw new Error('Invalid treaty type');

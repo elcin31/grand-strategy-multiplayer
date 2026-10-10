@@ -4,6 +4,7 @@ import { provinceProduction } from './resourceSystem.ts';
 import type { Country, GameState } from './gameTypes.ts';
 import { governmentIncome } from './governmentSystem.ts';
 import { diplomacyBudget } from './diplomacy2System.ts';
+import { espionageModifiers } from './espionageSystem.ts';
 
 export const DEFAULT_TAX_RATE = 30;
 export const MIN_TAX_RATE = 10;
@@ -61,8 +62,9 @@ export function recalcEconomy(state: GameState): void {
     const people = population.get(c.id) ?? 0;
     const meanDevelopment = people > 0 ? (development.get(c.id) ?? 0) / people : 0;
     const tradeIncome = money(rawTrade * (.1 + (diplomatic.tradeBonus.get(c.id) ?? 0)) * meanDevelopment / 100 * (.5 + c.stability / 200));
-    const resourceIncome = resources.get(c.id) ?? 0, buildingMaintenance = buildingCosts.get(c.id) ?? 0;
-    const productionIncome=production.get(c.id)??0,administrationMaintenance=administration.get(c.id)??0;
+    const sabotage=espionageModifiers(state,c.id).productionMultiplier;
+    const resourceIncome = money((resources.get(c.id) ?? 0)*sabotage), buildingMaintenance = buildingCosts.get(c.id) ?? 0;
+    const productionIncome=money((production.get(c.id)??0)*sabotage),administrationMaintenance=administration.get(c.id)??0;
     const monthlyIncome = money(taxIncome + tradeIncome + resourceIncome + productionIncome);
     const armyMaintenance = money((troops.get(c.id) ?? 0) / 1000 * ARMY_MAINTENANCE_PER_THOUSAND);
     const interest = money(c.debt! * MONTHLY_INTEREST);

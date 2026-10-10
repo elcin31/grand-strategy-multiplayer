@@ -189,7 +189,7 @@ jobs:
       - uses: reactivecircus/android-emulator-runner@v2
         env:
           CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-          CAMERA_ALLOWED_STATE_VERSION: '13'
+          CAMERA_ALLOWED_STATE_VERSION: '14'
           CAMERA_REQUIRE_SURFACE_PRESENTATION: '1'
         with:
           api-level: 35

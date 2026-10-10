@@ -398,11 +398,21 @@ before_relations=int(re.search(r'отношения (-?\d+)',read_scrolling('Б�
 click_scrolling('Улучшить отношения · 10 PP')
 assert int(re.search(r'отношения (-?\d+)',read_scrolling('Бразилия · отношения ')).group(1))==before_relations, 'Relations mission applied an instant reward'
 assert '0/12 мес.' in read_scrolling('Улучшение отношений: '), 'Diplomatic mission did not start while paused'
+click_scrolling('Разведка и контрразведка ▾')
+click_scrolling('Начать: Контрразведка')
+click_scrolling('Начать: Сбор разведданных')
+assert '0/2 мес.' in read_scrolling('Контрразведка · Германия · '), 'Counterintelligence did not queue while paused'
+screenshot('espionage-queued')
+click_scrolling('Разведка и контрразведка ▴')
 advance_campaign_months(6)
 navigate('Дипломатия')
 click_scrolling('Поиск страны для дипломатии')
 adb('shell','input','text','bra'); adb('shell','input','keyevent','4')
 click_scrolling('Бразилия')
+click_scrolling('Разведка и контрразведка ▾')
+assert 'контрразведка действует' in read_scrolling('Группы: '), 'Guaranteed counterintelligence failed through the real game clock'
+screenshot('espionage-complete')
+click_scrolling('Разведка и контрразведка ▴')
 assert int(re.search(r'отношения (-?\d+)',read_scrolling('Бразилия · отношения ')).group(1))>=before_relations+18, 'Diplomacy mission did not progress through the real clock'
 click_scrolling('Предложить: Ненападение')
 assert 'Ненападение' in read_scrolling('Договоры: ')

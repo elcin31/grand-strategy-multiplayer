@@ -6,6 +6,7 @@ import { monthlyStability, pacifyProvince, suppressRebellion } from './stability
 import { monthlyWar, proposePeace, recordWarBattle, respondPeace } from './warSystem.ts';
 import { declareWar, diplomaticAction, monthlyDiplomacy, offerTreaty, respondTreaty, warBetween } from './diplomacySystem.ts';
 import {startRelationMission,cancelRelationMission,sendGift,sendInsult,offerDiplomacy,respondDiplomacy,terminateTreaty,monthlyDiplomacy2,canEnterTerritory,pruneAccessWithdrawals} from './diplomacy2System.ts';
+import {startEspionage,cancelEspionage,monthlyEspionage} from './espionageSystem.ts';
 import { assignCommander, battleFatigue, combatMultiplier, recoverMilitary, UNITS, type UnitType } from './militarySystem.ts';
 import { monthlyResearch, startResearch, techLevel } from './technologySystem.ts';
 import { buildingModifierTotals, cancelConstructionInProvince, completeConstructions, provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
@@ -29,7 +30,7 @@ const armiesIn = (state: GameState, provinceId: string, ownerId?: CountryId) => 
 const provinceById = (state: GameState, id: string) => state.provinces.find((province) => province.id === id);
 const totalTroops = (armies: Army[]) => armies.reduce((sum, army) => sum + army.troops, 0);
 
-function recalcCountryStats(state: GameState) {
+function recalcCountryStats(state: GameState,withEconomy=true) {
   for (const nation of Object.values(state.countries)) { nation.income = 0; nation.army = 0; if (state.dataset) { nation.population = 0; nation.provinceIds = []; } }
   for (const province of state.provinces) {
     const nation = countryFor(state, province.ownerId);
@@ -39,7 +40,7 @@ function recalcCountryStats(state: GameState) {
   if (state.dataset) for (const nation of Object.values(state.countries)) nation.income = governmentIncome(nation.income, nation.governmentType);
   for (const army of state.armies) countryFor(state, army.ownerId).army += army.troops;
   pruneAccessWithdrawals(state);
-  recalcEconomy(state);
+  if(withEconomy)recalcEconomy(state);
 }
 function entityId(state: GameState, kind: string): string {
   const sequence = state.nextEntityId ?? 1;
@@ -170,6 +171,8 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
       else respondPeace(next,player.countryId,command.warId,command.accept);
       recalcCountryStats(next);recalcPopulationTotals(next);recalcReligiousUnity(next);recalcEconomy(next);checkWinner(next);return next;
     }
+    case 'START_ESPIONAGE':
+    case 'CANCEL_ESPIONAGE':
     case 'DIPLOMATIC_ACTION':
     case 'START_RELATION_MISSION':
     case 'CANCEL_RELATION_MISSION':
@@ -183,6 +186,8 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
     case 'DECLARE_WAR': {
       if (!next.dataset || !['running','paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');
       const player=getPlayer(next,command.playerId);if(!player.countryId)throw new Error('Страна не выбрана');
+      if(command.type==='START_ESPIONAGE')startEspionage(next,player.countryId,command.targetId,command.kind);
+      if(command.type==='CANCEL_ESPIONAGE')cancelEspionage(next,player.countryId,command.missionId);
       if(command.type==='DIPLOMATIC_ACTION')diplomaticAction(next,player.countryId,command.targetId,command.action);
       if(command.type==='START_RELATION_MISSION')startRelationMission(next,player.countryId,command.targetId,command.kind);
       if(command.type==='CANCEL_RELATION_MISSION')cancelRelationMission(next,player.countryId,command.missionId);
@@ -297,9 +302,12 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
       completeConstructions(next);
       monthlyDiplomacy(next);
       monthlyDiplomacy2(next);
+      monthlyEspionage(next);
       monthlyResearch(next);
       recoverMilitary(next);
-      monthlyPopulationGrowth(next); recalcCountryStats(next);
+      // The monthly treasury phase recalculates the budget after government
+      // and religion changes below. Avoid a redundant earlier province pass.
+      monthlyPopulationGrowth(next); recalcCountryStats(next,false);
       const buildingTotals = buildingModifierTotals(next);
       for (const id of countryIds(next)) {
         const nation = countryFor(next, id);

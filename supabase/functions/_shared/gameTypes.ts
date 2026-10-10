@@ -10,6 +10,7 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital';
 
 export interface Country {
+  spyCooldowns?: Record<string,number>;
   warExhaustion?: number;
   aggressiveExpansion?: number;
   overlordId?: string;
@@ -171,6 +172,9 @@ export interface Leader {
 }
 
 export interface GameState {
+  spyMissions?: import('./espionageSystem.ts').SpyMission[];
+  spyReports?: import('./espionageSystem.ts').SpyReport[];
+  spyEffects?: import('./espionageSystem.ts').SpyEffect[];
   relationMissions?: import('./diplomacyTypes.ts').RelationMission[];
   diplomaticOffers?: import('./diplomacyTypes.ts').DiplomaticOffer[];
   diplomaticHistory?: import('./diplomacyTypes.ts').DiplomaticEvent[];
@@ -204,6 +208,8 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'START_ESPIONAGE';playerId:string;targetId:string;kind:import('./espionageSystem.ts').EspionageKind}
+  | {type:'CANCEL_ESPIONAGE';playerId:string;missionId:string}
   | {type:'START_RELATION_MISSION';playerId:string;targetId:string;kind:import('./diplomacyTypes.ts').RelationMissionKind}
   | {type:'CANCEL_RELATION_MISSION';playerId:string;missionId:string}
   | {type:'SEND_GIFT';playerId:string;targetId:string;amount:number}

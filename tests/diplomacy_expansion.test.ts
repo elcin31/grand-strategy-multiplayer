@@ -11,6 +11,7 @@ import {encodeCampaign,decodeCampaign,validateCampaign} from '../src/persistence
 import {CampaignStore,type CampaignFiles} from '../src/persistence/campaignStore';
 import {stateChecksum} from '../supabase/functions/_shared/sessionState';
 import {runStrategicAI} from '../supabase/functions/_shared/aiSystem';
+import {CURRENT_STATE_VERSION} from '../supabase/functions/_shared/stateMigrations';
 import {assertInvariants} from './helpers/invariants';
 import type {GameState,GameCommand} from '../supabase/functions/_shared/gameTypes';
 import type {DiplomaticTerms} from '../supabase/functions/_shared/diplomacyTypes';
@@ -97,7 +98,7 @@ test('fully occupied AI still answers a valid peace offer and invalid diplomacy 
 test('legacy schema12 pending diplomacy migrates with deadline/relations intact and gets a byte-exact backup before overwrite',async()=>{
   const s=world();s.stateVersion=12;delete s.relationMissions;delete s.diplomaticOffers;delete s.diplomaticHistory;delete s.politicalUnions;s.diplomacy!['france|germany']={a:'france',b:'germany',relation:42,treaties:['TradeAgreement'],rivals:[],guarantors:['germany'],truceUntilTick:0,proposal:{from:'germany',type:'Alliance',expiresTick:12}};
   const text=JSON.stringify({format:1,metadata:{id:s.id,name:'legacy',generation:1},checksum:stateChecksum(s),state:s}),map=new Map([[s.id+'.1.json',text]]),files:CampaignFiles={list:async()=>[...map.keys()],read:async n=>map.get(n)!,write:async(n,t)=>{map.set(n,t);},move:async(a,b)=>{map.set(b,map.get(a)!);map.delete(a);},remove:async n=>{map.delete(n);}};
-  const store=new CampaignStore(files),loaded=await store.load(s.id);assert.equal(loaded.stateVersion,13);assert.equal(loaded.diplomaticOffers![0]!.expiresTick,12);assert.equal(loaded.diplomacy!['france|germany']!.relation,42);assert.equal(loaded.diplomacy!['france|germany']!.terms![0]!.type,'TradeAgreement');await store.save(loaded);assert.equal(map.get(s.id+'.before-expansion-v13.backup'),text);await store.save(loaded);assert.equal(map.get(s.id+'.before-expansion-v13.backup'),text);
+  const store=new CampaignStore(files),loaded=await store.load(s.id);assert.equal(loaded.stateVersion,CURRENT_STATE_VERSION);assert.equal(loaded.diplomaticOffers![0]!.expiresTick,12);assert.equal(loaded.diplomacy!['france|germany']!.relation,42);assert.equal(loaded.diplomacy!['france|germany']!.terms![0]!.type,'TradeAgreement');await store.save(loaded);assert.equal(map.get(s.id+'.before-expansion-v13.backup'),text);await store.save(loaded);assert.equal(map.get(s.id+'.before-expansion-v13.backup'),text);
   const agreed=command(loaded,{type:'RESPOND_TREATY',playerId:'guest',targetId:'germany',accept:true},'guest');assert.ok(agreed.diplomacy!['france|germany']!.treaties.includes('Alliance'));assert.deepEqual(validateCampaign(agreed),agreed);
 });
 test('schema13 validation rejects missing arrays, contradictory relations, duplicated treaties and malicious mission references',()=>{

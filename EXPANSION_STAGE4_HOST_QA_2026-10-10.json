@@ -1,0 +1,152 @@
+{
+  "runtimeParent": "b6abad4c7a5ac536817326184f5cd33a6c47d347",
+  "schema": 14,
+  "typecheck": "PASS",
+  "jsTests": {
+    "total": 222,
+    "pass": 222,
+    "fail": 0
+  },
+  "espionageBehaviorTests": 9,
+  "multiplayerReplayIntents": 11,
+  "pythonTests": {
+    "total": 48,
+    "pass": 47,
+    "skipped": 1
+  },
+  "hostBenchmarks": {
+    "baseline": {
+      "protocol": "expansion-host-seed101-240-months-v1",
+      "seed": 101,
+      "ticks": 240,
+      "stateVersion": 13,
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411,
+      "createMs": 81.02368100000012,
+      "sceneMs": 765.9315510000001,
+      "tickP50Ms": 86.80065300000206,
+      "tickP95Ms": 120.11476500000026,
+      "tickP99Ms": 148.58166800000072,
+      "tickMaxMs": 249.35134300000027,
+      "saveRestoreMs": [
+        449.20196400000077,
+        342.17828200000076,
+        272.93865000000005,
+        278.26097200000004
+      ],
+      "snapshotBytes": 3701127,
+      "armies": 204,
+      "activeWars": 19,
+      "spyMissions": 0,
+      "spyReports": 0,
+      "spyEffects": 0,
+      "heapUsed": 280290696,
+      "rss": 556904448,
+      "note": "Same Node host and seed/ticks/war/persistence scenario; CPU/data only, no handset/GPU/frame-pacing claim."
+    },
+    "initial": {
+      "protocol": "expansion-host-seed101-240-months-v1",
+      "seed": 101,
+      "ticks": 240,
+      "stateVersion": 14,
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411,
+      "createMs": 96.11749300000008,
+      "sceneMs": 348.172415,
+      "tickP50Ms": 93.95574699999997,
+      "tickP95Ms": 145.17867000000115,
+      "tickP99Ms": 189.57483899999716,
+      "tickMaxMs": 286.55484799999977,
+      "saveRestoreMs": [
+        359.8984359999995,
+        322.17587000000094,
+        368.45181199999934,
+        322.57355599999937
+      ],
+      "snapshotBytes": 3810892,
+      "armies": 205,
+      "activeWars": 22,
+      "spyMissions": 26,
+      "spyReports": 192,
+      "spyEffects": 77,
+      "heapUsed": 188716632,
+      "rss": 679010304,
+      "note": "Same Node host and seed/ticks/war/persistence scenario; CPU/data only, no handset/GPU/frame-pacing claim."
+    },
+    "indexed": {
+      "protocol": "expansion-host-seed101-240-months-v1",
+      "seed": 101,
+      "ticks": 240,
+      "stateVersion": 14,
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411,
+      "createMs": 132.63785499999994,
+      "sceneMs": 747.938114,
+      "tickP50Ms": 94.99291500000254,
+      "tickP95Ms": 151.9443570000003,
+      "tickP99Ms": 275.4309859999994,
+      "tickMaxMs": 326.17855899999995,
+      "saveRestoreMs": [
+        382.1691869999995,
+        321.33770800000093,
+        281.3112739999997,
+        361.35349399999905
+      ],
+      "snapshotBytes": 3810730,
+      "armies": 205,
+      "activeWars": 22,
+      "spyMissions": 26,
+      "spyReports": 192,
+      "spyEffects": 77,
+      "heapUsed": 447450768,
+      "rss": 653008896,
+      "note": "Same Node host and seed/ticks/war/persistence scenario; CPU/data only, no handset/GPU/frame-pacing claim."
+    },
+    "final": {
+      "protocol": "expansion-host-seed101-240-months-v1",
+      "seed": 101,
+      "ticks": 240,
+      "stateVersion": 14,
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411,
+      "createMs": 110.43608499999993,
+      "sceneMs": 658.427045,
+      "tickP50Ms": 77.38511400000061,
+      "tickP95Ms": 106.50482399999964,
+      "tickP99Ms": 158.03935300000012,
+      "tickMaxMs": 234.17842700000006,
+      "saveRestoreMs": [
+        312.3324040000007,
+        307.4131269999998,
+        366.44072099999903,
+        325.55200400000103
+      ],
+      "snapshotBytes": 3810730,
+      "armies": 205,
+      "activeWars": 22,
+      "spyMissions": 26,
+      "spyReports": 192,
+      "spyEffects": 77,
+      "heapUsed": 404534296,
+      "rss": 655589376,
+      "note": "Same Node host and seed/ticks/war/persistence scenario; CPU/data only, no handset/GPU/frame-pacing claim."
+    }
+  },
+  "native": "New schema14 native UI and paired camera acceptance pending; prior ca UX/stress pass is separate.",
+  "productionBackend": "Existing Dominion only; deployment pending; no cloud write.",
+  "limitations": [
+    "Supply penalty connects to Stage6 graph supply; current sabotage budget and intel combat effects are exercised.",
+    "Finite deterministic host simulation does not establish physical handset FPS or complete expansion balance.",
+    "Full schema14 10000 ticks scheduled in CI; previous10000 result belongs to schema13."
+  ],
+  "hermesExport": {
+    "status": "PASS",
+    "bytes": 11335606,
+    "sha256": "e3fd7da359b3e936bf6783413f3f53f4483a1cdf213928c401bffd8ec96808cb"
+  },
+  "nativeHarness": "Retains original UX/stress gates, adds paused espionage commands and real-clock counterintelligence assertions; not yet native-verified."
+}
