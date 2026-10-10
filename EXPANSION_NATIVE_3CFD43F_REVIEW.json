@@ -1,0 +1,34 @@
+{
+  "runtime": "3cfd43f16678345ce0e55016775c7efb95d0e8cf",
+  "apkSourceRun": 38025683396,
+  "qaSource": "3cfd43f16678345ce0e55016775c7efb95d0e8cf",
+  "run": 38025683396,
+  "job": 114138817620,
+  "artifact": 11661556179,
+  "artifactSha256": "5189c302d458564bc4fe8da5b9c2353420d2bc8bba4eab29ff1073679609d4be",
+  "verification": "ZIP size/hash/CRC verified, successful smoke and full stress; actual army-deselected/foreign-flag/world-reset PNGs retained and visually inspected; map intact. This does not override original and fixed-world camera failures.",
+  "stressSeconds": 1847.460649634,
+  "sampledPssKiB": {
+    "count": 30,
+    "min": 369550,
+    "max": 518140,
+    "first": 369550,
+    "last": 462256
+  },
+  "fatalPatternMatches": [],
+  "paintGate": {
+    "landFraction": 0.1268,
+    "samplePixels": 287232
+  },
+  "coverage": [
+    "real repeated army marker deselection retains order",
+    "Android Back retains order",
+    "foreign flag opens targeted diplomacy",
+    "reselection and separate Cancel Movement",
+    "recruit/commander/build/research/economy/debt/government/religion/legacy treaty",
+    "4 presets,12 modes,5 landscape layouts,density,cutout",
+    "offline cold launch,process restart,device reboot,ordinary campaign save restore",
+    "1800-second minimum continuous render/simulation/autosave stress"
+  ],
+  "limitations": "Software-rendered emulator only; no physical Redmi or continuous memory peak measurement. Runtime3c is performance REJECTED by two camera comparisons; this native UI/save/stress success is not overall performance acceptance or validation of the subsequent quiet-raster renderer."
+}

@@ -2,7 +2,8 @@ import {memo,useEffect,useMemo,useRef,useState} from 'react';
 import {Group,Image as MapImage,Picture,Skia,PaintStyle,type SkCanvas,type SkImage,type SkPath,type SkPicture} from '@shopify/react-native-skia';
 import {borderChunks,bordersInBounds,type BorderChunk} from '../map/borderChunks';
 import {rasterLevel} from '../map/cameraCoverage';
-import {visibleRasterTiles,RasterCache,type RasterTile} from '../map/rasterTiles';
+import {visibleRasterTiles,rasterTiles,RasterCache,type RasterTile} from '../map/rasterTiles';
+import {scheduleIdleSlices} from '../performance/idleSlices';
 import {geometryForLod,type GeometryLod} from '../map/geometryLod';
 import {featurePath,overlaps,type Bounds,type MapFeature} from '../map/geometry';
 import {GRAPHICS,type GraphicsPreset,type MapMode} from '../map/settings';
@@ -57,36 +58,64 @@ function tilePicture(tile:RasterTile,d:Drawing,key:string){
   drawTile(tile,d,canvas);const picture=recorder.finishRecordingAsPicture();
   d.resources.pictures.set(key,picture,1);return picture;
 }
+function tileImage(tile:RasterTile,drawing:Drawing,key:string,picture:SkPicture,cold=false):SkImage|undefined{
+  const b=tile.bounds,s=tile.level.scale,w=Math.ceil((b.right-b.left)*s)+4,h=Math.ceil((b.bottom-b.top)*s)+4,bytes=w*h*4;
+  if(cold&&!drawing.resources.images.canFit(bytes))return;
+  const start=performance.now(),surface=Skia.Surface.Make(w,h);if(!surface)return;
+  try{
+    const canvas=surface.getCanvas();canvas.clear(Skia.Color('transparent'));canvas.translate(2-b.left*s,2-b.top*s);canvas.scale(s,s);canvas.drawPicture(picture);surface.flush();
+    const image=surface.makeImageSnapshot();
+    if(cold)drawing.resources.images.setCold(key,image,bytes);else drawing.resources.images.set(key,image,bytes);
+    const elapsed=performance.now()-start,m=getMetrics();
+    recordMetrics({rasterBuilds:m.rasterBuilds+1,rasterMs:m.rasterMs+elapsed,rasterBytes:drawing.resources.images.bytes,...(cold?{rasterPrewarmBuilds:m.rasterPrewarmBuilds+1,rasterPrewarmMs:m.rasterPrewarmMs+elapsed}:{})});
+    return image;
+  }finally{surface.dispose();}
+}
 type Work={run:()=>void;cancelled:boolean};const queue:Work[]=[];let timer:ReturnType<typeof setTimeout>|undefined;
 function drain(){timer=undefined;const work=queue.shift();if(work&&!work.cancelled)work.run();if(queue.length)timer=setTimeout(drain,8);}
 /** At most one bounded surface per slice; touch transforms remain on UI thread. */
 function scheduleRaster(run:()=>void){const work={run,cancelled:false};queue.push(work);if(!timer)timer=setTimeout(drain,8);return()=>{work.cancelled=true;const index=queue.indexOf(work);if(index>=0)queue.splice(index,1);};}
 const RasterTileNode=memo(function RasterTileNode({tile,drawing}:{tile:RasterTile;drawing:Drawing}){
-  const key=tileKey(tile,drawing),picture=useMemo(()=>tilePicture(tile,drawing,key),[tile,drawing,key]);
+  const key=tileKey(tile,drawing);
   const [ready,setReady]=useState<{key:string;image:SkImage}|null>(()=>{const image=drawing.resources.images.get(key);return image?{key,image}:null;});
+  const cached=ready?.key===key?ready.image:drawing.resources.images.get(key);
+  // A ready image does not need a new vector recording, even if its old
+  // picture was evicted. Keep geometry preparation out of warm camera visits.
+  const hasImage=!!cached;
+  const picture=useMemo(()=>hasImage?null:tilePicture(tile,drawing,key),[tile,drawing,key,hasImage]);
   useEffect(()=>{
-    const cached=drawing.resources.images.get(key);if(cached){setReady({key,image:cached});return;}
+    if(cached){setReady(previous=>previous?.key===key&&previous.image===cached?previous:{key,image:cached});return;}
     return scheduleRaster(()=>{
-      const start=performance.now(),b=tile.bounds,s=tile.level.scale,w=Math.ceil((b.right-b.left)*s)+4,h=Math.ceil((b.bottom-b.top)*s)+4;
       // A JS-thread GPU snapshot belongs to that thread's GrDirectContext.
       // Retain a raster image instead; the Canvas uploads it once in its own
       // render context. Small bounded surfaces also avoid GPU locks on pinch.
-      const surface=Skia.Surface.Make(w,h);if(!surface)return;
-      const canvas=surface.getCanvas();canvas.clear(Skia.Color('transparent'));canvas.translate(2-b.left*s,2-b.top*s);canvas.scale(s,s);canvas.drawPicture(picture);surface.flush();
-      const image=surface.makeImageSnapshot();drawing.resources.images.set(key,image,w*h*4);setReady({key,image});
-      recordMetrics({rasterBuilds:getMetrics().rasterBuilds+1,rasterMs:getMetrics().rasterMs+performance.now()-start,rasterBytes:drawing.resources.images.bytes});
-      // Snapshot has its own ownership. Only the temporary surface is disposed.
-      surface.dispose();
+      const image=drawing.resources.images.get(key)??tileImage(tile,drawing,key,picture!);if(image)setReady({key,image});
     });
-  },[key,tile,drawing,picture]);
+  },[key,tile,drawing,picture,cached]);
   const b=tile.bounds,gutter=2/tile.level.scale;
-  return <Group clip={Skia.XYWHRect(b.left,b.top,b.right-b.left,b.bottom-b.top)}>{ready?.key===key?<MapImage fit="fill" image={ready.image} x={b.left-gutter} y={b.top-gutter} width={b.right-b.left+gutter*2} height={b.bottom-b.top+gutter*2}/>:<Picture picture={picture}/>}</Group>;
+  return <Group clip={Skia.XYWHRect(b.left,b.top,b.right-b.left,b.bottom-b.top)}>{cached?<MapImage fit="fill" image={cached} x={b.left-gutter} y={b.top-gutter} width={b.right-b.left+gutter*2} height={b.bottom-b.top+gutter*2}/>:<Picture picture={picture!}/>}</Group>;
 });
-export const MapRasterLayer=memo(function MapRasterLayer({scene,features,owners,colors,lod,preset,mode,detail,bounds,zoom}:{scene:MapScene;features:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;bounds:Bounds;zoom:number}){
+export const MapRasterLayer=memo(function MapRasterLayer({scene,features,owners,colors,lod,preset,mode,detail,bounds,zoom,canPrewarm}:{scene:MapScene;features:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;bounds:Bounds;zoom:number;canPrewarm:()=>boolean}){
   const resources=useMemo<Resources>(()=>({paths:new Map(),pictures:new RasterCache<SkPicture>(1000,96),images:new RasterCache<SkImage>()}),[scene]);
   useEffect(()=>()=>{resources.paths.clear();resources.pictures.clear();resources.images.clear();},[resources]);
   const drawing=useMemo<Drawing>(()=>({scene,features,owners,colors,lod,preset,mode,detail,resources}),[scene,features,owners,colors,lod,preset,mode,detail,resources]);
   const level=rasterLevel(zoom),context=useMemo(()=>features===scene.features?features:[...scene.features.filter(f=>!f.provinceId),...features],[scene,features]);
+  useEffect(()=>{
+    if(mode!=='Political'||detail||lod!=='low')return;
+    let world:RasterTile[]|undefined,index=0;
+    return scheduleIdleSlices(()=>queue.length===0&&canPrewarm(),()=>{
+      world??=rasterTiles(context,rasterLevel(.5));
+      while(index<world.length){
+        const tile=world[index++]!,key=tileKey(tile,drawing);
+        if(resources.images.peek(key))continue;
+        const b=tile.bounds,s=tile.level.scale,bytes=(Math.ceil((b.right-b.left)*s)+4)*(Math.ceil((b.bottom-b.top)*s)+4)*4;
+        if(!resources.images.canFit(bytes))return false;
+        const image=tileImage(tile,drawing,key,tilePicture(tile,drawing,key),true);
+        return !!image&&index<world.length;
+      }
+      return false;
+    });
+  },[drawing,context,canPrewarm,mode,detail,lod,resources]);
   const tiles=visibleRasterTiles(context,bounds,level),previous=useRef(tiles);
   if(previous.current.length!==tiles.length||tiles.some((t,i)=>t!==previous.current[i]))previous.current=tiles;
   useEffect(()=>{recordMetrics({geographyRenders:getMetrics().geographyRenders+1,rasterTiles:previous.current.length});});

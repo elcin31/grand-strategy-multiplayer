@@ -1,5 +1,5 @@
 import {countryGlyph,hitCountryGlyph,type CountryGlyph} from '../map/countryTargets';
-import {nextFrameDeadline,frameBucket,frameQuantile,createFrameAccumulator,recordFrameInterval,finishFrameSample} from '../performance/framePacing';
+import {CameraWorkGate,nextFrameDeadline,frameBucket,frameQuantile,createFrameAccumulator,recordFrameInterval,finishFrameSample} from '../performance/framePacing';
 import {MapRasterLayer} from './MapRasterLayer';
 import {MapMarkerLayer} from './MapMarkerLayer';
 import {cameraCoverage,cameraNeedsCoverage,viewportLayoutUpdate,interactionDetailZoom} from '../map/cameraCoverage';
@@ -15,7 +15,7 @@ import {preparedCountryLabels} from '../map/labelIndex';
 import {mapLegend} from '../map/modes';
 import {armyCounters,occupationFeatures,warBorderPath} from '../map/overlays';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View, PixelRatio, Platform } from 'react-native';
+import { AppState, Pressable, ScrollView, StyleSheet, Text, View, PixelRatio, Platform } from 'react-native';
 import {createShareable,UIRuntimeId} from 'react-native-worklets';
 import { Canvas, Circle, Fill, Group, LinearGradient, Path, Rect, Skia, matchFont, vec } from '@shopify/react-native-skia';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -110,7 +110,9 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   useEffect(()=>{runOnUI(()=>{frameSampler.value!.histogram.fill(0);})();},[sampleDistribution,frameSampler]);
   const moving=useSharedValue(false);
   const activityRef=useRef(onCameraActivity);activityRef.current=onCameraActivity;
-  const cameraActivity=useCallback((active:boolean)=>activityRef.current?.(active),[]);
+  const rasterWork=useRef(new CameraWorkGate());
+  const cameraActivity=useCallback((active:boolean)=>{rasterWork.current.activity(active);activityRef.current?.(active);},[]);
+  const canPrewarm=useCallback(()=>AppState.currentState==='active'&&!rasterWork.current.defer(performance.now(),750),[]);
   const animateEffects=(preset==='High'||preset==='Ultra')&&state.battleLog.some(b=>state.tick-b.tick<=1);
   useEffect(()=>{if(!animateEffects)pulse.value=.9;},[animateEffects,pulse]);
   useFrameCallback(frame=>{
@@ -259,7 +261,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
         <Fill color="#203B48" />
         {GRAPHICS[preset].water && <Rect x={0} y={0} width={viewport.width} height={viewport.height}><LinearGradient start={vec(0, 0)} end={vec(viewport.width, viewport.height)} colors={['#18303C', '#294A57', '#193542']} /></Rect>}
         <Group transform={transform}>
-          <MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={detailZoom}/>
+          <MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={detailZoom} canPrewarm={canPrewarm}/>
           {occupiedBatches.map(([color,path])=><Group key={color}><Path path={path} color={color} opacity={.28}/><Path path={path} color={color} opacity={.55} style="stroke" strokeWidth={selectionScale}/></Group>)}
           {warBorders!==''&&<Path path={warBorders} style="stroke" color="#ed7f72" strokeWidth={selectionScale} opacity={pulse}/>}
           {state.armies.filter(a=>a.id===selectedArmyId&&a.order).map(a=>{const points=[a.provinceId,...a.order!.route].map(id=>provinceGeometry.get(id)?.anchor).filter(Boolean);return <Path key={a.id+"-order"} path={points.map((p,i)=>`${i?"L":"M"}${p!.x},${p!.y}`).join("")} style="stroke" strokeWidth={selectionScale} color="#fff0ac"/>;})}

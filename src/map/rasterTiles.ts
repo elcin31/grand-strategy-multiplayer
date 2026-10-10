@@ -24,6 +24,14 @@ export class RasterCache<T>{
   bytes=0;
   constructor(readonly maxBytes=32*1024*1024,readonly maxEntries=96){}
   get(key:string):T|undefined{const item=this.entries.get(key);if(!item)return undefined;this.entries.delete(key);this.entries.set(key,item);return item.value;}
+  peek(key:string):T|undefined{return this.entries.get(key)?.value;}
+  canFit(bytes:number):boolean{return Number.isSafeInteger(bytes)&&bytes>=0&&this.entries.size<this.maxEntries&&this.bytes+bytes<=this.maxBytes;}
+  /** Idle preparation never displaces visible work. Unused prefetched entries
+   * are first to be evicted; a real get promotes them through the normal LRU. */
+  setCold(key:string,value:T,bytes:number):boolean{
+    if(this.entries.has(key)||!this.canFit(bytes))return false;
+    this.entries=new Map([[key,{value,bytes}],...this.entries]);this.bytes+=bytes;return true;
+  }
   set(key:string,value:T,bytes:number):void{
     const old=this.entries.get(key);if(old)this.bytes-=old.bytes;this.entries.delete(key);
     if(bytes>this.maxBytes)return;
