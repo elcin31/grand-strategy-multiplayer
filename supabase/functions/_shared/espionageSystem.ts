@@ -7,7 +7,7 @@ import {techLevel} from './technologySystem.ts';
 
 export const ESPIONAGE_MISSIONS={
   IntelligenceGathering:{name:'Сбор разведданных',cost:80,pp:8,months:3,cooldown:12,success:75,detection:20,effectMonths:12,description:'Снимок армии, бюджета и устойчивости; +8% силы при атаке этой страны на 12 месяцев.'},
-  Sabotage:{name:'Саботаж',cost:120,pp:12,months:4,cooldown:18,success:60,detection:40,effectMonths:6,description:'Производство и ресурсный доход −20%, снабжение −15% на 6 месяцев.'},
+  Sabotage:{name:'Саботаж',cost:120,pp:12,months:4,cooldown:18,success:60,detection:40,effectMonths:6,description:'Производство, ресурсный доход и темп строительства −20%, снабжение −15% на 6 месяцев.'},
   PoliticalIntrigue:{name:'Политическая интрига',cost:100,pp:10,months:6,cooldown:18,success:55,detection:45,effectMonths:0,description:'Стабильность −7, национальное недовольство +10, до трёх провинций: недовольство +12.'},
   Counterintelligence:{name:'Контрразведка',cost:70,pp:8,months:2,cooldown:12,success:100,detection:0,effectMonths:12,description:'На 12 месяцев: шанс вражеской операции −30 п.п., обнаружение +25 п.п.'},
 } as const;
@@ -59,6 +59,7 @@ export function espionageQuote(s:GameState,ownerId:string,targetId:string,kind:E
   else if((s.spyMissions?.length??0)+(s.spyEffects?.length??0)>=900)reason='Достигнут предел операций';
   else if(kind==='Counterintelligence'&&espionageModifiers(s,ownerId).counterintelligence)reason='Контрразведка уже действует';
   else if(kind!=='IntelligenceGathering'&&kind!=='Counterintelligence'&&s.diplomacy?.[pairKey(ownerId,targetId)]?.terms?.some(t=>['Alliance','PoliticalUnion'].includes(t.type)&&t.untilTick>s.tick))reason='Союзные обязательства запрещают подрывную операцию';
+  else if(!Number.isSafeInteger(s.tick+Math.max(rule.cooldown,rule.months+rule.effectMonths)))reason='Espionage date overflow';
   return{cost:rule.cost,pp:rule.pp,months:rule.months,successChance,detectionChance,reason};
 }
 export function startEspionage(s:GameState,ownerId:string,targetId:string,kind:EspionageKind):void {
@@ -97,7 +98,7 @@ export function monthlyEspionage(s:GameState):void {
       }else{
         const kind=m.kind==='IntelligenceGathering'?'Intel':m.kind;
         s.spyEffects!.push({id:entity(s,'se'),missionId:m.id,ownerId:m.ownerId,targetId:m.targetId,kind,startedTick:s.tick,untilTick:future(s,rule.effectMonths)});
-        message=m.kind==='IntelligenceGathering'?'Разведданные получены; преимущество при атаке +8% на 12 месяцев.':m.kind==='Sabotage'?'Саботаж: производство и ресурсы −20%, снабжение −15% на 6 месяцев.':'Контрразведка действует 12 месяцев.';
+        message=m.kind==='IntelligenceGathering'?'Разведданные получены; преимущество при атаке +8% на 12 месяцев.':m.kind==='Sabotage'?'Саботаж: производство, ресурсы и темп строительства −20%, снабжение −15% на 6 месяцев.':'Контрразведка действует 12 месяцев.';
         if(m.kind==='IntelligenceGathering')intelligence={army:target.army,treasury:target.treasury,debt:target.debt??0,stability:target.stability,technology:target.technology,provinceCount:target.provinceIds!.length,counterintelligence:espionageModifiers(s,m.targetId).counterintelligence};
       }
     }
@@ -123,7 +124,7 @@ export function initializeEspionage(s:GameState,migrate:boolean):void {
     if(!c.spyCooldowns||typeof c.spyCooldowns!=='object'||Array.isArray(c.spyCooldowns)||Object.keys(c.spyCooldowns).length>Object.keys(s.countries).length*4)throw Error('Invalid espionage cooldowns');
     for(const [key,value]of Object.entries(c.spyCooldowns)){const [target,kind,...rest]=key.split(':');if(rest.length||!s.countries[target!]||!Object.hasOwn(ESPIONAGE_MISSIONS,kind!)||!date(value))throw Error('Invalid espionage cooldown');}
   }
-  for(const m of s.spyMissions){id(m.id);parties(m.ownerId,m.targetId,m.kind);const key=m.ownerId+':'+m.targetId+':'+m.kind;if(missions.has(key)||!date(m.startedTick)||m.startedTick>s.tick||!date(m.completeTick)||m.completeTick!==m.startedTick+ESPIONAGE_MISSIONS[m.kind].months||(s.countries[m.ownerId]!.spyCooldowns![m.targetId+':'+m.kind]??0)<m.startedTick+ESPIONAGE_MISSIONS[m.kind].cooldown)throw Error('Invalid espionage mission');missions.add(key);}
+  for(const m of s.spyMissions){id(m.id);parties(m.ownerId,m.targetId,m.kind);const key=m.ownerId+':'+m.targetId+':'+m.kind,rule=ESPIONAGE_MISSIONS[m.kind];if(missions.has(key)||!date(m.startedTick)||m.startedTick>s.tick||!date(m.completeTick)||m.completeTick!==m.startedTick+rule.months||!date(m.startedTick+Math.max(rule.cooldown,rule.months+rule.effectMonths))||(s.countries[m.ownerId]!.spyCooldowns![m.targetId+':'+m.kind]??0)<m.startedTick+rule.cooldown)throw Error('Invalid espionage mission');missions.add(key);}
   for(const e of s.spyEffects){id(e.id);if(!['Intel','Sabotage','Counterintelligence'].includes(e.kind))throw Error('Invalid espionage effect kind');parties(e.ownerId,e.targetId,e.kind==='Intel'?'IntelligenceGathering':e.kind);const duration=e.kind==='Sabotage'?6:12;if(!validId(e.missionId)||effects.has(e.missionId)||!date(e.startedTick)||e.startedTick>s.tick||!date(e.untilTick)||e.untilTick!==e.startedTick+duration)throw Error('Invalid espionage effect');effects.add(e.missionId);}
   for(const r of s.spyReports){id(r.id);parties(r.ownerId,r.targetId,r.kind);if(!validId(r.missionId)||results.has(r.missionId)||!date(r.tick)||r.tick>s.tick||!['Success','Failure','Cancelled','Aborted'].includes(r.outcome)||typeof r.detected!=='boolean'||r.kind==='Counterintelligence'&&r.detected||typeof r.message!=='string'||r.message.length>250)throw Error('Invalid espionage report');results.add(r.missionId);
     if(r.intelligence){const i=r.intelligence;if(r.kind!=='IntelligenceGathering'||r.outcome!=='Success'||Object.keys(i).length!==7||![i.army,i.treasury,i.debt,i.stability,i.technology,i.provinceCount].every(n=>Number.isFinite(n)&&n>=0)||i.stability>100||i.technology>100||!Number.isSafeInteger(i.army)||!Number.isSafeInteger(i.provinceCount)||i.provinceCount>s.provinces.length||typeof i.counterintelligence!=='boolean'||money(i.treasury)!==i.treasury||money(i.debt)!==i.debt)throw Error('Invalid intelligence snapshot');}

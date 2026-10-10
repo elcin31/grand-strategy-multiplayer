@@ -32,7 +32,7 @@ export function initializeTechnology(state: GameState): void {
       if (r.branch!=='Science'&&!Object.hasOwn(TECHNOLOGIES, r.branch)) throw new Error('Invalid research branch');
       const n=r.nodeId?technologyNode(r.nodeId):undefined;
       const q = r.branch==='Science'?{targetLevel:scienceLevel(c)+1,months:n?.months}:researchQuote(c, r.branch);
-      if (r.targetLevel !== q.targetLevel || r.targetLevel > 5 || r.required !== q.months || !Number.isFinite(r.progress) || r.progress < 0 || r.progress >= r.required || !Number.isSafeInteger(r.startedTick) || r.startedTick < 0 || r.startedTick > state.tick) throw new Error('Invalid research project');
+      if (r.targetLevel !== q.targetLevel || r.targetLevel > 5 || r.required !== q.months || !Number.isFinite(r.progress) || r.progress < 0 || r.progress >= r.required || !Number.isSafeInteger(r.startedTick) || r.startedTick < 0 || r.startedTick > state.tick || !Number.isSafeInteger(r.startedTick+r.required)) throw new Error('Invalid research project');
     }
   }
 }

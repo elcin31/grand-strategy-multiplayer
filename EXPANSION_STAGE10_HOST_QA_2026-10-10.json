@@ -1,0 +1,466 @@
+{
+  "parentHead": "c660c4bd57785de074a645455f650a89d31b6ccb",
+  "stateVersion": 18,
+  "scope": "Stage10 dated sabotage/construction integration, numerical project guards and bounded long-term demographic feedback",
+  "typescript": "PASS",
+  "javascript": {
+    "passed": 280,
+    "failed": 0
+  },
+  "python": {
+    "total": 55,
+    "passed": 55,
+    "skipped": 0,
+    "analyzer": "perfetto==0.58.2 installed; actual SQL regression PASS"
+  },
+  "integrationTests": {
+    "new": 8,
+    "allPassed": true,
+    "coverage": [
+      "actual paid sabotage and authoritative monthly order",
+      "six dated work months and natural deadline bypass rejection",
+      "fourteen-tick delayed completion and exact repeated save/restore",
+      "once-per-tick work, queued one-time payments and partial refund",
+      "bounded stacked effects with infrastructure/science",
+      "research and post-completion espionage date overflow before payment",
+      "strict future/forged work rejection"
+    ]
+  },
+  "demographicTests": {
+    "new": 3,
+    "allPassed": true,
+    "coverage": [
+      "initial inherited rate; smooth pressure",
+      "10000 isolated provincial months and urban conservation",
+      "over-capacity old population/carry retained",
+      "real infrastructure/farm/hospital/development capacity"
+    ]
+  },
+  "host240": {
+    "baseline": {
+      "protocol": "expansion-host-seed101-240-months-v1",
+      "seed": 101,
+      "ticks": 240,
+      "stateVersion": 18,
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411,
+      "createMs": 47.375043000000005,
+      "sceneMs": 266.668552,
+      "tickP50Ms": 53.19710999999916,
+      "tickP95Ms": 71.75809300000037,
+      "tickP99Ms": 88.96859900000163,
+      "tickMaxMs": 125.40440699999999,
+      "saveRestoreMs": [
+        212.4044869999998,
+        170.03488199999993,
+        188.28558599999997,
+        188.6418730000005
+      ],
+      "snapshotBytes": 4146058,
+      "armies": 225,
+      "activeWars": 11,
+      "spyMissions": 18,
+      "spyReports": 192,
+      "spyEffects": 52,
+      "heapUsed": 353432608,
+      "rss": 742948864,
+      "note": "Same Node host and seed/ticks/war/persistence scenario; CPU/data only, no handset/GPU/frame-pacing claim."
+    },
+    "candidate": {
+      "protocol": "expansion-host-seed101-240-months-v1",
+      "seed": 101,
+      "ticks": 240,
+      "stateVersion": 18,
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411,
+      "createMs": 59.41156699999999,
+      "sceneMs": 203.78143500000004,
+      "tickP50Ms": 54.948136000000886,
+      "tickP95Ms": 76.80983000000015,
+      "tickP99Ms": 84.22240099999999,
+      "tickMaxMs": 117.43723899999998,
+      "saveRestoreMs": [
+        200.05022399999962,
+        184.26882000000023,
+        205.353427,
+        172.3701490000003
+      ],
+      "snapshotBytes": 4152992,
+      "armies": 224,
+      "activeWars": 15,
+      "spyMissions": 17,
+      "spyReports": 192,
+      "spyEffects": 62,
+      "heapUsed": 251342784,
+      "rss": 749047808,
+      "note": "Same Node host and seed/ticks/war/persistence scenario; CPU/data only, no handset/GPU/frame-pacing claim."
+    },
+    "execution": "Sequential, no concurrent heavy workload. Final espionage date guard is an additional constant-time safety check; ordinary 240-month behavior unchanged. CPU/data only, no Android acceptance."
+  },
+  "demography10000": {
+    "before": {
+      "protocol": "fixed-seed101-demography-only-10000-v1",
+      "runtime": "c660c4bd57785de074a645455f650a89d31b6ccb",
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411,
+      "initialPopulation": 7632252811,
+      "samples": [
+        {
+          "tick": 1000,
+          "population": 14887752851,
+          "populationRatio": 1.9506367542677563,
+          "monthlyBirths": 9946684,
+          "monthlyIncome": 52179,
+          "elapsedMs": 806.834578
+        },
+        {
+          "tick": 2000,
+          "population": 29050839580,
+          "populationRatio": 3.806325641903583,
+          "monthlyBirths": 19419332,
+          "monthlyIncome": 100030,
+          "elapsedMs": 1585.796747
+        },
+        {
+          "tick": 3000,
+          "population": 56707547427,
+          "populationRatio": 7.429988082322185,
+          "monthlyBirths": 37926633,
+          "monthlyIncome": 193767,
+          "elapsedMs": 2323.635865
+        },
+        {
+          "tick": 4000,
+          "population": 110732524711,
+          "populationRatio": 14.508498008793225,
+          "monthlyBirths": 74097907,
+          "monthlyIncome": 377304,
+          "elapsedMs": 3104.275202
+        },
+        {
+          "tick": 5000,
+          "population": 216302311613,
+          "populationRatio": 28.340559068123877,
+          "monthlyBirths": 144816413,
+          "monthlyIncome": 736785,
+          "elapsedMs": 3890.876882
+        },
+        {
+          "tick": 6000,
+          "population": 422666805746,
+          "populationRatio": 55.37903633601217,
+          "monthlyBirths": 283125851,
+          "monthlyIncome": 1441016,
+          "elapsedMs": 4660.941165
+        },
+        {
+          "tick": 7000,
+          "population": 826200562000,
+          "populationRatio": 108.25120478310635,
+          "monthlyBirths": 553720513,
+          "monthlyIncome": 2821076,
+          "elapsedMs": 5479.408271
+        },
+        {
+          "tick": 8000,
+          "population": 1615557712054,
+          "populationRatio": 211.67507838911916,
+          "monthlyBirths": 1083303442,
+          "monthlyIncome": 5526115,
+          "elapsedMs": 6254.4419020000005
+        },
+        {
+          "tick": 9000,
+          "population": 3160154678947,
+          "populationRatio": 414.0526732018652,
+          "monthlyBirths": 2120104124,
+          "monthlyIncome": 10830006,
+          "elapsedMs": 6997.672546
+        },
+        {
+          "tick": 10000,
+          "population": 6183612239524,
+          "populationRatio": 810.1948916854348,
+          "monthlyBirths": 4150600403,
+          "monthlyIncome": 21232630,
+          "elapsedMs": 7766.440541
+        }
+      ],
+      "note": "Original abstract game demographics; no real-world forecast, full-engine or hardware-performance claim"
+    },
+    "after": {
+      "protocol": "fixed-seed101-demography-only-10000-v1",
+      "runtime": "stage10-candidate",
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411,
+      "initialPopulation": 7632252811,
+      "samples": [
+        {
+          "tick": 1000,
+          "population": 13211714736,
+          "populationRatio": 1.7310373572739348,
+          "monthlyBirths": 5624014,
+          "monthlyIncome": 46572,
+          "elapsedMs": 921.197772
+        },
+        {
+          "tick": 2000,
+          "population": 18081108384,
+          "populationRatio": 2.3690395000989177,
+          "monthlyBirths": 3885057,
+          "monthlyIncome": 63107,
+          "elapsedMs": 1790.083538
+        },
+        {
+          "tick": 3000,
+          "population": 20925091708,
+          "populationRatio": 2.7416664812048244,
+          "monthlyBirths": 1918375,
+          "monthlyIncome": 72811,
+          "elapsedMs": 2649.2369580000004
+        },
+        {
+          "tick": 4000,
+          "population": 22212403186,
+          "populationRatio": 2.9103337816570134,
+          "monthlyBirths": 795973,
+          "monthlyIncome": 77232,
+          "elapsedMs": 3501.2594179999996
+        },
+        {
+          "tick": 5000,
+          "population": 22726996124,
+          "populationRatio": 2.9777572476693472,
+          "monthlyBirths": 306540,
+          "monthlyIncome": 79001,
+          "elapsedMs": 4385.4813300000005
+        },
+        {
+          "tick": 6000,
+          "population": 22922317899,
+          "populationRatio": 3.003348875703274,
+          "monthlyBirths": 114664,
+          "monthlyIncome": 79691,
+          "elapsedMs": 5345.756526
+        },
+        {
+          "tick": 7000,
+          "population": 22994987013,
+          "populationRatio": 3.012870194742295,
+          "monthlyBirths": 42427,
+          "monthlyIncome": 79926,
+          "elapsedMs": 6199.722132
+        },
+        {
+          "tick": 8000,
+          "population": 23021822506,
+          "populationRatio": 3.016386259220836,
+          "monthlyBirths": 15646,
+          "monthlyIncome": 80021,
+          "elapsedMs": 7086.30569
+        },
+        {
+          "tick": 9000,
+          "population": 23031705528,
+          "populationRatio": 3.0176811615576344,
+          "monthlyBirths": 5755,
+          "monthlyIncome": 80052,
+          "elapsedMs": 7951.907246000001
+        },
+        {
+          "tick": 10000,
+          "population": 23035341859,
+          "populationRatio": 3.018157604239769,
+          "monthlyBirths": 2107,
+          "monthlyIncome": 80061,
+          "elapsedMs": 8793.61809
+        }
+      ],
+      "note": "Original abstract game demographics; no real-world forecast, full-engine or hardware-performance claim"
+    },
+    "execution": "Sequential isolated full-world fixed seed101 model. Does not replace full-engine CI10000."
+  },
+  "hermes": {
+    "bytes": 11471487,
+    "sha256": "f9073e680af5e038e42f45a8c24f1a0c0d07bb40b8cd59de5fb9521ac4551609",
+    "magic": "c61fbc03c103191f",
+    "status": "PASS"
+  },
+  "exportArt": "42 byte-exact optimized WebPs PASS",
+  "cameraReviewFile": "EXPANSION_CAMERA_REVIEW_C75.json",
+  "pinchTraceFile": "EXPANSION_PINCH_TRACE_C75.json",
+  "latestActualCI": {
+    "stage7": {
+      "runId": 38079172136,
+      "build": "success",
+      "long": "success",
+      "camera": "failure",
+      "native": "in_progress"
+    },
+    "stage8": {
+      "runId": 38080813451,
+      "build": "success",
+      "long": "success",
+      "camera": "in_progress",
+      "native": "in_progress",
+      "longArtifact": {
+        "id": 11681116565,
+        "bytes": 1854,
+        "sha256": "d2a666b32fb3b7cd586b27d06fab8b96838a69759b875c59179c986648e7d5bf",
+        "crc": "PASS",
+        "results": {
+          "ticks": 10000,
+          "countries": 195,
+          "provinces": 2924,
+          "cities": 5411,
+          "restores": 10,
+          "warsObserved": 11737,
+          "peaceCount": 11724,
+          "battles": 2744,
+          "movementTicks": 9944,
+          "maxWarAge": 11,
+          "maxArmies": 2212,
+          "maxSnapshotBytes": 5207394,
+          "tickP95Ms": 266.8107130001299,
+          "samples": [
+            {
+              "tick": 1000,
+              "bytes": 4354244,
+              "heapUsed": 51508344,
+              "rss": 358662144,
+              "armies": 256,
+              "wars": 14,
+              "peaceCount": 1287,
+              "bankruptCountries": 6,
+              "treasuryMax": 10818587.08,
+              "elapsedSeconds": 79
+            },
+            {
+              "tick": 2000,
+              "bytes": 4509869,
+              "heapUsed": 54629392,
+              "rss": 457162752,
+              "armies": 555,
+              "wars": 17,
+              "peaceCount": 2593,
+              "bankruptCountries": 25,
+              "treasuryMax": 36158646.537,
+              "elapsedSeconds": 178
+            },
+            {
+              "tick": 3000,
+              "bytes": 4612224,
+              "heapUsed": 55474016,
+              "rss": 460451840,
+              "armies": 787,
+              "wars": 13,
+              "peaceCount": 3856,
+              "bankruptCountries": 29,
+              "treasuryMax": 92477024.452,
+              "elapsedSeconds": 298
+            },
+            {
+              "tick": 4000,
+              "bytes": 4717475,
+              "heapUsed": 56547224,
+              "rss": 468451328,
+              "armies": 1031,
+              "wars": 16,
+              "peaceCount": 5065,
+              "bankruptCountries": 33,
+              "treasuryMax": 212698354.489,
+              "elapsedSeconds": 433
+            },
+            {
+              "tick": 5000,
+              "bytes": 4822506,
+              "heapUsed": 57158504,
+              "rss": 470573056,
+              "armies": 1274,
+              "wars": 15,
+              "peaceCount": 6219,
+              "bankruptCountries": 34,
+              "treasuryMax": 479012594.366,
+              "elapsedSeconds": 591
+            },
+            {
+              "tick": 6000,
+              "bytes": 4932659,
+              "heapUsed": 58578912,
+              "rss": 474009600,
+              "armies": 1531,
+              "wars": 14,
+              "peaceCount": 7307,
+              "bankruptCountries": 35,
+              "treasuryMax": 1072961621.899,
+              "elapsedSeconds": 781
+            },
+            {
+              "tick": 7000,
+              "bytes": 5043402,
+              "heapUsed": 59143952,
+              "rss": 475537408,
+              "armies": 1821,
+              "wars": 10,
+              "peaceCount": 8396,
+              "bankruptCountries": 36,
+              "treasuryMax": 2387697271.998,
+              "elapsedSeconds": 1008
+            },
+            {
+              "tick": 8000,
+              "bytes": 5128035,
+              "heapUsed": 59648456,
+              "rss": 478785536,
+              "armies": 2029,
+              "wars": 11,
+              "peaceCount": 9507,
+              "bankruptCountries": 36,
+              "treasuryMax": 5297592690.84,
+              "elapsedSeconds": 1234
+            },
+            {
+              "tick": 9000,
+              "bytes": 5179883,
+              "heapUsed": 60060304,
+              "rss": 479444992,
+              "armies": 2142,
+              "wars": 10,
+              "peaceCount": 10619,
+              "bankruptCountries": 36,
+              "treasuryMax": 11751765398.676,
+              "elapsedSeconds": 1487
+            },
+            {
+              "tick": 10000,
+              "bytes": 5207394,
+              "heapUsed": 60251728,
+              "rss": 480182272,
+              "armies": 2209,
+              "wars": 13,
+              "peaceCount": 11724,
+              "bankruptCountries": 36,
+              "treasuryMax": 26098271673.306,
+              "elapsedSeconds": 1743
+            }
+          ],
+          "note": "Full-world deterministic AI simulation; seeded initial legal war, no physical device or network claim"
+        }
+      }
+    },
+    "stage9": {
+      "runId": 38081869155,
+      "build": "success",
+      "all42PackagedArtGate": "success",
+      "long": "in_progress",
+      "camera": "in_progress",
+      "native": "not_yet_observed"
+    }
+  },
+  "backend": "No cloud changes; existing Dominion only. Coordinated schema18 compatibility/reconnect rollout remains pending.",
+  "finalApk": "NOT ACCEPTED OR DELIVERED"
+}

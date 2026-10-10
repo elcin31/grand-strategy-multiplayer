@@ -344,11 +344,13 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
       if(!Number.isSafeInteger(next.tick+1)||!Number.isSafeInteger(next.year+(next.month===12?1:0)))throw new Error('Campaign clock overflow');
       next.tick += 1; next.month += 1; if (next.month > 12) { next.month = 1; next.year += 1; }
       advanceArmyOrders(next,resolveMovement);
-      completeConstructions(next);
-      processConstructionQueue(next);
       monthlyDiplomacy(next);
       monthlyDiplomacy2(next);
       monthlyEspionage(next);
+      // Newly completed sabotage affects all six dated monthly work periods,
+      // including this month's construction, budget and supply.
+      completeConstructions(next);
+      processConstructionQueue(next);
       recoverMilitary(next);
       // The monthly treasury phase recalculates the budget after government
       // and religion changes below. Avoid a redundant earlier province pass.

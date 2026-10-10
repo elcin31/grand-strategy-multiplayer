@@ -2,7 +2,7 @@ name: Dominion auxiliary pinch system trace
 on:
   push:
     branches: [expansion-camera-qa]
-    paths: [.github/workflows/expansion-camera-trace.yml, scripts/camera_system_trace.py, scripts/camera_trace_analysis.py, scripts/analyze-camera-trace.py, scripts/camera-trace-requirements.txt, tests/camera_system_trace_test.py, tests/camera_trace_analysis_test.py, tests/camera_trace_sql_integration_test.py]
+    paths: [.github/workflows/expansion-camera-trace.yml, scripts/camera_system_trace.py, scripts/camera_trace_analysis.py, scripts/analyze-camera-trace.py, scripts/camera-trace-requirements.txt, scripts/camera_capture_validation.py, scripts/verify-camera-capture.py, tests/camera_capture_validation_test.py, tests/camera_system_trace_test.py, tests/camera_trace_analysis_test.py, tests/camera_trace_sql_integration_test.py]
   workflow_dispatch:
 permissions:
   contents: read
@@ -15,9 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      CAMERA_CANDIDATE_RUNTIME: 9c3da342cf9e9d83252a58278f3fe1f842ced3d9
+      CAMERA_CANDIDATE_RUNTIME: c75bf36aa030f07c0291309b4c9a159e48a9b8b6
       CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-      CAMERA_CANDIDATE_RUN: '38041251527'
+      CAMERA_CANDIDATE_RUN: '38079172136'
+      CAMERA_ALLOWED_STATE_VERSION: '17'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,17 +28,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git diff --exit-code 9c3da342cf9e9d83252a58278f3fe1f842ced3d9 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38041251527 > source-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38041251527/jobs > source-jobs.json
-          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='9c3da342cf9e9d83252a58278f3fe1f842ced3d9';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
-      - name: Require already completed unchanged paired frame gates
+          git diff --exit-code c75bf36aa030f07c0291309b4c9a159e48a9b8b6 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38079172136 > source-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38079172136/jobs > source-jobs.json
+          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='c75bf36aa030f07c0291309b4c9a159e48a9b8b6';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
+      - name: Require completed paired capture job and preserve its failure status
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38042596102 > paired-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38042596102/jobs > paired-jobs.json
-          python -c "import json;r=json.load(open('paired-run.json'));j=json.load(open('paired-jobs.json'))['jobs'];assert r['head_sha']=='8e3b163ecd25271db343527dbd88258bbb57f7f9';s=next(x for x in j if x['name']=='camera-comparison')['steps'];assert next(x for x in s if x['name']=='Run reactivecircus/android-emulator-runner@v2')['conclusion']=='success'"
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38079172136 > paired-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38079172136/jobs > paired-jobs.json
+          python -c "import json;r=json.load(open('paired-run.json'));j=json.load(open('paired-jobs.json'))['jobs'];assert r['head_sha']=='c75bf36aa030f07c0291309b4c9a159e48a9b8b6';c=next(x for x in j if x['name']=='camera-comparison');assert c['status']=='completed';assert c['conclusion'] in ['success','failure']"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -45,8 +46,11 @@ jobs:
       - run: npm ci --include=dev --no-audit --no-fund
       - name: Generate one authoritative paused schema12 fixture for both APKs
         run: |
-          git diff --exit-code 47b0db4f8b220e9ea89998afaac035239b64f5e0 9c3da342cf9e9d83252a58278f3fe1f842ced3d9 -- supabase/functions/_shared src/persistence/campaignCodec.ts
-          node --import tsx scripts/make-camera-fixture.ts camera-fixture
+          git diff --exit-code 47b0db4f8b220e9ea89998afaac035239b64f5e0 HEAD -- supabase/functions/_shared/worldDefinitions.ts supabase/functions/_shared/worldData
+          fixture_source="$RUNNER_TEMP/dominion-accepted-trace-fixture"
+          git worktree add --detach "$fixture_source" 47b0db4f8b220e9ea89998afaac035239b64f5e0
+          cp scripts/make-camera-fixture.ts "$fixture_source/scripts/make-camera-fixture.ts"
+          node --import tsx "$fixture_source/scripts/make-camera-fixture.ts" "$GITHUB_WORKSPACE/camera-fixture"
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -58,7 +62,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38041251527
+          run-id: 38079172136
           name: dominion-camera-illustrated-release
       - uses: actions/download-artifact@v4
         with:
@@ -66,6 +70,14 @@ jobs:
           run-id: 37971350100
           name: dominion-camera-illustrated-release
           path: baseline-apk
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 38079172136
+          name: camera-native-paired-evidence
+          path: paired-evidence
+      - name: Require all four actual complete captures before separate diagnostics
+        run: python scripts/verify-camera-capture.py paired-evidence camera-fixture/camera-fixture-101.1.json > paired-capture-validation.json
       - name: Verify standalone checkpoint APK
         id: apk
         run: |
@@ -112,5 +124,6 @@ jobs:
             checkpoint-integrity.txt
             paired-run.json
             paired-jobs.json
+            paired-capture-validation.json
             camera-fixture/manifest.json
           retention-days: 14

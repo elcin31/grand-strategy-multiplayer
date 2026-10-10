@@ -1,0 +1,1449 @@
+{
+  "diagnosticHead": "927723790aaabc82501a07747d7861918f65d1da",
+  "runtimeHead": "c75bf36aa030f07c0291309b4c9a159e48a9b8b6",
+  "runId": 38082664397,
+  "jobId": 114302617950,
+  "conclusion": "success",
+  "artifactId": 11681166950,
+  "artifactBytes": 11762756,
+  "artifactSha256": "f095645b873e709e4169459a4e5de87ead95b62b406b27cdb916ea821acf73a9",
+  "zipCrc": "PASS",
+  "runtimeExactDiff": "PASS",
+  "analyses": {
+    "trace-before": {
+      "diagnosticOnly": true,
+      "traceSha256": "6b6238286654cf05ab7244b2e186b29310dc380e5211e17b5f1fc5c4088d0490",
+      "markerCandidates": [
+        {
+          "ts": 100060536329,
+          "dur": 11366069644
+        }
+      ],
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "markerValid": true,
+      "schedulerCoveragePresent": true,
+      "attributionComplete": false,
+      "threadStates": [
+        {
+          "tid": 2611,
+          "thread": "HWC release",
+          "state": "S",
+          "observedMs": 11100.286982,
+          "samples": 7
+        },
+        {
+          "tid": 2610,
+          "thread": "GPU completion",
+          "state": "S",
+          "observedMs": 10914.759921,
+          "samples": 228
+        },
+        {
+          "tid": 2326,
+          "thread": "binder:2269_2",
+          "state": "S",
+          "observedMs": 10903.70731,
+          "samples": 96
+        },
+        {
+          "tid": 2377,
+          "thread": "binder:2269_5",
+          "state": "S",
+          "observedMs": 10886.438952,
+          "samples": 44
+        },
+        {
+          "tid": 2273,
+          "thread": "Jit thread pool",
+          "state": "S",
+          "observedMs": 10876.267258,
+          "samples": 38
+        },
+        {
+          "tid": 2324,
+          "thread": "binder:2269_4",
+          "state": "S",
+          "observedMs": 10809.721799,
+          "samples": 70
+        },
+        {
+          "tid": 2279,
+          "thread": "binder:2269_2",
+          "state": "S",
+          "observedMs": 10698.956934,
+          "samples": 87
+        },
+        {
+          "tid": 2308,
+          "thread": "hades",
+          "state": "S",
+          "observedMs": 10669.528665,
+          "samples": 9
+        },
+        {
+          "tid": 2306,
+          "thread": "mqt_v_js",
+          "state": "S",
+          "observedMs": 10201.212493,
+          "samples": 80
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 10196.884628,
+          "samples": 2475
+        },
+        {
+          "tid": 2307,
+          "thread": "mqt_v_native",
+          "state": "S",
+          "observedMs": 10170.025081,
+          "samples": 49
+        },
+        {
+          "tid": 2278,
+          "thread": "binder:2269_1",
+          "state": "S",
+          "observedMs": 9997.092343,
+          "samples": 7
+        },
+        {
+          "tid": 2300,
+          "thread": "RenderThread",
+          "state": "S",
+          "observedMs": 9619.265091,
+          "samples": 142
+        },
+        {
+          "tid": 2298,
+          "thread": "Profile Saver",
+          "state": "S",
+          "observedMs": 4653.596253,
+          "samples": 1
+        },
+        {
+          "tid": 2300,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 1177.159873,
+          "samples": 703
+        },
+        {
+          "tid": 2306,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 762.214782,
+          "samples": 401
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "state": "S",
+          "observedMs": 602.696067,
+          "samples": 123
+        },
+        {
+          "tid": 2306,
+          "thread": "mqt_v_js",
+          "state": "R",
+          "observedMs": 349.856763,
+          "samples": 320
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "state": "R+",
+          "observedMs": 332.744033,
+          "samples": 1654
+        },
+        {
+          "tid": 2300,
+          "thread": "RenderThread",
+          "state": "R+",
+          "observedMs": 329.066817,
+          "samples": 438
+        },
+        {
+          "tid": 2273,
+          "thread": "Jit thread pool",
+          "state": "R",
+          "observedMs": 261.941642,
+          "samples": 59
+        },
+        {
+          "tid": 2279,
+          "thread": "binder:2269_2",
+          "state": "R",
+          "observedMs": 238.598856,
+          "samples": 93
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "state": "R",
+          "observedMs": 233.456256,
+          "samples": 821
+        },
+        {
+          "tid": 2308,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 185.065535,
+          "samples": 84
+        },
+        {
+          "tid": 2610,
+          "thread": "GPU completion",
+          "state": "R",
+          "observedMs": 177.631838,
+          "samples": 231
+        },
+        {
+          "tid": 2324,
+          "thread": "binder:2269_4",
+          "state": "R",
+          "observedMs": 146.442464,
+          "samples": 76
+        },
+        {
+          "tid": 2300,
+          "thread": "RenderThread",
+          "state": "R",
+          "observedMs": 89.203278,
+          "samples": 264
+        },
+        {
+          "tid": 2308,
+          "thread": "hades",
+          "state": "R",
+          "observedMs": 74.540977,
+          "samples": 67
+        },
+        {
+          "tid": 2377,
+          "thread": "binder:2269_5",
+          "state": "R",
+          "observedMs": 60.631403,
+          "samples": 48
+        },
+        {
+          "tid": 2306,
+          "thread": "mqt_v_js",
+          "state": "R+",
+          "observedMs": 52.785606,
+          "samples": 80
+        },
+        {
+          "tid": 2273,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 42.419303,
+          "samples": 67
+        },
+        {
+          "tid": 2273,
+          "thread": "Jit thread pool",
+          "state": "R+",
+          "observedMs": 38.276942,
+          "samples": 8
+        },
+        {
+          "tid": 2326,
+          "thread": "binder:2269_2",
+          "state": "R",
+          "observedMs": 37.858265,
+          "samples": 97
+        },
+        {
+          "tid": 2307,
+          "thread": "mqt_v_native",
+          "state": "R",
+          "observedMs": 22.42347,
+          "samples": 51
+        },
+        {
+          "tid": 2308,
+          "thread": "hades",
+          "state": "R+",
+          "observedMs": 13.073226,
+          "samples": 17
+        },
+        {
+          "tid": 2324,
+          "thread": "binder:2269_4",
+          "state": "Running",
+          "observedMs": 10.112223,
+          "samples": 93
+        },
+        {
+          "tid": 2610,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 8.764502,
+          "samples": 234
+        },
+        {
+          "tid": 2326,
+          "thread": "binder:2269_2",
+          "state": "Running",
+          "observedMs": 8.581225,
+          "samples": 99
+        },
+        {
+          "tid": 2279,
+          "thread": "binder:2269_2",
+          "state": "R+",
+          "observedMs": 8.520748,
+          "samples": 24
+        },
+        {
+          "tid": 2324,
+          "thread": "binder:2269_4",
+          "state": "R+",
+          "observedMs": 4.384568,
+          "samples": 17
+        },
+        {
+          "tid": 2279,
+          "thread": "binder:2269_2",
+          "state": "Running",
+          "observedMs": 4.353273,
+          "samples": 117
+        },
+        {
+          "tid": 2307,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 4.087037,
+          "samples": 51
+        },
+        {
+          "tid": 2377,
+          "thread": "binder:2269_5",
+          "state": "Running",
+          "observedMs": 2.01806,
+          "samples": 56
+        },
+        {
+          "tid": 2377,
+          "thread": "binder:2269_5",
+          "state": "R+",
+          "observedMs": 1.207596,
+          "samples": 8
+        },
+        {
+          "tid": 2298,
+          "thread": "Profile Saver",
+          "state": "R",
+          "observedMs": 1.06867,
+          "samples": 2
+        },
+        {
+          "tid": 2278,
+          "thread": "binder:2269_1",
+          "state": "R",
+          "observedMs": 0.93509,
+          "samples": 7
+        },
+        {
+          "tid": 2611,
+          "thread": "HWC release",
+          "state": "R",
+          "observedMs": 0.5274,
+          "samples": 6
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "state": "D",
+          "observedMs": 0.28866,
+          "samples": 1
+        },
+        {
+          "tid": 2278,
+          "thread": "binder:2269_1",
+          "state": "Running",
+          "observedMs": 0.245404,
+          "samples": 8
+        },
+        {
+          "tid": 2273,
+          "thread": "Jit thread pool",
+          "state": "D",
+          "observedMs": 0.191335,
+          "samples": 1
+        },
+        {
+          "tid": 2610,
+          "thread": "GPU completion",
+          "state": "R+",
+          "observedMs": 0.131045,
+          "samples": 2
+        },
+        {
+          "tid": 2611,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.114871,
+          "samples": 7
+        },
+        {
+          "tid": 2326,
+          "thread": "binder:2269_2",
+          "state": "R+",
+          "observedMs": 0.099147,
+          "samples": 2
+        },
+        {
+          "tid": 2278,
+          "thread": "binder:2269_1",
+          "state": "R+",
+          "observedMs": 0.04045,
+          "samples": 1
+        },
+        {
+          "tid": 2298,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.01948,
+          "samples": 2
+        }
+      ],
+      "completedNestedSlices": [
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "eglSwapBuffers",
+          "samples": 128,
+          "nestedInclusiveMs": 7386.219709,
+          "maxCompletedMs": 156.276962
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 128,
+          "nestedInclusiveMs": 7333.883512,
+          "maxCompletedMs": 155.995764
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "animation",
+          "samples": 95,
+          "nestedInclusiveMs": 4517.915732,
+          "maxCompletedMs": 220.181862
+        },
+        {
+          "tid": 2300,
+          "thread": "RenderThread",
+          "name": "Drawing  0.00  0.00 1280.00 720.00",
+          "samples": 75,
+          "nestedInclusiveMs": 1425.632109,
+          "maxCompletedMs": 49.790962
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "input",
+          "samples": 85,
+          "nestedInclusiveMs": 1056.208385,
+          "maxCompletedMs": 179.700703
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "VRI[MainActivity]",
+          "samples": 85,
+          "nestedInclusiveMs": 1055.744611,
+          "maxCompletedMs": 179.696116
+        },
+        {
+          "tid": 2300,
+          "thread": "RenderThread",
+          "name": "eglSwapBuffersWithDamageKHR",
+          "samples": 75,
+          "nestedInclusiveMs": 1051.987898,
+          "maxCompletedMs": 43.59536
+        },
+        {
+          "tid": 2300,
+          "thread": "RenderThread",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 145,
+          "nestedInclusiveMs": 1005.222877,
+          "maxCompletedMs": 41.173905
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "glBufferDataSyncAEMU encode",
+          "samples": 896,
+          "nestedInclusiveMs": 557.345874,
+          "maxCompletedMs": 19.554286
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "traversal",
+          "samples": 75,
+          "nestedInclusiveMs": 503.48118,
+          "maxCompletedMs": 27.977569
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "draw-VRI[MainActivity]",
+          "samples": 75,
+          "nestedInclusiveMs": 495.803353,
+          "maxCompletedMs": 27.913343
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "postAndWait",
+          "samples": 75,
+          "nestedInclusiveMs": 481.20948,
+          "maxCompletedMs": 27.839303
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 24981",
+          "samples": 1,
+          "nestedInclusiveMs": 331.878674,
+          "maxCompletedMs": 331.878674
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 24998 in 23.6ms",
+          "samples": 1,
+          "nestedInclusiveMs": 331.030531,
+          "maxCompletedMs": 331.030531
+        },
+        {
+          "tid": 2300,
+          "thread": "RenderThread",
+          "name": "flush commands",
+          "samples": 75,
+          "nestedInclusiveMs": 319.379471,
+          "maxCompletedMs": 35.972984
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 24913",
+          "samples": 1,
+          "nestedInclusiveMs": 286.623368,
+          "maxCompletedMs": 286.623368
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 24922 in 20.5ms",
+          "samples": 1,
+          "nestedInclusiveMs": 286.421988,
+          "maxCompletedMs": 286.421988
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 25056",
+          "samples": 1,
+          "nestedInclusiveMs": 280.240497,
+          "maxCompletedMs": 280.240497
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 25065 in 32.3ms",
+          "samples": 1,
+          "nestedInclusiveMs": 279.38917,
+          "maxCompletedMs": 279.38917
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 24898",
+          "samples": 1,
+          "nestedInclusiveMs": 263.522172,
+          "maxCompletedMs": 263.522172
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 24907 in 31.8ms",
+          "samples": 1,
+          "nestedInclusiveMs": 261.996592,
+          "maxCompletedMs": 261.996592
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "glTexSubImage2D encode",
+          "samples": 2619,
+          "nestedInclusiveMs": 246.256076,
+          "maxCompletedMs": 8.186701
+        },
+        {
+          "tid": 2300,
+          "thread": "RenderThread",
+          "name": "glBufferDataSyncAEMU encode",
+          "samples": 225,
+          "nestedInclusiveMs": 230.15552,
+          "maxCompletedMs": 26.764988
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 24974",
+          "samples": 1,
+          "nestedInclusiveMs": 228.261308,
+          "maxCompletedMs": 228.261308
+        },
+        {
+          "tid": 2610,
+          "thread": "GPU completion",
+          "name": "waitForever",
+          "samples": 131,
+          "nestedInclusiveMs": 222.62418,
+          "maxCompletedMs": 9.710563
+        },
+        {
+          "tid": 2300,
+          "thread": "RenderThread",
+          "name": "syncFrameState",
+          "samples": 75,
+          "nestedInclusiveMs": 206.647569,
+          "maxCompletedMs": 13.251154
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_MOVE deviceId=-1 source=0x1002 historySize=11",
+          "samples": 4,
+          "nestedInclusiveMs": 191.298131,
+          "maxCompletedMs": 157.525
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_MOVE deviceId=-1 source=0x1002 historySize=27",
+          "samples": 1,
+          "nestedInclusiveMs": 179.523209,
+          "maxCompletedMs": 179.523209
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "deliverInputEvent src=0x1002 eventTimeNano=108137709236 id=0xfafb3b17",
+          "samples": 1,
+          "nestedInclusiveMs": 179.505312,
+          "maxCompletedMs": 179.505312
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "ViewPostImeInputStage id=0xfafb3b17",
+          "samples": 1,
+          "nestedInclusiveMs": 179.31557,
+          "maxCompletedMs": 179.31557
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 24928",
+          "samples": 1,
+          "nestedInclusiveMs": 175.083099,
+          "maxCompletedMs": 175.083099
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 24936 in 17.0ms",
+          "samples": 1,
+          "nestedInclusiveMs": 174.90846,
+          "maxCompletedMs": 174.90846
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 24868",
+          "samples": 1,
+          "nestedInclusiveMs": 172.158542,
+          "maxCompletedMs": 172.158542
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 24876 in 23.0ms",
+          "samples": 1,
+          "nestedInclusiveMs": 168.43558,
+          "maxCompletedMs": 168.43558
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 25085",
+          "samples": 1,
+          "nestedInclusiveMs": 167.133262,
+          "maxCompletedMs": 167.133262
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 25094 in 23.3ms",
+          "samples": 1,
+          "nestedInclusiveMs": 164.676154,
+          "maxCompletedMs": 164.676154
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 24882",
+          "samples": 1,
+          "nestedInclusiveMs": 164.184562,
+          "maxCompletedMs": 164.184562
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 24891 in 17.4ms",
+          "samples": 1,
+          "nestedInclusiveMs": 163.977935,
+          "maxCompletedMs": 163.977935
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 25034",
+          "samples": 1,
+          "nestedInclusiveMs": 163.185204,
+          "maxCompletedMs": 163.185204
+        },
+        {
+          "tid": 2269,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 25071",
+          "samples": 1,
+          "nestedInclusiveMs": 161.723459,
+          "maxCompletedMs": 161.723459
+        }
+      ],
+      "markerStartNs": 100060536329,
+      "markerEndNs": 111426605973,
+      "markerDurationMs": 11366.069644,
+      "note": "Observed thread-state intersections only inside the actual device marker. Marker encloses input injection; asynchronous presentation after its end is outside this interval. Missing scheduler/loss means incomplete attribution, never zero CPU. Nested slice durations overlap; their sum is NOT CPU time. Partially completed slices excluded from category totals. No frame/FPS acceptance inferred. Raw trace retained for inspection; separate diagnostic launch, software emulator only."
+    },
+    "trace-after": {
+      "diagnosticOnly": true,
+      "traceSha256": "215c9873953fca3d9d9dd0317c004d9c1c468ac5afd47b79168be56d96f73043",
+      "markerCandidates": [
+        {
+          "ts": 183444133852,
+          "dur": 11359866555
+        }
+      ],
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "markerValid": true,
+      "schedulerCoveragePresent": true,
+      "attributionComplete": false,
+      "threadStates": [
+        {
+          "tid": 3040,
+          "thread": "HWC release",
+          "state": "S",
+          "observedMs": 11093.043641,
+          "samples": 10
+        },
+        {
+          "tid": 2770,
+          "thread": "binder:2735_3",
+          "state": "S",
+          "observedMs": 10929.527517,
+          "samples": 101
+        },
+        {
+          "tid": 2745,
+          "thread": "binder:2735_2",
+          "state": "S",
+          "observedMs": 10866.067139,
+          "samples": 27
+        },
+        {
+          "tid": 3039,
+          "thread": "GPU completion",
+          "state": "S",
+          "observedMs": 10846.221588,
+          "samples": 172
+        },
+        {
+          "tid": 2739,
+          "thread": "Jit thread pool",
+          "state": "S",
+          "observedMs": 10808.993591,
+          "samples": 31
+        },
+        {
+          "tid": 2872,
+          "thread": "binder:2735_5",
+          "state": "S",
+          "observedMs": 10542.652861,
+          "samples": 122
+        },
+        {
+          "tid": 2896,
+          "thread": "binder:2735_6",
+          "state": "S",
+          "observedMs": 10314.127304,
+          "samples": 21
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 10229.345536,
+          "samples": 2214
+        },
+        {
+          "tid": 2757,
+          "thread": "mqt_v_js",
+          "state": "S",
+          "observedMs": 10072.56157,
+          "samples": 82
+        },
+        {
+          "tid": 2758,
+          "thread": "mqt_v_native",
+          "state": "S",
+          "observedMs": 10007.375916,
+          "samples": 80
+        },
+        {
+          "tid": 2751,
+          "thread": "RenderThread",
+          "state": "S",
+          "observedMs": 9729.588935,
+          "samples": 135
+        },
+        {
+          "tid": 2807,
+          "thread": "binder:2735_4",
+          "state": "S",
+          "observedMs": 8268.109396,
+          "samples": 20
+        },
+        {
+          "tid": 2759,
+          "thread": "hades",
+          "state": "S",
+          "observedMs": 8013.639211,
+          "samples": 7
+        },
+        {
+          "tid": 2751,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 1050.348658,
+          "samples": 658
+        },
+        {
+          "tid": 2757,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 764.585897,
+          "samples": 475
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "state": "S",
+          "observedMs": 543.091982,
+          "samples": 133
+        },
+        {
+          "tid": 2757,
+          "thread": "mqt_v_js",
+          "state": "R",
+          "observedMs": 481.506242,
+          "samples": 366
+        },
+        {
+          "tid": 2872,
+          "thread": "binder:2735_5",
+          "state": "R",
+          "observedMs": 436.261848,
+          "samples": 129
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "state": "R+",
+          "observedMs": 349.639942,
+          "samples": 1394
+        },
+        {
+          "tid": 2751,
+          "thread": "RenderThread",
+          "state": "R+",
+          "observedMs": 298.784673,
+          "samples": 410
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "state": "R",
+          "observedMs": 237.789095,
+          "samples": 820
+        },
+        {
+          "tid": 3039,
+          "thread": "GPU completion",
+          "state": "R",
+          "observedMs": 234.530527,
+          "samples": 171
+        },
+        {
+          "tid": 2739,
+          "thread": "Jit thread pool",
+          "state": "R",
+          "observedMs": 232.80375,
+          "samples": 48
+        },
+        {
+          "tid": 2759,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 179.450973,
+          "samples": 64
+        },
+        {
+          "tid": 2759,
+          "thread": "hades",
+          "state": "R",
+          "observedMs": 160.683768,
+          "samples": 52
+        },
+        {
+          "tid": 2745,
+          "thread": "binder:2735_2",
+          "state": "R",
+          "observedMs": 138.982555,
+          "samples": 27
+        },
+        {
+          "tid": 2751,
+          "thread": "RenderThread",
+          "state": "R",
+          "observedMs": 127.762121,
+          "samples": 248
+        },
+        {
+          "tid": 2739,
+          "thread": "Jit thread pool",
+          "state": "R+",
+          "observedMs": 120.190706,
+          "samples": 12
+        },
+        {
+          "tid": 2807,
+          "thread": "binder:2735_4",
+          "state": "R",
+          "observedMs": 64.267594,
+          "samples": 19
+        },
+        {
+          "tid": 2739,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 50.127622,
+          "samples": 60
+        },
+        {
+          "tid": 2896,
+          "thread": "binder:2735_6",
+          "state": "R",
+          "observedMs": 48.166625,
+          "samples": 21
+        },
+        {
+          "tid": 2757,
+          "thread": "mqt_v_js",
+          "state": "R+",
+          "observedMs": 41.212846,
+          "samples": 108
+        },
+        {
+          "tid": 2770,
+          "thread": "binder:2735_3",
+          "state": "R",
+          "observedMs": 35.49071,
+          "samples": 101
+        },
+        {
+          "tid": 2748,
+          "thread": "Profile Saver",
+          "state": "R",
+          "observedMs": 31.057858,
+          "samples": 1
+        },
+        {
+          "tid": 2872,
+          "thread": "binder:2735_5",
+          "state": "R+",
+          "observedMs": 17.024801,
+          "samples": 47
+        },
+        {
+          "tid": 2758,
+          "thread": "mqt_v_native",
+          "state": "R",
+          "observedMs": 13.524255,
+          "samples": 83
+        },
+        {
+          "tid": 3039,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 10.963148,
+          "samples": 174
+        },
+        {
+          "tid": 2872,
+          "thread": "binder:2735_5",
+          "state": "Running",
+          "observedMs": 10.603697,
+          "samples": 176
+        },
+        {
+          "tid": 2759,
+          "thread": "hades",
+          "state": "R+",
+          "observedMs": 10.044532,
+          "samples": 12
+        },
+        {
+          "tid": 2758,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 4.562387,
+          "samples": 83
+        },
+        {
+          "tid": 2807,
+          "thread": "binder:2735_4",
+          "state": "R+",
+          "observedMs": 4.239431,
+          "samples": 15
+        },
+        {
+          "tid": 2745,
+          "thread": "binder:2735_2",
+          "state": "Running",
+          "observedMs": 1.41673,
+          "samples": 29
+        },
+        {
+          "tid": 2807,
+          "thread": "binder:2735_4",
+          "state": "Running",
+          "observedMs": 0.856564,
+          "samples": 35
+        },
+        {
+          "tid": 2770,
+          "thread": "binder:2735_3",
+          "state": "Running",
+          "observedMs": 0.72089,
+          "samples": 101
+        },
+        {
+          "tid": 2896,
+          "thread": "binder:2735_6",
+          "state": "Running",
+          "observedMs": 0.619841,
+          "samples": 21
+        },
+        {
+          "tid": 3040,
+          "thread": "HWC release",
+          "state": "R",
+          "observedMs": 0.589582,
+          "samples": 9
+        },
+        {
+          "tid": 3039,
+          "thread": "GPU completion",
+          "state": "R+",
+          "observedMs": 0.498061,
+          "samples": 2
+        },
+        {
+          "tid": 3040,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.126939,
+          "samples": 10
+        },
+        {
+          "tid": 2748,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.030816,
+          "samples": 1
+        },
+        {
+          "tid": 2745,
+          "thread": "binder:2735_2",
+          "state": "R+",
+          "observedMs": 0.011386,
+          "samples": 2
+        }
+      ],
+      "completedNestedSlices": [
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "eglSwapBuffers",
+          "samples": 124,
+          "nestedInclusiveMs": 7267.428929,
+          "maxCompletedMs": 305.658235
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 124,
+          "nestedInclusiveMs": 7205.911054,
+          "maxCompletedMs": 305.33176
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "animation",
+          "samples": 92,
+          "nestedInclusiveMs": 4108.289299,
+          "maxCompletedMs": 365.877359
+        },
+        {
+          "tid": 2751,
+          "thread": "RenderThread",
+          "name": "Drawing  0.00  0.00 1280.00 720.00",
+          "samples": 71,
+          "nestedInclusiveMs": 1302.437725,
+          "maxCompletedMs": 58.620754
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "input",
+          "samples": 82,
+          "nestedInclusiveMs": 1112.409164,
+          "maxCompletedMs": 153.976408
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "VRI[MainActivity]",
+          "samples": 82,
+          "nestedInclusiveMs": 1111.900946,
+          "maxCompletedMs": 153.97066
+        },
+        {
+          "tid": 2751,
+          "thread": "RenderThread",
+          "name": "eglSwapBuffersWithDamageKHR",
+          "samples": 71,
+          "nestedInclusiveMs": 1080.280598,
+          "maxCompletedMs": 53.890514
+        },
+        {
+          "tid": 2751,
+          "thread": "RenderThread",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 134,
+          "nestedInclusiveMs": 987.317787,
+          "maxCompletedMs": 53.176461
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "glBufferDataSyncAEMU encode",
+          "samples": 585,
+          "nestedInclusiveMs": 545.349409,
+          "maxCompletedMs": 22.82263
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "traversal",
+          "samples": 71,
+          "nestedInclusiveMs": 396.285873,
+          "maxCompletedMs": 17.720416
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "draw-VRI[MainActivity]",
+          "samples": 71,
+          "nestedInclusiveMs": 392.33991,
+          "maxCompletedMs": 17.683401
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "postAndWait",
+          "samples": 71,
+          "nestedInclusiveMs": 379.163306,
+          "maxCompletedMs": 17.637803
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 50614",
+          "samples": 1,
+          "nestedInclusiveMs": 372.313284,
+          "maxCompletedMs": 372.313284
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 50623 in 21.6ms",
+          "samples": 1,
+          "nestedInclusiveMs": 369.888935,
+          "maxCompletedMs": 369.888935
+        },
+        {
+          "tid": 2739,
+          "thread": "Jit thread pool",
+          "name": "Compiling baseline",
+          "samples": 95,
+          "nestedInclusiveMs": 278.277115,
+          "maxCompletedMs": 77.515258
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 50711",
+          "samples": 1,
+          "nestedInclusiveMs": 274.628063,
+          "maxCompletedMs": 274.628063
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 50721 in 32.0ms",
+          "samples": 1,
+          "nestedInclusiveMs": 274.463358,
+          "maxCompletedMs": 274.463358
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 50585",
+          "samples": 1,
+          "nestedInclusiveMs": 269.817994,
+          "maxCompletedMs": 269.817994
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 50594 in 27.0ms",
+          "samples": 1,
+          "nestedInclusiveMs": 269.651977,
+          "maxCompletedMs": 269.651977
+        },
+        {
+          "tid": 3039,
+          "thread": "GPU completion",
+          "name": "waitForever",
+          "samples": 97,
+          "nestedInclusiveMs": 262.234098,
+          "maxCompletedMs": 48.006035
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "glTexSubImage2D encode",
+          "samples": 2660,
+          "nestedInclusiveMs": 260.906323,
+          "maxCompletedMs": 7.464781
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 50659",
+          "samples": 1,
+          "nestedInclusiveMs": 205.372409,
+          "maxCompletedMs": 205.372409
+        },
+        {
+          "tid": 2751,
+          "thread": "RenderThread",
+          "name": "flush commands",
+          "samples": 71,
+          "nestedInclusiveMs": 190.555164,
+          "maxCompletedMs": 31.419477
+        },
+        {
+          "tid": 2751,
+          "thread": "RenderThread",
+          "name": "syncFrameState",
+          "samples": 71,
+          "nestedInclusiveMs": 187.528511,
+          "maxCompletedMs": 12.981432
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 50750",
+          "samples": 1,
+          "nestedInclusiveMs": 172.780777,
+          "maxCompletedMs": 172.780777
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_MOVE deviceId=-1 source=0x1002 historySize=11",
+          "samples": 2,
+          "nestedInclusiveMs": 172.640789,
+          "maxCompletedMs": 143.838147
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 50758 in 18.5ms",
+          "samples": 1,
+          "nestedInclusiveMs": 172.486429,
+          "maxCompletedMs": 172.486429
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 50742",
+          "samples": 1,
+          "nestedInclusiveMs": 163.948681,
+          "maxCompletedMs": 163.948681
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 50644",
+          "samples": 1,
+          "nestedInclusiveMs": 159.53385,
+          "maxCompletedMs": 159.53385
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 50653 in 23.6ms",
+          "samples": 1,
+          "nestedInclusiveMs": 159.17109,
+          "maxCompletedMs": 159.17109
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 50578",
+          "samples": 1,
+          "nestedInclusiveMs": 156.174174,
+          "maxCompletedMs": 156.174174
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_MOVE deviceId=-1 source=0x1002 historySize=35",
+          "samples": 1,
+          "nestedInclusiveMs": 153.817311,
+          "maxCompletedMs": 153.817311
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "deliverInputEvent src=0x1002 eventTimeNano=191104372584 id=0xcde06dd4",
+          "samples": 1,
+          "nestedInclusiveMs": 153.800306,
+          "maxCompletedMs": 153.800306
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 50681",
+          "samples": 1,
+          "nestedInclusiveMs": 153.706356,
+          "maxCompletedMs": 153.706356
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "ViewPostImeInputStage id=0xcde06dd4",
+          "samples": 1,
+          "nestedInclusiveMs": 153.58165,
+          "maxCompletedMs": 153.58165
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 50690 in 25.7ms",
+          "samples": 1,
+          "nestedInclusiveMs": 153.262666,
+          "maxCompletedMs": 153.262666
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 50600",
+          "samples": 1,
+          "nestedInclusiveMs": 149.590941,
+          "maxCompletedMs": 149.590941
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_MOVE deviceId=-1 source=0x1002 historySize=24",
+          "samples": 3,
+          "nestedInclusiveMs": 149.08385,
+          "maxCompletedMs": 147.560162
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 50608 in 21.1ms",
+          "samples": 1,
+          "nestedInclusiveMs": 148.713874,
+          "maxCompletedMs": 148.713874
+        },
+        {
+          "tid": 2735,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_DOWN deviceId=-1 source=0x1002 historySize=0",
+          "samples": 5,
+          "nestedInclusiveMs": 148.605883,
+          "maxCompletedMs": 140.545526
+        }
+      ],
+      "markerStartNs": 183444133852,
+      "markerEndNs": 194804000407,
+      "markerDurationMs": 11359.866555,
+      "note": "Observed thread-state intersections only inside the actual device marker. Marker encloses input injection; asynchronous presentation after its end is outside this interval. Missing scheduler/loss means incomplete attribution, never zero CPU. Nested slice durations overlap; their sum is NOT CPU time. Partially completed slices excluded from category totals. No frame/FPS acceptance inferred. Raw trace retained for inspection; separate diagnostic launch, software emulator only."
+    }
+  },
+  "setupWarningDetails": "36 unavailable vendor display tracepoints (dpu,g2d,mali,mdss,panel,sde) in the emulator; actual metadata inspected with pinned Perfetto. Both attributionComplete flags remain false. Scheduler observations and overlapping nested EGL slices do not establish isolated GPU cost or frame acceptance.",
+  "technicalReference": "https://android.googlesource.com/platform/external/perfetto/+/refs/heads/ui-stable/src/trace_processor/storage/stats.h"
+}
