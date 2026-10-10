@@ -2,6 +2,8 @@ import type { GameState, Province } from './gameTypes.ts';
 import { governmentModifiers } from './governmentSystem.ts';
 import { combatMultiplier } from './militarySystem.ts';
 import { money } from './economySystem.ts';
+import {takeArmyLosses} from './armyComposition.ts';
+import {cancelConstructionInProvince} from './buildingSystem.ts';
 export interface Rebellion { strength:number; startedTick:number; lastBattleTick:number }
 export interface RebellionEvent { provinceId:string; tick:number; kind:'Uprising'|'Suppressed'; armyLosses:number; rebelLosses:number }
 const bounded=(n:number)=>Math.max(0,Math.min(100,n));
@@ -31,7 +33,7 @@ export function suppressRebellion(state:GameState,countryId:string,province:Prov
   const troops=armies.reduce((n,a)=>n+a.troops,0),power=armies.reduce((n,a)=>n+a.troops*combatMultiplier(state,a,province,true),0);
   const strength=r.strength,rebelLosses=Math.min(strength,Math.max(1,Math.floor(power*.55))),armyLosses=Math.min(troops,Math.max(1,Math.floor(strength*.3)));
   let remaining=armyLosses;
-  for(const a of armies){const loss=Math.min(a.troops,remaining);a.troops-=loss;remaining-=loss;a.morale=Math.max(0,(a.morale??80)-5);a.organization=Math.max(0,(a.organization??80)-10);}
+  for(const a of armies){const loss=Math.min(a.troops,remaining);takeArmyLosses(a,loss);remaining-=loss;a.morale=Math.max(0,(a.morale??80)-5);a.organization=Math.max(0,(a.organization??80)-10);}
   state.armies=state.armies.filter(a=>a.troops>0);r.strength-=rebelLosses;r.lastBattleTick=state.tick;
   if(r.strength<=0){delete province.rebellion;province.unrest=Math.min(40,province.unrest!);province.rebellionCooldownUntilTick=state.tick+24;log(state,{provinceId:province.id,tick:state.tick,kind:'Suppressed',armyLosses,rebelLosses});}
 }
@@ -52,7 +54,7 @@ export function monthlyStability(state:GameState):void {
     if(!p.rebellion && p.unrest>=85 && p.population>=2000 && state.tick>=p.rebellionCooldownUntilTick!){
       const strength=Math.min(50000,Math.max(500,Math.floor(p.population*.004)));
       p.rebellion={strength,startedTick:state.tick,lastBattleTick:-1};
-      state.constructions=state.constructions?.filter(c=>c.provinceId!==p.id);
+      cancelConstructionInProvince(state,p.id);
       state.countries[p.ownerId]!.stability=bounded(state.countries[p.ownerId]!.stability-2);
       log(state,{provinceId:p.id,tick:state.tick,kind:'Uprising',armyLosses:0,rebelLosses:0});
     }

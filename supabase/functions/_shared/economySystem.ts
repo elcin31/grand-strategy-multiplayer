@@ -6,6 +6,7 @@ import { governmentIncome } from './governmentSystem.ts';
 import { diplomacyBudget } from './diplomacy2System.ts';
 import { espionageModifiers } from './espionageSystem.ts';
 import {economicPolicy,researchMonthlyCost,militaryFundingCost} from './economy2System.ts';
+import {armyBaseUpkeep,takeArmyLosses} from './armyComposition.ts';
 
 export const DEFAULT_TAX_RATE = 30;
 export const MIN_TAX_RATE = 10;
@@ -36,7 +37,7 @@ export function recalcEconomy(state: GameState): void {
   if (!state.dataset) return;
   const diplomatic = diplomacyBudget(state);
   const resources = new Map<string, number>(), buildingCosts = new Map<string, number>(), production = new Map<string,number>(), administration = new Map<string,number>();
-  const taxBase = new Map<string, number>(), tradeBase = new Map<string, number>(), development = new Map<string, number>(), population = new Map<string, number>(), troops = new Map<string, number>();
+  const taxBase = new Map<string, number>(), tradeBase = new Map<string, number>(), development = new Map<string, number>(), population = new Map<string, number>(), troops = new Map<string, number>(),militaryCosts=new Map<string,number>();
   for (const p of state.provinces) {
     if (!Object.hasOwn(state.countries, p.ownerId)) throw new Error('Unknown economic province owner');
     validMoney(p.income);
@@ -56,6 +57,7 @@ export function recalcEconomy(state: GameState): void {
     const sum = (troops.get(a.ownerId) ?? 0) + a.troops;
     if (!Number.isSafeInteger(sum)) throw new Error('Army upkeep overflow');
     troops.set(a.ownerId, sum);
+    militaryCosts.set(a.ownerId,(militaryCosts.get(a.ownerId)??0)+armyBaseUpkeep(a));
   }
   for (const c of Object.values(state.countries)) {
     const rawTax = taxBase.get(c.id) ?? 0, rawTrade = tradeBase.get(c.id) ?? 0;
@@ -68,7 +70,8 @@ export function recalcEconomy(state: GameState): void {
     const resourceIncome = money((resources.get(c.id) ?? 0)*sabotage*policy.production), buildingMaintenance = buildingCosts.get(c.id) ?? 0;
     const productionIncome=money((production.get(c.id)??0)*sabotage*policy.production),administrationMaintenance=money((administration.get(c.id)??0)*policy.administration);
     const monthlyIncome = money(taxIncome + tradeIncome + resourceIncome + productionIncome);
-    const armyMaintenance = money((troops.get(c.id) ?? 0) / 1000 * ARMY_MAINTENANCE_PER_THOUSAND*militaryFundingCost(c));
+    c.militaryUpkeepBase=money(militaryCosts.get(c.id)??0);
+    const armyMaintenance = money(c.militaryUpkeepBase*militaryFundingCost(c));
     const interest = money(c.debt! * MONTHLY_INTEREST);
     const diplomaticMaintenance = diplomatic.costs.get(c.id) ?? 0;
     const researchMaintenance=researchMonthlyCost(c);
@@ -83,7 +86,7 @@ export function recalcEconomy(state: GameState): void {
 /** Recruitment changes no income source, so update only this country's upkeep. */
 export function refreshArmyBudget(c: Country): void {
   if (!c.economy) return;
-  c.economy.armyMaintenance = money(c.army / 1000 * ARMY_MAINTENANCE_PER_THOUSAND*militaryFundingCost(c));
+  c.economy.armyMaintenance = money((c.militaryUpkeepBase??c.army/1000*ARMY_MAINTENANCE_PER_THOUSAND)*militaryFundingCost(c));
   c.economy.monthlyBalance = money(c.economy.monthlyIncome - c.economy.armyMaintenance - c.economy.buildingMaintenance - c.economy.interest - c.economy.administrationMaintenance - (c.economy.diplomaticMaintenance??0)-(c.economy.researchMaintenance??0));
 }
 export function refreshResearchBudget(c:Country):void {
@@ -128,7 +131,7 @@ function bankruptcy(state: GameState, c: Country): void {
   }
   c.treasury = 0; c.debt = 0;
   const ratio = c.economy!.armyMaintenance > 0 ? Math.max(0, Math.min(.5, c.economy!.monthlyIncome * .8 / c.economy!.armyMaintenance)) : 0;
-  for (const a of state.armies) if (a.ownerId === c.id) a.troops = Math.floor(a.troops * ratio / 1000) * 1000;
+  for (const a of state.armies) if (a.ownerId === c.id) takeArmyLosses(a,a.troops-Math.floor(a.troops * ratio / 1000) * 1000);
   state.armies = state.armies.filter(a => a.troops > 0);
 }
 

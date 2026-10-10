@@ -1,3 +1,4 @@
+import {scenarioStrength} from './helpers/militaryFixture';
 import { declareWar } from '../supabase/functions/_shared/diplomacySystem';
 import { recalcEconomy } from '../supabase/functions/_shared/economySystem';
 import { test } from 'node:test';
@@ -74,7 +75,7 @@ test('conquest preserves completed buildings but cancels the defeated owner cons
   const target=origin.neighbors.map(id=>state.provinces.find(p=>p.id===id)!).find(p=>p.ownerId!=='germany')!;
   const defenderId=target.ownerId; target.buildings={Fort:1}; state.countries[defenderId]!.treasury=1_000_000;
   startConstruction(state,defenderId,target,'Farm');
-  const army=state.armies.find(a=>a.ownerId==='germany')!; army.provinceId=origin.id; army.troops=5_000_000;
+  const army=state.armies.find(a=>a.ownerId==='germany')!; army.provinceId=origin.id; scenarioStrength(army,5_000_000);
   state.armies=state.armies.filter(a=>a.ownerId!==defenderId||a.provinceId!==target.id);
   declareWar(state,'germany',defenderId);
   const next=applyServerCommand(state,{type:'MOVE_ARMY',playerId:'host',armyId:army.id,provinceId:target.id},'host');

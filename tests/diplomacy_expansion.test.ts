@@ -1,3 +1,4 @@
+import {scenarioStrength} from './helpers/militaryFixture';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
@@ -85,7 +86,7 @@ test('political union requires mature cooperation, preserves country identities,
   const unionTerm=s.diplomacy![pairKey('germany','france')]!.terms!.find(t=>t.type==='PoliticalUnion')!;s=command(s,{type:'TERMINATE_TREATY',playerId:'guest',targetId:'germany',treatyId:unionTerm.id},'guest');assert.equal(s.politicalUnions!.length,0);assert.equal(s.diplomacy![pairKey('germany','france')]!.truceUntilTick,33);assert.deepEqual(s,decodeCampaign(encodeCampaign(s,1)).state);
 });
 test('ultimatums require credible force and resources; consent transfers cash while refusal creates a crisis',()=>{
-  let s=world();assert.throws(()=>accepted(s,{kind:'Ultimatum',demand:'Payment',amount:50}),/военная сила/);const army=s.armies.find(a=>a.ownerId==='germany')!;army.troops=1_000_000;recalcEconomy(s);const before=money(s.countries.germany!.treasury+s.countries.france!.treasury),n=accepted(s,{kind:'Ultimatum',demand:'Payment',amount:50});assert.equal(n.countries.france!.treasury,money(s.countries.france!.treasury-50));assert.equal(money(n.countries.germany!.treasury+n.countries.france!.treasury),money(before-25));assert.ok(!warBetween(n,'germany','france'));
+  let s=world();assert.throws(()=>accepted(s,{kind:'Ultimatum',demand:'Payment',amount:50}),/военная сила/);const army=s.armies.find(a=>a.ownerId==='germany')!;scenarioStrength(army,1_000_000);recalcEconomy(s);const before=money(s.countries.germany!.treasury+s.countries.france!.treasury),n=accepted(s,{kind:'Ultimatum',demand:'Payment',amount:50});assert.equal(n.countries.france!.treasury,money(s.countries.france!.treasury-50));assert.equal(money(n.countries.germany!.treasury+n.countries.france!.treasury),money(before-25));assert.ok(!warBetween(n,'germany','france'));
   s=command(s,{type:'OFFER_DIPLOMACY',playerId:'host',targetId:'france',terms:{kind:'Ultimatum',demand:'Payment',amount:50}});s=command(s,{type:'RESPOND_DIPLOMACY',playerId:'guest',offerId:s.diplomaticOffers![0]!.id,accept:false},'guest');assert.equal(s.countries.germany!.aggressiveExpansion,2);assert.ok(s.diplomaticHistory!.some(e=>e.kind==='OfferRejected'));
 });
 test('contextual relations react to claims, trade and military threats without cumulative drift',()=>{

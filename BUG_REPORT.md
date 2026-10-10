@@ -1,3 +1,12 @@
+# Stage6 current open gates — 2026-10-10
+
+- Rejected opaque SurfaceView removed after complete Stage5 ABBA regression. Current transparent-surface candidate still requires native acceptance; host tick tails remain variable and require final profiling/balance/native QA.
+- Stage4/5 counterintelligence native assertion failed because the old4x UI harness overshot the requested clock interval. Proven artifact tick93→127, correct effect expired107. Observe1x target tick and pause the visible control immediately; do not weaken mission or fatal assertions. Fix requires the next Android run.
+- Rebellion now cancels both active and waiting paid construction, as occupation already does. New composition/count/template/date guards reject invalid current saves; valid legacy strengths are migrated without loss.
+- Remaining original roadmap: named technologies, national courses,19 additional original paintings, whole integration/long-war and treasury balance, coordinated existing-backend rollout and final signed standalone APK. No intermediate build is the final release.
+
+---
+
 # Active exact-source gates and durable continuation — 2026-10-10
 
 Current game source **9c3da342cf9e9d83252a58278f3fe1f842ced3d9**, build/194JS/25Python/10k38041251527 PASS, APK0.8.1 SHA88be9d431bdf72022b25220747114b3477ead8d1cd4dfd88e438a61ab2b8ee53. Native harness **7f57ab3ff6d0a089b75d8cfb2589ca446fcf4483** is pushed; exact-source full menu/army/order/Back/flag/save/reboot/30min stress run **38044397912**, smoke **114190884722**, in progress. Auxiliary trace/evidence **a5555024d8dbbb637734fe6327239db320e4c1c1** is pushed; trace-only run **38045173001**, diagnostic **114193130923**, and unchanged paired repeat **38045172996** in progress. Both new workflow source guards enforce byte-identical9c and successful build/10k; no gameplay source/schema/assets/signing/threshold change in this QA commit. New host tests **34Python,33PASS/1SDK-dependentSKIP**, actual pinned synthetic Android async parser10ms/foreignPID exclusion PASS; synthetic input is not an Android frame benchmark. Actual old trace correctly remains INCOMPLETE with6152192 overwritten bytes/193chunks and no completed gesture interval.

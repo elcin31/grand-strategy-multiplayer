@@ -103,7 +103,11 @@ def set_speed(speed):
             return root
     raise AssertionError('Speed command did not become active: '+label)
 def advance_campaign_months(months):
-    root = set_speed(4)
+    # UIAutomator plus the old navigated set_speed(0) can take many seconds.
+    # At4x this advanced34 ticks during a requested6-tick counterintelligence
+    # check, legitimately expiring its12-month result. Use real1x time and tap
+    # the already visible pause control immediately at the observed target.
+    root = set_speed(1)
     def tick(tree):
         text = next(n.get('text') for n in tree.iter('node') if n.get('text','').startswith('Ход '))
         return int(re.match(r'Ход (\d+)', text).group(1))
@@ -111,8 +115,12 @@ def advance_campaign_months(months):
     deadline = time.monotonic() + 180
     while time.monotonic() < deadline:
         time.sleep(2)
-        if tick(hierarchy('population-growing')) >= target:
-            set_speed(0); return
+        root=hierarchy('population-growing')
+        if tick(root) >= target:
+            click_text(root,'Пауза');time.sleep(1)
+            paused=hierarchy('month-target-paused')
+            assert any(n.get('content-desc')=='Пауза' and n.get('selected')=='true' for n in paused.iter('node')), 'Real clock did not pause'
+            return
     raise AssertionError('Campaign clock did not advance enough months')
 def province_army_text(root):
     texts = [n.get('text','') for n in root.iter('node') if n.get('text')]
@@ -234,6 +242,16 @@ commander_name=commander_label.removeprefix('Полководец ')
 assert commander_name in read_scrolling('Командир: '), 'Commander assignment did not apply'
 root=hierarchy('commander-art');screenshot('commander-art')
 assert any(n.get('content-desc')=='Портрет вымышленного полководца: '+commander_name for n in root.iter('node')), 'Assigned commander portrait missing'
+# Military 2.0: mix an actual paid infantry regiment, preserve its commander,
+# and persist the explicit automatic reinforcement setting. No test-only money.
+click_scrolling('Добавить часть: Пехота')
+read_scrolling('DEU')
+assert province_army_text(hierarchy('military-mixed-regiment')) == str(int(before[:-1])+26)+'K', 'Mixed regiment did not update actual army strength'
+assert 'Пехота:' in read_scrolling('Пехота:'), 'Composition is not displayed'
+click_scrolling('Автоматическое пополнение')
+assert 'включено' in read_scrolling('Автоматическое пополнение:'), 'Automatic reinforcement command did not apply'
+assert 'Снабжение ' in read_scrolling('Снабжение '), 'Supply status is absent'
+screenshot('military-logistics')
 # Expansion 2.0: actual Canvas marker/flag touch regression, independent of row commands.
 def click_owned_route():
     # The route caption is a 13px TextView inside a 58px clickable control.

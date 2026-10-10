@@ -1,3 +1,38 @@
+# Continuation — Stage6 Military2.0, supply and rejected surface experiment, 2026-10-10
+
+Verified parent HEAD **8cf992ee6443b0396f3742ef5e90a6e4e3f32557** on GitHub expansion-v2/local, tree dcb5c39c1d5d635fdebd8010c589be9f0215ab9a. Earlier expansion checkpoints:5fdee487b821e2efa59be0b36466a3b9e5188b37, b6abad4c7a5ac536817326184f5cd33a6c47d347,4bd9d4000fab1f1130d42c1265b2ef9f21ab356a,ca230dd129f5647d9f1a11fbbc42c78bd2344702. Main dbb354 and accepted47b unchanged. Only existing Dominion repository/backend; no AssetMind, world reduction or cloud deployment. Existing195/2924/5411 retained.
+
+**Stage6 implementation:** actual mixed regiments retain the existing six modern types/prices/unlocks and check campaign era. Integer proportional casualties preserve a paid target recipe. Experienced units and trained generals affect combat; recruits dilute experience. Upkeep weights real composition and funding. Reinforcement consumes actual treasury/manpower, requires50% supply/controlled home territory/no default or retreat and is limited to one transaction per month; automation is an explicit persisted setting. Safe adjacent retreats clear only their own order, log actual movement and prevent attacks for two months; routed defenders survive when a legal route exists, encircled armies do not teleport. AI chooses affordable advanced/support units, reinforces and retreats in existing tick slots. Deselection/cancellation/foreign flag/Back contracts retained.
+
+**Supply:** controlled capital or a real Infrastructure2/Barracks1 reserve node; connected legal territory, infrastructure, terrain, occupation, directional access and war permissions affect graph quality. Shipping requires real ports at both coastlines; hostile coastal garrisons can interdict approaches. Capacity responds to infrastructure/barracks/ports and actual weighted load. Sabotage, funding and default affect current supply. Cut routes cause attrition and prevent free readiness recovery. Graphs are monthly/on demand, never camera-frame work. Per-state geographic/permission indexes,32-network LRU, a proven capital-source fast path and army-only index refresh avoid repeated world traversal. Military panel exposes real composition, supply/reason/capacity, paid/manual/auto replenishment and safe retreat. Rebellion now cancels both paid active and waiting construction projects.
+
+**Schema16 additive:** Army composition/template/experience/supply/lastSupplyTick/reinforcementEnabled/lastReinforcementTick/lastReinforcementCost/retreatUntilTick; Commander experience; derived national militaryUpkeepBase. Schema15 migration preserves strengths/types/cash/commanders and byte-exact before-military-v16.backup. Strict enum/count/sums/template/date/finite/precision/ownership validation, immutable shared reducer, actor/CAS/receipts unchanged. Tests explicitly initialize legitimate strength scenarios; production never repairs forged compositions. Original schema12 fixture fields/checksum survive16 with inactive military defaults.
+
+**Verified:** TypeScript, full242/242 JS,49Python(48PASS/1SDK fixture skip), final Hermes export and100-month budget/army/population checks. Nineteen lost-response intent kinds including four military commands apply once after reconnect. All host measurements, failed experiments and export digest are in EXPANSION_STAGE6_HOST_QA_2026-10-10.json. Initial fixed240 P95 rose116.77→243.22ms and triggered profiling. Supply inclusive CPU attribution fell9460→1060ms after local optimizations. Final isolated candidate P95/P99 178.38/479.99ms versus fresh reverse baseline153.60/208.81ms; earlier source fast-path run144.04/196.13ms is retained too. Host tail variability is unresolved, not a performance acceptance or handset FPS claim. Native tick/PSS/camera acceptance remains open.
+
+**Actual Stage5 CI38062913884:** build114244643496 SUCCESS and actual10000ticks114244643674 SUCCESS; native114247363935 FAILURE at the old overshooting counterintelligence clock assertion. Stage4 native114241620123 also failed this assertion; downloaded artifact11674052330/12,003,634bytes/SHA dbe186b20715a2a007ca1336f151dfe410b4440caeee460732bcbff1c485c9c7/CRC PASS proves requested6months advanced34 (tick93→127), beyond the correct effect deadline107. Current smoke uses1x, observes the actual target tick, and pauses the already-visible control without navigation/scroll while running. All active-counter/fatal/stress/UX assertions remain. New military UI checks require the next native run.
+
+**Stage1 experiment rejected:** Stage5 camera114247121076 completed all9 scenarios in both orders with identical pinned save, then FAILED forward terrain compositorP99 and reverse pinch histogramP95 (650→1200ms). Downloaded artifact11675267082/17,653,590bytes/SHA d013ce386ff602d55c5bed1a3fe179ee2f80183e070ce8141a00d1629cdee184/CRC PASS. Evidence in EXPANSION_CAMERA_SURFACE_REJECTION_8CF.json. Restore only the accepted transparent Skia Canvas by removing the unaccepted opaque Android property. Existing caches, geometry, input/frame scheduling and all original compositor/P95/P99/PSS/paint gates remain. This correction is not yet accepted as a new camera performance result.
+
+| Approved stage | Status and remaining gate |
+|---|---|
+|0 Recovery|DONE; do not repeat|
+|1 Frame pacing|PARTIAL; rejected surface restored, repeat complete ABBA and PSS/tick acceptance|
+|2 Army UX|DONE at exact ca230dd native/1800s; integrated16 acceptance pending|
+|3 Diplomacy2.0|PARTIAL; core+host/10k verified, named technology adapter/native/backend final integration pending|
+|4 Espionage/AI|PARTIAL; core+host/10k and real supply effect verified; corrected native clock/backend integration pending|
+|5 Economy/buildings|PARTIAL; full core+host+CI10k verified; integrated native/backend acceptance pending|
+|6 Military/supply|PARTIAL; full core+242 tests/export verified; native/long-run/balance/backend final gates pending|
+|7 Technology tree|NOT STARTED; next exact operation|
+|8 National course|NOT STARTED|
+|9 New historical art/UI|NOT STARTED; still19 NEW originals beyond inherited15|
+|10 Integration/balance|PARTIAL; existing chaos/save/CAS/10k retained, whole expansion and long-war/cash balance pending|
+|11 Final Android release|NOT STARTED; checkpoint builds are not final2.0 delivery|
+
+**Exact next operation:** confirm/save this reviewed tree as a logical military/supply commit on expansion-v2 with a normal CI run; retain that run while implementing Stage7's original five-direction named prerequisite graph. Preserve legacy five-level research and already paid projects, connect named unlocks to real gameplay, add historical era/cost/progress/illustrations and Android-landscape navigation, adapt actual diplomatic technology exchange, and verify new schema/save/reconnect regressions before the next commit. Do not restart recovery, change backend or declare native/release DONE from host evidence. Continue Stage8→19 new original artworks→whole integration/10000 ticks→coordinated existing-backend standalone release. Do not end with an intermediate APK.
+
+---
+
 # Continuation — Stage5 Economy2.0 and construction, 2026-10-10
 
 Parent HEAD **5fdee487b821e2efa59be0b36466a3b9e5188b37** is confirmed on GitHub expansion-v2/local. Main dbb354, accepted47b/world195/2924/5411 and existing Dominion backend are unchanged. Recovery is DONE; no new repository, AssetMind access, backend deployment, world reduction or final APK.

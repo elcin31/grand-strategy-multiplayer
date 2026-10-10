@@ -2,7 +2,7 @@
 import math
 
 
-def assert_paused_fixture(actual, expected, allowed_version=15):
+def assert_paused_fixture(actual, expected, allowed_version=16):
     def finite(value):
         if isinstance(value, float):
             assert math.isfinite(value), 'Non-finite benchmark snapshot'
@@ -21,6 +21,10 @@ def assert_paused_fixture(actual, expected, allowed_version=15):
     for key in ['relationMissions','diplomaticOffers','diplomaticHistory','politicalUnions','spyMissions','spyReports','spyEffects','constructionQueue']:
         assert not state.get(key), 'Active expansion gameplay in camera fixture: '+key
     for army in state['armies']:
+        assert not army.get('reinforcementEnabled',False), 'Active reinforcement in camera fixture'
+        assert army.get('experience',0)==0 and army.get('retreatUntilTick',0)==0, 'Active military advancement in camera fixture'
+        if 'composition' in army:
+            assert army['composition']=={army.get('unitType','Infantry'):army['troops']} and army.get('template')==army['composition'], 'Changed army recipe in camera fixture'
         assert not army.get('order'), 'Active army route in paused camera fixture'
     for country in state['countries'].values():
         assert not country.get('spyCooldowns'), 'Active espionage cooldown in camera fixture'

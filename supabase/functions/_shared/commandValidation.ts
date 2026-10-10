@@ -36,6 +36,10 @@ const fields: Record<string, readonly string[]> = {
   OFFER_TREATY: ['type','playerId','targetId','treaty'],
   RESPOND_TREATY: ['type','playerId','targetId','accept'],
   DECLARE_WAR: ['type','playerId','targetId'],
+  ADD_REGIMENT:['type','playerId','armyId','unitType','troops'],
+  REINFORCE_ARMY:['type','playerId','armyId'],
+  SET_REINFORCEMENT:['type','playerId','armyId','enabled'],
+  RETREAT_ARMY:['type','playerId','armyId','provinceId'],
   RECRUIT_UNIT: ['type','playerId','provinceId','troops','unitType'],
   ASSIGN_COMMANDER: ['type','playerId','armyId','commanderId'],
   START_RESEARCH: ['type', 'playerId', 'branch'],
@@ -79,12 +83,13 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if(type==='SET_ECONOMIC_POLICY'&&(typeof command.policy!=='string'||!Object.hasOwn(ECONOMIC_POLICIES,command.policy)))throw Error('Invalid economic policy');
   if(type==='SET_FUNDING'&&(!['Research','Military'].includes(command.domain as string)||typeof command.level!=='string'||!Object.hasOwn(FUNDING_LEVELS,command.level)))throw Error('Invalid funding');
   if (type === 'BORROW' || type === 'REPAY_DEBT') assertLoanAmount(command.amount);
-  if (type === 'RECRUIT_UNIT' && (typeof command.unitType !== 'string' || !Object.hasOwn(UNITS, command.unitType))) throw new Error('Invalid unit type');
+  if ((type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.unitType !== 'string' || !Object.hasOwn(UNITS, command.unitType))) throw new Error('Invalid unit type');
   if (type === 'START_RESEARCH' && (typeof command.branch !== 'string' || !Object.hasOwn(TECHNOLOGIES, command.branch))) throw new Error('Invalid research branch');
   if ((type === 'BUILD'||type==='QUEUE_BUILD') && (typeof command.buildingType !== 'string' || !BUILDING_TYPES.includes(command.buildingType as BuildingType))) throw new Error('Invalid building type');
   if (type === 'CHANGE_RELIGION') assertReligion(command.religionId);
   if (type === 'CHANGE_GOVERNMENT' && (typeof command.governmentType !== 'string' || !GOVERNMENT_TYPES.includes(command.governmentType as GovernmentType))) throw new Error('Invalid government type');
+  if(type==='SET_REINFORCEMENT'&&typeof command.enabled!=='boolean')throw Error('Invalid reinforcement toggle');
   if (type === 'SET_READY' && typeof command.ready !== 'boolean') throw new Error('Invalid ready value');
   if (type === 'SET_SPEED' && (typeof command.speed !== 'number' || !Number.isInteger(command.speed) || command.speed < 0 || command.speed > 4)) throw new Error('Invalid game speed');
-  if ((type === 'RECRUIT' || type === 'RECRUIT_UNIT') && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');
+  if ((type === 'RECRUIT' || type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');
 }

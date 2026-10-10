@@ -26,6 +26,7 @@ export interface Country {
   bankruptcyUntilTick?: number;
   bankruptcyCount?: number;
   economy?: EconomyBudget;
+  militaryUpkeepBase?:number;
   id: CountryId;
   name: string;
   shortName: string;
@@ -113,6 +114,15 @@ export interface Construction {
 }
 
 export interface Army {
+  composition?:import('./armyComposition.ts').Composition;
+  template?:import('./armyComposition.ts').Composition;
+  experience?:number;
+  supply?:number;
+  lastSupplyTick?:number;
+  reinforcementEnabled?:boolean;
+  lastReinforcementTick?:number;
+  lastReinforcementCost?:number;
+  retreatUntilTick?:number;
   order?: import("./armyOrders.ts").ArmyOrder;
   unitType?: UnitType;
   morale?: number;
@@ -237,6 +247,10 @@ export type GameCommand =
   | { type: 'RESPOND_TREATY'; playerId: string; targetId: string; accept: boolean }
   | { type: 'DECLARE_WAR'; playerId: string; targetId: string }
   | { type: 'RECRUIT_UNIT'; playerId: string; provinceId: string; troops: number; unitType: UnitType }
+  | {type:'ADD_REGIMENT';playerId:string;armyId:string;unitType:UnitType;troops:number}
+  | {type:'REINFORCE_ARMY';playerId:string;armyId:string}
+  | {type:'SET_REINFORCEMENT';playerId:string;armyId:string;enabled:boolean}
+  | {type:'RETREAT_ARMY';playerId:string;armyId:string;provinceId:string}
   | { type: 'ASSIGN_COMMANDER'; playerId: string; armyId: string; commanderId: string }
   | { type: 'START_RESEARCH'; playerId: string; branch: TechnologyBranch }
   | { type: 'SET_TAX_RATE'; playerId: string; taxRate: number }

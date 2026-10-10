@@ -1,3 +1,4 @@
+import {scenarioStrength} from './helpers/militaryFixture';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
@@ -5,7 +6,7 @@ import {applyServerCommand} from '../supabase/functions/_shared/serverCommand';
 import {declareWar,warBetween,pairKey} from '../supabase/functions/_shared/diplomacySystem';
 import {initializeWars,monthlyWar,refreshWars} from '../supabase/functions/_shared/warSystem';
 function campaign(){const s=createWorldState('warqa','WAR001','host','QA',99);s.phase='paused';s.speed=0;s.players[0]!.countryId='germany';s.players.push({id:'guest',countryId:'france',displayName:'QA2',ready:true,isHost:false});return s;}
-function invaded(){let s=campaign();declareWar(s,'germany','france');const origin=s.provinces.find(p=>p.ownerId==='germany'&&p.neighbors.some(id=>s.provinces.find(q=>q.id===id)?.ownerId==='france'))!,dest=origin.neighbors.map(id=>s.provinces.find(q=>q.id===id)!).find(p=>p.ownerId==='france')!,a=s.armies.find(a=>a.ownerId==='germany')!;a.provinceId=origin.id;a.troops=10000000;s.armies=s.armies.filter(q=>q.ownerId!=='france'||q.provinceId!==dest.id);s=applyServerCommand(s,{type:'MOVE_ARMY',playerId:'host',armyId:a.id,provinceId:dest.id},'host');return {s,destId:dest.id,warId:s.wars![0]!.id};}
+function invaded(){let s=campaign();declareWar(s,'germany','france');const origin=s.provinces.find(p=>p.ownerId==='germany'&&p.neighbors.some(id=>s.provinces.find(q=>q.id===id)?.ownerId==='france'))!,dest=origin.neighbors.map(id=>s.provinces.find(q=>q.id===id)!).find(p=>p.ownerId==='france')!,a=s.armies.find(a=>a.ownerId==='germany')!;a.provinceId=origin.id;scenarioStrength(a,10000000);s.armies=s.armies.filter(q=>q.ownerId!=='france'||q.provinceId!==dest.id);s=applyServerCommand(s,{type:'MOVE_ARMY',playerId:'host',armyId:a.id,provinceId:dest.id},'host');return {s,destId:dest.id,warId:s.wars![0]!.id};}
 test('battle occupies without annexation; income, recruitment and construction respect controller',()=>{
   const {s,destId}=invaded(),p=s.provinces.find(p=>p.id===destId)!;assert.equal(p.ownerId,'france');assert.equal(p.controllerId,'germany');assert.ok(s.wars![0]!.occupiedProvinceIds!.includes(destId));assert.ok(s.wars![0]!.casualties!.germany!>0);assert.ok(s.countries.germany!.warExhaustion!>0);
   for(const playerId of ['host','guest']){assert.throws(()=>applyServerCommand(s,{type:'RECRUIT',playerId,provinceId:destId,troops:1000},playerId));assert.throws(()=>applyServerCommand(s,{type:'BUILD',playerId,provinceId:destId,buildingType:'Farm'},playerId));}

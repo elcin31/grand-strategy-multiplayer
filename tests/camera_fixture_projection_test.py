@@ -14,8 +14,8 @@ class FixtureProjectionTest(unittest.TestCase):
             'cities':[{'id':'c','provinceId':'p','population':30}],
             'armies':[{'id':'a','ownerId':'de','provinceId':'p','troops':1000}],
             'diplomacy':{},'wars':[],'constructions':[],'movements':[]}}
-    def test_only_inactive_additive_schema15_defaults_can_change_the_legacy_workload(self):
-        base=self.fixture();actual=copy.deepcopy(base);actual['state']['stateVersion']=15
+    def test_only_inactive_additive_schema16_defaults_can_change_the_legacy_workload(self):
+        base=self.fixture();actual=copy.deepcopy(base);actual['state']['stateVersion']=16
         for key in ['relationMissions','diplomaticOffers','diplomaticHistory','politicalUnions','spyMissions','spyReports','spyEffects','constructionQueue']:actual['state'][key]=[]
         actual['state']['countries']['de']['spyCooldowns']={}
         actual['state']['countries']['de']['economy']['diplomaticMaintenance']=0
@@ -36,5 +36,5 @@ class FixtureProjectionTest(unittest.TestCase):
             base=self.fixture();actual=copy.deepcopy(base);change(actual['state'])
             with self.assertRaises(AssertionError):assert_paused_fixture(actual,base)
     def test_future_schema_is_rejected(self):
-        base=self.fixture();actual=copy.deepcopy(base);actual['state']['stateVersion']=16
+        base=self.fixture();actual=copy.deepcopy(base);actual['state']['stateVersion']=17
         with self.assertRaises(AssertionError):assert_paused_fixture(actual,base)

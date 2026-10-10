@@ -24,6 +24,7 @@ export function findArmyRoute(state:GameState,army:Army,targetId:string):string[
 export function setArmyOrder(state:GameState,ownerId:string,armyId:string,targetId:string):void {
  const army=state.armies.find(a=>a.id===armyId);if(!army||army.ownerId!==ownerId)throw Error('Можно отдавать приказы только своей армии');
  const route=findArmyRoute(state,army,targetId),target=state.provinces.find(p=>p.id===targetId)!;
+ if(warBetween(state,ownerId,target.controllerId??target.ownerId)&&state.tick<(army.retreatUntilTick??0))throw Error('После отступления наступление временно недоступно');
  army.order=route.length?{type:warBetween(state,ownerId,target.controllerId??target.ownerId)||!state.dataset&&(target.controllerId??target.ownerId)!==ownerId?'ATTACK':'MOVE',targetProvinceId:targetId,route,issuedTick:state.tick}:undefined;
 }
 export function advanceArmyOrders(state:GameState,move:(state:GameState,owner:string,army:string,target:string)=>void):void {
@@ -32,7 +33,7 @@ export function advanceArmyOrders(state:GameState,move:(state:GameState,owner:st
   const order=army.order;if(!order||!state.armies.includes(army))continue;
   const next=provinces.get(order.route[0]??''),origin=provinces.get(army.provinceId);
   // Recheck every step against authoritative control and diplomacy. Never follow stale permissions.
-  if(!next||!origin?.neighbors.includes(next.id)||!canEnterTerritory(state,army.ownerId,next.controllerId??next.ownerId,army.id,next.id)){delete army.order;continue;}
+  if(!next||!origin?.neighbors.includes(next.id)||!canEnterTerritory(state,army.ownerId,next.controllerId??next.ownerId,army.id,next.id)||warBetween(state,army.ownerId,next.controllerId??next.ownerId)&&state.tick<(army.retreatUntilTick??0)){delete army.order;continue;}
   move(state,army.ownerId,army.id,next.id);
   if(army.provinceId!==next.id){delete army.order;continue;} // failed assault stops the order
   order.route.shift();if(!order.route.length)delete army.order;

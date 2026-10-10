@@ -1,3 +1,4 @@
+import {initializeArmyComposition} from './armyComposition.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import { initializeResources } from './resourceSystem.ts';
 import { countryDefinitions, provinceDefinitions, cityDefinitions } from './worldDefinitions.ts';
@@ -36,7 +37,7 @@ export function createWorldState(gameId: string, roomCode: string, playerId: str
     const country = countries[definition.id]!;
     initializeGovernment(country);
     country.income = governmentIncome(monthly, country.governmentType);
-    if (troops) armies.push({ id: 'army-capital-'+definition.id, ownerId: definition.id, provinceId: capital.provinceId, troops });
+    if (troops) {const army={ id: 'army-capital-'+definition.id, ownerId: definition.id, provinceId: capital.provinceId, troops };initializeArmyComposition(army);armies.push(army);}
   }
   const state: GameState = { stateVersion: CURRENT_STATE_VERSION, dataset: 'modern-world-v2', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, leaders, constructions: [],constructionQueue:[],relationMissions: [], diplomaticOffers: [], diplomaticHistory: [], politicalUnions: [], spyMissions: [], spyReports: [], spyEffects: [], armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };
   if(deferred)return state;
