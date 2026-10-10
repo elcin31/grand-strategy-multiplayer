@@ -9,6 +9,8 @@ Actual runtime **d7c3d593802f2edf27894f92fe10928341df0080**, build/long/camera r
 
 Checkpoint APK SHA9b1346892404fb11d51cc4232afe0c8d3165e9944603d10da41fec9e8a3f96c9, 140961717bytes, embedded Hermes10475572bytes, nondebuggable0.8.1(9), landscape, only dedicated Dominion backend and unchanged sideload signing certificate verified. EXPANSION_SAMPLER_APK_VERIFICATION.json / EXPANSION_LONG_D7C3D59.json hold verified artifacts. This is an intermediate binary, not Dominion-grand-strategy-v2-release.apk. No main/backend/production-data changes, no AssetMind access, no province/city reduction, no schema changes. Physical Redmi performance unmeasured.
 
+Same-APK native rerun **38023398108** (QA38faf70) and fixed-world forward/reverse camera **38023545936** (QA49ea226) are running. Both workflows reject any changed APK runtime sources. DIPLOMACY_IMPLEMENTATION_CONTRACT.md records all18 action, consent, accounting/access/migration decisions for the next stage; it is preparation, not implemented gameplay.
+
 **Next exact action:** complete same-APK full native rerun on expansion-qa and investigate fixed-world pinch tail using raw stage timings/replicates; preserve all original gates. Persistence continuation concern remains: cold host encode+decode ~619ms and asynchronous file reads may resume synchronous validation during camera movement. Retain corrupt-save refusal/checksums/atomic generations. Do not begin the next major stage until required prior regression checks pass. Then extend existing diplomacy/treaty/CAS/order paths to all18 real actions, gradual missions, transfers/access/consent, reasons/history and AI.
 
 ---
