@@ -1,3 +1,11 @@
+# Stage10 actual full-world stability and latest native evidence — 2026-10-10
+
+Currentd5 CI10000/ten exact restores SUCCESS: maximum451 armies/4,487,736snapshot/P95100.742ms, final population3.249×/2849 actual AI courses/806 science discoveries. The demographic interaction fix reduced runaway recruitment/world work while preserving initial world195/2924/5411 and growth. This is actual CI CPU/data simulation, not handset FPS. Full raw/digest EXPANSION_STAGE10_COMPAT_QA_2026-10-10.json.
+
+Actualc75 full Android UX/research/layout/restart/reboot/1823.220318868-second soak SUCCESS. Latest course/art/integrated acceptance remains separate. Stage9 full ABBA captures are complete but FAIL eight unchanged compositorP99/pinch histogram gates; no samples removed or thresholds relaxed. All original rows EXPANSION_CAMERA_REVIEW_C660.json. Candidate world pan commits0 map/geography/raster, active JS0.3–0.4% in this sampled emulator protocol vs baseline1.0–1.1%; P99 remains worse despite lower sampled JS load. Developer overlay accessibility payload is7144–8702bytes vs accepted604–605 and repeats unchanged target coordinates every timing refresh. This is a measured diagnostic lead, not confirmed attribution or a completed microstutter fix. Existing accepted renderer/cache/input/army-target functionality remains.
+
+No new gameplay/frame work in the compatibility/native-ledger continuation; same tested Stage10 host240 engine applies. Backend bundles and host edge fixtures are build/protocol checks; no cloud deployment or physical-memory/frame acceptance inferred.
+
 # Stage10 measured balance and preserved native failures — 2026-10-10
 
 Sequential same host seed101/240 ticks/four exact restores: baseline18 P95/P99=71.76/88.97ms→candidate18=76.81/84.22ms;RSS742,948,864→749,047,808/snapshot4,146,058→4,152,992. Demography-only full-world10000 baseline810.19× population→candidate3.018× with continuous original-map capacity/development/buildings feedback; initial growth retained, old people/carries preserved. This separate demographic benchmark does not replace the complete authoritative10000 CI. No per-frame economy/spy/research/focus/supply work introduced; indexed sabotage effects reused for dated construction. Full results EXPANSION_STAGE10_HOST_QA_2026-10-10.json.

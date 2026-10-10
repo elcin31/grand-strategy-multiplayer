@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from map_paint_check import assert_map_painted, map_paint_stats
 from native_campaign_feedback import campaign_feedback
+from native_diplomacy_feedback import relation_snapshot, assert_relation_mission
 from camera_surface_stats import assert_map_backend
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 OUT = Path('android-smoke'); OUT.mkdir(exist_ok=True)
@@ -94,6 +95,13 @@ def read_scrolling(prefix):
                     return node.get('text')
         adb('shell','input','swipe','1080','530','1080','320','350')
     raise AssertionError('Missing readable state: '+prefix)
+def read_relation_snapshot(country, name):
+    read_scrolling(country+' · отношения ')
+    root=hierarchy(name)
+    # The mounted scroll hierarchy contains the full reason ledger, including
+    # clipped rows. The header, reward row and progress are separately scrolled
+    # into readable bounds; retain the full XML to reconcile all other effects.
+    return relation_snapshot([n.get('text') for n in root.iter('node') if n.get('package')==PACKAGE and n.get('text')],country)
 def set_speed(speed):
     navigate('Страна')
     label = 'Пауза' if speed == 0 else f'Скорость {speed}×'
@@ -452,7 +460,8 @@ click_scrolling('Дипломатия ▾')
 click_scrolling('Поиск страны для дипломатии')
 adb('shell','input','text','bra'); adb('shell','input','keyevent','4')
 click_scrolling('Бразилия')
-before_relations=int(re.search(r'отношения (-?\d+)',read_scrolling('Бразилия · отношения ')).group(1))
+before_diplomacy=read_relation_snapshot('Бразилия','diplomacy-before')
+before_relations=before_diplomacy['relation']
 click_scrolling('Улучшить отношения · 10 PP')
 assert int(re.search(r'отношения (-?\d+)',read_scrolling('Бразилия · отношения ')).group(1))==before_relations, 'Relations mission applied an instant reward'
 assert '0/12 мес.' in read_scrolling('Улучшение отношений: '), 'Diplomatic mission did not start while paused'
@@ -471,7 +480,10 @@ click_scrolling('Разведка и контрразведка ▾')
 assert 'контрразведка действует' in read_scrolling('Группы: '), 'Guaranteed counterintelligence failed through the real game clock'
 screenshot('espionage-complete')
 click_scrolling('Разведка и контрразведка ▴')
-assert int(re.search(r'отношения (-?\d+)',read_scrolling('Бразилия · отношения ')).group(1))>=before_relations+18, 'Diplomacy mission did not progress through the real clock'
+after_diplomacy=read_relation_snapshot('Бразилия','diplomacy-after')
+read_scrolling('Дипломатическое сотрудничество: ')
+mission_progress=read_scrolling('Улучшение отношений: ')
+(OUT/'diplomacy-mission.json').write_text(json.dumps(assert_relation_mission(before_diplomacy,after_diplomacy,mission_progress,6),ensure_ascii=False,indent=2))
 click_scrolling('Предложить: Ненападение')
 assert 'Ненападение' in read_scrolling('Договоры: ')
 screenshot('diplomacy-treaty')

@@ -1,4 +1,5 @@
 import {readRequest,RequestError} from '../_shared/requestValidation.ts';
+import {assertClientCompatibility} from '../_shared/clientCompatibility.ts';
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import {applyServerCommand} from '../_shared/serverCommand.ts';
 import {packRoomState,unpackRoomState} from '../_shared/stateStorage.ts';
@@ -8,7 +9,7 @@ import {assertEnvelope} from '../_shared/sessionState.ts';
 Deno.serve(async req=>{
  if(req.method==='OPTIONS')return new Response('ok',{headers:jsonHeaders});if(req.method!=='POST')return json({error:'Method not allowed'},405);
  try{
-  const body=await readRequest(req);assertEnvelope(body);const {gameId,playerId,token,command,commandId,expectedVersion}=body;
+  const body=await readRequest(req);assertEnvelope(body);assertClientCompatibility(body);const {gameId,playerId,token,command,commandId,expectedVersion}=body;
   if(!gameId||!playerId||!token||!command?.type)return json({error:'Invalid request'},400);
   try{await verifySession(gameId,playerId,token);}catch{return json({error:'Недействительная или истёкшая игровая сессия'},401);}
   const hash=await sha256(JSON.stringify(command));

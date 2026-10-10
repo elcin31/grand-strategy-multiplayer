@@ -1,3 +1,11 @@
+# Stage10 actual native ledger and compatibility — 2026-10-10
+
+Actual strengthened10000/ten restores PASS atd5: maximum451 armies,3.249× initial population,2849 AI courses/806 science discoveries, finite valid state andP95100.742ms. Full raw results/digest EXPANSION_STAGE10_COMPAT_QA_2026-10-10.json.
+
+Stage8 native reached real paid course/research/counterintelligence completion, then a faulty netrelation assertion rejected correct concurrent outcomes: mission+21 and detected intelligence−15. New Android validator retains both gameplay effects and verifies actual dated progress/monthly reward/full netreason reconciliation. Exact captured XML regression rejects corrupt/missing/forged/instant/clock errors; no game feature/test/stress gate disabled. Requires fresh native acceptance. Previousc75 actual complete1823.22-second native PASS is preserved and not substituted for latest course/art gates.
+
+Schema18 compatibility is prepared/tested before DB in both real edge entrypoints, including current-client session authentication, stored identity and pending receipt replay. Bundles compiled, production still schema12; no premature cutoff/deployment. Still open: full latest native/frame acceptance, original complete ABBA P99/pinch/PSS failures, actual coordinated live schema18 QA/reconnect and final signed2.0 APK. Current280→284JS/strictTS/59Python/no skips/Hermes/all42images PASS; these do not prove live deployment or camera acceptance.
+
 # Stage10 integration findings and remaining release gates — 2026-10-10
 
 Fixed and verified with280JS/TS/55Python: sabotage previously omitted construction; natural quoted dates could finish delayed work early; forged fractional work/future starts could pass active-project validation; research and post-completion intelligence/counterintelligence effect dates lacked complete pre-payment overflow reservation. Six actual dated sabotage work months, delayed completion/save/restart, once-only queue costs, partial/dependent refunds and strict numerical failures now have real regression coverage. Population's unchecked constant exponential feedback produced810× growth over10000 isolated months; continuous capacity/development/real-building pressure now produces3.018× while preserving old above-capacity population/carries and initial growth. Strengthened complete-game10000 still awaits current CI.
