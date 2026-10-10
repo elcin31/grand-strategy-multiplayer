@@ -6,6 +6,8 @@ Auxiliary CSV re-analysis (EXPANSION_CAMERA_STAGE_TIMINGS_EFD1F3D.json) locates 
 
 Cold host persistence probe of the unchanged existing codec: 3,298,611-byte initial snapshot, serialize 96.42ms / checksum 145.99ms / encode+decode validation 618.58ms. One cold sample, not an Android result or paired improvement (EXPANSION_PERSISTENCE_BASELINE_D7C3D59.json). Quiet-camera scheduling reduces overlap at save start, but filesystem-read continuations still run synchronous validation; investigate staged/cooperative save processing while retaining checksums, corrupt-save refusal and atomic generations. No validation was removed.
 
+Prepared fixed-save-reset-v2 native protocol loads one checksum-validated schema12 campaign into both release APKs on an ephemeral rootable AOSP emulator, resets camera positions per scenario and asserts the paused saved state is unchanged. Fixture generation repeated byte-identically (SHA3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5 / checksum e8befae1). Current and accepted baseline engine/save codec sources are identical. No production data or debug backdoor; source/runtime and original p95 thresholds remain verified. Local 14 Python tests include deliberate wrong-fixture, panel/pinch regression and missing-PSS rejections. Native fixture load and same-APK comparison pending; original independent-campaign rejection is not overwritten.
+
 ---
 
 # Expansion 2.0 — stage 1 implementation / native validation pending

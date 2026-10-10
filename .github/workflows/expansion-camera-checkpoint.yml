@@ -1,12 +1,12 @@
-name: Dominion same-APK camera checkpoint
+name: Dominion fixed-world native camera checkpoint
 on:
   push:
     branches: [expansion-camera-qa]
-    paths: [.github/workflows/expansion-camera-checkpoint.yml, scripts/android-camera-profile.py, scripts/compare-camera-native.py, scripts/export-camera-evidence.py]
+    paths: [.github/workflows/expansion-camera-checkpoint.yml, scripts/android-camera-profile.py, scripts/compare-camera-native.py, scripts/export-camera-evidence.py, scripts/make-camera-fixture.ts, scripts/camera_frame_stats.py, tests/camera_frame_stats_test.py, tests/camera_protocol_test.py]
   workflow_dispatch:
 permissions:
   contents: read
-  actions: write
+  actions: read
 concurrency:
   group: dominion-camera-checkpoint-${{ github.ref }}
   cancel-in-progress: true
@@ -22,16 +22,19 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git diff --exit-code efd1f3d4b63d737001ab6301b65bd151609b76af HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/37991163050 > source-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/37991163050/jobs > source-jobs.json
-          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='efd1f3d4b63d737001ab6301b65bd151609b76af';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
-      - name: Stop only superseded same-APK harness run
-        env:
-          GH_TOKEN: ${{ github.token }}
+          git diff --exit-code d7c3d593802f2edf27894f92fe10928341df0080 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38021043667 > source-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38021043667/jobs > source-jobs.json
+          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='d7c3d593802f2edf27894f92fe10928341df0080';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --include=dev --no-audit --no-fund
+      - name: Generate one authoritative paused schema12 fixture for both APKs
         run: |
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/37995218177 > superseded-run.json
-          python -c "import json,subprocess;r=json.load(open('superseded-run.json'));assert r['head_sha']=='072e656c56c30114f67a130f50f25a791ea50757' and r['head_branch']=='expansion-camera-qa';subprocess.run(['gh','run','cancel','37995218177','--repo','elcin31/grand-strategy-multiplayer'],check=False) if r['status']!='completed' else None"
+          git diff --exit-code 47b0db4f8b220e9ea89998afaac035239b64f5e0 d7c3d593802f2edf27894f92fe10928341df0080 -- supabase/functions/_shared src/persistence/campaignCodec.ts
+          node --import tsx scripts/make-camera-fixture.ts camera-fixture
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -41,7 +44,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 37991163050
+          run-id: 38021043667
           name: dominion-camera-illustrated-release
       - uses: actions/download-artifact@v4
         with:
@@ -66,8 +69,9 @@ jobs:
           sudo udevadm trigger --name-match=kvm
       - uses: reactivecircus/android-emulator-runner@v2
         env:
-          CAMERA_CANDIDATE_RUNTIME: efd1f3d4b63d737001ab6301b65bd151609b76af
-          CAMERA_CANDIDATE_RUN: '37991163050'
+          CAMERA_CANDIDATE_RUNTIME: d7c3d593802f2edf27894f92fe10928341df0080
+          CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
+          CAMERA_CANDIDATE_RUN: '38021043667'
         with:
           api-level: 35
           arch: x86_64
@@ -91,4 +95,5 @@ jobs:
             CAMERA_NATIVE_PAIRED.json
             EXPANSION_CAMERA_REVIEW.json
             checkpoint-integrity.txt
+            camera-fixture/manifest.json
           retention-days: 14
