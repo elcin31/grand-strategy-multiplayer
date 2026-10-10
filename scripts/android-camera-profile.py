@@ -134,6 +134,12 @@ assert any(n.get('text')=='Performance overlay: Вкл' for n in hierarchy('over
 settings();
 if not fixture:adb('shell','input','keyevent','4')
 time.sleep(2)
+if os.environ.get('CAMERA_TRACE_ONLY')=='1':
+    from camera_system_trace import capture_camera_trace
+    reset_camera()
+    print('DOMINION_TRACE '+json.dumps(capture_camera_trace(adb,OUT,lambda:gesture('pinch'))),flush=True)
+    if fixture:assert_fixture_campaign()
+    sys.exit(0)
 results=[]
 sample('01-idle')
 reset_camera();sample('02-medium-pan','pan')

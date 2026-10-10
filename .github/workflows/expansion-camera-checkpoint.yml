@@ -2,7 +2,7 @@ name: Dominion fixed-world native camera checkpoint
 on:
   push:
     branches: [expansion-camera-qa]
-    paths: [.github/workflows/expansion-camera-checkpoint.yml, scripts/android-camera-profile.py, scripts/android_accessibility.py, scripts/compare-camera-native.py, scripts/export-camera-evidence.py, scripts/make-camera-fixture.ts, scripts/camera_frame_stats.py, tests/camera_frame_stats_test.py, tests/camera_protocol_test.py, tests/camera_accessibility_test.py]
+    paths: [.github/workflows/expansion-camera-checkpoint.yml, scripts/android-camera-profile.py, scripts/android_accessibility.py, scripts/compare-camera-native.py, scripts/export-camera-evidence.py, scripts/make-camera-fixture.ts, scripts/camera_frame_stats.py, tests/camera_frame_stats_test.py, tests/camera_protocol_test.py, tests/camera_accessibility_test.py, scripts/camera_telemetry.py, tests/camera_telemetry_test.py, scripts/camera_system_trace.py, scripts/camera-trace-requirements.txt, scripts/analyze-camera-trace.py, tests/camera_system_trace_test.py]
   workflow_dispatch:
 permissions:
   contents: read
@@ -13,23 +13,24 @@ concurrency:
 jobs:
   camera-comparison:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 55
     env:
-      CAMERA_CANDIDATE_RUNTIME: 3cfd43f16678345ce0e55016775c7efb95d0e8cf
+      CAMERA_CANDIDATE_RUNTIME: 9c3da342cf9e9d83252a58278f3fe1f842ced3d9
       CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-      CAMERA_CANDIDATE_RUN: '38025683396'
+      CAMERA_CANDIDATE_RUN: '38041251527'
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Require identical tested game runtime
+        id: source
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git diff --exit-code 3cfd43f16678345ce0e55016775c7efb95d0e8cf HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38025683396 > source-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38025683396/jobs > source-jobs.json
-          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='3cfd43f16678345ce0e55016775c7efb95d0e8cf';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
+          git diff --exit-code 9c3da342cf9e9d83252a58278f3fe1f842ced3d9 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38041251527 > source-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38041251527/jobs > source-jobs.json
+          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='9c3da342cf9e9d83252a58278f3fe1f842ced3d9';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -37,7 +38,7 @@ jobs:
       - run: npm ci --include=dev --no-audit --no-fund
       - name: Generate one authoritative paused schema12 fixture for both APKs
         run: |
-          git diff --exit-code 47b0db4f8b220e9ea89998afaac035239b64f5e0 3cfd43f16678345ce0e55016775c7efb95d0e8cf -- supabase/functions/_shared src/persistence/campaignCodec.ts
+          git diff --exit-code 47b0db4f8b220e9ea89998afaac035239b64f5e0 9c3da342cf9e9d83252a58278f3fe1f842ced3d9 -- supabase/functions/_shared src/persistence/campaignCodec.ts
           node --import tsx scripts/make-camera-fixture.ts camera-fixture
       - uses: actions/setup-java@v4
         with:
@@ -49,7 +50,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38025683396
+          run-id: 38041251527
           name: dominion-camera-illustrated-release
       - uses: actions/download-artifact@v4
         with:
@@ -58,10 +59,12 @@ jobs:
           name: dominion-camera-illustrated-release
           path: baseline-apk
       - name: Verify standalone checkpoint APK
+        id: apk
         run: |
           python scripts/verify-apk.py Dominion-camera-optimized-illustrated.apk
           python scripts/verify-release.py Dominion-camera-optimized-illustrated.apk > checkpoint-integrity.txt
       - name: Compile identical real gesture driver
+        id: gesture
         run: |
           mkdir -p camera-classes camera-dex
           javac -cp "$ANDROID_HOME/platforms/android-35/android.jar" -d camera-classes scripts/CameraGesture.java
@@ -89,6 +92,24 @@ jobs:
             python scripts/compare-camera-native.py camera-before-reverse/results.json camera-after-reverse/results.json
             mv CAMERA_NATIVE_PAIRED.json CAMERA_NATIVE_PAIRED_REVERSE.json
             cp CAMERA_NATIVE_PAIRED_FORWARD.json CAMERA_NATIVE_PAIRED.json
+      - name: Install pinned host-only trace analyzer
+        id: trace_tools
+        if: always() && steps.source.outcome == 'success' && steps.apk.outcome == 'success' && steps.gesture.outcome == 'success'
+        run: python -m pip install -r scripts/camera-trace-requirements.txt
+      - name: Separate pinch system diagnostics; original camera gates above remain unchanged
+        if: always() && steps.source.outcome == 'success' && steps.apk.outcome == 'success' && steps.gesture.outcome == 'success' && steps.trace_tools.outcome == 'success'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_2
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar
+            CAMERA_TRACE_ONLY=1 CAMERA_PROFILE_OUT=trace-before python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
+            python scripts/analyze-camera-trace.py trace-before
+            CAMERA_TRACE_ONLY=1 CAMERA_PROFILE_OUT=trace-after python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
+            python scripts/analyze-camera-trace.py trace-after
       - name: Export verified native frames and original screenshots for remote review
         if: always()
         run: python scripts/export-camera-evidence.py
@@ -97,6 +118,8 @@ jobs:
         with:
           name: expansion-camera-paired-evidence
           path: |
+            trace-before/
+            trace-after/
             camera-before/
             camera-after/
             camera-before-reverse/
