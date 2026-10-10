@@ -1,8 +1,9 @@
 import sys
+import shlex
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parents[1] / 'scripts'))
-from camera_surface_stats import map_surface_layer, surface_frame_stats, surface_sequence_stats
+from camera_surface_stats import map_surface_layer, surface_frame_stats, surface_sequence_stats, surface_latency_args
 
 
 class SurfaceStatsTest(unittest.TestCase):
@@ -12,6 +13,14 @@ class SurfaceStatsTest(unittest.TestCase):
         self.assertEqual(map_surface_layer('app/Main (BLAST)#2', 'app'), 'app/Main (BLAST)#2')
         self.assertIsNone(map_surface_layer(layers + '\nSurfaceView[app/Other](BLAST)#5', 'app'))
         self.assertIsNone(map_surface_layer('other/Main (BLAST)#1', 'app'))
+
+    def test_actual_android_requested_state_wrapper_and_shell_metacharacters(self):
+        raw='RequestedLayerState{SurfaceView[app/app.MainActivity](BLAST)#202 parentId=201}'
+        layer=map_surface_layer(raw,'app')
+        self.assertEqual(layer,'SurfaceView[app/app.MainActivity](BLAST)#202')
+        self.assertEqual(shlex.split(surface_latency_args(layer)[-1]),[layer])
+        window='RequestedLayerState{app/app.MainActivity#52 parentId=40}'
+        self.assertEqual(map_surface_layer(window,'app'),'app/app.MainActivity#52')
 
     def test_only_actual_present_times_and_long_stalls_are_retained(self):
         raw = '16666667\n1 1000000000 5\n2 1016666667 6\n3 7016666667 7\n0 0 0\n4 9223372036854775807 8'

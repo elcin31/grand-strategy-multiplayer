@@ -7,8 +7,9 @@ import atexit,hashlib,json,os,re,subprocess,sys,time,xml.etree.ElementTree as ET
 from pathlib import Path
 from camera_frame_stats import frame_stats,thread_stats
 from camera_telemetry import camera_telemetry
-from camera_surface_stats import map_surface_layer, SurfaceSampler
+from camera_surface_stats import map_surface_layer, SurfaceSampler, surface_latency_args
 from android_fixture import root_test_device
+from camera_fixture_projection import assert_paused_fixture
 from map_paint_check import assert_map_painted
 from android_accessibility import dump_hierarchy
 PACKAGE='com.elcin31.grandstrategymultiplayer'
@@ -68,8 +69,11 @@ def assert_fixture_campaign():
     saves=[n for n in names if re.fullmatch(re.escape(fixture['state']['id'])+r'\.\d+\.json',n)]
     assert saves, 'Fixed campaign snapshot missing'
     newest=max(saves,key=lambda n:int(n.rsplit('.',2)[1]))
-    actual=json.loads(adb('shell','cat',directory+'/'+newest))
-    assert actual['checksum']==fixture['checksum'] and actual['state']==fixture['state'], 'Camera workload changed its paused campaign state'
+    raw=adb('shell','cat',directory+'/'+newest)
+    captured=OUT/('fixture-native-'+newest);captured.write_text(raw)
+    subprocess.run(['node','--import','tsx',str(Path(__file__).with_name('verify-camera-checksum.ts')),str(captured)],check=True)
+    actual=json.loads(raw)
+    assert_paused_fixture(actual,fixture,int(os.environ.get('CAMERA_ALLOWED_STATE_VERSION','13')))
 def reset_camera(local=False,world=False):
     find_click('Обзор мира' if world else 'Европа')
     if local:find_click('Приблизить');find_click('Приблизить')
@@ -94,7 +98,8 @@ def sample(name,kind=None):
     thread_file.close()
     surface=compositor.finish()
     raw=adb('shell','dumpsys','gfxinfo',PACKAGE,'framestats');(OUT/(name+'-frames.txt')).write_text(raw)
-    latency=adb('shell','dumpsys','SurfaceFlinger','--latency',map_layer) if map_layer else ''
+    try:latency=adb(*surface_latency_args(map_layer),timeout=5) if map_layer else ''
+    except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as error:latency='Latency diagnostic unavailable: '+str(getattr(error,'output',None) or error)
     (OUT/(name+'-surface-latency.txt')).write_text(latency)
     cpu=adb('shell','dumpsys','cpuinfo');(OUT/(name+'-cpu.txt')).write_text(cpu)
     mem=adb('shell','dumpsys','meminfo',PACKAGE);(OUT/(name+'-memory.txt')).write_text(mem)

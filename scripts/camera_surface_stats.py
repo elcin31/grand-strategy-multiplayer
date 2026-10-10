@@ -6,19 +6,34 @@ Keep the actual latency output, unavailable/ambiguous captures and ring limits.
 """
 import math
 import json
+import re
+import shlex
 import threading
 import time
 
 
 def map_surface_layer(layers, package):
-    candidates = [s.strip() for s in layers.splitlines() if package in s]
+    candidates = []
+    for line in layers.splitlines():
+        s=line.strip()
+        wrapper=re.fullmatch(r'RequestedLayerState\{(.+) parentId=-?\d+\}',s)
+        if wrapper:s=wrapper[1]
+        if package in s:candidates.append(s)
     surface = [s for s in candidates if 'SurfaceView' in s and '(BLAST)' in s]
     if not surface:
         surface = [s for s in candidates if 'SurfaceView' in s]
     if surface:
         return surface[0] if len(surface) == 1 else None
     window = [s for s in candidates if 'SurfaceView' not in s and '(BLAST)' in s]
+    if not window:
+        window=[s for s in candidates if 'SurfaceView' not in s and re.search(r'/[^/]*\.MainActivity#\d+$',s)]
     return window[0] if len(window) == 1 else None
+
+
+def surface_latency_args(layer):
+    # adb joins shell arguments into one remote shell command. Parentheses,
+    # brackets and spaces in actual Android layer names must be quoted.
+    return ('shell','dumpsys','SurfaceFlinger','--latency',shlex.quote(layer))
 
 
 def surface_frame_stats(raw):
@@ -115,7 +130,7 @@ class SurfaceSampler:
     def _capture(self):
         row = {}
         try:
-            row['raw'] = self.adb('shell','dumpsys','SurfaceFlinger','--latency',self.layer,timeout=5) if self.layer else ''
+            row['raw'] = self.adb(*surface_latency_args(self.layer),timeout=5) if self.layer else ''
         except Exception as error:
             row['error'] = str(error)
         row['atSeconds'] = time.monotonic()-self.started
