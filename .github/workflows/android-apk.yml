@@ -14,8 +14,10 @@ permissions:
 env:
   CI: '1'
 concurrency:
-  group: dominion-camera-${{ github.ref }}
-  cancel-in-progress: true
+  # Preserve a completed stage's running native/30-minute evidence when the
+  # next logical stage is saved. Each commit still executes its own full gates.
+  group: dominion-camera-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: false
 jobs:
   long-simulation:
     runs-on: ubuntu-latest
@@ -189,7 +191,7 @@ jobs:
       - uses: reactivecircus/android-emulator-runner@v2
         env:
           CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-          CAMERA_ALLOWED_STATE_VERSION: '14'
+          CAMERA_ALLOWED_STATE_VERSION: '15'
           CAMERA_REQUIRE_SURFACE_PRESENTATION: '1'
         with:
           api-level: 35

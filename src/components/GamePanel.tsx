@@ -9,6 +9,8 @@ import { WarPanel } from './WarPanel';
 import { DiplomacyPanel } from './DiplomacyPanel';
 import { MilitaryPanel } from './MilitaryPanel';
 import { StrategyPanel } from './StrategyPanel';
+import {EconomyControls} from './EconomyControls';
+import {queuedBuildingQuote,constructionQueueAvailability} from '../../supabase/functions/_shared/constructionQueueSystem';
 import { BUILDINGS, BUILDING_TYPES, buildingQuote } from '../../supabase/functions/_shared/buildingSystem';
 import { RESOURCES, provinceProduction, resourceReport } from '../../supabase/functions/_shared/resourceSystem';
 import { useState } from 'react';
@@ -51,6 +53,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
   const neighbors = selected ? selected.neighbors.map((id) => state.provinces.find((province) => province.id === id)).filter(Boolean) : [];
   const selectedCities = selected ? (state.cities ?? []).filter(c => c.provinceId === selected.id).sort((a,b) => Number(b.id===focusedCityId)-Number(a.id===focusedCityId) || Number(b.isCapital)-Number(a.isCapital) || b.population-a.population).slice(0,3) : [];
   const selectedConstruction = selected ? state.constructions?.find(item => item.provinceId === selected.id) ?? null : null;
+  const selectedQueue=selected?state.constructionQueue?.filter(q=>q.provinceId===selected.id)??[]:[];
   const completedBuildings = selected ? BUILDING_TYPES.filter(type => (selected.buildings?.[type] ?? 0) > 0) : [];
   const isOwnProvince = selected?.ownerId === countryId && (selected.controllerId ?? selected.ownerId) === countryId;
   const cooldown = Math.max(0, (nation.governmentCooldownUntilTick ?? 0) - state.tick);
@@ -109,6 +112,8 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
         </>}
         <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Содержание армии: {currency(budget.armyMaintenance)}</Text>
         <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Содержание зданий: {currency(budget.buildingMaintenance)}</Text>
+        <Text style={styles.hint}>Дипломатические миссии: {currency(budget.diplomaticMaintenance??0)}</Text>
+        <Text style={styles.hint}>Исследования: {currency(budget.researchMaintenance??0)} / мес.</Text>
         <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Проценты: {currency(budget.interest)} · 0.5% долга / мес.</Text>
         <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Баланс: {currency(budget.monthlyBalance)} / мес.</Text>
         <View style={styles.recruitRow}>
@@ -123,6 +128,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
           <Pressable accessibilityRole="button" disabled={!economicActionsEnabled || repayQuote<=0} style={[styles.secondaryButton,repayQuote<=0 && styles.disabled]} onPress={()=>onCommand({type:'REPAY_DEBT',playerId,amount:repayQuote})}><Text style={styles.secondaryText}>Погасить {currency(repayQuote)}</Text></Pressable>
         </View>
         <Text style={styles.hint}>Дефицит использует кредитный лимит. Неплатёжеспособность списывает долг, снижает стабильность и репутацию, вызывает unrest и сокращает армию до доступного бюджета.</Text>
+        <EconomyControls state={state} playerId={playerId} onCommand={onCommand}/>
       </View>}
 
       {section==='Government'&&state.dataset && <Pressable accessibilityRole="button" onPress={() => { setGovernmentOpen(!governmentOpen); setReligionOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Правительство {governmentOpen ? '▴' : '▾'}</Text></Pressable>}
@@ -203,24 +209,29 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
               {isOwnProvince&&<Pressable accessibilityRole="button" accessibilityLabel="Строить" style={styles.secondaryButton} onPress={()=>setBuildOpen(!buildOpen)}><Text style={styles.secondaryText}>СТРОИТЬ {buildOpen?"▴":"▾"}</Text></Pressable>}
               {completedBuildings.length === 0 ? <Text style={styles.muted}>Построенных зданий нет</Text> : <View style={styles.buildingList}>{completedBuildings.map(type => <View key={type} style={[styles.buildingPill,{flexDirection:'row',alignItems:'center',gap:6}]}><AtlasArt atlas="buildings" index={BUILDING_ART[type]} width={26} height={26} label={'Построено: '+BUILDINGS[type].name}/><Text style={styles.buildingPillText}>{BUILDINGS[type].name} · ур. {selected.buildings?.[type]}</Text></View>)}</View>}
               {selectedConstruction && <Text style={styles.hint}>Строится: {BUILDINGS[selectedConstruction.buildingType].name} ур. {selectedConstruction.targetLevel} · {Math.min(100,Math.round(100*(state.tick-selectedConstruction.startedTick)/(selectedConstruction.completeTick-selectedConstruction.startedTick)))}% · осталось {Math.max(0, selectedConstruction.completeTick-state.tick)} мес.</Text>}
+              {isOwnProvince&&selectedConstruction&&<Pressable accessibilityRole="button" accessibilityLabel={'Отменить стройку: '+BUILDINGS[selectedConstruction.buildingType].name} disabled={!economicActionsEnabled} style={styles.secondaryButton} onPress={()=>onCommand({type:'CANCEL_CONSTRUCTION',playerId,constructionId:selectedConstruction.id})}><Text style={styles.secondaryText}>Отменить текущую стройку</Text></Pressable>}
+              {selectedQueue.map((q,i)=><View key={q.id} style={styles.card}><Text style={styles.hint}>Очередь {i+1}: {BUILDINGS[q.buildingType].name} ур. {q.targetLevel} · оплачено {currency(q.cost)} · {q.buildTime} мес. после предыдущего проекта</Text>{isOwnProvince&&<Pressable accessibilityRole="button" accessibilityLabel={'Отменить проект очереди: '+BUILDINGS[q.buildingType].name} disabled={!economicActionsEnabled} style={styles.secondaryButton} onPress={()=>onCommand({type:'CANCEL_CONSTRUCTION',playerId,constructionId:q.id})}><Text style={styles.secondaryText}>Отменить · возврат {currency(q.cost*.5)}</Text></Pressable>}</View>)}
+              {isOwnProvince&&(selectedConstruction||selectedQueue.length>0)&&<Text style={styles.hint}>До 4 проектов на провинцию. Стоимость оплачивается при заказе. Отмена возвращает половину неиспользованной стоимости; последующие улучшения того же здания также отменяются. Захват прекращает стройку без возврата.</Text>}
               {isOwnProvince && buildOpen && <View style={{gap:8}}>
                 {BUILDING_TYPES.map(type => {
                   const definition = BUILDINGS[type];
                   const currentLevel = selected.buildings?.[type] ?? 0;
-                  const quote = currentLevel < definition.maxLevel ? buildingQuote(selected, type) : null;
-                  const disabled = !!selected.rebellion || !economicActionsEnabled || Boolean(selectedConstruction) || !quote || nation.treasury < quote.cost;
+                  let quote:ReturnType<typeof buildingQuote>|null=null;try{quote=queuedBuildingQuote(state,selected,type);}catch{}
+                  const reason=constructionQueueAvailability(state,countryId,selected,type),queued=!!selectedConstruction||selectedQueue.length>0;
+                  const disabled = !economicActionsEnabled || !!reason || !quote;
                   return <Pressable
                     accessibilityRole="button"
-                    accessibilityLabel={`Построить ${definition.name}`}
+                    accessibilityLabel={queued?`Добавить в очередь: ${definition.name}`:`Построить ${definition.name}`}
                     accessibilityState={{ disabled }}
                     key={type}
                     disabled={disabled}
                     style={[styles.buildOption, disabled && styles.disabled]}
-                    onPress={() => onCommand({ type: 'BUILD', playerId, provinceId: selected.id, buildingType: type })}
+                    onPress={() => onCommand({ type: queued?'QUEUE_BUILD':'BUILD', playerId, provinceId: selected.id, buildingType: type })}
                   >
                     <View style={{flexDirection:'row',alignItems:'center',gap:10}}><AtlasArt atlas="buildings" index={BUILDING_ART[type]} width={56} height={56} label={'Иллюстрация здания: '+definition.name}/><View style={{flex:1}}><Text style={styles.govName}>{definition.name}</Text><Text style={styles.govDetails}>Уровень {currentLevel}/{definition.maxLevel}</Text></View></View>
                     <Text style={styles.govDetails}>{Object.entries(definition.modifiers).map(([key,value])=>`${({taxPercent:"Налоги, %",tradePercent:"Торговля, %",resourcePercent:"Добыча, %",manpowerPercent:"Резерв, %",researchPercent:"Исследования, %",defensePercent:"Защита, %",populationGrowthPercent:"Рост населения, %",stabilityPerYear:"Стабильность / год",unrestPerYear:"Беспорядки / год"} as Record<string,string>)[key]??key}: ${value!>0?"+":""}${value}`).join(" · ")}</Text>
                     <Text style={styles.govDetails}>Содержание {currency(definition.maintenance)}/мес.</Text>
+                    {reason&&<Text style={styles.govDetails}>{reason}</Text>}
                     {(type==="Farm"||type==="Factory")&&<Text style={styles.govDetails}>Выпуск +{currency((type==="Farm"?3:12)*(.5+(selected.development??40)/100))}/мес. до содержания</Text>}
                     <Text style={styles.routeAction}>{quote ? `${currency(quote.cost)} · ${quote.buildTime} мес.` : 'МАКСИМУМ'}</Text>
                   </Pressable>;

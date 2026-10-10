@@ -1,0 +1,13 @@
+import {Text,View,ScrollView} from 'react-native';
+import {ECONOMIC_POLICIES,FUNDING_LEVELS,policyAvailability,fundingAvailability,type EconomicPolicy,type FundingLevel} from '../../supabase/functions/_shared/economy2System';
+import {DiplomacyButton} from './DiplomacyActions';
+import {styles,type StrategyProps} from './StrategyPanel';
+export function EconomyControls({state,playerId,onCommand}:StrategyProps){
+  const id=state.players.find(p=>p.id===playerId)?.countryId;if(!id)return null;const c=state.countries[id]!;
+  return <View style={styles.wrap}>
+    <Text style={styles.title}>Экономическая политика · {ECONOMIC_POLICIES[c.economicPolicy??'Balanced'].name}</Text>
+    <Text style={styles.text}>Смена: 50 млн и 15 PP · cooldown 6 мес. Эффекты действуют в производстве, торговле, содержании, исследованиях и каждом игровом месяце.</Text>
+    <ScrollView horizontal contentContainerStyle={styles.row}>{(Object.keys(ECONOMIC_POLICIES) as EconomicPolicy[]).filter(policy=>policy!==c.economicPolicy).map(policy=>{const rule=ECONOMIC_POLICIES[policy],reason=policyAvailability(state,id,policy);return <View key={policy} style={styles.option}><Text style={styles.title}>{rule.name}{c.economicPolicy===policy?' ✓':''}</Text><Text style={styles.text}>{rule.description}</Text>{reason&&<Text style={styles.text}>{reason}</Text>}<DiplomacyButton label={'Принять: '+rule.name} disabled={!!reason} onPress={()=>onCommand({type:'SET_ECONOMIC_POLICY',playerId,policy})}/></View>;})}</ScrollView>
+    {(['Research','Military'] as const).map(domain=><View key={domain} style={styles.card}><Text style={styles.title}>{domain==='Research'?'Финансирование исследований':'Военное финансирование'}</Text><Text style={styles.text}>{domain==='Research'?'Ежемесячно 10 млн × уровень проекта × 0,5 / 1 / 1,5. Прогресс начисляется после оплаты; банкротство приостанавливает работу.':'Содержание × 0,75 / 1 / 1,25. Боевая готовность × 0,85 / 1 / 1,08.'} Смена: 5 PP, общий cooldown 3 мес.</Text><View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>{(Object.keys(FUNDING_LEVELS) as FundingLevel[]).map(level=>{const reason=fundingAvailability(state,id,domain,level),active=(domain==='Research'?c.researchFunding:c.militaryFunding)===level;return <View key={level} style={[styles.option,{width:'auto',flexBasis:100,flexGrow:1}]}><Text style={styles.title}>{FUNDING_LEVELS[level].name}{active?' ✓':''}</Text>{reason&&<Text style={styles.text}>{reason}</Text>}<DiplomacyButton label={(domain==='Research'?'Исследования: ':'Армия: ')+FUNDING_LEVELS[level].name} disabled={!!reason} onPress={()=>onCommand({type:'SET_FUNDING',playerId,domain,level})}/></View>;})}</View></View>)}
+  </View>;
+}

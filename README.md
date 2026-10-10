@@ -8,6 +8,8 @@ Main contains the verified **0.8.1 (9)** camera/illustrated release: **195 count
 
 Expansion now includes an authoritative Diplomacy 2.0 core and additive schema13 migration: missions, gifts, timed/consented treaties, directional neutral access, trade, technology/province exchange, ultimatums, multi-party summits, federations and a persistent journal. 210 host regressions, a Hermes Android export and a 10,000-tick/ten-restore run pass. Native interface/camera acceptance, final backend compatibility rollout and the remaining Expansion systems are pending; this feature branch is not a finished release. See `DIPLOMACY_2_HOST_QA_2026-10-10.json` and the latest handoff entry.
 
+The continuation also implements four real espionage missions/counterintelligence and bounded diplomatic AI (schema14), plus five economic policies, research/military funding, server-checked building requirements and paid/cancellable construction queues (schema15). These are tick-based additions to the existing game, with migrations and original-save backups. Final integrated native/camera/backend release gates remain open.
+
 Read [DEVELOPMENT_HANDOFF.md](DEVELOPMENT_HANDOFF.md) for exact implementation, commits, CI evidence, remaining gates and next five phases. [RECOVERY_AUDIT.md](RECOVERY_AUDIT.md) records the recovered 26-phase matrix. [BUG_REPORT.md](BUG_REPORT.md) tracks current defects/limitations; [WORLD_UPDATE_STATUS.md](WORLD_UPDATE_STATUS.md) is mostly historical evidence.
 
 ## Run and verify
@@ -29,7 +31,7 @@ The live QA script creates only an isolated test campaign in the dedicated game 
 
 Clients send intent. A shared pure reducer implements local/server rules; the authenticated server boundary rejects actor spoofing. Edge Functions price and validate recruitment, movement/combat, research/buildings, government/resources, diplomacy/war/peace. Hashed room bearer tokens, RLS denial of direct client table access and compare-and-swap version updates remain intact.
 
-Modern snapshots use `stateVersion: 12`, ordered migrations and compressed persistence with legacy JSONB fallback. Offline campaigns use validated atomic save generations; multiplayer credentials/pending commands persist in native SecureStore. Reconnect recovers server state, versioned transactional receipts prevent duplicate effects, and server time can progress through any connected member. All-offline campaigns are dormant with bounded catch-up. Strategic AI takes over a timed-out country and yields on authenticated return.
+Modern snapshots use `stateVersion: 15`, ordered migrations and compressed persistence with legacy JSONB fallback. Offline campaigns use validated atomic save generations; multiplayer credentials/pending commands persist in native SecureStore. Reconnect recovers server state, versioned transactional receipts prevent duplicate effects, and server time can progress through any connected member. All-offline campaigns are dormant with bounded catch-up. Strategic AI takes over a timed-out country and yields on authenticated return.
 
 Dedicated backend: `dfjsnjxnyjspwugjguhq`.
 Endpoint: `https://dfjsnjxnyjspwugjguhq.supabase.co/functions/v1`.

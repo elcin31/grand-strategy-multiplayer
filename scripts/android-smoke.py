@@ -322,6 +322,11 @@ assert any(n.get('content-desc')=='Иллюстрация здания: Ферм
 click_scrolling('Построить Ферма')
 assert 'Ферма' in read_scrolling('Строится: '), 'Construction did not start from the catalogue'
 screenshot('construction-queued')
+click_scrolling('Добавить в очередь: Ферма')
+assert 'ур. 2' in read_scrolling('Очередь 1: Ферма'), 'Paid next-level construction did not queue'
+screenshot('construction-waiting')
+click_scrolling('Отменить проект очереди: Ферма')
+assert 'Ферма' in read_scrolling('Строится: '), 'Cancelling a waiting project cancelled paid active construction'
 # Government is a real paid command, with a frozen 24-month cooldown on pause.
 click_scrolling('Экономика ▾')
 root = hierarchy('economy-before'); screenshot('economy-before')
@@ -361,6 +366,13 @@ advance_campaign_months(20)
 population_root = hierarchy('population-after'); screenshot('population-after')
 population_after = next(n.get('text') for n in population_root.iter('node') if n.get('text','').startswith('Население: ')).split(' · ')[0]
 assert population_after != population_before, 'Actual campaign population did not grow'
+navigate('Экономика');click_scrolling('Экономика ▾')
+click_scrolling('Принять: Программа инвестиций')
+assert 'Программа инвестиций' in read_scrolling('Экономическая политика · '), 'Economic policy command did not apply'
+click_scrolling('Исследования: Приоритетное')
+root=hierarchy('economy-policy-funding');screenshot('economy-policy-funding')
+assert not any('Действие отклонено' in n.get('text','') for n in root.iter('node')), 'Funding command was rejected'
+click_scrolling('Экономика ▴');navigate('Страна')
 click_scrolling('Правительство ▴')
 click_scrolling('Религия ▾')
 root = hierarchy('religion-before');screenshot('religion-art')

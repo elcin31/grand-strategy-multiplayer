@@ -1,0 +1,177 @@
+{
+  "date": "2026-10-10",
+  "stage": 5,
+  "parentHead": "5fdee487b821e2efa59be0b36466a3b9e5188b37",
+  "stateVersion": 15,
+  "jsFullSuite": {
+    "passed": 230,
+    "failed": 0
+  },
+  "currentTargetSuite": {
+    "count": 16,
+    "covers": "economic policies/funding/ten buildings/queues/old building regressions/fifteen lost-response intents",
+    "status": "16/16 PASS"
+  },
+  "typescript": "PASS",
+  "cameraFixture": "Every original schema12 field retained except allowed version15; new systems inactive; saved checksum verified",
+  "hostScenarioBaseline14": {
+    "protocol": "expansion-host-seed101-240-months-v1",
+    "seed": 101,
+    "ticks": 240,
+    "stateVersion": 14,
+    "countries": 195,
+    "provinces": 2924,
+    "cities": 5411,
+    "createMs": 101.479378,
+    "sceneMs": 618.3743609999999,
+    "tickP50Ms": 82.55443800000285,
+    "tickP95Ms": 111.21338300000025,
+    "tickP99Ms": 133.15109099999972,
+    "tickMaxMs": 213.196778,
+    "saveRestoreMs": [
+      359.22308599999997,
+      374.50978700000087,
+      327.49580699999933,
+      318.3951510000006
+    ],
+    "snapshotBytes": 3810730,
+    "armies": 205,
+    "activeWars": 22,
+    "spyMissions": 26,
+    "spyReports": 192,
+    "spyEffects": 77,
+    "heapUsed": 390818936,
+    "rss": 642506752,
+    "note": "Same Node host and seed/ticks/war/persistence scenario; CPU/data only, no handset/GPU/frame-pacing claim."
+  },
+  "hostScenarioCandidate15": {
+    "protocol": "expansion-host-seed101-240-months-v1",
+    "seed": 101,
+    "ticks": 240,
+    "stateVersion": 15,
+    "countries": 195,
+    "provinces": 2924,
+    "cities": 5411,
+    "createMs": 110.70722799999999,
+    "sceneMs": 861.7233799999999,
+    "tickP50Ms": 80.15082900000016,
+    "tickP95Ms": 118.40353700000014,
+    "tickP99Ms": 149.6639670000004,
+    "tickMaxMs": 413.4990429999998,
+    "saveRestoreMs": [
+      361.369541,
+      362.50431799999933,
+      332.08410899999944,
+      362.19030199999906
+    ],
+    "snapshotBytes": 3838716,
+    "armies": 199,
+    "activeWars": 14,
+    "spyMissions": 16,
+    "spyReports": 192,
+    "spyEffects": 59,
+    "heapUsed": 398642192,
+    "rss": 616423424,
+    "note": "Same Node host and seed/ticks/war/persistence scenario; CPU/data only, no handset/GPU/frame-pacing claim."
+  },
+  "earlierConcurrentCaptures": [
+    {
+      "comparable": false,
+      "reason": "overlapped compiler/export/tests or offline GIS generation; retained, no frame-pacing inference",
+      "report": {
+        "protocol": "expansion-host-seed101-240-months-v1",
+        "seed": 101,
+        "ticks": 240,
+        "stateVersion": 15,
+        "countries": 195,
+        "provinces": 2924,
+        "cities": 5411,
+        "createMs": 138.14417500000013,
+        "sceneMs": 602.402781,
+        "tickP50Ms": 75.04444700000022,
+        "tickP95Ms": 125.89857299999994,
+        "tickP99Ms": 276.002164,
+        "tickMaxMs": 407.3406450000002,
+        "saveRestoreMs": [
+          385.45220599999993,
+          482.9307349999999,
+          373.1491300000016,
+          333.35999900000024
+        ],
+        "snapshotBytes": 3838716,
+        "armies": 199,
+        "activeWars": 14,
+        "spyMissions": 16,
+        "spyReports": 192,
+        "spyEffects": 59,
+        "heapUsed": 403009152,
+        "rss": 610357248,
+        "note": "Same Node host and seed/ticks/war/persistence scenario; CPU/data only, no handset/GPU/frame-pacing claim."
+      }
+    },
+    {
+      "comparable": false,
+      "reason": "overlapped compiler/export/tests or offline GIS generation; retained, no frame-pacing inference",
+      "report": {
+        "protocol": "expansion-host-seed101-240-months-v1",
+        "seed": 101,
+        "ticks": 240,
+        "stateVersion": 15,
+        "countries": 195,
+        "provinces": 2924,
+        "cities": 5411,
+        "createMs": 140.40321899999992,
+        "sceneMs": 702.907528,
+        "tickP50Ms": 78.85022700000081,
+        "tickP95Ms": 118.5415920000014,
+        "tickP99Ms": 140.36934399999882,
+        "tickMaxMs": 359.7703919999999,
+        "saveRestoreMs": [
+          394.1622379999999,
+          394.5874480000002,
+          395.61910999999964,
+          301.10371900000246
+        ],
+        "snapshotBytes": 3838716,
+        "armies": 199,
+        "activeWars": 14,
+        "spyMissions": 16,
+        "spyReports": 192,
+        "spyEffects": 59,
+        "heapUsed": 388583016,
+        "rss": 601137152,
+        "note": "Same Node host and seed/ticks/war/persistence scenario; CPU/data only, no handset/GPU/frame-pacing claim."
+      }
+    }
+  ],
+  "stage4CI": {
+    "run": 38060565201,
+    "build": "SUCCESS",
+    "long10000": "SUCCESS",
+    "longArtifact": 11673670466,
+    "longArtifactBytes": 1829,
+    "longArtifactSha256": "482b942b2a1c05606109d832b35731e4bf29888720263e5a445a113788f6ccf4",
+    "androidSmoke": "in progress",
+    "camera": "FAILURE during baseline external UiAutomation crash; no paired acceptance"
+  },
+  "cameraQa76": {
+    "run": 38059892133,
+    "artifact": 11672543413,
+    "bytes": 3548686,
+    "sha256": "64c419760306df540be4d5683cf0102984592384ab07d0b3829507b3820b51fe",
+    "zipCRC": "PASS",
+    "failure": "baseline external UiAutomation Bad file descriptor; candidate/reverse not measured"
+  },
+  "productionBackend": "unchanged existing Dominion only; coordinated rollout pending",
+  "note": "Host CPU/data timings, no handset FPS/thermal/GPU claim; full native/camera/final rollout remain pending.",
+  "python": {
+    "tests": 49,
+    "pass": 48,
+    "sdkOnlySkipped": 1
+  },
+  "hermesExport": {
+    "status": "PASS",
+    "bytes": 11365746,
+    "sha256": "502fc13cd5365d471dc184cfe0cde797390fe3902d36cd0a71fe0e1bc3ca7ea9"
+  }
+}

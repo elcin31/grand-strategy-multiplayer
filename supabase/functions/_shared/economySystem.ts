@@ -5,6 +5,7 @@ import type { Country, GameState } from './gameTypes.ts';
 import { governmentIncome } from './governmentSystem.ts';
 import { diplomacyBudget } from './diplomacy2System.ts';
 import { espionageModifiers } from './espionageSystem.ts';
+import {economicPolicy,researchMonthlyCost,militaryFundingCost} from './economy2System.ts';
 
 export const DEFAULT_TAX_RATE = 30;
 export const MIN_TAX_RATE = 10;
@@ -58,30 +59,36 @@ export function recalcEconomy(state: GameState): void {
   }
   for (const c of Object.values(state.countries)) {
     const rawTax = taxBase.get(c.id) ?? 0, rawTrade = tradeBase.get(c.id) ?? 0;
-    const taxIncome = money(governmentIncome(rawTax, c.governmentType) * c.taxRate! / DEFAULT_TAX_RATE * (1 + techLevel(c, 'Economy') * .04));
+    const policy=economicPolicy(c);
+    const taxIncome = money(governmentIncome(rawTax, c.governmentType) * c.taxRate! / DEFAULT_TAX_RATE * (1 + techLevel(c, 'Economy') * .04)*policy.tax);
     const people = population.get(c.id) ?? 0;
     const meanDevelopment = people > 0 ? (development.get(c.id) ?? 0) / people : 0;
-    const tradeIncome = money(rawTrade * (.1 + (diplomatic.tradeBonus.get(c.id) ?? 0)) * meanDevelopment / 100 * (.5 + c.stability / 200));
+    const tradeIncome = money(rawTrade * (.1 + (diplomatic.tradeBonus.get(c.id) ?? 0)) * meanDevelopment / 100 * (.5 + c.stability / 200)*policy.trade);
     const sabotage=espionageModifiers(state,c.id).productionMultiplier;
-    const resourceIncome = money((resources.get(c.id) ?? 0)*sabotage), buildingMaintenance = buildingCosts.get(c.id) ?? 0;
-    const productionIncome=money((production.get(c.id)??0)*sabotage),administrationMaintenance=administration.get(c.id)??0;
+    const resourceIncome = money((resources.get(c.id) ?? 0)*sabotage*policy.production), buildingMaintenance = buildingCosts.get(c.id) ?? 0;
+    const productionIncome=money((production.get(c.id)??0)*sabotage*policy.production),administrationMaintenance=money((administration.get(c.id)??0)*policy.administration);
     const monthlyIncome = money(taxIncome + tradeIncome + resourceIncome + productionIncome);
-    const armyMaintenance = money((troops.get(c.id) ?? 0) / 1000 * ARMY_MAINTENANCE_PER_THOUSAND);
+    const armyMaintenance = money((troops.get(c.id) ?? 0) / 1000 * ARMY_MAINTENANCE_PER_THOUSAND*militaryFundingCost(c));
     const interest = money(c.debt! * MONTHLY_INTEREST);
     const diplomaticMaintenance = diplomatic.costs.get(c.id) ?? 0;
-    const monthlyBalance = money(monthlyIncome - armyMaintenance - buildingMaintenance - interest - administrationMaintenance - diplomaticMaintenance);
+    const researchMaintenance=researchMonthlyCost(c);
+    const monthlyBalance = money(monthlyIncome - armyMaintenance - buildingMaintenance - interest - administrationMaintenance - diplomaticMaintenance-researchMaintenance);
     const creditLimit = state.tick < c.bankruptcyUntilTick! ? 0 : money(monthlyIncome * 24);
     c.income = taxIncome;
     c.army = troops.get(c.id) ?? 0;
-    c.economy = { productionIncome, administrationMaintenance, diplomaticMaintenance, taxIncome, tradeIncome, resourceIncome, monthlyIncome, armyMaintenance, buildingMaintenance, interest, monthlyBalance, creditLimit };
+    c.economy = { productionIncome, administrationMaintenance, diplomaticMaintenance,researchMaintenance,taxIncome, tradeIncome, resourceIncome, monthlyIncome, armyMaintenance, buildingMaintenance, interest, monthlyBalance, creditLimit };
   }
 }
 
 /** Recruitment changes no income source, so update only this country's upkeep. */
 export function refreshArmyBudget(c: Country): void {
   if (!c.economy) return;
-  c.economy.armyMaintenance = money(c.army / 1000 * ARMY_MAINTENANCE_PER_THOUSAND);
-  c.economy.monthlyBalance = money(c.economy.monthlyIncome - c.economy.armyMaintenance - c.economy.buildingMaintenance - c.economy.interest - c.economy.administrationMaintenance - (c.economy.diplomaticMaintenance??0));
+  c.economy.armyMaintenance = money(c.army / 1000 * ARMY_MAINTENANCE_PER_THOUSAND*militaryFundingCost(c));
+  c.economy.monthlyBalance = money(c.economy.monthlyIncome - c.economy.armyMaintenance - c.economy.buildingMaintenance - c.economy.interest - c.economy.administrationMaintenance - (c.economy.diplomaticMaintenance??0)-(c.economy.researchMaintenance??0));
+}
+export function refreshResearchBudget(c:Country):void {
+  if(!c.economy)return;c.economy.researchMaintenance=researchMonthlyCost(c);
+  c.economy.monthlyBalance=money(c.economy.monthlyIncome-c.economy.armyMaintenance-c.economy.buildingMaintenance-c.economy.interest-c.economy.administrationMaintenance-(c.economy.diplomaticMaintenance??0)-c.economy.researchMaintenance);
 }
 
 export function initializeEconomy(state: GameState): void {
@@ -138,9 +145,10 @@ export function monthlyEconomy(state: GameState): void {
       else bankruptcy(state, c);
     }
     const pressure = Math.max(0, c.taxRate! - DEFAULT_TAX_RATE) / 300;
-    c.stability = Math.max(0, Math.min(100, c.stability - pressure));
-    c.unrest = Math.max(0, Math.min(100, c.unrest! + pressure));
-    pressures.set(c.id, pressure);
+    const policy=economicPolicy(c);
+    c.stability = Math.max(0, Math.min(100, c.stability - pressure+policy.stability));
+    c.unrest = Math.max(0, Math.min(100, c.unrest! + pressure+policy.unrest));
+    pressures.set(c.id, pressure+policy.unrest);
   }
   for (const p of state.provinces) p.unrest = Math.min(100, p.unrest! + (pressures.get(p.ownerId) ?? 0));
   recalcEconomy(state);

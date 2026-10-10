@@ -10,6 +10,11 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital';
 
 export interface Country {
+  economicPolicy?: import('./economy2System.ts').EconomicPolicy;
+  researchFunding?: import('./economy2System.ts').FundingLevel;
+  militaryFunding?: import('./economy2System.ts').FundingLevel;
+  policyCooldownUntilTick?: number;
+  budgetCooldownUntilTick?: number;
   spyCooldowns?: Record<string,number>;
   warExhaustion?: number;
   aggressiveExpansion?: number;
@@ -51,6 +56,7 @@ export interface Country {
 
 /** Monetary values are millions, with precision to $1,000. Derived forecast. */
 export interface EconomyBudget {
+  researchMaintenance?: number;
   diplomaticMaintenance?: number;
   productionIncome: number;
   administrationMaintenance: number;
@@ -172,6 +178,7 @@ export interface Leader {
 }
 
 export interface GameState {
+  constructionQueue?: import('./constructionQueueSystem.ts').QueuedConstruction[];
   spyMissions?: import('./espionageSystem.ts').SpyMission[];
   spyReports?: import('./espionageSystem.ts').SpyReport[];
   spyEffects?: import('./espionageSystem.ts').SpyEffect[];
@@ -208,6 +215,10 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'SET_ECONOMIC_POLICY';playerId:string;policy:import('./economy2System.ts').EconomicPolicy}
+  | {type:'SET_FUNDING';playerId:string;domain:'Research'|'Military';level:import('./economy2System.ts').FundingLevel}
+  | {type:'QUEUE_BUILD';playerId:string;provinceId:string;buildingType:BuildingType}
+  | {type:'CANCEL_CONSTRUCTION';playerId:string;constructionId:string}
   | {type:'START_ESPIONAGE';playerId:string;targetId:string;kind:import('./espionageSystem.ts').EspionageKind}
   | {type:'CANCEL_ESPIONAGE';playerId:string;missionId:string}
   | {type:'START_RELATION_MISSION';playerId:string;targetId:string;kind:import('./diplomacyTypes.ts').RelationMissionKind}

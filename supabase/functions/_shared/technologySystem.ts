@@ -1,7 +1,8 @@
 import type { Country, GameState } from './gameTypes.ts';
 import { buildingModifierTotals } from './buildingSystem.ts';
 import { governmentModifiers } from './governmentSystem.ts';
-import { money } from './economySystem.ts';
+import { money,refreshResearchBudget } from './economySystem.ts';
+import {economicPolicy,researchFunding} from './economy2System.ts';
 
 export const TECHNOLOGIES = {
   Economy: { name: 'Экономика', effect: '+4% налогов / уровень' },
@@ -40,6 +41,7 @@ export function startResearch(state: GameState, c: Country, branch: TechnologyBr
   if (c.treasury < q.cost) throw new Error('Недостаточно средств');
   c.treasury = money(c.treasury - q.cost);
   c.research = { branch, targetLevel: q.targetLevel, progress: 0, required: q.months, startedTick: state.tick };
+  refreshResearchBudget(c);
 }
 export function monthlyResearch(state: GameState): void {
   if (!state.dataset) return;
@@ -47,7 +49,7 @@ export function monthlyResearch(state: GameState): void {
   for (const c of Object.values(state.countries)) {
     const r = c.research;
     if (!r || !c.provinceIds?.length || state.tick < c.bankruptcyUntilTick!) continue;
-    r.progress += 1 + (governmentModifiers(c.governmentType).researchPercent + (totals.get(c.id)?.researchPercent ?? 0)) / 100;
-    if (r.progress + 1e-9 >= r.required) { c.technologies![r.branch] = r.targetLevel; delete c.research; }
+    r.progress += (1 + (governmentModifiers(c.governmentType).researchPercent + (totals.get(c.id)?.researchPercent ?? 0)) / 100)*researchFunding(c)*economicPolicy(c).research;
+    if (r.progress + 1e-9 >= r.required) { c.technologies![r.branch] = r.targetLevel; delete c.research; refreshResearchBudget(c); }
   }
 }

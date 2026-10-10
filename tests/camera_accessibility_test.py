@@ -48,3 +48,10 @@ class AccessibilityTest(unittest.TestCase):
     def test_other_failure_is_not_treated_as_optional_diagnostics(self):
         with self.assertRaises(subprocess.CalledProcessError):
             self.exercise([subprocess.CalledProcessError(1, 'uiautomator')])
+
+    def test_exact_external_automation_crash_can_retry_but_game_and_unknown_crashes_fail(self):
+        log='E AndroidRuntime: FATAL EXCEPTION: UiAutomation\nE AndroidRuntime: PID: 3975\nE AndroidRuntime: java.lang.RuntimeException: Bad file descriptor\nE AndroidRuntime: at android.accessibilityservice.IAccessibilityServiceConnection$Stub$Proxy.findAccessibilityNodeInfoByAccessibilityId'
+        self.exercise([subprocess.CalledProcessError(137,'uiautomator')],logs=log)
+        for broken in [log.replace('3975','42'),log.replace('Bad file descriptor','NullPointerException'),log.replace('UiAutomation','main'),log+'\nFatal signal 11',log+'\nJavascriptException: missing module']:
+            with self.assertRaisesRegex(AssertionError,'Fatal error'):
+                self.exercise([subprocess.CalledProcessError(137,'uiautomator')],logs=broken)

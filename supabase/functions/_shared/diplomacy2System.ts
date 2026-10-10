@@ -129,7 +129,7 @@ function unionOf(s:GameState,id:string){return s.politicalUnions?.find(u=>u.memb
 function provinceTransfer(s:GameState,from:string,to:string,id:string,price:number):Province {
   peaceful(s,from,to);const p=s.provinces.find(p=>p.id===id);if(!p||p.ownerId!==from||(p.controllerId??p.ownerId)!==from||p.rebellion)throw Error('Нет права передать провинцию');
   if((s.cities??[]).some(c=>c.provinceId===id&&c.isCapital)||s.countries[from]!.provinceIds!.length<=1)throw Error('Столицу или последнюю провинцию передать нельзя');
-  if(s.wars!.some(w=>[...w.attackers,...w.defenders].includes(from)||[...w.attackers,...w.defenders].includes(to))||s.armies.some(a=>a.provinceId===id)||s.constructions!.some(q=>q.provinceId===id))throw Error('Война, армия или строительство блокируют передачу');
+  if(s.wars!.some(w=>[...w.attackers,...w.defenders].includes(from)||[...w.attackers,...w.defenders].includes(to))||s.armies.some(a=>a.provinceId===id)||s.constructions!.some(q=>q.provinceId===id)||s.constructionQueue?.some(q=>q.provinceId===id))throw Error('Война, армия или строительство блокируют передачу');
   if(s.countries[to]!.treasury<price)throw Error('Покупатель не может оплатить провинцию');
   money(s.countries[from]!.treasury+price);return p;
 }

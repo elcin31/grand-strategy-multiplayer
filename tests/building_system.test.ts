@@ -1,4 +1,5 @@
 import { declareWar } from '../supabase/functions/_shared/diplomacySystem';
+import { recalcEconomy } from '../supabase/functions/_shared/economySystem';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { BUILDINGS, BUILDING_TYPES, buildingQuote, initializeBuildings, provinceBuildingModifiers, startConstruction } from '../supabase/functions/_shared/buildingSystem';
@@ -39,7 +40,12 @@ test('authenticated BUILD is server-priced, immutable, owner-bound and queues on
 });
 
 test('construction completes only after game time, then affects maintenance and province economy',()=>{
-  let state=campaign(); const province=capitalProvince(state), beforeResource=state.countries.germany!.economy!.resourceIncome;
+  let state=campaign(); const province=capitalProvince(state);
+  // This test isolates construction timing and its budget effects. A mine now
+  // requires a real mineral deposit; separate expansion tests reject empty sites.
+  province.resourceDeposit={type:'iron',richness:80}; delete province.resourceMix;
+  recalcEconomy(state);
+  const beforeResource=state.countries.germany!.economy!.resourceIncome;
   const quote=buildingQuote(province,'Mine'); state=applyServerCommand(state,{type:'BUILD',playerId:'host',provinceId:province.id,buildingType:'Mine'},'host');
   state=applyServerCommand(state,{type:'SET_SPEED',playerId:'host',speed:1},'host');
   for(let i=0;i<quote.buildTime-1;i++) state=applyServerCommand(state,{type:'ADVANCE_TICK'},'host');

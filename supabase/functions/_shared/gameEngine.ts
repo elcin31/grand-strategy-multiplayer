@@ -7,6 +7,8 @@ import { monthlyWar, proposePeace, recordWarBattle, respondPeace } from './warSy
 import { declareWar, diplomaticAction, monthlyDiplomacy, offerTreaty, respondTreaty, warBetween } from './diplomacySystem.ts';
 import {startRelationMission,cancelRelationMission,sendGift,sendInsult,offerDiplomacy,respondDiplomacy,terminateTreaty,monthlyDiplomacy2,canEnterTerritory,pruneAccessWithdrawals} from './diplomacy2System.ts';
 import {startEspionage,cancelEspionage,monthlyEspionage} from './espionageSystem.ts';
+import {economicPolicy,setEconomicPolicy,setFunding} from './economy2System.ts';
+import {queueConstruction,cancelConstruction,processConstructionQueue} from './constructionQueueSystem.ts';
 import { assignCommander, battleFatigue, combatMultiplier, recoverMilitary, UNITS, type UnitType } from './militarySystem.ts';
 import { monthlyResearch, startResearch, techLevel } from './technologySystem.ts';
 import { buildingModifierTotals, cancelConstructionInProvince, completeConstructions, provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
@@ -143,6 +145,8 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
   const next = clone(state);
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   switch (command.type) {
+    case 'SET_ECONOMIC_POLICY':
+    case 'SET_FUNDING':
     case 'SET_TAX_RATE':
     case 'BORROW':
     case 'REPAY_DEBT': {
@@ -150,7 +154,9 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
       if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId); if (!player.countryId) throw new Error('Страна не выбрана');
       const nation = countryFor(next, player.countryId);
-      if (command.type === 'SET_TAX_RATE') { nation.taxRate = command.taxRate; recalcEconomy(next); }
+      if(command.type==='SET_ECONOMIC_POLICY'){setEconomicPolicy(next,player.countryId,command.policy);recalcEconomy(next);}
+      else if(command.type==='SET_FUNDING'){setFunding(next,player.countryId,command.domain,command.level);recalcEconomy(next);}
+      else if (command.type === 'SET_TAX_RATE') { nation.taxRate = command.taxRate; recalcEconomy(next); }
       else if (command.type === 'BORROW') borrow(next, nation, command.amount); else repay(next, nation, command.amount);
       return next;
     }
@@ -206,12 +212,16 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
       const player = getPlayer(next, command.playerId); if (!player.countryId) throw new Error('Страна не выбрана');
       startResearch(next, countryFor(next, player.countryId), command.branch); return next;
     }
+    case 'CANCEL_CONSTRUCTION': {
+      if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Сначала начните кампанию');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');cancelConstruction(next,p.countryId,command.constructionId);recalcEconomy(next);return next;
+    }
+    case 'QUEUE_BUILD':
     case 'BUILD': {
       if (!next.dataset) throw new Error('Строительство доступно в кампании современного мира');
       if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId); if (!player.countryId) throw new Error('Страна не выбрана');
       const province = provinceById(next, command.provinceId); if (!province) throw new Error('Провинция не найдена');
-      startConstruction(next, player.countryId, province, command.buildingType); recalcEconomy(next); return next;
+      if(command.type==='QUEUE_BUILD')queueConstruction(next,player.countryId,province,command.buildingType);else startConstruction(next, player.countryId, province, command.buildingType); recalcEconomy(next); return next;
     }
     case 'SELECT_COUNTRY': {
       if (next.phase !== 'lobby') throw new Error('Страну можно выбрать только в лобби');
@@ -300,10 +310,10 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
       next.tick += 1; next.month += 1; if (next.month > 12) { next.month = 1; next.year += 1; }
       advanceArmyOrders(next,resolveMovement);
       completeConstructions(next);
+      processConstructionQueue(next);
       monthlyDiplomacy(next);
       monthlyDiplomacy2(next);
       monthlyEspionage(next);
-      monthlyResearch(next);
       recoverMilitary(next);
       // The monthly treasury phase recalculates the budget after government
       // and religion changes below. Avoid a redundant earlier province pass.
@@ -314,7 +324,7 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
         if (!next.dataset) nation.treasury += nation.income;
         const government = next.dataset ? governmentModifiers(nation.governmentType) : undefined;
         const buildings = buildingTotals.get(id);
-        nation.manpower += Math.max(500, Math.round(nation.population * .00004 * (1 + ((government?.manpowerPercent ?? 0) + (buildings?.manpowerPercent ?? 0)) / 100)));
+        nation.manpower += Math.max(500, Math.round(nation.population * .00004 * (1 + ((government?.manpowerPercent ?? 0) + (buildings?.manpowerPercent ?? 0)) / 100)*(next.dataset?economicPolicy(nation).manpower:1)));
         if (government) {
           nation.politicalPower = Math.min(500, nation.politicalPower! + POLITICAL_POWER_MONTHLY);
           nation.technology = Math.min(100, nation.technology + .025 * (1 + (government.researchPercent + (buildings?.researchPercent ?? 0)) / 100));
@@ -322,7 +332,7 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }
-      monthlyReligionEffects(next); monthlyEconomy(next); monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
+      monthlyReligionEffects(next); monthlyEconomy(next); monthlyResearch(next); monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
     }
   }
 }

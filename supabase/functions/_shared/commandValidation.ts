@@ -7,10 +7,15 @@ import { assertReligion } from './religionSystem.ts';
 import { assertLoanAmount, assertTaxRate } from './economySystem.ts';
 import { assertDiplomaticTerms, assertDiplomaticAmount } from './diplomacy2System.ts';
 import { ESPIONAGE_MISSIONS } from './espionageSystem.ts';
+import {ECONOMIC_POLICIES,FUNDING_LEVELS} from './economy2System.ts';
 import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  SET_ECONOMIC_POLICY: ['type','playerId','policy'],
+  SET_FUNDING: ['type','playerId','domain','level'],
+  QUEUE_BUILD: ['type','playerId','provinceId','buildingType'],
+  CANCEL_CONSTRUCTION: ['type','playerId','constructionId'],
   START_ESPIONAGE: ['type','playerId','targetId','kind'],
   CANCEL_ESPIONAGE: ['type','playerId','missionId'],
   SET_TAX_RATE: ['type', 'playerId', 'taxRate'],
@@ -54,7 +59,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (typeof type !== 'string' || !Object.hasOwn(fields, type)) throw new Error('Unknown command');
   const allowed = fields[type]!;
   if (Object.keys(command).some(key => !allowed.includes(key)) || allowed.some(key => !Object.hasOwn(command, key))) throw new Error('Invalid command fields');
-  for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId', 'warId','missionId','offerId','treatyId']) {
+  for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId', 'warId','missionId','offerId','treatyId','constructionId']) {
     // Natural Earth retains literal '+' and '?' in a few province IDs. Ownership
     // and exact membership are still checked by the authoritative reducer.
     const pattern = key === 'provinceId' ? /^[A-Za-z0-9_+?-]{1,128}$/ : /^[A-Za-z0-9_-]{1,128}$/;
@@ -71,10 +76,12 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if ((type === 'RESPOND_TREATY' || type === 'RESPOND_PEACE' || type === 'RESPOND_DIPLOMACY') && typeof command.accept !== 'boolean') throw new Error('Invalid treaty response');
   if (type === 'SELECT_COUNTRY' && (typeof command.countryId !== 'string' || !countryIds.includes(command.countryId))) throw new Error('Unknown country');
   if (type === 'SET_TAX_RATE') assertTaxRate(command.taxRate);
+  if(type==='SET_ECONOMIC_POLICY'&&(typeof command.policy!=='string'||!Object.hasOwn(ECONOMIC_POLICIES,command.policy)))throw Error('Invalid economic policy');
+  if(type==='SET_FUNDING'&&(!['Research','Military'].includes(command.domain as string)||typeof command.level!=='string'||!Object.hasOwn(FUNDING_LEVELS,command.level)))throw Error('Invalid funding');
   if (type === 'BORROW' || type === 'REPAY_DEBT') assertLoanAmount(command.amount);
   if (type === 'RECRUIT_UNIT' && (typeof command.unitType !== 'string' || !Object.hasOwn(UNITS, command.unitType))) throw new Error('Invalid unit type');
   if (type === 'START_RESEARCH' && (typeof command.branch !== 'string' || !Object.hasOwn(TECHNOLOGIES, command.branch))) throw new Error('Invalid research branch');
-  if (type === 'BUILD' && (typeof command.buildingType !== 'string' || !BUILDING_TYPES.includes(command.buildingType as BuildingType))) throw new Error('Invalid building type');
+  if ((type === 'BUILD'||type==='QUEUE_BUILD') && (typeof command.buildingType !== 'string' || !BUILDING_TYPES.includes(command.buildingType as BuildingType))) throw new Error('Invalid building type');
   if (type === 'CHANGE_RELIGION') assertReligion(command.religionId);
   if (type === 'CHANGE_GOVERNMENT' && (typeof command.governmentType !== 'string' || !GOVERNMENT_TYPES.includes(command.governmentType as GovernmentType))) throw new Error('Invalid government type');
   if (type === 'SET_READY' && typeof command.ready !== 'boolean') throw new Error('Invalid ready value');

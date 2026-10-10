@@ -1,3 +1,38 @@
+# Continuation — Stage5 Economy2.0 and construction, 2026-10-10
+
+Parent HEAD **5fdee487b821e2efa59be0b36466a3b9e5188b37** is confirmed on GitHub expansion-v2/local. Main dbb354, accepted47b/world195/2924/5411 and existing Dominion backend are unchanged. Recovery is DONE; no new repository, AssetMind access, backend deployment, world reduction or final APK.
+
+**Stage5 implemented:** five paid/cooldown policies change real taxes, production/resources, trade, administration/military expenses, manpower, research speed and monthly stability/unrest. Research and military Low/Standard/High budgets cost5PP and share3-month cooldown; research monthly costs are charged before progress, including the final month. Bankruptcy pauses research. Military budget changes actual upkeep/readiness; graph supply and reinforcement are the next Stage6 integration. Existing debt/interest/default/tax/production/trade systems retained. AI chooses affordable policy/funding changes on scheduled strategic slots, never render frames.
+
+**Existing ten buildings extended:** no duplicate catalogue. New projects check deposits for mines, derived coastal sites+infrastructure for ports, urban development/capital for universities/hospitals, and technology/infrastructure for higher levels. Completed legacy buildings and paid active jobs survive migration. Paid queues are bounded to4 total projects/province and32 waiting/country; virtual levels price sequential improvements. Start of waiting work never charges again. Cancellation returns50% unused paid work and cancels only dependent later same-building upgrades; unrelated projects continue. Repeated cancellation fails, occupation cancels without refund, default pauses waiting work. All controls issue authenticated shared commands with real availability reasons; collapsed panels do not mount these controls.
+
+**Schema15 additive:** country economicPolicy/researchFunding/militaryFunding/policyCooldownUntilTick/budgetCooldownUntilTick; constructionQueue and derived researchMaintenance. Schema14 defaults Balanced/Standard/empty queue and preserves actual paid work/cash. Byte-exact before-economy-v15.backup precedes overwrite. Strict types/enums/dates/quotes/capacity/ownership/IDs reject malformed current saves; actor/CAS/receipt boundaries unchanged. Full accepted schema12 camera fixture original fields and checksum remain valid after migration; no new active work permitted. Port index is generated offline from unchanged public-domain geometry, exterior shores only,1299 sites. Internal holes/unrepresented territory do not become seas; geography/city counts untouched. Source SHA and method in WATER_ACCESS_REPORT/ASSET_CREDITS.
+
+**Verified:** strict TS and full230/230 JS PASS;16 changed-system/replay tests pass, including15 intent kinds; updated Python/accessibility and final Hermes export results in EXPANSION_STAGE5_HOST_QA_2026-10-10.json. Old mine timing test now uses a real mineral deposit; its timing/budget assertions remain. Fixed host seed101/240months/4restores: schema14 baselineP95 111.21ms/P99 133.15ms; schema15 candidate118.40/149.66ms, snapshot3,838,716bytes. Concurrent earlier measurements are retained and marked non-comparable. These are CPU/data measurements, not Android/FPS; tails and native memory remain open.
+
+**Stage4 CI38060565201:** signed standalone checkpoint build+actual10000ticks SUCCESS, ten restores,195/2924/5411 unchanged. Downloaded long artifact11673670466:1829bytes, SHA482b942b2a1c05606109d832b35731e4bf29888720263e5a445a113788f6ccf4, ZIP CRC PASS. Actual max armies3623/snapshot4,446,757bytes/tickP95 101.66ms; extreme long-run wars/cash/human unanswered-war age still require Stage10 balance. Native30min job114241620123 is still running at this entry, not yet accepted for spy UI. Camera114241620089 failed during baseline accessibility; no paired result. Auxiliary QA76 similarly failed before candidate/reverse, artifact11672543413/3,548,686bytes/SHA64c419760306df540be4d5683cf0102984592384ab07d0b3829507b3820b51fe/CRC PASS.
+
+**Observed harness correction:** raw log proves an external UiAutomation process died with Bad file descriptor, rather than the game. Only that exact exception, distinct PID and accessibility stack can be retried three times while the game PID must remain identical. Unknown/game/native/JS fatals still fail; raw logs and all original frame/paint/PSS/P95/P99 gates retained. New regression covers successful recovery and rejects game-PID/unknown/other crashes. CI concurrency now preserves previous commits' running native30min evidence; each new commit still runs all original gates. Native smoke adds paid queue/cancel/policy/funding interactions; not yet claimed passed.
+
+| Approved stage | Current status |
+|---|---|
+|0 Recovery|DONE|
+|1 Camera/frame pacing|PARTIAL; opaque Canvas remains unaccepted, complete paired evidence pending|
+|2 Army UX|DONE for ca native, latest integration gate pending|
+|3 Diplomacy2.0|PARTIAL; core/tests/10k done, native/final rollout/named technology exchange pending|
+|4 Espionage/diplomatic AI|PARTIAL; core/tests/10k done, native/final rollout/Stage6 supply hook pending|
+|5 Economy/buildings|PARTIAL; implemented/host verified, latest native/integration/final rollout pending|
+|6 Military/supply|PARTIAL; next graph supply/composition/reinforcement/retreat|
+|7 Technology DAG|PARTIAL; inherited branches preserved, named five-branch DAG next|
+|8 National Course|NOT STARTED|
+|9 Illustrations/polish|PARTIAL; existing15 retained,19NEW originals still required|
+|10 Whole-expansion balance/integration|PARTIAL|
+|11 Final signed APK/delivery|NOT STARTED|
+
+**Exact next operation:** finish Stage6 on existing combat/movement: mixed army composition and experience, commander training, capital/controlled-access/infrastructure/port supply routes, occupation/blockade/sabotage/funding effects, paid manpower-bound reinforcement, attrition and legal retreat; UI, strict saves/migration, meaningful tests and identical host scenario. Collect all running native/camera CI evidence. Then named five-branch tech DAG with real unlocks and diplomacy adapter, original National Course with once-only rewards,19NEW original paintings, full integration/balance10k and final signed standalone APK. Continue the accepted scope, never restart recovery or deliver the checkpoint APK as complete Expansion2.0.
+
+---
+
 # Continuation — Stage4 espionage and scheduled diplomatic AI, 2026-10-10
 
 Parent HEAD **b6abad4c7a5ac536817326184f5cd33a6c47d347** was saved on GitHub expansion-v2. Main/accepted47b/world195/2924/5411/full scope/existing Dominion backend remain unchanged. No AssetMind/cloud deployment/new repository/world reduction/final APK. Recovery DONE; continue from this header.

@@ -7,12 +7,14 @@ import { initializeWars } from './warSystem.ts';
 import { initializeDiplomacy } from './diplomacySystem.ts';
 import { initializeDiplomacy2 } from './diplomacy2System.ts';
 import { initializeEspionage } from './espionageSystem.ts';
+import {initializeEconomy2} from './economy2System.ts';
+import {initializeConstructionQueue} from './constructionQueueSystem.ts';
 import { initializeMilitary } from './militarySystem.ts';
 import { initializeTechnology } from './technologySystem.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
-export const CURRENT_STATE_VERSION = 14;
+export const CURRENT_STATE_VERSION = 15;
 
 /** Ordered schema migrations; every normalizer is also run as validation for current saves. */
 export function migrateV1ToV2(s:GameState){initializeBuildings(s);}
@@ -34,6 +36,8 @@ export function normalizeGameState(state:GameState):void {
  for(let i=0;i<migrations.length;i++){migrations[i]!(state);if(version<=i+1)state.stateVersion=i+2;}
  initializeDiplomacy2(state,version<13);
  initializeEspionage(state,version<14);
+ initializeEconomy2(state,version<15);
+ initializeConstructionQueue(state,version<15);
  validateArmyOrders(state);
  state.stateVersion=CURRENT_STATE_VERSION;
 }

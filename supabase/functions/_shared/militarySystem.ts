@@ -4,6 +4,7 @@ import type { Army, GameState, Province } from './gameTypes.ts';
 import { techLevel } from './technologySystem.ts';
 import { generateLeader } from './leaderGeneration.ts';
 import { espionageModifiers } from './espionageSystem.ts';
+import {militaryReadiness} from './economy2System.ts';
 export const UNITS = {
   Infantry: { name: 'Пехота', cost: 20, attack: 1, defense: 1, unlock: 0 },
   Mechanized: { name: 'Механизированная пехота', cost: 35, attack: 1.25, defense: 1.15, unlock: 1 },
@@ -62,7 +63,7 @@ export function combatMultiplier(state: GameState,army: Army,province: Province,
   if(!defending && army.unitType==='Armor' && ['mountain','urban','forest'].includes(terrain))terrainFactor=.65;
   if(army.unitType==='SpecialForces' && terrain==='mountain')terrainFactor*=1.25;
   const intel=!defending&&espionageModifiers(state,army.ownerId).intelTargets.has(province.controllerId??province.ownerId)?1.08:1;
-  return (defending?unit.defense:unit.attack)*(.4+(army.morale??80)/200+(army.organization??80)/200)*(1+skill/500)*(1+techLevel(state.countries[army.ownerId]!,'Military')*.06)*terrainFactor*intel;
+  return (defending?unit.defense:unit.attack)*(.4+(army.morale??80)/200+(army.organization??80)/200)*(1+skill/500)*(1+techLevel(state.countries[army.ownerId]!,'Military')*.06)*terrainFactor*intel*militaryReadiness(state.countries[army.ownerId]!);
 }
 export function recoverMilitary(state: GameState): void {
   if(!state.dataset)return;

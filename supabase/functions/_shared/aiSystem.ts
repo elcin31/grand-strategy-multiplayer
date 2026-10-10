@@ -1,5 +1,6 @@
 import type { Army, BuildingType, GameState, Province } from './gameTypes.ts';
-import { BUILDINGS, buildingQuote, provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
+import { BUILDINGS, buildingQuote,buildingRequirementReason,provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
+import {policyAvailability,setEconomicPolicy,fundingAvailability,setFunding,type EconomicPolicy} from './economy2System.ts';
 import { combatMultiplier } from './militarySystem.ts';
 import { researchQuote, startResearch, techLevel, type TechnologyBranch } from './technologySystem.ts';
 import { declareWar, diplomaticAction, pairKey, offerTreaty, warBetween,type DiplomacyLink } from './diplomacySystem.ts';
@@ -96,6 +97,12 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
     const capital=capitals.get(c.capitalCityId??'')??home[0]!.id;
     if(s.tick%6===index%6){
       const affordable=(cost:number)=>c.treasury-cost>=context().treasuryReserve&&s.tick>=c.bankruptcyUntilTick!;
+      const desiredPolicy:EconomicPolicy=context().incomeBalance<0?'Austerity':w?'Mobilization':style==='Economic'?'Investment':style==='Diplomatic'?'OpenMarkets':'Balanced';
+      if(affordable(50)&&!policyAvailability(s,id,desiredPolicy))setEconomicPolicy(s,id,desiredPolicy);
+      const militaryLevel=context().incomeBalance<0?'Low':w&&affordable((c.economy?.armyMaintenance??0)*6)?'High':'Standard';
+      if(!fundingAvailability(s,id,'Military',militaryLevel))setFunding(s,id,'Military',militaryLevel);
+      const researchLevel=context().incomeBalance<0?'Low':(style==='Economic'||style==='Diplomatic')&&context().incomeBalance>50?'High':'Standard';
+      if(!fundingAvailability(s,id,'Research',researchLevel))setFunding(s,id,'Research',researchLevel);
       const enemyIds=activeEnemies(s,id),suspected=detectedThreats.has(id);
       const spy=(target:string,kind:EspionageKind)=>{const quote=espionageQuote(s,id,target,kind);if(!quote.reason&&affordable(quote.cost)){startEspionage(s,id,target,kind);return true;}return false;};
       const threatened=enemyIds.length>0||context().neighbourThreat>c.army*1.5;
@@ -124,7 +131,7 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
       if(!c.research){const branches:TechnologyBranch[]=style==='Economic'?['Economy','Industry','Administration','Military','Diplomacy']:style==='Diplomatic'?['Diplomacy','Economy','Administration','Military','Industry']:['Military','Economy','Administration','Industry','Diplomacy'];const branch=branches.filter(b=>techLevel(c,b)<5).sort((a,b)=>techLevel(c,a)-techLevel(c,b))[0];if(branch&&affordable(researchQuote(c,branch).cost))startResearch(s,c,branch);}
       if(!s.constructions?.some(q=>q.ownerId===id)&&context().incomeBalance>15){
         const site=[...home].filter(p=>!p.rebellion).sort((a,b)=>b.income-a.income)[0];
-        if(site){const kinds:BuildingType[]=style==='Defensive'?['Fort','Administration','Farm']:site.resourceDeposit?['Mine','Factory','University','Infrastructure']:['Factory','University','Farm'];const kind=kinds.find(k=>(site.buildings?.[k]??0)<BUILDINGS[k].maxLevel);if(kind){const q=buildingQuote(site,kind);if(affordable(q.cost)&&context().incomeBalance>BUILDINGS[kind].maintenance*3)startConstruction(s,id,site,kind);}}
+        if(site){const kinds:BuildingType[]=style==='Defensive'?['Fort','Administration','Farm']:site.resourceDeposit?['Mine','Factory','University','Infrastructure']:['Factory','University','Farm'];const kind=kinds.find(k=>(site.buildings?.[k]??0)<BUILDINGS[k].maxLevel&&!buildingRequirementReason(s,site,k));if(kind){const q=buildingQuote(site,kind);if(affordable(q.cost)&&context().incomeBalance>BUILDINGS[kind].maintenance*3)startConstruction(s,id,site,kind);}}
       }
       const cap=home.find(p=>p.id===capital)??home[0]!;
       indexArmies();
