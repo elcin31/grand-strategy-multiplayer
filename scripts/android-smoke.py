@@ -13,6 +13,7 @@ import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from map_paint_check import assert_map_painted, map_paint_stats
+from native_campaign_feedback import campaign_feedback
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 OUT = Path('android-smoke'); OUT.mkdir(exist_ok=True)
 def adb(*args): return subprocess.check_output(['adb', *args], text=True)
@@ -161,7 +162,9 @@ root=hierarchy('01-menu-launch')
 launch_time=time.monotonic()
 click_text(root,'Одиночная игра')
 root=hierarchy('01-campaign-loading');screenshot('01-campaign-loading')
-assert any('Загрузка кампании' in n.get('text','') for n in root.iter('node')) or any('Политическая' in n.get('text','') for n in root.iter('node')), 'One tap produced no visible loading or campaign'
+feedback=campaign_feedback(root,PACKAGE)
+assert feedback, 'One tap produced no visible loading or campaign'
+print('Single-tap visible feedback:',feedback,flush=True)
 time.sleep(15)
 (OUT/'menu-to-campaign-seconds.txt').write_text(str(time.monotonic()-launch_time)+'\nIncludes UI dump/screenshot and fixed smoke wait; not startup latency.\n')
 root = hierarchy('02-map'); screenshot('02-map')

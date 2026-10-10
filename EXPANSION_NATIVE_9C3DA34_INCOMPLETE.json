@@ -1,0 +1,20 @@
+{
+  "candidateRuntime": "9c3da342cf9e9d83252a58278f3fe1f842ced3d9",
+  "run": 38041251527,
+  "status": "INCOMPLETE; no camera/army/stress result for this source",
+  "nativeJob": 114184359644,
+  "nativeArtifactId": 11665813433,
+  "nativeArtifactZipBytes": 4257486,
+  "nativeArtifactZipSha256": "8fac8516df3a94b054716662579d5283eb4b773222bf6331b76cf7c35cc768df",
+  "nativeZipHashAndCrcVerified": true,
+  "nativeFailure": "One tap produced no visible loading or campaign",
+  "nativeFinding": "Definite harness false negative: captured own-app XML01-campaign-loading shows Подготовка карты мира… and mounted country-picker/room shell. Old detector recognized only Загрузка кампании/Политическая. Original PNG/XML viewed; no matched game fatal/ReactNativeJS error in retained log. Accept existing genuine loading caption once, then require unchanged later map/army/save/stress checks. No new tap/retry conceals failure.",
+  "nativeFixture": "tests/fixtures/native_campaign_loading.xml",
+  "cameraJob": 114184359616,
+  "cameraArtifactId": 11666417675,
+  "cameraArtifactZipBytes": 533820,
+  "cameraArtifactZipSha256": "9bc1b1eaaa0ed6bcbd71890b585e8e26866c34b9a9498c787823f8aace748be2",
+  "cameraZipHashAndCrcVerified": true,
+  "cameraFinding": "Original independent-world job stopped on baseline47b before ANY scenario or candidate install: Missing Раздел Страна after tap Начать игру. Log records HOME launcher foreground at09:41:44 fromuid10121, game process still alive/onHostPause; no matched game fatal. Unexpected Home transition cause not proven. Not a9c camera regression or pass. Stronger fixed-save8e3/run38042596102 avoids campaign-setup tap variance but does not supersede a genuine frame-gate rejection.",
+  "transferNote": "First native ZIP transfer was2666496bytes, rejected. Fresh download matched all4257486bytes/official digest/CRC before extraction."
+}

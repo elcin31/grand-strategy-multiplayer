@@ -1,0 +1,25 @@
+{
+  "runtime": "7897d1c260a650818edfb792f5767071b0a42233",
+  "run": 38029758673,
+  "job": 114178493419,
+  "artifactId": 11665904382,
+  "artifactZipBytes": 25686038,
+  "artifactZipSha256": "176f548e2a0b3d0e672767f99deab97294a43126aad4159ea369798d93beeb2c",
+  "zipHashAndCrcVerified": true,
+  "status": "Native full smoke/stress PASS; does NOT override this runtime fixed-world reverse pinch rejection",
+  "stressSeconds": 1837.28411562,
+  "sampledPssKiB": {
+    "count": 31,
+    "min": 437338,
+    "max": 524666,
+    "first": 453908,
+    "last": 490209
+  },
+  "matchedFatalOrGameAnrOrOom": [],
+  "paintStats": {
+    "landFraction": 0.3034,
+    "samplePixels": 287232
+  },
+  "requiredArmyChecks": "Real marker select/repeated-tap/Back deselect preserve order, foreign flag diplomacy priority, reselection, separate movement cancel in unchanged full smoke. Same prior7897APK SHA1647622fcb43a77716995f6b44c87bdbed488f6041cd63426a68eac5e0a891d1.",
+  "note": "Own fresh emulator rerun after original Quickstep ANR. Original failure/artifact11661937968 retained. Native legacy gameplay/offline/menu/commands/presets/modes/layouts/density/cutout/saves/kill/reboot/30min assertions remain. New9c source still needs its own full native test. Not physical Redmi measurements or finalv2 release."
+}
