@@ -1,5 +1,5 @@
 import {countryGlyph,hitCountryGlyph,type CountryGlyph} from '../map/countryTargets';
-import {nextFrameDeadline,frameBucket,frameQuantile,framePackIncrement,unpackFrameHistogram} from '../performance/framePacing';
+import {nextFrameDeadline,frameBucket,frameQuantile,createFrameAccumulator,recordFrameInterval,finishFrameSample} from '../performance/framePacing';
 import {MapRasterLayer} from './MapRasterLayer';
 import {MapMarkerLayer} from './MapMarkerLayer';
 import {cameraCoverage,cameraNeedsCoverage,viewportLayoutUpdate,interactionDetailZoom} from '../map/cameraCoverage';
@@ -15,10 +15,11 @@ import {preparedCountryLabels} from '../map/labelIndex';
 import {mapLegend} from '../map/modes';
 import {armyCounters,occupationFeatures,warBorderPath} from '../map/overlays';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View, PixelRatio } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View, PixelRatio, Platform } from 'react-native';
+import {createShareable,UIRuntimeId} from 'react-native-worklets';
 import { Canvas, Circle, Fill, Group, LinearGradient, Path, Rect, Skia, matchFont, vec } from '@shopify/react-native-skia';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { cancelAnimation, runOnJS, useAnimatedReaction, useFrameCallback, useDerivedValue, useSharedValue, withDecay, withTiming } from 'react-native-reanimated';
+import { cancelAnimation, runOnJS, runOnUI, useAnimatedReaction, useFrameCallback, useDerivedValue, useSharedValue, withDecay, withTiming } from 'react-native-reanimated';
 import { type CountryId, type GameState, type Province } from '../types/game';
 import { boundedCamera, Camera, clamp, TILT, visibleBounds, zoomAt } from '../map/camera';
 import { featurePath } from '../map/geometry';
@@ -92,7 +93,12 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   const setSettingsOpen=(value:boolean)=>onSettingsChange?.(value);
   const x = useSharedValue(defaults.x), y = useSharedValue(defaults.y), zoom = useSharedValue(defaults.zoom);
   const renderX=useSharedValue(defaults.x),renderY=useSharedValue(defaults.y),renderZoom=useSharedValue(defaults.zoom);
-  const frameBudget=targetFrameRate(frameRate,preset),frameClock=useSharedValue(0),sampleClock=useSharedValue(0),frameCount=useSharedValue(0),slowFrames=useSharedValue(0),cameraUpdates=useSharedValue(0);
+  const frameBudget=targetFrameRate(frameRate,preset);
+  // Worklets 0.10 Shareable holds a mutable host object on the UI runtime.
+  // Unlike reactive Shared Values, private counters have no dirty flags,
+  // animation cancellation, listeners or guest serialization on each increment.
+  // Web runs the callback on its single JS runtime and needs no native host.
+  const frameSampler=useMemo(()=>Platform.OS==='web'?{value:createFrameAccumulator()}:createShareable(UIRuntimeId,createFrameAccumulator()),[]);
   const acceptFrameSample=useCallback((fps:number,ms:number,slow:number,updates:number,histogram?:number[])=>{
     const distribution=histogram?{frameP50Ms:frameQuantile(histogram,.5),frameP95Ms:frameQuantile(histogram,.95),frameP99Ms:frameQuantile(histogram,.99),frameSamples:histogram.reduce((n,x)=>n+x,0),over50Ms:histogram.slice(frameBucket(50)+1).reduce((n,x)=>n+x,0),over100Ms:histogram.slice(frameBucket(100)+1).reduce((n,x)=>n+x,0)}:{};
     recordMetrics({uiFps:fps,frameMs:ms,slowFrames:slow,cameraUpdates:updates,...distribution},true);
@@ -100,36 +106,33 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
     if(adaptive){quality.current=adaptQuality(quality.current,ceiling,fps,frameBudget,Date.now(),updates>3);if(quality.current.tier!==preset)setPreset(quality.current.tier);}
   },[adaptive,ceiling,frameBudget,preset,overlay]);
   const pulse=useSharedValue(.9);
-  const h0=useSharedValue(0),h1=useSharedValue(0),h2=useSharedValue(0),h3=useSharedValue(0),h4=useSharedValue(0),h5=useSharedValue(0),h6=useSharedValue(0),h7=useSharedValue(0);
-  const frameHistogram=useMemo(()=>[h0,h1,h2,h3,h4,h5,h6,h7],[h0,h1,h2,h3,h4,h5,h6,h7]);
   const sampleDistribution=overlay||benchmarkRunning;
-  useEffect(()=>{for(const band of frameHistogram)band.value=0;},[sampleDistribution,frameHistogram]);
-  const moving=useSharedValue(false),lastMotionFrame=useSharedValue(0);
+  useEffect(()=>{runOnUI(()=>{frameSampler.value!.histogram.fill(0);})();},[sampleDistribution,frameSampler]);
+  const moving=useSharedValue(false);
   const activityRef=useRef(onCameraActivity);activityRef.current=onCameraActivity;
   const cameraActivity=useCallback((active:boolean)=>activityRef.current?.(active),[]);
   const animateEffects=(preset==='High'||preset==='Ultra')&&state.battleLog.some(b=>state.tick-b.tick<=1);
+  useEffect(()=>{if(!animateEffects)pulse.value=.9;},[animateEffects,pulse]);
   useFrameCallback(frame=>{
     const dt=frame.timeSincePreviousFrame;if(dt===null||dt<=0)return;
-    frameCount.value++;if(dt>1000/frameBudget*1.5)slowFrames.value++;
-    if(sampleDistribution){const bucket=frameBucket(dt);frameHistogram[Math.floor(bucket/3)]!.value+=framePackIncrement(bucket);}
-    if(frame.timestamp>=frameClock.value-.5){
-      frameClock.value=nextFrameDeadline(frame.timestamp,frameClock.value,frameBudget);
-      pulse.value=animateEffects?.8+.2*Math.sin(frame.timestamp/900):.9;
+    const sample=frameSampler.value!;
+    recordFrameInterval(sample,dt,frameBudget,sampleDistribution);
+    if(frame.timestamp>=sample.deadline-.5){
+      sample.deadline=nextFrameDeadline(frame.timestamp,sample.deadline,frameBudget);
+      if(animateEffects)pulse.value=.8+.2*Math.sin(frame.timestamp/900);
       if(renderX.value!==x.value||renderY.value!==y.value||renderZoom.value!==zoom.value){
-        renderX.value=x.value;renderY.value=y.value;renderZoom.value=zoom.value;cameraUpdates.value++;lastMotionFrame.value=frame.timestamp;
+        renderX.value=x.value;renderY.value=y.value;renderZoom.value=zoom.value;sample.updates++;sample.lastMotion=frame.timestamp;
         if(!moving.value){moving.value=true;runOnJS(cameraActivity)(true);}
       }
     }
     // One begin/end pair per motion, including inertia and toolbar animations;
     // no per-frame JS callbacks or React camera state updates.
-    if(moving.value&&frame.timestamp-lastMotionFrame.value>=150){moving.value=false;runOnJS(cameraActivity)(false);}
-    if(sampleClock.value===0)sampleClock.value=frame.timestamp;
-    const elapsed=frame.timestamp-sampleClock.value;
+    if(moving.value&&frame.timestamp-sample.lastMotion>=150){moving.value=false;runOnJS(cameraActivity)(false);}
+    if(sample.sampleClock===0)sample.sampleClock=frame.timestamp;
+    const elapsed=frame.timestamp-sample.sampleClock;
     if(elapsed>=1000){
-      let histogram:number[]|undefined;
-      if(sampleDistribution){const packed:number[]=[];for(const band of frameHistogram){packed.push(band.value);band.value=0;}histogram=unpackFrameHistogram(packed);}
-      runOnJS(acceptFrameSample)(frameCount.value*1000/elapsed,elapsed/frameCount.value,slowFrames.value,cameraUpdates.value,histogram);
-      sampleClock.value=frame.timestamp;frameCount.value=0;slowFrames.value=0;cameraUpdates.value=0;
+      const result=finishFrameSample(sample,frame.timestamp,sampleDistribution);
+      runOnJS(acceptFrameSample)(result.fps,result.ms,result.slow,result.updates,result.histogram);
     }
   });
   const startX = useSharedValue(0), startY = useSharedValue(0), startZoom = useSharedValue(1);

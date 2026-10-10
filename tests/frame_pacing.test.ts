@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {nextFrameDeadline,FRAME_BUCKETS,frameBucket,frameQuantile,CameraWorkGate,framePackIncrement,unpackFrameHistogram} from '../src/performance/framePacing';
+import {nextFrameDeadline,FRAME_BUCKETS,frameBucket,frameQuantile,CameraWorkGate,createFrameAccumulator,recordFrameInterval,finishFrameSample} from '../src/performance/framePacing';
 test('camera preserves target cadence at 60/90/120Hz and discards stall catch-up',()=>{
   for(const hz of [60,90,120])for(const target of [30,60]){
     let deadline=0,updates=0;
@@ -15,11 +15,20 @@ test('camera preserves target cadence at 60/90/120Hz and discards stall catch-up
     assert.ok(deadline>now+.5&&deadline<=now+1000/target+.5,'No overdue catch-up deadline after a short stall');
   }
 });
-test('packed UI histogram preserves every bucket without cross-counter carry',()=>{
-  const packed=Array(8).fill(0),expected=Array(FRAME_BUCKETS.length+1).fill(0);
-  for(let bucket=0;bucket<expected.length;bucket++)for(let n=0;n<bucket*7+1;n++){packed[Math.floor(bucket/3)]+=framePackIncrement(bucket);expected[bucket]++;}
-  assert.deepEqual(unpackFrameHistogram(packed),expected);
-  assert.equal(frameQuantile(unpackFrameHistogram(packed),.95),null);
+test('UI-private sampler preserves intervals, reuses storage and isolates samples/campaigns',()=>{
+  const a=createFrameAccumulator(),b=createFrameAccumulator(),storage=a.histogram;
+  a.sampleClock=1000;a.updates=50;
+  for(const dt of [...Array(95).fill(16),50,75,100,500,6000])recordFrameInterval(a,dt,60,true);
+  assert.strictEqual(a.histogram,storage);assert.equal(a.count,100);assert.equal(a.slow,5);
+  const sample=finishFrameSample(a,2000,true);
+  assert.equal(sample.fps,100);assert.equal(sample.ms,10);assert.equal(sample.updates,50);
+  assert.equal(frameQuantile(sample.histogram!,.99),500);
+  assert.equal(a.count,0);assert.equal(a.slow,0);assert.equal(a.updates,0);
+  assert.equal(a.histogram.reduce((n,x)=>n+x,0),0);assert.strictEqual(a.histogram,storage);
+  assert.equal(b.count,0);assert.notStrictEqual(b.histogram,a.histogram);
+  recordFrameInterval(a,20,60,false);assert.equal(a.histogram.reduce((n,x)=>n+x,0),0);
+  assert.equal(finishFrameSample(a,3000,false).histogram,undefined);
+  assert.equal(sample.histogram!.reduce((n,x)=>n+x,0),100,'A later reset must not mutate the already published sample');
 });
 test('bounded frame histograms expose short stutters rather than hiding them in mean FPS',()=>{
   const h=Array(FRAME_BUCKETS.length+1).fill(0);

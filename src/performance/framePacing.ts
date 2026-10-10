@@ -14,17 +14,26 @@ export function frameBucket(ms:number):number {
   for(let i=0;i<FRAME_BUCKETS.length;i++)if(ms<=FRAME_BUCKETS[i]!)return i;
   return FRAME_BUCKETS.length;
 }
-/** Three 16-bit counters fit exactly in a JS number. Scalar shared values avoid
- * modifying/unmarshalling a shared array on every display callback. */
-export function framePackIncrement(bucket:number):number {
-  'worklet';
-  return 2**((bucket%3)*16);
+export interface FrameAccumulator {
+  deadline:number;sampleClock:number;count:number;slow:number;updates:number;lastMotion:number;
+  histogram:number[];
 }
-export function unpackFrameHistogram(packed:readonly number[]):number[] {
+/** Private UI-runtime state, not reactive values. Nothing observes these
+ * counters per frame; only the completed one-second sample crosses to JS. */
+export function createFrameAccumulator():FrameAccumulator {
+  return {deadline:0,sampleClock:0,count:0,slow:0,updates:0,lastMotion:0,histogram:Array(FRAME_BUCKETS.length+1).fill(0)};
+}
+export function recordFrameInterval(sample:FrameAccumulator,dt:number,target:number,distribution:boolean):void {
   'worklet';
-  const histogram:number[]=[];
-  for(let i=0;i<FRAME_BUCKETS.length+1;i++)histogram.push(Math.floor(packed[Math.floor(i/3)]!/2**((i%3)*16))%65536);
-  return histogram;
+  sample.count++;if(dt>1000/target*1.5)sample.slow++;
+  if(distribution)sample.histogram[frameBucket(dt)]!++;
+}
+export function finishFrameSample(sample:FrameAccumulator,now:number,distribution:boolean) {
+  'worklet';
+  const elapsed=now-sample.sampleClock;
+  const result={fps:sample.count*1000/elapsed,ms:elapsed/sample.count,slow:sample.slow,updates:sample.updates,histogram:distribution?sample.histogram.slice():undefined};
+  sample.sampleClock=now;sample.count=0;sample.slow=0;sample.updates=0;sample.histogram.fill(0);
+  return result;
 }
 /** Histogram upper bounds, not exact quantiles. Overflow remains explicit. */
 export function frameQuantile(histogram:readonly number[],q:number):number|null {

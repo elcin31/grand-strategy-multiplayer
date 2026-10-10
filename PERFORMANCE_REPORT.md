@@ -1,3 +1,9 @@
+# Expansion 2.0 — native revision review, 2026-10-10
+
+Runtime `efd1f3d` passes build / 10,000 ticks / full Android touch smoke + 1835.67s stress. Same-APK camera replay 37995443161 **REJECTED**: panel-closed histogram P95 117 -> 200ms; pinch P95 500 -> 400ms does not override the failed scenario or worse raw P99. Verified paired/native/APK hashes, all quantiles and sampled PSS in EXPANSION_NATIVE_EFD1F3D_REVIEW.json; long simulation EXPANSION_LONG_EFD1F3D.json. Current UI-host private-counter revision needs fresh native acceptance. No physical Redmi FPS, no completed Expansion 2.0, no final v2 APK claimed. Stages 3–11 remain fully authorized and pending.
+
+---
+
 # Expansion 2.0 — stage 1 implementation / native validation pending
 
 **Checkpoint 056a5b2 rejected; do not accept or deliver it.** Same-emulator run 37985852569 / paired artifact 11645185137 found pinch full histogram p95 **550→700ms**, raw recent-window p95 **596.02→720.31ms**, p99 **916.82→1300.14ms**. Main UI mean CPU **77.36→83.42%**; JS mean **23.27→14.65%**. Local pan raw p95 **116.93→207.51ms** also regressed. World topology and static path counts stayed equal; reduced JS/cull counts do not prove improved presentation. EXPANSION_CAMERA_REJECTED_056a5b2.json preserves all nine scenarios and corrects the report's stale 0.7 metadata to the actual downloaded 0.8.1 baseline/run. No physical-device claim.

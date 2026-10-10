@@ -1,3 +1,9 @@
+# Expansion 2.0 — release remains blocked, 2026-10-10
+
+Runtime `efd1f3d` passes build / 10,000 ticks / full Android touch smoke + 1835.67s stress. Same-APK camera replay 37995443161 **REJECTED**: panel-closed histogram P95 117 -> 200ms; pinch P95 500 -> 400ms does not override the failed scenario or worse raw P99. Verified paired/native/APK hashes, all quantiles and sampled PSS in EXPANSION_NATIVE_EFD1F3D_REVIEW.json; long simulation EXPANSION_LONG_EFD1F3D.json. Current UI-host private-counter revision needs fresh native acceptance. No physical Redmi FPS, no completed Expansion 2.0, no final v2 APK claimed. Stages 3–11 remain fully authorized and pending.
+
+---
+
 # Dominion Expansion 2.0 — release NOT READY
 
 Stages 0–2 checkpoint only; stages 3–11 remain scoped in EXPANSION_SCOPE.md. Existing main/runtime release below is historical. Main remains `dbb354ab038713c3e54b969b34a6fc88bf2de11f`; expansion work is isolated on `expansion-v2` in the same repository.
