@@ -1,3 +1,4 @@
+import {scenarioStrength} from './helpers/militaryFixture';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
@@ -17,7 +18,7 @@ test('multi-province order is authoritative, immutable, cancellable and saved',(
  assert.throws(()=>applyServerCommand(s,{type:'ORDER_ARMY',playerId:'host',armyId:s.armies.find(v=>v.ownerId==='france')!.id,provinceId:target.id},'host'));
 });
 test('attack reaches exact requested target; neutral and stale routes cannot bypass diplomacy',()=>{
- const s=campaign(),a=s.armies.find(a=>a.ownerId==='germany')!;a.troops=10000000;
+ const s=campaign(),a=s.armies.find(a=>a.ownerId==='germany')!;scenarioStrength(a,10000000);
  const border=s.provinces.find(p=>p.ownerId==='germany'&&p.neighbors.some(id=>s.provinces.find(q=>q.id===id)?.ownerId==='france'))!;
  const target=s.provinces.find(p=>p.ownerId==='france'&&border.neighbors.includes(p.id))!;
  assert.throws(()=>findArmyRoute(s,a,target.id),/войну/);declareWar(s,'germany','france');

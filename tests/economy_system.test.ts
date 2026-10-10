@@ -1,3 +1,4 @@
+import {scenarioStrength} from './helpers/militaryFixture';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createWorldState } from '../supabase/functions/_shared/worldState';
@@ -56,7 +57,7 @@ test('loan/tax payload, lobby, overspend, credit, precision and bankruptcy guard
 test('deficit uses bounded debt; default cannot maintain an unpaid army or spam penalties every month',()=>{
   const state=world(), c=state.countries.germany!;
   c.treasury=0; c.taxRate=10;
-  const army=state.armies.find(a=>a.ownerId==='germany')!; army.troops=1_000_000;
+  const army=state.armies.find(a=>a.ownerId==='germany')!; scenarioStrength(army,1_000_000);
   recalcEconomy(state); const shortfall=-c.economy!.monthlyBalance;
   assert.ok(shortfall>0 && shortfall<c.economy!.creditLimit);
   monthlyEconomy(state); assert.equal(c.treasury,0); assert.equal(c.debt,shortfall);

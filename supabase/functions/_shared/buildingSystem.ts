@@ -1,4 +1,7 @@
+import {scienceLevel} from './technologyTree.ts';
 import type { BuildingType, Construction, CountryId, GameState, Province } from './gameTypes.ts';
+import {WATER_ACCESS} from './waterAccess.ts';
+const capitalSites=new WeakMap<GameState,Set<string>>();
 
 export interface BuildingModifiers {
   taxPercent: number;
@@ -35,6 +38,19 @@ export const BUILDINGS: Record<BuildingType, BuildingDefinition> = {
   Hospital: { name: 'Госпиталь', baseCost: 300, baseBuildTime: 12, maintenance: 6, maxLevel: 5, modifiers: { populationGrowthPercent: 3, unrestPerYear: -.2 } },
 };
 export const BUILDING_TYPES = Object.keys(BUILDINGS) as BuildingType[];
+/** Existing buildings survive migration/conquest; requirements govern only
+ * new projects. Levels3–5 require the corresponding technological capability. */
+export function buildingRequirementReason(s:GameState,p:Province,type:BuildingType,targetLevel=buildingLevel(p,type)+1):string|null {
+  const c=s.countries[p.ownerId]!;
+  const branch=({Farm:'Economy',Mine:'Industry',Factory:'Industry',Barracks:'Military',Fort:'Military',University:'Administration',Port:'Diplomacy',Infrastructure:'Administration',Administration:'Administration',Hospital:'Administration'} as const)[type];
+  if((c.technologies?.[branch]??0)<Math.max(0,targetLevel-2))return `Требуется технология ${branch} уровня ${targetLevel-2}`;
+  if(type==='Mine'&&!(p.resourceMix??(p.resourceDeposit?[p.resourceDeposit]:[])).some(r=>!['food','timber'].includes(r.type)))return 'Требуется минеральное месторождение';
+  if(type==='Port'&&!WATER_ACCESS.has(p.id))return 'Нужен выход к воде на карте';
+  if(type==='Port'&&buildingLevel(p,'Infrastructure')<1)return 'Требуется инфраструктура уровня 1';
+  if((type==='University'||type==='Hospital')&&(p.development??40)<40){let sites=capitalSites.get(s);if(!sites){sites=new Set((s.cities??[]).filter(c=>c.isCapital).map(c=>c.provinceId));capitalSites.set(s,sites);}if(!sites.has(p.id))return 'Нужно развитие 40 или столица';}
+  if(['Factory','Barracks','Fort'].includes(type)&&targetLevel>2&&buildingLevel(p,'Infrastructure')<targetLevel-2)return `Требуется инфраструктура уровня ${targetLevel-2}`;
+  return null;
+}
 
 const precise = (value: number): number => {
   if (!Number.isFinite(value) || Math.abs(value) > Number.MAX_SAFE_INTEGER / 1000) throw new Error('Building money overflow');
@@ -92,6 +108,7 @@ function validateConstruction(state: GameState, construction: Construction): voi
   const quote = buildingQuote(province, construction.buildingType);
   if (construction.targetLevel !== quote.targetLevel || construction.cost !== quote.cost) throw new Error('Invalid construction quote');
   if (!Number.isSafeInteger(construction.startedTick) || !Number.isSafeInteger(construction.completeTick) || construction.startedTick < 0 || construction.completeTick !== construction.startedTick + quote.buildTime) throw new Error('Invalid construction timing');
+  if(construction.workDone!==undefined||construction.workTick!==undefined){if(!Number.isFinite(construction.workDone)||construction.workDone!<0||construction.workDone!>=quote.buildTime||!Number.isSafeInteger(construction.workTick)||construction.workTick!<construction.startedTick||construction.workTick!>state.tick)throw Error('Invalid construction progress');}
 }
 /** Modern save migration/validation. Missing building maps stay sparse to avoid inflating 4k-province snapshots. */
 export function initializeBuildings(state: GameState): void {
@@ -109,10 +126,13 @@ export function initializeBuildings(state: GameState): void {
 export function startConstruction(state: GameState, ownerId: CountryId, province: Province, buildingType: BuildingType): Construction {
   if (!state.dataset) throw new Error('Строительство доступно в кампании современного мира');
   if (province.rebellion || province.ownerId !== ownerId || (province.controllerId ?? province.ownerId) !== ownerId) throw new Error('Нельзя строить в чужой провинции');
-  if (state.constructions!.some(item => item.provinceId === province.id)) throw new Error('В провинции уже идёт строительство');
+  if (state.constructions!.some(item => item.provinceId === province.id)||state.constructionQueue?.some(item=>item.provinceId===province.id)) throw new Error('В провинции уже идёт строительство');
   const nation = state.countries[ownerId];
   if (!nation) throw new Error('Страна не найдена');
   const quote = buildingQuote(province, buildingType);
+  const reason=buildingRequirementReason(state,province,buildingType,quote.targetLevel);if(reason)throw Error(reason);
+  if(state.tick<(nation.bankruptcyUntilTick??0))throw Error('Строительство недоступно после банкротства');
+  if(!Number.isSafeInteger(state.tick+quote.buildTime))throw Error('Construction date overflow');
   if (nation.treasury < quote.cost) throw new Error('Недостаточно средств для строительства');
   if (state.nextEntityId === undefined) state.nextEntityId = 1;
   if (!Number.isSafeInteger(state.nextEntityId) || state.nextEntityId < 1 || state.nextEntityId >= Number.MAX_SAFE_INTEGER) throw new Error('Entity sequence exhausted');
@@ -123,14 +143,27 @@ export function startConstruction(state: GameState, ownerId: CountryId, province
   return construction;
 }
 export function cancelConstructionInProvince(state: GameState, provinceId: string): void {
-  if (!state.dataset || !state.constructions?.length) return;
-  state.constructions = state.constructions.filter(item => item.provinceId !== provinceId);
+  if (!state.dataset) return;
+  if(state.constructionQueue?.length)state.constructionQueue=state.constructionQueue.filter(item=>item.provinceId!==provinceId);
+  if(state.constructions?.length)state.constructions = state.constructions.filter(item => item.provinceId !== provinceId);
+}
+export function constructionProgress(state:GameState,job:Construction):{percent:number;months:number}{
+  const c=state.countries[job.ownerId]!,duration=job.completeTick-job.startedTick,done=job.workDone??state.tick-job.startedTick,rate=1+(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01;
+  return {percent:Math.min(100,Math.round(100*done/duration)),months:Math.max(0,Math.ceil((duration-done)/rate))};
 }
 export function completeConstructions(state: GameState): void {
   if (!state.dataset || !state.constructions?.length) return;
   const remaining: Construction[] = [];
   for (const construction of state.constructions) {
-    if (construction.completeTick > state.tick) { remaining.push(construction); continue; }
+    const c=state.countries[construction.ownerId]!,bonus=(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01;
+    if(bonus>0||construction.workDone!==undefined){
+      // Old paid jobs retain their quoted duration. A newly opened capability
+      // accelerates this month onwards; previous work is never credited twice.
+      construction.workDone??=Math.max(0,state.tick-construction.startedTick-1);
+      construction.workTick??=Math.max(construction.startedTick,state.tick-1);
+      construction.workDone+=(state.tick-construction.workTick)*(1+bonus);construction.workTick=state.tick;
+    }
+    if (construction.completeTick > state.tick && (construction.workDone??0)+1e-9<construction.completeTick-construction.startedTick) { remaining.push(construction); continue; }
     const province = state.provinces.find(p => p.id === construction.provinceId);
     if (!province || province.rebellion || province.ownerId !== construction.ownerId || (province.controllerId ?? province.ownerId) !== construction.ownerId) continue;
     const current = buildingLevel(province, construction.buildingType);

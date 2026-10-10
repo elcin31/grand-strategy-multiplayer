@@ -14,6 +14,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from map_paint_check import assert_map_painted, map_paint_stats
 from native_campaign_feedback import campaign_feedback
+from camera_surface_stats import assert_map_backend
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 OUT = Path('android-smoke'); OUT.mkdir(exist_ok=True)
 def adb(*args): return subprocess.check_output(['adb', *args], text=True)
@@ -103,7 +104,11 @@ def set_speed(speed):
             return root
     raise AssertionError('Speed command did not become active: '+label)
 def advance_campaign_months(months):
-    root = set_speed(4)
+    # UIAutomator plus the old navigated set_speed(0) can take many seconds.
+    # At4x this advanced34 ticks during a requested6-tick counterintelligence
+    # check, legitimately expiring its12-month result. Use real1x time and tap
+    # the already visible pause control immediately at the observed target.
+    root = set_speed(1)
     def tick(tree):
         text = next(n.get('text') for n in tree.iter('node') if n.get('text','').startswith('Ход '))
         return int(re.match(r'Ход (\d+)', text).group(1))
@@ -111,8 +116,12 @@ def advance_campaign_months(months):
     deadline = time.monotonic() + 180
     while time.monotonic() < deadline:
         time.sleep(2)
-        if tick(hierarchy('population-growing')) >= target:
-            set_speed(0); return
+        root=hierarchy('population-growing')
+        if tick(root) >= target:
+            click_text(root,'Пауза');time.sleep(1)
+            paused=hierarchy('month-target-paused')
+            assert any(n.get('content-desc')=='Пауза' and n.get('selected')=='true' for n in paused.iter('node')), 'Real clock did not pause'
+            return
     raise AssertionError('Campaign clock did not advance enough months')
 def province_army_text(root):
     texts = [n.get('text','') for n in root.iter('node') if n.get('text')]
@@ -169,6 +178,11 @@ time.sleep(15)
 (OUT/'menu-to-campaign-seconds.txt').write_text(str(time.monotonic()-launch_time)+'\nIncludes UI dump/screenshot and fixed smoke wait; not startup latency.\n')
 root = hierarchy('02-map'); screenshot('02-map')
 assert_map_painted(OUT/'02-map.png')
+expected_backend=os.environ.get('DOMINION_EXPECT_MAP_BACKEND') or ('surface' if os.environ.get('DOMINION_EXPECT_OPAQUE_MAP')=='1' else None)
+if expected_backend:
+    layers = adb('shell','dumpsys','SurfaceFlinger','--list')
+    (OUT/'map-surface-layers.txt').write_text(layers)
+    assert_map_backend(layers,PACKAGE,expected_backend)
 assert any('Политическая' in n.get('text','') for n in root.iter('node')), 'GPU map screen did not mount'
 # Exercise real offline commands in the release bundle, not only a mounted canvas.
 # Select through the real searchable picker; no dependency on synthetic demo geometry.
@@ -230,6 +244,16 @@ commander_name=commander_label.removeprefix('Полководец ')
 assert commander_name in read_scrolling('Командир: '), 'Commander assignment did not apply'
 root=hierarchy('commander-art');screenshot('commander-art')
 assert any(n.get('content-desc')=='Портрет вымышленного полководца: '+commander_name for n in root.iter('node')), 'Assigned commander portrait missing'
+# Military 2.0: mix an actual paid infantry regiment, preserve its commander,
+# and persist the explicit automatic reinforcement setting. No test-only money.
+click_scrolling('Добавить часть: Пехота')
+read_scrolling('DEU')
+assert province_army_text(hierarchy('military-mixed-regiment')) == str(int(before[:-1])+26)+'K', 'Mixed regiment did not update actual army strength'
+assert 'Пехота:' in read_scrolling('Пехота:'), 'Composition is not displayed'
+click_scrolling('Автоматическое пополнение')
+assert 'включено' in read_scrolling('Автоматическое пополнение:'), 'Automatic reinforcement command did not apply'
+assert 'Снабжение ' in read_scrolling('Снабжение '), 'Supply status is absent'
+screenshot('military-logistics')
 # Expansion 2.0: actual Canvas marker/flag touch regression, independent of row commands.
 def click_owned_route():
     # The route caption is a 13px TextView inside a 58px clickable control.
@@ -318,6 +342,11 @@ assert any(n.get('content-desc')=='Иллюстрация здания: Ферм
 click_scrolling('Построить Ферма')
 assert 'Ферма' in read_scrolling('Строится: '), 'Construction did not start from the catalogue'
 screenshot('construction-queued')
+click_scrolling('Добавить в очередь: Ферма')
+assert 'ур. 2' in read_scrolling('Очередь 1: Ферма'), 'Paid next-level construction did not queue'
+screenshot('construction-waiting')
+click_scrolling('Отменить проект очереди: Ферма')
+assert 'Ферма' in read_scrolling('Строится: '), 'Cancelling a waiting project cancelled paid active construction'
 # Government is a real paid command, with a frozen 24-month cooldown on pause.
 click_scrolling('Экономика ▾')
 root = hierarchy('economy-before'); screenshot('economy-before')
@@ -357,6 +386,13 @@ advance_campaign_months(20)
 population_root = hierarchy('population-after'); screenshot('population-after')
 population_after = next(n.get('text') for n in population_root.iter('node') if n.get('text','').startswith('Население: ')).split(' · ')[0]
 assert population_after != population_before, 'Actual campaign population did not grow'
+navigate('Экономика');click_scrolling('Экономика ▾')
+click_scrolling('Принять: Программа инвестиций')
+assert 'Программа инвестиций' in read_scrolling('Экономическая политика · '), 'Economic policy command did not apply'
+click_scrolling('Исследования: Приоритетное')
+root=hierarchy('economy-policy-funding');screenshot('economy-policy-funding')
+assert not any('Действие отклонено' in n.get('text','') for n in root.iter('node')), 'Funding command was rejected'
+click_scrolling('Экономика ▴');navigate('Страна')
 click_scrolling('Правительство ▴')
 click_scrolling('Религия ▾')
 root = hierarchy('religion-before');screenshot('religion-art')
@@ -385,13 +421,45 @@ advance_campaign_months(7)
 navigate('Технологии')
 assert read_scrolling('Экономика · 1/5'), 'Research did not complete through the real game clock'
 screenshot('research-complete')
+# The original five-direction graph uses real prerequisite navigation and
+# funded scientific research, never a decorative unlocked button.
+for direction in ['Военное дело','Инфраструктура','Государство и связь','Наука']:
+    click_scrolling('Направление: '+direction)
+    screenshot('technology-direction-'+str(len(direction)))
+click_scrolling('Уменьшить дерево технологий')
+click_scrolling('Увеличить дерево технологий')
+click_scrolling('Исследовать: Воспроизводимый научный метод')
+assert '0.0 / 8' in read_scrolling('Наука: '), 'Scientific project did not queue while paused'
+screenshot('science-queued')
+advance_campaign_months(9)
+navigate('Технологии')
+assert read_scrolling('Наука · 1/5'), 'Scientific discovery did not complete through the real game clock'
+screenshot('science-complete')
 click_scrolling('Технологии ▴')
 click_scrolling('Дипломатия ▾')
 click_scrolling('Поиск страны для дипломатии')
 adb('shell','input','text','bra'); adb('shell','input','keyevent','4')
 click_scrolling('Бразилия')
+before_relations=int(re.search(r'отношения (-?\d+)',read_scrolling('Бразилия · отношения ')).group(1))
 click_scrolling('Улучшить отношения · 10 PP')
-assert 'отношения 15' in read_scrolling('Бразилия · отношения ')
+assert int(re.search(r'отношения (-?\d+)',read_scrolling('Бразилия · отношения ')).group(1))==before_relations, 'Relations mission applied an instant reward'
+assert '0/12 мес.' in read_scrolling('Улучшение отношений: '), 'Diplomatic mission did not start while paused'
+click_scrolling('Разведка и контрразведка ▾')
+click_scrolling('Начать: Контрразведка')
+click_scrolling('Начать: Сбор разведданных')
+assert '0/2 мес.' in read_scrolling('Контрразведка · Германия · '), 'Counterintelligence did not queue while paused'
+screenshot('espionage-queued')
+click_scrolling('Разведка и контрразведка ▴')
+advance_campaign_months(6)
+navigate('Дипломатия')
+click_scrolling('Поиск страны для дипломатии')
+adb('shell','input','text','bra'); adb('shell','input','keyevent','4')
+click_scrolling('Бразилия')
+click_scrolling('Разведка и контрразведка ▾')
+assert 'контрразведка действует' in read_scrolling('Группы: '), 'Guaranteed counterintelligence failed through the real game clock'
+screenshot('espionage-complete')
+click_scrolling('Разведка и контрразведка ▴')
+assert int(re.search(r'отношения (-?\d+)',read_scrolling('Бразилия · отношения ')).group(1))>=before_relations+18, 'Diplomacy mission did not progress through the real clock'
 click_scrolling('Предложить: Ненападение')
 assert 'Ненападение' in read_scrolling('Договоры: ')
 screenshot('diplomacy-treaty')

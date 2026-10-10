@@ -1,0 +1,1033 @@
+{
+  "recoveredMain": "dbb354ab038713c3e54b969b34a6fc88bf2de11f",
+  "recoveredExpansion": "26c300f1ff2195d1e21b0a39282cc04ccfc2ec4c",
+  "runtime": "9c3da342cf9e9d83252a58278f3fe1f842ced3d9",
+  "pairedRun": 38045172996,
+  "pairedArtifact": {
+    "id": 11666948507,
+    "bytes": 18371542,
+    "sha256": "fff76e04864c6592345e7a0b20abe8ecdfa10dba416117fdc4093bd45f7c5f1e",
+    "crcVerified": true
+  },
+  "traceRun": 38045173001,
+  "traceArtifact": {
+    "id": 11666742888,
+    "bytes": 10844175,
+    "sha256": "5e6c147e9b6a572775a2cdb37dc8b8a001f0bee1eaa31e957d70912a4c839025",
+    "crcVerified": true
+  },
+  "cameraGate": "REJECTED: pinch histogramP95 150 -> 200ms; reverse not run after forward failure",
+  "rows": [
+    {
+      "scenario": "01-idle",
+      "before": {
+        "histogramP50Ms": null,
+        "histogramP95Ms": null,
+        "histogramP99Ms": null,
+        "p50Ms": null,
+        "p95Ms": null,
+        "p99Ms": null,
+        "rawMaxMs": null,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "uiWorkMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "syncWaitMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "renderCompletionMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          }
+        },
+        "pssKiB": 344922
+      },
+      "after": {
+        "histogramP50Ms": null,
+        "histogramP95Ms": null,
+        "histogramP99Ms": null,
+        "p50Ms": null,
+        "p95Ms": null,
+        "p99Ms": null,
+        "rawMaxMs": null,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "uiWorkMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "syncWaitMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "renderCompletionMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          }
+        },
+        "pssKiB": 364648
+      }
+    },
+    {
+      "scenario": "02-medium-pan",
+      "before": {
+        "histogramP50Ms": 81.0,
+        "histogramP95Ms": 113.0,
+        "histogramP99Ms": 129.0,
+        "p50Ms": 90.341126,
+        "p95Ms": 116.826408,
+        "p99Ms": 123.202344,
+        "rawMaxMs": 147.979955,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 49.999998,
+            "p99": 66.666664
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 31.661156,
+            "p95": 50.637718,
+            "p99": 55.292763
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.70516,
+            "p95": 11.416943,
+            "p99": 15.539053
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 21.93446,
+            "p95": 43.55434,
+            "p99": 65.598212
+          }
+        },
+        "pssKiB": 334770
+      },
+      "after": {
+        "histogramP50Ms": 81.0,
+        "histogramP95Ms": 113.0,
+        "histogramP99Ms": 150.0,
+        "p50Ms": 83.912543,
+        "p95Ms": 116.839011,
+        "p99Ms": 149.151054,
+        "rawMaxMs": 150.101904,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 31.899061,
+            "p95": 44.717806,
+            "p99": 51.464661
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.894586,
+            "p95": 13.830488,
+            "p99": 17.296034
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 21.082763,
+            "p95": 46.292104,
+            "p99": 57.366857
+          }
+        },
+        "pssKiB": 349044
+      }
+    },
+    {
+      "scenario": "03-pinch",
+      "before": {
+        "histogramP50Ms": 81.0,
+        "histogramP95Ms": 150.0,
+        "histogramP99Ms": 300.0,
+        "p50Ms": 88.299909,
+        "p95Ms": 200.119645,
+        "p99Ms": 316.766027,
+        "rawMaxMs": 366.801667,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 133.333328,
+            "p99": 216.666658
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 34.262927,
+            "p95": 84.95713,
+            "p99": 135.647756
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 2.173633,
+            "p95": 8.766529,
+            "p99": 12.85298
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 16.438375,
+            "p95": 40.848453,
+            "p99": 49.508974
+          }
+        },
+        "pssKiB": 358500
+      },
+      "after": {
+        "histogramP50Ms": 77.0,
+        "histogramP95Ms": 200.0,
+        "histogramP99Ms": 300.0,
+        "p50Ms": 83.777363,
+        "p95Ms": 262.293231,
+        "p99Ms": 350.159562,
+        "rawMaxMs": 445.574711,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 133.333328,
+            "p99": 233.333324
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 33.922309,
+            "p95": 93.195615,
+            "p99": 116.469062
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 1.65554,
+            "p95": 11.307785,
+            "p99": 13.383402
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 13.483241,
+            "p95": 37.862808,
+            "p99": 47.33508
+          }
+        },
+        "pssKiB": 391474
+      }
+    },
+    {
+      "scenario": "04-world-pan",
+      "before": {
+        "histogramP50Ms": 85.0,
+        "histogramP95Ms": 113.0,
+        "histogramP99Ms": 121.0,
+        "p50Ms": 87.490139,
+        "p95Ms": 116.818242,
+        "p99Ms": 127.576311,
+        "rawMaxMs": 133.466816,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 49.999998,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 31.558032,
+            "p95": 48.274642,
+            "p99": 53.792389
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.125445,
+            "p95": 13.469239,
+            "p99": 17.019111
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 18.918225,
+            "p95": 44.254484,
+            "p99": 48.40709
+          }
+        },
+        "pssKiB": 355232
+      },
+      "after": {
+        "histogramP50Ms": 85.0,
+        "histogramP95Ms": 113.0,
+        "histogramP99Ms": 121.0,
+        "p50Ms": 87.630869,
+        "p95Ms": 116.811466,
+        "p99Ms": 120.278569,
+        "rawMaxMs": 121.869962,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 49.999998,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 34.107811,
+            "p95": 45.984575,
+            "p99": 49.274023
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 5.004526,
+            "p95": 12.59396,
+            "p99": 13.362937
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 17.946725,
+            "p95": 41.835446,
+            "p99": 48.255989
+          }
+        },
+        "pssKiB": 394734
+      }
+    },
+    {
+      "scenario": "05-local-labels-armies",
+      "before": {
+        "histogramP50Ms": 57.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 93.0,
+        "p50Ms": 65.913887,
+        "p95Ms": 83.534606,
+        "p99Ms": 85.135395,
+        "rawMaxMs": 90.955926,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 118,
+            "p50": 0.0,
+            "p95": 16.666666,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 118,
+            "p50": 18.435635,
+            "p95": 31.335365,
+            "p99": 37.261196
+          },
+          "syncWaitMs": {
+            "samples": 118,
+            "p50": 2.789752,
+            "p95": 13.660861,
+            "p99": 17.046056
+          },
+          "renderCompletionMs": {
+            "samples": 118,
+            "p50": 20.60443,
+            "p95": 35.156375,
+            "p99": 43.197918
+          }
+        },
+        "pssKiB": 390750
+      },
+      "after": {
+        "histogramP50Ms": 61.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 89.0,
+        "p50Ms": 66.849095,
+        "p95Ms": 84.95149,
+        "p99Ms": 91.296839,
+        "rawMaxMs": 93.588234,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 21.922617,
+            "p95": 31.482213,
+            "p99": 32.971065
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 2.323156,
+            "p95": 10.883221,
+            "p99": 16.25134
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 21.412716,
+            "p95": 36.69133,
+            "p99": 37.29075
+          }
+        },
+        "pssKiB": 421420
+      }
+    },
+    {
+      "scenario": "06-terrain-pan",
+      "before": {
+        "histogramP50Ms": 61.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 85.0,
+        "p50Ms": 67.549045,
+        "p95Ms": 85.303042,
+        "p99Ms": 142.742348,
+        "rawMaxMs": 148.620643,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 0.0,
+            "p95": 16.666666,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 20.501236,
+            "p95": 33.663693,
+            "p99": 36.654055
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.283634,
+            "p95": 13.877394,
+            "p99": 20.09495
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 22.568815,
+            "p95": 38.032036,
+            "p99": 41.191235
+          }
+        },
+        "pssKiB": 445872
+      },
+      "after": {
+        "histogramP50Ms": 61.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 97.0,
+        "p50Ms": 66.794289,
+        "p95Ms": 84.175932,
+        "p99Ms": 85.933678,
+        "rawMaxMs": 100.121566,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 0.0,
+            "p95": 16.666666,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 20.336971,
+            "p95": 31.518874,
+            "p99": 35.142179
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 2.751305,
+            "p95": 11.399267,
+            "p99": 15.732061
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 21.642674,
+            "p95": 36.204194,
+            "p99": 36.873592
+          }
+        },
+        "pssKiB": 351326
+      }
+    },
+    {
+      "scenario": "07-military-overlay",
+      "before": {
+        "histogramP50Ms": 57.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 85.0,
+        "p50Ms": 66.810121,
+        "p95Ms": 84.530464,
+        "p99Ms": 85.967441,
+        "rawMaxMs": 92.095416,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 0.0,
+            "p95": 16.666666,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 18.951614,
+            "p95": 30.324462,
+            "p99": 35.170516
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.314236,
+            "p95": 11.688693,
+            "p99": 16.245572
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 22.292729,
+            "p95": 34.939717,
+            "p99": 45.557198
+          }
+        },
+        "pssKiB": 339857
+      },
+      "after": {
+        "histogramP50Ms": 57.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 97.0,
+        "p50Ms": 57.328231,
+        "p95Ms": 84.579203,
+        "p99Ms": 91.218407,
+        "rawMaxMs": 98.70671,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 0.0,
+            "p95": 16.666666,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 19.855343,
+            "p95": 30.260346,
+            "p99": 35.540253
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 3.141758,
+            "p95": 13.30766,
+            "p99": 16.061246
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 22.015856,
+            "p95": 37.00912,
+            "p99": 38.141614
+          }
+        },
+        "pssKiB": 378554
+      }
+    },
+    {
+      "scenario": "08-panel-open",
+      "before": {
+        "histogramP50Ms": 65.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 97.0,
+        "p50Ms": 70.148107,
+        "p95Ms": 86.266545,
+        "p99Ms": 91.874855,
+        "rawMaxMs": 100.205088,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 21.960233,
+            "p95": 32.134813,
+            "p99": 37.130295
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 3.323478,
+            "p95": 14.114407,
+            "p99": 17.61174
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 23.977818,
+            "p95": 34.919867,
+            "p99": 39.272452
+          }
+        },
+        "pssKiB": 383571
+      },
+      "after": {
+        "histogramP50Ms": 65.0,
+        "histogramP95Ms": 89.0,
+        "histogramP99Ms": 101.0,
+        "p50Ms": 75.553396,
+        "p95Ms": 87.615727,
+        "p99Ms": 100.174894,
+        "rawMaxMs": 100.194302,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 23.485399,
+            "p95": 36.258525,
+            "p99": 38.70821
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 4.178584,
+            "p95": 12.593444,
+            "p99": 15.559774
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 22.85284,
+            "p95": 38.845354,
+            "p99": 41.484021
+          }
+        },
+        "pssKiB": 338557
+      }
+    },
+    {
+      "scenario": "09-panel-closed",
+      "before": {
+        "histogramP50Ms": 61.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 97.0,
+        "p50Ms": 67.772275,
+        "p95Ms": 84.640162,
+        "p99Ms": 88.111262,
+        "rawMaxMs": 93.863088,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 0.0,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 21.606896,
+            "p95": 32.088734,
+            "p99": 39.552069
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 2.844583,
+            "p95": 12.811944,
+            "p99": 19.058734
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 23.502959,
+            "p95": 35.85299,
+            "p99": 43.736421
+          }
+        },
+        "pssKiB": 340370
+      },
+      "after": {
+        "histogramP50Ms": 61.0,
+        "histogramP95Ms": 81.0,
+        "histogramP99Ms": 97.0,
+        "p50Ms": 68.103319,
+        "p95Ms": 88.495446,
+        "p99Ms": 93.073774,
+        "rawMaxMs": 100.124481,
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 21.139744,
+            "p95": 30.803346,
+            "p99": 35.233796
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.183571,
+            "p95": 12.573078,
+            "p99": 16.861797
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 22.883726,
+            "p95": 36.978319,
+            "p99": 42.650016
+          }
+        },
+        "pssKiB": 366161
+      }
+    }
+  ],
+  "traces": {
+    "before": {
+      "traceSha256": "5ec90e829e0576c25e2b6fed49898a02430ff31505f9985b21194a27de11e30d",
+      "markerDurationMs": 11357.30193,
+      "markerValid": true,
+      "schedulerCoveragePresent": true,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "swapSlices": [
+        {
+          "tid": 2223,
+          "thread": "tegymultiplayer",
+          "name": "eglSwapBuffers",
+          "samples": 173,
+          "nestedInclusiveMs": 7069.65045,
+          "maxCompletedMs": 92.888714
+        },
+        {
+          "tid": 2223,
+          "thread": "tegymultiplayer",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 173,
+          "nestedInclusiveMs": 6987.081254,
+          "maxCompletedMs": 92.536101
+        },
+        {
+          "tid": 2223,
+          "thread": "tegymultiplayer",
+          "name": "animation",
+          "samples": 133,
+          "nestedInclusiveMs": 4887.212713,
+          "maxCompletedMs": 138.690718
+        },
+        {
+          "tid": 2236,
+          "thread": "RenderThread",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 199,
+          "nestedInclusiveMs": 1247.393276,
+          "maxCompletedMs": 63.417059
+        }
+      ],
+      "runningThreads": [
+        {
+          "tid": 2223,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 10092.322923,
+          "samples": 2713
+        },
+        {
+          "tid": 2236,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 1455.652669,
+          "samples": 930
+        },
+        {
+          "tid": 2243,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 678.41498,
+          "samples": 472
+        },
+        {
+          "tid": 2245,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 219.672602,
+          "samples": 97
+        },
+        {
+          "tid": 2227,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 53.990813,
+          "samples": 72
+        },
+        {
+          "tid": 2228,
+          "thread": "HeapTaskDaemon",
+          "state": "Running",
+          "observedMs": 16.246309,
+          "samples": 6
+        },
+        {
+          "tid": 2406,
+          "thread": "binder:2223_5",
+          "state": "Running",
+          "observedMs": 9.113987,
+          "samples": 116
+        },
+        {
+          "tid": 2232,
+          "thread": "binder:2223_1",
+          "state": "Running",
+          "observedMs": 7.166052,
+          "samples": 175
+        },
+        {
+          "tid": 2574,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 7.149275,
+          "samples": 320
+        },
+        {
+          "tid": 2239,
+          "thread": "HybridData Dest",
+          "state": "Running",
+          "observedMs": 5.873478,
+          "samples": 10
+        },
+        {
+          "tid": 2244,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 3.788799,
+          "samples": 87
+        },
+        {
+          "tid": 2231,
+          "thread": "FinalizerWatchd",
+          "state": "Running",
+          "observedMs": 3.015477,
+          "samples": 2
+        },
+        {
+          "tid": 2229,
+          "thread": "ReferenceQueueD",
+          "state": "Running",
+          "observedMs": 1.514431,
+          "samples": 10
+        },
+        {
+          "tid": 2257,
+          "thread": "binder:2223_4",
+          "state": "Running",
+          "observedMs": 1.132701,
+          "samples": 127
+        },
+        {
+          "tid": 2233,
+          "thread": "binder:2223_2",
+          "state": "Running",
+          "observedMs": 0.998934,
+          "samples": 31
+        },
+        {
+          "tid": 2575,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.129951,
+          "samples": 6
+        },
+        {
+          "tid": 2230,
+          "thread": "FinalizerDaemon",
+          "state": "Running",
+          "observedMs": 0.061301,
+          "samples": 1
+        },
+        {
+          "tid": 2247,
+          "thread": "Expo JNI deallo",
+          "state": "Running",
+          "observedMs": 0.017105,
+          "samples": 1
+        },
+        {
+          "tid": 2235,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.015592,
+          "samples": 2
+        }
+      ]
+    },
+    "after": {
+      "traceSha256": "090e16fd8a44e1b13f465863646bf7921dd57d5e3c4af3900399a959f2e29e2a",
+      "markerDurationMs": 11383.216934,
+      "markerValid": true,
+      "schedulerCoveragePresent": true,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "swapSlices": [
+        {
+          "tid": 2684,
+          "thread": "tegymultiplayer",
+          "name": "eglSwapBuffers",
+          "samples": 176,
+          "nestedInclusiveMs": 7159.169309,
+          "maxCompletedMs": 148.154022
+        },
+        {
+          "tid": 2684,
+          "thread": "tegymultiplayer",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 176,
+          "nestedInclusiveMs": 7103.070123,
+          "maxCompletedMs": 147.705986
+        },
+        {
+          "tid": 2684,
+          "thread": "tegymultiplayer",
+          "name": "animation",
+          "samples": 139,
+          "nestedInclusiveMs": 5319.974707,
+          "maxCompletedMs": 200.018601
+        },
+        {
+          "tid": 2700,
+          "thread": "RenderThread",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 216,
+          "nestedInclusiveMs": 1204.41301,
+          "maxCompletedMs": 42.452225
+        }
+      ],
+      "runningThreads": [
+        {
+          "tid": 2684,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 9895.268521,
+          "samples": 2724
+        },
+        {
+          "tid": 2700,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 1462.134829,
+          "samples": 1024
+        },
+        {
+          "tid": 2706,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 761.566641,
+          "samples": 515
+        },
+        {
+          "tid": 2708,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 212.443284,
+          "samples": 115
+        },
+        {
+          "tid": 2689,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 45.372329,
+          "samples": 71
+        },
+        {
+          "tid": 2986,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 8.113945,
+          "samples": 362
+        },
+        {
+          "tid": 2695,
+          "thread": "binder:2684_2",
+          "state": "Running",
+          "observedMs": 7.046378,
+          "samples": 193
+        },
+        {
+          "tid": 2757,
+          "thread": "binder:2684_5",
+          "state": "Running",
+          "observedMs": 4.254692,
+          "samples": 86
+        },
+        {
+          "tid": 2707,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 4.18263,
+          "samples": 97
+        },
+        {
+          "tid": 2719,
+          "thread": "binder:2684_4",
+          "state": "Running",
+          "observedMs": 3.707786,
+          "samples": 89
+        },
+        {
+          "tid": 2720,
+          "thread": "binder:2684_2",
+          "state": "Running",
+          "observedMs": 1.015631,
+          "samples": 150
+        },
+        {
+          "tid": 2987,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.16835,
+          "samples": 14
+        },
+        {
+          "tid": 2699,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.014883,
+          "samples": 2
+        },
+        {
+          "tid": 2696,
+          "thread": "binder:2684_3",
+          "state": "Running",
+          "observedMs": 0.010385,
+          "samples": 1
+        }
+      ]
+    }
+  },
+  "interpretation": "Actual markers and scheduler states exist; 36 ftrace setup warnings prevent complete attribution. eglSwapBuffers spans dominate inclusive native slices; nested totals overlap and must not be added. Installed Skia2.6.2 uses TextureView by default and exposes opaque SurfaceView for full-frame map. Testing opaque presentation is a local experiment, not an established speedup. Different presentation paths also require separate SurfaceFlinger evidence; lower HWUI-only timings cannot establish map display improvement. All physical Redmi measurements remain unavailable."
+}

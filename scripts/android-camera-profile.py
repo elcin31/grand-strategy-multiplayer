@@ -11,7 +11,7 @@ from camera_surface_stats import map_surface_layer, SurfaceSampler, surface_late
 from android_fixture import root_test_device
 from camera_fixture_projection import assert_paused_fixture
 from map_paint_check import assert_map_painted
-from android_accessibility import dump_hierarchy
+from android_accessibility import dump_hierarchy, assert_no_game_fatal
 PACKAGE='com.elcin31.grandstrategymultiplayer'
 OUT=Path(os.environ.get('CAMERA_PROFILE_OUT','camera-profile'));OUT.mkdir(exist_ok=True)
 def adb(*args,timeout=None):return subprocess.check_output(['adb',*map(str,args)],text=True,stderr=subprocess.STDOUT,timeout=timeout)
@@ -108,7 +108,7 @@ def sample(name,kind=None):
     painted=assert_map_painted(OUT/(name+'.png')) if name in ('01-idle','04-world-pan','05-local-labels-armies') else None
     # Completed-frame timestamps, PSS and PNG are already captured. Persist
     # them before the optional accessibility diagnostic process can be killed.
-    assert not re.search(r'FATAL EXCEPTION|Fatal signal|JavascriptException',logs), 'Fatal runtime error in '+name
+    assert_no_game_fatal(logs,pid)
     current_pid=adb('shell','pidof',PACKAGE).strip()
     assert current_pid==pid and pid, 'Game process disappeared/restarted in '+name
     (OUT/(name+'-threads.txt')).write_text(adb('shell','top','-H','-b','-n','1','-p',pid))
@@ -177,5 +177,5 @@ adb('shell','input','keyevent','4')
 if fixture:reset_camera(local=True)
 sample('09-panel-closed','pan')
 if fixture:assert_fixture_campaign()
-logs=adb('logcat','-d');assert not re.search(r'FATAL EXCEPTION|JavascriptException|com.facebook.react.common.JavascriptException',logs), 'Fatal runtime error'
+logs=adb('logcat','-d');assert_no_game_fatal(logs,adb('shell','pidof',PACKAGE).strip())
 print('PASS: camera profile scenarios complete',flush=True)

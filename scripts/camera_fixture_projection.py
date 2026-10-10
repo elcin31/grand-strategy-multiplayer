@@ -2,7 +2,7 @@
 import math
 
 
-def assert_paused_fixture(actual, expected, allowed_version=13):
+def assert_paused_fixture(actual, expected, allowed_version=17):
     def finite(value):
         if isinstance(value, float):
             assert math.isfinite(value), 'Non-finite benchmark snapshot'
@@ -18,11 +18,21 @@ def assert_paused_fixture(actual, expected, allowed_version=13):
     assert set(state['countries'])==set(baseline['countries']), 'Changed benchmark countries'
     for key in ['diplomacy','wars','constructions','movements']:
         assert state.get(key)==baseline.get(key), 'Changed paused workload: '+key
-    for key in ['relationMissions','diplomaticOffers','diplomaticHistory','politicalUnions']:
+    for key in ['relationMissions','diplomaticOffers','diplomaticHistory','politicalUnions','spyMissions','spyReports','spyEffects','constructionQueue']:
         assert not state.get(key), 'Active expansion gameplay in camera fixture: '+key
     for army in state['armies']:
+        assert not army.get('reinforcementEnabled',False), 'Active reinforcement in camera fixture'
+        assert army.get('experience',0)==0 and army.get('retreatUntilTick',0)==0, 'Active military advancement in camera fixture'
+        if 'composition' in army:
+            assert army['composition']=={army.get('unitType','Infantry'):army['troops']} and army.get('template')==army['composition'], 'Changed army recipe in camera fixture'
         assert not army.get('order'), 'Active army route in paused camera fixture'
     for country in state['countries'].values():
+        assert not country.get('scientificDiscoveries'), 'Active science in camera fixture'
+        assert not country.get('research'), 'Active research in camera fixture'
+        assert not country.get('spyCooldowns'), 'Active espionage cooldown in camera fixture'
+        assert country.get('economicPolicy','Balanced')=='Balanced', 'Active economic policy in camera fixture'
+        assert country.get('researchFunding','Standard')==country.get('militaryFunding','Standard')=='Standard', 'Changed funding in camera fixture'
+        assert country.get('economy',{}).get('researchMaintenance',0)==0, 'Research expense changed camera fixture'
         assert country.get('economy',{}).get('diplomaticMaintenance',0)==0, 'Diplomatic expense changed camera fixture'
     def compare(value, reference, path):
         if path=='state.stateVersion':return

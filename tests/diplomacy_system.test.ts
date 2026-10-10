@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
 import {applyServerCommand} from '../supabase/functions/_shared/serverCommand';
+import {monthlyDiplomacy2} from '../supabase/functions/_shared/diplomacy2System';
 import {declareWar,diplomaticLink,initializeDiplomacy,pairKey,warBetween} from '../supabase/functions/_shared/diplomacySystem';
 function campaign(){const s=createWorldState('diplomacy','DIP001','host','QA',37);s.phase='paused';s.players[0]!.countryId='germany';s.players.push({id:'guest',countryId:'france',displayName:'QA2',ready:true,isHost:false});return s;}
 test('human treaties require counterparty consent and preserve immutable state',()=>{
@@ -25,6 +26,8 @@ test('paid relations have cooldowns, NPC consent is deterministic, and spoofed f
   const s=campaign();const cmd={type:'DIPLOMATIC_ACTION',playerId:'host',targetId:'poland',action:'Improve'} as const;
   const n=applyServerCommand(s,cmd,'host');assert.equal(n.countries.germany!.politicalPower,s.countries.germany!.politicalPower!-10);
   assert.throws(()=>applyServerCommand(n,cmd,'host'));
+  assert.equal(n.diplomacy![pairKey('germany','poland')]!.relation,0);
+  for(let i=0;i<6;i++){n.tick++;monthlyDiplomacy2(n);}
   const accepted=applyServerCommand(n,{type:'OFFER_TREATY',playerId:'host',targetId:'poland',treaty:'Alliance'},'host');assert.ok(accepted.diplomacy![pairKey('germany','poland')]!.treaties.includes('Alliance'));
   assert.throws(()=>applyServerCommand(s,{...cmd,relation:100} as never,'host'));
   n.diplomacy![pairKey('germany','poland')]!.relation=Infinity;assert.throws(()=>initializeDiplomacy(n));

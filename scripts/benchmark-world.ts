@@ -1,4 +1,6 @@
+import {armyBaseUpkeep} from '../supabase/functions/_shared/armyComposition';
 import { assertDeposit } from '../supabase/functions/_shared/resourceSystem';
+import {militaryFundingCost} from '../supabase/functions/_shared/economy2System';
 import { RELIGIONS } from '../supabase/functions/_shared/religionSystem';
 import { performance } from 'node:perf_hooks';
 import { createWorldState } from '../supabase/functions/_shared/worldState';
@@ -19,8 +21,9 @@ for(let i=0;i<ticks;i++){
  for(const c of Object.values(state.countries)){
   for(const n of [c.debt,c.bankruptcyCount,c.bankruptcyUntilTick])if(!Number.isFinite(n)||n!<0)throw Error('Invalid financial state');
   const b=c.economy!;for(const n of Object.values(b))if(!Number.isFinite(n))throw Error('Invalid financial budget');
-  if(b.monthlyIncome!==Math.round((b.taxIncome+b.tradeIncome+b.resourceIncome+b.productionIncome)*1000)/1000||b.monthlyBalance!==Math.round((b.monthlyIncome-b.armyMaintenance-b.buildingMaintenance-b.interest-b.administrationMaintenance)*1000)/1000)throw Error('Inconsistent financial budget');
-  if(b.armyMaintenance!==Math.round(c.army/1000*1.25*1000)/1000)throw Error('Inconsistent army upkeep');
+  if(b.monthlyIncome!==Math.round((b.taxIncome+b.tradeIncome+b.resourceIncome+b.productionIncome)*1000)/1000||b.monthlyBalance!==Math.round((b.monthlyIncome-b.armyMaintenance-b.buildingMaintenance-b.interest-b.administrationMaintenance-(b.diplomaticMaintenance??0)-(b.researchMaintenance??0))*1000)/1000)throw Error('Inconsistent financial budget');
+  const militaryBase=Math.round(state.armies.filter(a=>a.ownerId===c.id).reduce((n,a)=>n+armyBaseUpkeep(a),0)*1000)/1000;
+  if(c.militaryUpkeepBase!==militaryBase||b.armyMaintenance!==Math.round(militaryBase*militaryFundingCost(c)*1000)/1000)throw Error('Inconsistent army upkeep');
  }
  for(const c of Object.values(state.countries))for(const n of [c.technology,c.stability,c.unrest,c.religiousUnity])if(!Number.isFinite(n)||n!<0||n!>100)throw Error('Invalid capped country value');
  for(const c of Object.values(state.countries))if(!Number.isFinite(c.politicalPower)||c.politicalPower!<0||c.politicalPower!>500)throw Error('Invalid political power');

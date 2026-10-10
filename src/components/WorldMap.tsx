@@ -268,7 +268,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
       {/* The full-frame ocean Fill makes this canvas opaque. On Android Skia
           can present its SurfaceView directly instead of copying a transparent
           TextureView through the React Native window on every camera frame. */}
-      <Canvas opaque={Platform.OS==='android'} accessible accessibilityLabel="Карта Dominion" style={StyleSheet.absoluteFill}>
+      <Canvas accessible accessibilityLabel="Карта Dominion" style={StyleSheet.absoluteFill}>
         <Fill color="#203B48" />
         {GRAPHICS[preset].water && <Rect x={0} y={0} width={viewport.width} height={viewport.height}><LinearGradient start={vec(0, 0)} end={vec(viewport.width, viewport.height)} colors={['#18303C', '#294A57', '#193542']} /></Rect>}
         <Group transform={transform}>

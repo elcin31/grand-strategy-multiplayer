@@ -1,3 +1,4 @@
+import {technologyNode} from './technologyTree.ts';
 import { assertPeaceTerms } from './warSystem.ts';
 import { TREATIES } from './diplomacySystem.ts';
 import { UNITS } from './militarySystem.ts';
@@ -5,10 +6,19 @@ import { TECHNOLOGIES } from './technologySystem.ts';
 import { BUILDING_TYPES } from './buildingSystem.ts';
 import { assertReligion } from './religionSystem.ts';
 import { assertLoanAmount, assertTaxRate } from './economySystem.ts';
+import { assertDiplomaticTerms, assertDiplomaticAmount } from './diplomacy2System.ts';
+import { ESPIONAGE_MISSIONS } from './espionageSystem.ts';
+import {ECONOMIC_POLICIES,FUNDING_LEVELS} from './economy2System.ts';
 import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  SET_ECONOMIC_POLICY: ['type','playerId','policy'],
+  SET_FUNDING: ['type','playerId','domain','level'],
+  QUEUE_BUILD: ['type','playerId','provinceId','buildingType'],
+  CANCEL_CONSTRUCTION: ['type','playerId','constructionId'],
+  START_ESPIONAGE: ['type','playerId','targetId','kind'],
+  CANCEL_ESPIONAGE: ['type','playerId','missionId'],
   SET_TAX_RATE: ['type', 'playerId', 'taxRate'],
   BORROW: ['type', 'playerId', 'amount'],
   REPAY_DEBT: ['type', 'playerId', 'amount'],
@@ -17,11 +27,23 @@ const fields: Record<string, readonly string[]> = {
   PROPOSE_PEACE: ['type','playerId','warId','terms'],
   RESPOND_PEACE: ['type','playerId','warId','accept'],
   DIPLOMATIC_ACTION: ['type','playerId','targetId','action'],
+  START_RELATION_MISSION: ['type','playerId','targetId','kind'],
+  CANCEL_RELATION_MISSION: ['type','playerId','missionId'],
+  SEND_GIFT: ['type','playerId','targetId','amount'],
+  SEND_INSULT: ['type','playerId','targetId'],
+  OFFER_DIPLOMACY: ['type','playerId','targetId','terms'],
+  RESPOND_DIPLOMACY: ['type','playerId','offerId','accept'],
+  TERMINATE_TREATY: ['type','playerId','targetId','treatyId'],
   OFFER_TREATY: ['type','playerId','targetId','treaty'],
   RESPOND_TREATY: ['type','playerId','targetId','accept'],
   DECLARE_WAR: ['type','playerId','targetId'],
+  ADD_REGIMENT:['type','playerId','armyId','unitType','troops'],
+  REINFORCE_ARMY:['type','playerId','armyId'],
+  SET_REINFORCEMENT:['type','playerId','armyId','enabled'],
+  RETREAT_ARMY:['type','playerId','armyId','provinceId'],
   RECRUIT_UNIT: ['type','playerId','provinceId','troops','unitType'],
   ASSIGN_COMMANDER: ['type','playerId','armyId','commanderId'],
+  START_TECHNOLOGY:['type','playerId','nodeId'],
   START_RESEARCH: ['type', 'playerId', 'branch'],
   BUILD: ['type', 'playerId', 'provinceId', 'buildingType'],
   SELECT_COUNTRY: ['type', 'playerId', 'countryId'],
@@ -43,7 +65,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (typeof type !== 'string' || !Object.hasOwn(fields, type)) throw new Error('Unknown command');
   const allowed = fields[type]!;
   if (Object.keys(command).some(key => !allowed.includes(key)) || allowed.some(key => !Object.hasOwn(command, key))) throw new Error('Invalid command fields');
-  for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId', 'warId']) {
+  for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId', 'warId','missionId','offerId','treatyId','constructionId']) {
     // Natural Earth retains literal '+' and '?' in a few province IDs. Ownership
     // and exact membership are still checked by the authoritative reducer.
     const pattern = key === 'provinceId' ? /^[A-Za-z0-9_+?-]{1,128}$/ : /^[A-Za-z0-9_-]{1,128}$/;
@@ -51,18 +73,26 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   }
   if (allowed.includes('targetId') && (typeof command.targetId !== 'string' || !countryIds.includes(command.targetId))) throw new Error('Unknown target country');
   if (type === 'DIPLOMATIC_ACTION' && !['Improve','Rival','Guarantee','Cancel'].includes(command.action as string)) throw new Error('Invalid diplomacy action');
+  if (type === 'START_RELATION_MISSION' && !['Improve','Damage'].includes(command.kind as string)) throw new Error('Invalid relation mission');
+  if (type === 'START_ESPIONAGE' && (typeof command.kind!=='string'||!Object.hasOwn(ESPIONAGE_MISSIONS,command.kind))) throw new Error('Invalid espionage kind');
+  if (type === 'SEND_GIFT') assertDiplomaticAmount(command.amount,false);
+  if (type === 'OFFER_DIPLOMACY') assertDiplomaticTerms(command.terms,countryIds);
   if (type === 'OFFER_TREATY' && (typeof command.treaty !== 'string' || !Object.hasOwn(TREATIES,command.treaty))) throw new Error('Invalid treaty type');
   if (type === 'PROPOSE_PEACE') assertPeaceTerms(command.terms);
-  if ((type === 'RESPOND_TREATY' || type === 'RESPOND_PEACE') && typeof command.accept !== 'boolean') throw new Error('Invalid treaty response');
+  if ((type === 'RESPOND_TREATY' || type === 'RESPOND_PEACE' || type === 'RESPOND_DIPLOMACY') && typeof command.accept !== 'boolean') throw new Error('Invalid treaty response');
   if (type === 'SELECT_COUNTRY' && (typeof command.countryId !== 'string' || !countryIds.includes(command.countryId))) throw new Error('Unknown country');
   if (type === 'SET_TAX_RATE') assertTaxRate(command.taxRate);
+  if(type==='SET_ECONOMIC_POLICY'&&(typeof command.policy!=='string'||!Object.hasOwn(ECONOMIC_POLICIES,command.policy)))throw Error('Invalid economic policy');
+  if(type==='SET_FUNDING'&&(!['Research','Military'].includes(command.domain as string)||typeof command.level!=='string'||!Object.hasOwn(FUNDING_LEVELS,command.level)))throw Error('Invalid funding');
   if (type === 'BORROW' || type === 'REPAY_DEBT') assertLoanAmount(command.amount);
-  if (type === 'RECRUIT_UNIT' && (typeof command.unitType !== 'string' || !Object.hasOwn(UNITS, command.unitType))) throw new Error('Invalid unit type');
+  if ((type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.unitType !== 'string' || !Object.hasOwn(UNITS, command.unitType))) throw new Error('Invalid unit type');
+  if(type==='START_TECHNOLOGY'&&(typeof command.nodeId!=='string'||!technologyNode(command.nodeId)))throw Error('Invalid named technology');
   if (type === 'START_RESEARCH' && (typeof command.branch !== 'string' || !Object.hasOwn(TECHNOLOGIES, command.branch))) throw new Error('Invalid research branch');
-  if (type === 'BUILD' && (typeof command.buildingType !== 'string' || !BUILDING_TYPES.includes(command.buildingType as BuildingType))) throw new Error('Invalid building type');
+  if ((type === 'BUILD'||type==='QUEUE_BUILD') && (typeof command.buildingType !== 'string' || !BUILDING_TYPES.includes(command.buildingType as BuildingType))) throw new Error('Invalid building type');
   if (type === 'CHANGE_RELIGION') assertReligion(command.religionId);
   if (type === 'CHANGE_GOVERNMENT' && (typeof command.governmentType !== 'string' || !GOVERNMENT_TYPES.includes(command.governmentType as GovernmentType))) throw new Error('Invalid government type');
+  if(type==='SET_REINFORCEMENT'&&typeof command.enabled!=='boolean')throw Error('Invalid reinforcement toggle');
   if (type === 'SET_READY' && typeof command.ready !== 'boolean') throw new Error('Invalid ready value');
   if (type === 'SET_SPEED' && (typeof command.speed !== 'number' || !Number.isInteger(command.speed) || command.speed < 0 || command.speed > 4)) throw new Error('Invalid game speed');
-  if ((type === 'RECRUIT' || type === 'RECRUIT_UNIT') && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');
+  if ((type === 'RECRUIT' || type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');
 }

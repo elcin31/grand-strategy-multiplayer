@@ -50,3 +50,7 @@ Heraldry and fictional miniature portraits in src/components/Heraldry.tsx are or
 
 ## Research only — not shipped
 Age of History 3 screenshots on Steam, SteamDB and developer/community pages were viewed solely for visual/UX research. None are included in Dominion or licensed as project assets.
+
+## Derived coastal construction sites — 2026-10-10
+
+`supabase/functions/_shared/waterAccess.ts` and `WATER_ACCESS_REPORT.json` derive approximate port sites from the existing public-domain Natural Earth province geometry, using `scripts/derive-water-access.py`. Only exterior shores count; internal simplification holes or unrepresented land are excluded. No province/city/geometry is removed or modified, and no runtime GIS dependency is added. The report pins the unchanged source SHA. This is a game approximation, not maritime navigation data.

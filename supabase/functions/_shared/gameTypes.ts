@@ -10,16 +10,24 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital';
 
 export interface Country {
+  economicPolicy?: import('./economy2System.ts').EconomicPolicy;
+  researchFunding?: import('./economy2System.ts').FundingLevel;
+  militaryFunding?: import('./economy2System.ts').FundingLevel;
+  policyCooldownUntilTick?: number;
+  budgetCooldownUntilTick?: number;
+  spyCooldowns?: Record<string,number>;
   warExhaustion?: number;
   aggressiveExpansion?: number;
   overlordId?: string;
   technologies?: Record<TechnologyBranch, number>;
   research?: Research;
+  scientificDiscoveries?: import('./technologyTree.ts').TechnologyId[];
   taxRate?: number;
   debt?: number;
   bankruptcyUntilTick?: number;
   bankruptcyCount?: number;
   economy?: EconomyBudget;
+  militaryUpkeepBase?:number;
   id: CountryId;
   name: string;
   shortName: string;
@@ -50,6 +58,8 @@ export interface Country {
 
 /** Monetary values are millions, with precision to $1,000. Derived forecast. */
 export interface EconomyBudget {
+  researchMaintenance?: number;
+  diplomaticMaintenance?: number;
   productionIncome: number;
   administrationMaintenance: number;
   taxIncome: number;
@@ -102,9 +112,20 @@ export interface Construction {
   startedTick: number;
   completeTick: number;
   cost: number;
+  workDone?: number;
+  workTick?: number;
 }
 
 export interface Army {
+  composition?:import('./armyComposition.ts').Composition;
+  template?:import('./armyComposition.ts').Composition;
+  experience?:number;
+  supply?:number;
+  lastSupplyTick?:number;
+  reinforcementEnabled?:boolean;
+  lastReinforcementTick?:number;
+  lastReinforcementCost?:number;
+  retreatUntilTick?:number;
   order?: import("./armyOrders.ts").ArmyOrder;
   unitType?: UnitType;
   morale?: number;
@@ -170,6 +191,14 @@ export interface Leader {
 }
 
 export interface GameState {
+  constructionQueue?: import('./constructionQueueSystem.ts').QueuedConstruction[];
+  spyMissions?: import('./espionageSystem.ts').SpyMission[];
+  spyReports?: import('./espionageSystem.ts').SpyReport[];
+  spyEffects?: import('./espionageSystem.ts').SpyEffect[];
+  relationMissions?: import('./diplomacyTypes.ts').RelationMission[];
+  diplomaticOffers?: import('./diplomacyTypes.ts').DiplomaticOffer[];
+  diplomaticHistory?: import('./diplomacyTypes.ts').DiplomaticEvent[];
+  politicalUnions?: import('./diplomacyTypes.ts').PoliticalUnion[];
   movements?: import("./movementHistory.ts").MovementEvent[];
   rebellionLog?: RebellionEvent[];
   warHistory?: WarSummary[];
@@ -199,6 +228,19 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'SET_ECONOMIC_POLICY';playerId:string;policy:import('./economy2System.ts').EconomicPolicy}
+  | {type:'SET_FUNDING';playerId:string;domain:'Research'|'Military';level:import('./economy2System.ts').FundingLevel}
+  | {type:'QUEUE_BUILD';playerId:string;provinceId:string;buildingType:BuildingType}
+  | {type:'CANCEL_CONSTRUCTION';playerId:string;constructionId:string}
+  | {type:'START_ESPIONAGE';playerId:string;targetId:string;kind:import('./espionageSystem.ts').EspionageKind}
+  | {type:'CANCEL_ESPIONAGE';playerId:string;missionId:string}
+  | {type:'START_RELATION_MISSION';playerId:string;targetId:string;kind:import('./diplomacyTypes.ts').RelationMissionKind}
+  | {type:'CANCEL_RELATION_MISSION';playerId:string;missionId:string}
+  | {type:'SEND_GIFT';playerId:string;targetId:string;amount:number}
+  | {type:'SEND_INSULT';playerId:string;targetId:string}
+  | {type:'OFFER_DIPLOMACY';playerId:string;targetId:string;terms:import('./diplomacyTypes.ts').DiplomaticTerms}
+  | {type:'RESPOND_DIPLOMACY';playerId:string;offerId:string;accept:boolean}
+  | {type:'TERMINATE_TREATY';playerId:string;targetId:string;treatyId:string}
   | { type: 'PACIFY_PROVINCE'; playerId: string; provinceId: string }
   | { type: 'SUPPRESS_REBELLION'; playerId: string; provinceId: string }
   | { type: 'PROPOSE_PEACE'; playerId: string; warId: string; terms: PeaceTerms }
@@ -208,7 +250,12 @@ export type GameCommand =
   | { type: 'RESPOND_TREATY'; playerId: string; targetId: string; accept: boolean }
   | { type: 'DECLARE_WAR'; playerId: string; targetId: string }
   | { type: 'RECRUIT_UNIT'; playerId: string; provinceId: string; troops: number; unitType: UnitType }
+  | {type:'ADD_REGIMENT';playerId:string;armyId:string;unitType:UnitType;troops:number}
+  | {type:'REINFORCE_ARMY';playerId:string;armyId:string}
+  | {type:'SET_REINFORCEMENT';playerId:string;armyId:string;enabled:boolean}
+  | {type:'RETREAT_ARMY';playerId:string;armyId:string;provinceId:string}
   | { type: 'ASSIGN_COMMANDER'; playerId: string; armyId: string; commanderId: string }
+  | {type:'START_TECHNOLOGY';playerId:string;nodeId:import('./technologyTree.ts').TechnologyId}
   | { type: 'START_RESEARCH'; playerId: string; branch: TechnologyBranch }
   | { type: 'SET_TAX_RATE'; playerId: string; taxRate: number }
   | { type: 'BORROW'; playerId: string; amount: number }

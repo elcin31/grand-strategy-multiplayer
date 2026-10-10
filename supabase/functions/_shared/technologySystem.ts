@@ -1,7 +1,9 @@
 import type { Country, GameState } from './gameTypes.ts';
 import { buildingModifierTotals } from './buildingSystem.ts';
 import { governmentModifiers } from './governmentSystem.ts';
-import { money } from './economySystem.ts';
+import { money,refreshResearchBudget } from './economySystem.ts';
+import {economicPolicy,researchFunding} from './economy2System.ts';
+import {scienceLevel,technologyNode,legacyTechnologyNode,namedResearchQuote,grantTechnology,type TechnologyId} from './technologyTree.ts';
 
 export const TECHNOLOGIES = {
   Economy: { name: 'Экономика', effect: '+4% налогов / уровень' },
@@ -12,7 +14,7 @@ export const TECHNOLOGIES = {
 } as const;
 export type TechnologyBranch = keyof typeof TECHNOLOGIES;
 export const TECHNOLOGY_BRANCHES = Object.keys(TECHNOLOGIES) as TechnologyBranch[];
-export interface Research { branch: TechnologyBranch; targetLevel: number; progress: number; required: number; startedTick: number }
+export interface Research { branch: TechnologyBranch|'Science';nodeId?:TechnologyId; targetLevel: number; progress: number; required: number; startedTick: number }
 export function techLevel(c: Country, branch: TechnologyBranch): number { return c.technologies?.[branch] ?? 0; }
 export function researchQuote(c: Country, branch: TechnologyBranch) {
   const level = techLevel(c, branch);
@@ -26,20 +28,20 @@ export function initializeTechnology(state: GameState): void {
     for (const key of TECHNOLOGY_BRANCHES) if (!Number.isInteger(c.technologies[key]) || c.technologies[key] < 0 || c.technologies[key] > 5) throw new Error('Invalid technology level');
     if (c.research) {
       const r = c.research;
-      if (!Object.hasOwn(TECHNOLOGIES, r.branch)) throw new Error('Invalid research branch');
-      const q = researchQuote(c, r.branch);
+      if (r.branch!=='Science'&&!Object.hasOwn(TECHNOLOGIES, r.branch)) throw new Error('Invalid research branch');
+      const n=r.nodeId?technologyNode(r.nodeId):undefined;
+      const q = r.branch==='Science'?{targetLevel:scienceLevel(c)+1,months:n?.months}:researchQuote(c, r.branch);
       if (r.targetLevel !== q.targetLevel || r.targetLevel > 5 || r.required !== q.months || !Number.isFinite(r.progress) || r.progress < 0 || r.progress >= r.required || !Number.isSafeInteger(r.startedTick) || r.startedTick < 0 || r.startedTick > state.tick) throw new Error('Invalid research project');
     }
   }
 }
 export function startResearch(state: GameState, c: Country, branch: TechnologyBranch): void {
-  const q = researchQuote(c, branch);
-  if (c.research) throw new Error('Исследование уже идёт');
-  if (q.targetLevel > 5) throw new Error('Максимальный уровень технологии');
-  if (!c.provinceIds?.length || state.tick < c.bankruptcyUntilTick!) throw new Error('Исследования недоступны');
-  if (c.treasury < q.cost) throw new Error('Недостаточно средств');
-  c.treasury = money(c.treasury - q.cost);
-  c.research = { branch, targetLevel: q.targetLevel, progress: 0, required: q.months, startedTick: state.tick };
+  const id=legacyTechnologyNode(branch,techLevel(c,branch)+1);if(!id)throw Error('Максимальный уровень технологии');startTechnology(state,c,id);
+}
+export function startTechnology(state:GameState,c:Country,id:TechnologyId):void {
+  const q=namedResearchQuote(state,c,id);if(q.reason)throw Error(q.reason);const n=technologyNode(id)!;
+  c.treasury=money(c.treasury-q.cost);c.research={branch:n.legacy??'Science',nodeId:id,targetLevel:n.level,progress:0,required:q.months,startedTick:state.tick};
+  refreshResearchBudget(c);
 }
 export function monthlyResearch(state: GameState): void {
   if (!state.dataset) return;
@@ -47,7 +49,7 @@ export function monthlyResearch(state: GameState): void {
   for (const c of Object.values(state.countries)) {
     const r = c.research;
     if (!r || !c.provinceIds?.length || state.tick < c.bankruptcyUntilTick!) continue;
-    r.progress += 1 + (governmentModifiers(c.governmentType).researchPercent + (totals.get(c.id)?.researchPercent ?? 0)) / 100;
-    if (r.progress + 1e-9 >= r.required) { c.technologies![r.branch] = r.targetLevel; delete c.research; }
+    r.progress += (1 + (governmentModifiers(c.governmentType).researchPercent + (totals.get(c.id)?.researchPercent ?? 0)+scienceLevel(c)*5) / 100)*researchFunding(c)*economicPolicy(c).research;
+    if (r.progress + 1e-9 >= r.required) {delete c.research; if(r.branch==='Science')grantTechnology(state,c,r.nodeId!);else c.technologies![r.branch]=r.targetLevel;refreshResearchBudget(c); }
   }
 }

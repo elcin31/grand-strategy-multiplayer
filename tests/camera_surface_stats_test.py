@@ -3,10 +3,17 @@ import shlex
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parents[1] / 'scripts'))
-from camera_surface_stats import map_surface_layer, surface_frame_stats, surface_sequence_stats, surface_latency_args
+from camera_surface_stats import map_surface_layer, surface_frame_stats, surface_sequence_stats, surface_latency_args, assert_map_backend
 
 
 class SurfaceStatsTest(unittest.TestCase):
+    def test_native_backend_gate_checks_the_restored_texture_and_rejects_wrong_missing_or_ambiguous_surfaces(self):
+        texture='app/Main (BLAST)#2'
+        surface='SurfaceView[app/Main](BLAST)#4'
+        self.assertEqual(assert_map_backend(texture,'app','texture'),texture)
+        self.assertEqual(assert_map_backend(surface,'app','surface'),surface)
+        for layers,expected in [(texture,'surface'),(surface,'texture'),('other/Main (BLAST)#1','texture'),(texture+'\napp/Main (BLAST)#3','texture'),(texture,'unknown')]:
+            with self.assertRaises(AssertionError):assert_map_backend(layers,'app',expected)
     def test_map_layer_is_unambiguous_and_ignores_other_app(self):
         layers = 'other/Main (BLAST)#1\napp/Main (BLAST)#2\nSurfaceView[app/Main]#3\nSurfaceView[app/Main](BLAST)#4'
         self.assertEqual(map_surface_layer(layers, 'app'), 'SurfaceView[app/Main](BLAST)#4')

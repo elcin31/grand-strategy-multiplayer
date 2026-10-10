@@ -1,3 +1,4 @@
+import {scenarioArmy} from './helpers/militaryFixture';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
@@ -27,6 +28,6 @@ test('pacification is priced by server and ownership-bound, unrest responds to w
   p.rebellion={strength:NaN,startedTick:0,lastBattleTick:-1};assert.throws(()=>initializeStability(s));
 });
 test('a losing suppression cannot be repeated in the same paused tick',()=>{
-  const s=campaign(),p=s.provinces.find(p=>p.ownerId==='germany')!;s.armies=s.armies.filter(a=>a.provinceId!==p.id);s.armies.push({id:'tiny',ownerId:'germany',provinceId:p.id,troops:1000,morale:80,organization:80,unitType:'Infantry'});p.rebellion={strength:50000,startedTick:0,lastBattleTick:-1};
+  const s=campaign(),p=s.provinces.find(p=>p.ownerId==='germany')!;s.armies=s.armies.filter(a=>a.provinceId!==p.id);s.armies.push(scenarioArmy({id:'tiny',ownerId:'germany',provinceId:p.id,troops:1000,morale:80,organization:80,unitType:'Infantry'}));p.rebellion={strength:50000,startedTick:0,lastBattleTick:-1};
   const n=applyServerCommand(s,{type:'SUPPRESS_REBELLION',playerId:'host',provinceId:p.id},'host');assert.ok(n.provinces.find(q=>q.id===p.id)!.rebellion);assert.throws(()=>applyServerCommand(n,{type:'SUPPRESS_REBELLION',playerId:'host',provinceId:p.id},'host'));
 });

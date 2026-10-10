@@ -1,3 +1,4 @@
+import {scenarioArmy} from './helpers/militaryFixture';
 import { declareWar } from '../supabase/functions/_shared/diplomacySystem';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -107,13 +108,14 @@ test('battle IDs stay unique after the bounded log fills in a single paused tick
   const destination=origin.neighbors.find(id=>state.provinces.find(n=>n.id===id)?.ownerId!=='germany')!;
   const enemy=state.provinces.find(p=>p.id===destination)!.ownerId;
   declareWar(state,'germany',enemy);
-  state.armies.push({id:'army-boundary-test',ownerId:'germany',provinceId:origin.id,troops:1000});
-  state.armies.push({id:'army-defender-test',ownerId:enemy,provinceId:destination,troops:1000000});
+  state.armies.push(scenarioArmy({id:'army-defender-test',ownerId:enemy,provinceId:destination,troops:1000000}));
   const ids=new Set<string>();
   for(let i=0;i<60;i++) {
-    const existing=state.armies.find(a=>a.id==='army-boundary-test');
-    if(existing)existing.troops=1000;else state.armies.push({id:'army-boundary-test',ownerId:'germany',provinceId:origin.id,troops:1000});
-    state=applyServerCommand(state,{type:'MOVE_ARMY',playerId:'host',armyId:'army-boundary-test',provinceId:destination},'host');
+    // Independent fresh assaults exercise ID exhaustion in one paused tick;
+    // a survivor that just retreated cannot immediately assault again.
+    const armyId='army-boundary-test-'+i;
+    state.armies.push(scenarioArmy({id:armyId,ownerId:'germany',provinceId:origin.id,troops:1000}));
+    state=applyServerCommand(state,{type:'MOVE_ARMY',playerId:'host',armyId,provinceId:destination},'host');
     const id=state.battleLog[0]!.id;assert.ok(!ids.has(id));ids.add(id);
     assert.equal(new Set(state.battleLog.map(b=>b.id)).size,state.battleLog.length);
     assert.ok(state.battleLog.length<=20);assert.equal(state.tick,0);

@@ -1,0 +1,112 @@
+{
+  "parentHead": "3aebf887af13903ff7271fe71d957ca4f8769db1",
+  "stateVersion": 17,
+  "typescript": "PASS",
+  "javascript": {
+    "passed": 254,
+    "failed": 0
+  },
+  "python": {
+    "total": 50,
+    "passed": 49,
+    "skipped": 1,
+    "skipReason": "Pinned host-only Perfetto trace analyzer is installed in diagnostic CI"
+  },
+  "hermes": {
+    "bytes": 11419589,
+    "sha256": "07c7bc0c77e04787ef235fce6e89295ae68719d0c31e38fab57178e73f482778",
+    "magic": "c61fbc03c103191f",
+    "status": "PASS"
+  },
+  "cameraFixture": {
+    "originalVersion": 12,
+    "migratedVersion": 17,
+    "originalChecksum": "e8befae1",
+    "migratedChecksum": "7cca345b",
+    "unchangedOriginalFields": "PASS",
+    "newGameplayInactive": "PASS"
+  },
+  "sameHost240": {
+    "baseline16": {
+      "protocol": "expansion-host-seed101-240-months-v1",
+      "seed": 101,
+      "ticks": 240,
+      "stateVersion": 16,
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411,
+      "createMs": 54.14646800000003,
+      "sceneMs": 218.35268499999995,
+      "tickP50Ms": 53.850742999999966,
+      "tickP95Ms": 76.16648900000018,
+      "tickP99Ms": 86.861852,
+      "tickMaxMs": 120.33543799999984,
+      "saveRestoreMs": [
+        202.54649400000017,
+        167.6638210000001,
+        165.34219399999893,
+        173.16781699999956
+      ],
+      "snapshotBytes": 3902933,
+      "armies": 214,
+      "activeWars": 12,
+      "spyMissions": 23,
+      "spyReports": 192,
+      "spyEffects": 57,
+      "heapUsed": 217453432,
+      "rss": 670461952,
+      "note": "Same Node host and seed/ticks/war/persistence scenario; CPU/data only, no handset/GPU/frame-pacing claim."
+    },
+    "candidate17": {
+      "protocol": "expansion-host-seed101-240-months-v1",
+      "seed": 101,
+      "ticks": 240,
+      "stateVersion": 17,
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411,
+      "createMs": 66.15594100000004,
+      "sceneMs": 216.13729499999994,
+      "tickP50Ms": 50.38586799999939,
+      "tickP95Ms": 84.851629,
+      "tickP99Ms": 104.61417299999994,
+      "tickMaxMs": 130.99596999999994,
+      "saveRestoreMs": [
+        249.53381799999988,
+        176.612529,
+        178.30929300000025,
+        160.94569299999966
+      ],
+      "snapshotBytes": 3916914,
+      "armies": 217,
+      "activeWars": 17,
+      "spyMissions": 21,
+      "spyReports": 192,
+      "spyEffects": 59,
+      "heapUsed": 130996056,
+      "rss": 764530688,
+      "note": "Same Node host and seed/ticks/war/persistence scenario; CPU/data only, no handset/GPU/frame-pacing claim."
+    },
+    "p95ChangePercent": 11.402836226309176,
+    "p99ChangePercent": 20.43741940938577,
+    "note": "Clean sequential same Node host, seed101, war, 240 monthly ticks and four exact restores. Native frame/handset acceptance remains open; ticks describe different genuine gameplay outcomes."
+  },
+  "parentCI": {
+    "run": 38066562526,
+    "buildJob": 114255285611,
+    "build": "SUCCESS",
+    "longJob": 114255285734,
+    "long": "SUCCESS:10000 ticks/10 restores/195 countries/2924 provinces/5411 cities",
+    "longEvidenceArtifact": 11676395618,
+    "longZipBytes": 1843,
+    "longZipSha256": "6d5395cbbe527584ba6175febbb460f0c34fde00759d98a5f1fdd0dc05ebc735",
+    "longMaxArmies": 2176,
+    "longMaxWarAge": 11,
+    "longP95Ms": 215.44947599992156,
+    "nativeJob": 114260181033,
+    "native": "FAIL at stale experimental opaque-surface expectation; later clock/military/30min gates not reached",
+    "cameraJob": 114259276775,
+    "camera": "FAIL in both complete capture orders, compositor P99; exact evidence EXPANSION_CAMERA_REVIEW_3AEB.json",
+    "cloudDeployment": "NONE"
+  }
+}

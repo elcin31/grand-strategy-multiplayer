@@ -1,3 +1,4 @@
+import {scenarioStrength} from './helpers/militaryFixture';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
@@ -19,7 +20,7 @@ test('commanders are seeded, country bound, unique per army and affect readiness
   const n=applyServerCommand(s,cmd,'host');assert.equal(s.armies.find(q=>q.id===a.id)!.commanderId,undefined);
   assert.ok(combatMultiplier(n,n.armies.find(q=>q.id===a.id)!,p,false)>combatMultiplier(s,a,p,false));
   assert.throws(()=>applyServerCommand(s,{...cmd,commanderId:'general-france-0'},'host'));
-  a.unitType='Armor';p.terrain='plains';const plains=combatMultiplier(s,a,p,false);p.terrain='mountain';assert.ok(combatMultiplier(s,a,p,false)<plains);
+  scenarioStrength(a,a.troops,'Armor');p.terrain='plains';const plains=combatMultiplier(s,a,p,false);p.terrain='mountain';assert.ok(combatMultiplier(s,a,p,false)<plains);
   a.morale=1;a.organization=1;const exhausted=combatMultiplier(s,a,p,false);recoverMilitary(s);assert.ok(combatMultiplier(s,a,p,false)>exhausted);
   a.morale=NaN;assert.throws(()=>initializeMilitary(s));
 });
