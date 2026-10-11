@@ -2,7 +2,7 @@ import {memo,useEffect,useMemo,useRef,useState} from 'react';
 import {Group,Image as MapImage,Picture,Skia,PaintStyle,type SkCanvas,type SkImage,type SkPath,type SkPicture} from '@shopify/react-native-skia';
 import {borderChunks,bordersInBounds,type BorderChunk} from '../map/borderChunks';
 import {rasterLevel} from '../map/cameraCoverage';
-import {visibleRasterTiles,rasterTiles,RasterCache,type RasterTile} from '../map/rasterTiles';
+import {visibleRasterTiles,rasterTiles,RasterCache,retainRasterImage,type RasterTile} from '../map/rasterTiles';
 import {scheduleIdleSlices} from '../performance/idleSlices';
 import {geometryForLod,type GeometryLod} from '../map/geometryLod';
 import {featurePath,overlaps,type Bounds,type MapFeature} from '../map/geometry';
@@ -65,7 +65,7 @@ function tileImage(tile:RasterTile,drawing:Drawing,key:string,picture:SkPicture,
   try{
     const canvas=surface.getCanvas();canvas.clear(Skia.Color('transparent'));canvas.translate(2-b.left*s,2-b.top*s);canvas.scale(s,s);canvas.drawPicture(picture);surface.flush();
     const image=surface.makeImageSnapshot();
-    if(cold)drawing.resources.images.setCold(key,image,bytes);else drawing.resources.images.set(key,image,bytes);
+    retainRasterImage(drawing.resources.images,drawing.resources.pictures,key,image,bytes,cold);
     const elapsed=performance.now()-start,m=getMetrics();
     recordMetrics({rasterBuilds:m.rasterBuilds+1,rasterMs:m.rasterMs+elapsed,rasterBytes:drawing.resources.images.bytes,...(cold?{rasterPrewarmBuilds:m.rasterPrewarmBuilds+1,rasterPrewarmMs:m.rasterPrewarmMs+elapsed}:{})});
     return image;

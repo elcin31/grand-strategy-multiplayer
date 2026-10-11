@@ -38,6 +38,19 @@ export class RasterCache<T>{
     this.entries.set(key,{value,bytes});this.bytes+=bytes;
     while(this.bytes>this.maxBytes||this.entries.size>this.maxEntries){const first=this.entries.keys().next().value!;this.bytes-=this.entries.get(first)!.bytes;this.entries.delete(first);}
   }
+  delete(key:string):boolean{const old=this.entries.get(key);if(!old)return false;this.entries.delete(key);this.bytes-=old.bytes;return true;}
   clear():void{this.entries.clear();this.bytes=0;}
   get size():number{return this.entries.size;}
+}
+/** Once pixels are retained, the same tile's vector fallback is redundant.
+ * Drop only the cache reference: display nodes still own their original
+ * picture until their ordinary image commit. Never dispose a live Skia object.
+ * Failed/oversized/capacity-rejected rasters retain the recorded fallback. */
+export function retainRasterImage<I,P>(images:RasterCache<I>,pictures:RasterCache<P>,key:string,image:I,bytes:number,cold=false):boolean{
+  if(!Number.isSafeInteger(bytes)||bytes<=0||bytes>images.maxBytes)return false;
+  let retained:boolean;
+  if(cold)retained=images.setCold(key,image,bytes);
+  else{images.set(key,image,bytes);retained=images.peek(key)===image;}
+  if(retained)pictures.delete(key);
+  return retained;
 }

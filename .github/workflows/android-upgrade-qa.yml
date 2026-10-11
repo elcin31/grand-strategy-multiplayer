@@ -14,6 +14,20 @@ on:
         description: Successful compatible checkpoint build
         required: false
         type: string
+      require_version_upgrade:
+        description: Require an actual higher-version final release replacement
+        required: false
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      apk_run_id:
+        required: true
+        type: string
+      require_version_upgrade:
+        required: false
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
@@ -89,6 +103,10 @@ jobs:
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: python scripts/android-upgrade-qa.py baseline-apk/Dominion-camera-optimized-illustrated.apk candidate-apk/Dominion-camera-optimized-illustrated.apk camera-fixture/camera-fixture-101.1.json
+      - name: Require actual higher-version replacement before final publication
+        if: inputs.require_version_upgrade
+        run: |
+          python -c "import json;r=json.load(open('android-upgrade/UPGRADE_SAVE_QA.json'));assert r['finalVersionUpgrade'] is True;assert r['candidate']['versionCode']>r['baseline']['versionCode']"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

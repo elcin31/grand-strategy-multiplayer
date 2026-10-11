@@ -1,3 +1,11 @@
+## Actual rollback preparation, 2026-10-11
+
+Current dedicated production still room21/command23/schema12, ACTIVE/verify_jwt:false; no deployment performed. Exact downloaded command23 source is durably preserved in backend-rollback/game-command-v23/index.js (2091247bytes/SHAf2b16707530850e3fa4ded4204316aff7d75925b46fe8286cabeda48c571cdd1); accepted47 minified rebuild matches byte-for-byte. Original function metadata/ezbr archive hashes and limitations are in backend-rollback/manifest.json. game-room source retrieval returned connector UNAVAILABLE on three attempts despite healthy metadata. Accepted47 reconstruction (2098171bytes/SHA670b0a8f05a78527207345e449ea720d5d618eb3b93d72dca96ec226f36e8c3f) is available as a reviewed recovery source, but an exact deployed-room match is not proven. Never call it an exact backup or invent a retrieval cause. Preserve this distinction in the rollout/rollback decision; no permission requirement is inferred from this local documentation. Once any room migrates to18, use forward18 fixes and never restore12 over migrated state.
+
+Reviewed CI86 backend bundle artifact11693232709 digest/CRC/individual SHA verified; actual bytes/hashes unchanged from2e. Build-only is not live acceptance. Coordinate existing command before room only after a ready compatible signed client, then inspect actual versions and execute the existing real-clock/authenticated HTTP QA with isolated UUID cleanup.
+
+---
+
 # Expansion18 coordinated rollout
 
 Use only `elcin31/grand-strategy-multiplayer` and its existing project `dfjsnjxnyjspwugjguhq`. The inspected production `game-room`21 / `game-command`23 still run schema12. This document and compiled bundles do not deploy them.
