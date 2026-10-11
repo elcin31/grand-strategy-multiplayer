@@ -1,3 +1,15 @@
+# Actual8ff backend/10000 ticks and guarded cleanup verified; APK building (2026-10-11)
+
+Current expansion metadata6b957f49/verified game8ff217222f8d8f1adae63735185496994bb68119. Full38179378823: actual backend114588486365 SUCCESS;10000ticks114588486410 SUCCESS;build114588486142 still IN_PROGRESS at assembleRelease. No native/upgrade/online/camera acceptance yet.
+
+Existing read-only collector actual38180365546/job114591432562 SUCCESS validated exact-sourceZIP bytes+SHA+CRC: backend11717184073/606bytes/SHA75065b9b403ca0d433af974f6128a2e3f802c4bf9532ca388bf290fcd3e220b7;long11717219707/2530bytes/SHA238a447880924401aa57db9e1fd5e711190810b9e4cc41e08bee033c52fa3c87. Backend actualschema18,tick21→46,payments/receipt retry/constructionrefund/composition/commander/reinforcement/budget/gifts/paidrelations/fourspyresults/once-onlycourse/science/humantrade/reconnect/realhostmigration PASS. Real spies:politicalintrigueSuccessDetected,tick18;sabotageFailureDetected16;intelligenceSuccessDetected6;counterintelligenceSuccessUndetected5. Long:10000ticks/195countries/2924provinces/5411cities/10exactrestores/max451armies/4487736snapshotbytes/P95**105.906297ms**,863sCPU-hostelapsed,2849courses/806discoveries/populationratio3.24919. These are actual host/backend facts, not handsetFPS.
+
+Completed exactHTTP QAroom**f2b4feb8-3da7-4c39-894f-cae4ac95d3e7**,created2026-10-11T22:11:04.187431Z,8reviewedQA members/52receipts/no backupcolumns: guarded one-row delete succeeded. Independent0rooms/0players/0receipts;**29originalcitybackups retained**. No other room touched. Future nativeonline UUID/cleanup is PENDING and must be reviewed independently after that actual job completes. At-capture backend artifact is immutable; cleanup is recorded separately.
+
+WORLD_RASTER_NATIVE_QA_2026-10-11.json binds full source proof, actual raw artifact readback and cleanup. Initial collector38179929224 compiled/passed and saw no artifacts yet; second collector actually downloaded/verified the two above, without rerunning source build/native gestures. Runtime/source/full7guards unchanged; main/backend unchanged; primaryexecutoroffline. **Next exact action:** wait for actual original build completion and four signed native jobs, read newly uploadedAPK/upgrade/nativeonline/camera/soak through the same exact-source collector, verify hashes/config and original failed/success results, review exact native QA UUID, then final raw seven-gate acceptance/publication/delivery only when all succeed. Do not reroll failed numerical camera gates.
+
+---
+
 # Exact native artifact readback prepared while full8ff QA runs (2026-10-11)
 
 Published expansion metadata parent **6b957f49a33c466950d901ff67484d345624b0bc**, verified game runtime8ff217222f8d8f1adae63735185496994bb68119/source38179037438. Full native38179378823 is running; every original required gate/threshold remains. Existing QA branch receives a normal descendant of this metadata, preserving both lines. No runtime/art/backend/main change.

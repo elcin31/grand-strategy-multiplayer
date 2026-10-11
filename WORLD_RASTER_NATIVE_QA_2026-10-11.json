@@ -1,0 +1,868 @@
+{
+  "status": "SOURCE_VERIFIED_NATIVE_PARTIAL",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "runtime": "8ff217222f8d8f1adae63735185496994bb68119",
+  "runId": 38179378823,
+  "sourcePreflight": {
+    "status": "SOURCE_VERIFIED_NATIVE_PENDING",
+    "runtime": "8ff217222f8d8f1adae63735185496994bb68119",
+    "tree": "cb0d22131898ca12dfb116556469fa77ddca3a66",
+    "sourceRunId": 38179037438,
+    "sourceJobId": 114587462307,
+    "strictTypecheck": true,
+    "js": {
+      "tests": 309,
+      "pass": 309,
+      "fail": 0,
+      "skip": 0
+    },
+    "python": {
+      "tests": 97,
+      "pass": 97,
+      "skip": 0,
+      "pinnedPerfetto": "0.58.2"
+    },
+    "originalArt": 42,
+    "productionHermes": {
+      "path": "source-hermes-qa/_expo/static/js/android/AppEntry-eeeecedbf7b3b05c64de7257eb486490.hbc",
+      "bytes": 11484254,
+      "sha256": "3b6662739738f11ef7e014b59cfebe1ac94340aaeb0c6ab63db1240a31d00ecd",
+      "magic": "c61fbc03c103191f"
+    },
+    "pixel": {
+      "frames": 32,
+      "results": [
+        {
+          "zoom": 0.5,
+          "center": [
+            160.125,
+            160.25
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            287.875,
+            288.375
+          ],
+          "maxChannelDelta": 1,
+          "rmsChannelDelta": 0.009021097956087902,
+          "changedChannels": 1,
+          "alphaChanges": 0,
+          "firstDifferences": [
+            {
+              "channel": 2240,
+              "actual": 77,
+              "expected": 76
+            }
+          ]
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            575.625,
+            576.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            1152.375,
+            576.875
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            1439.25,
+            719.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            575.625,
+            288.375
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            704.375,
+            18.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            1398.25,
+            718.875
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            160.125,
+            160.25
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            287.875,
+            288.375
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            575.625,
+            576.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            1152.375,
+            576.875
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            1439.25,
+            719.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            575.625,
+            288.375
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            704.375,
+            18.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            1398.25,
+            718.875
+          ],
+          "maxChannelDelta": 1,
+          "rmsChannelDelta": 0.009021097956087902,
+          "changedChannels": 1,
+          "alphaChanges": 0,
+          "firstDifferences": [
+            {
+              "channel": 5952,
+              "actual": 44,
+              "expected": 45
+            }
+          ]
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            160.125,
+            160.25
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            287.875,
+            288.375
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            575.625,
+            576.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            1152.375,
+            576.875
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            1439.25,
+            719.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            575.625,
+            288.375
+          ],
+          "maxChannelDelta": 1,
+          "rmsChannelDelta": 0.009021097956087902,
+          "changedChannels": 1,
+          "alphaChanges": 0,
+          "firstDifferences": [
+            {
+              "channel": 2949,
+              "actual": 59,
+              "expected": 58
+            }
+          ]
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            704.375,
+            18.125
+          ],
+          "maxChannelDelta": 1,
+          "rmsChannelDelta": 0.01275775907699572,
+          "changedChannels": 2,
+          "alphaChanges": 0,
+          "firstDifferences": [
+            {
+              "channel": 10878,
+              "actual": 85,
+              "expected": 86
+            },
+            {
+              "channel": 11133,
+              "actual": 115,
+              "expected": 116
+            }
+          ]
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            1398.25,
+            718.875
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            160.125,
+            160.25
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            287.875,
+            288.375
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            575.625,
+            576.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            1152.375,
+            576.875
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            1439.25,
+            719.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            575.625,
+            288.375
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            704.375,
+            18.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            1398.25,
+            718.875
+          ],
+          "maxChannelDelta": 1,
+          "rmsChannelDelta": 0.01275775907699572,
+          "changedChannels": 2,
+          "alphaChanges": 0,
+          "firstDifferences": [
+            {
+              "channel": 4480,
+              "actual": 130,
+              "expected": 131
+            },
+            {
+              "channel": 5248,
+              "actual": 113,
+              "expected": 114
+            }
+          ]
+        }
+      ],
+      "peak": 1,
+      "rms": 0.01275775907699572,
+      "negativeControl": {
+        "maxChannelDelta": 50,
+        "rmsChannelDelta": 3.6504472293074355,
+        "alphaChanges": 0
+      },
+      "fixedBudget": {
+        "peak": 4,
+        "rms": 0.125,
+        "alphaChanges": 0
+      },
+      "ownedSourceLifetimeVerified": true
+    },
+    "priorRejectedUiSoak": {
+      "status": "PRIOR_REJECTED_BINARY_SOAK_VERIFIED",
+      "runtime": "bf05151c94988f7d2511218a8cc51a1858a5a1a7",
+      "runId": 38171409180,
+      "apkSha256": "6918422f4d03ddff656a921f19178c6a461b507985c30c62188bcfdb5ef813d0",
+      "durationSeconds": 1829.044582619,
+      "durationFileSha256": "63adabaae20b41f52761b57b707c1e7ef6a8764e0badfa10232fd33597ef76c7",
+      "memorySamples": 31,
+      "pssMinKiB": 422364,
+      "pssMaxKiB": 531570,
+      "releaseAccepted": false,
+      "note": "Six original camera limits failed. No earlier native gate accepts this changed renderer source."
+    },
+    "performanceAccepted": false,
+    "releaseAccepted": false,
+    "physicalRedmi": false,
+    "workspace": "Executor remains disconnected; these checks are actual existing-repository GitHub CI, not claimed local execution.",
+    "nativeRunId": 38179378823
+  },
+  "nativeJobs": [
+    {
+      "id": 114588486142,
+      "name": "build-apk",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 114588486365,
+      "name": "backend-live / live-world",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 114588486410,
+      "name": "long-simulation",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "artifactReadback": {
+    "runId": 38179378823,
+    "jobId": 114591432562,
+    "qaRuntime": "098866f7de34e84a3fc7e9b12f0e4da20bad33d3",
+    "actualZipReadback": true,
+    "originalConclusionsUnchanged": true,
+    "status": "COLLECTED_NOT_RELEASE_ACCEPTANCE",
+    "repository": "elcin31/grand-strategy-multiplayer",
+    "runtime": "8ff217222f8d8f1adae63735185496994bb68119",
+    "originalRunStatus": "in_progress",
+    "originalRunConclusion": null,
+    "jobs": {
+      "android-online / native-online": {
+        "status": "not_started",
+        "conclusion": null
+      },
+      "android-smoke": {
+        "status": "not_started",
+        "conclusion": null
+      },
+      "backend-live / live-world": {
+        "id": 114588486365,
+        "status": "completed",
+        "conclusion": "success"
+      },
+      "android-upgrade / release-upgrade-save": {
+        "status": "not_started",
+        "conclusion": null
+      },
+      "build-apk": {
+        "id": 114588486142,
+        "status": "in_progress",
+        "conclusion": null
+      },
+      "camera-comparison": {
+        "status": "not_started",
+        "conclusion": null
+      },
+      "long-simulation": {
+        "id": 114588486410,
+        "status": "completed",
+        "conclusion": "success"
+      }
+    },
+    "allSevenCompleted": false,
+    "allSevenPassed": false,
+    "releaseAccepted": false,
+    "qaCleanup": "PENDING actual guarded database review/readback",
+    "artifacts": {
+      "backend": {
+        "id": 11717184073,
+        "name": "world-backend-expansion-evidence",
+        "bytes": 606,
+        "sha256": "75065b9b403ca0d433af974f6128a2e3f802c4bf9532ca388bf290fcd3e220b7",
+        "zipCrcVerified": true,
+        "sourceRuntime": "8ff217222f8d8f1adae63735185496994bb68119",
+        "sourceRunId": 38179378823
+      },
+      "long": {
+        "id": 11717219707,
+        "name": "final-long-simulation-evidence",
+        "bytes": 2530,
+        "sha256": "238a447880924401aa57db9e1fd5e711190810b9e4cc41e08bee033c52fa3c87",
+        "zipCrcVerified": true,
+        "sourceRuntime": "8ff217222f8d8f1adae63735185496994bb68119",
+        "sourceRunId": 38179378823
+      }
+    },
+    "missingArtifacts": [
+      "dominion-camera-illustrated-release",
+      "camera-native-paired-evidence",
+      "dominion-upgrade-save-evidence",
+      "dominion-native-online-evidence",
+      "android-smoke-evidence"
+    ],
+    "backend": {
+      "roomId": "f2b4feb8-3da7-4c39-894f-cae4ac95d3e7",
+      "featuresVerified": true,
+      "hostMigrationVerified": true,
+      "stateVersion": 18,
+      "finalSchema": 18,
+      "finalTick": 46,
+      "tick": 21,
+      "spyResults": [
+        {
+          "kind": "PoliticalIntrigue",
+          "tick": 18,
+          "outcome": "Success",
+          "detected": true
+        },
+        {
+          "kind": "Sabotage",
+          "tick": 16,
+          "outcome": "Failure",
+          "detected": true
+        },
+        {
+          "kind": "IntelligenceGathering",
+          "tick": 6,
+          "outcome": "Success",
+          "detected": true
+        },
+        {
+          "kind": "Counterintelligence",
+          "tick": 5,
+          "outcome": "Success",
+          "detected": false
+        }
+      ]
+    },
+    "longSimulation": {
+      "ticks": 10000,
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411,
+      "restores": 10,
+      "warsObserved": 12618,
+      "peaceCount": 12602,
+      "battles": 4235,
+      "movementTicks": 9946,
+      "maxWarAge": 11,
+      "maxArmies": 451,
+      "maxSnapshotBytes": 4487736,
+      "tickP95Ms": 105.90629700000864,
+      "samples": [
+        {
+          "tick": 1000,
+          "bytes": 4324604,
+          "heapUsed": 51810152,
+          "rss": 347373568,
+          "armies": 237,
+          "wars": 13,
+          "peaceCount": 1274,
+          "bankruptCountries": 9,
+          "treasuryMax": 10190269.335,
+          "population": 13799445475,
+          "populationRatio": 1.8080435510615582,
+          "settlementCapacity": 24472490124,
+          "completedFocuses": 2438,
+          "scientificDiscoveries": 562,
+          "elapsedSeconds": 80
+        },
+        {
+          "tick": 2000,
+          "bytes": 4416670,
+          "heapUsed": 54160656,
+          "rss": 447676416,
+          "armies": 344,
+          "wars": 13,
+          "peaceCount": 2639,
+          "bankruptCountries": 30,
+          "treasuryMax": 27614776.525,
+          "population": 19334995051,
+          "populationRatio": 2.533327384430112,
+          "settlementCapacity": 24683088691,
+          "completedFocuses": 2747,
+          "scientificDiscoveries": 728,
+          "elapsedSeconds": 171
+        },
+        {
+          "tick": 3000,
+          "bytes": 4453454,
+          "heapUsed": 55383496,
+          "rss": 448716800,
+          "armies": 394,
+          "wars": 18,
+          "peaceCount": 3922,
+          "bankruptCountries": 36,
+          "treasuryMax": 49708625.241,
+          "population": 22554812745,
+          "populationRatio": 2.955197279693465,
+          "settlementCapacity": 24777016414,
+          "completedFocuses": 2794,
+          "scientificDiscoveries": 781,
+          "elapsedSeconds": 267
+        },
+        {
+          "tick": 4000,
+          "bytes": 4474767,
+          "heapUsed": 55376728,
+          "rss": 463904768,
+          "armies": 428,
+          "wars": 16,
+          "peaceCount": 5169,
+          "bankruptCountries": 38,
+          "treasuryMax": 73882882.667,
+          "population": 23951578465,
+          "populationRatio": 3.1382055938293525,
+          "settlementCapacity": 24782261878,
+          "completedFocuses": 2819,
+          "scientificDiscoveries": 795,
+          "elapsedSeconds": 360
+        },
+        {
+          "tick": 5000,
+          "bytes": 4471174,
+          "heapUsed": 55507664,
+          "rss": 464564224,
+          "armies": 434,
+          "wars": 18,
+          "peaceCount": 6399,
+          "bankruptCountries": 40,
+          "treasuryMax": 98835927.435,
+          "population": 24481389830,
+          "populationRatio": 3.2076230224863815,
+          "settlementCapacity": 24783227976,
+          "completedFocuses": 2832,
+          "scientificDiscoveries": 797,
+          "elapsedSeconds": 445
+        },
+        {
+          "tick": 6000,
+          "bytes": 4483632,
+          "heapUsed": 55818056,
+          "rss": 465498112,
+          "armies": 435,
+          "wars": 14,
+          "peaceCount": 7628,
+          "bankruptCountries": 40,
+          "treasuryMax": 124038148.644,
+          "population": 24677188293,
+          "populationRatio": 3.2332771075709066,
+          "settlementCapacity": 24800974889,
+          "completedFocuses": 2835,
+          "scientificDiscoveries": 801,
+          "elapsedSeconds": 530
+        },
+        {
+          "tick": 7000,
+          "bytes": 4478898,
+          "heapUsed": 56374976,
+          "rss": 472223744,
+          "armies": 439,
+          "wars": 13,
+          "peaceCount": 8864,
+          "bankruptCountries": 42,
+          "treasuryMax": 149330681.859,
+          "population": 24754528939,
+          "populationRatio": 3.2434105043431587,
+          "settlementCapacity": 24801479404,
+          "completedFocuses": 2841,
+          "scientificDiscoveries": 803,
+          "elapsedSeconds": 613
+        },
+        {
+          "tick": 8000,
+          "bytes": 4484308,
+          "heapUsed": 56557600,
+          "rss": 472739840,
+          "armies": 445,
+          "wars": 15,
+          "peaceCount": 10107,
+          "bankruptCountries": 43,
+          "treasuryMax": 174649965.651,
+          "population": 24783566722,
+          "populationRatio": 3.24721511927391,
+          "settlementCapacity": 24801479404,
+          "completedFocuses": 2844,
+          "scientificDiscoveries": 804,
+          "elapsedSeconds": 697
+        },
+        {
+          "tick": 9000,
+          "bytes": 4487736,
+          "heapUsed": 56634184,
+          "rss": 473264128,
+          "armies": 447,
+          "wars": 9,
+          "peaceCount": 11354,
+          "bankruptCountries": 44,
+          "treasuryMax": 199984024.64,
+          "population": 24794470048,
+          "populationRatio": 3.248643704813462,
+          "settlementCapacity": 24801479404,
+          "completedFocuses": 2846,
+          "scientificDiscoveries": 806,
+          "elapsedSeconds": 780
+        },
+        {
+          "tick": 10000,
+          "bytes": 4484485,
+          "heapUsed": 56879144,
+          "rss": 473960448,
+          "armies": 446,
+          "wars": 16,
+          "peaceCount": 12602,
+          "bankruptCountries": 44,
+          "treasuryMax": 225307782.924,
+          "population": 24798640582,
+          "populationRatio": 3.249190140329066,
+          "settlementCapacity": 24801479404,
+          "completedFocuses": 2849,
+          "scientificDiscoveries": 806,
+          "elapsedSeconds": 863
+        }
+      ],
+      "note": "Full-world deterministic AI simulation; seeded initial legal war, no physical device or network claim"
+    }
+  },
+  "qaCleanup": {
+    "completedRooms": [
+      {
+        "id": "f2b4feb8-3da7-4c39-894f-cae4ac95d3e7",
+        "createdAt": "2026-10-11 22:11:04.187431+00",
+        "reviewedPlayers": 8,
+        "reviewedMembers": [
+          {
+            "host": false,
+            "name": "QA guest 0"
+          },
+          {
+            "host": false,
+            "name": "QA guest 1"
+          },
+          {
+            "host": false,
+            "name": "QA guest 2"
+          },
+          {
+            "host": false,
+            "name": "QA guest 3"
+          },
+          {
+            "host": false,
+            "name": "QA guest 4"
+          },
+          {
+            "host": false,
+            "name": "QA guest 5"
+          },
+          {
+            "host": false,
+            "name": "QA guest 6"
+          },
+          {
+            "host": true,
+            "name": "WORLD ECONOMY QA"
+          }
+        ],
+        "reviewedReceipts": 52,
+        "allBackupColumnsNull": true,
+        "guardedDeletion": true,
+        "independentReadback": {
+          "rooms_remaining": 0,
+          "players_remaining": 0,
+          "receipts_remaining": 0,
+          "original_city_backups": 29
+        }
+      }
+    ],
+    "nativeOnlineRoom": "PENDING actual completed native-online job/UUID; do not guess or delete."
+  },
+  "performanceAccepted": false,
+  "releaseAccepted": false,
+  "physicalRedmiTested": false
+}
