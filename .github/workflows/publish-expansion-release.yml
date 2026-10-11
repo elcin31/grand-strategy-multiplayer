@@ -1,0 +1,111 @@
+name: Publish accepted Dominion 2.0 APK
+on:
+  push:
+    branches: [apk-delivery]
+    paths:
+      - .github/workflows/publish-expansion-release.yml
+      - RELEASE_ACCEPTANCE_V2.json
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: dominion-expansion-v2-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: elcin31/grand-strategy-multiplayer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Require exact accepted main runtime and all completed release gates
+        id: accepted
+        run: |
+          run_id=$(python -c "import json;r=json.load(open('RELEASE_ACCEPTANCE_V2.json'));assert r['status']=='ACCEPTED';print(r['runId'])")
+          [[ "$run_id" =~ ^[0-9]+$ ]]
+          gh api "repos/$GH_REPO/actions/runs/$run_id" > accepted-run.json
+          gh api "repos/$GH_REPO/actions/runs/$run_id/jobs?per_page=100" > accepted-jobs.json
+          python -c "import sys,json;sys.path.insert(0,'scripts');from release_v2_validation import assert_accepted_run;assert_accepted_run(json.load(open('RELEASE_ACCEPTANCE_V2.json')),json.load(open('accepted-run.json')),json.load(open('accepted-jobs.json')))"
+          source_sha=$(python -c "import json;print(json.load(open('accepted-run.json'))['head_sha'])")
+          git diff --exit-code "$source_sha" HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+          echo "main_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion-camera-illustrated-release
+          run-id: ${{ steps.accepted.outputs.run_id }}
+          github-token: ${{ github.token }}
+          path: release
+      - uses: actions/download-artifact@v4
+        with:
+          name: camera-native-paired-evidence
+          run-id: ${{ steps.accepted.outputs.run_id }}
+          github-token: ${{ github.token }}
+          path: camera-evidence
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion-upgrade-save-evidence
+          run-id: ${{ steps.accepted.outputs.run_id }}
+          github-token: ${{ github.token }}
+          path: upgrade-evidence
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion-native-online-evidence
+          run-id: ${{ steps.accepted.outputs.run_id }}
+          github-token: ${{ github.token }}
+          path: online-evidence
+      - uses: actions/download-artifact@v4
+        with:
+          name: world-backend-expansion-evidence
+          run-id: ${{ steps.accepted.outputs.run_id }}
+          github-token: ${{ github.token }}
+          path: backend-evidence
+      - uses: actions/download-artifact@v4
+        with:
+          name: android-smoke-evidence
+          run-id: ${{ steps.accepted.outputs.run_id }}
+          github-token: ${{ github.token }}
+          path: native-evidence
+      - name: Verify exact binary and real install/online/soak/cleanup evidence
+        run: |
+          python scripts/verify-expansion-release.py
+          python scripts/verify-apk.py release/Dominion-grand-strategy-v2-release.apk
+          python scripts/verify-packaged-art.py release/Dominion-grand-strategy-v2-release.apk
+          python -c "import shutil;shutil.make_archive('release/Dominion-v2-camera-evidence','zip','camera-evidence')"
+          cp RELEASE_ACCEPTANCE_V2.json release/
+          cp upgrade-evidence/android-upgrade/UPGRADE_SAVE_QA.json online-evidence/android-online/NATIVE_ONLINE_QA.json backend-evidence/BACKEND_EXPANSION_QA.json release/
+          python -c "import zipfile;z=zipfile.ZipFile('release/Dominion-grand-strategy-v2-release.zip','w',zipfile.ZIP_DEFLATED,compresslevel=9);z.write('release/Dominion-grand-strategy-v2-release.apk','Dominion-grand-strategy-v2-release.apk');z.close()"
+          (cd release && sha256sum Dominion-grand-strategy-v2-release.apk Dominion-grand-strategy-v2-release.zip > Dominion-v2-checksums.txt)
+      - name: Publish exact accepted APK without rebuilding
+        env:
+          MAIN_SHA: ${{ steps.accepted.outputs.main_sha }}
+        run: |
+          test "$(gh api repos/$GH_REPO/git/ref/heads/main --jq .object.sha)" = "$MAIN_SHA"
+          cat > release-notes.md <<'NOTES'
+          Dominion 2.0 — Grand Strategy Expansion.
+
+          Standalone Android RELEASE APK with embedded Hermes, landscape and the existing Dominion multiplayer backend. Diplomacy/espionage/AI, economy/construction, military/supply, technology tree, national courses and27 new original illustrations. Existing package/signature retained; Android version2.0.0(code10).
+
+          Accepted checks include full regression suites,10000 authoritative ticks,30-minute actual native render/simulation/autosave soak, unchanged paired camera gates in both orders, real0.8.1→2.0 in-place save upgrade, production HTTP integration and encrypted native multiplayer reconnect/host takeover/reboot. Physical Xiaomi performance remains unmeasured. Exact hashes and sanitized evidence attached.
+          NOTES
+          if gh release view v2.0.0 >/dev/null 2>&1; then
+            mkdir existing-release
+            gh release download v2.0.0 --pattern Dominion-grand-strategy-v2-release.apk --dir existing-release
+            cmp release/Dominion-grand-strategy-v2-release.apk existing-release/Dominion-grand-strategy-v2-release.apk
+          else
+            gh release create v2.0.0 --target "$MAIN_SHA" --title 'Dominion 2.0 — Grand Strategy Expansion' --notes-file release-notes.md release/*
+          fi
+      - name: Verify public APK and ZIP bytes against accepted hashes
+        run: |
+          curl --fail --location --retry 2 --max-time 180 'https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.0.0/Dominion-grand-strategy-v2-release.apk' -o public-check.apk
+          cmp release/Dominion-grand-strategy-v2-release.apk public-check.apk
+          curl --fail --location --retry 2 --max-time 180 'https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.0.0/Dominion-grand-strategy-v2-release.zip' -o public-check.zip
+          python -c "import zipfile;z=zipfile.ZipFile('public-check.zip');assert z.testzip() is None;assert z.namelist()==['Dominion-grand-strategy-v2-release.apk'];assert z.read(z.namelist()[0])==open('public-check.apk','rb').read()"
+          gh release view v2.0.0 --json url,assets

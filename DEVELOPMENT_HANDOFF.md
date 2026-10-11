@@ -1,3 +1,17 @@
+# Continuation — exact-artifact publication prepared, 2026-10-11
+
+Verified published runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**; its full required CI **38133111807** is IN PROGRESS (build114451355387,10000ticks114451355479,actual HTTP114451355520). Do not start another identical APK build for this QA/ops-only block. Main remainsdbb354ab and must be promoted normally only after acceptance. Previous candidates38132365346/38132865124 are retained but superseded for release by the current runtime/recovery fix.
+
+Prepared a separate publication-only workflow on the EXISTING apk-delivery branch: accepted run/source/binary SHA/size and every required job, native higher-version/signature/UID/save/backups, actual encrypted paid-course/native-owner/reboot return, live schema18/host migration, real1800s soak and scoped cleanup must all pass. It consumes the exact already-tested APK/evidence without rebuilding, verifies all42 art bytes, publishes v2.0.0 APK plus identical ZIP/checksums/evidence, then verifies public downloads. Old0.7/0.8 releases/workflows remain preserved. RELEASE_ACCEPTANCE_V2.json is deliberately absent until actual QA and cleanup finish; publication cannot run against a pending candidate.
+
+Files: .github/workflows/publish-expansion-release.yml, scripts/release_v2_validation.py, scripts/verify-expansion-release.py, tests/release_v2_validation_test.py, DEVELOPMENT_HANDOFF.md. Current **90Python/no skips PASS**, including negative publication gates for missing/failed/pending jobs, wrong runtime/binary, repeated focus reward flag, lower version, incomplete cleanup and NaN/Infinity/short soak; compilation/YAML/diff PASS. No application/backend/assets/dependency changes, current2.0.0(code10) APK pipeline unchanged. Actual physicalXiaomi remains unmeasured.
+
+Exact active operations: final candidate38133111807 full release gates, plus local actual HTTP QA e91630eb-1637-41fb-8e6b-688ae7593df5. HTTP currently validates policies/funding/paid focus after earlier auth/world/receipt/route/construction/typed army/commander checks; not full PASS yet. Collect every newly created exact QA UUID/name from sanitized logs, clean only those and prove zero room/membership/receipt remnants while original29city backups remain. Do not dispatch publication or promote main while camera/live/native/upgrade is pending/failed. Original continuous forwardpinch300→350 FAIL and raw evidence remain retained.
+
+Next exact action: finish actual current QA, fix concrete failures using these existing systems/scripts, update acceptance manifest and handoff only with observed results; normal verified main promotion, existing apk-delivery publication, download/hash/CRC/signature/config verification and direct finalAPK delivery.
+
+---
+
 # Continuation — final network recovery and mandatory live gate, 2026-10-11
 
 Verified published parent **8823d12f0bbfd84bcec4722c52b7935563133f62**; its full local **295JS/no skips PASS** and strictTS PASS. Candidate CI38132865124 IN PROGRESS; prior metadata-only38132365346 also retained. Main unchanged. This logical correction bounds heartbeat substitution to ACTIVE delivery, not merely a durable uncertain pending command: after network loss, normal authoritative polling/clock resumes while the same pending identity remains available for receipt recovery. Four focused control/CAS/paid-collision/active-heartbeat/lost-response polling guards and strictTS PASS. Existing14 multiplayer/wire/compatibility cases plus22paid-intent recovery scenarios retained, no weakened tests.
