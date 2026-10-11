@@ -1,3 +1,13 @@
+# Confirmed native multiplayer snapshot race — 2026-10-11
+
+Actual native online run38132141380/job114448497096 FAILED in ready/start, XML says `Stale campaign version`. Exact scoped roomff5c4d14-e26e-4c80-8cd1-e872ffd54741; evidence11699253034 ZIP SHA969e872e5141722e9002c5e8d98fc1e721a852f844caab2be1f96d2a5155afdf/CRC verified. Together with earlier7af pause refusal this confirms actual room-version CAS contention, rather than an invented backend/schema problem. Server correctly rejected stale writes; no CAS/receipts/auth rules weakened.
+
+Targeted client fix: bounded3total deliveries with the SAME commandId and exact original payload, fresh authoritative version after ONLY the two explicit server CAS refusals and ONLY absolute unpaid SELECT_COUNTRY/SET_READY/SET_SPEED. Paid/relative actions, unknown409 collisions, server validation, auth and rate limits retain terminal rejection; network uncertainty retains durable pending identity for receipt recovery. While a command is pending, native polling sends real lightweight authenticated heartbeat instead of advancing its own competing clock snapshot; refresh/poll resumes afterward. QA second guest also uses real heartbeat independently of UI traversal, preventing artificial presence changes during lobby controls. Game simulation/render architecture unchanged.
+
+Current local3new control/heartbeat/paid-collision-contention guards and14 existing targeted multiplayer/wire/compatibility/22-intent-loss cases PASS; strictTS/Python native guards PASS. Actual fixed signed Android acceptance remains PENDING and must be observed before claiming this bug closed.
+
+---
+
 # Actual native failures and current fixes — 2026-10-11
 
 755 native failed a harness pact expectation: its own detected spy operation correctly left netrelation2/trust41 at tick55, so NPC refusal was valid. Production AI/costs/consequences remain unchanged. The real-UI test now pays5000M for a gift, verifies actual entered amount, same clock/gifts+20/trust+3/net+20/unchanged other reasons, then requests the pact. Exact failed XML and negative regressions retained. Corrected755 native1800s run38114181616 is still pending at record; original failure stays failed.

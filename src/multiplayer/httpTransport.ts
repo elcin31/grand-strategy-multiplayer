@@ -22,8 +22,31 @@ export class HttpTransport implements MultiplayerTransport {
  joinRoom(roomCode:string,displayName:string){return this.establish({action:'join',roomCode,displayName});}
  async reconnect(gameId:string):Promise<TransportSession>{const raw=await this.store.get(key(gameId));if(!raw)throw new Error('Сессия не найдена');const s=JSON.parse(raw) as RemoteSession;const r=await this.request<RoomResponse>('game-room',{action:'reconnect',gameId,playerId:s.playerId,token:s.token});this.adopt(s,r);this.sessions.set(gameId,s);s.lastPlayed=Date.now();await this.persist(s);if(s.pending){try{await this.deliver(s);}catch(error){if(!(error instanceof RemoteError&&error.status===409))throw error;}}const fresh=await this.refresh(s);return{state:fresh.state,playerId:s.playerId};}
  private async refresh(s:RemoteSession){const r=await this.request<RoomResponse>('game-room',{action:'state',gameId:s.gameId,playerId:s.playerId,token:s.token});this.adopt(s,r);return r;}
- private async deliver(s:RemoteSession){if(!s.pending)return;const pending=s.pending;try{await this.request('game-command',{gameId:s.gameId,playerId:s.playerId,token:s.token,...pending});delete s.pending;await this.persist(s);await this.refresh(s);}catch(error){if(error instanceof RemoteError&&[400,401,409,429].includes(error.status)){delete s.pending;await this.persist(s);if(error.status!==401)await this.refresh(s);}throw error;}}
+ private async deliver(s:RemoteSession){
+  if(!s.pending)return;
+  const pending=s.pending;
+  // Only absolute, unpaid controls can be rebased after an explicit CAS refusal.
+  // Paid/relative intents retain the existing visible rejection behavior.
+  const rebasable=['SELECT_COUNTRY','SET_READY','SET_SPEED'].includes(pending.command.type);
+  for(let attempt=0;;attempt++){
+   try{
+    await this.request('game-command',{gameId:s.gameId,playerId:s.playerId,token:s.token,...pending});
+    delete s.pending;await this.persist(s);await this.refresh(s);return;
+   }catch(error){
+    const stale=error instanceof RemoteError&&error.status===409&&[
+     'Stale campaign version','Состояние обновилось. Повторите действие после синхронизации'
+    ].includes(error.message);
+    if(stale&&rebasable&&attempt<2){
+     await this.refresh(s);pending.expectedVersion=s.version;await this.persist(s);continue;
+    }
+    if(error instanceof RemoteError&&[400,401,409,429].includes(error.status)){
+     delete s.pending;await this.persist(s);if(error.status!==401)await this.refresh(s);
+    }
+    throw error;
+   }
+  }
+ }
  async sendCommand(gameId:string,command:GameCommand):Promise<void>{if(command.type==='ADVANCE_TICK')return;const previous=this.queues.get(gameId)??Promise.resolve();const next=previous.catch(()=>{}).then(async()=>{const s=this.sessions.get(gameId);if(!s)throw new Error('Сессия потеряна');if(s.pending)await this.deliver(s);s.pending={command,commandId:`cmd-${Date.now()}-${Math.random().toString(36).slice(2,14)}`,expectedVersion:s.version};await this.persist(s);await this.deliver(s);});this.queues.set(gameId,next);return next;}
- subscribe(gameId:string,onState:(s:GameState)=>void,onStatus?:(status:string)=>void):Unsubscribe{let stopped=false,inFlight=false;this.listeners.set(gameId,onState);const poll=async()=>{const s=this.sessions.get(gameId);if(stopped||inFlight||!s)return;inFlight=true;try{const r=await this.request<RoomResponse>('game-room',{action:'state',gameId,playerId:s.playerId,token:s.token,version:s.version,checksum:this.checksums.get(gameId)});if(!stopped){if(!r.unchanged)this.adopt(s,r);onStatus?.('');}}catch(error){if(!stopped){if(error instanceof RemoteError&&error.status===426){stopped=true;clearInterval(timer);onStatus?.(error.message);}else onStatus?.(error instanceof RemoteError&&error.status===401?'Сессия истекла. Вернитесь к списку кампаний.':'Связь потеряна — восстанавливаем…');}}finally{inFlight=false;}};const timer=setInterval(poll,1500);void poll();return()=>{stopped=true;clearInterval(timer);this.listeners.delete(gameId);};}
+ subscribe(gameId:string,onState:(s:GameState)=>void,onStatus?:(status:string)=>void):Unsubscribe{let stopped=false,inFlight=false;this.listeners.set(gameId,onState);const poll=async()=>{const s=this.sessions.get(gameId);if(stopped||inFlight||!s)return;inFlight=true;try{if(s.pending){await this.request('game-room',{action:'heartbeat',gameId,playerId:s.playerId,token:s.token});if(!stopped)onStatus?.('');}else{const r=await this.request<RoomResponse>('game-room',{action:'state',gameId,playerId:s.playerId,token:s.token,version:s.version,checksum:this.checksums.get(gameId)});if(!stopped){if(!r.unchanged)this.adopt(s,r);onStatus?.('');}}}catch(error){if(!stopped){if(error instanceof RemoteError&&error.status===426){stopped=true;clearInterval(timer);onStatus?.(error.message);}else onStatus?.(error instanceof RemoteError&&error.status===401?'Сессия истекла. Вернитесь к списку кампаний.':'Связь потеряна — восстанавливаем…');}}finally{inFlight=false;}};const timer=setInterval(poll,1500);void poll();return()=>{stopped=true;clearInterval(timer);this.listeners.delete(gameId);};}
  async leave(gameId:string){const s=this.sessions.get(gameId);if(s){s.lastPlayed=Date.now();await this.persist(s);}this.sessions.delete(gameId);}
 }

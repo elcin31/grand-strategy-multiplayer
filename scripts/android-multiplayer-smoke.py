@@ -11,6 +11,7 @@ import re
 import subprocess
 import sys
 import time
+import threading
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from android_accessibility import dump_hierarchy, assert_no_game_fatal
@@ -110,7 +111,8 @@ def pause_native_campaign():
                 return
             texts = {n.get('text', '') for n in tree.iter('node')}
             if 'Действие отклонено' in texts:
-                assert 'Состояние обновилось. Повторите действие после синхронизации' in texts, \
+                assert texts & {'Состояние обновилось. Повторите действие после синхронизации',
+                                'Stale campaign version'}, \
                     'Native pause was rejected for a reason other than a stale snapshot'
                 ok = next(n for n in tree.iter('node') if n.get('text') == 'OK')
                 tap_node(ok)
@@ -180,6 +182,22 @@ native_id = hosts[0]['id']
 Path('/tmp/dominion-native-online-room-id').write_text(room_id)
 print('QA room:', room_id, flush=True)
 guest_auth = {'gameId': room_id, 'playerId': guest['playerId'], 'token': guest['token']}
+guest_heartbeat_errors = []
+stop_guest_heartbeat = threading.Event()
+
+
+def keep_guest_connected():
+    # This is a real second player's lightweight heartbeat, not a snapshot/tick.
+    while not stop_guest_heartbeat.wait(5):
+        try:
+            request('game-room', {'action': 'heartbeat', **guest_auth})
+        except Exception as error:
+            guest_heartbeat_errors.append(type(error).__name__)
+            return
+
+
+threading.Thread(target=keep_guest_connected, daemon=True).start()
+atexit.register(stop_guest_heartbeat.set)
 
 
 def snapshot():
@@ -274,6 +292,7 @@ for attempt in range(45):
 else: raise AssertionError('QA emulator did not reboot')
 root_test_device(adb, OUT/'emulator-root-after-reboot.txt')
 final = reconnect('06-reboot-reconnect')
+assert not guest_heartbeat_errors, 'Actual guest heartbeat failed during native flow'
 assert_no_game_fatal(logs(), ' '.join(game_pids))
 report = {'roomId': room_id, 'qaName': QA_NAME, 'stateVersion': final['stateVersion'],
           'apkSha256': hashlib.sha256(Path(sys.argv[1]).read_bytes()).hexdigest(),

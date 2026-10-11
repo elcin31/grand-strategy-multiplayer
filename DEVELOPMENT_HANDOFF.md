@@ -1,3 +1,17 @@
+# Continuation — confirmed native CAS race correction, 2026-10-11
+
+Verified published parent **3f62338d965f9685be8f161fe0ad4994b23d1fe4**, final2.0.0(code10) full CI **38132365346** currently building/10000ticks; its native transport predates this confirmed correction and is superseded for final acceptance. Main unchanged dbb354ab. Existing backend command24/room22/schema18 unchanged; do not redeploy identical bundles.
+
+Actual native online38132141380/job114448497096 FAILED on ready/start with visible `Stale campaign version`, independently corroborating earlier pause contention. Scope ff5c4d14-e26e-4c80-8cd1-e872ffd54741; artifact11699253034 digest969e872e5141722e9002c5e8d98fc1e721a852f844caab2be1f96d2a5155afdf/CRC verified. This concrete game client bug is corrected without changing server authority: absolute unpaid selection/readiness/speed only may refresh and retry two explicit CAS refusals, bounded3attempts, same intent ID/payload. Paid actions and other errors remain rejected; own pending poll becomes authenticated heartbeat instead of competing clock update. Receipt/restart behavior retained. Native guest QA heartbeat is real5s server presence, independent of render/input traversal.
+
+Files: src/multiplayer/httpTransport.ts, tests/multiplayer_controls.test.ts, scripts/android-multiplayer-smoke.py, BUG_REPORT.md, DEVELOPMENT_HANDOFF.md. Local3new meaningful guards +14 existing targeted cases (including22paid-intent network loss/restart checks) PASS; strictTS/native Python3/compilation/diff PASS. Full required JS/native/camera/upgrade CI must run for this corrected APK. No camera threshold or gameplay mechanic altered.
+
+Live HTTP QA remains RUNNING in isolated e91630eb-1637-41fb-8e6b-688ae7593df5, host WORLD ECONOMY QA. Prior failed exact QA rooms9cc50b47,7afc3e4d,ff5c4d14 require full UUID/name guard cleanup recorded above; no user rooms modified. Continuous camera38128760449 original forward pinch300→350 FAIL retained; current final binary must pass unchanged allABBA gates. Stage1/10/11 remain PARTIAL; remaining implemented systems await full live acceptance. No physicalXiaomi claims.
+
+Next exact action: publish corrected2.0 candidate, monitor actual signed native online and all existing release gates, complete live QA/cleanup, then verified merge/publication/APK delivery. Do not stop at the fix or distribute the preceding candidate as final.
+
+---
+
 # Continuation — final2.0 standalone candidate, 2026-10-11
 
 Verified published base **ea03ae9e3a844cff308ca75f271fd890eeea2ff9**; main remains **dbb354ab038713c3e54b969b34a6fc88bf2de11f**. QA continuation on existing expansion-qa **90b1ee85b2e9c906cb6acdac5a46a6ee32e34c15**, native online run **38132141380** is IN PROGRESS. Application systems/art/world/backend retain the implemented86 runtime; this block changes release metadata and required QA wiring only.
