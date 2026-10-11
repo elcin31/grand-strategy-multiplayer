@@ -1,3 +1,11 @@
+# Exact published UI runtime and full QA — 2026-10-11T20:15Z
+
+Published runtime **bf05151c94988f7d2511218a8cc51a1858a5a1a7**, byte-identical tree **b49a6e88a03ea1456c68cd305e32ec722fb60c69** on existing expansion-v2. Local checkout aligned and clean after normal expected-head fast-forward from878abe0. New full signed Android Actions **38171409180 QUEUED at this checkpoint**: https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/38171409180 . This report-only follow-up does not change runtime or start another build. Local StrictTS/306JS/97Python/Hermes/all42assets PASS, unchanged native acceptance PENDING. Original12stage status0DONE;1PARTIAL;2DONE;3–8DONE;9DONE;10PARTIAL;11PARTIAL. Prior actual788/381610 camera four failures preserved. Main/backend unchanged; no accepted manifest/final APK.
+
+**Exact next operation:** inspect actual38171409180 build/live-backend/10000ticks jobs; once built, download immutable signed artifact and verify source/SHA/Hermes/art/certificate. Then inspect all four native jobs on this identical binary, preserve original complete ABBA evidence and all regressions, finish1800s soak and native upgrade/online authority. Review and narrowly clean only new exact QA room UUIDs. If camera fails, diagnose actual remaining failure and implement a small verified correction; no reroll/threshold relaxation. Only all seven actual same-binary successes allow normal main promotion and final publication/delivery. Physical Xiaomi results unmeasured.
+
+---
+
 # Active checkpoint — native CPU samples inspected; bounded UI composition candidate, 2026-10-11
 
 Current confirmed published parent **878abe0dd4dcd5b5a51f1c45cce3d406b378906e** on existing expansion-v2. Main **dbb354ab038713c3e54b969b34a6fc88bf2de11f** and dedicated backend room22/command24/schema18 remain unchanged. No completed gameplay/illustration system reimplemented. The previous actual runtime788a6bd/full38161007462 has six successful gates but four original camera failures, all preserved; its3bc74162 APK is rejected and cannot be delivered as final.

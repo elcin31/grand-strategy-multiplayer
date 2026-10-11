@@ -32,5 +32,10 @@
     "diffCheck": "PASS"
   },
   "nativeAcceptance": "PENDING fresh full signed APK. Do not reuse six earlier successful gates to accept changed JS, reroll rejected binary or relax original10% pinch/20%other/PSS limits.",
-  "physicalRedmi": "UNMEASURED"
+  "physicalRedmi": "UNMEASURED",
+  "runtimeCommit": "bf05151c94988f7d2511218a8cc51a1858a5a1a7",
+  "sourceTree": "b49a6e88a03ea1456c68cd305e32ec722fb60c69",
+  "fullNativeRunId": 38171409180,
+  "fullNativeRunUrl": "https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/38171409180",
+  "fullNativeStatusAtCheckpoint": "QUEUED"
 }
