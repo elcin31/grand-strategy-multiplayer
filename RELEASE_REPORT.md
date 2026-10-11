@@ -1,3 +1,9 @@
+# Current signed renderer revision — native acceptance pending, 2026-10-11
+
+Runtimeece99b6e603310ce5cbe7f029cf3a3dd3eda4eae / fullrun38151928979. Build114506980751,10000/10restores and liveHTTP SUCCESS. Downloaded candidate artifact11707378000/62288920bytes/ZIP SHA93a7e138d40be2086e7523848ec27b5e0222450bb893c3bf31a1acfa886708a1/CRC verified. APK142477053bytes/SHA6ba03fb0631ac2db17af7ef2d38e45c83b74b8e5f2cd90b8026671d36c3d2b26: standalone embedded Hermes,fourABIs,all42byte-exact original paintings,sameproduction backend,samepackage/certificate,2.0.0code10,nondebuggable,landscape. All four exact new-binary native gates IN_PROGRESS; no acceptance manifest or final delivery yet. Full record EXPANSION_RENDERER_QA_2026-10-11.json. Old f794/75aa camera-rejected binary remains rejected. Physical Redmi unmeasured.
+
+---
+
 # f794 final candidate rejected; renderer revision ready for actual signed QA — 2026-10-11
 
 Dominion2.0 is not accepted or delivered yet. The previously verified f794/75aa release candidate passed offline1847s/save/upgrade/online/HTTP but its complete corrected38147835796 camera comparison FAILS five unchanged limits in both orders. Preserve that exact APK and raw history as a rejected checkpoint. EXPANSION_FINAL_CAMERA_REJECTED_F794.json identifies all36raw captures and verified artifact11705562470 digest.

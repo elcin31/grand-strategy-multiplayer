@@ -76,11 +76,57 @@
     "preservedCityBackups": 29,
     "method": "Completed HTTP job; exact UUID, exact creation timestamp, expected WORLD ECONOMY QA membership and all three original-backup fields empty; FK cleanup followed by independent zero-row readback."
   },
-  "signedApk": "PENDING",
-  "nativeCamera": "PENDING",
-  "nativeOfflineSoak": "PENDING",
-  "nativeVersionUpgrade": "PENDING",
-  "nativeOnline": "PENDING",
+  "signedApk": {
+    "status": "PENDING_NATIVE_ACCEPTANCE",
+    "runtime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
+    "runId": 38151928979,
+    "artifactId": 11707378000,
+    "zipBytes": 62288920,
+    "zipSha256": "93a7e138d40be2086e7523848ec27b5e0222450bb893c3bf31a1acfa886708a1",
+    "apkBytes": 142477053,
+    "apkSha256": "6ba03fb0631ac2db17af7ef2d38e45c83b74b8e5f2cd90b8026671d36c3d2b26",
+    "hermesBytes": 10693676,
+    "hermesSha256": "7c2f0132049a84625383104d3df98ea6a68deca49be3b579468070c26d35c55e",
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "jobId": 114506980751,
+    "conclusion": "success",
+    "version": "2.0.0",
+    "versionCode": 10,
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "landscapeVerifiedByCI": true,
+    "nonDebuggableVerifiedByCI": true,
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "packagedOriginalPaintings": 42,
+    "packagedOriginalPaintingBytes": 3479060,
+    "jsTests": 299,
+    "jsSkipped": 0,
+    "ciPythonTests": 97,
+    "ciPythonOptionalSkipped": 2,
+    "localPythonTests": 97,
+    "localPythonSkipped": 0,
+    "typecheck": "PASS"
+  },
+  "nativeCamera": {
+    "jobId": 114511075768,
+    "status": "IN_PROGRESS"
+  },
+  "nativeOfflineSoak": {
+    "jobId": 114511075812,
+    "status": "IN_PROGRESS"
+  },
+  "nativeVersionUpgrade": {
+    "jobId": 114511075906,
+    "status": "IN_PROGRESS"
+  },
+  "nativeOnline": {
+    "jobId": 114511076358,
+    "status": "IN_PROGRESS"
+  },
   "longSimulation": {
     "jobId": 114506980677,
     "conclusion": "success",
