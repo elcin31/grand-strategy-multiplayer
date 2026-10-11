@@ -1,6 +1,7 @@
 """Root only the ephemeral QA emulator, with proof after adbd restarts."""
 import subprocess
 import time
+import re
 
 
 def fresh_camera_install(adb, package, apk):
@@ -10,6 +11,20 @@ def fresh_camera_install(adb, package, apk):
         assert adb('uninstall', package, timeout=60).strip() == 'Success', 'Camera test uninstall failed'
     assert adb('install', apk, timeout=180).strip().endswith('Success'), 'Camera test install failed'
     assert adb('shell', 'pm', 'clear', package).strip() == 'Success', 'Camera fixture reset failed'
+
+
+def label_test_fixture(adb, app_directory, fixture_directory, fixture_file):
+    """Keep enforcing SELinux; copy the newly installed app's actual MLS label."""
+    assert fixture_directory == app_directory+'/files/dominion-campaigns'
+    assert fixture_file.startswith(fixture_directory+'/') and '/' not in fixture_file[len(fixture_directory)+1:]
+    context = adb('shell', 'ls', '-Zd', app_directory).split()[0]
+    assert re.fullmatch(r'u:object_r:app_data_file:s0(?::c\d+(?:,c\d+)*)?', context), 'No actual installed app data label'
+    # restorecon can use stale package-info categories after a version switch.
+    # The PackageManager-created app root has the current UID's actual label.
+    adb('shell', 'chcon', '-R', context, fixture_directory)
+    observed = adb('shell', 'ls', '-Zd', fixture_file).split()[0]
+    assert observed == context, 'Copied camera fixture retains another installation label'
+    return context
 
 
 def root_test_device(adb, diagnostic):

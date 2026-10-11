@@ -2,6 +2,7 @@ import importlib.util
 import subprocess
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 spec = importlib.util.spec_from_file_location('android_accessibility', Path(__file__).parents[1] / 'scripts/android_accessibility.py')
@@ -10,6 +11,14 @@ spec.loader.exec_module(module)
 
 
 class AccessibilityTest(unittest.TestCase):
+    def test_disabled_pressable_cannot_be_tapped_through_its_enabled_text_child(self):
+        root=ET.fromstring('<hierarchy><node content-desc="Продолжить" enabled="false"><node text="Продолжить" enabled="true" /></node></hierarchy>')
+        self.assertIsNone(module.find_enabled_control(root,'Продолжить'))
+        root[0].set('enabled','true')
+        self.assertIs(module.find_enabled_control(root,'Продолжить'),root[0])
+        root[0].set('visible-to-user','false')
+        self.assertIsNone(module.find_enabled_control(root,'Продолжить'))
+
     def exercise(self, failures, pid='42', logs=''):
         calls = []
         def adb(*args, **kwargs):

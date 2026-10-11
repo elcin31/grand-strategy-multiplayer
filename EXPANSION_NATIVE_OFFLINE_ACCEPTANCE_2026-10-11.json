@@ -1,0 +1,56 @@
+{
+  "status": "PASS",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "runtime": "f794ea4a4974f2f826f3ec7bd712a81b5f05291a",
+  "runId": 38133111807,
+  "jobId": 114455037099,
+  "jobName": "android-smoke",
+  "jobConclusion": "success",
+  "artifact": {
+    "id": 11701132935,
+    "name": "android-smoke-evidence",
+    "bytes": 29739969,
+    "sha256": "bbf83828788b583459248379c4922743aa8537bfd444dee33f5e163807ad38d4",
+    "zipCrcVerified": true
+  },
+  "candidateApk": {
+    "name": "Dominion-grand-strategy-v2-release.apk",
+    "bytes": 142473881,
+    "sha256": "75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3"
+  },
+  "stress": {
+    "durationSeconds": 1847.2766113159998,
+    "minimumRequiredSeconds": 1800,
+    "memorySamples": 30,
+    "pssMinKiB": 427745,
+    "pssMaxKiB": 541261,
+    "scope": "Sampled PSS on API35 SwiftShader emulator; no continuous peak or physical-device performance claim"
+  },
+  "nativeHarnessChecks": {
+    "offlineStandaloneStartup": true,
+    "landscape": true,
+    "worldSelectionSearchStartPauseRecruitment": true,
+    "populationGovernmentReligion": true,
+    "fourPresetsTwelveModesFiveLayouts": true,
+    "armySelectionMovementCancelBackPriority": true,
+    "persistentCampaignProcessAndEmulatorReboot": true,
+    "renderSimulationAutosaveSoak": true,
+    "gameFatalCheckPassed": true
+  },
+  "visualReview": {
+    "paintStats": {
+      "landFraction": 0.2284,
+      "samplePixels": 287232
+    },
+    "reviewedOriginalScreenshots": [
+      "construction-art.png",
+      "focus-art.png",
+      "military-logistics.png",
+      "technology-art.png"
+    ],
+    "historicalIllustrationsVisible": true,
+    "packaged42OriginalArtHashesVerifiedSeparately": true
+  },
+  "remainingAcceptance": "Corrected complete camera ABBA at original limits, then exact-binary acceptance/publication/delivery",
+  "physicalRedmiNote12Tested": false
+}
