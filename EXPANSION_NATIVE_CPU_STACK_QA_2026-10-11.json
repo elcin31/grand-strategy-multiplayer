@@ -1,0 +1,3863 @@
+{
+  "status": "DIAGNOSTIC_ONLY_NATIVE_CAMERA_REMAINS_REJECTED",
+  "dateUtc": "2026-10-11",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "runtimeCommit": "788a6bd575a4c9d13ed3ab1c0810eaa0d576ca2f",
+  "fullRejectedRunId": 38161007462,
+  "diagnosticRunId": 38169301651,
+  "diagnosticJobId": 114558335773,
+  "diagnosticCommit": "bf1f95b80bbe5445176b96e91035a9c5c5689dd4",
+  "artifact": {
+    "id": 11713821877,
+    "bytes": 25064892,
+    "sha256": "de555d0122a753059b6e9191de0501e7e7940e7f4b7535748626fbae82116e91",
+    "sizeShaAndZipCrcVerified": true
+  },
+  "candidateApkSha256": "3bc7416204a60aa9613864a828a03e61becc11c63e2d0071d479f99cf9cc8524",
+  "environment": "Android userdebug x86_64 1280x720 emulator, SwiftShader/QEMU. Physical Xiaomi Redmi Note12 not measured.",
+  "method": "Four separate trace-only launches after all original ABBA acceptance captures. Actual linux.perf99Hz samples and scheduler states filtered to the captured Dominion PID and its real async gesture marker. Recursive callsite traversal, maximum128 frames; inclusive sample counts COUNT(DISTINCT sample_id) grouped by thread/mapping/function. Completed nested slices overlap and are not CPU shares or isolated GPU durations.",
+  "captures": [
+    {
+      "name": "trace-after-local",
+      "pid": 3727,
+      "scenario": "local-pan",
+      "traceBytes": 19872571,
+      "traceSha256": "d5b91097edef16b83916beaf1f50175dbade4b5685ef5aef3b9e91b5278c21ac",
+      "configSha256": "1578c5790df64013aeac3c11e431a7b9c5c86a3a9aa760baf9c98e25b8c7cda7",
+      "gestureMarker": "DOMINION_LOCAL_PAN_TRACE",
+      "requestedCpuSamplingHz": 99,
+      "markerStartNs": 369153481532,
+      "markerEndNs": 379785271712,
+      "markerDurationMs": 10631.79018,
+      "markerValid": true,
+      "schedulerCoveragePresent": true,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "cpuProfileObserved": true,
+      "sampledThreads": [
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "samples": 684,
+          "withStack": 684,
+          "unwindErrorSamples": 1
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "samples": 376,
+          "withStack": 376,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3748,
+          "thread": "mqt_v_js",
+          "samples": 10,
+          "withStack": 10,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3731,
+          "thread": "Jit thread pool",
+          "samples": 5,
+          "withStack": 5,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3736,
+          "thread": "binder:3727_1",
+          "samples": 4,
+          "withStack": 4,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3738,
+          "thread": "binder:3727_3",
+          "samples": 2,
+          "withStack": 2,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3762,
+          "thread": "binder:3727_3",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        }
+      ],
+      "completedNestedSlices": [
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "animation",
+          "samples": 292,
+          "nestedInclusiveMs": 7364.597871,
+          "maxCompletedMs": 55.545459
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "Drawing  0.00  0.00 1280.00 720.00",
+          "samples": 231,
+          "nestedInclusiveMs": 4156.651121,
+          "maxCompletedMs": 53.325048
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "eglSwapBuffers",
+          "samples": 232,
+          "nestedInclusiveMs": 3693.623981,
+          "maxCompletedMs": 36.735182
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 232,
+          "nestedInclusiveMs": 3513.470093,
+          "maxCompletedMs": 30.187048
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "eglSwapBuffersWithDamageKHR",
+          "samples": 231,
+          "nestedInclusiveMs": 3119.818438,
+          "maxCompletedMs": 50.40375
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 453,
+          "nestedInclusiveMs": 2988.481278,
+          "maxCompletedMs": 30.395142
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "glBufferDataSyncAEMU encode",
+          "samples": 891,
+          "nestedInclusiveMs": 1860.535033,
+          "maxCompletedMs": 18.350632
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "traversal",
+          "samples": 231,
+          "nestedInclusiveMs": 1680.271041,
+          "maxCompletedMs": 20.636461
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "draw-VRI[MainActivity]",
+          "samples": 231,
+          "nestedInclusiveMs": 1652.423318,
+          "maxCompletedMs": 20.574937
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "postAndWait",
+          "samples": 231,
+          "nestedInclusiveMs": 1614.03277,
+          "maxCompletedMs": 20.475754
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "syncFrameState",
+          "samples": 231,
+          "nestedInclusiveMs": 906.882161,
+          "maxCompletedMs": 16.170056
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "flush commands",
+          "samples": 231,
+          "nestedInclusiveMs": 800.549051,
+          "maxCompletedMs": 24.645799
+        },
+        {
+          "tid": 4063,
+          "thread": "GPU completion",
+          "name": "waitForever",
+          "samples": 294,
+          "nestedInclusiveMs": 773.523575,
+          "maxCompletedMs": 34.166407
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "glBufferDataSyncAEMU encode",
+          "samples": 693,
+          "nestedInclusiveMs": 396.990498,
+          "maxCompletedMs": 16.703934
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "input",
+          "samples": 234,
+          "nestedInclusiveMs": 366.94795,
+          "maxCompletedMs": 28.52276
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "VRI[MainActivity]",
+          "samples": 234,
+          "nestedInclusiveMs": 365.22896,
+          "maxCompletedMs": 28.517425
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "queueBuffer",
+          "samples": 462,
+          "nestedInclusiveMs": 329.460793,
+          "maxCompletedMs": 31.410128
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "AtlasTextOp",
+          "samples": 1848,
+          "nestedInclusiveMs": 319.818981,
+          "maxCompletedMs": 16.82338
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "auto skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)::(anonymous class)::operator()() const",
+          "samples": 231,
+          "nestedInclusiveMs": 297.632935,
+          "maxCompletedMs": 17.005273
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "waitForeverOnFence",
+          "samples": 222,
+          "nestedInclusiveMs": 263.423701,
+          "maxCompletedMs": 14.263446
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "auto skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)::(anonymous class)::operator()() const",
+          "samples": 231,
+          "nestedInclusiveMs": 211.939224,
+          "maxCompletedMs": 6.385803
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "glTexSubImage2D encode",
+          "samples": 240,
+          "nestedInclusiveMs": 206.964271,
+          "maxCompletedMs": 9.719072
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "dequeueBuffer - VRI[MainActivity]#0(BLAST Consumer)0",
+          "samples": 231,
+          "nestedInclusiveMs": 194.227062,
+          "maxCompletedMs": 44.683241
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "dequeueBuffer",
+          "samples": 231,
+          "nestedInclusiveMs": 191.257308,
+          "maxCompletedMs": 44.664594
+        },
+        {
+          "tid": 3731,
+          "thread": "Jit thread pool",
+          "name": "Compiling baseline",
+          "samples": 95,
+          "nestedInclusiveMs": 136.620981,
+          "maxCompletedMs": 32.952234
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "rcDestroySyncKHR encode",
+          "samples": 222,
+          "nestedInclusiveMs": 134.223753,
+          "maxCompletedMs": 9.750019
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "glBufferSubData encode",
+          "samples": 891,
+          "nestedInclusiveMs": 129.598238,
+          "maxCompletedMs": 5.428374
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "queueBuffer",
+          "samples": 464,
+          "nestedInclusiveMs": 128.941844,
+          "maxCompletedMs": 4.77684
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "glBufferSubData encode",
+          "samples": 693,
+          "nestedInclusiveMs": 105.791818,
+          "maxCompletedMs": 6.546226
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "CircularRRectOp",
+          "samples": 4158,
+          "nestedInclusiveMs": 100.447789,
+          "maxCompletedMs": 5.72898
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#scheduleVsyncLocked",
+          "samples": 292,
+          "nestedInclusiveMs": 97.035593,
+          "maxCompletedMs": 27.822972
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_MOVE deviceId=-1 source=0x1002 historySize=2",
+          "samples": 92,
+          "nestedInclusiveMs": 89.12911,
+          "maxCompletedMs": 4.027559
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_MOVE deviceId=-1 source=0x1002 historySize=3",
+          "samples": 100,
+          "nestedInclusiveMs": 86.779502,
+          "maxCompletedMs": 6.326469
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "name": "onFrameAvailable - VRI[MainActivity]#0(f:0,a:1)",
+          "samples": 214,
+          "nestedInclusiveMs": 82.495724,
+          "maxCompletedMs": 3.691436
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "glGenTextures encode",
+          "samples": 18,
+          "nestedInclusiveMs": 75.558182,
+          "maxCompletedMs": 17.678773
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "glVertexAttribPointerOffset encode",
+          "samples": 39769,
+          "nestedInclusiveMs": 75.340384,
+          "maxCompletedMs": 4.831324
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 113380",
+          "samples": 1,
+          "nestedInclusiveMs": 59.091981,
+          "maxCompletedMs": 59.091981
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 113382 in 19.6ms",
+          "samples": 1,
+          "nestedInclusiveMs": 59.027537,
+          "maxCompletedMs": 59.027537
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 113483",
+          "samples": 1,
+          "nestedInclusiveMs": 58.192197,
+          "maxCompletedMs": 58.192197
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 113485 in 25.5ms",
+          "samples": 1,
+          "nestedInclusiveMs": 58.138044,
+          "maxCompletedMs": 58.138044
+        }
+      ],
+      "runningAndRunnableThreadStates": [
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 6854.336945,
+          "samples": 3709
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 3804.486911,
+          "samples": 2067
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "state": "R+",
+          "observedMs": 909.477638,
+          "samples": 2325
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "state": "R",
+          "observedMs": 689.922388,
+          "samples": 790
+        },
+        {
+          "tid": 3742,
+          "thread": "RenderThread",
+          "state": "R+",
+          "observedMs": 638.772295,
+          "samples": 1276
+        },
+        {
+          "tid": 4063,
+          "thread": "GPU completion",
+          "state": "R",
+          "observedMs": 578.949983,
+          "samples": 603
+        },
+        {
+          "tid": 3727,
+          "thread": "tegymultiplayer",
+          "state": "R",
+          "observedMs": 546.245577,
+          "samples": 1384
+        },
+        {
+          "tid": 3736,
+          "thread": "binder:3727_1",
+          "state": "R",
+          "observedMs": 219.499387,
+          "samples": 200
+        },
+        {
+          "tid": 3731,
+          "thread": "Jit thread pool",
+          "state": "R",
+          "observedMs": 161.010435,
+          "samples": 42
+        },
+        {
+          "tid": 3748,
+          "thread": "mqt_v_js",
+          "state": "R",
+          "observedMs": 135.071707,
+          "samples": 90
+        },
+        {
+          "tid": 3748,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 101.136672,
+          "samples": 104
+        },
+        {
+          "tid": 3762,
+          "thread": "binder:3727_3",
+          "state": "R",
+          "observedMs": 90.139165,
+          "samples": 354
+        },
+        {
+          "tid": 3738,
+          "thread": "binder:3727_3",
+          "state": "R",
+          "observedMs": 88.490863,
+          "samples": 64
+        },
+        {
+          "tid": 3731,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 63.184414,
+          "samples": 55
+        },
+        {
+          "tid": 3731,
+          "thread": "Jit thread pool",
+          "state": "R+",
+          "observedMs": 46.320013,
+          "samples": 13
+        },
+        {
+          "tid": 3736,
+          "thread": "binder:3727_1",
+          "state": "Running",
+          "observedMs": 41.583189,
+          "samples": 387
+        },
+        {
+          "tid": 3736,
+          "thread": "binder:3727_1",
+          "state": "R+",
+          "observedMs": 32.358346,
+          "samples": 187
+        },
+        {
+          "tid": 3748,
+          "thread": "mqt_v_js",
+          "state": "R+",
+          "observedMs": 28.443256,
+          "samples": 14
+        },
+        {
+          "tid": 4063,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 19.81632,
+          "samples": 605
+        },
+        {
+          "tid": 3738,
+          "thread": "binder:3727_3",
+          "state": "R+",
+          "observedMs": 16.179994,
+          "samples": 63
+        },
+        {
+          "tid": 3738,
+          "thread": "binder:3727_3",
+          "state": "Running",
+          "observedMs": 14.347688,
+          "samples": 127
+        },
+        {
+          "tid": 3749,
+          "thread": "mqt_v_native",
+          "state": "R",
+          "observedMs": 4.407739,
+          "samples": 5
+        },
+        {
+          "tid": 3762,
+          "thread": "binder:3727_3",
+          "state": "Running",
+          "observedMs": 3.173574,
+          "samples": 354
+        },
+        {
+          "tid": 3740,
+          "thread": "Profile Saver",
+          "state": "R",
+          "observedMs": 1.748252,
+          "samples": 2
+        },
+        {
+          "tid": 4063,
+          "thread": "GPU completion",
+          "state": "R+",
+          "observedMs": 1.32612,
+          "samples": 2
+        },
+        {
+          "tid": 3749,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 1.291675,
+          "samples": 5
+        },
+        {
+          "tid": 3732,
+          "thread": "HeapTaskDaemon",
+          "state": "Running",
+          "observedMs": 0.413841,
+          "samples": 1
+        },
+        {
+          "tid": 4064,
+          "thread": "HWC release",
+          "state": "R",
+          "observedMs": 0.351695,
+          "samples": 5
+        },
+        {
+          "tid": 3732,
+          "thread": "HeapTaskDaemon",
+          "state": "R",
+          "observedMs": 0.108625,
+          "samples": 1
+        },
+        {
+          "tid": 3735,
+          "thread": "FinalizerWatchd",
+          "state": "Running",
+          "observedMs": 0.094839,
+          "samples": 2
+        },
+        {
+          "tid": 4064,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.073149,
+          "samples": 5
+        },
+        {
+          "tid": 3735,
+          "thread": "FinalizerWatchd",
+          "state": "R",
+          "observedMs": 0.04612,
+          "samples": 2
+        },
+        {
+          "tid": 3740,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.02477,
+          "samples": 2
+        }
+      ],
+      "topSampledFrames": [
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 343,
+          "inclusiveSamples": 479
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 188,
+          "inclusiveSamples": 290
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 65,
+          "inclusiveSamples": 67
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 61,
+          "inclusiveSamples": 63
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 47,
+          "inclusiveSamples": 52
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 22,
+          "inclusiveSamples": 27
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 19,
+          "inclusiveSamples": 30
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 16,
+          "inclusiveSamples": 21
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "syscall_enter_from_user_mode",
+          "selfSamples": 14,
+          "inclusiveSamples": 15
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 10,
+          "inclusiveSamples": 10
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "mod_node_page_state",
+          "selfSamples": 10,
+          "inclusiveSamples": 10
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 9,
+          "inclusiveSamples": 13
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 9,
+          "inclusiveSamples": 9
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 7,
+          "inclusiveSamples": 7
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "__vfprintf",
+          "selfSamples": 6,
+          "inclusiveSamples": 10
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "read",
+          "selfSamples": 5,
+          "inclusiveSamples": 452
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "syscall_enter_from_user_mode",
+          "selfSamples": 5,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "ring_buffer_lock_reserve",
+          "selfSamples": 4,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "__errno",
+          "selfSamples": 4,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "smp_call_function_many_cond",
+          "selfSamples": 4,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libc.so",
+          "function": "read",
+          "selfSamples": 3,
+          "inclusiveSamples": 272
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "write",
+          "selfSamples": 3,
+          "inclusiveSamples": 77
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libc.so",
+          "function": "write",
+          "selfSamples": 3,
+          "inclusiveSamples": 44
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "memset_generic",
+          "selfSamples": 3,
+          "inclusiveSamples": 5
+        },
+        {
+          "thread": "Jit thread pool",
+          "mapping": "/kernel",
+          "function": "smp_call_function_many_cond",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libc.so",
+          "function": "memcpy",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "__fget_files",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "mod_node_page_state",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "selinux_file_permission",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "__fget_files",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "selinux_file_permission",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "vfs_read",
+          "selfSamples": 2,
+          "inclusiveSamples": 437
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libOpenglSystemCommon.so",
+          "function": "qemu_pipe_read",
+          "selfSamples": 2,
+          "inclusiveSamples": 274
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "vsnprintf",
+          "selfSamples": 2,
+          "inclusiveSamples": 12
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libutils.so",
+          "function": "_ZN7android6Looper8pollOnceEiPiS1_PPv",
+          "selfSamples": 2,
+          "inclusiveSamples": 8
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "_ZN5scudo9AllocatorINS_19AndroidNormalConfigEXadL_Z21scudo_malloc_postinitEEE8allocateEmNS_5Chunk6OriginEmb",
+          "selfSamples": 2,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libc.so",
+          "function": "memset_generic",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "fsnotify_perm",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        },
+        {
+          "thread": "binder:3727_1",
+          "mapping": "/kernel",
+          "function": "queued_spin_lock_slowpath",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "__tls_get_addr",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        }
+      ]
+    },
+    {
+      "name": "trace-after-pinch",
+      "pid": 2773,
+      "scenario": "pinch",
+      "traceBytes": 22987407,
+      "traceSha256": "91769cffb14ff977a2f2fe9709945f690179f5913666ae59146f4a747843900c",
+      "configSha256": "1578c5790df64013aeac3c11e431a7b9c5c86a3a9aa760baf9c98e25b8c7cda7",
+      "gestureMarker": "DOMINION_PINCH_TRACE",
+      "requestedCpuSamplingHz": 99,
+      "markerStartNs": 181117001507,
+      "markerEndNs": 191753268593,
+      "markerDurationMs": 10636.267086,
+      "markerValid": true,
+      "schedulerCoveragePresent": true,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "cpuProfileObserved": true,
+      "sampledThreads": [
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "samples": 928,
+          "withStack": 928,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2788,
+          "thread": "RenderThread",
+          "samples": 93,
+          "withStack": 93,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2794,
+          "thread": "mqt_v_js",
+          "samples": 53,
+          "withStack": 53,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2797,
+          "thread": "hades",
+          "samples": 30,
+          "withStack": 30,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2777,
+          "thread": "Jit thread pool",
+          "samples": 3,
+          "withStack": 3,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2778,
+          "thread": "HeapTaskDaemon",
+          "samples": 3,
+          "withStack": 3,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2782,
+          "thread": "binder:2773_1",
+          "samples": 2,
+          "withStack": 2,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2808,
+          "thread": "binder:2773_3",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2828,
+          "thread": "binder:2773_4",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        }
+      ],
+      "completedNestedSlices": [
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "eglSwapBuffers",
+          "samples": 129,
+          "nestedInclusiveMs": 6057.411969,
+          "maxCompletedMs": 133.987973
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 129,
+          "nestedInclusiveMs": 5979.90223,
+          "maxCompletedMs": 133.597016
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "animation",
+          "samples": 91,
+          "nestedInclusiveMs": 4473.913977,
+          "maxCompletedMs": 227.327088
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "input",
+          "samples": 82,
+          "nestedInclusiveMs": 1276.460209,
+          "maxCompletedMs": 180.897323
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "VRI[MainActivity]",
+          "samples": 82,
+          "nestedInclusiveMs": 1275.773653,
+          "maxCompletedMs": 180.891214
+        },
+        {
+          "tid": 2788,
+          "thread": "RenderThread",
+          "name": "Drawing  0.00  0.00 1280.00 720.00",
+          "samples": 70,
+          "nestedInclusiveMs": 1178.819785,
+          "maxCompletedMs": 58.996242
+        },
+        {
+          "tid": 2788,
+          "thread": "RenderThread",
+          "name": "eglSwapBuffersWithDamageKHR",
+          "samples": 70,
+          "nestedInclusiveMs": 917.549764,
+          "maxCompletedMs": 54.767143
+        },
+        {
+          "tid": 2788,
+          "thread": "RenderThread",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 136,
+          "nestedInclusiveMs": 834.497152,
+          "maxCompletedMs": 35.914383
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "glBufferDataSyncAEMU encode",
+          "samples": 733,
+          "nestedInclusiveMs": 616.453816,
+          "maxCompletedMs": 19.771864
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "traversal",
+          "samples": 70,
+          "nestedInclusiveMs": 391.996656,
+          "maxCompletedMs": 26.624822
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "draw-VRI[MainActivity]",
+          "samples": 70,
+          "nestedInclusiveMs": 383.164585,
+          "maxCompletedMs": 26.556085
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "postAndWait",
+          "samples": 70,
+          "nestedInclusiveMs": 371.316577,
+          "maxCompletedMs": 26.457939
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 53020",
+          "samples": 1,
+          "nestedInclusiveMs": 330.482859,
+          "maxCompletedMs": 330.482859
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 53030 in 20.2ms",
+          "samples": 1,
+          "nestedInclusiveMs": 330.197619,
+          "maxCompletedMs": 330.197619
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 52871",
+          "samples": 1,
+          "nestedInclusiveMs": 317.948869,
+          "maxCompletedMs": 317.948869
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 52880 in 32.9ms",
+          "samples": 1,
+          "nestedInclusiveMs": 317.610198,
+          "maxCompletedMs": 317.610198
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 52946",
+          "samples": 1,
+          "nestedInclusiveMs": 303.227279,
+          "maxCompletedMs": 303.227279
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 52955 in 26.9ms",
+          "samples": 1,
+          "nestedInclusiveMs": 302.183242,
+          "maxCompletedMs": 302.183242
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 53036",
+          "samples": 1,
+          "nestedInclusiveMs": 289.113648,
+          "maxCompletedMs": 289.113648
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 53045 in 30.1ms",
+          "samples": 1,
+          "nestedInclusiveMs": 288.759398,
+          "maxCompletedMs": 288.759398
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "glTexSubImage2D encode",
+          "samples": 2439,
+          "nestedInclusiveMs": 277.804536,
+          "maxCompletedMs": 7.642693
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 52886",
+          "samples": 1,
+          "nestedInclusiveMs": 235.660593,
+          "maxCompletedMs": 235.660593
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 52894 in 31.3ms",
+          "samples": 1,
+          "nestedInclusiveMs": 235.213627,
+          "maxCompletedMs": 235.213627
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 52961",
+          "samples": 1,
+          "nestedInclusiveMs": 232.469448,
+          "maxCompletedMs": 232.469448
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 52969 in 23.5ms",
+          "samples": 1,
+          "nestedInclusiveMs": 232.191178,
+          "maxCompletedMs": 232.191178
+        },
+        {
+          "tid": 2788,
+          "thread": "RenderThread",
+          "name": "flush commands",
+          "samples": 70,
+          "nestedInclusiveMs": 219.313692,
+          "maxCompletedMs": 30.52975
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 53006",
+          "samples": 1,
+          "nestedInclusiveMs": 215.804007,
+          "maxCompletedMs": 215.804007
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 53014 in 22.1ms",
+          "samples": 1,
+          "nestedInclusiveMs": 215.513171,
+          "maxCompletedMs": 215.513171
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 52916",
+          "samples": 1,
+          "nestedInclusiveMs": 209.676653,
+          "maxCompletedMs": 209.676653
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 52924 in 25.8ms",
+          "samples": 1,
+          "nestedInclusiveMs": 202.935772,
+          "maxCompletedMs": 202.935772
+        },
+        {
+          "tid": 2788,
+          "thread": "RenderThread",
+          "name": "syncFrameState",
+          "samples": 70,
+          "nestedInclusiveMs": 188.617207,
+          "maxCompletedMs": 15.101134
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 52856",
+          "samples": 1,
+          "nestedInclusiveMs": 187.575026,
+          "maxCompletedMs": 187.575026
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 52864 in 32.6ms",
+          "samples": 1,
+          "nestedInclusiveMs": 187.389916,
+          "maxCompletedMs": 187.389916
+        },
+        {
+          "tid": 2788,
+          "thread": "RenderThread",
+          "name": "queueBuffer",
+          "samples": 140,
+          "nestedInclusiveMs": 182.697704,
+          "maxCompletedMs": 40.205196
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_MOVE deviceId=-1 source=0x1002 historySize=24",
+          "samples": 1,
+          "nestedInclusiveMs": 180.271979,
+          "maxCompletedMs": 180.271979
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "deliverInputEvent src=0x1002 eventTimeNano=190287416724 id=0xda9e69b5",
+          "samples": 1,
+          "nestedInclusiveMs": 180.24239,
+          "maxCompletedMs": 180.24239
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "ViewPostImeInputStage id=0xda9e69b5",
+          "samples": 1,
+          "nestedInclusiveMs": 179.982968,
+          "maxCompletedMs": 179.982968
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_MOVE deviceId=-1 source=0x1002 historySize=5",
+          "samples": 6,
+          "nestedInclusiveMs": 174.657926,
+          "maxCompletedMs": 43.200805
+        },
+        {
+          "tid": 3076,
+          "thread": "GPU completion",
+          "name": "waitForever",
+          "samples": 104,
+          "nestedInclusiveMs": 172.418941,
+          "maxCompletedMs": 16.760215
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "name": "glGenTextures encode",
+          "samples": 241,
+          "nestedInclusiveMs": 172.068982,
+          "maxCompletedMs": 15.474826
+        }
+      ],
+      "runningAndRunnableThreadStates": [
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 9385.794238,
+          "samples": 2509
+        },
+        {
+          "tid": 2788,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 993.774399,
+          "samples": 644
+        },
+        {
+          "tid": 2794,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 549.501716,
+          "samples": 445
+        },
+        {
+          "tid": 2794,
+          "thread": "mqt_v_js",
+          "state": "R",
+          "observedMs": 397.98101,
+          "samples": 309
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "state": "R+",
+          "observedMs": 389.205254,
+          "samples": 1568
+        },
+        {
+          "tid": 2773,
+          "thread": "tegymultiplayer",
+          "state": "R",
+          "observedMs": 315.974594,
+          "samples": 940
+        },
+        {
+          "tid": 2788,
+          "thread": "RenderThread",
+          "state": "R+",
+          "observedMs": 286.127005,
+          "samples": 387
+        },
+        {
+          "tid": 2797,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 278.240102,
+          "samples": 106
+        },
+        {
+          "tid": 2828,
+          "thread": "binder:2773_4",
+          "state": "R",
+          "observedMs": 232.341221,
+          "samples": 64
+        },
+        {
+          "tid": 2777,
+          "thread": "Jit thread pool",
+          "state": "R",
+          "observedMs": 205.680165,
+          "samples": 47
+        },
+        {
+          "tid": 3076,
+          "thread": "GPU completion",
+          "state": "R",
+          "observedMs": 185.220795,
+          "samples": 203
+        },
+        {
+          "tid": 2782,
+          "thread": "binder:2773_1",
+          "state": "R",
+          "observedMs": 174.427814,
+          "samples": 81
+        },
+        {
+          "tid": 2797,
+          "thread": "hades",
+          "state": "R",
+          "observedMs": 168.436956,
+          "samples": 100
+        },
+        {
+          "tid": 2788,
+          "thread": "RenderThread",
+          "state": "R",
+          "observedMs": 156.300233,
+          "samples": 257
+        },
+        {
+          "tid": 2794,
+          "thread": "mqt_v_js",
+          "state": "R+",
+          "observedMs": 114.204198,
+          "samples": 136
+        },
+        {
+          "tid": 2784,
+          "thread": "binder:2773_3",
+          "state": "R",
+          "observedMs": 92.300017,
+          "samples": 33
+        },
+        {
+          "tid": 2777,
+          "thread": "Jit thread pool",
+          "state": "R+",
+          "observedMs": 86.261481,
+          "samples": 8
+        },
+        {
+          "tid": 2808,
+          "thread": "binder:2773_3",
+          "state": "R",
+          "observedMs": 45.821044,
+          "samples": 91
+        },
+        {
+          "tid": 2777,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 42.015357,
+          "samples": 55
+        },
+        {
+          "tid": 2778,
+          "thread": "HeapTaskDaemon",
+          "state": "Running",
+          "observedMs": 28.589193,
+          "samples": 15
+        },
+        {
+          "tid": 2782,
+          "thread": "binder:2773_1",
+          "state": "Running",
+          "observedMs": 15.225236,
+          "samples": 109
+        },
+        {
+          "tid": 2795,
+          "thread": "mqt_v_native",
+          "state": "R",
+          "observedMs": 12.342245,
+          "samples": 98
+        },
+        {
+          "tid": 2778,
+          "thread": "HeapTaskDaemon",
+          "state": "R+",
+          "observedMs": 12.144209,
+          "samples": 2
+        },
+        {
+          "tid": 2782,
+          "thread": "binder:2773_1",
+          "state": "R+",
+          "observedMs": 7.68278,
+          "samples": 28
+        },
+        {
+          "tid": 2778,
+          "thread": "HeapTaskDaemon",
+          "state": "R",
+          "observedMs": 6.196282,
+          "samples": 12
+        },
+        {
+          "tid": 2795,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 6.104908,
+          "samples": 98
+        },
+        {
+          "tid": 2791,
+          "thread": "HybridData Dest",
+          "state": "Running",
+          "observedMs": 5.875543,
+          "samples": 5
+        },
+        {
+          "tid": 2784,
+          "thread": "binder:2773_3",
+          "state": "Running",
+          "observedMs": 5.26321,
+          "samples": 43
+        },
+        {
+          "tid": 3076,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 4.817782,
+          "samples": 205
+        },
+        {
+          "tid": 2828,
+          "thread": "binder:2773_4",
+          "state": "Running",
+          "observedMs": 4.453918,
+          "samples": 75
+        },
+        {
+          "tid": 2779,
+          "thread": "ReferenceQueueD",
+          "state": "Running",
+          "observedMs": 1.902083,
+          "samples": 4
+        },
+        {
+          "tid": 2779,
+          "thread": "ReferenceQueueD",
+          "state": "R+",
+          "observedMs": 1.613816,
+          "samples": 2
+        },
+        {
+          "tid": 2781,
+          "thread": "FinalizerWatchd",
+          "state": "R",
+          "observedMs": 1.605833,
+          "samples": 1
+        },
+        {
+          "tid": 2828,
+          "thread": "binder:2773_4",
+          "state": "R+",
+          "observedMs": 1.317341,
+          "samples": 11
+        },
+        {
+          "tid": 2797,
+          "thread": "hades",
+          "state": "R+",
+          "observedMs": 1.151729,
+          "samples": 6
+        },
+        {
+          "tid": 2808,
+          "thread": "binder:2773_3",
+          "state": "Running",
+          "observedMs": 1.09643,
+          "samples": 91
+        },
+        {
+          "tid": 2791,
+          "thread": "HybridData Dest",
+          "state": "R",
+          "observedMs": 0.92313,
+          "samples": 5
+        },
+        {
+          "tid": 2784,
+          "thread": "binder:2773_3",
+          "state": "R+",
+          "observedMs": 0.320561,
+          "samples": 10
+        },
+        {
+          "tid": 2787,
+          "thread": "Profile Saver",
+          "state": "R",
+          "observedMs": 0.317942,
+          "samples": 1
+        },
+        {
+          "tid": 3077,
+          "thread": "HWC release",
+          "state": "R",
+          "observedMs": 0.169744,
+          "samples": 5
+        },
+        {
+          "tid": 3077,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.119619,
+          "samples": 6
+        },
+        {
+          "tid": 2780,
+          "thread": "FinalizerDaemon",
+          "state": "Running",
+          "observedMs": 0.116164,
+          "samples": 1
+        },
+        {
+          "tid": 2779,
+          "thread": "ReferenceQueueD",
+          "state": "R",
+          "observedMs": 0.110009,
+          "samples": 2
+        },
+        {
+          "tid": 2780,
+          "thread": "FinalizerDaemon",
+          "state": "R",
+          "observedMs": 0.05501,
+          "samples": 1
+        },
+        {
+          "tid": 2799,
+          "thread": "Expo JNI deallo",
+          "state": "Running",
+          "observedMs": 0.044514,
+          "samples": 1
+        },
+        {
+          "tid": 2781,
+          "thread": "FinalizerWatchd",
+          "state": "Running",
+          "observedMs": 0.021428,
+          "samples": 1
+        },
+        {
+          "tid": 2787,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.02081,
+          "samples": 1
+        },
+        {
+          "tid": 2799,
+          "thread": "Expo JNI deallo",
+          "state": "R",
+          "observedMs": 0.020589,
+          "samples": 1
+        },
+        {
+          "tid": 3076,
+          "thread": "GPU completion",
+          "state": "R+",
+          "observedMs": 0.009725,
+          "samples": 1
+        }
+      ],
+      "topSampledFrames": [
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 528,
+          "inclusiveSamples": 668
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 82,
+          "inclusiveSamples": 84
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 54,
+          "inclusiveSamples": 74
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 27,
+          "inclusiveSamples": 30
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 23,
+          "inclusiveSamples": 25
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "do_user_addr_fault",
+          "selfSamples": 17,
+          "inclusiveSamples": 36
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "syscall_enter_from_user_mode",
+          "selfSamples": 14,
+          "inclusiveSamples": 16
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 9,
+          "inclusiveSamples": 9
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "memset_generic",
+          "selfSamples": 8,
+          "inclusiveSamples": 31
+        },
+        {
+          "thread": "hades",
+          "mapping": "base.apk!libhermesvm.so",
+          "function": "pc:25d8bb",
+          "selfSamples": 8,
+          "inclusiveSamples": 8
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 7,
+          "inclusiveSamples": 7
+        },
+        {
+          "thread": "hades",
+          "mapping": "base.apk!libhermesvm.so",
+          "function": "pc:260f22",
+          "selfSamples": 7,
+          "inclusiveSamples": 7
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "write",
+          "selfSamples": 5,
+          "inclusiveSamples": 78
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 5,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "mod_node_page_state",
+          "selfSamples": 5,
+          "inclusiveSamples": 5
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "__vfprintf",
+          "selfSamples": 4,
+          "inclusiveSamples": 13
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "_ZN5scudo9AllocatorINS_19AndroidNormalConfigEXadL_Z21scudo_malloc_postinitEEE8allocateEmNS_5Chunk6OriginEmb",
+          "selfSamples": 4,
+          "inclusiveSamples": 8
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "memcpy",
+          "selfSamples": 4,
+          "inclusiveSamples": 5
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 4,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "selinux_file_permission",
+          "selfSamples": 4,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "read",
+          "selfSamples": 3,
+          "inclusiveSamples": 638
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "do_pte_missing",
+          "selfSamples": 3,
+          "inclusiveSamples": 17
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "hades",
+          "mapping": "base.apk!libhermesvm.so",
+          "function": "pc:25d8ac",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "mqt_v_js",
+          "mapping": "base.apk!libhermesvm.so",
+          "function": "pc:1ae36f",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "_ZN5scudo11HybridMutex6unlockEv",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "__errno",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "_raw_spin_lock",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "finish_task_switch",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "fput",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "fsnotify_perm",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "get_mem_cgroup_from_mm",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libOpenglSystemCommon.so",
+          "function": "qemu_pipe_read",
+          "selfSamples": 2,
+          "inclusiveSamples": 641
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libOpenglSystemCommon.so",
+          "function": "qemu_pipe_write_fully",
+          "selfSamples": 2,
+          "inclusiveSamples": 57
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "_ZN5scudo9AllocatorINS_19AndroidNormalConfigEXadL_Z21scudo_malloc_postinitEEE10deallocateEPvNS_5Chunk6OriginEmm",
+          "selfSamples": 2,
+          "inclusiveSamples": 9
+        },
+        {
+          "thread": "mqt_v_js",
+          "mapping": "libc.so",
+          "function": "_ZN5scudo9AllocatorINS_19AndroidNormalConfigEXadL_Z21scudo_malloc_postinitEEE8allocateEmNS_5Chunk6OriginEmb",
+          "selfSamples": 2,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "strlen",
+          "selfSamples": 2,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "Jit thread pool",
+          "mapping": "/kernel",
+          "function": "smp_call_function_many_cond",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "syscall_enter_from_user_mode",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        },
+        {
+          "thread": "hades",
+          "mapping": "base.apk!libhermesvm.so",
+          "function": "pc:264b12",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        }
+      ]
+    },
+    {
+      "name": "trace-before-local",
+      "pid": 3233,
+      "scenario": "local-pan",
+      "traceBytes": 20705919,
+      "traceSha256": "8e2037b21e9f1d66161fa8b97051ca268c9258e3d77961e86b883dd6aa12b5cd",
+      "configSha256": "1578c5790df64013aeac3c11e431a7b9c5c86a3a9aa760baf9c98e25b8c7cda7",
+      "gestureMarker": "DOMINION_LOCAL_PAN_TRACE",
+      "requestedCpuSamplingHz": 99,
+      "markerStartNs": 276186106476,
+      "markerEndNs": 286845133482,
+      "markerDurationMs": 10659.027006,
+      "markerValid": true,
+      "schedulerCoveragePresent": true,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "cpuProfileObserved": true,
+      "sampledThreads": [
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "samples": 672,
+          "withStack": 672,
+          "unwindErrorSamples": 1
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "samples": 365,
+          "withStack": 365,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3253,
+          "thread": "mqt_v_js",
+          "samples": 32,
+          "withStack": 32,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3237,
+          "thread": "Jit thread pool",
+          "samples": 8,
+          "withStack": 8,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3256,
+          "thread": "hades",
+          "samples": 8,
+          "withStack": 8,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3458,
+          "thread": "binder:3233_6",
+          "samples": 2,
+          "withStack": 2,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3242,
+          "thread": "binder:3233_1",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3254,
+          "thread": "mqt_v_native",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3257,
+          "thread": "binder:3233_4",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3577,
+          "thread": "GPU completion",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        }
+      ],
+      "completedNestedSlices": [
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "animation",
+          "samples": 295,
+          "nestedInclusiveMs": 6839.600545,
+          "maxCompletedMs": 140.768941
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "Drawing  0.00  0.00 1280.00 720.00",
+          "samples": 235,
+          "nestedInclusiveMs": 4370.112404,
+          "maxCompletedMs": 46.788909
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "eglSwapBuffers",
+          "samples": 261,
+          "nestedInclusiveMs": 3691.742539,
+          "maxCompletedMs": 102.226383
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 261,
+          "nestedInclusiveMs": 3523.893539,
+          "maxCompletedMs": 101.702379
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "eglSwapBuffersWithDamageKHR",
+          "samples": 235,
+          "nestedInclusiveMs": 3343.169811,
+          "maxCompletedMs": 45.039535
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 464,
+          "nestedInclusiveMs": 3087.159633,
+          "maxCompletedMs": 33.112494
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "glBufferDataSyncAEMU encode",
+          "samples": 989,
+          "nestedInclusiveMs": 2014.16506,
+          "maxCompletedMs": 22.2938
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "traversal",
+          "samples": 235,
+          "nestedInclusiveMs": 1624.572303,
+          "maxCompletedMs": 30.025437
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "draw-VRI[MainActivity]",
+          "samples": 235,
+          "nestedInclusiveMs": 1602.626255,
+          "maxCompletedMs": 29.933161
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "postAndWait",
+          "samples": 235,
+          "nestedInclusiveMs": 1554.706201,
+          "maxCompletedMs": 29.81176
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "syncFrameState",
+          "samples": 235,
+          "nestedInclusiveMs": 980.597933,
+          "maxCompletedMs": 16.857099
+        },
+        {
+          "tid": 3577,
+          "thread": "GPU completion",
+          "name": "waitForever",
+          "samples": 328,
+          "nestedInclusiveMs": 909.870497,
+          "maxCompletedMs": 33.08343
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "flush commands",
+          "samples": 235,
+          "nestedInclusiveMs": 807.527018,
+          "maxCompletedMs": 32.831508
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "input",
+          "samples": 241,
+          "nestedInclusiveMs": 496.008476,
+          "maxCompletedMs": 24.007311
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "VRI[MainActivity]",
+          "samples": 241,
+          "nestedInclusiveMs": 494.544313,
+          "maxCompletedMs": 24.002417
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "waitForeverOnFence",
+          "samples": 229,
+          "nestedInclusiveMs": 407.532512,
+          "maxCompletedMs": 15.206274
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "glBufferDataSyncAEMU encode",
+          "samples": 705,
+          "nestedInclusiveMs": 338.997672,
+          "maxCompletedMs": 14.150769
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "auto skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)::(anonymous class)::operator()() const",
+          "samples": 235,
+          "nestedInclusiveMs": 338.445479,
+          "maxCompletedMs": 31.598329
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "AtlasTextOp",
+          "samples": 1880,
+          "nestedInclusiveMs": 332.099514,
+          "maxCompletedMs": 10.675274
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "dequeueBuffer - VRI[MainActivity]#0(BLAST Consumer)0",
+          "samples": 235,
+          "nestedInclusiveMs": 291.384704,
+          "maxCompletedMs": 30.090586
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "dequeueBuffer",
+          "samples": 235,
+          "nestedInclusiveMs": 287.702051,
+          "maxCompletedMs": 30.073323
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "queueBuffer",
+          "samples": 470,
+          "nestedInclusiveMs": 286.35556,
+          "maxCompletedMs": 11.57976
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "auto skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)::(anonymous class)::operator()() const",
+          "samples": 235,
+          "nestedInclusiveMs": 233.9439,
+          "maxCompletedMs": 8.710935
+        },
+        {
+          "tid": 3237,
+          "thread": "Jit thread pool",
+          "name": "Compiling baseline",
+          "samples": 93,
+          "nestedInclusiveMs": 220.130327,
+          "maxCompletedMs": 38.012043
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "CircularRRectOp",
+          "samples": 4230,
+          "nestedInclusiveMs": 155.73764,
+          "maxCompletedMs": 31.118434
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "glTexSubImage2D encode",
+          "samples": 28,
+          "nestedInclusiveMs": 149.665613,
+          "maxCompletedMs": 10.339577
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 83647",
+          "samples": 1,
+          "nestedInclusiveMs": 143.858212,
+          "maxCompletedMs": 143.858212
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 83649 in 17.3ms",
+          "samples": 1,
+          "nestedInclusiveMs": 143.795103,
+          "maxCompletedMs": 143.795103
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "glBufferSubData encode",
+          "samples": 989,
+          "nestedInclusiveMs": 141.530178,
+          "maxCompletedMs": 5.058755
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 82153",
+          "samples": 1,
+          "nestedInclusiveMs": 112.898337,
+          "maxCompletedMs": 112.898337
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 82156 in 31.9ms",
+          "samples": 1,
+          "nestedInclusiveMs": 112.839316,
+          "maxCompletedMs": 112.839316
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "rcDestroySyncKHR encode",
+          "samples": 229,
+          "nestedInclusiveMs": 104.959175,
+          "maxCompletedMs": 7.216994
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#scheduleVsyncLocked",
+          "samples": 295,
+          "nestedInclusiveMs": 104.891267,
+          "maxCompletedMs": 23.557816
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_MOVE deviceId=-1 source=0x1002 historySize=2",
+          "samples": 98,
+          "nestedInclusiveMs": 102.07326,
+          "maxCompletedMs": 8.060789
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "glVertexAttribPointerOffset encode",
+          "samples": 44489,
+          "nestedInclusiveMs": 101.170161,
+          "maxCompletedMs": 10.22829
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "queueBuffer",
+          "samples": 522,
+          "nestedInclusiveMs": 98.819197,
+          "maxCompletedMs": 5.552377
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "glBufferSubData encode",
+          "samples": 705,
+          "nestedInclusiveMs": 97.419131,
+          "maxCompletedMs": 6.143498
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_MOVE deviceId=-1 source=0x1002 historySize=1",
+          "samples": 49,
+          "nestedInclusiveMs": 93.326702,
+          "maxCompletedMs": 20.024495
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "name": "onFrameAvailable - VRI[MainActivity]#0(f:0,a:1)",
+          "samples": 201,
+          "nestedInclusiveMs": 76.230412,
+          "maxCompletedMs": 3.842049
+        },
+        {
+          "tid": 3237,
+          "thread": "Jit thread pool",
+          "name": "ScopedCodeCacheWrite",
+          "samples": 186,
+          "nestedInclusiveMs": 68.124255,
+          "maxCompletedMs": 20.120425
+        }
+      ],
+      "runningAndRunnableThreadStates": [
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 6843.953139,
+          "samples": 3669
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 3681.130317,
+          "samples": 2300
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "state": "R+",
+          "observedMs": 967.634751,
+          "samples": 2267
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "state": "R+",
+          "observedMs": 772.192802,
+          "samples": 1411
+        },
+        {
+          "tid": 3233,
+          "thread": "tegymultiplayer",
+          "state": "R",
+          "observedMs": 743.297149,
+          "samples": 1402
+        },
+        {
+          "tid": 3577,
+          "thread": "GPU completion",
+          "state": "R",
+          "observedMs": 548.130926,
+          "samples": 664
+        },
+        {
+          "tid": 3246,
+          "thread": "RenderThread",
+          "state": "R",
+          "observedMs": 533.458904,
+          "samples": 889
+        },
+        {
+          "tid": 3257,
+          "thread": "binder:3233_4",
+          "state": "R",
+          "observedMs": 405.368535,
+          "samples": 222
+        },
+        {
+          "tid": 3458,
+          "thread": "binder:3233_6",
+          "state": "R",
+          "observedMs": 401.428088,
+          "samples": 159
+        },
+        {
+          "tid": 3253,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 316.416716,
+          "samples": 246
+        },
+        {
+          "tid": 3253,
+          "thread": "mqt_v_js",
+          "state": "R",
+          "observedMs": 304.523427,
+          "samples": 190
+        },
+        {
+          "tid": 3237,
+          "thread": "Jit thread pool",
+          "state": "R",
+          "observedMs": 243.733529,
+          "samples": 41
+        },
+        {
+          "tid": 3242,
+          "thread": "binder:3233_1",
+          "state": "R",
+          "observedMs": 188.639035,
+          "samples": 115
+        },
+        {
+          "tid": 3267,
+          "thread": "binder:3233_1",
+          "state": "R",
+          "observedMs": 170.1041,
+          "samples": 309
+        },
+        {
+          "tid": 3256,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 91.744338,
+          "samples": 33
+        },
+        {
+          "tid": 3237,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 71.754427,
+          "samples": 55
+        },
+        {
+          "tid": 3237,
+          "thread": "Jit thread pool",
+          "state": "R+",
+          "observedMs": 68.620205,
+          "samples": 14
+        },
+        {
+          "tid": 3256,
+          "thread": "hades",
+          "state": "R",
+          "observedMs": 52.68505,
+          "samples": 29
+        },
+        {
+          "tid": 3254,
+          "thread": "mqt_v_native",
+          "state": "R",
+          "observedMs": 42.616135,
+          "samples": 58
+        },
+        {
+          "tid": 3257,
+          "thread": "binder:3233_4",
+          "state": "R+",
+          "observedMs": 37.301229,
+          "samples": 64
+        },
+        {
+          "tid": 3253,
+          "thread": "mqt_v_js",
+          "state": "R+",
+          "observedMs": 33.510662,
+          "samples": 55
+        },
+        {
+          "tid": 3257,
+          "thread": "binder:3233_4",
+          "state": "Running",
+          "observedMs": 25.265889,
+          "samples": 287
+        },
+        {
+          "tid": 3578,
+          "thread": "HWC release",
+          "state": "R",
+          "observedMs": 23.554036,
+          "samples": 32
+        },
+        {
+          "tid": 3577,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 22.099019,
+          "samples": 668
+        },
+        {
+          "tid": 3343,
+          "thread": "binder:3233_5",
+          "state": "R",
+          "observedMs": 17.310064,
+          "samples": 31
+        },
+        {
+          "tid": 3458,
+          "thread": "binder:3233_6",
+          "state": "Running",
+          "observedMs": 15.096522,
+          "samples": 209
+        },
+        {
+          "tid": 3242,
+          "thread": "binder:3233_1",
+          "state": "Running",
+          "observedMs": 12.014196,
+          "samples": 145
+        },
+        {
+          "tid": 3343,
+          "thread": "binder:3233_5",
+          "state": "R+",
+          "observedMs": 10.949122,
+          "samples": 14
+        },
+        {
+          "tid": 3242,
+          "thread": "binder:3233_1",
+          "state": "R+",
+          "observedMs": 10.876202,
+          "samples": 30
+        },
+        {
+          "tid": 3577,
+          "thread": "GPU completion",
+          "state": "R+",
+          "observedMs": 6.320961,
+          "samples": 2
+        },
+        {
+          "tid": 3254,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 5.103084,
+          "samples": 59
+        },
+        {
+          "tid": 3458,
+          "thread": "binder:3233_6",
+          "state": "R+",
+          "observedMs": 4.592607,
+          "samples": 50
+        },
+        {
+          "tid": 3267,
+          "thread": "binder:3233_1",
+          "state": "Running",
+          "observedMs": 3.134214,
+          "samples": 309
+        },
+        {
+          "tid": 3343,
+          "thread": "binder:3233_5",
+          "state": "Running",
+          "observedMs": 2.897814,
+          "samples": 45
+        },
+        {
+          "tid": 3256,
+          "thread": "hades",
+          "state": "R+",
+          "observedMs": 0.891376,
+          "samples": 4
+        },
+        {
+          "tid": 3578,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.552838,
+          "samples": 33
+        },
+        {
+          "tid": 3245,
+          "thread": "Profile Saver",
+          "state": "R",
+          "observedMs": 0.014707,
+          "samples": 1
+        },
+        {
+          "tid": 3245,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.008617,
+          "samples": 1
+        },
+        {
+          "tid": 3254,
+          "thread": "mqt_v_native",
+          "state": "R+",
+          "observedMs": 0.00403,
+          "samples": 1
+        }
+      ],
+      "topSampledFrames": [
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 327,
+          "inclusiveSamples": 462
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 198,
+          "inclusiveSamples": 288
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 58,
+          "inclusiveSamples": 62
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 50,
+          "inclusiveSamples": 52
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 44,
+          "inclusiveSamples": 45
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 42,
+          "inclusiveSamples": 45
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 15,
+          "inclusiveSamples": 17
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 11,
+          "inclusiveSamples": 21
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "mod_node_page_state",
+          "selfSamples": 11,
+          "inclusiveSamples": 11
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "syscall_enter_from_user_mode",
+          "selfSamples": 8,
+          "inclusiveSamples": 11
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 7,
+          "inclusiveSamples": 7
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "read",
+          "selfSamples": 5,
+          "inclusiveSamples": 438
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 5,
+          "inclusiveSamples": 5
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libOpenglSystemCommon.so",
+          "function": "_ZN14QemuPipeStream24commitBufferAndReadFullyEmPvm",
+          "selfSamples": 4,
+          "inclusiveSamples": 472
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "__vfprintf",
+          "selfSamples": 4,
+          "inclusiveSamples": 13
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "syscall_enter_from_user_mode",
+          "selfSamples": 4,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 4,
+          "inclusiveSamples": 5
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "__fget_files",
+          "selfSamples": 4,
+          "inclusiveSamples": 5
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 4,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "base.apk!librnskia.so",
+          "function": "pc:96ecd2",
+          "selfSamples": 4,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libart.so",
+          "function": "_ZN3art17InvokeWithVarArgsIP10_jmethodIDEENS_6JValueERKNS_33ScopedObjectAccessAlreadyRunnableEP8_jobjectT_P13__va_list_tag",
+          "selfSamples": 3,
+          "inclusiveSamples": 659
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libc.so",
+          "function": "read",
+          "selfSamples": 3,
+          "inclusiveSamples": 261
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "_ZN5scudo9AllocatorINS_19AndroidNormalConfigEXadL_Z21scudo_malloc_postinitEEE8allocateEmNS_5Chunk6OriginEmb",
+          "selfSamples": 3,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "__set_errno_internal",
+          "selfSamples": 3,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "finish_task_switch",
+          "selfSamples": 3,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "Jit thread pool",
+          "mapping": "/kernel",
+          "function": "smp_call_function_many_cond",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "strlen",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "__virt_addr_valid",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "write",
+          "selfSamples": 2,
+          "inclusiveSamples": 69
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "boot-framework.oat",
+          "function": "art_jni_trampoline",
+          "selfSamples": 2,
+          "inclusiveSamples": 44
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libhwui.so",
+          "function": "_ZN6sktext3gpu25TextBlobRedrawCoordinator16drawGlyphRunListEP8SkCanvasRK8SkMatrixRKNS_12GlyphRunListERK7SkPaint18SkStrikeDeviceInfoRKNSt3__18functionIFvPKNS0_11AtlasSubRunE7SkPointSC_5sk_spI8SkRefCntENS0_12RendererDataEEEE",
+          "selfSamples": 2,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libhwui.so",
+          "function": "_ZN6sktext3gpu11GlyphVector24regenerateAtlasForGaneshEiiN5skgpu10MaskFormatEiP16GrMeshDrawTarget",
+          "selfSamples": 2,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "ring_buffer_lock_reserve",
+          "selfSamples": 2,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "__sfvwrite",
+          "selfSamples": 2,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "ktime_get_boot_fast_ns",
+          "selfSamples": 2,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libc.so",
+          "function": "malloc",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libc.so",
+          "function": "strlen",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libhwui.so",
+          "function": "_ZN7android10uirenderer10RenderNode15prepareTreeImplERNS0_12TreeObserverERNS0_8TreeInfoEb",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "__fget_files",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "rcu_core",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        }
+      ]
+    },
+    {
+      "name": "trace-before-pinch",
+      "pid": 2266,
+      "scenario": "pinch",
+      "traceBytes": 22710572,
+      "traceSha256": "b7617767d05c8b47927e925bd2932182b8e999c143ca0548442f80fe50fc22cd",
+      "configSha256": "1578c5790df64013aeac3c11e431a7b9c5c86a3a9aa760baf9c98e25b8c7cda7",
+      "gestureMarker": "DOMINION_PINCH_TRACE",
+      "requestedCpuSamplingHz": 99,
+      "markerStartNs": 96269492404,
+      "markerEndNs": 106907878202,
+      "markerDurationMs": 10638.385798,
+      "markerValid": true,
+      "schedulerCoveragePresent": true,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "cpuProfileObserved": true,
+      "sampledThreads": [
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "samples": 925,
+          "withStack": 925,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2279,
+          "thread": "RenderThread",
+          "samples": 125,
+          "withStack": 125,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2285,
+          "thread": "mqt_v_js",
+          "samples": 61,
+          "withStack": 61,
+          "unwindErrorSamples": 3
+        },
+        {
+          "tid": 2290,
+          "thread": "hades",
+          "samples": 13,
+          "withStack": 13,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2269,
+          "thread": "Jit thread pool",
+          "samples": 6,
+          "withStack": 6,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2622,
+          "thread": "GPU completion",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        }
+      ],
+      "completedNestedSlices": [
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "eglSwapBuffers",
+          "samples": 131,
+          "nestedInclusiveMs": 5999.287356,
+          "maxCompletedMs": 123.069564
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 131,
+          "nestedInclusiveMs": 5931.023276,
+          "maxCompletedMs": 122.660083
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "animation",
+          "samples": 101,
+          "nestedInclusiveMs": 5018.514347,
+          "maxCompletedMs": 211.325951
+        },
+        {
+          "tid": 2279,
+          "thread": "RenderThread",
+          "name": "Drawing  0.00  0.00 1280.00 720.00",
+          "samples": 79,
+          "nestedInclusiveMs": 1494.619111,
+          "maxCompletedMs": 69.176146
+        },
+        {
+          "tid": 2279,
+          "thread": "RenderThread",
+          "name": "eglSwapBuffersWithDamageKHR",
+          "samples": 79,
+          "nestedInclusiveMs": 1175.970398,
+          "maxCompletedMs": 67.642526
+        },
+        {
+          "tid": 2279,
+          "thread": "RenderThread",
+          "name": "rcCreateSyncKHR encode",
+          "samples": 154,
+          "nestedInclusiveMs": 1019.419553,
+          "maxCompletedMs": 37.632169
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "input",
+          "samples": 90,
+          "nestedInclusiveMs": 950.987091,
+          "maxCompletedMs": 170.067566
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "VRI[MainActivity]",
+          "samples": 90,
+          "nestedInclusiveMs": 950.265973,
+          "maxCompletedMs": 170.061003
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "glBufferDataSyncAEMU encode",
+          "samples": 754,
+          "nestedInclusiveMs": 681.738534,
+          "maxCompletedMs": 21.502243
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "traversal",
+          "samples": 79,
+          "nestedInclusiveMs": 392.051811,
+          "maxCompletedMs": 18.401904
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "draw-VRI[MainActivity]",
+          "samples": 79,
+          "nestedInclusiveMs": 381.898377,
+          "maxCompletedMs": 18.340222
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "postAndWait",
+          "samples": 79,
+          "nestedInclusiveMs": 370.958791,
+          "maxCompletedMs": 18.242343
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 26145",
+          "samples": 1,
+          "nestedInclusiveMs": 318.348665,
+          "maxCompletedMs": 318.348665
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 26154 in 26.1ms",
+          "samples": 1,
+          "nestedInclusiveMs": 317.165923,
+          "maxCompletedMs": 317.165923
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 26085",
+          "samples": 1,
+          "nestedInclusiveMs": 316.139217,
+          "maxCompletedMs": 316.139217
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 26094 in 16.9ms",
+          "samples": 1,
+          "nestedInclusiveMs": 315.692972,
+          "maxCompletedMs": 315.692972
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 25995",
+          "samples": 1,
+          "nestedInclusiveMs": 284.343911,
+          "maxCompletedMs": 284.343911
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 26004 in 28.6ms",
+          "samples": 1,
+          "nestedInclusiveMs": 282.478439,
+          "maxCompletedMs": 282.478439
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 25980",
+          "samples": 1,
+          "nestedInclusiveMs": 268.886108,
+          "maxCompletedMs": 268.886108
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 25989 in 27.2ms",
+          "samples": 1,
+          "nestedInclusiveMs": 267.391322,
+          "maxCompletedMs": 267.391322
+        },
+        {
+          "tid": 2279,
+          "thread": "RenderThread",
+          "name": "flush commands",
+          "samples": 79,
+          "nestedInclusiveMs": 258.08434,
+          "maxCompletedMs": 39.518895
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "glTexSubImage2D encode",
+          "samples": 2284,
+          "nestedInclusiveMs": 248.949254,
+          "maxCompletedMs": 9.882462
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 26129",
+          "samples": 1,
+          "nestedInclusiveMs": 216.452353,
+          "maxCompletedMs": 216.452353
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 26138 in 18.1ms",
+          "samples": 1,
+          "nestedInclusiveMs": 216.015681,
+          "maxCompletedMs": 216.015681
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 26040",
+          "samples": 1,
+          "nestedInclusiveMs": 205.23182,
+          "maxCompletedMs": 205.23182
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 26048 in 20.4ms",
+          "samples": 1,
+          "nestedInclusiveMs": 204.954134,
+          "maxCompletedMs": 204.954134
+        },
+        {
+          "tid": 2622,
+          "thread": "GPU completion",
+          "name": "waitForever",
+          "samples": 100,
+          "nestedInclusiveMs": 192.465554,
+          "maxCompletedMs": 35.310704
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 26025",
+          "samples": 1,
+          "nestedInclusiveMs": 192.353783,
+          "maxCompletedMs": 192.353783
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 26034 in 30.0ms",
+          "samples": 1,
+          "nestedInclusiveMs": 191.955006,
+          "maxCompletedMs": 191.955006
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 26054",
+          "samples": 1,
+          "nestedInclusiveMs": 189.842121,
+          "maxCompletedMs": 189.842121
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 26063 in 31.5ms",
+          "samples": 1,
+          "nestedInclusiveMs": 189.54771,
+          "maxCompletedMs": 189.54771
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 26070",
+          "samples": 1,
+          "nestedInclusiveMs": 187.148445,
+          "maxCompletedMs": 187.148445
+        },
+        {
+          "tid": 2279,
+          "thread": "RenderThread",
+          "name": "syncFrameState",
+          "samples": 79,
+          "nestedInclusiveMs": 186.91238,
+          "maxCompletedMs": 13.211691
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 26078 in 24.7ms",
+          "samples": 1,
+          "nestedInclusiveMs": 186.874287,
+          "maxCompletedMs": 186.874287
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 26010",
+          "samples": 1,
+          "nestedInclusiveMs": 173.730124,
+          "maxCompletedMs": 173.730124
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame - resynced to 26018 in 24.1ms",
+          "samples": 1,
+          "nestedInclusiveMs": 171.949963,
+          "maxCompletedMs": 171.949963
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "Choreographer#doFrame 26115",
+          "samples": 1,
+          "nestedInclusiveMs": 169.840544,
+          "maxCompletedMs": 169.840544
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "dispatchInputEvent MotionEvent ACTION_MOVE deviceId=-1 source=0x1002 historySize=24",
+          "samples": 1,
+          "nestedInclusiveMs": 169.775874,
+          "maxCompletedMs": 169.775874
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "deliverInputEvent src=0x1002 eventTimeNano=105470753450 id=0xe4f74a16",
+          "samples": 1,
+          "nestedInclusiveMs": 169.750329,
+          "maxCompletedMs": 169.750329
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "name": "ViewPostImeInputStage id=0xe4f74a16",
+          "samples": 1,
+          "nestedInclusiveMs": 169.340288,
+          "maxCompletedMs": 169.340288
+        }
+      ],
+      "runningAndRunnableThreadStates": [
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 9396.525888,
+          "samples": 2529
+        },
+        {
+          "tid": 2279,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 1210.974276,
+          "samples": 705
+        },
+        {
+          "tid": 2285,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 596.223205,
+          "samples": 353
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "state": "R+",
+          "observedMs": 357.232901,
+          "samples": 1513
+        },
+        {
+          "tid": 2285,
+          "thread": "mqt_v_js",
+          "state": "R",
+          "observedMs": 340.138881,
+          "samples": 298
+        },
+        {
+          "tid": 2266,
+          "thread": "tegymultiplayer",
+          "state": "R",
+          "observedMs": 323.297963,
+          "samples": 1009
+        },
+        {
+          "tid": 2279,
+          "thread": "RenderThread",
+          "state": "R+",
+          "observedMs": 268.523765,
+          "samples": 426
+        },
+        {
+          "tid": 2290,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 160.189463,
+          "samples": 87
+        },
+        {
+          "tid": 2622,
+          "thread": "GPU completion",
+          "state": "R",
+          "observedMs": 155.130301,
+          "samples": 188
+        },
+        {
+          "tid": 2274,
+          "thread": "binder:2266_1",
+          "state": "R",
+          "observedMs": 140.001103,
+          "samples": 74
+        },
+        {
+          "tid": 2279,
+          "thread": "RenderThread",
+          "state": "R",
+          "observedMs": 137.817926,
+          "samples": 279
+        },
+        {
+          "tid": 2269,
+          "thread": "Jit thread pool",
+          "state": "R",
+          "observedMs": 96.452557,
+          "samples": 49
+        },
+        {
+          "tid": 2290,
+          "thread": "hades",
+          "state": "R",
+          "observedMs": 81.790384,
+          "samples": 84
+        },
+        {
+          "tid": 2285,
+          "thread": "mqt_v_js",
+          "state": "R+",
+          "observedMs": 69.037128,
+          "samples": 55
+        },
+        {
+          "tid": 2269,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 44.162865,
+          "samples": 52
+        },
+        {
+          "tid": 2317,
+          "thread": "binder:2266_4",
+          "state": "R",
+          "observedMs": 32.916467,
+          "samples": 106
+        },
+        {
+          "tid": 2289,
+          "thread": "mqt_v_native",
+          "state": "R",
+          "observedMs": 18.587204,
+          "samples": 36
+        },
+        {
+          "tid": 2314,
+          "thread": "binder:2266_5",
+          "state": "R",
+          "observedMs": 17.759251,
+          "samples": 22
+        },
+        {
+          "tid": 2274,
+          "thread": "binder:2266_1",
+          "state": "R+",
+          "observedMs": 14.705838,
+          "samples": 38
+        },
+        {
+          "tid": 2274,
+          "thread": "binder:2266_1",
+          "state": "Running",
+          "observedMs": 14.39228,
+          "samples": 112
+        },
+        {
+          "tid": 2622,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 7.447778,
+          "samples": 190
+        },
+        {
+          "tid": 2289,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 6.839106,
+          "samples": 37
+        },
+        {
+          "tid": 2289,
+          "thread": "mqt_v_native",
+          "state": "R+",
+          "observedMs": 6.177393,
+          "samples": 1
+        },
+        {
+          "tid": 2314,
+          "thread": "binder:2266_5",
+          "state": "Running",
+          "observedMs": 3.558192,
+          "samples": 38
+        },
+        {
+          "tid": 2314,
+          "thread": "binder:2266_5",
+          "state": "R+",
+          "observedMs": 2.127496,
+          "samples": 16
+        },
+        {
+          "tid": 2290,
+          "thread": "hades",
+          "state": "R+",
+          "observedMs": 1.202624,
+          "samples": 3
+        },
+        {
+          "tid": 2317,
+          "thread": "binder:2266_4",
+          "state": "Running",
+          "observedMs": 1.056398,
+          "samples": 106
+        },
+        {
+          "tid": 2278,
+          "thread": "Profile Saver",
+          "state": "R",
+          "observedMs": 0.608329,
+          "samples": 2
+        },
+        {
+          "tid": 2269,
+          "thread": "Jit thread pool",
+          "state": "R+",
+          "observedMs": 0.261883,
+          "samples": 3
+        },
+        {
+          "tid": 2622,
+          "thread": "GPU completion",
+          "state": "R+",
+          "observedMs": 0.136897,
+          "samples": 1
+        },
+        {
+          "tid": 2623,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.125088,
+          "samples": 4
+        },
+        {
+          "tid": 2623,
+          "thread": "HWC release",
+          "state": "R",
+          "observedMs": 0.12384,
+          "samples": 3
+        },
+        {
+          "tid": 2278,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.024794,
+          "samples": 2
+        }
+      ],
+      "topSampledFrames": [
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 490,
+          "inclusiveSamples": 650
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 102,
+          "inclusiveSamples": 103
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 72,
+          "inclusiveSamples": 100
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 30,
+          "inclusiveSamples": 38
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 18,
+          "inclusiveSamples": 18
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "syscall_enter_from_user_mode",
+          "selfSamples": 17,
+          "inclusiveSamples": 18
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 13,
+          "inclusiveSamples": 13
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "do_user_addr_fault",
+          "selfSamples": 12,
+          "inclusiveSamples": 33
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 11,
+          "inclusiveSamples": 12
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "read",
+          "selfSamples": 10,
+          "inclusiveSamples": 632
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 9,
+          "inclusiveSamples": 11
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "__vfprintf",
+          "selfSamples": 8,
+          "inclusiveSamples": 11
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "_raw_spin_lock",
+          "selfSamples": 7,
+          "inclusiveSamples": 7
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "mod_node_page_state",
+          "selfSamples": 7,
+          "inclusiveSamples": 7
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 6,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "memset_generic",
+          "selfSamples": 5,
+          "inclusiveSamples": 26
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "memcpy",
+          "selfSamples": 5,
+          "inclusiveSamples": 7
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "selinux_file_permission",
+          "selfSamples": 5,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "hades",
+          "mapping": "base.apk!libhermesvm.so",
+          "function": "pc:25d8bb",
+          "selfSamples": 5,
+          "inclusiveSamples": 5
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "write",
+          "selfSamples": 4,
+          "inclusiveSamples": 76
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libOpenglSystemCommon.so",
+          "function": "_ZN14QemuPipeStream24commitBufferAndReadFullyEmPvm",
+          "selfSamples": 3,
+          "inclusiveSamples": 647
+        },
+        {
+          "thread": "mqt_v_js",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 3,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "fsnotify_perm",
+          "selfSamples": 3,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "mqt_v_js",
+          "mapping": "base.apk!libhermesvm.so",
+          "function": "pc:1ae395",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "__errno",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "__do_softirq",
+          "selfSamples": 3,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libOpenglSystemCommon.so",
+          "function": "qemu_pipe_read",
+          "selfSamples": 2,
+          "inclusiveSamples": 635
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libc.so",
+          "function": "read",
+          "selfSamples": 2,
+          "inclusiveSamples": 93
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "vfs_write",
+          "selfSamples": 2,
+          "inclusiveSamples": 55
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "vsnprintf",
+          "selfSamples": 2,
+          "inclusiveSamples": 13
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "ring_buffer_lock_reserve",
+          "selfSamples": 2,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "base.apk!libc++_shared.so",
+          "function": "_Znwm",
+          "selfSamples": 2,
+          "inclusiveSamples": 4
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "_ZN5scudo11HybridMutex6unlockEv",
+          "selfSamples": 2,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "_ZN5scudo9AllocatorINS_19AndroidNormalConfigEXadL_Z21scudo_malloc_postinitEEE8allocateEmNS_5Chunk6OriginEmb",
+          "selfSamples": 2,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "base.apk!librnskia.so",
+          "function": "pc:52f942",
+          "selfSamples": 2,
+          "inclusiveSamples": 3
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "libutils.so",
+          "function": "_ZNK7android7RefBase9incStrongEPKv",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        },
+        {
+          "thread": "mqt_v_js",
+          "mapping": "libc.so",
+          "function": "memcpy",
+          "selfSamples": 2,
+          "inclusiveSamples": 2
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Every capture retains36 unavailable ftrace vendor setup points and attributionComplete=false; no coverage flags or acceptance limits changed.",
+    "A requested sampling config is not evidence: actual perf_sample rows/callsites are observed and counted inside each real marker. Unwind-error counts remain visible.",
+    "Sampled kernel/emulator hot paths and overlapping nested EGL/HWUI slices do not prove a unique app-level causal regression or handset performance.",
+    "This successful diagnostic workflow does not accept or reroll the rejected runtime. All four original failures remain in EXPANSION_RASTER_NATIVE_QA_2026-10-11.json."
+  ],
+  "observation": "Pinch main-thread samples are dominated by goldfish pipe reads/page pinning in QEMU OpenGL submission/synchronization; RenderThread composition is also observed. Actual JS samples are a small subset of the scoped captures. Local-pan has substantial RenderThread Drawing/postAndWait work.",
+  "nextHypothesis": "Cache a bounded number of existing visible UI chrome hosts during camera motion, release them after idle. This attempts to reduce repeated HWUI composition beside the accepted Texture map. No measured improvement claimed until fresh same-binary full native QA passes unchanged original gates."
+}

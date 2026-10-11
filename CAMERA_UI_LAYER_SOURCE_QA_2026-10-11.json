@@ -1,0 +1,41 @@
+{
+  "status": "SOURCE_VERIFIED_NATIVE_REJECTED_CAMERA",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "parentCheckpoint": "878abe0dd4dcd5b5a51f1c45cce3d406b378906e",
+  "rejectedRuntime": "788a6bd575a4c9d13ed3ab1c0810eaa0d576ca2f",
+  "rejectedRunId": 38161007462,
+  "scope": "Bounded existing visible UI chrome hosts only: toolbar, topbar, bottom navigation, current side panel, optional diagnostic overlay. Host View/ScrollView props retained; no extra native wrapper. Enable Android hardware texture while existing camera sample reports motion; disable after a zero-motion sample. Accepted transparent Texture map and all simulation, inputs, assets, renderer caches, frame pacing and original native acceptance limits remain unchanged.",
+  "diagnosticLead": "Actual scoped native CPU/HWUI observations in EXPANSION_NATIVE_CPU_STACK_QA_2026-10-11.json. Proposed composition benefit is a hypothesis, not complete attribution or measured frame improvement.",
+  "nativeApiReview": {
+    "reactNative": "0.86.3",
+    "source": "Libraries/Components/View/ViewPropTypes.js renderToHardwareTextureAndroid; ScrollViewProps extends ViewProps and passes hardware-layer prop to existing native scroll host.",
+    "officialDocumentation": "https://reactnative.dev/docs/0.86/view#rendertohardwaretextureandroid",
+    "memory": "At most five currently mounted screen-bounded chrome hosts. Hardware layers can consume extra GPU memory; release on idle. Original full PSS/frame/screen-paint/input gates remain mandatory."
+  },
+  "verification": {
+    "strictTypecheck": "PASS",
+    "javascriptTests": 306,
+    "javascriptSkipped": 0,
+    "pythonTests": 97,
+    "pythonSkipped": 0,
+    "productionHermes": {
+      "bytes": 11481936,
+      "sha256": "f3ee9e711e2412753219a4d0483d1ebebd9c4155d6ba08a2223d1c560b8a173c",
+      "magic": "c61fbc03c103191f"
+    },
+    "originalArt": {
+      "files": 42,
+      "bytes": 3479060,
+      "allExactHashesInAndroidExport": true
+    },
+    "reactReview": "Module-level primitive boolean snapshot through useSyncExternalStore, existing throttled telemetry only, memoized leaf subscriptions; parent CampaignScreen/GamePanel receive no camera subscription. No hook condition or missing dependency, additional per-frame React notifications, render-driven simulation, eager image load, changed accessibility label/touch responder/layout/section key. No changed host uses a ref.",
+    "diffCheck": "PASS"
+  },
+  "nativeAcceptance": "REJECTED actual camera114567941571: all36CI scenario rows available, six unchanged numeric gate violations, all18PSS comparisons pass. Five other native/build/backend gates SUCCESS;1800s soak still IN_PROGRESS. Full raw ZIP local verification blocked by executor disconnect; no claim of final acceptance.",
+  "physicalRedmi": "UNMEASURED",
+  "runtimeCommit": "bf05151c94988f7d2511218a8cc51a1858a5a1a7",
+  "sourceTree": "b49a6e88a03ea1456c68cd305e32ec722fb60c69",
+  "fullNativeRunId": 38171409180,
+  "fullNativeRunUrl": "https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/38171409180",
+  "fullNativeStatusAtCheckpoint": "IN_PROGRESS_CAMERA_FAILURE"
+}

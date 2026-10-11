@@ -1,3 +1,19 @@
+# Exact UI binary rejected; further source diagnosis required — 2026-10-11
+
+Actual runtimebf05151/run381714/APK6918422f fails six original camera limits; all36CI rows and18 passing PSS comparisons preserved in EXPANSION_UI_LAYER_NATIVE_QA_2026-10-11.json. Build/10000ticks/backend/upgrade/nativeonline pass;1800s native smoke remains in progress. Both reviewed QA rooms removed with combined0rooms/players/receipts and29originalbackups retained. Binary is not accepted for final publication/delivery.
+
+Executor disconnected during camera ZIP download; declared immutable digest/source recorded without false local integrity claim. Existing exact-binary auxiliary CI now performs full capture revalidation and CPU stack queries. Helper validation remains pending CI. Main/backend/runtime unchanged; accepted manifest absent; original seven-gate release requirement and physical-handset honesty retained.
+
+---
+
+# UI composition candidate requires new full signed QA — 2026-10-11
+
+Previous788/3bc release binary is **REJECTED**: six actual gates pass but four original camera gates fail; EXPANSION_RASTER_NATIVE_QA_2026-10-11.json preserves all proof. Separate actual CPU diagnostic run38169301651 SUCCESS confirms marker-scoped sample capture, not release acceptance; missing36 vendor tracepoints and incomplete attribution retained.
+
+New bounded UI host-layer source passes StrictTS/306JS/97Python/Hermes/42art/review; CAMERA_UI_LAYER_SOURCE_QA_2026-10-11.json. Build a fresh standalone signed binary and require all seven full gates on it, including original complete ABBA/PSS,1800-second soak,upgrade and real online/backend authority. No earlier native success applies to changed JS. Main/backend unchanged, accepted runtime manifest absent, APK delivery remains pending. Preserve same package/certificate/version2.0.0code10/landscape/embedded JS and original save migration. Exact next operation in DEVELOPMENT_HANDOFF.md.
+
+---
+
 # Latest exact signed candidate is rejected — 2026-10-11
 
 Current runtime788a6bd/full38161007462 completed FAILURE because camera114537652725 violates four original gates. Six other actual same-APK gates pass. Downloaded release artifact11710144490/digest7644235e size+SHA+CRC verified; APK142479405bytes/SHA3bc7416204a60aa9613864a828a03e61becc11c63e2d0071d479f99cf9cc8524,2.0.0code10/samecertificate/landscape/nondebug/embeddedHermes/all4ABI/42paintings/dedicatedDominionendpoint. APK is not accepted or delivered. Native soak1832.626s, actual upgrade/backups and native multiplayer verified. Both new scoped QA rooms removed with independent0rooms/players/receipts and29original city backups retained. EXPANSION_RASTER_NATIVE_QA_2026-10-11.json binds all actual source/artifact hashes and original failures.
