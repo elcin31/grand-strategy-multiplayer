@@ -20,6 +20,20 @@ def clock_function(environment):
 
 
 class BackendWorldGuardTest(unittest.TestCase):
+    def test_spy_mission_kind_remains_payload_and_does_not_shadow_command_type(self):
+        tree=ast.parse(SCRIPT.read_text())
+        function=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='command')
+        calls=[]
+        env={'heartbeat':lambda:None, 'print':lambda *a,**kw:None,
+             'envelope':lambda p,c: {'command':c},
+             'request':lambda path,body,expected: (calls.append((path,body,expected)) or {'ok':True},expected)}
+        exec(compile(ast.Module(body=[function],type_ignores=[]),str(SCRIPT),'exec'),env)
+        for mission in ['Sabotage','PoliticalIntrigue']:
+            self.assertEqual(env['command']({'playerId':'host'},'START_ESPIONAGE',400,
+                                            targetId='bra',kind=mission),{'ok':True})
+            self.assertEqual(calls[-1],('game-command',{'command':{'type':'START_ESPIONAGE',
+                'playerId':'host','targetId':'bra','kind':mission}},400))
+
     def test_old_backend_blocks_before_any_room_or_saved_identifier(self):
         calls=[]
         def request(path,body,expected,**kwargs):

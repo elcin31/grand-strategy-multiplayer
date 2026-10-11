@@ -3,6 +3,15 @@ import subprocess
 import time
 
 
+def fresh_camera_install(adb, package, apk):
+    """Camera QA already resets saves; fresh installs also support version10→9."""
+    installed = adb('shell', 'pm', 'list', 'packages', package).splitlines()
+    if 'package:'+package in installed:
+        assert adb('uninstall', package, timeout=60).strip() == 'Success', 'Camera test uninstall failed'
+    assert adb('install', apk, timeout=180).strip().endswith('Success'), 'Camera test install failed'
+    assert adb('shell', 'pm', 'clear', package).strip() == 'Success', 'Camera fixture reset failed'
+
+
 def root_test_device(adb, diagnostic):
     lines = []
     def record(value):

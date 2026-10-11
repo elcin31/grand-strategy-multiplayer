@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 55
     env:
-      CAMERA_CANDIDATE_RUNTIME: 86b0f6d83079785ec7c29eb61e137c2613ff0a69
+      CAMERA_CANDIDATE_RUNTIME: f794ea4a4974f2f826f3ec7bd712a81b5f05291a
       CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-      CAMERA_CANDIDATE_RUN: '38115315485'
+      CAMERA_CANDIDATE_RUN: '38133111807'
       CAMERA_REQUIRE_SURFACE_PRESENTATION: '1'
       CAMERA_ALLOWED_STATE_VERSION: '18'
     steps:
@@ -29,10 +29,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git diff --exit-code 86b0f6d83079785ec7c29eb61e137c2613ff0a69 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38115315485 > source-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38115315485/jobs > source-jobs.json
-          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='86b0f6d83079785ec7c29eb61e137c2613ff0a69';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
+          git diff --exit-code f794ea4a4974f2f826f3ec7bd712a81b5f05291a HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38133111807 > source-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38133111807/jobs > source-jobs.json
+          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='f794ea4a4974f2f826f3ec7bd712a81b5f05291a';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -55,7 +55,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38115315485
+          run-id: 38133111807
           name: dominion-camera-illustrated-release
       - uses: actions/download-artifact@v4
         with:
@@ -66,8 +66,8 @@ jobs:
       - name: Verify standalone checkpoint APK
         id: apk
         run: |
-          python scripts/verify-apk.py Dominion-camera-optimized-illustrated.apk
-          python scripts/verify-release.py Dominion-camera-optimized-illustrated.apk > checkpoint-integrity.txt
+          python scripts/verify-apk.py Dominion-grand-strategy-v2-release.apk
+          python scripts/verify-release.py Dominion-grand-strategy-v2-release.apk > checkpoint-integrity.txt
       - name: Compile identical real gesture driver
         id: gesture
         run: |
@@ -89,11 +89,11 @@ jobs:
           script: |
             adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar
             CAMERA_PROFILE_OUT=camera-before python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
-            CAMERA_PROFILE_OUT=camera-after python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
+            CAMERA_PROFILE_OUT=camera-after python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
             forward_ok=0
             if python scripts/compare-camera-native.py camera-before/results.json camera-after/results.json; then forward_ok=1; fi
             cp CAMERA_NATIVE_PAIRED.json CAMERA_NATIVE_PAIRED_FORWARD.json
-            CAMERA_PROFILE_OUT=camera-after-reverse python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
+            CAMERA_PROFILE_OUT=camera-after-reverse python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
             CAMERA_PROFILE_OUT=camera-before-reverse python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
             reverse_ok=0
             if python scripts/compare-camera-native.py camera-before-reverse/results.json camera-after-reverse/results.json; then reverse_ok=1; fi
@@ -116,7 +116,7 @@ jobs:
             adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar
             CAMERA_TRACE_ONLY=1 CAMERA_PROFILE_OUT=trace-before python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
             python scripts/analyze-camera-trace.py trace-before
-            CAMERA_TRACE_ONLY=1 CAMERA_PROFILE_OUT=trace-after python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
+            CAMERA_TRACE_ONLY=1 CAMERA_PROFILE_OUT=trace-after python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
             python scripts/analyze-camera-trace.py trace-after
       - name: Export verified native frames and original screenshots for remote review
         if: always()
@@ -137,5 +137,7 @@ jobs:
             CAMERA_NATIVE_PAIRED_REVERSE.json
             EXPANSION_CAMERA_REVIEW.json
             checkpoint-integrity.txt
+            source-run.json
+            source-jobs.json
             camera-fixture/manifest.json
           retention-days: 14

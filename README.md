@@ -4,7 +4,9 @@ Original Android-first global strategy, built with Expo 57, React Native 0.86, T
 
 ## Current checkpoint
 
-Main contains the verified **0.8.1 (9)** camera/illustrated release: **195 countries, 2,924 provinces, 5,411 cities, schema12**. The continuing **Expansion 2.0** work is on `expansion-v2`; it is not yet merged or a final v2 release. Recovery and army-selection fixes exist, while current camera acceptance and the full diplomacy/espionage/economy/military/technology/focus/art expansion remain open. Existing systems and optimized map caches are retained.
+Main retains the accepted **0.8.1 (9)** release. The existing `expansion-v2` branch contains the integrated Dominion 2.0 systems on **schema18**: diplomacy and AI offers, four espionage missions, budget/policies/funding and construction queues, typed armies/generals/supply,30 technology nodes in5 branches,40 national courses with once-only rewards, and27 new original illustrations (42 packaged assets). The historical world remains **195 countries,2,924 provinces,5,411 cities**. Gameplay advances through authoritative ticks; camera/render work is independent.
+
+The final candidate is **2.0.0 (10)**, using the existing package/signature and Dominion backend `dfjsnjxnyjspwugjguhq` (room22/command24, schema18). Final delivery is still pending the actual live/native online QA, unchanged camera comparison gates and higher-version save-upgrade acceptance. Read `DEVELOPMENT_HANDOFF.md` for exact verified checkpoints and unresolved failures; no intermediate0.8.1 APK is claimed as the final2.0 release.
 
 Expansion now includes an authoritative Diplomacy 2.0 core and additive schema13 migration: missions, gifts, timed/consented treaties, directional neutral access, trade, technology/province exchange, ultimatums, multi-party summits, federations and a persistent journal. 210 host regressions, a Hermes Android export and a 10,000-tick/ten-restore run pass. Native interface/camera acceptance, final backend compatibility rollout and the remaining Expansion systems are pending; this feature branch is not a finished release. See `DIPLOMACY_2_HOST_QA_2026-10-10.json` and the latest handoff entry.
 

@@ -28,10 +28,10 @@ def heartbeat():
     with ThreadPoolExecutor(8) as pool: list(pool.map(lambda p: request('game-room',{'action':'heartbeat',**auth(p)}),players))
 def snapshot(p=host):return request('game-room',{'action':'state',**auth(p)})[0]
 def envelope(p,command,version=None):return {**auth(p),'command':command,'commandId':str(uuid.uuid4()),'expectedVersion':snapshot(p)['version'] if version is None else version}
-def command(p,kind,expected=200,**fields):
+def command(p,command_type,expected=200,**fields):
     heartbeat()
-    print('Check:',kind,flush=True)
-    return request('game-command',envelope(p,{'type':kind,'playerId':p['playerId'],**fields}),expected)[0]
+    print('Check:',command_type,flush=True)
+    return request('game-command',envelope(p,{'type':command_type,'playerId':p['playerId'],**fields}),expected)[0]
 def advance_live(months):
     start=snapshot()['state']['tick'];command(host,'SET_SPEED',speed=4)
     deadline=time.monotonic()+180

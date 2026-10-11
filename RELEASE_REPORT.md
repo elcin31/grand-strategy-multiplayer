@@ -1,3 +1,11 @@
+# Final2.0 actual live acceptance — 2026-10-11
+
+Current final runtimef794ea4a/CI38133111807 backend job114451355520 SUCCESS. Downloaded actual sanitized evidence11699439508/ZIP SHA340b01b2415175505643cad7cd26c21786031329c58bbf26cc244f6e5ca54a04/CRC PASS: schema18,195/2924/5411 world,eight players/ninth rejection/auth/spoof/version/receipt/payload guards, payments/refunds/construction/typed armies/commander/reinforcement/budget/cooldowns, human treaty/trade consent, all4 spies/counterintelligence, once-only course/science completion, save/reconnect, real server clock/AI host takeover/same-country human return. Features tick21/final tick47; exact scope10a12545-03d1-4058-a915-0fbe79f7d0b4, cleanup PENDING.
+
+Fresh final CI compiled bundles11700270852 ZIP SHA31a55ab71b77ef135b9b6f4f95234f22336317d65c8a5b9bd4383774c3074469/CRC verified; bothJS source digests exactly match already-deployed command24/room22. No repeated deployment. Evidence EXPANSION_LIVE_ACCEPTANCE_2026-10-11.json. Native/camera/upgrade/soak and final publication/delivery still PENDING; this is live feature acceptance, not an APK release or handset result.
+
+---
+
 # Latest actual evidence — 2026-10-11
 
 Actual86 native38115315485/job114402328011 SUCCESS, downloaded verified artifact with1817.9730875s stress plus game UX/save/restart/reboot. Exact86 upgrade38117186948 SUCCESS; save12→18/all six original backups/preferences/private files/UID retained. Same0.8.1(9), finalVersionUpgrade=false. Camera FAIL nine; live18/native reconnect/higher-version final release/delivery pending. Full evidence EXPANSION_CONTINUOUS_CAMERA_QA_2026-10-11.json.84Python/no skips PASS; application byte-unchanged86.

@@ -5,10 +5,27 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).parents[1] / 'scripts'))
-from android_fixture import root_test_device
+from android_fixture import root_test_device, fresh_camera_install
 
 
 class CameraFixtureTest(unittest.TestCase):
+    def test_comparison_replaces_newer_version_only_after_successful_isolated_uninstall(self):
+        calls=[]
+        def adb(*args,**kwargs):
+            calls.append(args)
+            if args[:4]==('shell','pm','list','packages'):return 'package:qa.camera\n'
+            return 'Success\n'
+        fresh_camera_install(adb,'qa.camera','baseline-v9.apk')
+        self.assertEqual(calls,[('shell','pm','list','packages','qa.camera'),
+            ('uninstall','qa.camera'),('install','baseline-v9.apk'),('shell','pm','clear','qa.camera')])
+        calls.clear()
+        def failed(*args,**kwargs):
+            calls.append(args)
+            return 'package:qa.camera\n' if args[:4]==('shell','pm','list','packages') else 'Failure\n'
+        with self.assertRaisesRegex(AssertionError,'uninstall failed'):
+            fresh_camera_install(failed,'qa.camera','baseline-v9.apk')
+        self.assertFalse(any(c[0]=='install' for c in calls))
+
     def run_root(self, uid, root_failure=False):
         def adb(*args, **kwargs):
             if args == ('root',) and root_failure:

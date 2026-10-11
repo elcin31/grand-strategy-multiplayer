@@ -1,3 +1,165 @@
+# Continuation — final camera version-switch harness recovery, 2026-10-11
+
+Verified parent **ca7eeab08561f51e37501382a5bfb66dfb79d83b**; current signed app runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**, APK unchanged75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3. Corrected real native online QA **38135659505/cf93b08b7ce919323ad92893d2851fb2461e5bd1** IN_PROGRESS on exactly this APK after visible-control fix. Final native soak114455037099 remains IN_PROGRESS; actual higher-version upgrade114455037206 SUCCESS.
+
+Final camera114455037050 FAIL, evidence11700523412/13335120bytes/SHA4eeb6664cb41e5fbd8b1571adfe6d9f1f9fb51f94e95fab50f97337804a6af74/CRC verified. Forward medium compositor p99 **149.736818→244.749993ms** fails1.2; pinch HWUI95 **450→500ms** and compositor95 **440.639226→504.727749ms** also exceed1.1. Forward PSS all<=1.2; other scenarios retain mostly lower/equal timings. Reverse candidate completed but baseline install FAILED because adb install-r refuses signed version10→9 downgrade. Earlier3f/882 comparisons show the same actual version-switch failure. These are failed measurements, not acceptance. Original continuous300→350ms pinch failure also remains preserved.
+
+Camera fixture protocol already clears all app data per profile. The test now verifies rooted ephemeral emulator, explicitly uninstalls only its existing Dominion QA package, installs the actual next signed APK and clears its fixture data before loading the identical checksum-validated paused save. This makes both forward and reverse fresh starts possible without altering Android release security or real upgrade-save QA. Tests reject unsuccessful uninstall before install. All frame/compositor/PSS thresholds, continuous gesture cadence and captured intervals unchanged. Existing expansion-camera-checkpoint is updated to reuse exact final38133111807/N binary with source runtime guard and uploaded source provenance. No gameplay/renderer/asset/backend changes or APK rebuild.
+
+Files: scripts/android_fixture.py,scripts/android-camera-profile.py,tests/camera_fixture_test.py,.github/workflows/expansion-camera-checkpoint.yml,DEVELOPMENT_HANDOFF.md.4fixture guards/compile/YAML/diff PASS. Next: run the corrected complete ABBA comparison on existing expansion-camera-qa, preserve old failed measurements, diagnose any remaining measured regression before release. Native actual paid/course/session/reconnect still mandatory. Main/acceptance/publication remain blocked. Exact QA cleanup and all29original backups remain required. Physical Xiaomi unmeasured.
+
+---
+
+# Continuation — actual offscreen native course control recovery, 2026-10-11
+
+Verified published parent **cac6ad0e0e4b842d0ce2d8f98cb2c1205bac32ed**; exact game runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**, unchanged APK142473881bytes/SHA75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3. Final38133111807 build/10000/liveHTTP/actual0.8.1→2.0save upgrade PASS; camera/1800s native soak IN_PROGRESS. Do not rebuild for this QA-only fix.
+
+Correction to prior handoff expectation: current final native job114455037604 did NOT reach the exit dialog. It and corrected standalone38135164588/job114457434504 failed earlier at finding the actual course control, because UiAutomator retains offscreen TextView bounds **[982,704][1151,610]** (inverted by ScrollView clipping). Downloaded corrected-run artifact11700363401/554343bytes/SHA8b067c35e93843bc8a7b6165f4826e4967b7bf6cb50468125e697b0ef73fb9f6/CRC verified; exact hierarchy21-find-2.xml confirms this. Original882 exit-case failure remains genuine and its fix remains required. No game runtime defect was inferred from this harness failure.
+
+The finder now ignores disabled/outside/clipped/inverted controls while continuing real bounded ScrollView gestures, and taps only valid visible screen coordinates exactly once. Payment/220treasury/16political-power/once-only eco-audit/paused state/session/owner-return/reboot assertions remain unchanged. Five native guards/compilation/diff PASS. Files: scripts/native_online_validation.py,scripts/android-multiplayer-smoke.py,tests/native_online_validation_test.py,DEVELOPMENT_HANDOFF.md.
+
+Additional exact isolated cleanup UUIDs: b18c51ce-00e1-48b4-8977-007d1c01fb19 (failed final native),4a7c4f96-1661-40b1-87b3-0f835983e783 (corrected standalone failure), both NATIVE ONLINE QA. Preserve earlier exact scoped list and all29original city backups/user rooms. Next: run corrected full native flow against the same final APK on existing expansion-qa; finish unchanged camera/soak gates, strict composite proof if frozen old harness remains failed, exact guarded cleanup, accepted main/publication/direct delivery. No physical Xiaomi performance claim.
+
+---
+
+# Continuation — verified final APK and exact native exit harness fix, 2026-10-11
+
+Verified published parent **b30aed95f0f02c027655ba3e88fedbba2329864f**; app runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**. Required CI **38133111807** build114451355387/10000ticks114451355479/liveHTTP114451355520 SUCCESS. Actual release ZIP11700581166/62,287,784bytes/digestea15e7b9941fa8cbfb00495b2ab27b77bb0bca7368876f50015732aaac5063c6/CRC verified. APK **Dominion-grand-strategy-v2-release.apk**,142,473,881bytes/SHA **75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3**, embedded actual Hermes10,690,504bytes/magic/dedicated backend/all4HermesVM ABI/all42 original paintings byte-exact PASS. Actual CI manifest2.0.0(10),nondebug,landscape,signaturefac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c tied to the sameAPK digest. Native/camera/soak/online acceptance still PENDING; do not deliver yet.
+
+Previous corrected-control candidate882 native38132865124/job114454303930 passed actual create/country/ready/start/serverpause/single native paid course, then FAILED on literal `Выйти` lookup. Downloaded evidence11700082781/ZIP SHA36df2fc8066721411122d846b151881aeebf2c66f90e84f46eb6a46cce5530df/CRC verified: actual title `Выйти из кампании?`, native Android Button `ВЫЙТИ`,otherbutton `ОСТАТЬСЯ`. This is a confirmed harness case issue, not a game exit or lost session bug. Strict fix requires actual correct confirmation title plus ONE enabled/clickable Android button matching the label case-insensitively; no bypass or blind extra tap. Tests reject wrong dialog,wrong/duplicate controls. Exact failed room0c48799f-180c-4206-bfd4-69fb539f0996 (NATIVE ONLINE QA) added to scoped cleanup list; other prior exactUUIDs remain recorded.
+
+Files: scripts/android-multiplayer-smoke.py, scripts/native_online_validation.py, tests/native_online_validation_test.py, .github/android-online-source (now exact final run38133111807), DEVELOPMENT_HANDOFF.md.4native guards/compilation/diff PASS; application/runtime source remains byte-identicalf794. Current pipeline's frozen old harness is expected to retain this same failure; rerun corrected native QA on existing expansion-qa against the exact already-built finalAPK, without another APK or completed10000/HTTP/native-offline build. Record both failed old run and successful corrected source/evidence explicitly; no test removal or weakened game assertion. Final publication must require corrected actual native owner/paidcourse/menu/process/hosttakeover/reboot proof and every other unchanged gate.
+
+Next exact step: publish this QA-only fix, normally merge into existing expansion-qa to run corrected signed native flow against38133111807; finish current camera/upgrade/1800s gates. Only after all actual proofs and exact UUID/name-guarded cleanup may acceptance/main/publication/directAPK delivery proceed. No physicalXiaomi measurement.
+
+---
+
+# Continuation — live acceptance recorded and portable artifact layout, 2026-10-11
+
+Verified parent **081e661e4deecc4781419c45b733dc8c37edb0e2**, runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**, active complete final CI **38133111807**. Backend-live114451355520 SUCCESS, actual evidence/source-bundle digests verified and current deployed22/24 source-byte identity confirmed. Full observed report EXPANSION_LIVE_ACCEPTANCE_2026-10-11.json; stage3–8 live functional gates now PASS. Current native/camera/upgrade/1800s/online still pending, so final release and main promotion remain blocked. Original forwardpinchFAIL retained.
+
+Redundant local HTTP QA e91630eb-1637-41fb-8e6b-688ae7593df5 was stopped through its unified session56184 after identical full actual CI PASS (exit130); partial local output is not promoted to full acceptance. Cleanup must include this exact scoped room and current CI10a12545-03d1-4058-a915-0fbe79f7d0b4 plus the three failed native/HTTP UUIDs already recorded. Do not delete original/user rooms or backups.
+
+Actual native evidence artifact uses a common absolute root when /tmp identifier is uploaded beside workspace files. Publication now requires ONE recursively found exact JSON report (reject missing/duplicates), accepting current real artifact layout; future native uploads copy the sanitized UUID into android-online and keep a relative common root. Publication retries only missing release assets after checking an already-existing identicalAPK, never clobbers a binary/tag. Main/full publication flow uses the same unique-report reader. These are QA/ops fixes only; no app/runtime/assets/backend changes and no identical APK rebuild.
+
+Files: EXPANSION_LIVE_ACCEPTANCE_2026-10-11.json, RELEASE_REPORT.md, DEVELOPMENT_HANDOFF.md, existing publication/online/Android workflow verification lines, release_v2_validation/verify-expansion-release scripts and negative artifact-layout regression. Current **91Python/no skips PASS**, compilation/YAML/diff PASS. Main unchangeddbb354ab, acceptance manifest absent/PENDING until actual native gates and guarded cleanup finish. PhysicalXiaomi unmeasured.
+
+Next exact operation: monitor38133111807/current signed gates, fix confirmed failures, collect exact QA UUIDs/guarded cleanup, record final accepted SHA/digests/version/signature/proofs and stage status; normally promote existing main, trigger existing apk-delivery publication-only workflow, verify/download and attach Dominion-grand-strategy-v2-release.apk.
+
+---
+
+# Continuation — full live backend PASS, final Android pending, 2026-10-11
+
+Verified current published HEAD **081e661e4deecc4781419c45b733dc8c37edb0e2**; actual application runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**. Its required CI **38133111807** backend-live/job114451355520 SUCCESS. Build/10000/native/camera/upgrade/online remain in progress/pending; main unchangeddbb354ab. Publication-prep HEAD is runtime-byte-identicalN, so do not rebuild for these reports/ops.
+
+Actual live schema18 feature and clock/host migration evidence ZIP11699439508/digest340b01b2415175505643cad7cd26c21786031329c58bbf26cc244f6e5ca54a04/CRC verified, exact room10a12545-03d1-4058-a915-0fbe79f7d0b4 (WORLD ECONOMY QA), tick21→47; all auth/version/world/8players/receipt/cost/refund/route/building/army/economy/consent/4spies/once-only course/science/reconnect/time/migration checks PASS. New compiled artifact11700270852/digest31a55ab71b77ef135b9b6f4f95234f22336317d65c8a5b9bd4383774c3074469/CRC verified and both bundles exactly match currently deployed command24/room22 SHA values. Never redeploy unchanged bundles. Full observed report EXPANSION_LIVE_ACCEPTANCE_2026-10-11.json.
+
+Gameplay systems stages3–8 now have integrated host/JS/native/10000tick and actual production schema18 functional evidence. Final overall acceptance still waits for current native/camera/upgrade/online/soak; stage1 remains PARTIAL with preserved earlier pinchFAIL,10/11 PARTIAL. No final release/physicalXiaomi claim. One local duplicate HTTP scenario e91630eb was still running when full identical CI finished; stopping it is permitted to avoid repeating accepted work, but cleanup must include its exact UUID regardless of partial completion. Prior failed scoped rooms9cc50b47/7afc3e4d/ff5c4d14 plus current CI10a room remain for UUID/name-guarded cleanup only; preserve original29city backups.
+
+Files: EXPANSION_LIVE_ACCEPTANCE_2026-10-11.json, RELEASE_REPORT.md, DEVELOPMENT_HANDOFF.md and publication-only retry of missing assets after verifying existing identicalAPK (no clobber/tag overwrite).90Python/no skips/compilation/YAML/diff PASS inherited; final APK gates must be observed, not inferred.
+
+Next exact action: monitor38133111807, inspect real current signed native/camera results and fix concrete failures; guarded cleanup/acceptance manifest, normal promotion and existing apk-delivery publication without duplicate build, download/verify/deliver final2.0APK.
+
+---
+
+# Continuation — exact-artifact publication prepared, 2026-10-11
+
+Verified published runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**; its full required CI **38133111807** is IN PROGRESS (build114451355387,10000ticks114451355479,actual HTTP114451355520). Do not start another identical APK build for this QA/ops-only block. Main remainsdbb354ab and must be promoted normally only after acceptance. Previous candidates38132365346/38132865124 are retained but superseded for release by the current runtime/recovery fix.
+
+Prepared a separate publication-only workflow on the EXISTING apk-delivery branch: accepted run/source/binary SHA/size and every required job, native higher-version/signature/UID/save/backups, actual encrypted paid-course/native-owner/reboot return, live schema18/host migration, real1800s soak and scoped cleanup must all pass. It consumes the exact already-tested APK/evidence without rebuilding, verifies all42 art bytes, publishes v2.0.0 APK plus identical ZIP/checksums/evidence, then verifies public downloads. Old0.7/0.8 releases/workflows remain preserved. RELEASE_ACCEPTANCE_V2.json is deliberately absent until actual QA and cleanup finish; publication cannot run against a pending candidate.
+
+Files: .github/workflows/publish-expansion-release.yml, scripts/release_v2_validation.py, scripts/verify-expansion-release.py, tests/release_v2_validation_test.py, DEVELOPMENT_HANDOFF.md. Current **90Python/no skips PASS**, including negative publication gates for missing/failed/pending jobs, wrong runtime/binary, repeated focus reward flag, lower version, incomplete cleanup and NaN/Infinity/short soak; compilation/YAML/diff PASS. No application/backend/assets/dependency changes, current2.0.0(code10) APK pipeline unchanged. Actual physicalXiaomi remains unmeasured.
+
+Exact active operations: final candidate38133111807 full release gates, plus local actual HTTP QA e91630eb-1637-41fb-8e6b-688ae7593df5. HTTP currently validates policies/funding/paid focus after earlier auth/world/receipt/route/construction/typed army/commander checks; not full PASS yet. Collect every newly created exact QA UUID/name from sanitized logs, clean only those and prove zero room/membership/receipt remnants while original29city backups remain. Do not dispatch publication or promote main while camera/live/native/upgrade is pending/failed. Original continuous forwardpinch300→350 FAIL and raw evidence remain retained.
+
+Next exact action: finish actual current QA, fix concrete failures using these existing systems/scripts, update acceptance manifest and handoff only with observed results; normal verified main promotion, existing apk-delivery publication, download/hash/CRC/signature/config verification and direct finalAPK delivery.
+
+---
+
+# Continuation — final network recovery and mandatory live gate, 2026-10-11
+
+Verified published parent **8823d12f0bbfd84bcec4722c52b7935563133f62**; its full local **295JS/no skips PASS** and strictTS PASS. Candidate CI38132865124 IN PROGRESS; prior metadata-only38132365346 also retained. Main unchanged. This logical correction bounds heartbeat substitution to ACTIVE delivery, not merely a durable uncertain pending command: after network loss, normal authoritative polling/clock resumes while the same pending identity remains available for receipt recovery. Four focused control/CAS/paid-collision/active-heartbeat/lost-response polling guards and strictTS PASS. Existing14 multiplayer/wire/compatibility cases plus22paid-intent recovery scenarios retained, no weakened tests.
+
+Existing backend-world-qa is now reusable and mandatory in Android release pipeline, actual production HTTP only/isolated QA room; its existing auth/CAS/4missions/once-only focus/science/treaties/clock/host-migration assertions are unchanged. Timeout45 accommodates full real snapshots/time; it is not a simulation-time shortcut. Backend auth/source/deployed22/24 and render/offline gameplay remain unchanged. Release publication requires this live gate in addition to all original native/camera/long/upgrades and native online acceptance.
+
+Files: src/multiplayer/httpTransport.ts, tests/multiplayer_controls.test.ts, .github/workflows/android-apk.yml, .github/workflows/backend-world-qa.yml, BUG_REPORT.md, DEVELOPMENT_HANDOFF.md. Current local4new guards/strictTS/backendQA4/YAML/diff PASS. Final version2.0.0(code10)/same package/signature and fileDominion-grand-strategy-v2-release.apk retained. Actual signed verification for the containing commit still PENDING.
+
+Exact independent HTTP operation remains RUNNING in isolated e91630eb-1637-41fb-8e6b-688ae7593df5 (WORLD ECONOMY QA). Retain prior failures and exact room cleanup identifiers. Stage1 remains PARTIAL(original continuous forwardpinch300→350ms failure); gameplay stages3–8 integration exists but full live gate pending;9/10/11 final acceptance/delivery pending. No handset performance claim.
+
+Next: finish this containing commit's existing complete release Actions; inspect failures and exact native online flow/real backend results, guarded cleanup, normal accepted merge/publication and verified APK delivery. Do not reimplement finished systems or generate art again.
+
+---
+
+# Continuation — confirmed native CAS race correction, 2026-10-11
+
+Verified published parent **3f62338d965f9685be8f161fe0ad4994b23d1fe4**, final2.0.0(code10) full CI **38132365346** currently building/10000ticks; its native transport predates this confirmed correction and is superseded for final acceptance. Main unchanged dbb354ab. Existing backend command24/room22/schema18 unchanged; do not redeploy identical bundles.
+
+Actual native online38132141380/job114448497096 FAILED on ready/start with visible `Stale campaign version`, independently corroborating earlier pause contention. Scope ff5c4d14-e26e-4c80-8cd1-e872ffd54741; artifact11699253034 digest969e872e5141722e9002c5e8d98fc1e721a852f844caab2be1f96d2a5155afdf/CRC verified. This concrete game client bug is corrected without changing server authority: absolute unpaid selection/readiness/speed only may refresh and retry two explicit CAS refusals, bounded3attempts, same intent ID/payload. Paid actions and other errors remain rejected; own pending poll becomes authenticated heartbeat instead of competing clock update. Receipt/restart behavior retained. Native guest QA heartbeat is real5s server presence, independent of render/input traversal.
+
+Files: src/multiplayer/httpTransport.ts, tests/multiplayer_controls.test.ts, scripts/android-multiplayer-smoke.py, BUG_REPORT.md, DEVELOPMENT_HANDOFF.md. Local3new meaningful guards +14 existing targeted cases (including22paid-intent network loss/restart checks) PASS; strictTS/native Python3/compilation/diff PASS. Full required JS/native/camera/upgrade CI must run for this corrected APK. No camera threshold or gameplay mechanic altered.
+
+Live HTTP QA remains RUNNING in isolated e91630eb-1637-41fb-8e6b-688ae7593df5, host WORLD ECONOMY QA. Prior failed exact QA rooms9cc50b47,7afc3e4d,ff5c4d14 require full UUID/name guard cleanup recorded above; no user rooms modified. Continuous camera38128760449 original forward pinch300→350 FAIL retained; current final binary must pass unchanged allABBA gates. Stage1/10/11 remain PARTIAL; remaining implemented systems await full live acceptance. No physicalXiaomi claims.
+
+Next exact action: publish corrected2.0 candidate, monitor actual signed native online and all existing release gates, complete live QA/cleanup, then verified merge/publication/APK delivery. Do not stop at the fix or distribute the preceding candidate as final.
+
+---
+
+# Continuation — final2.0 standalone candidate, 2026-10-11
+
+Verified published base **ea03ae9e3a844cff308ca75f271fd890eeea2ff9**; main remains **dbb354ab038713c3e54b969b34a6fc88bf2de11f**. QA continuation on existing expansion-qa **90b1ee85b2e9c906cb6acdac5a46a6ee32e34c15**, native online run **38132141380** is IN PROGRESS. Application systems/art/world/backend retain the implemented86 runtime; this block changes release metadata and required QA wiring only.
+
+Final candidate version **2.0.0 / Android code10**, same package com.elcin31.grandstrategymultiplayer, same release signing setup, landscape, embedded Hermes and existing dedicated backend. Final file **Dominion-grand-strategy-v2-release.apk**. Main release pipeline now requires real native online reconnect and actual higher-version0.8.1→2.0 save preservation in addition to strictTS/JS/Python/art/10000ticks/1800s/native cameraABBA. Legacy internal artifact name retained for accepted baseline/checkpoint consumers; actual final filename/tag/title updated to2.0. No release declared before these gates pass.
+
+Files: app.json, package.json/package-lock.json (root versions only, no dependency upgrade), .github/workflows/android-apk.yml/.github/workflows/android-upgrade-qa.yml, README.md, DEVELOPMENT_HANDOFF.md. Current local strict typecheck and **88Python/no skips PASS**, versions/landscape/YAML/diff PASS; unchanged gameplay inherited **292JS PASS** and full new CI will rerun its required checks. Existing production command24/room22 ACTIVE/schema18; live HTTP restarted after tested QA dispatch fix in isolated room **e91630eb-1637-41fb-8e6b-688ae7593df5**, status RUNNING (not PASS). Prior failed scoped rooms9cc50b47-6263-4ec7-8d4f-90ded6a453a7 and7afc3e4d-f379-4bb5-8994-944a6418848f still need exact UUID/name-guarded cleanup;29 existing city backups must remain.
+
+Stage status:0DONE;2DONE;1PARTIAL(one forward pinch300→350ms originalHWUI gate failure retained);3–8PARTIAL(working integrated/host/native/10000tick verified, full live schema18 pending);9PARTIAL(27new/all42 exact packaged verified, final frame gate pending);10PARTIAL(real live/native online final acceptance pending);11PARTIAL(final2.0 build/QA/publication/delivery pending). No new roadmap or repeated gameplay/art implementation. Physical Xiaomi results remain unmeasured.
+
+Next exact operation: start/monitor this candidate's full Actions gates, inspect native38132141380 pause evidence and live HTTP completion; fix concrete failures, record exact QA cleanup, then accept/merge/publish the existing project and deliver the verified final signed standalone APK.
+
+---
+
+# Continuation — exact live QA harness failures, 2026-10-11
+
+Verified parent1e0e140946c49bea664959ec9fb09ad09e7a9ba4; main unchanged. Existing schema18 command24/room22 ACTIVE. Live HTTP first run stopped at spy validation because helper parameter `kind` collided with the real espionage payload; previous actual checks through paid course and two spy starts passed, but full QA is NOT PASS. Rename helper parameter only; regression covers real Sabotage/PoliticalIntrigue payloads. Fresh real HTTP run started; exact QA UUID in its log/`/tmp/dominion-world-qa-room-id`.
+
+Native online run38130564619/job114443827687 FAILED after actual room/country/ready/start, at server pause. Artifact11698799308 ZIP SHA77f7464d86bb5e4e701c6d079707bf142c2112cee1036e40d66afd00c12f7ea2/CRC verified; actual stored isolated room still speed1/running/tick9 with5 accepted commands. Add actual native response capture/wait: a visible exact stale-version CAS rejection may be dismissed, synchronized and explicitly retried for idempotent pause only. Paid course remains a single tap and waits for authoritative acknowledgement; no blind paid retries or weakened assertions. Do not claim pause cause without new native evidence.
+
+Failed scoped rooms7afc3e4d-f379-4bb5-8994-944a6418848f (NATIVE ONLINE QA) and9cc50b47-6263-4ec7-8d4f-90ded6a453a7 (WORLD ECONOMY QA) need UUID/name-guarded cleanup; prior delete invocation aborted without deletion. No user rooms edited. Guards4backend/3native and compilation/diff PASS.
+
+Continuous fullABBA38128760449 FAILED only forward pinch HWUI P95 300→350ms at unchanged10% threshold; reverse pinch350→350, other8 scenarios/memory/compositor gates PASS in both orders. Preserve FAIL/artifact11699033408 SHA3e8f4e0091c61630658026abe6950632ad945dbba0cef9275d114fbef6d00df7. Stage1 remains PARTIAL; no physical-handset result inferred.
+
+Next exact operation: publish this QA-only fix to existing expansion-qa, inspect actual native pause response; finish fresh HTTP QA and scoped cleanup; prepare2.0.0(code10) same-package/signature release, all native/integration/camera/upgrade gates and final APK delivery. Gameplay/art/source unchanged86.
+
+---
+
+# Continuation — actual native online QA harness, 2026-10-11
+
+Verified published parent d0de8ae5ce5e17b8710919798f3a82a0b50a3e30 after expected-parent GitData publication (local tree byte-identical); existing command24/room22 ACTIVE/schema18. Native online acceptance was missing, so this logical block adds only actual QA: visible native room creation/country/ready/start/pause/paid course, guest real HTTP corroboration, encrypted SecureStore session/UID, menu/process return, real68s host/AI migration and native owner return, emulator reboot/reconnect, strict same-room/world/member/once-only payment assertions and scoped cleanup UUID. No token/fixture injection, fake clock, user-room edits or new game system. Uses the existing exact86 signed standalone APK38115315485; no identical rebuild/1800s rerun.
+
+Files: scripts/android-multiplayer-smoke.py, scripts/native_online_validation.py, tests/native_online_validation_test.py, .github/workflows/android-online-qa.yml, .github/android-online-source. Actual pinned Expo57 Android SecureStore keychain prefix/encryptedct layout inspected locally.3 meaningful authority/repeated-payment/session-loss guard tests/no skips, Python compile/YAML/diff checks PASS; no TS/game/renderer/assets/dependency changes, inherit current292JS/strictTS. This is PREPARED, not native online PASS.
+
+Actual continuous38128760449 original fullABBA step now FAILED; independent pinch diagnostics/artifact export remain running. Preserve all36 rows/unchanged thresholds when its artifact arrives, diagnose concrete residual delays/memory. Real schema18 HTTP QA continues only in room9cc50b47-6263-4ec7-8d4f-90ded6a453a7, WORLD ECONOMY QA; actual auth/capacity/country/start/pause/recruitment have progressed, complete assertions/host migration and exact UUID cleanup remain pending. No broad DB delete.
+
+Exact next action: publish this QA-only skip-ci canonical commit, normal-merge into existing expansion-qa without force (retaining its existing upgrade/source diagnostics) so the new native-online workflow runs on86. Inspect actual continuous camera metrics; complete measured camera/runtime correction as needed. Finish live HTTP/native reconnect and guarded cleanup, then final2.0 higher version/name/all full release gates/delivery. Stages0/2DONE,1PARTIAL;3–10PARTIAL integrated with actual live/online/frame acceptance pending;11PARTIAL final2.0 not delivered.
+
+---
+
+# Continuation — recovered8fd and deployed existing Dominion backend, 2026-10-11
+
+Recovered actual expansion-v2 HEAD8fd9ae2f39509ad51bc37421b7e8188fc7a6bf96; main remains dbb354ab038713c3e54b969b34a6fc88bf2de11f. Last50 commits, all12 branches, zero open PRs, running/completed/failed Actions and actual artifacts inspected. Workspace initially empty after maintenance; checked out the existing repository/current branch. No unpublished previous edits recoverable beyond its published8fd checkpoint. Current runtime/assets/world/backend source byte-identical86b0f6d; do not repeat implemented gameplay/art.
+
+Actual current host strictTS/292JS/no skips PASS. Reviewed86 backend artifact11693232709 ZIP digest/CRC and each source SHA/byte count verified; independent clean8fd local builds are byte-exact. Existing malformed HTTP10/10 PASS. Existing dedicated project dfjsnjxnyjspwugjguhq only, ACTIVE_HEALTHY; before QA29 rooms/32 memberships/10 receipts/all29 prior city backups retained.
+
+**Actual coordinated deployment completed:** existing game-command23→24 first, then game-room21→22; both ACTIVE/verify_jwt:false, custom hashed-player-session auth/CAS/receipts retained. Source hashes and deployed archive IDs in EXPANSION_BACKEND_ROLLOUT_2026-10-11.json. No SQL schema or user-room edit, replacement project/database/auth/storage, or AssetMind access. Compatible signed86 standalone client already verified by actual release/native/in-place-save gates. Old clients receive426 and need the compatible APK. Exact command23 rollback is preserved; retrieved room21 source remains UNAVAILABLE and accepted reconstruction is explicitly not exact. Forward schema18 fixes only after any migration.
+
+**Exact active operation:** real-clock authenticated HTTP expansion QA is RUNNING in isolated room9cc50b47-6263-4ec7-8d4f-90ded6a453a7, host name WORLD ECONOMY QA. Only this UUID may be cleaned, with original-host-name guard, then verify zero room/player/receipt rows. No success inferred from deployment.
+
+Continuous fullABBA38128760449/job114438523543 is still running; preserve original gates and failures. Separate world/local trace38128760470 SUCCESS, artifact11698996366 ZIP SHA3bd58295efba16b6f64842e2b6407b6bdf931912d40d0152d2e34d8f4ae2af1c/CRC verified. Four actual10.55–10.67s continuous markers and scheduler data exist, but36 ftrace setup errors make attributionComplete=false. Candidate observed JS running time is lower in these traces; no full frame/PSS improvement or handset FPS claimed.
+
+Approved stages:0DONE;2DONE actual native army interaction;1PARTIAL current full continuous camera pending;3–8PARTIAL implemented/host/native/10000 verified, live18 RUNNING;9PARTIAL27 new/all42 packaged originals, final frame gate pending;10PARTIAL live/native reconnect/final integration pending;11PARTIAL checkpoint standalone exists, final2.0 higher version/release/delivery pending. Next: finish actual live QA/cleanup, inspect current fullABBA, add/run real native online reconnect with retained SecureStore, finalize2.0 version/name/publishing and all full gates, then deliver Dominion-grand-strategy-v2-release.apk. Do not stop at recovery/deployment or distribute intermediate0.8.1 as final.
+
+---
+
 # Continuation — actual Android PASS and continuous camera capture, 2026-10-11
 
 Confirmed parent63a40b9b2162403e658b7ad79692987fb50953ac; application/backend/world/assets/dependencies byte-identical86b0f6d83079785ec7c29eb61e137c2613ff0a69. Obtain this QA-only containing SHA from expansion-v2. Scratch maintenance removed an uncommitted correction; restored from GitHub63 with all8c1 auxiliary world/local diagnostics preserved, and verified again:84Python/no skips, pinned Perfetto0.58.2/officialv57.2, compilation/YAML/source/schema/diff checks PASS. Inherit292JS/strictTS/Hermes/all42 from unchanged86. No repeated gameplay development or duplicate APK build.
