@@ -1,3 +1,15 @@
+# Continuation — actual native online QA harness, 2026-10-11
+
+Verified published parent d0de8ae5ce5e17b8710919798f3a82a0b50a3e30 after expected-parent GitData publication (local tree byte-identical); existing command24/room22 ACTIVE/schema18. Native online acceptance was missing, so this logical block adds only actual QA: visible native room creation/country/ready/start/pause/paid course, guest real HTTP corroboration, encrypted SecureStore session/UID, menu/process return, real68s host/AI migration and native owner return, emulator reboot/reconnect, strict same-room/world/member/once-only payment assertions and scoped cleanup UUID. No token/fixture injection, fake clock, user-room edits or new game system. Uses the existing exact86 signed standalone APK38115315485; no identical rebuild/1800s rerun.
+
+Files: scripts/android-multiplayer-smoke.py, scripts/native_online_validation.py, tests/native_online_validation_test.py, .github/workflows/android-online-qa.yml, .github/android-online-source. Actual pinned Expo57 Android SecureStore keychain prefix/encryptedct layout inspected locally.3 meaningful authority/repeated-payment/session-loss guard tests/no skips, Python compile/YAML/diff checks PASS; no TS/game/renderer/assets/dependency changes, inherit current292JS/strictTS. This is PREPARED, not native online PASS.
+
+Actual continuous38128760449 original fullABBA step now FAILED; independent pinch diagnostics/artifact export remain running. Preserve all36 rows/unchanged thresholds when its artifact arrives, diagnose concrete residual delays/memory. Real schema18 HTTP QA continues only in room9cc50b47-6263-4ec7-8d4f-90ded6a453a7, WORLD ECONOMY QA; actual auth/capacity/country/start/pause/recruitment have progressed, complete assertions/host migration and exact UUID cleanup remain pending. No broad DB delete.
+
+Exact next action: publish this QA-only skip-ci canonical commit, normal-merge into existing expansion-qa without force (retaining its existing upgrade/source diagnostics) so the new native-online workflow runs on86. Inspect actual continuous camera metrics; complete measured camera/runtime correction as needed. Finish live HTTP/native reconnect and guarded cleanup, then final2.0 higher version/name/all full release gates/delivery. Stages0/2DONE,1PARTIAL;3–10PARTIAL integrated with actual live/online/frame acceptance pending;11PARTIAL final2.0 not delivered.
+
+---
+
 # Continuation — recovered8fd and deployed existing Dominion backend, 2026-10-11
 
 Recovered actual expansion-v2 HEAD8fd9ae2f39509ad51bc37421b7e8188fc7a6bf96; main remains dbb354ab038713c3e54b969b34a6fc88bf2de11f. Last50 commits, all12 branches, zero open PRs, running/completed/failed Actions and actual artifacts inspected. Workspace initially empty after maintenance; checked out the existing repository/current branch. No unpublished previous edits recoverable beyond its published8fd checkpoint. Current runtime/assets/world/backend source byte-identical86b0f6d; do not repeat implemented gameplay/art.
