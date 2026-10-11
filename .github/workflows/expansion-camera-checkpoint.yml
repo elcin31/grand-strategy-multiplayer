@@ -2,7 +2,7 @@ name: Dominion fixed-world native camera checkpoint
 on:
   push:
     branches: [expansion-camera-qa]
-    paths: [.github/workflows/expansion-camera-checkpoint.yml, scripts/android-camera-profile.py, scripts/android_accessibility.py, scripts/compare-camera-native.py, scripts/export-camera-evidence.py, scripts/make-camera-fixture.ts, scripts/camera_frame_stats.py, tests/camera_frame_stats_test.py, tests/camera_protocol_test.py, tests/camera_accessibility_test.py, scripts/camera_telemetry.py, tests/camera_telemetry_test.py, scripts/camera_surface_stats.py, tests/camera_surface_stats_test.py, scripts/android_fixture.py, tests/camera_fixture_test.py]
+    paths: [.github/workflows/expansion-camera-checkpoint.yml, scripts/android-camera-profile.py, scripts/CameraGesture.java, scripts/camera_gesture.py, tests/camera_gesture_test.py, scripts/android_accessibility.py, scripts/compare-camera-native.py, scripts/export-camera-evidence.py, scripts/make-camera-fixture.ts, scripts/camera_frame_stats.py, tests/camera_frame_stats_test.py, tests/camera_protocol_test.py, tests/camera_accessibility_test.py, scripts/camera_telemetry.py, tests/camera_telemetry_test.py, scripts/camera_surface_stats.py, tests/camera_surface_stats_test.py, scripts/android_fixture.py, tests/camera_fixture_test.py]
   workflow_dispatch:
 permissions:
   contents: read
@@ -15,10 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 55
     env:
-      CAMERA_CANDIDATE_RUNTIME: ca230dd129f5647d9f1a11fbbc42c78bd2344702
+      CAMERA_CANDIDATE_RUNTIME: 86b0f6d83079785ec7c29eb61e137c2613ff0a69
       CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-      CAMERA_CANDIDATE_RUN: '38047057931'
+      CAMERA_CANDIDATE_RUN: '38115315485'
       CAMERA_REQUIRE_SURFACE_PRESENTATION: '1'
+      CAMERA_ALLOWED_STATE_VERSION: '18'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,10 +29,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git diff --exit-code ca230dd129f5647d9f1a11fbbc42c78bd2344702 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38047057931 > source-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38047057931/jobs > source-jobs.json
-          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='ca230dd129f5647d9f1a11fbbc42c78bd2344702';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
+          git diff --exit-code 86b0f6d83079785ec7c29eb61e137c2613ff0a69 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38115315485 > source-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38115315485/jobs > source-jobs.json
+          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='86b0f6d83079785ec7c29eb61e137c2613ff0a69';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -39,8 +40,11 @@ jobs:
       - run: npm ci --include=dev --no-audit --no-fund
       - name: Generate one authoritative paused schema12 fixture for both APKs
         run: |
-          git diff --exit-code 47b0db4f8b220e9ea89998afaac035239b64f5e0 ca230dd129f5647d9f1a11fbbc42c78bd2344702 -- supabase/functions/_shared src/persistence/campaignCodec.ts
-          node --import tsx scripts/make-camera-fixture.ts camera-fixture
+          git diff --exit-code 47b0db4f8b220e9ea89998afaac035239b64f5e0 HEAD -- supabase/functions/_shared/worldDefinitions.ts supabase/functions/_shared/worldData
+          fixture_source="$RUNNER_TEMP/dominion-accepted-camera-fixture"
+          git worktree add --detach "$fixture_source" 47b0db4f8b220e9ea89998afaac035239b64f5e0
+          cp scripts/make-camera-fixture.ts "$fixture_source/scripts/make-camera-fixture.ts"
+          node --import tsx "$fixture_source/scripts/make-camera-fixture.ts" "$GITHUB_WORKSPACE/camera-fixture"
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -51,7 +55,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38047057931
+          run-id: 38115315485
           name: dominion-camera-illustrated-release
       - uses: actions/download-artifact@v4
         with:

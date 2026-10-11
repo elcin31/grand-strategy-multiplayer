@@ -1,0 +1,51 @@
+{
+  "recordedAt": "2026-10-11T06:05:16.734107+00:00",
+  "projectId": "dfjsnjxnyjspwugjguhq",
+  "deploymentPerformed": false,
+  "functions": [
+    {
+      "id": "62dc20f9-507e-4b06-9126-1e7a8c433759",
+      "slug": "game-room",
+      "name": "game-room",
+      "status": "ACTIVE",
+      "version": 21,
+      "created_at": 1790788902466,
+      "updated_at": 1791537650554,
+      "verify_jwt": false,
+      "import_map": false,
+      "entrypoint_path": "file:///tmp/user_fn_dfjsnjxnyjspwugjguhq_62dc20f9-507e-4b06-9126-1e7a8c433759_21/source/index.js",
+      "ezbr_sha256": "8b39a9c0a089f65e4ad8214f27edfa83168736652feb8ef34a5eeefc1e1491e6"
+    },
+    {
+      "id": "688baa79-a72a-4473-9dfb-3780925b27cd",
+      "slug": "game-command",
+      "name": "game-command",
+      "status": "ACTIVE",
+      "version": 23,
+      "created_at": 1790788947209,
+      "updated_at": 1791537653167,
+      "verify_jwt": false,
+      "import_map": false,
+      "entrypoint_path": "file:///tmp/user_fn_dfjsnjxnyjspwugjguhq_688baa79-a72a-4473-9dfb-3780925b27cd_23/source/index.js",
+      "ezbr_sha256": "5fcd0dcdc673fc963c8887c00a67f07a9e80ea98bccb4b78c86c9c91f41b4667"
+    }
+  ],
+  "exactCommandFile": {
+    "path": "game-command-v23/index.js",
+    "bytes": 2091247,
+    "sha256": "f2b16707530850e3fa4ded4204316aff7d75925b46fe8286cabeda48c571cdd1",
+    "gitBlob": "7c091cb0b8398a51cb5f2b038c569772894263cc",
+    "provenance": "Actual get_edge_function game-command23 download; accepted47b esbuild minify rebuild matches exact source bytes."
+  },
+  "room21": {
+    "exactDeployedSourceAvailable": false,
+    "retrieval": "get_edge_function returned connector UNAVAILABLE on three attempts; healthy ACTIVE metadata. Cause unproven.",
+    "acceptedReconstruction": {
+      "sourceCommit": "47b0db4f8b220e9ea89998afaac035239b64f5e0",
+      "bytes": 2098171,
+      "sha256": "670b0a8f05a78527207345e449ea720d5d618eb3b93d72dca96ec226f36e8c3f",
+      "exactDeployedMatchProven": false
+    }
+  },
+  "rollbackBoundary": "Before any18 room migration, exact command23 and explicitly unconfirmed accepted47 room reconstruction are available. Never restore schema12 over migrated18 rooms. Existing custom auth/verify_jwt false retained."
+}

@@ -1,3 +1,23 @@
+# Latest actual evidence — 2026-10-11
+
+Actual86 full gapped4x9 ABBA FAILED nine original gates (eight P99 plus reverse terrain memory355081→454055KiB). Old driver injects150ms between1920ms gestures; CPU sampling extends frame capture beyond input. Both APKs now use continuous-pointer-v1/five complete real cycles/actual timestamps/zero injected idle/identical100ms finish grace. Every observed interval and original10/20%/20frames/paint/world limits retained. Fresh actual Java compilation/ABBA pending; no frame or handset FPS acceptance. Full evidence EXPANSION_CONTINUOUS_CAMERA_QA_2026-10-11.json.84Python/no skips PASS; application byte-unchanged86.
+
+---
+
+# Exclusive raster cache ownership — 2026-10-11
+
+Actual755 full unchanged4x9 ABBA is complete but fails six gates: forward pinch HWUI histogramP95 250→600ms, terrain compositorP99 91.625084→141.332038ms, panel-closedP99 92.214825→114.228966ms; reverse pinch compositorP95 471.589329→532.826437ms, worldP99 128.837025→190.818058ms, military PSS330285→397090KiB (748KiB above the20% cap). Local-panP99 passes both orders in this particular capture. Full original rows/digest/fixture preserved in EXPANSION_RASTER_OWNERSHIP_UPGRADE_QA_2026-10-11.json; no overall pass, samples removed or physical FPS claim.
+
+Current bounded change removes a redundant vector cache reference only when same-key raster pixels are actually retained. No live native object disposal, pixel cache reduction, renderer replacement or world change. Cold capacity failures and all invalid/oversized retention preserve fallback and foreground images. Existing native path/border caches, idle prewarm and32MiB/96 pixel LRU remain. Tradeoff: an evicted image can require vector re-recording from cached native geometry.292JS/76Python/strictTS/production Hermes/all42 images PASS; these prove ownership/compatibility, not device frame or memory improvement. Fresh complete unchanged ABBA and native30-minute results are required.
+
+Actual755 current10000 simulation succeeds with ten exact restores/P95101.600633ms/451max armies/4,487,736max snapshot/3.24919x population. Simulation is unchanged by this cache fix; fresh CI repeats it. Actual same-version Android replacement/save12→18/preferences/restart succeeds in separate run38114726798; it is not frame acceptance.
+
+---
+
+## Continuation 2026-10-11
+
+Direct9-number camera matrix removes six pinnedSkia4x4 compositions per UI update; numerical/host tests/export PASS, native frame effect pending. Actual8df full4×9 camera: pinch passes both orders but six unchanged P99/PSS gates fail; raw EXPANSION_CAMERA_REVIEW_8DF.json retained. No FPS claim or final acceptance.
+
 # Bounded diagnostic HUD publication — 2026-10-10
 
 Actual Stage9 world-pan hierarchy:8702 UTF8 bytes per timing HUD refresh,329chars/five country targets plus6538chars/23 army markers; every clustered army identity remains. Candidate timing node uses800bytes for the same compact timing metrics;7920bytes of full target geometry are published separately only when actual targets/selection change, through a stable external-store snapshot and memoized native node. Same visual overlay footprint, overlay still enabled and strict original ABBA/compositor/pinch/PSS gates retained.285JS/TS/61Python, actual-capture reconstruction/corruption tests,120 changed timing samples/stable target identity and changed selection/position PASS; Hermes/all42asset hashes PASS. Full evidence EXPANSION_CAMERA_TARGET_PUBLISH_QA.json.

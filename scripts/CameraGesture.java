@@ -26,8 +26,13 @@ public class CameraGesture {
     catch(ClassNotFoundException e){cls=Class.forName("android.hardware.input.InputManager");}
     manager=cls.getMethod("getInstance").invoke(null);
     inject=cls.getMethod("injectInputEvent",InputEvent.class,int.class);
-    boolean pinch=args[0].equals("pinch"); int cycles=Integer.parseInt(args[1]);
+    if(args.length<2 || (!args[0].equals("pan") && !args[0].equals("pinch")))throw new IllegalArgumentException("Invalid gesture");
+    int cycles=Integer.parseInt(args[1]),gapMs=args.length>2?Integer.parseInt(args[2]):150;
+    if(cycles<1 || cycles>50 || gapMs<0 || gapMs>1000)throw new IllegalArgumentException("Invalid input cadence");
+    boolean pinch=args[0].equals("pinch");
+    StringBuilder timing=new StringBuilder("{\"kind\":\"").append(args[0]).append("\",\"gapMs\":").append(gapMs).append(",\"cycles\":[");
     for(int cycle=0;cycle<cycles;cycle++) {
+      long downNs=System.nanoTime();
       down=SystemClock.uptimeMillis(); event(MotionEvent.ACTION_DOWN,1,pinch?475:360);
       if(pinch)event(MotionEvent.ACTION_POINTER_DOWN+(1<<8),2,45);
       for(int frame=0;frame<=120;frame++) {
@@ -37,8 +42,13 @@ public class CameraGesture {
         long due=down+frame*16; if(due>SystemClock.uptimeMillis())SystemClock.sleep(due-SystemClock.uptimeMillis());
       }
       if(pinch)event(MotionEvent.ACTION_POINTER_UP+(1<<8),2,45);
-      event(MotionEvent.ACTION_UP,1,pinch?475:360);SystemClock.sleep(150);
+      event(MotionEvent.ACTION_UP,1,pinch?475:360);
+      long upNs=System.nanoTime();
+      if(cycle>0)timing.append(',');
+      timing.append("{\"downNs\":").append(downNs).append(",\"upNs\":").append(upNs).append('}');
+      SystemClock.sleep(gapMs);
     }
+    System.out.println("DOMINION_GESTURE_TIMING "+timing.append("]}"));
     System.out.println("PASS: "+args[0]+" real pointer cycles="+cycles);
   }
 }

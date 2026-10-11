@@ -2,13 +2,24 @@
 import re
 
 
+def capture_relation_snapshot(country, name, read_scrolling, capture_texts):
+    # The header can be readable while the end of its reason ledger is still
+    # beyond Android's accessibility viewport. Scroll the real end marker into
+    # view before taking ONE coherent snapshot; never merge different clocks.
+    read_scrolling(country + ' · отношения ')
+    read_scrolling('Дипломатические миссии')
+    return relation_snapshot(capture_texts(name), country)
+
+
 def relation_snapshot(texts, country):
     header = next((t for t in texts if t.startswith(country + ' · отношения ')), None)
     assert header is not None, 'Missing target relation header'
-    match = re.fullmatch(re.escape(country) + r' · отношения (-?\d+) · доверие \d+ · МИР', header)
+    match = re.fullmatch(re.escape(country) + r' · отношения (-?\d+) · доверие (\d+) · МИР', header)
     assert match, 'Invalid relation header or unexpected war'
     relation = int(match.group(1))
     assert -100 <= relation <= 100, 'Invalid relation value'
+    trust = int(match.group(2))
+    assert 0 <= trust <= 100, 'Invalid trust value'
     tick_text = next((t for t in texts if t.startswith('Ход ')), '')
     tick_match = re.match(r'Ход (\d+) · ', tick_text)
     assert tick_match, 'Missing campaign clock'
@@ -25,7 +36,20 @@ def relation_snapshot(texts, country):
         assert -100 <= value <= 100, 'Invalid relation reason value'
         # Two countries can run separate improving missions with the same label.
         reasons[label] = reasons.get(label, 0) + value
-    return {'tick': int(tick_match.group(1)), 'relation': relation, 'reasons': reasons}
+    return {'tick': int(tick_match.group(1)), 'relation': relation, 'trust':trust, 'reasons': reasons}
+
+
+def assert_paid_gift(before, after):
+    # The real UI sends5000M while paused. Verify its existing capped20-point
+    # consequence, without deleting the detected-spy penalty or monthly ledger.
+    assert after['tick']==before['tick'], 'Gift capture advanced the campaign clock'
+    assert after['trust']==min(100,before['trust']+3), 'Gift missed its actual trust consequence'
+    assert after['reasons'].get('Дары',0)-before['reasons'].get('Дары',0)==20, 'Paid gift missed its capped relation effect'
+    assert {k:v for k,v in after['reasons'].items() if k!='Дары'}=={k:v for k,v in before['reasons'].items() if k!='Дары'}, 'Gift hid an existing diplomacy/espionage consequence'
+    assert after['relation']==max(-100,min(100,before['relation']+20)), 'Gift relation total differs from actual payment effect'
+    return {'tick':after['tick'],'amountMillions':5000,'relationBefore':before['relation'],
+            'relationAfter':after['relation'],'trustBefore':before['trust'],'trustAfter':after['trust'],
+            'reasonsBefore':before['reasons'],'reasonsAfter':after['reasons']}
 
 
 def assert_relation_mission(before, after, progress_text, minimum_months):

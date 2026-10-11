@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      CAMERA_CANDIDATE_RUNTIME: 8df429dd20f8df7cf4a7f2b6f157db04b7a37a72
+      CAMERA_CANDIDATE_RUNTIME: 86b0f6d83079785ec7c29eb61e137c2613ff0a69
       CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-      CAMERA_CANDIDATE_RUN: '38086183625'
+      CAMERA_CANDIDATE_RUN: '38115315485'
       CAMERA_ALLOWED_STATE_VERSION: '18'
     steps:
       - uses: actions/checkout@v4
@@ -28,17 +28,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git diff --exit-code 8df429dd20f8df7cf4a7f2b6f157db04b7a37a72 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38086183625 > source-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38086183625/jobs > source-jobs.json
-          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='8df429dd20f8df7cf4a7f2b6f157db04b7a37a72';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
+          git diff --exit-code 86b0f6d83079785ec7c29eb61e137c2613ff0a69 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38115315485 > source-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38115315485/jobs > source-jobs.json
+          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='86b0f6d83079785ec7c29eb61e137c2613ff0a69';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
       - name: Require completed paired capture job and preserve its failure status
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38086183625 > paired-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38086183625/jobs > paired-jobs.json
-          python -c "import json;r=json.load(open('paired-run.json'));j=json.load(open('paired-jobs.json'))['jobs'];assert r['head_sha']=='8df429dd20f8df7cf4a7f2b6f157db04b7a37a72';c=next(x for x in j if x['name']=='camera-comparison');assert c['status']=='completed';assert c['conclusion'] in ['success','failure']"
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38115315485 > paired-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38115315485/jobs > paired-jobs.json
+          python -c "import json;r=json.load(open('paired-run.json'));j=json.load(open('paired-jobs.json'))['jobs'];assert r['head_sha']=='86b0f6d83079785ec7c29eb61e137c2613ff0a69';c=next(x for x in j if x['name']=='camera-comparison');assert c['status']=='completed';assert c['conclusion'] in ['success','failure']"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -62,7 +62,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38086183625
+          run-id: 38115315485
           name: dominion-camera-illustrated-release
       - uses: actions/download-artifact@v4
         with:
@@ -73,7 +73,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38086183625
+          run-id: 38115315485
           name: camera-native-paired-evidence
           path: paired-evidence
       - name: Require all four actual complete captures before separate diagnostics

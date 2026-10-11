@@ -1,3 +1,17 @@
+# Actual native failures and current fixes — 2026-10-11
+
+755 native failed a harness pact expectation: its own detected spy operation correctly left netrelation2/trust41 at tick55, so NPC refusal was valid. Production AI/costs/consequences remain unchanged. The real-UI test now pays5000M for a gift, verifies actual entered amount, same clock/gifts+20/trust+3/net+20/unchanged other reasons, then requests the pact. Exact failed XML and negative regressions retained. Corrected755 native1800s run38114181616 is still pending at record; original failure stays failed.
+
+Actual upgrade harness run38113583940 captured the accepted baseline before cold raster paint; same bounded15s post-UI-mount cold wait fixes capture ordering. Run38114181491 skipped adaptive OFF because the actual accessible parent stores its label in content-desc and has empty text; strict text-or-content-desc parser plus exact native-parent regression fixes it. These are harness bugs, not invented game Back or migration failures. New3766/run38114726798 actual in-place upgrade/save12→18/six immutable backups/preferences/restart PASS. Final higher-version replacement and live reconnect still pending.
+
+Camera remains PARTIAL with six full755 ABBA violations. New ownership fix drops redundant vector cache references only after successfully retained pixels, never live Skia disposal; fallback and accepted caches preserved. Native performance effect unproven until fresh full gates. All actual raw rows/negative tests/limits in EXPANSION_RASTER_OWNERSHIP_UPGRADE_QA_2026-10-11.json.
+
+---
+
+## Continuation 2026-10-11
+
+2e native return137 traced to external UIAutomator4053 BadFD, not a game fatal: shared bounded PID-stable fatal-aware capture now used, unknown/game/JS fatal remains fatal.8df native ledger header readable while actual end marker offscreen: scroll end before ONE strict snapshot, never stitch ticks or waive rewards. Exact artifact regressions PASS; fresh native gate pending.
+
 # HUD repeated-payload correction — 2026-10-10
 
 Actual dense native HUD sent8702bytes of timing+unchanged country/clustered army targets at every sample. Local fix preserves complete geometry in an independent stable snapshot/node and complete timing metrics in an800byte node; visual footprint and real target-driven UX checks remain. Exact saved native XML reconstructs byte/value-identical target arrays; corrupt/missing/ambiguous/nonfinite/identity-less captures reject.285JS/TS/61Python/Hermes/42assets PASS. Actual new native accessibility/ABBA/full1800-second acceptance is pending; do not call remaining camera P99/pinch failures solved. Production rollout and final2.0 APK still pending as recorded below.

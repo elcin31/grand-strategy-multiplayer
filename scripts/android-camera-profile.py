@@ -8,6 +8,7 @@ from pathlib import Path
 from camera_frame_stats import frame_stats,thread_stats
 from camera_telemetry import camera_telemetry
 from camera_surface_stats import map_surface_layer, SurfaceSampler, surface_latency_args
+from camera_gesture import INPUT_PROTOCOL, gesture_command, gesture_timing
 from android_fixture import root_test_device
 from camera_fixture_projection import assert_paused_fixture
 from map_paint_check import assert_map_painted
@@ -46,7 +47,7 @@ def shot(name):
 def settings():click(hierarchy('settings'),'Настройки карты');time.sleep(.5)
 def nav(section):find_click('Раздел '+section)
 def gesture(kind,cycles=5):
-    adb('shell','CLASSPATH=/data/local/tmp/dominion-camera.jar app_process /system/bin CameraGesture '+kind+' '+str(cycles))
+    return gesture_timing(adb('shell',gesture_command(kind,cycles)),kind,cycles)
 fixture_path=os.environ.get('CAMERA_FIXTURE_PATH')
 fixture=json.loads(Path(fixture_path).read_text()) if fixture_path else None
 fixture_sha=hashlib.sha256(Path(fixture_path).read_bytes()).hexdigest() if fixture_path else None
@@ -90,13 +91,16 @@ def sample(name,kind=None):
     sampler=subprocess.Popen(['adb','shell','top','-H','-b','-d','1','-n','12','-p',pid],stdout=thread_file,stderr=subprocess.STDOUT)
     compositor=SurfaceSampler(adb,map_layer,OUT/(name+'-surface-polls.json'));compositor.start()
     t=time.monotonic()
-    if kind:gesture(kind)
-    else:time.sleep(10)
+    input_timing=gesture(kind) if kind else None
+    if not kind:time.sleep(10)
     elapsed=time.monotonic()-t
+    # Same fixed finish grace for both APKs; preserve all observed frames.
+    # Stop before the independent CPU sampler adds stationary tail intervals.
+    if kind:time.sleep(.1)
+    surface=compositor.finish()
     try:sampler.wait(timeout=20)
     except subprocess.TimeoutExpired:sampler.terminate();sampler.wait(timeout=5)
     thread_file.close()
-    surface=compositor.finish()
     raw=adb('shell','dumpsys','gfxinfo',PACKAGE,'framestats');(OUT/(name+'-frames.txt')).write_text(raw)
     try:latency=adb(*surface_latency_args(map_layer),timeout=5) if map_layer else ''
     except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as error:latency='Latency diagnostic unavailable: '+str(getattr(error,'output',None) or error)
@@ -114,9 +118,9 @@ def sample(name,kind=None):
     (OUT/(name+'-threads.txt')).write_text(adb('shell','top','-H','-b','-n','1','-p',pid))
     pss=re.search(r'TOTAL PSS:\s*(\d+)',mem)
     fallback=re.findall(r'DOMINION_CAMERA[^\n]*',logs)[-1:]
-    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,**frame_stats(raw),'surfacePresentation':surface,'cpuThreads':thread_stats((OUT/(name+'-threads-active.txt')).read_text(),pid),'mapPaint':painted,'cameraTrace':fallback,'cameraTelemetry':camera_telemetry(logs),'diagnosticError':None}
+    result={'pssKiB':int(pss[1]) if pss else None,'scenario':name,'elapsedSeconds':elapsed,'gestureTiming':input_timing,**frame_stats(raw),'surfacePresentation':surface,'cpuThreads':thread_stats((OUT/(name+'-threads-active.txt')).read_text(),pid),'mapPaint':painted,'cameraTrace':fallback,'cameraTelemetry':camera_telemetry(logs),'diagnosticError':None}
     results.append(result)
-    def persist(): (OUT/'results.json').write_text(json.dumps({'protocol':'fixed-save-reset-v2' if fixture else 'independent-campaign-v1','fixtureSha256':fixture_sha,'fixtureStateChecksum':fixture['checksum'] if fixture else None,'note':'Software SwiftShader API35 native frames, offline paused campaign. Same gestures for both builds; not physical Redmi FPS. Accessibility diagnostics are auxiliary to the completed-frame capture.','results':results},indent=2))
+    def persist(): (OUT/'results.json').write_text(json.dumps({'protocol':'fixed-save-reset-v2' if fixture else 'independent-campaign-v1','inputProtocol':INPUT_PROTOCOL,'fixtureSha256':fixture_sha,'fixtureStateChecksum':fixture['checksum'] if fixture else None,'note':'Software SwiftShader API35 native frames, offline paused campaign. Same five continuous pointer cycles without injected idle pauses for both APKs; all observed compositor intervals retained through input-command completion and fixed100ms finish grace. CPU/HWUI diagnostics can extend beyond input completion. Not physical Redmi FPS. Accessibility diagnostics are auxiliary to the completed-frame capture.','results':results},indent=2))
     persist()
     try:
         tree=hierarchy(name+'-metrics')

@@ -1,0 +1,43 @@
+{
+  "parentSha": "75512beb62f0b055d3cf1caa875e99127136c0b0",
+  "dedicatedBackend": "dfjsnjxnyjspwugjguhq",
+  "clientSchema": 18,
+  "hostPythonTests": 70,
+  "skipped": 0,
+  "runtimeDiffAgainstParent": "empty",
+  "inheritedVerifiedRuntime": {
+    "jsTests": 287,
+    "strictTypeScript": "PASS",
+    "hermesSha256": "018876a131e0c471cdb2640512b9c77f67c4a3c6a2e8d3542a182cb27706f35a",
+    "byteExactPaintings": 42
+  },
+  "preparedHttpChecks": [
+    "read-only schema/auth preflight before room creation",
+    "eight actual authenticated players and ninth-player rejection",
+    "actor/spoof/CAS/concurrent mutations",
+    "command receipts and altered replay",
+    "server movement/route/cancellation",
+    "paid waiting construction and refund",
+    "mixed regiments/commander/reinforcement",
+    "policy/funding and shared cooldown",
+    "gift actual debit and credit",
+    "four paid espionage mission results and active counterintelligence",
+    "relation mission actual monthly reward ledger",
+    "research/science real completion",
+    "National Course progress/once-only completion/event/duplicate reward rejection",
+    "human pact/trade consent and unauthorised response",
+    "stored reconnect and complete ledgers",
+    "real host timeout/AI takeover/host migration/human return"
+  ],
+  "hostGuardRegressions": [
+    "old backend stops before room/write",
+    "pause uses exactly observed CAS version without another poll/client tick",
+    "stuck clock fails",
+    "metadata current/old/future/missing/invalid preserved",
+    "endpoint fixed to Dominion",
+    "HTTP mismatch never logs private payload and NaN cannot reach network"
+  ],
+  "liveExecuted": false,
+  "deployed": false,
+  "note": "Preparation only. Existing production schema12 unchanged. Run after compatible signed client and coordinated existing command-before-room rollout; preserve only sanitized evidence and exact QA room UUID; guarded cleanup required. No old/future client data, DB schema or real user room changes."
+}

@@ -5,7 +5,7 @@ from copy import deepcopy
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parents[1] / 'scripts'))
-from native_diplomacy_feedback import relation_snapshot, assert_relation_mission
+from native_diplomacy_feedback import capture_relation_snapshot, relation_snapshot, assert_relation_mission, assert_paid_gift
 
 
 class NativeDiplomacyFeedbackTest(unittest.TestCase):
@@ -64,3 +64,37 @@ class NativeDiplomacyFeedbackTest(unittest.TestCase):
                 relation_snapshot(texts, 'Бразилия')
         with self.assertRaises(AssertionError):
             assert_relation_mission({**self.before, 'relation': 100}, self.after, self.progress, 6)
+
+    def test_scroll_to_real_ledger_end_before_single_snapshot(self):
+        clipped=ET.parse(Path(__file__).parent/'fixtures/native_diplomacy_clipped.xml')
+        clipped_texts=[n.get('text') for n in clipped.iter('node') if n.get('text')]
+        with self.assertRaisesRegex(AssertionError,'Incomplete relation ledger'):
+            relation_snapshot(clipped_texts,'Бразилия')
+        calls=[]
+        def read(prefix):calls.append(prefix)
+        def capture(name):
+            self.assertEqual(calls,['Бразилия · отношения ','Дипломатические миссии'])
+            calls.append(name)
+            return self.texts
+        self.assertEqual(capture_relation_snapshot('Бразилия','after',read,capture),self.after)
+        self.assertEqual(calls[-1],'after')
+
+    def test_scrolling_cannot_accept_a_still_incomplete_ledger(self):
+        clipped=[t for t in self.texts if t!='Дипломатические миссии']
+        with self.assertRaisesRegex(AssertionError,'Incomplete relation ledger'):
+            capture_relation_snapshot('Бразилия','after',lambda _:None,lambda _:clipped)
+
+    def test_paid_gift_retains_the_actual_refused_pact_spy_ledger(self):
+        root=ET.parse(Path(__file__).parent/'fixtures/native_diplomacy_refused.xml')
+        before=relation_snapshot([n.get('text') for n in root.iter('node') if n.get('text')],'Бразилия')
+        self.assertEqual((before['relation'],before['trust']),(2,41))
+        after={**before,'relation':22,'trust':44,'reasons':{**before['reasons'],'Дары':20}}
+        evidence=assert_paid_gift(before,after)
+        self.assertEqual(evidence['reasonsAfter']['Обнаруженная разведка'],-20)
+        self.assertEqual(evidence['reasonsAfter']['Дипломатическое сотрудничество'],18)
+        for change in [dict(tick=before['tick']+1),dict(trust=41),dict(relation=100),dict(reasons={'Дары':20}),dict(reasons={**after['reasons'],'Дары':19})]:
+            with self.assertRaises(AssertionError):assert_paid_gift(before,{**after,**change})
+
+    def test_invalid_trust_cannot_be_read_as_valid_diplomacy_evidence(self):
+        texts=[t.replace('доверие 44','доверие 101') for t in self.texts]
+        with self.assertRaisesRegex(AssertionError,'Invalid trust'):relation_snapshot(texts,'Бразилия')
