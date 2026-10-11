@@ -1,3 +1,7 @@
+## Continuation 2026-10-11
+
+Direct9-number camera matrix removes six pinnedSkia4x4 compositions per UI update; numerical/host tests/export PASS, native frame effect pending. Actual8df full4×9 camera: pinch passes both orders but six unchanged P99/PSS gates fail; raw EXPANSION_CAMERA_REVIEW_8DF.json retained. No FPS claim or final acceptance.
+
 # Bounded diagnostic HUD publication — 2026-10-10
 
 Actual Stage9 world-pan hierarchy:8702 UTF8 bytes per timing HUD refresh,329chars/five country targets plus6538chars/23 army markers; every clustered army identity remains. Candidate timing node uses800bytes for the same compact timing metrics;7920bytes of full target geometry are published separately only when actual targets/selection change, through a stable external-store snapshot and memoized native node. Same visual overlay footprint, overlay still enabled and strict original ABBA/compositor/pinch/PSS gates retained.285JS/TS/61Python, actual-capture reconstruction/corruption tests,120 changed timing samples/stable target identity and changed selection/position PASS; Hermes/all42asset hashes PASS. Full evidence EXPANSION_CAMERA_TARGET_PUBLISH_QA.json.

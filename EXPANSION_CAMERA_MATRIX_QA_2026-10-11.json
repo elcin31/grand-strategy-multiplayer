@@ -1,0 +1,71 @@
+{
+  "parentSha": "8df429dd20f8df7cf4a7f2b6f157db04b7a37a72",
+  "jsTests": 287,
+  "pythonTests": 64,
+  "skipped": 0,
+  "strictTypeScript": "PASS",
+  "cameraCompositionHost": {
+    "note": "Host Node microbenchmark of actual pinned Skia2.6.2 transform composition and equivalent direct matrix. Not UI/GPU time, native frame acceptance or physical FPS.",
+    "iterations": 200000,
+    "samples": [
+      {
+        "kind": "legacy",
+        "iterations": 200000,
+        "elapsedMs": 349.56420799999995,
+        "checksum": -1742967924.114988
+      },
+      {
+        "kind": "direct",
+        "iterations": 200000,
+        "elapsedMs": 3.849868000000015,
+        "checksum": -1742967924.114988
+      },
+      {
+        "kind": "direct",
+        "iterations": 200000,
+        "elapsedMs": 3.0491839999999684,
+        "checksum": -1742967924.114988
+      },
+      {
+        "kind": "legacy",
+        "iterations": 200000,
+        "elapsedMs": 310.391475,
+        "checksum": -1742967924.114988
+      }
+    ]
+  },
+  "hermes": {
+    "bytes": 11471674,
+    "sha256": "018876a131e0c471cdb2640512b9c77f67c4a3c6a2e8d3542a182cb27706f35a",
+    "magic": "c61fbc03c103191f",
+    "byteExactPaintings": 42
+  },
+  "nativeVerified": {
+    "sourceSha": "d5cd2472d36bbf983e4738b492c726867503c307",
+    "run": 38083920597,
+    "job": 114310428457,
+    "conclusion": "success",
+    "soakSeconds": 1839.9497840770002,
+    "artifact": 11682982704,
+    "artifactSha256": "d41e465454301a2e32228cf8cc14b18bebf9843a83744cc66adf6f89d8c7f4c9",
+    "zipCrcVerified": true,
+    "nativeOrJsFatalMatches": 0
+  },
+  "nativeFailures": [
+    {
+      "sourceSha": "2e397db36b17b82740097cfe5a18fb1f5ef6b02b",
+      "job": 114314006502,
+      "artifact": 11682703222,
+      "artifactSha256": "5f89d57464f8e10aac628b17d778e3860971fdc5107d7aa2047059a0b73a18de",
+      "observedFailure": "UIAutomator process4053 Bad file descriptor, return137; game telemetry process2201. Exact external stack retained; use existing bounded PID-stable fatal-aware camera capture."
+    },
+    {
+      "sourceSha": "8df429dd20f8df7cf4a7f2b6f157db04b7a37a72",
+      "job": 114316956485,
+      "artifact": 11682886611,
+      "artifactSha256": "ec31caba1baa4f1ec46b5017eee30fe5399f02aba05100fe3f453f95079a838a",
+      "observedFailure": "Relation header tick58/net4; four reasons beyond viewport and real end marker absent. Scroll actual end marker before one coherent strict snapshot."
+    }
+  ],
+  "acceptance": "Current integrated native/matrix/frame gates pending. Prior failures remain failures. No deployment or final APK delivery."
+}

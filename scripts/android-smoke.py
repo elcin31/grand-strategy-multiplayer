@@ -14,21 +14,19 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from map_paint_check import assert_map_painted, map_paint_stats
 from native_campaign_feedback import campaign_feedback
-from native_diplomacy_feedback import relation_snapshot, assert_relation_mission
+from native_diplomacy_feedback import capture_relation_snapshot, assert_relation_mission
+from android_accessibility import dump_hierarchy, assert_no_game_fatal
 from camera_hud_data import camera_hud_data
 from camera_surface_stats import assert_map_backend
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 OUT = Path('android-smoke'); OUT.mkdir(exist_ok=True)
-def adb(*args): return subprocess.check_output(['adb', *args], text=True)
+def adb(*args,timeout=None): return subprocess.check_output(['adb', *map(str,args)], text=True,stderr=subprocess.STDOUT,timeout=timeout)
 def save_logs():
     try: (OUT/'logcat.txt').write_text(adb('logcat','-d'))
     except (OSError, subprocess.CalledProcessError): pass
 atexit.register(save_logs)
 def hierarchy(name):
-    adb('shell','uiautomator','dump','/sdcard/window.xml')
-    xml = adb('shell','cat','/sdcard/window.xml')
-    (OUT / (name+'.xml')).write_text(xml)
-    return ET.fromstring(xml)
+    return dump_hierarchy(adb,PACKAGE,OUT,name,'/sdcard/window.xml')
 def screenshot(name):
     with (OUT / (name+'.png')).open('wb') as f: subprocess.run(['adb','exec-out','screencap','-p'],stdout=f,check=True)
 def launch():
@@ -97,12 +95,10 @@ def read_scrolling(prefix):
         adb('shell','input','swipe','1080','530','1080','320','350')
     raise AssertionError('Missing readable state: '+prefix)
 def read_relation_snapshot(country, name):
-    read_scrolling(country+' · отношения ')
-    root=hierarchy(name)
-    # The mounted scroll hierarchy contains the full reason ledger, including
-    # clipped rows. The header, reward row and progress are separately scrolled
-    # into readable bounds; retain the full XML to reconcile all other effects.
-    return relation_snapshot([n.get('text') for n in root.iter('node') if n.get('package')==PACKAGE and n.get('text')],country)
+    def capture_texts(capture_name):
+        root=hierarchy(capture_name)
+        return [n.get('text') for n in root.iter('node') if n.get('package')==PACKAGE and n.get('text')]
+    return capture_relation_snapshot(country,name,read_scrolling,capture_texts)
 def set_speed(speed):
     navigate('Страна')
     label = 'Пауза' if speed == 0 else f'Скорость {speed}×'
@@ -596,7 +592,7 @@ launch();restore_after_configuration('campaign-after-reboot');screenshot('campai
 (OUT/'meminfo-after-reboot.txt').write_text(adb('shell','dumpsys','meminfo',PACKAGE))
 assert 'Metro' not in adb('shell','ps','-A'), 'Unexpected Metro process'
 logs = adb('logcat','-d'); (OUT/'logcat.txt').write_text(logs)
-assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs, 'Native crash detected'
+assert_no_game_fatal(logs,adb('shell','pidof',PACKAGE).strip())
 assert 'Unable to load script' not in logs, 'Standalone JS load failed'
 print('PASS: network-disabled cold launch, landscape, 195-country world selection/search/start/pause/recruitment, population growth, government/religion cost/cooldown and Unity, 4 presets, 12 modes, camera inputs, 5 layouts, persistent campaign restore, Back priority, restart and device reboot, no fatal logs')
 
@@ -643,5 +639,6 @@ if duration:
     set_speed(0);screenshot('stress-complete');hierarchy('stress-complete')
     (OUT/'stress-duration.txt').write_text(str(time.monotonic()-start))
     logs=adb('logcat','-d');(OUT/'stress-logcat.txt').write_text(logs)
-    assert 'FATAL EXCEPTION' not in logs and 'Fatal signal' not in logs and 'Unable to load script' not in logs
+    assert_no_game_fatal(logs,adb('shell','pidof',PACKAGE).strip())
+    assert 'Unable to load script' not in logs
     print('PASS: continuous release render/simulation/autosave software stress',duration,'seconds',flush=True)

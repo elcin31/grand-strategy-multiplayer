@@ -1,4 +1,5 @@
 import {countryGlyph,hitCountryGlyph,type CountryGlyph} from '../map/countryTargets';
+import {cameraMatrix} from '../map/cameraMatrix';
 import {CameraWorkGate,nextFrameDeadline,frameBucket,frameQuantile,createFrameAccumulator,recordFrameInterval,finishFrameSample} from '../performance/framePacing';
 import {createCameraInput,queueCameraInput,takeCameraInput} from '../performance/cameraInput';
 import {MapRasterLayer} from './MapRasterLayer';
@@ -159,7 +160,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
       runOnJS(publishSnapshot)(camera);
     }
   });
-  const transform = useDerivedValue(() => [{ translateX: viewport.width / 2 }, { translateY: viewport.height / 2 }, { scaleX: renderZoom.value }, { scaleY: renderZoom.value * TILT }, { translateX: -renderX.value }, { translateY: -renderY.value }]);
+  const matrix = useDerivedValue(() => cameraMatrix(renderX.value,renderY.value,renderZoom.value,viewport.width,viewport.height));
   const inverseScale = useDerivedValue(() => [{ scaleX: 1 / renderZoom.value }, { scaleY: 1 / (renderZoom.value * TILT) }]);
   const borderScale = useDerivedValue(() => GRAPHICS[preset].borderWidth / renderZoom.value);
   const selectionScale = useDerivedValue(() => borderScale.value * 2.7);
@@ -270,7 +271,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
       <Canvas accessible accessibilityLabel="Карта Dominion" style={StyleSheet.absoluteFill}>
         <Fill color="#203B48" />
         {GRAPHICS[preset].water && <Rect x={0} y={0} width={viewport.width} height={viewport.height}><LinearGradient start={vec(0, 0)} end={vec(viewport.width, viewport.height)} colors={['#18303C', '#294A57', '#193542']} /></Rect>}
-        <Group transform={transform}>
+        <Group matrix={matrix}>
           <MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={detailZoom} canPrewarm={canPrewarm}/>
           {occupiedBatches.map(([color,path])=><Group key={color}><Path path={path} color={color} opacity={.28}/><Path path={path} color={color} opacity={.55} style="stroke" strokeWidth={selectionScale}/></Group>)}
           {warBorders!==''&&<Path path={warBorders} style="stroke" color="#ed7f72" strokeWidth={selectionScale} opacity={pulse}/>}

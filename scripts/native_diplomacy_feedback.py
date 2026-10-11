@@ -2,6 +2,15 @@
 import re
 
 
+def capture_relation_snapshot(country, name, read_scrolling, capture_texts):
+    # The header can be readable while the end of its reason ledger is still
+    # beyond Android's accessibility viewport. Scroll the real end marker into
+    # view before taking ONE coherent snapshot; never merge different clocks.
+    read_scrolling(country + ' · отношения ')
+    read_scrolling('Дипломатические миссии')
+    return relation_snapshot(capture_texts(name), country)
+
+
 def relation_snapshot(texts, country):
     header = next((t for t in texts if t.startswith(country + ' · отношения ')), None)
     assert header is not None, 'Missing target relation header'

@@ -55,3 +55,13 @@ class AccessibilityTest(unittest.TestCase):
         for broken in [log.replace('3975','42'),log.replace('Bad file descriptor','NullPointerException'),log.replace('UiAutomation','main'),log+'\nFatal signal 11',log+'\nJavascriptException: missing module']:
             with self.assertRaisesRegex(AssertionError,'Fatal error'):
                 self.exercise([subprocess.CalledProcessError(137,'uiautomator')],logs=broken)
+
+    def test_actual_native_process4053_bad_fd_does_not_hide_game2201_failure(self):
+        logs=(Path(__file__).parent/'fixtures/native_uiautomator_bad_fd.txt').read_text()
+        module.assert_no_game_fatal(logs,'2201')
+        self.exercise([subprocess.CalledProcessError(137,'uiautomator')],logs=logs)
+        with self.assertRaisesRegex(AssertionError,'Fatal error'):
+            module.assert_no_game_fatal(logs,'4053')
+        for fatal in ['FATAL EXCEPTION: main','Fatal signal 11','JavascriptException: broken campaign']:
+            with self.assertRaisesRegex(AssertionError,'Fatal error'):
+                module.assert_no_game_fatal(logs+'\n'+fatal,'2201')

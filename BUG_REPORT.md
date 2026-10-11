@@ -1,3 +1,7 @@
+## Continuation 2026-10-11
+
+2e native return137 traced to external UIAutomator4053 BadFD, not a game fatal: shared bounded PID-stable fatal-aware capture now used, unknown/game/JS fatal remains fatal.8df native ledger header readable while actual end marker offscreen: scroll end before ONE strict snapshot, never stitch ticks or waive rewards. Exact artifact regressions PASS; fresh native gate pending.
+
 # HUD repeated-payload correction — 2026-10-10
 
 Actual dense native HUD sent8702bytes of timing+unchanged country/clustered army targets at every sample. Local fix preserves complete geometry in an independent stable snapshot/node and complete timing metrics in an800byte node; visual footprint and real target-driven UX checks remain. Exact saved native XML reconstructs byte/value-identical target arrays; corrupt/missing/ambiguous/nonfinite/identity-less captures reject.285JS/TS/61Python/Hermes/42assets PASS. Actual new native accessibility/ABBA/full1800-second acceptance is pending; do not call remaining camera P99/pinch failures solved. Production rollout and final2.0 APK still pending as recorded below.
