@@ -20,6 +20,8 @@ concurrency:
   group: dominion-camera-${{ github.ref }}-${{ github.sha }}
   cancel-in-progress: false
 jobs:
+  backend-live:
+    uses: ./.github/workflows/backend-world-qa.yml
   long-simulation:
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -250,7 +252,7 @@ jobs:
     with:
       apk_run_id: ${{ github.run_id }}
   publish-release:
-    needs: [build-apk, long-simulation, android-smoke, camera-comparison, android-upgrade, android-online]
+    needs: [build-apk, long-simulation, android-smoke, camera-comparison, android-upgrade, android-online, backend-live]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:

@@ -1,3 +1,9 @@
+# Network recovery edge case guard — 2026-10-11
+
+Heartbeat substitution now exists only while delivery is ACTIVE. A failed/uncertain network response leaves its durable intent available for exactly-once recovery and immediately restores normal state polling; it must not freeze the only connected player's server-clock updates. New regression verifies real transport actions create→failedcommand→state, zero blind resend, unchanged pending identity. All4 new native control guards and strictTS PASS; real signed native acceptance remains pending.
+
+---
+
 # Confirmed native multiplayer snapshot race — 2026-10-11
 
 Actual native online run38132141380/job114448497096 FAILED in ready/start, XML says `Stale campaign version`. Exact scoped roomff5c4d14-e26e-4c80-8cd1-e872ffd54741; evidence11699253034 ZIP SHA969e872e5141722e9002c5e8d98fc1e721a852f844caab2be1f96d2a5155afdf/CRC verified. Together with earlier7af pause refusal this confirms actual room-version CAS contention, rather than an invented backend/schema problem. Server correctly rejected stale writes; no CAS/receipts/auth rules weakened.

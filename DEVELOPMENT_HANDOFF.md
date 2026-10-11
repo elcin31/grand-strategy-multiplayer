@@ -1,3 +1,17 @@
+# Continuation — final network recovery and mandatory live gate, 2026-10-11
+
+Verified published parent **8823d12f0bbfd84bcec4722c52b7935563133f62**; its full local **295JS/no skips PASS** and strictTS PASS. Candidate CI38132865124 IN PROGRESS; prior metadata-only38132365346 also retained. Main unchanged. This logical correction bounds heartbeat substitution to ACTIVE delivery, not merely a durable uncertain pending command: after network loss, normal authoritative polling/clock resumes while the same pending identity remains available for receipt recovery. Four focused control/CAS/paid-collision/active-heartbeat/lost-response polling guards and strictTS PASS. Existing14 multiplayer/wire/compatibility cases plus22paid-intent recovery scenarios retained, no weakened tests.
+
+Existing backend-world-qa is now reusable and mandatory in Android release pipeline, actual production HTTP only/isolated QA room; its existing auth/CAS/4missions/once-only focus/science/treaties/clock/host-migration assertions are unchanged. Timeout45 accommodates full real snapshots/time; it is not a simulation-time shortcut. Backend auth/source/deployed22/24 and render/offline gameplay remain unchanged. Release publication requires this live gate in addition to all original native/camera/long/upgrades and native online acceptance.
+
+Files: src/multiplayer/httpTransport.ts, tests/multiplayer_controls.test.ts, .github/workflows/android-apk.yml, .github/workflows/backend-world-qa.yml, BUG_REPORT.md, DEVELOPMENT_HANDOFF.md. Current local4new guards/strictTS/backendQA4/YAML/diff PASS. Final version2.0.0(code10)/same package/signature and fileDominion-grand-strategy-v2-release.apk retained. Actual signed verification for the containing commit still PENDING.
+
+Exact independent HTTP operation remains RUNNING in isolated e91630eb-1637-41fb-8e6b-688ae7593df5 (WORLD ECONOMY QA). Retain prior failures and exact room cleanup identifiers. Stage1 remains PARTIAL(original continuous forwardpinch300→350ms failure); gameplay stages3–8 integration exists but full live gate pending;9/10/11 final acceptance/delivery pending. No handset performance claim.
+
+Next: finish this containing commit's existing complete release Actions; inspect failures and exact native online flow/real backend results, guarded cleanup, normal accepted merge/publication and verified APK delivery. Do not reimplement finished systems or generate art again.
+
+---
+
 # Continuation — confirmed native CAS race correction, 2026-10-11
 
 Verified published parent **3f62338d965f9685be8f161fe0ad4994b23d1fe4**, final2.0.0(code10) full CI **38132365346** currently building/10000ticks; its native transport predates this confirmed correction and is superseded for final acceptance. Main unchanged dbb354ab. Existing backend command24/room22/schema18 unchanged; do not redeploy identical bundles.

@@ -85,3 +85,25 @@ test('polling keeps the native owner connected without advancing a competing sna
   assert.equal((await transport.savedSessions())[0]!.pending,undefined);
  }finally{stop?.();globalThis.fetch=original;}
 });
+
+test('a lost response keeps its durable intent but normal polling resumes after active delivery ends',async()=>{
+ const original=globalThis.fetch,state=createWorldState('loss-poll','LOSS01','host','QA',22);
+ const actions:string[]=[];let commands=0,observed!:()=>void;
+ const polled=new Promise<void>(r=>{observed=r;});
+ globalThis.fetch=async(url,init)=>{
+  const body=JSON.parse(String(init?.body));
+  if(String(url).endsWith('game-command')){commands++;throw new TypeError('response lost');}
+  actions.push(body.action);
+  return Response.json({state,version:0,playerId:'host',token:'test-only',checksum:stateChecksum(state)});
+ };
+ let stop:(()=>void)|undefined;
+ try{
+  const transport=new HttpTransport('https://network.test',store());await transport.createRoom('QA');
+  await assert.rejects(()=>transport.sendCommand(state.id,{type:'SET_SPEED',playerId:'host',speed:0}));
+  const durable=(await transport.savedSessions())[0]!.pending;
+  assert.ok(durable);
+  stop=transport.subscribe(state.id,()=>{observed();});await polled;stop();stop=undefined;
+  assert.deepEqual(actions,['create','state']);assert.equal(commands,1);
+  assert.deepEqual((await transport.savedSessions())[0]!.pending,durable);
+ }finally{stop?.();globalThis.fetch=original;}
+});
