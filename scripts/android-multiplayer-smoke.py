@@ -19,7 +19,7 @@ from android_fixture import root_test_device
 from backend_http import request
 from map_paint_check import assert_map_painted
 from native_online_validation import (assert_online_campaign, paid_course_fingerprint,
-                                      assert_same_native_session)
+                                      assert_same_native_session, exit_confirmation_button)
 
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 OUT = Path('android-online'); OUT.mkdir(exist_ok=True)
@@ -266,7 +266,9 @@ def reconnect(name):
     return current
 
 
-click('ВЫЙТИ'); click('Выйти'); time.sleep(2)
+click('ВЫЙТИ')
+tap_node(exit_confirmation_button(hierarchy('native-exit-confirmation')))
+time.sleep(2)
 reconnect('03-menu-reconnect')
 adb('shell', 'am', 'force-stop', PACKAGE)
 stopped_keys, stopped_cipher = secure_keys()

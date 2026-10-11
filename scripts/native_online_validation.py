@@ -3,6 +3,16 @@ import json
 import re
 
 
+def exit_confirmation_button(tree):
+    nodes = list(tree.iter('node'))
+    assert any(n.get('text') == 'Выйти из кампании?' for n in nodes), 'Missing native exit confirmation'
+    matches = [n for n in nodes if n.get('class') == 'android.widget.Button'
+               and n.get('text', '').casefold() == 'выйти'
+               and n.get('enabled') == 'true' and n.get('clickable') == 'true']
+    assert len(matches) == 1, 'Missing/ambiguous actual Android exit button'
+    return matches[0]
+
+
 def assert_online_campaign(response, room_id, player_id, country_id):
     state = response['state']
     assert state['id'] == room_id, 'Native flow switched rooms'
