@@ -80,7 +80,7 @@ jobs:
       - name: APK verifier and world importer regression tests
         # Native screenshot checks use the same pinned decoder as Python tests.
         run: |
-          python -m pip install -r scripts/camera-profile-requirements.txt
+          python -m pip install -r scripts/camera-profile-requirements.txt -r scripts/camera-trace-requirements.txt
           python -m unittest discover -s tests -p '*_test.py'
       - name: Validate original optimized illustrations
         run: npm run verify:art
