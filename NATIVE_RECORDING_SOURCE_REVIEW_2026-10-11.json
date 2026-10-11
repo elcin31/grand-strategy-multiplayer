@@ -29,5 +29,13 @@
   "nativePerformance": "PENDING fresh signed binary and complete original-threshold ABBA/1800s/upgrade/native multiplayer/10000/live gates. No measured improvement or physical Xiaomi claim.",
   "previousRejectedRuntime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
   "previousRun": 38151928979,
-  "previousOfflineStillRunning": 114511075812
+  "previousOfflineStillRunning": 114511075812,
+  "runtime": "eaa6d6e8171c60807b7d274199c20114e00fac26",
+  "runId": 38156439244,
+  "sourceTree": "b0f001b9b0be835b3f05527c03a4cec6b7c63e1d",
+  "nativeJobs": {
+    "build": 114520282712,
+    "longSimulation": 114520283051,
+    "backendLive": 114520282966
+  }
 }
