@@ -2,7 +2,7 @@ name: Dominion renderer source QA
 on:
   push:
     branches: [expansion-camera-qa]
-    paths: [.github/workflows/renderer-source-qa.yml, src/map/cameraCoverage.ts, CampaignScreen.tsx, src/components/WorldMap.tsx, src/components/PerformancePanel.tsx, src/components/CameraUiLayer.tsx, tests/world_raster_batch.test.ts]
+    paths: [.github/workflows/renderer-source-qa.yml, src/map/cameraCoverage.ts, CampaignScreen.tsx, src/components/WorldMap.tsx, src/components/PerformancePanel.tsx, src/components/CameraUiLayer.tsx, tests/world_raster_batch.test.ts, scripts/export-expansion-evidence.py, .github/renderer-evidence-source.json]
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,6 +26,7 @@ jobs:
         run: npm test
       - name: All Python regressions
         run: |
+          python -m py_compile scripts/export-expansion-evidence.py
           python -m pip install -r scripts/world-requirements.txt -r scripts/camera-profile-requirements.txt -r scripts/camera-trace-requirements.txt
           python -m unittest discover -s tests -p '*_test.py'
       - name: All42 original optimized illustrations
@@ -85,4 +86,28 @@ jobs:
           path: |
             renderer-source-sha.txt
             PRIOR_UI_SOAK_QA.json
+          retention-days: 14
+
+  native-evidence-readback:
+    if: contains(github.event.head_commit.message, '[native-evidence]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - run: python -m pip install -r scripts/camera-profile-requirements.txt
+      - name: Read exact source artifacts and preserve original gate conclusions
+        run: python scripts/export-expansion-evidence.py .github/renderer-evidence-source.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-source-artifact-readback
+          path: native-readback/
           retention-days: 14

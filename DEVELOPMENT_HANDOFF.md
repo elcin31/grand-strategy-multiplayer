@@ -1,3 +1,13 @@
+# Exact native artifact readback prepared while full8ff QA runs (2026-10-11)
+
+Published expansion metadata parent **6b957f49a33c466950d901ff67484d345624b0bc**, verified game runtime8ff217222f8d8f1adae63735185496994bb68119/source38179037438. Full native38179378823 is running; every original required gate/threshold remains. Existing QA branch receives a normal descendant of this metadata, preserving both lines. No runtime/art/backend/main change.
+
+Executor remainsoffline. scripts/export-expansion-evidence.py uses existing GitHub CI/gh read-only access to the exact configured381793 source. It requires zero game-source diff, binds run/eachartifact headSHA, downloads only the seven known Dominion evidence names, checks actual ZIP length/SHA against declared digest/CRC, preserves all original job conclusions, verifies APK/release/42art/Hermes and complete original rawABBAcamera, and reads sanitized install/online/backend/soak/long evidence. Missing/in-progress/failed gates are reported, never replaced or accepted. releaseAccepted is alwaysfalse; actual guarded database cleanup and full final release verifier remain required. No token/session values are printed. Exclusive readback runs on tagged pushes in existing renderer-source-qa workflow; source checks remain enabled.
+
+**Next:** inspect actual helper compilation/readback and current full native jobs. Available artifacts may be read before all gates finish, without claiming release readiness; collect again after new native artifacts are uploaded. Review/clean only exact completed QA roomUUIDs. Save readback proof inhandoff/source ledger; original failedcamera results cannot be rerolled. Source309JS/97Python/42art/Hermes/coast/lifetime proof remains. Do not promote main/create acceptance/publish APK before all seven original checks and raw artifacts are verified.
+
+---
+
 # Source verified and normally promoted; fresh seven-gate APK running (2026-10-11)
 
 **Exact tested/published runtime HEAD8ff217222f8d8f1adae63735185496994bb68119**, treecb0d22131898ca12dfb116556469fa77ddca3a66. Actual source38179037438/job114587462307 SUCCESS: strictTS;309/309JS/0skips;97Python/0skips including pinnedperfetto0.58.2 SQL checks;42exact original optimized images; actual productionHermes11484254bytes/SHA3b6662739738f11ef7e014b59cfebe1ac94340aaeb0c6ab63db1240a31d00ecd/magicc61fbc03c103191f. Existing QA→expansion-v2 promotion was normal fast-forward fromfe44e950, with all runtime diffs reviewed; no force/foreign overwrite. Fresh full Android run **38179378823** is running on this exact source. Main remainsdbb354ab/dedicated backendroom22/command24/schema18 unchanged; accepted manifest absent.
