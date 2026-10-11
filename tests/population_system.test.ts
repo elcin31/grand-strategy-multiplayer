@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createWorldState } from '../supabase/functions/_shared/worldState';
 import { applyServerCommand, createInitialState } from '../supabase/functions/_shared/game';
 import { applyCommand } from '../src/engine/gameEngine';
-import { annualPopulationGrowth, initializePopulation, monthlyPopulationGrowth, recalcPopulationTotals } from '../supabase/functions/_shared/populationSystem';
+import { annualPopulationGrowth, initializePopulation, monthlyPopulationGrowth, recalcPopulationTotals,populationCapacity } from '../supabase/functions/_shared/populationSystem';
 import { governmentIncome, governmentModifiers } from '../supabase/functions/_shared/governmentSystem';
 import type { GameState } from '../src/types/game';
 
@@ -39,6 +39,29 @@ test('paused commands cannot advance population, carries, city counts or date', 
   const before = applyServerCommand(campaign(), { type: 'SET_SPEED', playerId: 'host', speed: 0 }, 'host');
   const next = applyServerCommand(before, { type: 'ADVANCE_TICK' }, 'host');
   assert.deepEqual(next, before);
+});
+
+test('demographic capacity retains the first-month rate and slows births continuously as a province fills',()=>{
+  const initial=world(),p=initial.provinces.find(p=>p.ownerId==='germany')!,old=p.population,capacity=populationCapacity(p)!;
+  const expected=Math.floor(old*annualPopulationGrowth(p.development??40,initial.countries.germany!.stability)/12+p.populationGrowthCarry!);
+  monthlyPopulationGrowth(initial);assert.equal(p.monthlyPopulationGrowth,expected);assert.ok(capacity>old);
+  const half=world(),h=half.provinces.find(q=>q.id===p.id)!;h.population=Math.floor((old+capacity)/2);monthlyPopulationGrowth(half);
+  assert.ok(h.monthlyPopulationGrowth!/h.population<p.monthlyPopulationGrowth!/p.population);
+  const near=world(),n=near.provinces.find(q=>q.id===p.id)!;n.population=capacity-1;monthlyPopulationGrowth(near);assert.ok(n.monthlyPopulationGrowth!<=1);assert.ok(n.population<=capacity);
+});
+
+test('10000 demographic months preserve urban conservation and approach a bounded capacity without deleting people',()=>{
+  let s=world();const p=s.provinces.find(p=>p.ownerId==='germany')!,id=p.id,initial=p.population,capacity=populationCapacity(p)!;
+  s.provinces=[p];s.countries={germany:s.countries.germany!};s.cities=s.cities!.filter(c=>c.provinceId===id);initializePopulation(s);
+  for(let month=1;month<=10000;month++){monthlyPopulationGrowth(s);if(month%1000===0){initializePopulation(s);const stable=structuredClone(s);initializePopulation(s);assert.deepEqual(s,stable);assert.ok(s.cities!.reduce((n,c)=>n+c.population,0)<=p.population);}}
+  assert.ok(p.population>initial&&p.population<=capacity);assert.equal(s.countries.germany!.population,p.population);assert.ok(p.monthlyPopulationGrowth!<initial*.001);
+  const larger=world(),q=larger.provinces.find(q=>q.id===id)!;q.population=capacity*2;q.populationGrowthCarry=.75;const old=q.population;monthlyPopulationGrowth(larger);assert.equal(q.population,old);assert.equal(q.populationGrowthCarry,.75);assert.equal(q.monthlyPopulationGrowth,0);
+});
+
+test('actual development, farms, hospitals and infrastructure expand settlement capacity and restart exhausted growth',()=>{
+  const s=world(),p=s.provinces.find(p=>p.ownerId==='germany')!,capacity=populationCapacity(p)!;p.population=capacity;p.populationGrowthCarry=0;monthlyPopulationGrowth(s);assert.equal(p.monthlyPopulationGrowth,0);
+  p.buildings={Infrastructure:1,Farm:1,Hospital:1};assert.ok(populationCapacity(p)!>capacity);monthlyPopulationGrowth(s);assert.ok(p.monthlyPopulationGrowth!>0);
+  const low=populationCapacity(p)!;p.development=Math.min(100,(p.development??40)+1);assert.ok(populationCapacity(p)!>=low);
 });
 
 test('fractional growth makes tiny settlements grow and preserves urban/rural conservation across random small provinces', () => {

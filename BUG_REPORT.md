@@ -1,3 +1,29 @@
+# HUD repeated-payload correction — 2026-10-10
+
+Actual dense native HUD sent8702bytes of timing+unchanged country/clustered army targets at every sample. Local fix preserves complete geometry in an independent stable snapshot/node and complete timing metrics in an800byte node; visual footprint and real target-driven UX checks remain. Exact saved native XML reconstructs byte/value-identical target arrays; corrupt/missing/ambiguous/nonfinite/identity-less captures reject.285JS/TS/61Python/Hermes/42assets PASS. Actual new native accessibility/ABBA/full1800-second acceptance is pending; do not call remaining camera P99/pinch failures solved. Production rollout and final2.0 APK still pending as recorded below.
+
+# Stage10 actual native ledger and compatibility — 2026-10-10
+
+Actual strengthened10000/ten restores PASS atd5: maximum451 armies,3.249× initial population,2849 AI courses/806 science discoveries, finite valid state andP95100.742ms. Full raw results/digest EXPANSION_STAGE10_COMPAT_QA_2026-10-10.json.
+
+Stage8 native reached real paid course/research/counterintelligence completion, then a faulty netrelation assertion rejected correct concurrent outcomes: mission+21 and detected intelligence−15. New Android validator retains both gameplay effects and verifies actual dated progress/monthly reward/full netreason reconciliation. Exact captured XML regression rejects corrupt/missing/forged/instant/clock errors; no game feature/test/stress gate disabled. Requires fresh native acceptance. Previousc75 actual complete1823.22-second native PASS is preserved and not substituted for latest course/art gates.
+
+Schema18 compatibility is prepared/tested before DB in both real edge entrypoints, including current-client session authentication, stored identity and pending receipt replay. Bundles compiled, production still schema12; no premature cutoff/deployment. Still open: full latest native/frame acceptance, original complete ABBA P99/pinch/PSS failures, actual coordinated live schema18 QA/reconnect and final signed2.0 APK. Current280→284JS/strictTS/59Python/no skips/Hermes/all42images PASS; these do not prove live deployment or camera acceptance.
+
+# Stage10 integration findings and remaining release gates — 2026-10-10
+
+Fixed and verified with280JS/TS/55Python: sabotage previously omitted construction; natural quoted dates could finish delayed work early; forged fractional work/future starts could pass active-project validation; research and post-completion intelligence/counterintelligence effect dates lacked complete pre-payment overflow reservation. Six actual dated sabotage work months, delayed completion/save/restart, once-only queue costs, partial/dependent refunds and strict numerical failures now have real regression coverage. Population's unchecked constant exponential feedback produced810× growth over10000 isolated months; continuous capacity/development/real-building pressure now produces3.018× while preserving old above-capacity population/carries and initial growth. Strengthened complete-game10000 still awaits current CI.
+
+Still open: actual complete Stage7 ABBA PSS/P99/pinchP95 failures, latest integrated Android UI/30min/memory/decoding, current long simulation, coordinated schema18 backend/old-client compatibility/authenticated online reconnect and final signed versioned APK. Trace CI succeeds as a diagnostic capture while both attributionComplete flags stay false;36 missing emulator vendor tracepoints are preserved and were inspected. Original performance/gameplay gates were not relaxed. Stage9 actual signed checkpoint's42-image packaging gate passed; it is not final release acceptance or delivery.
+
+# Stage9 evidence — 2026-10-10
+
+269 hostJS/strictTS/51PythonPASS plus1 unavailable pinned Perfetto analyzer. All19 requested category originals and8 themes exist, have27 distinct recorded source hashes and real panel consumers; inherited15 unchanged.42 WebPs actual decode/export checked. Real release APK image hashes, native decoding/layout/memory and camera acceptance pending; no final APK claim. Stage7 actual10000 completed with finite valid restores, but long-run cash scale and latest integrated/native/backend gates still need Stage10. Tests' Node URL import matches the Node filesystem type rather than the RN URL shim; no gameplay assertion was disabled.
+
+# Stage8 validation checkpoint — 2026-10-10
+
+267/267 host tests PASS including13 course/DAG/payment/once-only/default/real-effects/strict-save/AI/overflow regressions and22 lost-response intent kinds. Schema18 course UI/native/10000/backend acceptance is pending. Parentc75 signed checkpoint build PASS; its long/camera still running and native not yet started when recorded. Camera P99 acceptance remains open from actual previous ABBA failure; do not equate host pass or checkpoint APK with final release.19NEW Stage9 originals and final coordinated schema rollout still outstanding.
+
 # Stage7 continuation findings — 2026-10-10
 
 Fixed and host-tested: bankrupt projects previously paused progress while retaining monthly research charges; active fractional building work must be dated/idempotent and cancel only unused cost; named scientific exchanges must enforce source discovery, era, prerequisite and active-project restrictions. Unknown/prototype identifiers/duplicate discoveries/replayed technology commands reject.254JS/TS/49Python tests and Hermes export pass.

@@ -1,7 +1,8 @@
 import {provinceDefinitions} from './worldDefinitions.ts';
 const incomeCalibration=new Map(provinceDefinitions.filter(p=>p.sourceRegions).map(p=>[p.id,{floor:p.sourceRegions!.length,offset:p.income-Math.max(1,Math.round(p.population/300000*(.5+p.development/100)))}]));
-import { provinceBuildingModifiers } from './buildingSystem.ts';
-import type { GameState } from './gameTypes.ts';
+const referencePopulation=new Map(provinceDefinitions.map(p=>[p.id,p.population]));
+import { buildingLevel,provinceBuildingModifiers } from './buildingSystem.ts';
+import type { GameState,Province } from './gameTypes.ts';
 
 function integer(value: number, name: string): void {
   if (!Number.isSafeInteger(value) || value < 0) throw new Error('Invalid population '+name);
@@ -9,10 +10,27 @@ function integer(value: number, name: string): void {
 function carry(value: number): void {
   if (!Number.isFinite(value) || value < 0 || value >= 1) throw new Error('Invalid population carry');
 }
-/** Original demographic game model, not a real-world forecast: 0.4–1% annually before building modifiers. */
+/** Original demographic game model, not a real-world forecast:0.4–1% annually
+ * before building and capacity modifiers. The initial monthly rate is retained. */
 export function annualPopulationGrowth(development: number, stability: number): number {
   if (![development, stability].every(v => Number.isFinite(v) && v >= 0 && v <= 100)) throw new Error('Invalid demographic modifiers');
   return .004 + .002 * development / 100 + .004 * stability / 100;
+}
+/** Abstract settlement capacity, not a geographic population estimate. The
+ * immutable original map population anchors the curve independently of saves,
+ * conquest and reconnect. Development and real buildings expand capacity;
+ * there is no extra ledger, per-frame work, forced death or world reduction.
+ * Unrepresented legacy/custom province IDs retain their existing model. */
+export function populationCapacity(p:Province):number|null {
+  const reference=referencePopulation.get(p.id);
+  return reference===undefined?null:Math.ceil(reference*(2+(p.development??40)/50+buildingLevel(p,'Infrastructure')*.2+buildingLevel(p,'Farm')*.1+buildingLevel(p,'Hospital')*.1));
+}
+function demographicHeadroom(p:Province):number {
+  const capacity=populationCapacity(p),reference=referencePopulation.get(p.id);
+  if(capacity===null||reference===undefined||capacity<=reference)return p.population===0?1:0;
+  // Full inherited growth at/below the initial population, then a continuous
+  // taper to capacity. Existing larger saves keep every person and their carry.
+  return Math.max(0,Math.min(1,(capacity-p.population)/(capacity-reference)));
 }
 /** Country totals are derived; province and city counts stay integer and safely bounded. */
 export function recalcPopulationTotals(state: GameState): void {
@@ -56,7 +74,7 @@ export function monthlyPopulationGrowth(state: GameState): void {
   for (const p of state.provinces) {
     const old = p.population;
     const buildingGrowth = provinceBuildingModifiers(p).populationGrowthPercent;
-    const rate = annualPopulationGrowth(p.development ?? 40, state.countries[p.ownerId]!.stability) * (1 + buildingGrowth / 100);
+    const rate = annualPopulationGrowth(p.development ?? 40, state.countries[p.ownerId]!.stability) * (1 + buildingGrowth / 100)*demographicHeadroom(p);
     const exact = old * rate / 12 + p.populationGrowthCarry!;
     const births = Math.floor(exact);
     integer(old + births, 'overflow');

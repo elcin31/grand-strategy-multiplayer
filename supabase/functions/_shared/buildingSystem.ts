@@ -1,4 +1,6 @@
+import {focusBonuses} from './focusCatalogue.ts';
 import {scienceLevel} from './technologyTree.ts';
+import {espionageModifiers} from './espionageSystem.ts';
 import type { BuildingType, Construction, CountryId, GameState, Province } from './gameTypes.ts';
 import {WATER_ACCESS} from './waterAccess.ts';
 const capitalSites=new WeakMap<GameState,Set<string>>();
@@ -107,8 +109,11 @@ function validateConstruction(state: GameState, construction: Construction): voi
   if (!province || !state.countries[construction.ownerId] || province.ownerId !== construction.ownerId) throw new Error('Invalid construction owner');
   const quote = buildingQuote(province, construction.buildingType);
   if (construction.targetLevel !== quote.targetLevel || construction.cost !== quote.cost) throw new Error('Invalid construction quote');
-  if (!Number.isSafeInteger(construction.startedTick) || !Number.isSafeInteger(construction.completeTick) || construction.startedTick < 0 || construction.completeTick !== construction.startedTick + quote.buildTime) throw new Error('Invalid construction timing');
-  if(construction.workDone!==undefined||construction.workTick!==undefined){if(!Number.isFinite(construction.workDone)||construction.workDone!<0||construction.workDone!>=quote.buildTime||!Number.isSafeInteger(construction.workTick)||construction.workTick!<construction.startedTick||construction.workTick!>state.tick)throw Error('Invalid construction progress');}
+  if (!Number.isSafeInteger(construction.startedTick) || !Number.isSafeInteger(construction.completeTick) || construction.startedTick < 0 || construction.startedTick > state.tick || construction.completeTick !== construction.startedTick + quote.buildTime) throw new Error('Invalid construction timing');
+  // Industry(10%), science(5%) and bounded course rewards(35%) can earn at
+  // most1.5 work units per elapsed month. Delayed jobs may pass their quote's
+  // date, but a save cannot invent completed work or future work ticks.
+  if(construction.workDone!==undefined||construction.workTick!==undefined){if(!Number.isFinite(construction.workDone)||construction.workDone!<0||construction.workDone!>=quote.buildTime||!Number.isSafeInteger(construction.workTick)||construction.workTick!<construction.startedTick||construction.workTick!>state.tick||construction.workDone!>(construction.workTick!-construction.startedTick)*1.5+1e-9)throw Error('Invalid construction progress');}
 }
 /** Modern save migration/validation. Missing building maps stay sparse to avoid inflating 4k-province snapshots. */
 export function initializeBuildings(state: GameState): void {
@@ -147,23 +152,30 @@ export function cancelConstructionInProvince(state: GameState, provinceId: strin
   if(state.constructionQueue?.length)state.constructionQueue=state.constructionQueue.filter(item=>item.provinceId!==provinceId);
   if(state.constructions?.length)state.constructions = state.constructions.filter(item => item.provinceId !== provinceId);
 }
+function constructionRate(state:GameState,ownerId:CountryId):number {
+  const c=state.countries[ownerId]!;
+  return (1+(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01+focusBonuses(c).construction)*espionageModifiers(state,ownerId).productionMultiplier;
+}
 export function constructionProgress(state:GameState,job:Construction):{percent:number;months:number}{
-  const c=state.countries[job.ownerId]!,duration=job.completeTick-job.startedTick,done=job.workDone??state.tick-job.startedTick,rate=1+(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01;
+  const duration=job.completeTick-job.startedTick,done=job.workDone??state.tick-job.startedTick,rate=constructionRate(state,job.ownerId);
   return {percent:Math.min(100,Math.round(100*done/duration)),months:Math.max(0,Math.ceil((duration-done)/rate))};
 }
 export function completeConstructions(state: GameState): void {
   if (!state.dataset || !state.constructions?.length) return;
   const remaining: Construction[] = [];
   for (const construction of state.constructions) {
-    const c=state.countries[construction.ownerId]!,bonus=(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01;
-    if(bonus>0||construction.workDone!==undefined){
+    const rate=constructionRate(state,construction.ownerId);
+    if(rate!==1||construction.workDone!==undefined){
       // Old paid jobs retain their quoted duration. A newly opened capability
-      // accelerates this month onwards; previous work is never credited twice.
+      // changes work from this month onwards; previous work is never credited
+      // twice. Sabotage's dated modifier uses the same indexed country effects
+      // as production and supply, without a construction × mission scan.
       construction.workDone??=Math.max(0,state.tick-construction.startedTick-1);
       construction.workTick??=Math.max(construction.startedTick,state.tick-1);
-      construction.workDone+=(state.tick-construction.workTick)*(1+bonus);construction.workTick=state.tick;
+      construction.workDone+=(state.tick-construction.workTick)*rate;construction.workTick=state.tick;
     }
-    if (construction.completeTick > state.tick && (construction.workDone??0)+1e-9<construction.completeTick-construction.startedTick) { remaining.push(construction); continue; }
+    const unfinished=construction.workDone===undefined?construction.completeTick>state.tick:construction.workDone+1e-9<construction.completeTick-construction.startedTick;
+    if (unfinished) { remaining.push(construction); continue; }
     const province = state.provinces.find(p => p.id === construction.provinceId);
     if (!province || province.rebellion || province.ownerId !== construction.ownerId || (province.controllerId ?? province.ownerId) !== construction.ownerId) continue;
     const current = buildingLevel(province, construction.buildingType);

@@ -21,7 +21,7 @@ export function pumpClock(state:GameState,clockAt:number,now:number):{state:Game
 }
 export function stateChecksum(state:GameState):string {const text=JSON.stringify(state);let h=2166136261;for(let i=0;i<text.length;i++)h=Math.imul(h^text.charCodeAt(i),16777619);return(h>>>0).toString(16).padStart(8,'0');}
 export function assertEnvelope(body:Record<string,unknown>):asserts body is Record<string,unknown>&{gameId:string;playerId:string;token:string;command:GameCommand;commandId:string;expectedVersion:number} {
- if(!body||typeof body!=='object'||Array.isArray(body)||Object.keys(body).some(k=>!['gameId','playerId','token','command','commandId','expectedVersion'].includes(k)))throw new Error('Invalid command envelope');
+ if(!body||typeof body!=='object'||Array.isArray(body)||Object.keys(body).some(k=>!['gameId','playerId','token','command','commandId','expectedVersion','clientStateVersion'].includes(k)))throw new Error('Invalid command envelope');
  assertSessionFields(body);
  if(!body.command||typeof body.command!=='object'||Array.isArray(body.command))throw new Error('Invalid command');
  if(typeof body.commandId!=='string'||!/^[A-Za-z0-9_-]{8,100}$/.test(body.commandId)||!Number.isSafeInteger(body.expectedVersion)||Number(body.expectedVersion)<0)throw new Error('commandId and expectedVersion required');

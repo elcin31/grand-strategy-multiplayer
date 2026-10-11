@@ -1,0 +1,50 @@
+{
+  "parentHead": "2e397db36b17b82740097cfe5a18fb1f5ef6b02b",
+  "scope": "Bound repeated developer-HUD geometry publication, preserve complete timing and actual touch targets",
+  "actualSourceEvidence": {
+    "runId": 38081869155,
+    "cameraJobId": 114303460432,
+    "artifactId": 11680994961,
+    "artifactSha256": "b08a2b178e2e9c7c5dabacaab41ddc1963a10f4bb4add6f4dc29a7632cc97256",
+    "fixture": "tests/fixtures/native_camera_targets.xml",
+    "fixtureSha256": "ef4cdf60f4a0803a51169c4584708df6fcf4579fd6c397d357a553d95b51f2df",
+    "originalWorldHudUtf8Bytes": 8702,
+    "countryTargets": 5,
+    "armyMarkers": 23,
+    "countryTargetCharacters": 329,
+    "armyTargetCharacters": 6538,
+    "note": "Actual saved hierarchy, not a new native run. The majority is army identities; country and army coordinates are both preserved."
+  },
+  "candidateEncoding": {
+    "timingMessageUtf8Bytes": 800,
+    "stableTargetMessageUtf8Bytes": 7920,
+    "timingSampleBytesReductionPercent": 90.80671110089635,
+    "allOriginalFieldsAndValuesRetained": true,
+    "geometrySnapshotIdentityStableAcross120TimingChanges": true,
+    "selectionAndPositionChangesPublish": true,
+    "visualHudBoundsUnchanged": true,
+    "method": "Independent memoized target node with stable external-store snapshot; timing node reuses existing complete compact timing serializer. Same overlay remains enabled, same camera/scenarios/thresholds/target-driven UX/paint/fatal checks."
+  },
+  "hostVerification": {
+    "javascript": {
+      "passed": 285,
+      "failed": 0,
+      "skipped": 0
+    },
+    "typescript": "PASS",
+    "python": {
+      "passed": 61,
+      "failed": 0,
+      "skipped": 0
+    },
+    "hermes": {
+      "bytes": 11471045,
+      "sha256": "f0e4cc9be695ccc6289a2a2b711a7e7051d8c595fdb1ecfec9e069c920ee4b5a",
+      "magic": "c61fbc03c103191f",
+      "all42ArtHashes": "PASS"
+    }
+  },
+  "nativeAcceptance": "PENDING: strict full ABBA/compositor/PSS/pinch, target-driven army/foreign diplomacy, full UI/save/reboot/1800-second native checks; original failures retained. Encoding/allocation reduction is not a confirmed hardware FPS or microstutter result.",
+  "backend": "Still room21/command23/schema12; prepared18 rollout in2e397db, no deployment or premature old-client cutoff.",
+  "engine": "No simulation/map renderer/assets/world changes. Actual strengthenedd5 10000/ten restores remains the current engine evidence; standard CI still repeats its normal required gate."
+}

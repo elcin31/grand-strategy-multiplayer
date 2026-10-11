@@ -1,3 +1,31 @@
+# Bounded diagnostic HUD publication — 2026-10-10
+
+Actual Stage9 world-pan hierarchy:8702 UTF8 bytes per timing HUD refresh,329chars/five country targets plus6538chars/23 army markers; every clustered army identity remains. Candidate timing node uses800bytes for the same compact timing metrics;7920bytes of full target geometry are published separately only when actual targets/selection change, through a stable external-store snapshot and memoized native node. Same visual overlay footprint, overlay still enabled and strict original ABBA/compositor/pinch/PSS gates retained.285JS/TS/61Python, actual-capture reconstruction/corruption tests,120 changed timing samples/stable target identity and changed selection/position PASS; Hermes/all42asset hashes PASS. Full evidence EXPANSION_CAMERA_TARGET_PUBLISH_QA.json.
+
+This is a verified encoding/allocation reduction, not completed native attribution/FPS/microstutter acceptance. No map renderer/world/geography/label/army budget/engine/cache change. Latest strict Android result is pending; every previous complete camera failure remains preserved. Do not rerun isolated CPU simulation benchmarks for a HUD-only change or substitute them for native acceptance.
+
+# Stage10 actual full-world stability and latest native evidence — 2026-10-10
+
+Currentd5 CI10000/ten exact restores SUCCESS: maximum451 armies/4,487,736snapshot/P95100.742ms, final population3.249×/2849 actual AI courses/806 science discoveries. The demographic interaction fix reduced runaway recruitment/world work while preserving initial world195/2924/5411 and growth. This is actual CI CPU/data simulation, not handset FPS. Full raw/digest EXPANSION_STAGE10_COMPAT_QA_2026-10-10.json.
+
+Actualc75 full Android UX/research/layout/restart/reboot/1823.220318868-second soak SUCCESS. Latest course/art/integrated acceptance remains separate. Stage9 full ABBA captures are complete but FAIL eight unchanged compositorP99/pinch histogram gates; no samples removed or thresholds relaxed. All original rows EXPANSION_CAMERA_REVIEW_C660.json. Candidate world pan commits0 map/geography/raster, active JS0.3–0.4% in this sampled emulator protocol vs baseline1.0–1.1%; P99 remains worse despite lower sampled JS load. Developer overlay accessibility payload is7144–8702bytes vs accepted604–605 and repeats unchanged target coordinates every timing refresh. This is a measured diagnostic lead, not confirmed attribution or a completed microstutter fix. Existing accepted renderer/cache/input/army-target functionality remains.
+
+No new gameplay/frame work in the compatibility/native-ledger continuation; same tested Stage10 host240 engine applies. Backend bundles and host edge fixtures are build/protocol checks; no cloud deployment or physical-memory/frame acceptance inferred.
+
+# Stage10 measured balance and preserved native failures — 2026-10-10
+
+Sequential same host seed101/240 ticks/four exact restores: baseline18 P95/P99=71.76/88.97ms→candidate18=76.81/84.22ms;RSS742,948,864→749,047,808/snapshot4,146,058→4,152,992. Demography-only full-world10000 baseline810.19× population→candidate3.018× with continuous original-map capacity/development/buildings feedback; initial growth retained, old people/carries preserved. This separate demographic benchmark does not replace the complete authoritative10000 CI. No per-frame economy/spy/research/focus/supply work introduced; indexed sabotage effects reused for dated construction. Full results EXPANSION_STAGE10_HOST_QA_2026-10-10.json.
+
+Actual Stage7 ABBA all9×4 complete FAILED PSS/compositorP99/pinchP95 with all rows/violations in EXPANSION_CAMERA_REVIEW_C75.json. Separate matched-runtime system trace CI38082664397 SUCCESS means capture/analysis completed, not camera acceptance: both attributionComplete=false and all36 unavailable vendor tracepoints retained. Observed main thread running~10.2s/11.36s in both captures, JS~0.76s/collector~0.18s; nested EGL timings overlap and are not CPU shares. Raw artifact digest/full analyses in EXPANSION_PINCH_TRACE_C75.json. Original thresholds/orders/captures/paint/PSS and accepted texture remain intact. Stage8 real10000/ten restores SUCCESS(P95266.81/max2212/snapshot5,207,394); Stage9 actual signed checkpoint includes all42 byte-exact images. Final integrated native/30min/frame/backend acceptance remains OPEN.
+
+# Stage9 asset budget and decoding — 2026-10-10
+
+27 NEW originals plus inherited15 occupy3,479,060bytes under unchanged3.5MB limit. New panels26×640×360; loading960×540, max2,073,600 RGBA bytes per newly mounted image. No asset imported by the map, eager prefetch, frame selection or new gameplay workload. Actual all42 hashes found in Android export; candidate-only APK gate added. Host Pillow diagnostics are recorded as CPU-only, not Android decoding/PSS/frame proof. Native layout/memory/decoding/loading/camera gates await actual CI. Existing Stage8 sequential240 simulation remains applicable because gameplay/renderer/schema are unchanged. Actual Stage7 10000/P95228.11ms data in the new report; camera acceptance remains OPEN.
+
+# Stage8 course host comparison — 2026-10-10
+
+Same sequential host seed101/240 monthly ticks/four exact saves: schema17 P95/P99=75.34/94.74ms;18=75.01/90.87ms. Snapshot3,916,914->4,146,058;RSS739,651,584->716,468,224. Permanent course bonuses use a WeakMap cache and bounded completions; graph availability only on open panels/strategic slots, monthly country pass/events, no map-frame work. No concurrent heavy local workload. Different actual gameplay outcomes; CPU/data figures do not prove Android frame acceptance. Existing complete Stage6 camera failures remain OPEN. Full report EXPANSION_STAGE8_HOST_QA_2026-10-10.json.
+
 # Stage7 continuation host/camera evidence — 2026-10-10
 
 Clean identical host seed101/240 monthly ticks/4 restores: schema16 P50/P95/P99=53.85/76.17/86.86ms;17=50.39/84.85/104.61ms. Genuine research/war outcomes differ, world195/2924/5411 stays fixed. Snapshot3,902,933->3,916,914;RSS670,461,952->764,530,688. No concurrent heavy process. These CPU/data figures do not establish Android FPS or frame acceptance. Full results EXPANSION_STAGE7_HOST_QA_2026-10-10.json.

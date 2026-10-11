@@ -14,8 +14,8 @@ class FixtureProjectionTest(unittest.TestCase):
             'cities':[{'id':'c','provinceId':'p','population':30}],
             'armies':[{'id':'a','ownerId':'de','provinceId':'p','troops':1000}],
             'diplomacy':{},'wars':[],'constructions':[],'movements':[]}}
-    def test_only_inactive_additive_schema17_defaults_can_change_the_legacy_workload(self):
-        base=self.fixture();actual=copy.deepcopy(base);actual['state']['stateVersion']=17
+    def test_only_inactive_additive_schema18_defaults_can_change_the_legacy_workload(self):
+        base=self.fixture();actual=copy.deepcopy(base);actual['state']['stateVersion']=18
         for key in ['relationMissions','diplomaticOffers','diplomaticHistory','politicalUnions','spyMissions','spyReports','spyEffects','constructionQueue']:actual['state'][key]=[]
         actual['state']['countries']['de']['spyCooldowns']={}
         actual['state']['countries']['de']['economy']['diplomaticMaintenance']=0
@@ -33,10 +33,13 @@ class FixtureProjectionTest(unittest.TestCase):
         def spy_cooldown(s):s['countries']['de']['spyCooldowns']={'de:Counterintelligence':12}
         def science(s):s['countries']['de']['scientificDiscoveries']=['science-method']
         def research(s):s['countries']['de']['research']={'nodeId':'eco-ledger'}
+        def focus(s):s['countries']['de']['completedFocuses']=[{'focusId':'eco-audit','tick':6}]
+        def project(s):s['countries']['de']['nationalFocus']={'focusId':'eco-audit'}
+        def focus_event(s):s['focusEvents']=[{'id':'event'}]
         def nan(s):s['extra']=float('nan')
-        for change in [reduced,troops,cash,country,tick,diplomacy,mission,spy,spy_effect,spy_cooldown,science,research,nan]:
+        for change in [reduced,troops,cash,country,tick,diplomacy,mission,spy,spy_effect,spy_cooldown,science,research,focus,project,focus_event,nan]:
             base=self.fixture();actual=copy.deepcopy(base);change(actual['state'])
             with self.assertRaises(AssertionError):assert_paused_fixture(actual,base)
     def test_future_schema_is_rejected(self):
-        base=self.fixture();actual=copy.deepcopy(base);actual['state']['stateVersion']=18
+        base=self.fixture();actual=copy.deepcopy(base);actual['state']['stateVersion']=19
         with self.assertRaises(AssertionError):assert_paused_fixture(actual,base)

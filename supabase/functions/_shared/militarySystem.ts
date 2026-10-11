@@ -1,3 +1,4 @@
+import {focusBonuses} from './focusCatalogue.ts';
 import {provinceDefinitions} from './worldDefinitions.ts';
 const mergedRegions=new Map(provinceDefinitions.filter(p=>p.sourceRegions).map(p=>[p.id,p.sourceRegions!]));
 import type { Army, GameState, Province } from './gameTypes.ts';
@@ -58,7 +59,7 @@ export function combatMultiplier(state: GameState,army: Army,province: Province,
   const combined=(parts.Artillery??0)>0&&((parts.Infantry??0)+(parts.Mechanized??0))>0?1.08:1;
   const logistics=.5+supplyAt(state,army.ownerId,army.provinceId).score/200;
   const intel=!defending&&espionageModifiers(state,army.ownerId).intelTargets.has(province.controllerId??province.ownerId)?1.08:1;
-  return strength*combined*logistics*(1+(army.experience??0)/500)*(.4+(army.morale??80)/200+(army.organization??80)/200)*(1+skill/500)*(1+techLevel(state.countries[army.ownerId]!,'Military')*.06)*intel*militaryReadiness(state.countries[army.ownerId]!);
+  return strength*combined*logistics*(1+(army.experience??0)/500)*(.4+(army.morale??80)/200+(army.organization??80)/200)*(1+skill/500)*(1+techLevel(state.countries[army.ownerId]!,'Military')*.06)*intel*militaryReadiness(state.countries[army.ownerId]!)*(1+focusBonuses(state.countries[army.ownerId]!).combat);
 }
 export function recoverMilitary(state: GameState): void {
   if(!state.dataset)return;

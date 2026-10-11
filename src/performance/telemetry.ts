@@ -6,6 +6,14 @@ export function cameraMetrics(value:Metrics):Omit<Metrics,'countryTargets'|'army
   return {...timings,benchmarkError:timings.benchmarkError.slice(0,160)};
 }
 let metrics:Metrics={countryTargets:'',armyTargets:'',frameP50Ms:null,frameP95Ms:null,frameP99Ms:null,frameSamples:0,over50Ms:0,over100Ms:0,cullCommits:0,pathBuilds:0,pathBuildMs:0,rasterPrewarmBuilds:0,rasterPrewarmMs:0,rasterBuilds:0,rasterMs:0,rasterBytes:0,rasterTiles:0,tapToActionMs:0,tapToScreenMs:0,renderFeatures:0,benchmarkError:'',benchmarkTicks:0,uiFps:0,frameMs:0,slowFrames:0,cameraUpdates:0,gestureEvents:0,gestureCommits:0,visibleProvinces:0,visibleArmies:0,visibleLabels:0,simulationMs:0,networkMs:0,networkBytes:0,mapRenders:0,geographyRenders:0,preset:'Balanced',geometryLod:'low',sceneMs:0};
+let targets:Pick<Metrics,'countryTargets'|'armyTargets'>={countryTargets:'',armyTargets:''};
+/** Stable snapshot: a timing sample must not resend unchanged touch geometry
+ * through Fabric/accessibility. Keep every coordinate/identity for real UX QA. */
+export function getMapTargets():Pick<Metrics,'countryTargets'|'armyTargets'>{
+  if(targets.countryTargets!==metrics.countryTargets||targets.armyTargets!==metrics.armyTargets)
+    targets={countryTargets:metrics.countryTargets,armyTargets:metrics.armyTargets};
+  return targets;
+}
 const listeners=new Set<()=>void>();let lastNotify=0;const samples:Metrics[]=[];
 export function recordMetrics(next:Partial<Metrics>,notify=false){metrics={...metrics,...next};if(notify&&Date.now()-lastNotify>=900){lastNotify=Date.now();samples.push({...metrics});if(samples.length>1800)samples.shift();for(const l of listeners)l();}}
 export const getMetrics=()=>metrics;

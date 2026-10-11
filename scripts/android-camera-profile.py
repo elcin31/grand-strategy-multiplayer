@@ -152,8 +152,10 @@ if not fixture:adb('shell','input','keyevent','4')
 time.sleep(2)
 if os.environ.get('CAMERA_TRACE_ONLY')=='1':
     from camera_system_trace import capture_camera_trace
-    reset_camera()
-    print('DOMINION_TRACE '+json.dumps(capture_camera_trace(adb,OUT,lambda:gesture('pinch'))),flush=True)
+    scenario=os.environ.get('CAMERA_TRACE_SCENARIO','pinch')
+    assert scenario in ['pinch','world-pan','local-pan'], 'Unsupported trace-only camera scenario'
+    reset_camera(world=scenario=='world-pan',local=scenario=='local-pan')
+    print('DOMINION_TRACE '+json.dumps(capture_camera_trace(adb,OUT,lambda:gesture('pinch' if scenario=='pinch' else 'pan'),scenario=scenario)),flush=True)
     if fixture:assert_fixture_campaign()
     sys.exit(0)
 results=[]

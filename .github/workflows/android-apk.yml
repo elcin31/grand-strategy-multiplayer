@@ -62,6 +62,14 @@ jobs:
         run: npm ci --include=dev --no-audit --no-fund
       - name: Typecheck
         run: npm run typecheck
+      - name: Compile existing Dominion backend functions for coordinated rollout
+        run: node scripts/bundle-backend.mjs backend-bundles
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dominion-backend-bundles
+          path: backend-bundles/
+          if-no-files-found: error
+          retention-days: 14
       - name: Regression tests
         run: npm test
       - name: Install world-import test dependency
@@ -91,7 +99,9 @@ jobs:
           cd android
           NODE_ENV=production ./gradlew assembleRelease --no-daemon
       - name: Verify bundled JavaScript and native libraries
-        run: python scripts/verify-apk.py android/app/build/outputs/apk/release/app-release.apk
+        run: |
+          python scripts/verify-apk.py android/app/build/outputs/apk/release/app-release.apk
+          python scripts/verify-packaged-art.py android/app/build/outputs/apk/release/app-release.apk > art-packaging.txt
       - name: Verify release manifest, signature and production backend
         run: |
           python scripts/verify-release.py android/app/build/outputs/apk/release/app-release.apk > release-integrity.txt
@@ -104,6 +114,7 @@ jobs:
           path: |
             Dominion-camera-optimized-illustrated.apk
             release-integrity.txt
+            art-packaging.txt
             paired-visual-ci.json
             paired-camera-ci.json
             CAMERA_HOST_PAIRED.json
@@ -191,7 +202,7 @@ jobs:
       - uses: reactivecircus/android-emulator-runner@v2
         env:
           CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-          CAMERA_ALLOWED_STATE_VERSION: '17'
+          CAMERA_ALLOWED_STATE_VERSION: '18'
           CAMERA_REQUIRE_SURFACE_PRESENTATION: '1'
         with:
           api-level: 35

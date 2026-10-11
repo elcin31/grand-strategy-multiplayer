@@ -1,8 +1,9 @@
 """Evidence from a real device marker only; incomplete capture stays incomplete."""
 
 
-def analyze_trace(trace, pid, digest):
+def analyze_trace(trace, pid, digest, marker='DOMINION_PINCH_TRACE'):
     assert isinstance(pid, int) and not isinstance(pid, bool) and pid > 0
+    assert marker in ['DOMINION_PINCH_TRACE','DOMINION_WORLD_PAN_TRACE','DOMINION_LOCAL_PAN_TRACE'], 'Unsupported real-gesture marker'
     diagnostics = [dict(name=r.name, index=r.idx, value=r.value, severity=r.severity)
                    for r in trace.query("SELECT name,idx,value,severity FROM stats WHERE value>0 AND "
                                         "(severity IN ('error','data_loss') OR name LIKE '%overrun%' "
@@ -15,9 +16,9 @@ def analyze_trace(trace, pid, digest):
       FROM slice s LEFT JOIN process_track pt ON s.track_id=pt.id
       LEFT JOIN thread_track tt ON s.track_id=tt.id LEFT JOIN thread t ON tt.utid=t.utid
       JOIN process p ON p.upid=COALESCE(pt.upid,t.upid)
-      WHERE s.name='DOMINION_PINCH_TRACE' AND p.pid={pid}''')]
+      WHERE s.name='{marker}' AND p.pid={pid}''')]
     report = dict(diagnosticOnly=True, traceSha256=digest, markerCandidates=markers,
-                  traceLossOrErrors=diagnostics, markerValid=False,
+                  traceLossOrErrors=diagnostics, markerValid=False, gestureMarker=marker,
                   schedulerCoveragePresent=False, attributionComplete=False,
                   threadStates=[], completedNestedSlices=[])
     if len(markers) != 1 or markers[0]['dur'] <= 0:

@@ -1,0 +1,194 @@
+{
+  "parentHead": "9004fddbd13743866ad61eb3c476889b3e5c47e1",
+  "stateVersion": 18,
+  "typescript": "PASS",
+  "javascript": {
+    "passed": 269,
+    "failed": 0
+  },
+  "python": {
+    "total": 52,
+    "passed": 51,
+    "skipped": 1,
+    "skipReason": "Pinned host-only Perfetto analyzer installed in diagnostic CI"
+  },
+  "originalScenes": 27,
+  "categories": {
+    "Diplomacy": 5,
+    "Military": 4,
+    "Construction": 4,
+    "Government": 3,
+    "Religion": 3,
+    "Theme": 8
+  },
+  "inherited15": "BYTE_EXACT_UNCHANGED",
+  "totalWebPs": 42,
+  "packagedArtBytes": 3479060,
+  "newArtBytes": 1290426,
+  "artBudgetBytes": 3500000,
+  "artVerifier": "PASS hashes/actual WebP decode/dimensions/distinct source hashes/category count/prompts",
+  "androidExportArt": "42 byte-exact optimized WebPs PASS",
+  "apkArtGate": "ADDED, awaiting actual build",
+  "hermes": {
+    "bytes": 11468269,
+    "sha256": "64d6a9270b1228107861f782ef00b735a735d1b4507f4429d90c5136f80edccd",
+    "magic": "c61fbc03c103191f",
+    "status": "PASS"
+  },
+  "hostDecodeDiagnostic": {
+    "rows": [
+      {
+        "subjectId": "diplomacy-embassy",
+        "decodeMs": 6.3146359998427215,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "diplomacy-treaty",
+        "decodeMs": 3.9169970000330068,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "diplomacy-peace",
+        "decodeMs": 3.0845940000290284,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "diplomacy-trade",
+        "decodeMs": 3.685597999719903,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "diplomacy-summit",
+        "decodeMs": 2.986826000324072,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "military-staff",
+        "decodeMs": 2.956560999791691,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "military-supply",
+        "decodeMs": 5.413678999957483,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "military-training",
+        "decodeMs": 3.754722999929072,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "military-fortress",
+        "decodeMs": 3.3938790002139285,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "construction-farm",
+        "decodeMs": 3.8740319996577455,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "construction-mine",
+        "decodeMs": 4.302806999930908,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "construction-factory",
+        "decodeMs": 3.681382000195299,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "construction-infrastructure",
+        "decodeMs": 3.9444580002054863,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "government-council",
+        "decodeMs": 3.0416790000344918,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "government-assembly",
+        "decodeMs": 2.5010449999172124,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "government-administration",
+        "decodeMs": 2.790950999951747,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "religion-cathedral",
+        "decodeMs": 3.348561000166228,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "religion-courtyard",
+        "decodeMs": 4.234635000102571,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "religion-temple",
+        "decodeMs": 3.3042140003090026,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "theme-espionage",
+        "decodeMs": 2.6283070001227316,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "theme-economy",
+        "decodeMs": 3.217834000224684,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "theme-ruler",
+        "decodeMs": 2.6205149997622357,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "theme-general",
+        "decodeMs": 2.758883000296919,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "theme-technology",
+        "decodeMs": 2.6737549997051246,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "theme-focus",
+        "decodeMs": 2.9967710001983505,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "theme-event",
+        "decodeMs": 2.772283000012976,
+        "rgbaBytes": 921600
+      },
+      {
+        "subjectId": "theme-loading",
+        "decodeMs": 8.060454000315076,
+        "rgbaBytes": 2073600
+      }
+    ],
+    "note": "Single host Pillow load per image, CPU/dimension diagnostics only; no Android image-decoding/frame/memory claim"
+  },
+  "simulation": "No gameplay/renderer/data/schema changes from verified Stage8 fixed240 scenario; do not repeat heavy benchmark without a new concern",
+  "nativeCameraMemoryLoading": "PENDING actual current CI",
+  "parentStage7CI": {
+    "run": 38079172136,
+    "build": "SUCCESS",
+    "long": "SUCCESS:10000 actual ticks/10 restores",
+    "longArtifact": 11679788619,
+    "longZipBytes": 1849,
+    "longZipSha256": "39a5549c5ddccc29e719a3d33fe78cbfcb3530c560b178085623d07e331d96bf",
+    "longMaxArmies": 2513,
+    "longSnapshotBytes": 4919817,
+    "longP95Ms": 228.11265199980699,
+    "camera": "IN_PROGRESS at checkpoint",
+    "native": "IN_PROGRESS at checkpoint"
+  },
+  "backendDeployment": "NONE"
+}

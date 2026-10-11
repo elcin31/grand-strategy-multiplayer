@@ -29,3 +29,19 @@ class TraceSqlIntegrationTest(unittest.TestCase):
         self.assertTrue(report['markerValid']);self.assertEqual(report['markerDurationMs'], 10)
         self.assertEqual(len(report['markerCandidates']), 1)
         self.assertFalse(report['attributionComplete']);self.assertFalse(report['schedulerCoveragePresent'])
+
+    def test_world_pan_uses_its_exact_marker_not_a_pinch_or_other_process_interval(self):
+        raw=('# tracer: nop\n'
+             ' writer-101 ( 101) [000] .... 1.000000: tracing_mark_write: S|42|DOMINION_WORLD_PAN_TRACE|101\n'
+             ' writer-102 ( 102) [000] .... 1.001000: tracing_mark_write: S|42|DOMINION_PINCH_TRACE|101\n'
+             ' writer-103 ( 103) [000] .... 1.010000: tracing_mark_write: F|42|DOMINION_PINCH_TRACE|101\n'
+             ' writer-104 ( 104) [000] .... 1.012000: tracing_mark_write: F|42|DOMINION_WORLD_PAN_TRACE|101\n')
+        with tempfile.NamedTemporaryFile(mode='w',suffix='.systrace') as f:
+            f.write(raw);f.flush()
+            with TraceProcessor(trace=f.name) as trace:
+                report=analyze_trace(trace,42,'synthetic','DOMINION_WORLD_PAN_TRACE')
+                with self.assertRaisesRegex(AssertionError,'Unsupported real-gesture'):
+                    analyze_trace(trace,42,'synthetic',"bad' OR 1=1")
+        self.assertTrue(report['markerValid']);self.assertEqual(report['markerDurationMs'],12)
+        self.assertEqual(report['gestureMarker'],'DOMINION_WORLD_PAN_TRACE')
+        self.assertFalse(report['attributionComplete'])

@@ -1,4 +1,5 @@
 import {technologyNode} from './technologyTree.ts';
+import {focusNode} from './focusCatalogue.ts';
 import { assertPeaceTerms } from './warSystem.ts';
 import { TREATIES } from './diplomacySystem.ts';
 import { UNITS } from './militarySystem.ts';
@@ -44,6 +45,8 @@ const fields: Record<string, readonly string[]> = {
   RECRUIT_UNIT: ['type','playerId','provinceId','troops','unitType'],
   ASSIGN_COMMANDER: ['type','playerId','armyId','commanderId'],
   START_TECHNOLOGY:['type','playerId','nodeId'],
+  START_NATIONAL_FOCUS:['type','playerId','focusId'],
+  CANCEL_NATIONAL_FOCUS:['type','playerId'],
   START_RESEARCH: ['type', 'playerId', 'branch'],
   BUILD: ['type', 'playerId', 'provinceId', 'buildingType'],
   SELECT_COUNTRY: ['type', 'playerId', 'countryId'],
@@ -87,6 +90,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (type === 'BORROW' || type === 'REPAY_DEBT') assertLoanAmount(command.amount);
   if ((type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.unitType !== 'string' || !Object.hasOwn(UNITS, command.unitType))) throw new Error('Invalid unit type');
   if(type==='START_TECHNOLOGY'&&(typeof command.nodeId!=='string'||!technologyNode(command.nodeId)))throw Error('Invalid named technology');
+  if(type==='START_NATIONAL_FOCUS'&&(typeof command.focusId!=='string'||!focusNode(command.focusId)))throw Error('Invalid national course');
   if (type === 'START_RESEARCH' && (typeof command.branch !== 'string' || !Object.hasOwn(TECHNOLOGIES, command.branch))) throw new Error('Invalid research branch');
   if ((type === 'BUILD'||type==='QUEUE_BUILD') && (typeof command.buildingType !== 'string' || !BUILDING_TYPES.includes(command.buildingType as BuildingType))) throw new Error('Invalid building type');
   if (type === 'CHANGE_RELIGION') assertReligion(command.religionId);

@@ -6,13 +6,14 @@ No app manifest/debug mode, game instrumentation or backend changes needed.
 """
 import hashlib
 import json
-import re
 import subprocess
 import time
+from android_accessibility import assert_no_game_fatal
 
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 DEVICE_TRACE = '/data/misc/perfetto-traces/dominion-camera.pftrace'
 MARKER = '/sys/kernel/tracing/trace_marker'
+GESTURE_MARKERS={'pinch':'DOMINION_PINCH_TRACE','world-pan':'DOMINION_WORLD_PAN_TRACE','local-pan':'DOMINION_LOCAL_PAN_TRACE'}
 # The first real 20s capture wrote 22.9MiB and overwrote its start marker in
 # the old 16MiB ring. This is a separate diagnostic launch, never the benchmark.
 CONFIG = '''buffers { size_kb: 65536 fill_policy: RING_BUFFER }
@@ -35,17 +36,19 @@ data_sources { config { name: "android.surfaceflinger.frametimeline" } }
 '''
 
 
-def capture_camera_trace(adb, out, gesture, popen=subprocess.Popen, pause=time.sleep):
+def capture_camera_trace(adb, out, gesture, popen=subprocess.Popen, pause=time.sleep, scenario='pinch'):
+    assert scenario in GESTURE_MARKERS, 'Unsupported trace-only camera scenario'
+    gesture_marker=GESTURE_MARKERS[scenario]
     assert adb('shell', 'id', '-u').strip() == '0', 'Trace-only mode requires its own rooted CI emulator'
     pid = adb('shell', 'pidof', PACKAGE).strip()
     assert pid.isascii() and pid.isdigit(), 'Missing/ambiguous game PID before trace'
     adb('shell', 'test', '-w', MARKER)
-    config = out / 'pinch-trace.cfg'
+    config = out / (scenario+'-trace.cfg')
     config.write_text(CONFIG)
     # Async begin/end delimit the real gesture on the device clock, allowing
     # later SQL to exclude startup/tail idle time without fabricating timestamps.
     def marker(phase):
-        adb('shell', 'sh', '-c', "'echo \""+phase+'|'+pid+'|DOMINION_PINCH_TRACE|101\" > '+MARKER+"'")
+        adb('shell', 'sh', '-c', "'echo \""+phase+'|'+pid+'|'+gesture_marker+'|101\" > '+MARKER+"'")
     with config.open('r') as source, (out / 'perfetto-record.txt').open('w') as log:
         process = popen(['adb', 'shell', 'perfetto', '--txt', '-c', '-', '-o', DEVICE_TRACE],
                         stdin=source, stdout=log, stderr=subprocess.STDOUT)
@@ -65,15 +68,15 @@ def capture_camera_trace(adb, out, gesture, popen=subprocess.Popen, pause=time.s
     assert adb('shell', 'pidof', PACKAGE).strip() == pid, 'Game died/restarted during trace'
     logs = adb('logcat', '-d')
     (out / 'trace-logcat.txt').write_text(logs)
-    assert not re.search(r'FATAL EXCEPTION|Fatal signal|JavascriptException', logs), 'Fatal error during trace'
-    trace = out / 'pinch.pftrace'
+    assert_no_game_fatal(logs,pid)
+    trace = out / (scenario+'.pftrace')
     adb('pull', DEVICE_TRACE, trace)
     raw = trace.read_bytes()
     assert len(raw) > 1024, 'Missing/empty system trace'
     report = {'diagnosticOnly': True, 'pid': int(pid), 'traceBytes': len(raw),
               'traceSha256': hashlib.sha256(raw).hexdigest(),
               'configSha256': hashlib.sha256(CONFIG.encode()).hexdigest(),
-              'gestureMarker': 'DOMINION_PINCH_TRACE',
+              'gestureMarker': gesture_marker, 'scenario':scenario, 'traceFile':trace.name,
               'note': 'Separate trace-only launch AFTER gated comparisons, not their workload. '
                       'No FPS, CPU attribution or performance acceptance inferred from file presence. '
                       'Analyze actual async marker interval and trace loss/coverage before attribution. '

@@ -1,0 +1,191 @@
+[
+  {
+    "id": "diplomacy-embassy",
+    "category": "Diplomacy",
+    "prompt": "Use case: historical-scene. Asset type: an original landscape oil painting for DOMINION historical grand strategy diplomacy panel. Style: fine museum-quality historical oil illustration with visible restrained brushwork, warm candlelight, navy cloth, burgundy drapery, antique gold and parchment tones; readable strong central scene even as a small mobile landscape banner. Original composition, human faces natural and distinct, dignified period clothing and authentic tools, no text, no labels, no UI, no logos, no watermarks, no recognizable copyrighted game imagery, no imitation of a named artist. Wide landscape 16:9, full bleed, no decorative frame. Primary request: An arriving diplomatic embassy at a Renaissance palace courtyard: three envoys with a sealed document greeted by a host official under stone arches, distant city and hills, midday softened warm light. The greeting and sealed dispatch are the central focal point.",
+    "sourceFile": "exec-ef1c5905-077e-4391-94ee-5b1eee635a1c.png",
+    "sourceSha256": "b0f6e8f1825e6da3fbd61fad32b62df1ea076da7c1029f53b56a0241249e656d"
+  },
+  {
+    "id": "diplomacy-treaty",
+    "category": "Diplomacy",
+    "prompt": "Use case: historical-scene. Asset type: an original landscape oil painting for DOMINION historical grand strategy diplomacy panel. Style: fine museum-quality historical oil illustration with visible restrained brushwork, warm candlelight, navy cloth, burgundy drapery, antique gold and parchment tones; readable strong central scene even as a small mobile landscape banner. Original composition, human faces natural and distinct, dignified period clothing and authentic tools, no text, no labels, no UI, no logos, no watermarks, no recognizable copyrighted game imagery, no imitation of a named artist. Wide landscape 16:9, full bleed, no decorative frame. Primary request: A treaty being signed at a seventeenth-century council table: two fictional states' envoys sitting across a parchment with wax seals, one writes with a quill, witnesses quietly standing behind, tall arched window, dusk candlelight, practical paper and ink.",
+    "sourceFile": "exec-09f03467-796d-4127-ad26-484f6cea4a9c.png",
+    "sourceSha256": "88d6d24a32d2a9d84027d084ab8de58b722b6083e3fee640a94b0cee787ded8f"
+  },
+  {
+    "id": "diplomacy-peace",
+    "category": "Diplomacy",
+    "prompt": "Use case: historical-scene. Asset type: an original landscape oil painting for DOMINION historical grand strategy diplomacy panel. Style: fine museum-quality historical oil illustration with visible restrained brushwork, warm candlelight, navy cloth, burgundy drapery, antique gold and parchment tones; readable strong central scene even as a small mobile landscape banner. Original composition, human faces natural and distinct, dignified period clothing and authentic tools, no text, no labels, no UI, no logos, no watermarks, no recognizable copyrighted game imagery, no imitation of a named artist. Wide landscape 16:9, full bleed, no decorative frame. Primary request: A peace parley after a campaign: two unarmed fictional commanders and a neutral mediator meet at a field pavilion, sheathed swords and a rolled map on a wooden table, weary cavalry resting far behind, misty sunrise and restrained hopeful mood.",
+    "sourceFile": "exec-0b105f9e-991f-4289-b173-3982a8b9964d.png",
+    "sourceSha256": "37911aac0ded89e922b66d10c7e50e049bae24c74796cff33efe44d9427869ed"
+  },
+  {
+    "id": "diplomacy-trade",
+    "category": "Diplomacy",
+    "prompt": "Use case: historical-scene. Asset type: an original landscape oil painting for DOMINION historical grand strategy diplomacy panel. Style: fine museum-quality historical oil illustration with visible restrained brushwork, warm candlelight, navy cloth, burgundy drapery, antique gold and parchment tones; readable strong central scene even as a small mobile landscape banner. Original composition, human faces natural and distinct, dignified period clothing and authentic tools, no text, no labels, no UI, no logos, no watermarks, no recognizable copyrighted game imagery, no imitation of a named artist. Wide landscape 16:9, full bleed, no decorative frame. Primary request: A maritime trade agreement in an early modern port office: two merchants and a public envoy studying a shipping ledger beside weighing scales and small commodity samples, moored sailing ships through a wide window, warm morning light.",
+    "sourceFile": "exec-9a523b1f-2f56-4900-b32e-4bda13ec906a.png",
+    "sourceSha256": "bd4c0945293ca4c1bf71063ee48bedb6d4df2b084218d5934a9f1a754a9ae5b2"
+  },
+  {
+    "id": "diplomacy-summit",
+    "category": "Diplomacy",
+    "prompt": "Use case: historical-scene. Asset type: an original landscape oil painting for DOMINION historical grand strategy diplomacy panel. Style: fine museum-quality historical oil illustration with visible restrained brushwork, warm candlelight, navy cloth, burgundy drapery, antique gold and parchment tones; readable strong central scene even as a small mobile landscape banner. Original composition, human faces natural and distinct, dignified period clothing and authentic tools, no text, no labels, no UI, no logos, no watermarks, no recognizable copyrighted game imagery, no imitation of a named artist. Wide landscape 16:9, full bleed, no decorative frame. Primary request: A diplomatic summit in an early nineteenth-century hall: five fictional envoys of different cultures gathered around a circular map table, attentive respectful discussion, stone columns and burgundy curtains, an illuminated globe, warm interior light. No flags or readable writing.",
+    "sourceFile": "exec-0bd99821-ff22-4d1d-acc5-d91b21313d00.png",
+    "sourceSha256": "cfd6ec5fc50021bf60b93f25af3ef9baf1af03e4cffb858f94a082999722fee7"
+  },
+  {
+    "id": "military-staff",
+    "category": "Military",
+    "prompt": "Use case: historical-scene. Asset type: original DOMINION grand strategy military landscape illustration. A historical oil painting with restrained visible brushwork and museum-quality detail, consistent deep navy, burgundy, antique gold, parchment and natural earth tones, cinematic natural light. Original fictional people and uniforms, authentic nineteenth-century tools and architecture, strong central focal subject readable as a mobile banner. Wide landscape16:9 full bleed. No text, labels, UI, modern logos, watermarks, named-artist imitation or copied game material. Primary request: An early nineteenth-century general staff at work inside a stone headquarters: a fictional woman commander and two officers carefully tracing a campaign route on a large parchment map, brass dividers, sealed orders, shaded oil lamps and distant mountains through the window; calm serious planning.",
+    "sourceFile": "exec-943d83d0-eda3-4114-bfd8-4df6a41874e1.png",
+    "sourceSha256": "53a947c5c64eacd02bcbdddc6b8f31cb647796c404b70fbba2d6a69680a9fe7d"
+  },
+  {
+    "id": "military-supply",
+    "category": "Military",
+    "prompt": "Use case: historical-scene. Asset type: original DOMINION grand strategy military landscape illustration. A historical oil painting with restrained visible brushwork and museum-quality detail, consistent deep navy, burgundy, antique gold, parchment and natural earth tones, cinematic natural light. Original fictional people and uniforms, authentic nineteenth-century tools and architecture, strong central focal subject readable as a mobile banner. Wide landscape16:9 full bleed. No text, labels, UI, modern logos, watermarks, named-artist imitation or copied game material. Primary request: An early nineteenth-century supply convoy arriving at a fortified depot: quartermaster checking barrels and grain sacks, horse-drawn wagons, disciplined guards in navy and burgundy uniforms, a bridge and hills behind, cool dawn with warm sunlight on the provisions; emphasize practical logistics.",
+    "sourceFile": "exec-38328f1d-49f5-48af-ac4c-f286d290e005.png",
+    "sourceSha256": "c5ca71794140bceec73b3b19df37bbf76c5a4491e048287cd212e95635f9be52"
+  },
+  {
+    "id": "military-training",
+    "category": "Military",
+    "prompt": "Use case: historical-scene. Asset type: original DOMINION grand strategy military landscape illustration. A historical oil painting with restrained visible brushwork and museum-quality detail, consistent deep navy, burgundy, antique gold, parchment and natural earth tones, cinematic natural light. Original fictional people and uniforms, authentic nineteenth-century tools and architecture, strong central focal subject readable as a mobile banner. Wide landscape16:9 full bleed. No text, labels, UI, modern logos, watermarks, named-artist imitation or copied game material. Primary request: A nineteenth-century army training ground: an instructor guiding infantry formations in the foreground, recruits practicing with period muskets held safely, a cavalry group in the distance, brick barracks and a broad sky; warm daylight and disciplined hopeful mood.",
+    "sourceFile": "exec-c9b7ee6f-74e0-4f47-a567-54a7a07d59f6.png",
+    "sourceSha256": "6fa606616a2ef5c130b95c6d85731e7e6a21c0b5079047324dd5b10c24dd4102"
+  },
+  {
+    "id": "military-fortress",
+    "category": "Military",
+    "prompt": "Use case: historical-scene. Asset type: original DOMINION grand strategy military landscape illustration. A historical oil painting with restrained visible brushwork and museum-quality detail, consistent deep navy, burgundy, antique gold, parchment and natural earth tones, cinematic natural light. Original fictional people and uniforms, authentic nineteenth-century tools and architecture, strong central focal subject readable as a mobile banner. Wide landscape16:9 full bleed. No text, labels, UI, modern logos, watermarks, named-artist imitation or copied game material. Primary request: A fictional commander defending a nineteenth-century stone fort: officers watching from a bastion beside mounted cannons and neatly stacked ammunition, earthworks and supply road visible beneath, dusk cloud light, resolve and readiness, no active firing or violence.",
+    "sourceFile": "exec-f2f55beb-3a79-48f5-8124-972c1f1e16a0.png",
+    "sourceSha256": "daded679347ae4d4c853f0ee7faaf217ff888bc0e34d0c0e456f6079272231d7"
+  },
+  {
+    "id": "construction-farm",
+    "category": "Construction",
+    "prompt": "Use case: historical-scene. Asset type: original construction painting for DOMINION grand strategy. Wide landscape16:9 full-bleed historical oil illustration, fine restrained brushwork, rich natural earth tones, deep navy and burgundy details, antique gold light and parchment haze, strong readable central human activity. Original people and scene, nineteenth-century period tools and architecture. No text, labels, UI, logos, watermarks, imitation of named artists or copied game art. Primary request: A nineteenth-century agricultural improvement project: workers building a small irrigation channel beside golden grain fields, a farmer surveying with a simple wooden level, cart and farmhouse, warm late afternoon, practical cooperative work and fertile landscape.",
+    "sourceFile": "exec-c1a3445b-364b-40c6-bec0-f78570831397.png",
+    "sourceSha256": "6bc25ea3373523abfdf5e73c495f82bcd4a6948a99d67d84eaaa95a0a752a272"
+  },
+  {
+    "id": "construction-mine",
+    "category": "Construction",
+    "prompt": "Use case: historical-scene. Asset type: original construction painting for DOMINION grand strategy. Wide landscape16:9 full-bleed historical oil illustration, fine restrained brushwork, rich natural earth tones, deep navy and burgundy details, antique gold light and parchment haze, strong readable central human activity. Original people and scene, nineteenth-century period tools and architecture. No text, labels, UI, logos, watermarks, imitation of named artists or copied game art. Primary request: A nineteenth-century mine being developed in a rocky hillside: timber pithead and a small ore wagon, workers using period picks and an engineer examining mineral samples on a table, sturdy safe scaffolding and warm light against cool rock shadows, no modern machinery.",
+    "sourceFile": "exec-1e234e3e-c2c2-45de-be07-47745628fd72.png",
+    "sourceSha256": "eb654aafd14c856086d15ff905ad515a0c442f536645f30e3cc251762adc8a86"
+  },
+  {
+    "id": "construction-factory",
+    "category": "Construction",
+    "prompt": "Use case: historical-scene. Asset type: original construction painting for DOMINION grand strategy. Wide landscape16:9 full-bleed historical oil illustration, fine restrained brushwork, rich natural earth tones, deep navy and burgundy details, antique gold light and parchment haze, strong readable central human activity. Original people and scene, nineteenth-century period tools and architecture. No text, labels, UI, logos, watermarks, imitation of named artists or copied game art. Primary request: Construction of a nineteenth-century brick factory: masons raising a wall, an engineer with a rolled plan, carefully built scaffolds and a completed workshop beyond, a small steam engine and chimney, warm evening sky; focus on building work, no smoke obscuring subjects.",
+    "sourceFile": "exec-d20e518c-f25b-4736-ab16-7d83c9510088.png",
+    "sourceSha256": "ed31b0f9cb29b86f229bdc3a1ebcd2f761cfd13dcf34ba42b06f03cf7f2d9a83"
+  },
+  {
+    "id": "construction-infrastructure",
+    "category": "Construction",
+    "prompt": "Use case: historical-scene. Asset type: original construction painting for DOMINION grand strategy. Wide landscape16:9 full-bleed historical oil illustration, fine restrained brushwork, rich natural earth tones, deep navy and burgundy details, antique gold light and parchment haze, strong readable central human activity. Original people and scene, nineteenth-century period tools and architecture. No text, labels, UI, logos, watermarks, imitation of named artists or copied game art. Primary request: A nineteenth-century railway stone bridge under construction over a river valley: surveyor and workers in foreground with a level and timber supports, an emerging arched bridge and rail line behind, warm dawn light, ambitious grounded engineering, no modern train.",
+    "sourceFile": "exec-b407b6f9-0e4c-41b9-8f83-ecb2dac33c6b.png",
+    "sourceSha256": "539df1e89d5af4e1f179af1822ea4471234e222e9ccccca2f900df49b90f1887"
+  },
+  {
+    "id": "government-council",
+    "category": "Government",
+    "prompt": "Use case: historical-scene. Asset type: original historical government painting for DOMINION. Wide16:9 landscape oil illustration with fine visible restrained brushwork, museum-quality human detail, strong central scene readable on a mobile panel, deep navy and burgundy fabrics, antique gold light and parchment tones. Period-authentic eighteenth/early-nineteenth-century architecture and tools. All characters fictional. No readable text, no labels, UI, logos, watermarks, imitation of a named artist, screenshots or copied game imagery. Primary request: A constitutional monarch hearing a practical state council in an eighteenth-century palace: fictional woman ruler in restrained royal dress, civil advisers around a table with parchment reports, warm window and candlelight, calm deliberation rather than coronation spectacle.",
+    "sourceFile": "exec-8f056678-725b-4fec-9218-b903991f1e2b.png",
+    "sourceSha256": "0bd01260522a24880ca3da1d220c71644fc0e3e7c2f94979d963f3b13894ce29"
+  },
+  {
+    "id": "government-assembly",
+    "category": "Government",
+    "prompt": "Use case: historical-scene. Asset type: original historical government painting for DOMINION. Wide16:9 landscape oil illustration with fine visible restrained brushwork, museum-quality human detail, strong central scene readable on a mobile panel, deep navy and burgundy fabrics, antique gold light and parchment tones. Period-authentic eighteenth/early-nineteenth-century architecture and tools. All characters fictional. No readable text, no labels, UI, logos, watermarks, imitation of a named artist, screenshots or copied game imagery. Primary request: An early nineteenth-century civic assembly: delegates discussing a budget in a small semicircular parliamentary chamber, a woman speaker at a plain wooden lectern, attentive members, tall windows and navy drapery, dignified warm afternoon light.",
+    "sourceFile": "exec-56c23964-9d29-4f57-9229-cd557cf8b9df.png",
+    "sourceSha256": "9ec2cd2f128acb455e2a9a164f8e7d3ef4dbf25617eb36730baa1ef6c193eabd"
+  },
+  {
+    "id": "government-administration",
+    "category": "Government",
+    "prompt": "Use case: historical-scene. Asset type: original historical government painting for DOMINION. Wide16:9 landscape oil illustration with fine visible restrained brushwork, museum-quality human detail, strong central scene readable on a mobile panel, deep navy and burgundy fabrics, antique gold light and parchment tones. Period-authentic eighteenth/early-nineteenth-century architecture and tools. All characters fictional. No readable text, no labels, UI, logos, watermarks, imitation of a named artist, screenshots or copied game imagery. Primary request: An early nineteenth-century civil administration office: senior official and clerks comparing accounts, shelves of archival volumes, orderly parchment bundles, seals and brass inkstands, soft warm lamplight and a city visible through a window; emphasize professional public service.",
+    "sourceFile": "exec-2df4b7e6-64df-4f6a-bf4a-550da52a2dc5.png",
+    "sourceSha256": "cfa5d17c36f30a30665ce430148c14f4891bf3e4d70492bd0b4f75f6798b45e4"
+  },
+  {
+    "id": "religion-cathedral",
+    "category": "Religion",
+    "prompt": "Use case: historical-scene. Asset type: original sacred-architecture painting for DOMINION grand strategy religion panel. Wide landscape16:9 full-bleed traditional oil illustration with fine restrained visible brushwork, respectful architectural atmosphere, warm antique gold light, natural stone, navy shadows, parchment sky and restrained burgundy accents. Strong architectural focal point readable on mobile. Original composition and period-accurate architecture. No readable text, no labels, UI, logos, watermarks, named-artist imitation or copied game assets. Primary request: The interior of an early-modern Christian stone cathedral, vaulted nave and stained glass, a few small respectfully dressed visitors for scale, sunlight filtering across columns and old stone floor, serene contemplative atmosphere; architecture rather than portraits is the subject.",
+    "sourceFile": "exec-6369b65b-2863-4a37-996c-9f579981f422.png",
+    "sourceSha256": "a52ced3a23bc97fa5e0dc0026646c363cb1c7a09a147b68365ddaae4bc72f084"
+  },
+  {
+    "id": "religion-courtyard",
+    "category": "Religion",
+    "prompt": "Use case: historical-scene. Asset type: original sacred-architecture painting for DOMINION grand strategy religion panel. Wide landscape16:9 full-bleed traditional oil illustration with fine restrained visible brushwork, respectful architectural atmosphere, warm antique gold light, natural stone, navy shadows, parchment sky and restrained burgundy accents. Strong architectural focal point readable on mobile. Original composition and period-accurate architecture. No readable text, no labels, UI, logos, watermarks, named-artist imitation or copied game assets. Primary request: A historic Ottoman mosque courtyard in the eighteenth century: stone arcades, a central ablution fountain, dome and slender minaret, a few quiet period-dressed visitors, warm early morning light, respectful tranquil scene and accurate architecture.",
+    "sourceFile": "exec-980a1972-84cf-4f6b-befe-ef943f7ad95f.png",
+    "sourceSha256": "045cb450e5bc0c26625854ebfda554cb67c5474d8f6525fdae5ab230739863ab"
+  },
+  {
+    "id": "religion-temple",
+    "category": "Religion",
+    "prompt": "Use case: historical-scene. Asset type: original sacred-architecture painting for DOMINION grand strategy religion panel. Wide landscape16:9 full-bleed traditional oil illustration with fine restrained visible brushwork, respectful architectural atmosphere, warm antique gold light, natural stone, navy shadows, parchment sky and restrained burgundy accents. Strong architectural focal point readable on mobile. Original composition and period-accurate architecture. No readable text, no labels, UI, logos, watermarks, named-artist imitation or copied game assets. Primary request: A historic eighteenth-century East Asian Buddhist temple courtyard: a timber prayer hall with gracefully upturned tiled roof, stone lanterns, broad steps and ancient pine, two small robed monks walking quietly, warm misty dawn and a serene respectful atmosphere.",
+    "sourceFile": "exec-376f70bd-4b92-4ef7-bd31-ca888aca9694.png",
+    "sourceSha256": "6de0c4ba245df17f53fc838022b4851c6fa63352b7feb3b5ce7945655bdedbd2"
+  },
+  {
+    "id": "theme-espionage",
+    "category": "Theme",
+    "prompt": "Use case: historical-scene. Asset type: original thematic oil painting for DOMINION grand strategy. Wide16:9 landscape full bleed, fine restrained visible brushwork, vivid credible human details, deep navy, restrained burgundy, antique gold and parchment palette, atmospheric warm light and dark cool shadows, central activity readable in small mobile panels. Original fictional characters, period-authentic eighteenth/early-nineteenth-century tools, no modern logos. No text, labels, UI, watermarks, named-artist imitation, screenshots or copied game artwork. Primary request: A discreet early nineteenth-century intelligence office at night: an agent in a dark coat delivers a sealed dispatch to a woman analyst examining a cipher wheel and map beside a shaded lamp, window overlooking quiet city rooftops, suspenseful but restrained, no weapons.",
+    "sourceFile": "exec-82ea1647-9d59-4bd1-aabb-edc635a3dd2a.png",
+    "sourceSha256": "ee3d9e6528bb1adb0f463f602adaf70d36694f0fdcffb140bebc83b7467a782f"
+  },
+  {
+    "id": "theme-economy",
+    "category": "Theme",
+    "prompt": "Use case: historical-scene. Asset type: original thematic oil painting for DOMINION grand strategy. Wide16:9 landscape full bleed, fine restrained visible brushwork, vivid credible human details, deep navy, restrained burgundy, antique gold and parchment palette, atmospheric warm light and dark cool shadows, central activity readable in small mobile panels. Original fictional characters, period-authentic eighteenth/early-nineteenth-century tools, no modern logos. No text, labels, UI, watermarks, named-artist imitation, screenshots or copied game artwork. Primary request: An eighteenth-century national treasury room: finance official comparing a ledger with gold coins, a weighing scale, revenue scrolls and commodity samples, clerks working quietly beyond, warm window light on the accounts, orderly serious public finance.",
+    "sourceFile": "exec-77c3ff70-641a-4728-9313-25623dbe9ad9.png",
+    "sourceSha256": "607a4704164de957795a7f4883283fabfa983ad27448059080373512b47a8042"
+  },
+  {
+    "id": "theme-ruler",
+    "category": "Theme",
+    "prompt": "Use case: historical-scene. Asset type: original thematic oil painting for DOMINION grand strategy. Wide16:9 landscape full bleed, fine restrained visible brushwork, vivid credible human details, deep navy, restrained burgundy, antique gold and parchment palette, atmospheric warm light and dark cool shadows, central activity readable in small mobile panels. Original fictional characters, period-authentic eighteenth/early-nineteenth-century tools, no modern logos. No text, labels, UI, watermarks, named-artist imitation, screenshots or copied game artwork. Primary request: An original fictional nineteenth-century woman head of state working at a desk: dignified middle-aged ruler wearing restrained navy attire and a burgundy sash, reading a sealed report beside a globe, warm side light, city beyond an arched window. A person at work, no real historical portrait or copied likeness.",
+    "sourceFile": "exec-1b5dcc4c-afa2-4817-b784-058f28d4ed8b.png",
+    "sourceSha256": "5f56875ea24897c9e8b395d1fbafd7808fd35ced4e5acabc1680ab87e03bd0fe"
+  },
+  {
+    "id": "theme-general",
+    "category": "Theme",
+    "prompt": "Use case: historical-scene. Asset type: original thematic oil painting for DOMINION grand strategy. Wide16:9 landscape full bleed, fine restrained visible brushwork, vivid credible human details, deep navy, restrained burgundy, antique gold and parchment palette, atmospheric warm light and dark cool shadows, central activity readable in small mobile panels. Original fictional characters, period-authentic eighteenth/early-nineteenth-century tools, no modern logos. No text, labels, UI, watermarks, named-artist imitation, screenshots or copied game artwork. Primary request: An original fictional nineteenth-century middle-aged male general in a navy uniform at a field headquarters: calm thoughtful face, a brass telescope and rolled campaign map on the table, supply tents and mountains outside, warm dawn light, no real person's likeness.",
+    "sourceFile": "exec-2dc8fa18-d4b1-40b9-8c75-124f1732ed4d.png",
+    "sourceSha256": "4a51e11c5378f35294c245b89f39e1734d60bd46dbefb6f4916fe840995bc2d2"
+  },
+  {
+    "id": "theme-technology",
+    "category": "Theme",
+    "prompt": "Use case: historical-scene. Asset type: original thematic historical oil painting for DOMINION. Wide16:9 landscape full bleed with restrained visible brushwork, fine human and architectural detail, museum-quality period atmosphere, deep navy, burgundy, antique gold light, parchment and natural earth tones. Original fictional characters and composition; eighteenth/early-nineteenth-century tools and clothing. No readable text, UI, labels, logos, watermarks, named-artist imitation, screenshots, famous likeness or copied game materials. Primary request: An early nineteenth-century university research workshop: a woman scientist and a colleague carefully testing a small electrical apparatus beside a microscope, brass instruments, glass vessels and diagrams with no readable writing, broad arched window, warm light and intent curious expressions. Credible university laboratory.",
+    "sourceFile": "exec-ba7e1695-4b08-4099-9b25-e0346e0d25eb.png",
+    "sourceSha256": "ba74c942936f4f9b04c73675ba50b92b0508a6f1dce72584fdeabf7129ec0bd9"
+  },
+  {
+    "id": "theme-focus",
+    "category": "Theme",
+    "prompt": "Use case: historical-scene. Asset type: original thematic historical oil painting for DOMINION. Wide16:9 landscape full bleed with restrained visible brushwork, fine human and architectural detail, museum-quality period atmosphere, deep navy, burgundy, antique gold light, parchment and natural earth tones. Original fictional characters and composition; eighteenth/early-nineteenth-century tools and clothing. No readable text, UI, labels, logos, watermarks, named-artist imitation, screenshots, famous likeness or copied game materials. Primary request: A national development council in the early nineteenth century: engineer, military officer, civic official and diplomatic envoy around a table studying routes and models of a bridge, school and harbor; warm purposeful deliberation, no icons or graph, a real atmospheric historical scene about national choices.",
+    "sourceFile": "exec-51ac3473-ce6c-4bca-ac79-4dc1926ab406.png",
+    "sourceSha256": "70bb0a6befb6b3594a8549556f7f43c3ae8a2827e7f787b24883b1c1e3768b10"
+  },
+  {
+    "id": "theme-event",
+    "category": "Theme",
+    "prompt": "Use case: historical-scene. Asset type: original thematic historical oil painting for DOMINION. Wide16:9 landscape full bleed with restrained visible brushwork, fine human and architectural detail, museum-quality period atmosphere, deep navy, burgundy, antique gold light, parchment and natural earth tones. Original fictional characters and composition; eighteenth/early-nineteenth-century tools and clothing. No readable text, UI, labels, logos, watermarks, named-artist imitation, screenshots, famous likeness or copied game materials. Primary request: A historical chronicler in an early nineteenth-century archive recording a campaign: seated writer with a quill and bound book, a messenger delivering a sealed dispatch, city skyline and gathering crowd seen through a window, warm side light, dignified reflection and a sense of unfolding history.",
+    "sourceFile": "exec-2eb76aac-ee9a-44bb-a2b0-b1ed84e9b3fb.png",
+    "sourceSha256": "3d5b1b01b1655eec4f758933bdb0b83c073813ec696e1e95efb2afa947679282"
+  },
+  {
+    "id": "theme-loading",
+    "category": "Theme",
+    "prompt": "Use case: historical-scene. Asset type: original thematic historical oil painting for DOMINION. Wide16:9 landscape full bleed with restrained visible brushwork, fine human and architectural detail, museum-quality period atmosphere, deep navy, burgundy, antique gold light, parchment and natural earth tones. Original fictional characters and composition; eighteenth/early-nineteenth-century tools and clothing. No readable text, UI, labels, logos, watermarks, named-artist imitation, screenshots, famous likeness or copied game materials. Primary request: A sweeping historical atlas scene: foreground cartographer's table with a globe, brass dividers and rolled parchment maps, beyond an open palace loggia lies a large harbor city with sailing ships, stone bridges and distant mountains, sunrise amber light, navy and burgundy cloth, expansive calm anticipation. Strong balanced composition for a full mobile landscape loading screen; no writing.",
+    "sourceFile": "exec-f575f9b2-9ee7-44e7-95ba-dec0e7ccf55f.png",
+    "sourceSha256": "e1f893bb1c7a032c3c720e291f61122fa634e759a51dc55fa47c33e08ab3693d"
+  }
+]

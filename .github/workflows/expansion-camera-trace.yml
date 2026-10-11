@@ -1,4 +1,4 @@
-name: Dominion auxiliary pinch system trace
+name: Dominion auxiliary world and local pan system traces
 on:
   push:
     branches: [expansion-camera-qa]
@@ -11,14 +11,14 @@ concurrency:
   group: dominion-camera-trace-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  pinch-system-diagnostics:
+  pan-system-diagnostics:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
-      CAMERA_CANDIDATE_RUNTIME: c75bf36aa030f07c0291309b4c9a159e48a9b8b6
+      CAMERA_CANDIDATE_RUNTIME: 8df429dd20f8df7cf4a7f2b6f157db04b7a37a72
       CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-      CAMERA_CANDIDATE_RUN: '38079172136'
-      CAMERA_ALLOWED_STATE_VERSION: '17'
+      CAMERA_CANDIDATE_RUN: '38086183625'
+      CAMERA_ALLOWED_STATE_VERSION: '18'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,17 +28,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git diff --exit-code c75bf36aa030f07c0291309b4c9a159e48a9b8b6 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38079172136 > source-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38079172136/jobs > source-jobs.json
-          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='c75bf36aa030f07c0291309b4c9a159e48a9b8b6';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
+          git diff --exit-code 8df429dd20f8df7cf4a7f2b6f157db04b7a37a72 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38086183625 > source-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38086183625/jobs > source-jobs.json
+          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='8df429dd20f8df7cf4a7f2b6f157db04b7a37a72';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
       - name: Require completed paired capture job and preserve its failure status
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38079172136 > paired-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38079172136/jobs > paired-jobs.json
-          python -c "import json;r=json.load(open('paired-run.json'));j=json.load(open('paired-jobs.json'))['jobs'];assert r['head_sha']=='c75bf36aa030f07c0291309b4c9a159e48a9b8b6';c=next(x for x in j if x['name']=='camera-comparison');assert c['status']=='completed';assert c['conclusion'] in ['success','failure']"
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38086183625 > paired-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38086183625/jobs > paired-jobs.json
+          python -c "import json;r=json.load(open('paired-run.json'));j=json.load(open('paired-jobs.json'))['jobs'];assert r['head_sha']=='8df429dd20f8df7cf4a7f2b6f157db04b7a37a72';c=next(x for x in j if x['name']=='camera-comparison');assert c['status']=='completed';assert c['conclusion'] in ['success','failure']"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -62,7 +62,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38079172136
+          run-id: 38086183625
           name: dominion-camera-illustrated-release
       - uses: actions/download-artifact@v4
         with:
@@ -73,7 +73,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38079172136
+          run-id: 38086183625
           name: camera-native-paired-evidence
           path: paired-evidence
       - name: Require all four actual complete captures before separate diagnostics
@@ -104,23 +104,27 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar
-            CAMERA_TRACE_ONLY=1 CAMERA_PROFILE_OUT=trace-before python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
-            CAMERA_TRACE_ONLY=1 CAMERA_PROFILE_OUT=trace-after python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
-      - name: Analyze both actual traces and preserve incomplete captures
+            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=world-pan CAMERA_PROFILE_OUT=trace-before-world python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
+            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=world-pan CAMERA_PROFILE_OUT=trace-after-world python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
+            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=local-pan CAMERA_PROFILE_OUT=trace-before-local python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
+            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=local-pan CAMERA_PROFILE_OUT=trace-after-local python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
+      - name: Analyze all four actual traces and preserve incomplete captures
         if: always()
         run: |
           python - <<'PYTRACE'
           import subprocess,sys
-          results=[subprocess.run([sys.executable,'scripts/analyze-camera-trace.py',p]).returncode for p in ['trace-before','trace-after']]
+          results=[subprocess.run([sys.executable,'scripts/analyze-camera-trace.py',p]).returncode for p in ['trace-before-world','trace-after-world','trace-before-local','trace-after-local']]
           sys.exit(any(results))
           PYTRACE
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: expansion-pinch-system-traces
+          name: expansion-pan-system-traces
           path: |
-            trace-before/
-            trace-after/
+            trace-before-world/
+            trace-after-world/
+            trace-before-local/
+            trace-after-local/
             checkpoint-integrity.txt
             paired-run.json
             paired-jobs.json

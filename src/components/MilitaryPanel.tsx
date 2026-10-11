@@ -1,4 +1,4 @@
-import {HistoricalArt} from './HistoricalArt';
+import {ExpansionArt} from './ExpansionArt';
 import {LeaderPortrait} from './Heraldry';
 import {portraitSeedFor} from '../ui/artCatalogue';
 import {useMemo} from 'react';
@@ -17,7 +17,7 @@ export function MilitaryPanel({state,playerId,onCommand,province,army}: Strategy
   const c=state.countries[countryId]!;
   const commander=army?.commanderId?state.commanders?.[army.commanderId]:undefined;
   const own=!province.rebellion && province.ownerId===countryId && (province.controllerId??province.ownerId)===countryId;
-  return <View style={styles.wrap}><HistoricalArt name="military"/>
+  return <View style={styles.wrap}><ExpansionArt name={army?.order||logistics&&logistics.supply.score<50?'military-supply':(province.buildings?.Fort??0)>0?'military-fortress':'military-training'}/>
     <Text style={styles.text}>Рельеф: {province.terrain} · {army ? `${UNITS[army.unitType??'Infantry'].name} · мораль ${army.morale?.toFixed(0)} · организация ${army.organization?.toFixed(0)}` : 'Выберите свою армию ниже'}</Text>
     {army&&<View style={{flexDirection:'row',alignItems:'center',gap:10}}>{commander&&<LeaderPortrait seed={portraitSeedFor(commander.id)} size={40} label={'Портрет вымышленного полководца: '+commander.name}/>}<Text style={[styles.text,{flex:1}]}>Командир: {commander?.name??'Не назначен'} · {army.troops.toLocaleString()} солдат. {army.order?`Цель: ${state.provinces.find(p=>p.id===army.order!.targetProvinceId)?.name} · ${army.order.route.length} шагов / мес.`:"Приказ: удерживать позицию. Выберите армию на карте, затем нажмите целевую провинцию."}</Text></View>}
     {army?.order&&<Pressable accessibilityRole="button" style={styles.button} onPress={()=>onCommand({type:"CANCEL_ARMY_ORDER",playerId,armyId:army.id})}><Text style={styles.title}>Отменить приказ</Text></Pressable>}
@@ -32,6 +32,7 @@ export function MilitaryPanel({state,playerId,onCommand,province,army}: Strategy
       <ScrollView horizontal contentContainerStyle={styles.row}>{UNIT_TYPES.map(unitType=>{const u=UNITS[unitType],at=state.provinces.find(p=>p.id===army.provinceId),disabled=!at||at.rebellion||at.ownerId!==countryId||(at.controllerId??at.ownerId)!==countryId||techLevel(c,'Military')<u.unlock||state.year<u.era||c.treasury<u.cost||c.manpower<1000||state.tick<(c.bankruptcyUntilTick??0);return <Pressable accessibilityRole="button" accessibilityLabel={`Добавить часть: ${u.name}`} key={unitType} disabled={!!disabled} style={[styles.option,!!disabled&&styles.disabled]} onPress={()=>onCommand({type:'ADD_REGIMENT',playerId,armyId:army.id,troops:1000,unitType})}><Text style={styles.title}>Добавить {u.name} +1K</Text><Text style={styles.text}>${u.cost}M · технология {u.unlock} · с {u.era} г.</Text></Pressable>;})}</ScrollView>
     </View>}
     {own && <ScrollView horizontal contentContainerStyle={styles.row}>{UNIT_TYPES.map(unitType=>{const u=UNITS[unitType],disabled=techLevel(c,'Military')<u.unlock || state.year<u.era || c.treasury<u.cost*10 || c.manpower<10000 || state.tick<(c.bankruptcyUntilTick??0);return <Pressable accessibilityRole="button" key={unitType} disabled={disabled} style={[styles.option,disabled&&styles.disabled]} onPress={()=>onCommand({type:'RECRUIT_UNIT',playerId,provinceId:province.id,troops:10000,unitType})}><Text style={styles.title}>{u.name} +10K</Text><Text style={styles.text}>${u.cost*10}M · военная технология {u.unlock}</Text></Pressable>;})}</ScrollView>}
+    {army?.ownerId===countryId&&<ExpansionArt name="theme-general" height={64}/>}
     {army?.ownerId===countryId && <ScrollView horizontal contentContainerStyle={styles.row}>{Object.values(state.commanders??{}).filter(g=>g.countryId===countryId).map(g=>{const disabled=state.armies.some(a=>a.commanderId===g.id);return <Pressable key={g.id} accessibilityRole="button" accessibilityLabel={'Полководец '+g.name} accessibilityState={{disabled,selected:army.commanderId===g.id}} disabled={disabled} style={[styles.option,disabled&&styles.disabled]} onPress={()=>onCommand({type:'ASSIGN_COMMANDER',playerId,armyId:army.id,commanderId:g.id})}><View style={{flexDirection:'row',alignItems:'center',gap:10}}><LeaderPortrait seed={portraitSeedFor(g.id)} size={36} label={'Портрет вымышленного полководца: '+g.name}/><Text style={[styles.title,{flex:1}]}>{g.name}</Text></View><Text style={styles.text}>Навык {g.skill} · опыт {g.experience??0}/20 · {army.commanderId===g.id?'Командует':'Назначить'}</Text></Pressable>;})}</ScrollView>}
   </View>;
 }
