@@ -1,0 +1,106 @@
+{
+  "status": "SOURCE_VERIFIED_FULL_NATIVE_IN_PROGRESS",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "runtime": "bf05151c94988f7d2511218a8cc51a1858a5a1a7",
+  "sourceTree": "b49a6e88a03ea1456c68cd305e32ec722fb60c69",
+  "runId": 38171409180,
+  "sourceVerification": "CAMERA_UI_LAYER_SOURCE_QA_2026-10-11.json",
+  "diagnosticProof": "EXPANSION_NATIVE_CPU_STACK_QA_2026-10-11.json",
+  "backendLive": {
+    "status": "SUCCESS",
+    "jobId": 114564617593,
+    "artifact": {
+      "id": 11714209423,
+      "bytes": 605,
+      "sha256": "9a9add6852e47ee43e3910388474e9de135e27e49bd5fa5965c04f378dc22184",
+      "sizeShaZipCrcVerified": true
+    },
+    "rawReport": {
+      "roomId": "73d08cc8-2a15-4600-8361-4bfcec0dc422",
+      "stateVersion": 18,
+      "tick": 21,
+      "featuresVerified": true,
+      "hostMigrationVerified": true,
+      "completedFocuses": [
+        {
+          "focusId": "eco-audit",
+          "tick": 9
+        }
+      ],
+      "scientificDiscoveries": [
+        "science-method"
+      ],
+      "spyResults": [
+        {
+          "kind": "PoliticalIntrigue",
+          "tick": 18,
+          "outcome": "Failure",
+          "detected": false
+        },
+        {
+          "kind": "Sabotage",
+          "tick": 16,
+          "outcome": "Success",
+          "detected": false
+        },
+        {
+          "kind": "IntelligenceGathering",
+          "tick": 6,
+          "outcome": "Success",
+          "detected": false
+        },
+        {
+          "kind": "Counterintelligence",
+          "tick": 5,
+          "outcome": "Success",
+          "detected": false
+        }
+      ],
+      "paidRelationChange": 27,
+      "humanTreaties": [
+        "NonAggression",
+        "TradeAgreement"
+      ],
+      "note": "Scoped existing production HTTP QA. No tokens, player IDs or whole snapshots in evidence.",
+      "finalTick": 46,
+      "finalSchema": 18
+    },
+    "cleanup": {
+      "status": "COMPLETED_INDEPENDENT_READBACK",
+      "roomId": "73d08cc8-2a15-4600-8361-4bfcec0dc422",
+      "createdAt": "2026-10-11T20:15:25.115378+00:00",
+      "reviewedMembers": [
+        "WORLD ECONOMY QA",
+        "QA guest 0",
+        "QA guest 1",
+        "QA guest 2",
+        "QA guest 3",
+        "QA guest 4",
+        "QA guest 5",
+        "QA guest 6"
+      ],
+      "reviewedReceipts": 52,
+      "deleteGuards": [
+        "Exact reviewed UUID and creation timestamp",
+        "All three original-backup columns NULL",
+        "Exact eight reviewed QA-only members and expected host",
+        "Exact52 reviewed command receipts"
+      ],
+      "roomsRemaining": 0,
+      "playersRemaining": 0,
+      "receiptsRemaining": 0,
+      "preservedCityBackups": 29
+    }
+  },
+  "pendingGates": [
+    "build-apk",
+    "long-simulation",
+    "android-smoke",
+    "camera-comparison",
+    "android-upgrade / release-upgrade-save",
+    "android-online / native-online"
+  ],
+  "releaseAccepted": false,
+  "physicalRedmi": "UNMEASURED",
+  "note": "Actual complete38171409180 signed-binary evidence still required; no preceding gate reused or original threshold changed."
+}
