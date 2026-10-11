@@ -4,6 +4,7 @@ import {CameraWorkGate,nextFrameDeadline,frameBucket,frameQuantile,createFrameAc
 import {createCameraInput,queueCameraInput,takeCameraInput} from '../performance/cameraInput';
 import {MapRasterLayer} from './MapRasterLayer';
 import {MapMarkerLayer} from './MapMarkerLayer';
+import {CameraLayerView} from './CameraUiLayer';
 import {cameraCoverage,cameraNeedsCoverage,viewportLayoutUpdate,interactionDetailZoom} from '../map/cameraCoverage';
 import {budgetArmyMarkers,markerBudgets} from '../map/markerBudget';
 import {countryRenderFeatures,renderFeaturesFor} from '../map/countryRender';
@@ -286,12 +287,12 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
         </Group>
       </Canvas>
     </GestureDetector>
-    <View style={styles.toolbar}>
+    <CameraLayerView style={styles.toolbar}>
       <Pressable accessibilityLabel="Настройки карты" style={styles.button} onPress={() => setSettingsOpen(!settingsOpen)}><Text style={styles.text}>{MODE_LABELS[mode]} · {preset} ▾</Text></Pressable>
       <Pressable accessibilityLabel="Обзор мира" style={styles.button} onPress={() => animateCamera({ x: 720, y: 310, zoom: Math.max(0.5, viewport.width / 1450) })}><Text style={styles.text}>МИР</Text></Pressable>
       <Pressable accessibilityLabel="Фокус выбранной провинции или страны" style={styles.button} onPress={()=>{const selected=selectedProvinceId?provinceGeometry.get(selectedProvinceId)?.anchor:undefined;const capital=mapCities.find(c=>c.id===state.countries[selectedCountryId??'']?.capitalCityId)?.point;const target=selected??capital;if(target)animateCamera({...target,zoom:6});}}><Text style={styles.text}>К ВЫБРАННОМУ</Text></Pressable>
       <Pressable accessibilityLabel="Европа" style={styles.button} onPress={() => animateCamera(defaults)}><Text style={styles.text}>ЕВРОПА</Text></Pressable>
-    </View>
+    </CameraLayerView>
     <View style={styles.zoomControls}>
       {[1.5, 1 / 1.5].map((factor, i) => <Pressable key={i} accessibilityLabel={i ? 'Отдалить' : 'Приблизить'} style={styles.button} onPress={() => animateCamera(zoomAt({ x: x.value, y: y.value, zoom: zoom.value }, factor, { x: viewport.width / 2, y: viewport.height / 2 }, viewport))}><Text style={styles.zoomText}>{i ? '−' : '+'}</Text></Pressable>)}
     </View>
