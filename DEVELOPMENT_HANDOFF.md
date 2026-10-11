@@ -1,3 +1,11 @@
+# World source pixel roundoff isolated; expanded visual check pending (2026-10-11)
+
+QA head parent **f5463ac6d260883a201b0d9442f0bffc92792ae0**, source grid/app fromdcec37c. Expansion-v2 remainsfe44e950 andmaindbb354ab. Actual source preflight38177349378 and38177612481 each pass strictTS and308/309JS/no skips; only the new zero-byte-difference assertion fails. All20 real CanvasKit comparisons retained:16 byte-identical;36changedRGBchannels/245760,max3/255,no alpha difference, only zoom.5. WORLD_RASTER_PIXEL_QA_2026-10-11.json preserves both failures; no native run was rerolled and no existing test was changed.
+
+Correct the new test's claim to **visual equivalence**, not false byte identity:32 pan/pinch cases including additional real coast/border positions; fixed peak4/255 and RMS.125/255 channel budget, exact composited alpha, plus a negative control that must reject destination fitting without its two-pixel gutter. Existing raster_recording exact native picture checks and every original native/frame/PSS threshold remain. This budget is fixed before the next run and must not be enlarged on new failures. Candidate runtime remains worldcells288/scale2/15images/original580side/32MiB/96/8MiBcaps and original UI hosts. Source validation, Python/art/Hermes/precise prior soak readback PENDING new actual CI. Once source preflight passes, advance its exact tested SHA toexpansion-v2 normally and require a new complete signed-binary seven-gate QA. No final APK accepted.
+
+---
+
 # Bounded world-grid correction — source preflight pending in existing QA branch (2026-10-11)
 
 Current published expansion-v2 parent **fe44e950371a8369dca2e2837818d0e58ff2c5b3**; existing QA parent **e939d42e19df6b9688d3a7bcd6dc1552cdd6aacd**. Exact previous runtime **bf05151c94988f7d2511218a8cc51a1858a5a1a7**, full run **38171409180**, APK6918422f is now fully completed **FAILURE**: six non-camera gates SUCCESS, including actual1800-second native render/simulation/autosave stress; camera FAILED six unchanged numerical limits. Its source/artifact failures remain in EXPANSION_UI_LAYER_NATIVE_QA_2026-10-11.json. Precise new soak duration/PSS await raw artifact readback; do not substitute the rounded1801s progress line.
