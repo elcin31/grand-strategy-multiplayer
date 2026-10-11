@@ -9,6 +9,12 @@ BACKUP_SUFFIXES = ('before-expansion-v13', 'before-espionage-v14',
                    'before-technology-v17', 'before-focus-v18')
 
 
+def adaptive_control_enabled(node):
+    label=node.get('text') or node.get('content-desc')
+    assert label in ('Адаптивное качество: Вкл','Адаптивное качество: Выкл'), 'Unknown actual adaptive control state'
+    return label=='Адаптивное качество: Вкл'
+
+
 def package_metadata(badging, signature):
     package = re.search(r"package: name='([^']+)' versionCode='(\d+)' versionName='([^']+)'", badging)
     certificates = re.findall(r'certificate SHA-256 digest: ([0-9a-f]{64})', signature)

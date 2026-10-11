@@ -2,13 +2,24 @@ import copy
 import json
 import sys
 import unittest
+import xml.etree.ElementTree as ET
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).parents[1]/'scripts'))
 from native_upgrade_validation import (PACKAGE,BACKUP_SUFFIXES,package_metadata,
-    assert_install_compatibility,assert_app_data_preserved,assert_migration,assert_backups_immutable)
+    assert_install_compatibility,assert_app_data_preserved,assert_migration,assert_backups_immutable,adaptive_control_enabled)
 
 
 class NativeUpgradeValidationTest(unittest.TestCase):
+    def test_real_accessible_pressable_reports_its_toggle_in_content_desc(self):
+        node=ET.parse(Path(__file__).parent/'fixtures/native_upgrade_toggle.xml').getroot()
+        self.assertEqual(node.get('text'),'')
+        self.assertTrue(adaptive_control_enabled(node))
+        self.assertTrue(adaptive_control_enabled(node[0]))
+        node.set('content-desc','Адаптивное качество: Выкл')
+        self.assertFalse(adaptive_control_enabled(node))
+        node.set('content-desc','unreadable')
+        with self.assertRaises(AssertionError):adaptive_control_enabled(node)
+
     def metadata(self,code=9,name='0.8.1'):
         return {'package':PACKAGE,'versionCode':code,'versionName':name,'certificateSha256':'a'*64}
 

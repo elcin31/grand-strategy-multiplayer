@@ -17,7 +17,7 @@ from android_fixture import root_test_device
 from camera_fixture_projection import assert_paused_fixture
 from map_paint_check import assert_map_painted
 from native_upgrade_validation import (PACKAGE, BACKUP_SUFFIXES, package_metadata,
-    assert_install_compatibility, assert_app_data_preserved, assert_migration, assert_backups_immutable)
+    assert_install_compatibility, assert_app_data_preserved, assert_migration, assert_backups_immutable, adaptive_control_enabled)
 
 BASELINE, CANDIDATE, FIXTURE = map(Path, sys.argv[1:4])
 OUT = Path(os.environ.get('DOMINION_UPGRADE_OUT', 'android-upgrade'))
@@ -164,7 +164,7 @@ adb('shell','chown','-R',before_uid+':'+before_uid,DIRECTORY);adb('shell','resto
 launch_saved('baseline')
 click('Настройки карты')
 _,adaptive_node=find_readable(('Адаптивное качество: Вкл','Адаптивное качество: Выкл'),220)
-if adaptive_node.get('text')=='Адаптивное качество: Вкл':click('Адаптивное качество: Вкл',220)
+if adaptive_control_enabled(adaptive_node):click('Адаптивное качество: Вкл',220)
 click('High',220)
 if not any(n.get('text')=='✓ 30 FPS' for n in hierarchy('baseline-fps').iter('node')):click('30 FPS',220)
 adb('shell','input','keyevent','4');time.sleep(1)
