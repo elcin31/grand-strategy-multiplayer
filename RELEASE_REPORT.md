@@ -1,3 +1,11 @@
+# Latest exact signed candidate is rejected — 2026-10-11
+
+Current runtime788a6bd/full38161007462 completed FAILURE because camera114537652725 violates four original gates. Six other actual same-APK gates pass. Downloaded release artifact11710144490/digest7644235e size+SHA+CRC verified; APK142479405bytes/SHA3bc7416204a60aa9613864a828a03e61becc11c63e2d0071d479f99cf9cc8524,2.0.0code10/samecertificate/landscape/nondebug/embeddedHermes/all4ABI/42paintings/dedicatedDominionendpoint. APK is not accepted or delivered. Native soak1832.626s, actual upgrade/backups and native multiplayer verified. Both new scoped QA rooms removed with independent0rooms/players/receipts and29original city backups retained. EXPANSION_RASTER_NATIVE_QA_2026-10-11.json binds all actual source/artifact hashes and original failures.
+
+Main remainsdbb354ab; accepted manifest absent. Next step: exact-APK auxiliary native CPU diagnosis and one measured renderer fix, followed by all original signed-binary gates on the changed runtime. Final publication/delivery remains pending; physical Xiaomi measurements are unavailable.
+
+---
+
 # eaa camera rejected; next safe raster unit requires new signed QA (2026-10-11)
 
 Latest actual eaa run38156439244 build/10000/liveHTTP/upgrade/nativeonline PASS; exact APK68150dd1 is REJECTED by four valid camera limits. Camera artifact11708903979/SHAd88206ca/digest+CRC verified/all36 raw captures retained. Actual nativeonline114524438870/artifact11709517326/SHA92704756 verifies exactAPK paidcourse/session/host/owner/reboot; its exact new QAroom a34d42ac was guarded-cleaned and independently0rooms/players/receipts,29originalbackups preserved. Actual1800s offline114524438351 still running and must be preserved. Full cumulative proof EXPANSION_NATIVE_RECORDING_QA_2026-10-11.json.

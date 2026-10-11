@@ -1,3 +1,11 @@
+# Exact raster APK camera rejection and CPU diagnosis — 2026-10-11
+
+Runtime788a6bd/full38161007462: actual camera114537652725 FAILURE; six other same-binary signed gates SUCCESS including1832.626s native soak. Verified all36same-fixture continuousABBA raw captures in artifact11710884121/digest4097b021. Four unchanged-limit failures: forwardpinch compositorP95 191.984328→220.565818ms and histogramP95 150→200ms; reversepinch compositorP99 415.957391→488.647959ms; reversepanel-open compositorP99 73.948650→101.921440ms. All18PSS pairs pass20% guard. Reduced JS/cull/raster preparation does not accept this APK. Complete proof EXPANSION_RASTER_NATIVE_QA_2026-10-11.json.
+
+Next existing auxiliary workflow records exact signed3bc74162 APK pinch/local-pan CPU callstacks at99Hz using linux.perf, retaining scheduler/ATrace/loss and real markers in separate diagnostic launches after complete failed original comparisons. CPU samples/usable symbols/coverage must be observed; no code-level attribution or improvement inferred yet. Original release thresholds remain intact; no same-binary gate reroll, manifest/debug switch or physical Xiaomi claims.
+
+---
+
 # Raster picture replay and bounded source builders — source verified, native pending (2026-10-11)
 
 Actual eaa38156439244 camera FAIL retains all36 captures and four original-limit violations; EXPANSION_EAA_CAMERA_REJECTED_2026-10-11.json contains exact values/artifact provenance. JS/cull work decreased but native UI pinch pressure remains. New scoped MapRasterLayer prepares immutable clipped raster pictures instead of per-frame declarative image fitting/clip commands, preserves linear/strict sampling and gutter pixels, and bounds/disposes exclusively recording-only source builders. Actual WASM raster pixel equality through pan/zoom and picture survival after builder eviction PASS; strictTS/306JS/no skips/97Python/no skips/Hermes/42paintings PASS. RASTER_PICTURE_SOURCE_QA_2026-10-11.json records pinned native API review, source budget estimates and tests. Foreground32MiB/cold8MiB pixel cache and original camera thresholds unchanged. Native timing/PSS effect and full new signed QA PENDING; no physical Redmi claim.

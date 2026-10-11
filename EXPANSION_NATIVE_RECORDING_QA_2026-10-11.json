@@ -430,5 +430,15 @@
     }
   },
   "physicalRedmi": "Not measured",
-  "note": "Actual fresh signed-binary QA after deterministic temporary native ownership fix. ece/f794 failed camera measurements remain rejected; no dropped samples, changed original limits, premature acceptance/publication/delivery or gameplay/backend rewrite."
+  "note": "Actual fresh signed-binary QA after deterministic temporary native ownership fix. ece/f794 failed camera measurements remain rejected; no dropped samples, changed original limits, premature acceptance/publication/delivery or gameplay/backend rewrite.",
+  "offlineSoak": {
+    "status": "SUCCESS",
+    "jobId": 114524438351,
+    "seconds": 1832.7152297610003,
+    "artifactId": 11710812885,
+    "zipBytes": 28708131,
+    "zipSha256": "c7a27d48ca6949d7374cd544a791c0003559324208275052d051ef178b893a91",
+    "crcVerified": true,
+    "note": "Actual completed previous eaa binary soak. Its camera remains failed; this does not accept the changed runtime788."
+  }
 }

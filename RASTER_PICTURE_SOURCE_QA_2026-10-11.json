@@ -1,5 +1,5 @@
 {
-  "status": "SOURCE_VERIFIED_NATIVE_PENDING",
+  "status": "SOURCE_VERIFIED_NATIVE_REJECTED_CAMERA",
   "repository": "elcin31/grand-strategy-multiplayer",
   "parentCheckpoint": "66f2fb37ea4cb672de8c5462eeb7b0a3c3c0b74f",
   "rejectedRuntime": "eaa6d6e8171c60807b7d274199c20114e00fac26",
@@ -33,13 +33,38 @@
     "diffCheck": "PASS",
     "reactReview": "Existing memoized raster component and tile hooks keep stable dependencies. Picture preparation follows tile/image changes; no per-frame allocations added, no render-FPS game/AI/network work. Recording cache never owns images/pictures passed as React props."
   },
-  "nativeAcceptance": "PENDING fresh signed binary/full original ABBA/1800s/upgrade/multiplayer/10000/live gates. Historical actual failures retained. No physical Redmi or measured Android improvement claimed.",
+  "nativeAcceptance": "REJECTED actual full38161007462: six non-camera gates SUCCESS, four original camera-limit violations. Exact full proof EXPANSION_RASTER_NATIVE_QA_2026-10-11.json.",
   "runtime": "788a6bd575a4c9d13ed3ab1c0810eaa0d576ca2f",
   "sourceTree": "493f7538265d0f5699b2e192089e65b7971cb4e0",
   "runId": 38161007462,
   "nativeJobs": {
-    "build": 114533716762,
-    "backendLive": 114533716808,
-    "longSimulation": 114533716853
+    "build-apk": {
+      "id": 114533716762,
+      "conclusion": "success"
+    },
+    "backend-live / live-world": {
+      "id": 114533716808,
+      "conclusion": "success"
+    },
+    "long-simulation": {
+      "id": 114533716853,
+      "conclusion": "success"
+    },
+    "android-smoke": {
+      "id": 114537652673,
+      "conclusion": "success"
+    },
+    "camera-comparison": {
+      "id": 114537652725,
+      "conclusion": "failure"
+    },
+    "android-upgrade / release-upgrade-save": {
+      "id": 114537652814,
+      "conclusion": "success"
+    },
+    "android-online / native-online": {
+      "id": 114537653078,
+      "conclusion": "success"
+    }
   }
 }

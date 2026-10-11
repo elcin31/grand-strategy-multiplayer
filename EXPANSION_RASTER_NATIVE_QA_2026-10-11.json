@@ -1,0 +1,2975 @@
+{
+  "diagnosticOnly": true,
+  "allFourCapturesComplete": true,
+  "scenariosPerLaunch": 9,
+  "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+  "fixtureStateChecksum": "e8befae1",
+  "comparisonGateViolations": [
+    {
+      "scenario": "forward:03-pinch",
+      "gate": "compositor:p95Ms",
+      "before": 191.984328,
+      "after": 220.565818
+    },
+    {
+      "scenario": "forward:03-pinch",
+      "gate": "histogramP95Ms",
+      "before": 150.0,
+      "after": 200.0
+    },
+    {
+      "scenario": "reverse:03-pinch",
+      "gate": "compositor:p99Ms",
+      "before": 415.957391,
+      "after": 488.647959
+    },
+    {
+      "scenario": "reverse:08-panel-open",
+      "gate": "compositor:p99Ms",
+      "before": 73.94865,
+      "after": 101.92144
+    }
+  ],
+  "comparisonGatesPassed": false,
+  "note": "Original20% PSS/other and10% pinch limits retained. Complete captures allow diagnosis; they do not establish final native or physical-device acceptance.",
+  "status": "REJECTED_CAMERA",
+  "runtime": "788a6bd575a4c9d13ed3ab1c0810eaa0d576ca2f",
+  "runId": 38161007462,
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "jobId": 114537652725,
+  "artifactId": 11710884121,
+  "zipBytes": 17792387,
+  "zipSha256": "4097b021393cf8f7a8523198c46f41da6462dbd317c79ab09358390d7ee84af4",
+  "crcVerified": true,
+  "apk": {
+    "bytes": 142479405,
+    "sha256": "3bc7416204a60aa9613864a828a03e61becc11c63e2d0071d479f99cf9cc8524",
+    "artifactId": 11710144490,
+    "zipBytes": 62290896,
+    "zipSha256": "7644235e1233e84e29cd060be41fe6b8fb089ca3d7a4ae40477a8fa8aba9cfae",
+    "crcVerified": true,
+    "version": "2.0.0",
+    "versionCode": 10,
+    "embeddedHermes": true,
+    "abis": 4,
+    "originalArt": 42,
+    "nondebuggable": true,
+    "landscape": true,
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "backendProject": "dfjsnjxnyjspwugjguhq"
+  },
+  "jobs": {
+    "build-apk": {
+      "id": 114533716762,
+      "conclusion": "success"
+    },
+    "backend-live / live-world": {
+      "id": 114533716808,
+      "conclusion": "success"
+    },
+    "long-simulation": {
+      "id": 114533716853,
+      "conclusion": "success"
+    },
+    "android-smoke": {
+      "id": 114537652673,
+      "conclusion": "success"
+    },
+    "camera-comparison": {
+      "id": 114537652725,
+      "conclusion": "failure"
+    },
+    "android-upgrade / release-upgrade-save": {
+      "id": 114537652814,
+      "conclusion": "success"
+    },
+    "android-online / native-online": {
+      "id": 114537653078,
+      "conclusion": "success"
+    }
+  },
+  "longSimulation": {
+    "ticks": 10000,
+    "restores": 10,
+    "countries": 195,
+    "provinces": 2924,
+    "cities": 5411,
+    "tickP95Ms": 101.66676599999482,
+    "maxSnapshotBytes": 4487736,
+    "artifactId": 11710138780,
+    "zipBytes": 2530,
+    "zipSha256": "43582e8f553436e492547f37034d879829374607758b66193b29804581166c0a",
+    "crcVerified": true
+  },
+  "offlineSoak": {
+    "seconds": 1832.6256649460001,
+    "artifactId": 11711883015,
+    "zipBytes": 29677733,
+    "zipSha256": "cf07e7b9794abed48c3e71cbd407ae38cdb3d4bd4665c733e8610d3f82043e4c",
+    "crcVerified": true
+  },
+  "nativeOnline": {
+    "report": {
+      "roomId": "bf2770bf-1b1b-4288-9e03-d87c2a70af6a",
+      "qaName": "NATIVE ONLINE QA",
+      "stateVersion": 18,
+      "apkSha256": "3bc7416204a60aa9613864a828a03e61becc11c63e2d0071d479f99cf9cc8524",
+      "nativeCreate": true,
+      "nativeCountrySelection": "germany",
+      "serverPaused": true,
+      "nativePaidFocus": "eco-audit",
+      "menuReconnect": true,
+      "processReconnect": true,
+      "realHostMigration": true,
+      "nativeOwnerReturn": true,
+      "rebootReconnect": true,
+      "sameNativeUidAndSessionKeys": true,
+      "onceOnlyFocusPaymentRetained": true,
+      "members": 2,
+      "cleanup": "PENDING",
+      "note": "Actual existing production HTTP and signed native controls; no tokens or snapshots in evidence."
+    },
+    "artifactId": 11710323283,
+    "zipBytes": 2071081,
+    "zipSha256": "788dea87e02d1c60aa4b95d8ef5f4dff98d3368779466b88f0f15e57e1c8a6ec",
+    "crcVerified": true
+  },
+  "upgrade": {
+    "report": {
+      "baseline": {
+        "package": "com.elcin31.grandstrategymultiplayer",
+        "versionCode": 9,
+        "versionName": "0.8.1",
+        "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+      },
+      "candidate": {
+        "package": "com.elcin31.grandstrategymultiplayer",
+        "versionCode": 10,
+        "versionName": "2.0.0",
+        "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+      },
+      "appUidRetained": true,
+      "privateCampaignFilesRetained": true,
+      "encryptedPreferenceBytesRetainedBeforeLaunch": true,
+      "actualSecureStorePreferencesAfterUpdate": {
+        "preset": "High",
+        "frameRate": 30,
+        "adaptive": false
+      },
+      "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+      "originalWorld": {
+        "countries": 195,
+        "provinces": 2924,
+        "cities": 5411
+      },
+      "oldSchema": 12,
+      "newSchema": 18,
+      "oldSaveSha256": "38c721cef325d05ec92f73e238b71b5607adbde38b928fd28762a7711dcf0125",
+      "migrationBackupSha256": {
+        "before-expansion-v13": "38c721cef325d05ec92f73e238b71b5607adbde38b928fd28762a7711dcf0125",
+        "before-espionage-v14": "38c721cef325d05ec92f73e238b71b5607adbde38b928fd28762a7711dcf0125",
+        "before-economy-v15": "38c721cef325d05ec92f73e238b71b5607adbde38b928fd28762a7711dcf0125",
+        "before-military-v16": "38c721cef325d05ec92f73e238b71b5607adbde38b928fd28762a7711dcf0125",
+        "before-technology-v17": "38c721cef325d05ec92f73e238b71b5607adbde38b928fd28762a7711dcf0125",
+        "before-focus-v18": "38c721cef325d05ec92f73e238b71b5607adbde38b928fd28762a7711dcf0125"
+      },
+      "repeatBackupBytesUnchanged": true,
+      "actualCandidateRestart": true,
+      "finalVersionUpgrade": true,
+      "note": "Real offline ephemeral-emulator package replacement, native save/load/backups and encrypted graphics preference round-trip. No production-session reconnect or hardware FPS claim."
+    },
+    "artifactId": 11710114845,
+    "zipBytes": 2722314,
+    "zipSha256": "ec1724a17f66481e93b51c1116354f586f7f54a4adf09b6eee385cfdd09753b1",
+    "crcVerified": true
+  },
+  "backendLive": {
+    "report": {
+      "roomId": "13f9606d-8a01-4b51-96cb-00efa62f4621",
+      "stateVersion": 18,
+      "tick": 21,
+      "featuresVerified": true,
+      "hostMigrationVerified": true,
+      "completedFocuses": [
+        {
+          "focusId": "eco-audit",
+          "tick": 9
+        }
+      ],
+      "scientificDiscoveries": [
+        "science-method"
+      ],
+      "spyResults": [
+        {
+          "kind": "PoliticalIntrigue",
+          "tick": 18,
+          "outcome": "Failure",
+          "detected": true
+        },
+        {
+          "kind": "Sabotage",
+          "tick": 16,
+          "outcome": "Success",
+          "detected": false
+        },
+        {
+          "kind": "IntelligenceGathering",
+          "tick": 6,
+          "outcome": "Success",
+          "detected": false
+        },
+        {
+          "kind": "Counterintelligence",
+          "tick": 5,
+          "outcome": "Success",
+          "detected": false
+        }
+      ],
+      "paidRelationChange": 27,
+      "humanTreaties": [
+        "NonAggression",
+        "TradeAgreement"
+      ],
+      "note": "Scoped existing production HTTP QA. No tokens, player IDs or whole snapshots in evidence.",
+      "finalTick": 48,
+      "finalSchema": 18
+    },
+    "artifactId": 11709992201,
+    "zipBytes": 607,
+    "zipSha256": "791ad3bd57678ae2c606a6d25220f5fcb7ea5ba11a5fbed54472c42bff40ea05",
+    "crcVerified": true
+  },
+  "qaCleanup": {
+    "projectId": "dfjsnjxnyjspwugjguhq",
+    "roomIds": [
+      "13f9606d-8a01-4b51-96cb-00efa62f4621",
+      "bf2770bf-1b1b-4288-9e03-d87c2a70af6a"
+    ],
+    "createdAt": [
+      "2026-10-11T17:46:09.045434+00:00",
+      "2026-10-11T18:07:29.606833+00:00"
+    ],
+    "guards": "Exact UUID, exact creation timestamp, expected QA host, only the individually reviewed QA members, no original city backup. Independent post-delete readback.",
+    "roomsRemaining": 0,
+    "playersRemaining": 0,
+    "receiptsRemaining": 0,
+    "preservedCityBackups": 29,
+    "status": "VERIFIED",
+    "note": "Original downloaded native report retains its at-capture PENDING cleanup field; completion is independently recorded here."
+  },
+  "comparisons": [
+    {
+      "order": "forward",
+      "scenario": "01-idle",
+      "before": {
+        "pssKiB": 363452,
+        "histogramP95Ms": null,
+        "surfacePresentation": {
+          "available": false,
+          "frames": 0,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null,
+          "maxMs": null,
+          "complete": true,
+          "polls": 40,
+          "maxPollGapSeconds": 0.27283850199998483,
+          "captureSeconds": 10.01044650899999
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "uiWorkMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "syncWaitMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "renderCompletionMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 0,
+          "activeUiCallbackFpsRange": null,
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 0,
+            "mapRenders": 0,
+            "geographyRenders": 0,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 373983,
+        "histogramP95Ms": null,
+        "surfacePresentation": {
+          "available": false,
+          "frames": 0,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null,
+          "maxMs": null,
+          "complete": true,
+          "polls": 40,
+          "maxPollGapSeconds": 0.2613610839999865,
+          "captureSeconds": 10.009406352999974
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "uiWorkMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "syncWaitMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "renderCompletionMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 0,
+          "activeUiCallbackFpsRange": null,
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 0,
+            "gestureCommits": 0,
+            "cullCommits": 0,
+            "mapRenders": 0,
+            "geographyRenders": 0,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "forward",
+      "scenario": "02-medium-pan",
+      "before": {
+        "pssKiB": 348953,
+        "histogramP95Ms": 113.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 243,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 39.114835,
+          "p95Ms": 73.718254,
+          "p99Ms": 108.451137,
+          "maxMs": 422.896965,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.33465691300000344,
+          "captureSeconds": 10.640283827000019
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 49.999998,
+            "p99": 66.666664
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 31.630105,
+            "p95": 45.429813,
+            "p99": 49.84707
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.094025,
+            "p95": 12.545598,
+            "p99": 21.014176
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 23.334726,
+            "p95": 50.144813,
+            "p99": 55.0984
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 20.322581458064633,
+            "max": 38.36065727213099
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 7,
+            "mapRenders": 6,
+            "geographyRenders": 6,
+            "pathBuilds": 34,
+            "pathBuildMs": 31.772682000002533,
+            "rasterBuilds": 4,
+            "rasterMs": 17.79554800000915,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 344025,
+        "histogramP95Ms": 109.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 240,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 39.996701,
+          "p95Ms": 71.674678,
+          "p99Ms": 81.872283,
+          "maxMs": 649.424322,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3214377140000124,
+          "captureSeconds": 10.645836250000002
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 34.337202,
+            "p95": 46.888588,
+            "p99": 50.716977
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 3.589734,
+            "p95": 12.129547,
+            "p99": 13.70695
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 19.794155,
+            "p95": 41.780351,
+            "p99": 57.780078
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 19.68750078749994,
+            "max": 49.18032983606468
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 50,
+            "max": 100
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 100
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 247,
+            "gestureCommits": 242,
+            "cullCommits": 4,
+            "mapRenders": 4,
+            "geographyRenders": 4,
+            "pathBuilds": 4,
+            "pathBuildMs": 0.5537659999681637,
+            "rasterBuilds": 4,
+            "rasterMs": 24.95642299996689,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "forward",
+      "scenario": "03-pinch",
+      "before": {
+        "pssKiB": 385920,
+        "histogramP95Ms": 150.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 151,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 47.664926,
+          "p95Ms": 191.984328,
+          "p99Ms": 417.023536,
+          "maxMs": 528.417552,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.35972906800000715,
+          "captureSeconds": 10.625111202
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 133.333328,
+            "p99": 266.666656
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 32.982001,
+            "p95": 79.873173,
+            "p99": 100.202888
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 2.717241,
+            "p95": 10.235182,
+            "p99": 13.64788
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 16.638149,
+            "p95": 33.740714,
+            "p99": 52.640334
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 10,
+          "retainedSamples": 10,
+          "malformedSamples": 0,
+          "activeSamples": 9,
+          "activeUiCallbackFpsRange": {
+            "min": 4.800000192000017,
+            "max": 39.3442638688523
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 22,
+            "mapRenders": 22,
+            "geographyRenders": 22,
+            "pathBuilds": 76,
+            "pathBuildMs": 17.65089399991848,
+            "rasterBuilds": 55,
+            "rasterMs": 202.30643100001907,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 380729,
+        "histogramP95Ms": 200.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 154,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 43.879773,
+          "p95Ms": 220.565818,
+          "p99Ms": 355.661817,
+          "maxMs": 452.419667,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.31783258600000863,
+          "captureSeconds": 10.665729186000021
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 166.66666,
+            "p99": 283.333322
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 33.400616,
+            "p95": 94.712331,
+            "p99": 134.177779
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 2.72957,
+            "p95": 11.160051,
+            "p99": 12.608351
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 18.420648,
+            "p95": 45.196234,
+            "p99": 99.683223
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 4.83870987096777,
+            "max": 42.295083659015624
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 50,
+            "max": 250
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 250
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 155,
+            "gestureCommits": 138,
+            "cullCommits": 19,
+            "mapRenders": 17,
+            "geographyRenders": 17,
+            "pathBuilds": 52,
+            "pathBuildMs": 13.874080000387039,
+            "rasterBuilds": 51,
+            "rasterMs": 166.9903429999831,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "forward",
+      "scenario": "04-world-pan",
+      "before": {
+        "pssKiB": 387316,
+        "histogramP95Ms": 113.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 247,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 38.86249,
+          "p95Ms": 73.800659,
+          "p99Ms": 87.840805,
+          "maxMs": 372.511142,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.34522594899999604,
+          "captureSeconds": 10.639147545000014
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 66.666664
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 31.482375,
+            "p95": 41.159876,
+            "p99": 42.278674
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.843992,
+            "p95": 12.557766,
+            "p99": 17.317692
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 22.939867,
+            "p95": 45.959953,
+            "p99": 50.312934
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 23.225807380645296,
+            "max": 36.39344407868786
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 5,
+            "mapRenders": 5,
+            "geographyRenders": 5,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 381638,
+        "histogramP95Ms": 113.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 243,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 39.401514,
+          "p95Ms": 73.889981,
+          "p99Ms": 93.57923,
+          "maxMs": 603.427764,
+          "complete": true,
+          "polls": 38,
+          "maxPollGapSeconds": 0.32415691599999263,
+          "captureSeconds": 10.637487097999951
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 31.650986,
+            "p95": 44.134862,
+            "p99": 47.642623
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 4.144681,
+            "p95": 11.10536,
+            "p99": 13.346582
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 21.907839,
+            "p95": 42.943405,
+            "p99": 46.144528
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 24.193549354838847,
+            "max": 47.21311664262479
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 50,
+            "max": 50
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 100
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 249,
+            "gestureCommits": 247,
+            "cullCommits": 0,
+            "mapRenders": 0,
+            "geographyRenders": 0,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "forward",
+      "scenario": "05-local-labels-armies",
+      "before": {
+        "pssKiB": 411254,
+        "histogramP95Ms": 81.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 347,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 27.902768,
+          "p95Ms": 50.642796,
+          "p99Ms": 74.548513,
+          "maxMs": 480.115667,
+          "complete": true,
+          "polls": 38,
+          "maxPollGapSeconds": 0.33878154899997526,
+          "captureSeconds": 10.628885782999987
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 0.0,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 20.03177,
+            "p95": 31.817895,
+            "p99": 34.629838
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.910332,
+            "p95": 14.600352,
+            "p99": 18.527718
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 24.393964,
+            "p95": 36.05943,
+            "p99": 39.445799
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 34.15384751999975,
+            "max": 47.21311664262209
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 7,
+            "mapRenders": 7,
+            "geographyRenders": 7,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 331498,
+        "histogramP95Ms": 81.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 324,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 28.578774,
+          "p95Ms": 52.760574,
+          "p99Ms": 66.727149,
+          "maxMs": 554.48416,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3184748280000349,
+          "captureSeconds": 10.646222670999919
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 22.966025,
+            "p95": 31.708793,
+            "p99": 39.10292
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.21194,
+            "p95": 10.646505,
+            "p99": 12.920727
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 21.793648,
+            "p95": 37.033342,
+            "p99": 39.307974
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 33.75000135000174,
+            "max": 49.18032983606468
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 40,
+            "max": 50
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 40,
+            "max": 50
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 336,
+            "gestureCommits": 334,
+            "cullCommits": 2,
+            "mapRenders": 2,
+            "geographyRenders": 2,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "forward",
+      "scenario": "06-terrain-pan",
+      "before": {
+        "pssKiB": 442790,
+        "histogramP95Ms": 81.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 336,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 29.269066,
+          "p95Ms": 50.756315,
+          "p99Ms": 63.408441,
+          "maxMs": 270.264547,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3116961930000457,
+          "captureSeconds": 10.64267909199998
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 117,
+            "p50": 0.0,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 117,
+            "p50": 19.952812,
+            "p95": 32.568394,
+            "p99": 36.733617
+          },
+          "syncWaitMs": {
+            "samples": 117,
+            "p50": 2.90373,
+            "p95": 12.650966,
+            "p99": 21.034144
+          },
+          "renderCompletionMs": {
+            "samples": 117,
+            "p50": 23.475817,
+            "p95": 35.138687,
+            "p99": 38.873095
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 35.40983748196758,
+            "max": 46.229510045900795
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 10,
+            "mapRenders": 9,
+            "geographyRenders": 9,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 362961,
+        "histogramP95Ms": 81.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 321,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 29.820507,
+          "p95Ms": 55.312589,
+          "p99Ms": 65.396277,
+          "maxMs": 441.79842,
+          "complete": true,
+          "polls": 38,
+          "maxPollGapSeconds": 0.32601234700007353,
+          "captureSeconds": 10.63808101799998
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 21.438317,
+            "p95": 34.610049,
+            "p99": 39.962721
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 2.920055,
+            "p95": 11.926955,
+            "p99": 16.160428
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 21.035879,
+            "p95": 36.142904,
+            "p99": 42.166868
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 33.44262428852589,
+            "max": 47.21311664262479
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 40,
+            "max": 50
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 67
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 343,
+            "gestureCommits": 341,
+            "cullCommits": 2,
+            "mapRenders": 2,
+            "geographyRenders": 2,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "forward",
+      "scenario": "07-military-overlay",
+      "before": {
+        "pssKiB": 358081,
+        "histogramP95Ms": 81.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 348,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 28.989197,
+          "p95Ms": 50.353144,
+          "p99Ms": 61.437223,
+          "maxMs": 352.00946,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.30700877399999627,
+          "captureSeconds": 10.66005511000003
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 118,
+            "p50": 0.0,
+            "p95": 16.666666,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 118,
+            "p50": 18.34809,
+            "p95": 30.183288,
+            "p99": 31.930593
+          },
+          "syncWaitMs": {
+            "samples": 118,
+            "p50": 2.395983,
+            "p95": 11.703663,
+            "p99": 16.582808
+          },
+          "renderCompletionMs": {
+            "samples": 118,
+            "p50": 21.396846,
+            "p95": 36.319678,
+            "p99": 39.577306
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 36.77419501935402,
+            "max": 48.19672323934476
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 7,
+            "mapRenders": 7,
+            "geographyRenders": 7,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 338961,
+        "histogramP95Ms": 85.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 318,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 30.450116,
+          "p95Ms": 55.073673,
+          "p99Ms": 67.723516,
+          "maxMs": 529.024257,
+          "complete": true,
+          "polls": 38,
+          "maxPollGapSeconds": 0.33455200999992485,
+          "captureSeconds": 10.62126580000006
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 22.878395,
+            "p95": 34.330932,
+            "p99": 39.758306
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.002437,
+            "p95": 9.362913,
+            "p99": 12.454632
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 21.045421,
+            "p95": 34.085016,
+            "p99": 38.139293
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 31.384616640000615,
+            "max": 48.19672323934614
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 40,
+            "max": 50
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 50
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 337,
+            "gestureCommits": 333,
+            "cullCommits": 4,
+            "mapRenders": 4,
+            "geographyRenders": 4,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "forward",
+      "scenario": "08-panel-open",
+      "before": {
+        "pssKiB": 410398,
+        "histogramP95Ms": 85.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 322,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 30.471538,
+          "p95Ms": 55.947067,
+          "p99Ms": 66.476527,
+          "maxMs": 536.033738,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3132365970000137,
+          "captureSeconds": 10.662874400000021
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 21.501872,
+            "p95": 37.577984,
+            "p99": 38.951743
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 2.968317,
+            "p95": 14.341084,
+            "p99": 18.141822
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 25.878089,
+            "p95": 38.942269,
+            "p99": 44.673464
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 11,
+          "activeUiCallbackFpsRange": {
+            "min": 31.875001274999903,
+            "max": 60.000002399998905
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 7,
+            "mapRenders": 7,
+            "geographyRenders": 6,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 326350,
+        "histogramP95Ms": 93.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 306,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 31.543567,
+          "p95Ms": 54.872614,
+          "p99Ms": 68.685612,
+          "maxMs": 454.396033,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3246269490000486,
+          "captureSeconds": 10.65204977399992
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 25.108941,
+            "p95": 36.258176,
+            "p99": 38.742101
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 3.635701,
+            "p95": 12.13811,
+            "p99": 17.986611
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 23.718359,
+            "p95": 37.333891,
+            "p99": 41.348446
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 31.475411095083196,
+            "max": 44.26229685245568
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 40,
+            "max": 50
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 50
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 314,
+            "gestureCommits": 312,
+            "cullCommits": 2,
+            "mapRenders": 2,
+            "geographyRenders": 2,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "forward",
+      "scenario": "09-panel-closed",
+      "before": {
+        "pssKiB": 331933,
+        "histogramP95Ms": 81.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 343,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 28.654619,
+          "p95Ms": 51.314127,
+          "p99Ms": 59.63802,
+          "maxMs": 247.029689,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3228281390000234,
+          "captureSeconds": 10.713034230999995
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 0.0,
+            "p95": 16.666666,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 19.719906,
+            "p95": 32.799369,
+            "p99": 38.511958
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 2.626266,
+            "p95": 12.013455,
+            "p99": 17.112477
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 21.937151,
+            "p95": 33.160457,
+            "p99": 37.285318
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 38.360657272130446,
+            "max": 46.229510045900795
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 6,
+            "mapRenders": 7,
+            "geographyRenders": 6,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 312073,
+        "histogramP95Ms": 81.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 320,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 29.889951,
+          "p95Ms": 56.430597,
+          "p99Ms": 70.334169,
+          "maxMs": 343.005244,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3108106070000076,
+          "captureSeconds": 10.629587668999989
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 23.153434,
+            "p95": 32.651218,
+            "p99": 39.138241
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.874958,
+            "p95": 13.611477,
+            "p99": 18.420057
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 24.07544,
+            "p95": 38.310217,
+            "p99": 41.445601
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 34.28571565714575,
+            "max": 44.26229685245568
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 40,
+            "max": 50
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 50
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 308,
+            "gestureCommits": 306,
+            "cullCommits": 2,
+            "mapRenders": 2,
+            "geographyRenders": 2,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "reverse",
+      "scenario": "01-idle",
+      "before": {
+        "pssKiB": 364745,
+        "histogramP95Ms": null,
+        "surfacePresentation": {
+          "available": false,
+          "frames": 0,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null,
+          "maxMs": null,
+          "complete": true,
+          "polls": 40,
+          "maxPollGapSeconds": 0.25969654799996533,
+          "captureSeconds": 10.009520805999955
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "uiWorkMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "syncWaitMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "renderCompletionMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 0,
+          "activeUiCallbackFpsRange": null,
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 0,
+            "mapRenders": 0,
+            "geographyRenders": 0,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 362347,
+        "histogramP95Ms": null,
+        "surfacePresentation": {
+          "available": false,
+          "frames": 0,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": null,
+          "p95Ms": null,
+          "p99Ms": null,
+          "maxMs": null,
+          "complete": true,
+          "polls": 40,
+          "maxPollGapSeconds": 0.25955479399999604,
+          "captureSeconds": 10.008521383000016
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "uiWorkMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "syncWaitMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "renderCompletionMs": {
+            "samples": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 0,
+          "activeUiCallbackFpsRange": null,
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 0,
+            "gestureCommits": 0,
+            "cullCommits": 0,
+            "mapRenders": 0,
+            "geographyRenders": 0,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "reverse",
+      "scenario": "02-medium-pan",
+      "before": {
+        "pssKiB": 351031,
+        "histogramP95Ms": 125.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 231,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 40.182028,
+          "p95Ms": 75.122049,
+          "p99Ms": 103.469189,
+          "maxMs": 432.804899,
+          "complete": true,
+          "polls": 38,
+          "maxPollGapSeconds": 0.34697616399989784,
+          "captureSeconds": 10.65539376200013
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 49.999998,
+            "p99": 116.666662
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 31.716023,
+            "p95": 45.538055,
+            "p99": 48.403938
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 3.78238,
+            "p95": 15.660462,
+            "p99": 18.40887
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 22.11056,
+            "p95": 45.765464,
+            "p99": 58.100678
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 19.672131934424744,
+            "max": 38.36065727212825
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 13,
+            "mapRenders": 11,
+            "geographyRenders": 11,
+            "pathBuilds": 34,
+            "pathBuildMs": 3.675772000453435,
+            "rasterBuilds": 4,
+            "rasterMs": 22.266702999942936,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 346641,
+        "histogramP95Ms": 109.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 239,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 40.445159,
+          "p95Ms": 71.731593,
+          "p99Ms": 86.942403,
+          "maxMs": 678.46117,
+          "complete": true,
+          "polls": 38,
+          "maxPollGapSeconds": 0.33370006000006924,
+          "captureSeconds": 10.628625306999993
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 32.583777,
+            "p95": 44.568298,
+            "p99": 46.880146
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.403155,
+            "p95": 11.05799,
+            "p99": 14.308174
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 21.122156,
+            "p95": 42.204064,
+            "p99": 45.918442
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 19.672131934426996,
+            "max": 49.18032983606749
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 50,
+            "max": 67
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 125
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 246,
+            "gestureCommits": 242,
+            "cullCommits": 2,
+            "mapRenders": 2,
+            "geographyRenders": 2,
+            "pathBuilds": 4,
+            "pathBuildMs": 0.7991510001011193,
+            "rasterBuilds": 4,
+            "rasterMs": 15.378731000120752,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "reverse",
+      "scenario": "03-pinch",
+      "before": {
+        "pssKiB": 395263,
+        "histogramP95Ms": 300.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 141,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 44.95823,
+          "p95Ms": 258.177282,
+          "p99Ms": 415.957391,
+          "maxMs": 468.770939,
+          "complete": true,
+          "polls": 40,
+          "maxPollGapSeconds": 0.32641319899994414,
+          "captureSeconds": 10.686997193000025
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 16.666666,
+            "p95": 233.333324,
+            "p99": 316.666654
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 30.924714,
+            "p95": 111.415087,
+            "p99": 166.229287
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 2.447174,
+            "p95": 9.107941,
+            "p99": 11.991261
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 19.483298,
+            "p95": 42.743507,
+            "p99": 68.865047
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 10,
+          "retainedSamples": 10,
+          "malformedSamples": 0,
+          "activeSamples": 9,
+          "activeUiCallbackFpsRange": {
+            "min": 3.5593221762711527,
+            "max": 33.87096909677439
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 19,
+            "mapRenders": 19,
+            "geographyRenders": 19,
+            "pathBuilds": 76,
+            "pathBuildMs": 11.500501999864355,
+            "rasterBuilds": 34,
+            "rasterMs": 153.9054780001752,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 384949,
+        "histogramP95Ms": 300.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 128,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 48.605087,
+          "p95Ms": 257.583387,
+          "p99Ms": 488.647959,
+          "maxMs": 517.884266,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3330094990000134,
+          "captureSeconds": 10.711779186000058
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 119,
+            "p50": 33.333332,
+            "p95": 183.333326,
+            "p99": 433.333316
+          },
+          "uiWorkMs": {
+            "samples": 119,
+            "p50": 33.827082,
+            "p95": 133.308522,
+            "p99": 150.31975
+          },
+          "syncWaitMs": {
+            "samples": 119,
+            "p50": 1.845852,
+            "p95": 9.036364,
+            "p99": 13.677435
+          },
+          "renderCompletionMs": {
+            "samples": 119,
+            "p50": 17.347438,
+            "p95": 49.463757,
+            "p99": 60.844168
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 9,
+          "activeUiCallbackFpsRange": {
+            "min": 2.812500112499838,
+            "max": 31.475411095083196
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 50,
+            "max": 250
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 250
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 127,
+            "gestureCommits": 113,
+            "cullCommits": 17,
+            "mapRenders": 16,
+            "geographyRenders": 16,
+            "pathBuilds": 52,
+            "pathBuildMs": 27.999130000011064,
+            "rasterBuilds": 34,
+            "rasterMs": 124.06816199969035,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "reverse",
+      "scenario": "04-world-pan",
+      "before": {
+        "pssKiB": 395051,
+        "histogramP95Ms": 109.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 241,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 39.443066,
+          "p95Ms": 70.379266,
+          "p99Ms": 88.631945,
+          "maxMs": 433.848756,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.33925568199992995,
+          "captureSeconds": 10.618877982999948
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 118,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 66.666664
+          },
+          "uiWorkMs": {
+            "samples": 118,
+            "p50": 33.762697,
+            "p95": 47.015236,
+            "p99": 51.635096
+          },
+          "syncWaitMs": {
+            "samples": 118,
+            "p50": 3.558166,
+            "p95": 9.926422,
+            "p99": 12.834689
+          },
+          "renderCompletionMs": {
+            "samples": 118,
+            "p50": 19.020011,
+            "p95": 43.585802,
+            "p99": 46.212409
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 22.622951724588457,
+            "max": 37.377050675415575
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 5,
+            "mapRenders": 5,
+            "geographyRenders": 5,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 354581,
+        "histogramP95Ms": 109.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 243,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 39.565068,
+          "p95Ms": 72.214764,
+          "p99Ms": 78.197965,
+          "maxMs": 574.701919,
+          "complete": true,
+          "polls": 38,
+          "maxPollGapSeconds": 0.3354035469999417,
+          "captureSeconds": 10.630587601999991
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 49.999998
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 32.709796,
+            "p95": 51.10123,
+            "p99": 52.78462
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.135036,
+            "p95": 11.412087,
+            "p99": 15.907862
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 17.265026,
+            "p95": 41.372663,
+            "p99": 46.100322
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 24.193549354838847,
+            "max": 45.245903449182094
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 50,
+            "max": 67
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 100
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 247,
+            "gestureCommits": 247,
+            "cullCommits": 0,
+            "mapRenders": 0,
+            "geographyRenders": 0,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "reverse",
+      "scenario": "05-local-labels-armies",
+      "before": {
+        "pssKiB": 431651,
+        "histogramP95Ms": 81.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 348,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 28.100383,
+          "p95Ms": 49.102759,
+          "p99Ms": 82.126102,
+          "maxMs": 495.809378,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.32181835799997316,
+          "captureSeconds": 10.638139040999931
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 117,
+            "p50": 0.0,
+            "p95": 16.666666,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 117,
+            "p50": 18.321702,
+            "p95": 30.625047,
+            "p99": 36.337876
+          },
+          "syncWaitMs": {
+            "samples": 117,
+            "p50": 2.920115,
+            "p95": 12.528631,
+            "p99": 13.924053
+          },
+          "renderCompletionMs": {
+            "samples": 117,
+            "p50": 22.713379,
+            "p95": 35.742187,
+            "p99": 40.784635
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 38.18181970909452,
+            "max": 52.13114962623751
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 7,
+            "mapRenders": 7,
+            "geographyRenders": 7,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 348073,
+        "histogramP95Ms": 85.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 313,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 30.884263,
+          "p95Ms": 55.19857,
+          "p99Ms": 63.092231,
+          "maxMs": 626.041074,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3377659959999164,
+          "captureSeconds": 10.632807548000073
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 23.415136,
+            "p95": 36.478585,
+            "p99": 40.607953
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 4.022478,
+            "p95": 10.828657,
+            "p99": 15.641302
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 20.912675,
+            "p95": 33.787252,
+            "p99": 36.354028
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 31.47541109507959,
+            "max": 38.36065727213264
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 40,
+            "max": 50
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 67
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 323,
+            "gestureCommits": 321,
+            "cullCommits": 2,
+            "mapRenders": 2,
+            "geographyRenders": 2,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "reverse",
+      "scenario": "06-terrain-pan",
+      "before": {
+        "pssKiB": 367267,
+        "histogramP95Ms": 81.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 345,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 27.400919,
+          "p95Ms": 50.735023,
+          "p99Ms": 62.258697,
+          "maxMs": 252.405897,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3168384680000145,
+          "captureSeconds": 10.64531513199995
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 118,
+            "p50": 0.0,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 118,
+            "p50": 19.692464,
+            "p95": 32.384671,
+            "p99": 36.668649
+          },
+          "syncWaitMs": {
+            "samples": 118,
+            "p50": 2.750431,
+            "p95": 11.447181,
+            "p99": 18.425606
+          },
+          "renderCompletionMs": {
+            "samples": 118,
+            "p50": 23.654541,
+            "p95": 36.702339,
+            "p99": 38.724494
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 36.77419501935505,
+            "max": 46.229510045898145
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 7,
+            "mapRenders": 7,
+            "geographyRenders": 7,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 309879,
+        "histogramP95Ms": 85.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 320,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 29.980556,
+          "p95Ms": 55.048656,
+          "p99Ms": 68.856205,
+          "maxMs": 435.683171,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.32902030299999296,
+          "captureSeconds": 10.630685407999977
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 23.091101,
+            "p95": 32.077012,
+            "p99": 36.693616
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 3.336926,
+            "p95": 11.785333,
+            "p99": 15.219526
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 22.518058,
+            "p95": 34.615407,
+            "p99": 37.847247
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 31.475411095083196,
+            "max": 47.21311664262479
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 40,
+            "max": 50
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 50
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 303,
+            "gestureCommits": 299,
+            "cullCommits": 4,
+            "mapRenders": 4,
+            "geographyRenders": 4,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "reverse",
+      "scenario": "07-military-overlay",
+      "before": {
+        "pssKiB": 401832,
+        "histogramP95Ms": 81.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 340,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 28.085489,
+          "p95Ms": 49.189981,
+          "p99Ms": 73.563875,
+          "maxMs": 437.709452,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.30683049200001733,
+          "captureSeconds": 10.632847656000195
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 0.0,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 18.988254,
+            "p95": 31.442075,
+            "p99": 34.391743
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 2.678072,
+            "p95": 12.166833,
+            "p99": 14.58604
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 21.008486,
+            "p95": 35.190003,
+            "p99": 38.639797
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 35.8208969552224,
+            "max": 51.14754302951605
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 8,
+            "mapRenders": 9,
+            "geographyRenders": 9,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 321977,
+        "histogramP95Ms": 81.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 318,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 29.951482,
+          "p95Ms": 51.453064,
+          "p99Ms": 59.314758,
+          "maxMs": 572.543111,
+          "complete": true,
+          "polls": 38,
+          "maxPollGapSeconds": 0.3150257089999968,
+          "captureSeconds": 10.649061837999966
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 118,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 118,
+            "p50": 22.20474,
+            "p95": 34.970267,
+            "p99": 38.265259
+          },
+          "syncWaitMs": {
+            "samples": 118,
+            "p50": 4.065031,
+            "p95": 11.530344,
+            "p99": 17.352164
+          },
+          "renderCompletionMs": {
+            "samples": 118,
+            "p50": 20.05141,
+            "p95": 34.982845,
+            "p99": 36.68305
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 32.45901769180455,
+            "max": 50.163936432788844
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 40,
+            "max": 50
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 50
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 332,
+            "gestureCommits": 330,
+            "cullCommits": 2,
+            "mapRenders": 2,
+            "geographyRenders": 2,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "reverse",
+      "scenario": "08-panel-open",
+      "before": {
+        "pssKiB": 350112,
+        "histogramP95Ms": 81.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 324,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 29.11194,
+          "p95Ms": 55.317957,
+          "p99Ms": 73.94865,
+          "maxMs": 396.408416,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.31602454500011845,
+          "captureSeconds": 10.646419415000082
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 0.0,
+            "p95": 16.666666,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 19.514238,
+            "p95": 30.667699,
+            "p99": 36.496723
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 2.811311,
+            "p95": 12.632616,
+            "p99": 19.851062
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 24.333654,
+            "p95": 38.362414,
+            "p99": 43.545393
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 35.8064530451615,
+            "max": 46.229510045898145
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 7,
+            "mapRenders": 6,
+            "geographyRenders": 6,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 328431,
+        "histogramP95Ms": 85.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 300,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 31.216469,
+          "p95Ms": 59.058785,
+          "p99Ms": 101.92144,
+          "maxMs": 571.028562,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3261974720001035,
+          "captureSeconds": 10.649647765999816
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 24.587504,
+            "p95": 34.219966,
+            "p99": 37.643443
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 3.585276,
+            "p95": 11.356464,
+            "p99": 12.427912
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 21.6139,
+            "p95": 35.092548,
+            "p99": 37.586526
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 28.57142971428496,
+            "max": 49.18032983606749
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 40,
+            "max": 50
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 50
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 312,
+            "gestureCommits": 310,
+            "cullCommits": 2,
+            "mapRenders": 2,
+            "geographyRenders": 2,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    },
+    {
+      "order": "reverse",
+      "scenario": "09-panel-closed",
+      "before": {
+        "pssKiB": 326024,
+        "histogramP95Ms": 77.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 344,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 28.163556,
+          "p95Ms": 51.049111,
+          "p99Ms": 64.554682,
+          "maxMs": 484.119637,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3349982509998881,
+          "captureSeconds": 10.647811488000116
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 0.0,
+            "p95": 16.666666,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 19.644062,
+            "p95": 31.379802,
+            "p99": 34.881964
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 2.36763,
+            "p95": 9.366528,
+            "p99": 14.788493
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 21.235986,
+            "p95": 34.145598,
+            "p99": 36.873924
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 12,
+          "retainedSamples": 12,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 34.28571565713815,
+            "max": 45.245903449187274
+          },
+          "activeUiCallbackP95MsRange": null,
+          "activeUiCallbackP99MsRange": null,
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": null,
+            "gestureCommits": null,
+            "cullCommits": 7,
+            "mapRenders": 7,
+            "geographyRenders": 7,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": null,
+            "rasterPrewarmMs": null
+          }
+        }
+      },
+      "after": {
+        "pssKiB": 330670,
+        "histogramP95Ms": 85.0,
+        "surfacePresentation": {
+          "available": true,
+          "frames": 312,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 29.727559,
+          "p95Ms": 53.066832,
+          "p99Ms": 67.255909,
+          "maxMs": 449.750968,
+          "complete": true,
+          "polls": 39,
+          "maxPollGapSeconds": 0.3225154350000139,
+          "captureSeconds": 10.63080418200002
+        },
+        "rawStageMs": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 16.666666,
+            "p95": 33.333332,
+            "p99": 33.333332
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 23.731458,
+            "p95": 32.752858,
+            "p99": 35.615698
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 3.692546,
+            "p95": 10.857981,
+            "p99": 14.03616
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 22.55957,
+            "p95": 35.005328,
+            "p99": 39.14401
+          }
+        },
+        "cameraTelemetry": {
+          "completeSamples": 11,
+          "retainedSamples": 11,
+          "malformedSamples": 0,
+          "activeSamples": 10,
+          "activeUiCallbackFpsRange": {
+            "min": 29.53846272000058,
+            "max": 46.22951004590344
+          },
+          "activeUiCallbackP95MsRange": {
+            "min": 40,
+            "max": 50
+          },
+          "activeUiCallbackP99MsRange": {
+            "min": 50,
+            "max": 67
+          },
+          "counterDeltasBetweenSamples": {
+            "gestureEvents": 299,
+            "gestureCommits": 293,
+            "cullCommits": 6,
+            "mapRenders": 6,
+            "geographyRenders": 6,
+            "pathBuilds": 0,
+            "pathBuildMs": 0.0,
+            "rasterBuilds": 0,
+            "rasterMs": 0.0,
+            "rasterPrewarmBuilds": 0,
+            "rasterPrewarmMs": 0.0
+          }
+        }
+      }
+    }
+  ],
+  "diagnosis": "PSS within original20% limits for all18 matched scenarios. Four exact camera gates remain failed. Pinch main/UI thread averages68.18→68.28%(forward),78.39→79.91%(reverse); JS5.55→4.81%,4.81→4.27%. Lower JS/cull/raster preparation does not prove overall smoothness. Complete native function attribution still pending separate exact-APK auxiliary trace. No performance gate reroll or relaxed threshold. No physical Redmi measurements."
+}
