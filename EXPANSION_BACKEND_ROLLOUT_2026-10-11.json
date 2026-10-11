@@ -1,0 +1,71 @@
+{
+  "recordedAt": "2026-10-11T09:48:57.089495+00:00",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "branch": "expansion-v2",
+  "recoveredHead": "8fd9ae2f39509ad51bc37421b7e8188fc7a6bf96",
+  "mainHead": "dbb354ab038713c3e54b969b34a6fc88bf2de11f",
+  "projectId": "dfjsnjxnyjspwugjguhq",
+  "sourceRuntime": "86b0f6d83079785ec7c29eb61e137c2613ff0a69",
+  "backendArtifact": {
+    "runId": 38115315485,
+    "artifactId": 11693232709,
+    "zipSha256": "6cd4e320068a1a29a48c982a1567167c91d8bf3442b5f47c19c218d06d35d8c6"
+  },
+  "deployments": [
+    {
+      "name": "game-command",
+      "oldVersion": 23,
+      "version": 24,
+      "status": "ACTIVE",
+      "verifyJwt": false,
+      "sourceBytes": 2777233,
+      "sourceSha256": "3072fb293d1ccb9d9b236c56149f511a7ca513a4ccbdd568efed0ac997375959",
+      "ezbrSha256": "085bb12875b6a424b37a8b28f17d504a0898ff691d6811ffb3002fecccbce45e"
+    },
+    {
+      "name": "game-room",
+      "oldVersion": 21,
+      "version": 22,
+      "status": "ACTIVE",
+      "verifyJwt": false,
+      "sourceBytes": 2789430,
+      "sourceSha256": "2b3a0cd8077a1dae0863a0bf9fc61fd68d4a94c0dc87535e8267de0dd3f56e6d",
+      "ezbrSha256": "960f79b56f27e15599c38290a1ce4f606f3e2f34f68ea4aa6498d8836d1de4d1"
+    }
+  ],
+  "checks": {
+    "strictTypeScript": "PASS",
+    "javaScript": {
+      "tests": 292,
+      "passed": 292,
+      "skipped": 0
+    },
+    "existingMalformedHttp": {
+      "passed": 10
+    },
+    "ciBundleAndLocalRebuildByteExact": true
+  },
+  "beforeQa": {
+    "rooms": 29,
+    "players": 32,
+    "receipts": 10,
+    "cityBackups": 29
+  },
+  "liveQa": {
+    "roomId": "9cc50b47-6263-4ec7-8d4f-90ded6a453a7",
+    "name": "WORLD ECONOMY QA",
+    "status": "RUNNING",
+    "cleanup": "PENDING"
+  },
+  "camera": {
+    "continuousRun": 38128760449,
+    "status": "RUNNING",
+    "panTraceRun": 38128760470,
+    "traceArtifactId": 11698996366,
+    "traceZipSha256": "3bd58295efba16b6f64842e2b6407b6bdf931912d40d0152d2e34d8f4ae2af1c",
+    "completeAttribution": false,
+    "note": "All four real continuous gesture markers exist. ftrace setup errors remain; nested slices are not CPU/GPU percentages."
+  },
+  "rollback": "Exact old command23 retained; room21 reconstruction is explicitly unconfirmed, as documented. Do not restore schema12 over any migrated schema18 room.",
+  "next": "Complete live schema18 HTTP QA and guarded exact-room cleanup; inspect complete continuous ABBA; verify actual native multiplayer reconnect; final higher-version release remains pending."
+}

@@ -17,7 +17,7 @@ class Process:
 
 
 class SystemTraceTest(unittest.TestCase):
-    def capture(self, root, code=0, after_pid='42', logs='', byte_count=2048, gesture_error=False):
+    def capture(self, root, code=0, after_pid='42', logs='', byte_count=2048, gesture_error=False, scenario='pinch'):
         calls = []
         def adb(*args):
             calls.append(args)
@@ -31,7 +31,7 @@ class SystemTraceTest(unittest.TestCase):
             calls.append(('gesture',))
             if gesture_error: raise RuntimeError('input failed')
         process=Process(code)
-        result=capture_camera_trace(adb,root,gesture,popen=lambda *a,**kw:process,pause=lambda _:None)
+        result=capture_camera_trace(adb,root,gesture,popen=lambda *a,**kw:process,pause=lambda _:None,scenario=scenario)
         return result,calls,process
 
     def test_trace_is_diagnostic_and_real_markers_enclose_gesture(self):
@@ -60,3 +60,15 @@ class SystemTraceTest(unittest.TestCase):
                 with self.assertRaisesRegex(AssertionError,'Missing/ambiguous'):
                     capture_camera_trace(adb,Path(directory),lambda:None)
             self.assertFalse(any(c[:2]==('shell','sh') for c in calls))
+
+    def test_pan_marker_and_trace_file_identify_actual_selected_gesture(self):
+        for scenario,marker in [('world-pan','DOMINION_WORLD_PAN_TRACE'),('local-pan','DOMINION_LOCAL_PAN_TRACE')]:
+            with tempfile.TemporaryDirectory() as directory:
+                result,calls,_=self.capture(Path(directory),scenario=scenario)
+                self.assertEqual(result['gestureMarker'],marker);self.assertEqual(result['traceFile'],scenario+'.pftrace')
+                self.assertTrue((Path(directory)/result['traceFile']).exists())
+                for phase in ['S','F']:self.assertTrue(any(c[:3]==('shell','sh','-c') and phase+'|42|'+marker+'|101' in c[3] for c in calls))
+        calls=[]
+        with tempfile.TemporaryDirectory() as directory,self.assertRaisesRegex(AssertionError,'Unsupported trace-only'):
+            capture_camera_trace(lambda *a:calls.append(a),Path(directory),lambda:None,scenario='world;echo bad')
+        self.assertEqual(calls,[])

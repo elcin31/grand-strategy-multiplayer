@@ -1,3 +1,9 @@
+# Latest actual evidence — 2026-10-11
+
+Actual86 native38115315485/job114402328011 SUCCESS, downloaded verified artifact with1817.9730875s stress plus game UX/save/restart/reboot. Exact86 upgrade38117186948 SUCCESS; save12→18/all six original backups/preferences/private files/UID retained. Same0.8.1(9), finalVersionUpgrade=false. Camera FAIL nine; live18/native reconnect/higher-version final release/delivery pending. Full evidence EXPANSION_CONTINUOUS_CAMERA_QA_2026-10-11.json.84Python/no skips PASS; application byte-unchanged86.
+
+---
+
 # Current86 standalone verification and durable upgrade publication gate — 2026-10-11
 
 Actual86 CI38115315485/build114398943630/10000 job114398943518 SUCCESS. Downloaded release ZIP11693595807/62,288,122bytes/SHA928d160e2d34b99ef3edcdcf5830f1f5e251dcfc55e94ddbd96951a0f3dc4f95 digest/CRC PASS; APK142,473,325bytes/SHAb43cf78cf96f63497ffd534fd508f193790388e1f0300ca0bfc442b1ed1d2583, Hermes10,689,948bytes/SHAfe453e21161b3ec4edd517d6c8d0d4a12f0c5ebe5ab1a0e9f706290858ab433a/dedicated backend/four Skia+Hermes ABIs/all42 byte-exact paintings/actual CI manifest+retained signature matching exact APK SHA PASS. Current full camera/native remain in progress, version0.8.1(9), no final release/delivery.

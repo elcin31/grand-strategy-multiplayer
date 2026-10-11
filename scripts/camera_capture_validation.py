@@ -4,6 +4,7 @@ Capture completeness is independent of performance acceptance. Failed memory
 and frame gates remain failures and are explicitly retained in this report.
 """
 import math
+from camera_gesture import validate_input_cadence
 
 CAPTURES = ('camera-before', 'camera-after', 'camera-after-reverse', 'camera-before-reverse')
 SCENARIOS = ('01-idle', '02-medium-pan', '03-pinch', '04-world-pan',
@@ -18,6 +19,7 @@ def positive(value):
 def validate_captures(captures, fixture_sha, fixture_checksum):
     assert set(captures) == set(CAPTURES), 'All four ABBA launches are required'
     assert fixture_sha and fixture_checksum, 'Missing accepted fixture identity'
+    assert len({validate_input_cadence(captures[n]) for n in CAPTURES})==1, 'Different camera input protocols'
     for name in CAPTURES:
         data = captures[name]
         assert data.get('protocol') == 'fixed-save-reset-v2', name+' protocol'

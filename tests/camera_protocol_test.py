@@ -11,13 +11,18 @@ SCRIPT = Path(__file__).parents[1] / 'scripts/compare-camera-native.py'
 
 
 class CameraProtocolTest(unittest.TestCase):
-    def compare(self, change, require_surface=False):
+    def compare(self, change, require_surface=False, continuous=False):
         data = {'protocol': 'fixed-save-reset-v2', 'fixtureSha256': 'fixture-a',
                 'fixtureStateChecksum': 'checksum-a', 'results': []}
         for i, name in enumerate(['idle', 'pan', '03-pinch', 'world', 'local', 'terrain', 'military', 'open', 'closed']):
             data['results'].append({'scenario': name, 'p50Ms': 16, 'p95Ms': 33,
                                     'histogramP95Ms': 33, 'pssKiB': 200000, 'jankPercent': 5,
                                     'surfacePresentation':{'available':True,'complete':True,'frames':40,'p50Ms':16,'p95Ms':33,'p99Ms':50}})
+        if continuous:
+            data['inputProtocol']='continuous-pointer-v1'
+            for row in data['results'][1:]:
+                row['gestureTiming']={'kind':'pinch' if row['scenario']=='03-pinch' else 'pan','gapMs':0,
+                                      'cycles':[{'downNs':i*2000+1,'upNs':i*2000+1900} for i in range(5)]}
         after = json.loads(json.dumps(data));change(after)
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -52,3 +57,16 @@ class CameraProtocolTest(unittest.TestCase):
         self.assertIn('complete compositor capture missing',self.compare(incomplete,require_surface=True).stderr)
         def tail(d):d['results'][2]['surfacePresentation']['p99Ms']=75
         self.assertIn('compositor p99 regression',self.compare(tail,require_surface=True).stderr)
+
+    def test_continuous_cadence_requires_matching_protocol_and_real_complete_markers(self):
+        self.assertEqual(self.compare(lambda _:None,True,True).returncode,0)
+        for mutation in [lambda d:d.pop('inputProtocol'),lambda d:d['results'][1].pop('gestureTiming'),
+                         lambda d:d['results'][1]['gestureTiming'].update(gapMs=150)]:
+            self.assertNotEqual(self.compare(mutation,True,True).returncode,0)
+
+    def test_continuous_input_does_not_relax_existing_frame_and_memory_limits(self):
+        for mutation,reason in [(lambda d:d['results'][3]['surfacePresentation'].update(p99Ms=61),'compositor p99 regression'),
+                                (lambda d:d['results'][2].update(histogramP95Ms=37),'Pinch p95 regression'),
+                                (lambda d:d['results'][3].update(pssKiB=240001),'Native memory regression'),
+                                (lambda d:d['results'][3]['surfacePresentation'].update(frames=19),'complete compositor capture missing')]:
+            self.assertIn(reason,self.compare(mutation,True,True).stderr)

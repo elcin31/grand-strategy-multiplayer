@@ -1,3 +1,9 @@
+# Latest actual evidence — 2026-10-11
+
+Actual86 full gapped4x9 ABBA FAILED nine original gates (eight P99 plus reverse terrain memory355081→454055KiB). Old driver injects150ms between1920ms gestures; CPU sampling extends frame capture beyond input. Both APKs now use continuous-pointer-v1/five complete real cycles/actual timestamps/zero injected idle/identical100ms finish grace. Every observed interval and original10/20%/20frames/paint/world limits retained. Fresh actual Java compilation/ABBA pending; no frame or handset FPS acceptance. Full evidence EXPANSION_CONTINUOUS_CAMERA_QA_2026-10-11.json.84Python/no skips PASS; application byte-unchanged86.
+
+---
+
 # Exclusive raster cache ownership — 2026-10-11
 
 Actual755 full unchanged4x9 ABBA is complete but fails six gates: forward pinch HWUI histogramP95 250→600ms, terrain compositorP99 91.625084→141.332038ms, panel-closedP99 92.214825→114.228966ms; reverse pinch compositorP95 471.589329→532.826437ms, worldP99 128.837025→190.818058ms, military PSS330285→397090KiB (748KiB above the20% cap). Local-panP99 passes both orders in this particular capture. Full original rows/digest/fixture preserved in EXPANSION_RASTER_OWNERSHIP_UPGRADE_QA_2026-10-11.json; no overall pass, samples removed or physical FPS claim.
