@@ -94,9 +94,7 @@
   },
   "pendingGates": [
     "android-smoke",
-    "camera-comparison",
-    "android-upgrade / release-upgrade-save",
-    "android-online / native-online"
+    "camera-comparison"
   ],
   "releaseAccepted": false,
   "physicalRedmi": "UNMEASURED",
@@ -341,5 +339,119 @@
     "camera-comparison": 114567941571,
     "android-upgrade / release-upgrade-save": 114567941609,
     "android-online / native-online": 114567941790
+  },
+  "upgrade": {
+    "status": "SUCCESS",
+    "jobId": 114567941609,
+    "artifact": {
+      "id": 11714826521,
+      "bytes": 2738725,
+      "sha256": "80afb37aa3eef5f772a8f49b69fbdf005beb243341e304b4d890797eba0ed373",
+      "sizeShaZipCrcVerified": true
+    },
+    "rawReport": {
+      "baseline": {
+        "package": "com.elcin31.grandstrategymultiplayer",
+        "versionCode": 9,
+        "versionName": "0.8.1",
+        "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+      },
+      "candidate": {
+        "package": "com.elcin31.grandstrategymultiplayer",
+        "versionCode": 10,
+        "versionName": "2.0.0",
+        "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+      },
+      "appUidRetained": true,
+      "privateCampaignFilesRetained": true,
+      "encryptedPreferenceBytesRetainedBeforeLaunch": true,
+      "actualSecureStorePreferencesAfterUpdate": {
+        "preset": "High",
+        "frameRate": 30,
+        "adaptive": false
+      },
+      "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+      "originalWorld": {
+        "countries": 195,
+        "provinces": 2924,
+        "cities": 5411
+      },
+      "oldSchema": 12,
+      "newSchema": 18,
+      "oldSaveSha256": "139b7e8b50a7fe078b81d003598a0cc62418f363e7c9f8fc930527c366374b19",
+      "migrationBackupSha256": {
+        "before-expansion-v13": "139b7e8b50a7fe078b81d003598a0cc62418f363e7c9f8fc930527c366374b19",
+        "before-espionage-v14": "139b7e8b50a7fe078b81d003598a0cc62418f363e7c9f8fc930527c366374b19",
+        "before-economy-v15": "139b7e8b50a7fe078b81d003598a0cc62418f363e7c9f8fc930527c366374b19",
+        "before-military-v16": "139b7e8b50a7fe078b81d003598a0cc62418f363e7c9f8fc930527c366374b19",
+        "before-technology-v17": "139b7e8b50a7fe078b81d003598a0cc62418f363e7c9f8fc930527c366374b19",
+        "before-focus-v18": "139b7e8b50a7fe078b81d003598a0cc62418f363e7c9f8fc930527c366374b19"
+      },
+      "repeatBackupBytesUnchanged": true,
+      "actualCandidateRestart": true,
+      "finalVersionUpgrade": true,
+      "note": "Real offline ephemeral-emulator package replacement, native save/load/backups and encrypted graphics preference round-trip. No production-session reconnect or hardware FPS claim."
+    }
+  },
+  "online": {
+    "status": "SUCCESS",
+    "jobId": 114567941790,
+    "artifact": {
+      "id": 11715181117,
+      "bytes": 1923173,
+      "sha256": "f3d193d72a4bc356f674fae47a2e7ac289bd8c77e105e35339d73408cea4cf09",
+      "sizeShaZipCrcVerified": true
+    },
+    "rawReport": {
+      "roomId": "d25d88a7-ba3f-453e-a235-48bd8a59a31f",
+      "qaName": "NATIVE ONLINE QA",
+      "stateVersion": 18,
+      "apkSha256": "6918422f4d03ddff656a921f19178c6a461b507985c30c62188bcfdb5ef813d0",
+      "nativeCreate": true,
+      "nativeCountrySelection": "germany",
+      "serverPaused": true,
+      "nativePaidFocus": "eco-audit",
+      "menuReconnect": true,
+      "processReconnect": true,
+      "realHostMigration": true,
+      "nativeOwnerReturn": true,
+      "rebootReconnect": true,
+      "sameNativeUidAndSessionKeys": true,
+      "onceOnlyFocusPaymentRetained": true,
+      "members": 2,
+      "cleanup": "PENDING",
+      "note": "Actual existing production HTTP and signed native controls; no tokens or snapshots in evidence."
+    },
+    "cleanup": {
+      "status": "COMPLETED_INDEPENDENT_READBACK",
+      "roomId": "d25d88a7-ba3f-453e-a235-48bd8a59a31f",
+      "createdAt": "2026-10-11T20:33:19.034412+00:00",
+      "reviewedMembers": [
+        "NATIVE ONLINE QA",
+        "NATIVE ONLINE QA GUEST"
+      ],
+      "reviewedReceipts": 7,
+      "deleteGuards": [
+        "Exact reviewed UUID and creation timestamp",
+        "All three original-backup columns NULL",
+        "Exact two reviewed QA-only members and expected returned host",
+        "Exact seven reviewed receipts"
+      ],
+      "roomsRemaining": 0,
+      "playersRemaining": 0,
+      "receiptsRemaining": 0,
+      "preservedCityBackups": 29
+    }
+  },
+  "qaCleanup": {
+    "roomIds": [
+      "73d08cc8-2a15-4600-8361-4bfcec0dc422",
+      "d25d88a7-ba3f-453e-a235-48bd8a59a31f"
+    ],
+    "roomsRemaining": 0,
+    "playersRemaining": 0,
+    "receiptsRemaining": 0,
+    "preservedCityBackups": 29,
+    "method": "Exact individually reviewed UUID/time/member/receipt/no-backup guards; independent combined readback after both deletions."
   }
 }
