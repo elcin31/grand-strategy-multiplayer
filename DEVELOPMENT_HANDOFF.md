@@ -1,3 +1,17 @@
+# Continuation — exact QA cleanup verified, 2026-10-11
+
+Verified parent **02dafe1651bf42adc8de330794d1ca9ee41b158c**; app runtime/APK exactf794/75aa unchanged.10 individual QA rooms were reviewed for exact UUID plus NATIVE ONLINE QA/WORLD ECONOMY QA identity and absence of original city backups, then deleted with all three guards. Independent DB readback: **0rooms/0players/0commandreceipts** for these exactUUIDs, **29original city backups retained**. Evidence EXPANSION_QA_CLEANUP_2026-10-11.json; live/native acceptance records point to it. Actual downloaded test reports keep their original at-capture pending cleanup fields; completion is recorded separately. No original/user campaign was removed.
+
+Current required proofs: final38133111807 build/296JS/strictTS/Python/10000ticks10restores/productionHTTP/higher-version-save upgrade SUCCESS; exact signed full native online recovery38135659505/job114458872397 SUCCESS. Fresh complete ABBA38136189671 IN_PROGRESS; final1800s native soak114455037099 IN_PROGRESS. Main unchangeddbb354ab, manifest absent/PENDING. Final release requires camera and soak to pass unchanged limits; no reroll or weakening. No physical Xiaomi measurement.
+
+Original12 stages:0DONE;1PARTIAL (old actual camera failures retained, corrected full comparison pending);2DONE;3–8DONE (implemented/integrated and full unit/10000/liveHTTP/actual native proof);9PARTIAL (27new/42total original art byte-exact embedded, final native frame/UI gate pending);10PARTIAL (allgame/HTTP/10000/upgrade/nativeonline PASS, camera/soak pending);11PARTIAL (actual signed2.0.0code10APK/samecertificate/embeddedHermes verified, final acceptance/publication/delivery pending). This continues the original roadmap only.
+
+Files: EXPANSION_QA_CLEANUP_2026-10-11.json,EXPANSION_LIVE_ACCEPTANCE_2026-10-11.json,EXPANSION_NATIVE_ONLINE_ACCEPTANCE_2026-10-11.json,DEVELOPMENT_HANDOFF.md,RELEASE_REPORT.md,BUG_REPORT.md. Report-only unit, JSON/diff checks PASS; no runtime or deployment change.
+
+Next exact action: inspect completed current ABBA and soak; fix any remaining measured camera regression. When all actualgates PASS record exact source/recovery/digests/cleanup in RELEASE_ACCEPTANCE_V2.json, promote existing main with expected-parent fast-forward, trigger publication-only existingapk-delivery workflow, verify publicAPK/ZIP hashes and directly deliver Dominion-grand-strategy-v2-release.apk. Prepared file-transfer helpers are current and private; APK not yet delivered/accepted.
+
+---
+
 # Continuation — final signed native online PASS and strict same-APK publication guards, 2026-10-11
 
 Verified published parent **d9b0061e4cafa98dced46e6b92f06975d9aedb66**; exact runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**, finalAPK142473881bytes/SHA75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3 unchanged. Corrected actual full native online **38135659505/cf93b08b7ce919323ad92893d2851fb2461e5bd1/job114458872397 SUCCESS**, artifact11701170433/2063182bytes/SHA68fb6886e32f9eb6056fcc42dc9617828c171e6be775463d70fe7f0f041d9097/CRC verified; downloaded source-run matches exact final38133111807/N.

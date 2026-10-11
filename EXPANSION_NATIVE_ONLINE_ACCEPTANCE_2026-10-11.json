@@ -31,5 +31,7 @@
     "jobId": 114455037604,
     "reason": "Offscreen native label has inverted clipped bounds; corrected actual flow passed"
   },
-  "note": "Actual signed production multiplayer QA. Complete release camera/soak acceptance still pending; no physical device claim."
+  "note": "Actual signed production multiplayer QA. Complete release camera/soak acceptance still pending; no physical device claim.",
+  "cleanup": "COMPLETE",
+  "cleanupEvidence": "EXPANSION_QA_CLEANUP_2026-10-11.json"
 }

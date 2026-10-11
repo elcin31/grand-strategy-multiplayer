@@ -1,0 +1,23 @@
+{
+  "project": "dfjsnjxnyjspwugjguhq",
+  "date": "2026-10-11",
+  "status": "COMPLETE",
+  "roomIds": [
+    "9cc50b47-6263-4ec7-8d4f-90ded6a453a7",
+    "7afc3e4d-f379-4bb5-8994-944a6418848f",
+    "ff5c4d14-e26e-4c80-8cd1-e872ffd54741",
+    "17c0ce2e-98e9-4daa-baf3-5f2e5abd5f5e",
+    "e91630eb-1637-41fb-8e6b-688ae7593df5",
+    "10a12545-03d1-4058-a915-0fbe79f7d0b4",
+    "0c48799f-180c-4206-bfd4-69fb539f0996",
+    "b18c51ce-00e1-48b4-8977-007d1c01fb19",
+    "4a7c4f96-1661-40b1-87b3-0f835983e783",
+    "43a7c12e-6d87-4afc-b31f-42a1d7f4fd46"
+  ],
+  "removedTestRooms": 10,
+  "roomsRemaining": 0,
+  "playersRemaining": 0,
+  "receiptsRemaining": 0,
+  "preservedCityBackups": 29,
+  "method": "Exact UUID plus expected QA identity and no original city backups, FK cleanup and independent zero-row readback; original user rooms excluded."
+}
