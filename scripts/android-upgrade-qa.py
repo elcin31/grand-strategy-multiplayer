@@ -112,6 +112,10 @@ def launch_saved(name):
     assert not any('поврежден' in n.get('text','').lower() or 'Действие отклонено' in n.get('text','') for n in tree.iter('node'))
     bounds=list(map(int,re.findall(r'\d+',tree[0].get('bounds',''))))
     assert bounds[2]>bounds[3], 'Updated app did not render landscape'
+    # As in the fixed-save camera harness, allow the ordinary cold raster
+    # preparation after UI mount. The same8% paint gate still rejects a blank
+    # surface; this fixed wait is not a measured startup-latency claim.
+    time.sleep(15)
     image = OUT/(name+'.png')
     image.write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
     assert_map_painted(image)
