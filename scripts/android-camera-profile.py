@@ -9,7 +9,7 @@ from camera_frame_stats import frame_stats,thread_stats
 from camera_telemetry import camera_telemetry
 from camera_surface_stats import map_surface_layer, SurfaceSampler, surface_latency_args
 from camera_gesture import INPUT_PROTOCOL, gesture_command, gesture_timing
-from android_fixture import root_test_device
+from android_fixture import root_test_device, fresh_camera_install
 from camera_fixture_projection import assert_paused_fixture
 from map_paint_check import assert_map_painted
 from android_accessibility import dump_hierarchy, assert_no_game_fatal
@@ -133,7 +133,8 @@ def sample(name,kind=None):
         print('Camera accessibility diagnostic unavailable:',name,str(error),flush=True)
     persist();print(json.dumps(result),flush=True)
 
-adb('install','-r',sys.argv[1]);adb('shell','pm','clear',PACKAGE)
+root_test_device(adb,OUT/'camera-install-emulator.txt')
+fresh_camera_install(adb,PACKAGE,sys.argv[1])
 adb('shell','wm','size','720x1280');adb('shell','wm','density','160')
 adb('shell','svc','wifi','disable');adb('shell','svc','data','disable')
 if fixture:load_fixed_fixture()

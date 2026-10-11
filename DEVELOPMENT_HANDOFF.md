@@ -1,3 +1,15 @@
+# Continuation — final camera version-switch harness recovery, 2026-10-11
+
+Verified parent **ca7eeab08561f51e37501382a5bfb66dfb79d83b**; current signed app runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**, APK unchanged75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3. Corrected real native online QA **38135659505/cf93b08b7ce919323ad92893d2851fb2461e5bd1** IN_PROGRESS on exactly this APK after visible-control fix. Final native soak114455037099 remains IN_PROGRESS; actual higher-version upgrade114455037206 SUCCESS.
+
+Final camera114455037050 FAIL, evidence11700523412/13335120bytes/SHA4eeb6664cb41e5fbd8b1571adfe6d9f1f9fb51f94e95fab50f97337804a6af74/CRC verified. Forward medium compositor p99 **149.736818→244.749993ms** fails1.2; pinch HWUI95 **450→500ms** and compositor95 **440.639226→504.727749ms** also exceed1.1. Forward PSS all<=1.2; other scenarios retain mostly lower/equal timings. Reverse candidate completed but baseline install FAILED because adb install-r refuses signed version10→9 downgrade. Earlier3f/882 comparisons show the same actual version-switch failure. These are failed measurements, not acceptance. Original continuous300→350ms pinch failure also remains preserved.
+
+Camera fixture protocol already clears all app data per profile. The test now verifies rooted ephemeral emulator, explicitly uninstalls only its existing Dominion QA package, installs the actual next signed APK and clears its fixture data before loading the identical checksum-validated paused save. This makes both forward and reverse fresh starts possible without altering Android release security or real upgrade-save QA. Tests reject unsuccessful uninstall before install. All frame/compositor/PSS thresholds, continuous gesture cadence and captured intervals unchanged. Existing expansion-camera-checkpoint is updated to reuse exact final38133111807/N binary with source runtime guard and uploaded source provenance. No gameplay/renderer/asset/backend changes or APK rebuild.
+
+Files: scripts/android_fixture.py,scripts/android-camera-profile.py,tests/camera_fixture_test.py,.github/workflows/expansion-camera-checkpoint.yml,DEVELOPMENT_HANDOFF.md.4fixture guards/compile/YAML/diff PASS. Next: run the corrected complete ABBA comparison on existing expansion-camera-qa, preserve old failed measurements, diagnose any remaining measured regression before release. Native actual paid/course/session/reconnect still mandatory. Main/acceptance/publication remain blocked. Exact QA cleanup and all29original backups remain required. Physical Xiaomi unmeasured.
+
+---
+
 # Continuation — actual offscreen native course control recovery, 2026-10-11
 
 Verified published parent **cac6ad0e0e4b842d0ce2d8f98cb2c1205bac32ed**; exact game runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**, unchanged APK142473881bytes/SHA75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3. Final38133111807 build/10000/liveHTTP/actual0.8.1→2.0save upgrade PASS; camera/1800s native soak IN_PROGRESS. Do not rebuild for this QA-only fix.
