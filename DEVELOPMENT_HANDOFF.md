@@ -1,3 +1,11 @@
+# Continuation — final filename evidence exporter alignment, 2026-10-11
+
+Parent cb168069c0dae5d546138eb10bc9a4acf8ca83d3; game/runtime/APK remains exactf794/75aa, no rebuild. Fresh ABBA run38135962195/e5480f55177be049728ba6337a793fff78f41411 began; review caught the final export-only helper still hardcoded to the old0.8.1filename. It now accepts an explicit APK path and the existing final camera workflow passes Dominion-grand-strategy-v2-release.apk. Local exporter smoke verified actual142473881bytes and75aa SHA; compilation/YAML/diff PASS. No native/frame/fixture threshold changed; incomplete captures remain incomplete.
+
+Publish these three QA/ops files and resume existing expansion-camera-qa; its existing cancel-in-progress policy will replace the early obsolete harness run with corrected complete output. Preserve historical failed measurements. Native paid/owner/return run38135659505 still active; final1800s smoke still active. Publication guard improvements are separately uncommitted work in scripts/release_v2_validation.py and scripts/verify-expansion-release.py, pending meaningful negative tests; do not claim them accepted. Next exact operation remains complete actual native/ABBA acceptance before scoped cleanup/main/release delivery. Physical Xiaomi unmeasured.
+
+---
+
 # Continuation — final camera version-switch harness recovery, 2026-10-11
 
 Verified parent **ca7eeab08561f51e37501382a5bfb66dfb79d83b**; current signed app runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**, APK unchanged75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3. Corrected real native online QA **38135659505/cf93b08b7ce919323ad92893d2851fb2461e5bd1** IN_PROGRESS on exactly this APK after visible-control fix. Final native soak114455037099 remains IN_PROGRESS; actual higher-version upgrade114455037206 SUCCESS.
