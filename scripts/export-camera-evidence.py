@@ -1,13 +1,13 @@
-import base64,hashlib,json,os,zipfile
+import base64,hashlib,json,os,sys,zipfile
 from pathlib import Path
-apk=Path("Dominion-camera-optimized-illustrated.apk")
+apk=Path(sys.argv[1] if len(sys.argv)>1 else "Dominion-camera-optimized-illustrated.apk")
 with zipfile.ZipFile(apk) as z:
     assert z.testzip() is None
     bundle=z.read("assets/index.android.bundle")
     assert b"https://dfjsnjxnyjspwugjguhq.supabase.co/functions/v1" in bundle
 report_path=Path("CAMERA_NATIVE_PAIRED.json")
 report=json.loads(report_path.read_text()) if report_path.exists() else {"incomplete":True,"before":json.loads(Path("camera-before/results.json").read_text()) if Path("camera-before/results.json").exists() else None,"after":json.loads(Path("camera-after/results.json").read_text()) if Path("camera-after/results.json").exists() else None}
-report["apkVerification"]={"sourceRuntime":report.get("candidateRuntime",os.environ.get("CAMERA_CANDIDATE_RUNTIME")),"sourceRun":report.get("candidateRun",os.environ.get("CAMERA_CANDIDATE_RUN")),"bytes":apk.stat().st_size,"sha256":hashlib.sha256(apk.read_bytes()).hexdigest(),"bundleBytes":len(bundle),"integrity":Path("checkpoint-integrity.txt").read_text(),"note":"Intermediate only; Expansion 2.0 stages 3-11 unfinished. Unknown source stays null rather than guessing another build."}
+report["apkVerification"]={"sourceRuntime":report.get("candidateRuntime",os.environ.get("CAMERA_CANDIDATE_RUNTIME")),"sourceRun":report.get("candidateRun",os.environ.get("CAMERA_CANDIDATE_RUN")),"bytes":apk.stat().st_size,"sha256":hashlib.sha256(apk.read_bytes()).hexdigest(),"bundleBytes":len(bundle),"integrity":Path("checkpoint-integrity.txt").read_text(),"note":"Camera evidence only; complete release acceptance remains separate. Unknown source stays null rather than guessing another build."}
 report["pictures"]={}
 for name in ["03-pinch","04-world-pan"]:
     p=Path("camera-after")/(name+".png")
