@@ -12,9 +12,11 @@ from camera_trace_analysis import analyze_trace
 
 out = Path(sys.argv[1])
 capture = json.loads((out / 'trace-capture.json').read_text())
-assert hashlib.sha256((out / 'pinch.pftrace').read_bytes()).hexdigest() == capture['traceSha256'], 'Corrupted/wrong trace file'
-with TraceProcessor(trace=str(out / 'pinch.pftrace')) as trace:
-    report = analyze_trace(trace, capture['pid'], capture['traceSha256'])
+trace_file=capture.get('traceFile','pinch.pftrace')
+assert trace_file in ['pinch.pftrace','world-pan.pftrace','local-pan.pftrace'], 'Unsupported trace file'
+assert hashlib.sha256((out / trace_file).read_bytes()).hexdigest() == capture['traceSha256'], 'Corrupted/wrong trace file'
+with TraceProcessor(trace=str(out / trace_file)) as trace:
+    report = analyze_trace(trace, capture['pid'], capture['traceSha256'],capture.get('gestureMarker','DOMINION_PINCH_TRACE'))
 report['note'] = 'Observed thread-state intersections only inside the actual device marker. '
 report['note'] += ('Marker encloses input injection; asynchronous presentation after its end is outside this interval. '
                   'Missing scheduler/loss means incomplete attribution, never zero CPU. '

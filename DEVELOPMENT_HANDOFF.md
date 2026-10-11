@@ -1,3 +1,36 @@
+# Continuation — actual Android PASS and continuous camera capture, 2026-10-11
+
+Confirmed parent63a40b9b2162403e658b7ad79692987fb50953ac; application/backend/world/assets/dependencies byte-identical86b0f6d83079785ec7c29eb61e137c2613ff0a69. Obtain this QA-only containing SHA from expansion-v2. Scratch maintenance removed an uncommitted correction; restored from GitHub63 with all8c1 auxiliary world/local diagnostics preserved, and verified again:84Python/no skips, pinned Perfetto0.58.2/officialv57.2, compilation/YAML/source/schema/diff checks PASS. Inherit292JS/strictTS/Hermes/all42 from unchanged86. No repeated gameplay development or duplicate APK build.
+
+Actual86 run38115315485: build114398943630/10000 job114398943518/native114402328011 SUCCESS. Native artifact11694935665/28,873,137bytes/SHA7141b56b6a344e257c8f473d45d1f66eef4d252f7bda083c30c628c808c1b6b0 downloaded/digest/CRC: all mechanics/army UX/layouts/save/restart/reboot/no game fatal plus actual1817.9730875s continuous release render/simulation/autosave. Same0.8.1(9) checkpoint, not final release.
+
+Actual86 full4x9 camera114402327985 FAILED nine original gates. ZIP11693617354/17,844,527bytes/SHA3a6d3bccdf5339bd71c74a6355620413ffd04c83b0e932ae38795a5f5c34d4ae digest/CRC; all36 metrics and violations retained in EXPANSION_CONTINUOUS_CAMERA_QA_2026-10-11.json. Eight P99 violations plus reverse terrain PSS355081→454055KiB. No cache benefit or handset FPS inferred.
+
+Old driver inserts150ms after each1920ms gesture; world long intervals recur near2.07s. Compositor also waited for independent CPU sampling after motion. Both APKs now use five complete real-pointer cycles with explicit zero injected gap and actual monotonic down/up markers. Capture stops after identical100ms finish grace before CPU wait; every observed frame interval retained, real scheduling gaps never clamped. CPU/HWUI diagnostics may extend beyond motion. All four new captures must have the same continuous-pointer-v1 identity. Original10/20% PSS/P95/P99/HWUI/20frames/paint/full-world gates unchanged. Historical failures remain failures. Actual Android Java compilation and fresh full ABBA remain pending CI.
+
+Actual exact86 install migration38117186948/job114404309612 SUCCESS. ZIP11694246297/2,713,257bytes/SHA6080129c2de4fef90a4ebedbffff5f9cda54a9c190d834f1a553a5a61a9d0d45 digest/CRC; UID/private files/ciphertext retained before launch, actual Save12→18 with six byte-exact original backups, repeated restart/save and High/30/adaptive OFF survive. finalVersionUpgrade=false; main gate requires actual higher Android code and exact source SHA. No live-session reconnect claim.
+
+| Approved stage | Status |
+|---|---|
+|0 Recovery|DONE; do not repeat|
+|1 Frame pacing|PARTIAL; actual nine gapped failures; fresh continuous comparison pending|
+|2 Army selection/movement|DONE; actual integrated native PASS|
+|3 Diplomacy2.0|PARTIAL; implemented/host/native/10000 PASS; live18 pending|
+|4 Espionage/diplomatic AI|PARTIAL; implemented/host/native/10000 PASS; live18 pending|
+|5 Economy/buildings|PARTIAL; implemented/host/native/10000 PASS; live18 pending|
+|6 Military/supply|PARTIAL; implemented/host/native/10000 PASS; live18 pending|
+|7 Technology|PARTIAL;30 technologies/five branches/native PASS; live18 pending|
+|8 National Course|PARTIAL;40 focuses/AI/once-only/native/10000 PASS; live18 pending|
+|9 Historical art/UI|PARTIAL;27 new originals/42 embedded hashes PASS; final frame gate pending|
+|10 Integration/balance|PARTIAL; actual10000/ten restores/native1817s/migration PASS; frames/live reconnect pending|
+|11 Final Android2.0|PARTIAL; checkpoint standalone verified; higher-version final release/delivery pending|
+
+No data schema/gameplay/backend changes in this correction. Existing dedicated Dominion backend only: room21/command23/schema12 at last verification, no deployment/live QA room/DB writes yet. Exact command rollback and metadata durable in backend-rollback; room reconstruction explicitly not confirmed exact deployed bytes. Reviewed86 bundles recovered/digest/CRC/per-file SHA verified.
+
+Exact next operation: publish this tested skip-ci checkpoint; normal merge preserved auxiliary diagnostics/current runtime into existing expansion-camera-qa, no force, to run full continuous ABBA and four world/local traces using exact86 APK38115315485 and accepted47 APK37971350100. Immutable original195/2924/5411 schema12 fixture regenerated from accepted47. While CI runs, complete necessary existing command-before-room schema18 rollout/custom auth, real-clock/authenticated HTTP QA and exact isolated-room cleanup; verify native multiplayer reconnect. Diagnose remaining actual frame/memory failures without weakening limits. Finish final2.0/higher version/tag/title/file/retained certificate/actual replacement/save/backend/landscape/42art/1800s/10000/fullABBA; download/verify/deliver Dominion-grand-strategy-v2-release.apk. Do not stop at this checkpoint or deliver intermediate0.8.1.
+
+---
+
 # Continuation — actual86 build/10000 and final upgrade gate, 2026-10-11
 
 Latest GitHub/local verified HEAD **86b0f6d83079785ec7c29eb61e137c2613ff0a69**, tree1510d918410dd9d073550d9babb7832e6bca005f. This following QA-only logical commit uses skip-ci to preserve its ongoing full camera/native gates and avoids rebuilding identical application code. No application/backend/world/schema/dependency/asset changes in this continuation. Inherit292JS/76Python/no skips/strictTS/production Hermes/all42 from86. YAML syntax and actual same-version report rejection by final-version gate PASS.

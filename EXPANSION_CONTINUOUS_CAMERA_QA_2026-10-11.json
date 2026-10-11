@@ -1,0 +1,759 @@
+{
+  "parentHead": "63a40b9b2162403e658b7ad79692987fb50953ac",
+  "runtimeHead": "86b0f6d83079785ec7c29eb61e137c2613ff0a69",
+  "runtimeRun": 38115315485,
+  "artifactArchives": [
+    {
+      "id": 11694935665,
+      "bytes": 28873137,
+      "sha256": "7141b56b6a344e257c8f473d45d1f66eef4d252f7bda083c30c628c808c1b6b0"
+    },
+    {
+      "id": 11693617354,
+      "bytes": 17844527,
+      "sha256": "3a6d3bccdf5339bd71c74a6355620413ffd04c83b0e932ae38795a5f5c34d4ae"
+    },
+    {
+      "id": 11694246297,
+      "bytes": 2713257,
+      "sha256": "6080129c2de4fef90a4ebedbffff5f9cda54a9c190d834f1a553a5a61a9d0d45"
+    },
+    {
+      "id": 11693232709,
+      "bytes": 913370,
+      "sha256": "6cd4e320068a1a29a48c982a1567167c91d8bf3442b5f47c19c218d06d35d8c6"
+    }
+  ],
+  "originalWorld": {
+    "countries": 195,
+    "provinces": 2924,
+    "cities": 5411
+  },
+  "native": {
+    "job": 114402328011,
+    "conclusion": "success",
+    "actualStressSeconds": 1817.9730875,
+    "offline": true,
+    "physicalFps": null
+  },
+  "camera": {
+    "job": 114402327985,
+    "conclusion": "failure",
+    "validation": {
+      "diagnosticOnly": true,
+      "allFourCapturesComplete": true,
+      "scenariosPerLaunch": 9,
+      "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+      "fixtureStateChecksum": "e8befae1",
+      "comparisonGateViolations": [
+        {
+          "scenario": "forward:04-world-pan",
+          "gate": "compositor:p99Ms",
+          "before": 94.331576,
+          "after": 173.692582
+        },
+        {
+          "scenario": "forward:05-local-labels-armies",
+          "gate": "compositor:p99Ms",
+          "before": 70.181963,
+          "after": 96.503768
+        },
+        {
+          "scenario": "forward:06-terrain-pan",
+          "gate": "compositor:p99Ms",
+          "before": 80.451638,
+          "after": 98.863594
+        },
+        {
+          "scenario": "forward:08-panel-open",
+          "gate": "compositor:p99Ms",
+          "before": 69.158997,
+          "after": 101.160317
+        },
+        {
+          "scenario": "reverse:04-world-pan",
+          "gate": "compositor:p99Ms",
+          "before": 91.391645,
+          "after": 175.926056
+        },
+        {
+          "scenario": "reverse:05-local-labels-armies",
+          "gate": "compositor:p99Ms",
+          "before": 73.111394,
+          "after": 97.805195
+        },
+        {
+          "scenario": "reverse:06-terrain-pan",
+          "gate": "pss20percent",
+          "before": 355081,
+          "after": 454055
+        },
+        {
+          "scenario": "reverse:06-terrain-pan",
+          "gate": "compositor:p99Ms",
+          "before": 64.179756,
+          "after": 84.329195
+        },
+        {
+          "scenario": "reverse:09-panel-closed",
+          "gate": "compositor:p99Ms",
+          "before": 70.054117,
+          "after": 115.875477
+        }
+      ],
+      "comparisonGatesPassed": false,
+      "note": "Original20% PSS/other and10% pinch limits retained. Complete captures allow diagnosis; they do not establish final native or physical-device acceptance."
+    },
+    "captures": {
+      "camera-before": [
+        {
+          "scenario": "01-idle",
+          "pssKiB": 344688,
+          "histogramP95Ms": null,
+          "p95Ms": null,
+          "elapsedSeconds": 10.000074095000002,
+          "surfacePresentation": {
+            "available": false,
+            "complete": true,
+            "frames": 0,
+            "p50Ms": null,
+            "p95Ms": null,
+            "p99Ms": null
+          }
+        },
+        {
+          "scenario": "02-medium-pan",
+          "pssKiB": 331216,
+          "histogramP95Ms": 113.0,
+          "p95Ms": 117.429173,
+          "elapsedSeconds": 11.32877989100001,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 249,
+            "p50Ms": 41.966741,
+            "p95Ms": 75.147193,
+            "p99Ms": 115.645313
+          }
+        },
+        {
+          "scenario": "03-pinch",
+          "pssKiB": 355222,
+          "histogramP95Ms": 200.0,
+          "p95Ms": 284.363377,
+          "elapsedSeconds": 11.31131086900001,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 156,
+            "p50Ms": 48.063501,
+            "p95Ms": 228.907275,
+            "p99Ms": 334.93094
+          }
+        },
+        {
+          "scenario": "04-world-pan",
+          "pssKiB": 355314,
+          "histogramP95Ms": 113.0,
+          "p95Ms": 117.270958,
+          "elapsedSeconds": 11.295036398999997,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 250,
+            "p50Ms": 40.066832,
+            "p95Ms": 75.489198,
+            "p99Ms": 94.331576
+          }
+        },
+        {
+          "scenario": "05-local-labels-armies",
+          "pssKiB": 393871,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 84.195526,
+          "elapsedSeconds": 11.294488510999997,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 348,
+            "p50Ms": 29.074402,
+            "p95Ms": 55.385237,
+            "p99Ms": 70.181963
+          }
+        },
+        {
+          "scenario": "06-terrain-pan",
+          "pssKiB": 435230,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 85.011165,
+          "elapsedSeconds": 11.299320425000019,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 340,
+            "p50Ms": 30.41238,
+            "p95Ms": 55.957611,
+            "p99Ms": 80.451638
+          }
+        },
+        {
+          "scenario": "07-military-overlay",
+          "pssKiB": 357463,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 83.555332,
+          "elapsedSeconds": 11.297002340999995,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 352,
+            "p50Ms": 29.063142,
+            "p95Ms": 55.83982,
+            "p99Ms": 71.037129
+          }
+        },
+        {
+          "scenario": "08-panel-open",
+          "pssKiB": 414597,
+          "histogramP95Ms": 93.0,
+          "p95Ms": 84.89116,
+          "elapsedSeconds": 11.31259234800001,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 333,
+            "p50Ms": 30.476941,
+            "p95Ms": 58.882331,
+            "p99Ms": 69.158997
+          }
+        },
+        {
+          "scenario": "09-panel-closed",
+          "pssKiB": 333440,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 86.006776,
+          "elapsedSeconds": 11.264247943999976,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 348,
+            "p50Ms": 29.030066,
+            "p95Ms": 54.512259,
+            "p99Ms": 87.958441
+          }
+        }
+      ],
+      "camera-after": [
+        {
+          "scenario": "01-idle",
+          "pssKiB": 369539,
+          "histogramP95Ms": null,
+          "p95Ms": null,
+          "elapsedSeconds": 10.00008243000002,
+          "surfacePresentation": {
+            "available": false,
+            "complete": true,
+            "frames": 0,
+            "p50Ms": null,
+            "p95Ms": null,
+            "p99Ms": null
+          }
+        },
+        {
+          "scenario": "02-medium-pan",
+          "pssKiB": 338586,
+          "histogramP95Ms": 113.0,
+          "p95Ms": 116.81088,
+          "elapsedSeconds": 11.294377714000007,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 243,
+            "p50Ms": 40.84295,
+            "p95Ms": 77.113452,
+            "p99Ms": 124.801963
+          }
+        },
+        {
+          "scenario": "03-pinch",
+          "pssKiB": 378706,
+          "histogramP95Ms": 200.0,
+          "p95Ms": 266.765543,
+          "elapsedSeconds": 11.296653072000026,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 156,
+            "p50Ms": 48.757295,
+            "p95Ms": 191.611067,
+            "p99Ms": 344.675897
+          }
+        },
+        {
+          "scenario": "04-world-pan",
+          "pssKiB": 375653,
+          "histogramP95Ms": 109.0,
+          "p95Ms": 112.589482,
+          "elapsedSeconds": 11.286655440000004,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 248,
+            "p50Ms": 40.080623,
+            "p95Ms": 72.235157,
+            "p99Ms": 173.692582
+          }
+        },
+        {
+          "scenario": "05-local-labels-armies",
+          "pssKiB": 409113,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 85.328994,
+          "elapsedSeconds": 11.296195074000025,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 334,
+            "p50Ms": 29.988642,
+            "p95Ms": 53.545367,
+            "p99Ms": 96.503768
+          }
+        },
+        {
+          "scenario": "06-terrain-pan",
+          "pssKiB": 326153,
+          "histogramP95Ms": 85.0,
+          "p95Ms": 86.581,
+          "elapsedSeconds": 11.30259382600002,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 331,
+            "p50Ms": 28.876357,
+            "p95Ms": 57.46757,
+            "p99Ms": 98.863594
+          }
+        },
+        {
+          "scenario": "07-military-overlay",
+          "pssKiB": 381538,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 85.409272,
+          "elapsedSeconds": 11.300109256000042,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 336,
+            "p50Ms": 30.058231,
+            "p95Ms": 54.145863,
+            "p99Ms": 80.3383
+          }
+        },
+        {
+          "scenario": "08-panel-open",
+          "pssKiB": 359860,
+          "histogramP95Ms": 93.0,
+          "p95Ms": 87.534526,
+          "elapsedSeconds": 11.28115530499997,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 322,
+            "p50Ms": 30.579344,
+            "p95Ms": 56.558458,
+            "p99Ms": 101.160317
+          }
+        },
+        {
+          "scenario": "09-panel-closed",
+          "pssKiB": 342571,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 84.65152,
+          "elapsedSeconds": 11.316612005000025,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 342,
+            "p50Ms": 29.704292,
+            "p95Ms": 51.84983,
+            "p99Ms": 63.264004
+          }
+        }
+      ],
+      "camera-after-reverse": [
+        {
+          "scenario": "01-idle",
+          "pssKiB": 371666,
+          "histogramP95Ms": null,
+          "p95Ms": null,
+          "elapsedSeconds": 10.00008560699996,
+          "surfacePresentation": {
+            "available": false,
+            "complete": true,
+            "frames": 0,
+            "p50Ms": null,
+            "p95Ms": null,
+            "p99Ms": null
+          }
+        },
+        {
+          "scenario": "02-medium-pan",
+          "pssKiB": 339400,
+          "histogramP95Ms": 129.0,
+          "p95Ms": 134.079076,
+          "elapsedSeconds": 11.32653268599995,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 244,
+            "p50Ms": 40.858478,
+            "p95Ms": 76.821151,
+            "p99Ms": 97.516004
+          }
+        },
+        {
+          "scenario": "03-pinch",
+          "pssKiB": 383042,
+          "histogramP95Ms": 200.0,
+          "p95Ms": 316.87667,
+          "elapsedSeconds": 11.309413328000005,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 160,
+            "p50Ms": 43.5769,
+            "p95Ms": 230.993764,
+            "p99Ms": 457.325675
+          }
+        },
+        {
+          "scenario": "04-world-pan",
+          "pssKiB": 379308,
+          "histogramP95Ms": 109.0,
+          "p95Ms": 116.839123,
+          "elapsedSeconds": 11.34112006099997,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 249,
+            "p50Ms": 39.746364,
+            "p95Ms": 76.836663,
+            "p99Ms": 175.926056
+          }
+        },
+        {
+          "scenario": "05-local-labels-armies",
+          "pssKiB": 407076,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 85.781189,
+          "elapsedSeconds": 11.307968661000018,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 340,
+            "p50Ms": 29.988902,
+            "p95Ms": 53.864587,
+            "p99Ms": 97.805195
+          }
+        },
+        {
+          "scenario": "06-terrain-pan",
+          "pssKiB": 454055,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 85.609722,
+          "elapsedSeconds": 11.294534007000038,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 340,
+            "p50Ms": 30.44531,
+            "p95Ms": 52.630697,
+            "p99Ms": 84.329195
+          }
+        },
+        {
+          "scenario": "07-military-overlay",
+          "pssKiB": 345071,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 85.867268,
+          "elapsedSeconds": 11.286113009000019,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 336,
+            "p50Ms": 30.458384,
+            "p95Ms": 53.845204,
+            "p99Ms": 80.480131
+          }
+        },
+        {
+          "scenario": "08-panel-open",
+          "pssKiB": 330817,
+          "histogramP95Ms": 93.0,
+          "p95Ms": 100.126039,
+          "elapsedSeconds": 11.31629861700003,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 318,
+            "p50Ms": 32.069658,
+            "p95Ms": 58.45292,
+            "p99Ms": 74.774232
+          }
+        },
+        {
+          "scenario": "09-panel-closed",
+          "pssKiB": 361296,
+          "histogramP95Ms": 85.0,
+          "p95Ms": 85.647739,
+          "elapsedSeconds": 11.305406203000075,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 328,
+            "p50Ms": 30.047105,
+            "p95Ms": 57.190876,
+            "p99Ms": 115.875477
+          }
+        }
+      ],
+      "camera-before-reverse": [
+        {
+          "scenario": "01-idle",
+          "pssKiB": 339987,
+          "histogramP95Ms": null,
+          "p95Ms": null,
+          "elapsedSeconds": 10.000077565999845,
+          "surfacePresentation": {
+            "available": false,
+            "complete": true,
+            "frames": 0,
+            "p50Ms": null,
+            "p95Ms": null,
+            "p99Ms": null
+          }
+        },
+        {
+          "scenario": "02-medium-pan",
+          "pssKiB": 330300,
+          "histogramP95Ms": 113.0,
+          "p95Ms": 116.797295,
+          "elapsedSeconds": 11.294937837000134,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 248,
+            "p50Ms": 40.374046,
+            "p95Ms": 77.35325,
+            "p99Ms": 93.327298
+          }
+        },
+        {
+          "scenario": "03-pinch",
+          "pssKiB": 376616,
+          "histogramP95Ms": 250.0,
+          "p95Ms": 311.812263,
+          "elapsedSeconds": 11.432796349,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 151,
+            "p50Ms": 45.55699,
+            "p95Ms": 245.319803,
+            "p99Ms": 429.394093
+          }
+        },
+        {
+          "scenario": "04-world-pan",
+          "pssKiB": 371850,
+          "histogramP95Ms": 109.0,
+          "p95Ms": 116.793476,
+          "elapsedSeconds": 11.277262374000202,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 255,
+            "p50Ms": 40.085956,
+            "p95Ms": 74.457954,
+            "p99Ms": 91.391645
+          }
+        },
+        {
+          "scenario": "05-local-labels-armies",
+          "pssKiB": 403122,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 83.564795,
+          "elapsedSeconds": 11.29396597799996,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 355,
+            "p50Ms": 28.658287,
+            "p95Ms": 52.436697,
+            "p99Ms": 73.111394
+          }
+        },
+        {
+          "scenario": "06-terrain-pan",
+          "pssKiB": 355081,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 84.383447,
+          "elapsedSeconds": 11.28632143599998,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 355,
+            "p50Ms": 28.150449,
+            "p95Ms": 53.684759,
+            "p99Ms": 64.179756
+          }
+        },
+        {
+          "scenario": "07-military-overlay",
+          "pssKiB": 380037,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 83.511285,
+          "elapsedSeconds": 11.28423556000007,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 353,
+            "p50Ms": 29.707318,
+            "p95Ms": 50.169709,
+            "p99Ms": 84.950882
+          }
+        },
+        {
+          "scenario": "08-panel-open",
+          "pssKiB": 339037,
+          "histogramP95Ms": 89.0,
+          "p95Ms": 84.589097,
+          "elapsedSeconds": 11.272185577000073,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 329,
+            "p50Ms": 31.012775,
+            "p95Ms": 57.060942,
+            "p99Ms": 72.968636
+          }
+        },
+        {
+          "scenario": "09-panel-closed",
+          "pssKiB": 365515,
+          "histogramP95Ms": 81.0,
+          "p95Ms": 83.666055,
+          "elapsedSeconds": 11.27732418000005,
+          "surfacePresentation": {
+            "available": true,
+            "complete": true,
+            "frames": 353,
+            "p50Ms": 28.658788,
+            "p95Ms": 54.572814,
+            "p99Ms": 70.054117
+          }
+        }
+      ]
+    },
+    "oldWorldIntervals": {
+      "forwardRelativeSeconds": [
+        2.066823,
+        4.152438,
+        6.203015,
+        8.297626
+      ],
+      "forwardMilliseconds": [
+        153.775,
+        173.692582,
+        175.036332,
+        205.456539
+      ],
+      "reverseRelativeSeconds": [
+        2.104397,
+        4.18329,
+        6.269348,
+        8.325196,
+        11.05921
+      ],
+      "reverseMilliseconds": [
+        179.224844,
+        175.926056,
+        164.05465,
+        137.494439,
+        818.978938
+      ]
+    },
+    "note": "Old driver injects150ms after each1920ms cycle; periodic world gaps coincide with that cadence. CPU sampling extends capture beyond input. Measurement artifact hypothesis does not establish gameplay acceptance; all nine old failures retained."
+  },
+  "upgrade": {
+    "run": 38117186948,
+    "job": 114404309612,
+    "conclusion": "success",
+    "evidence": {
+      "baseline": {
+        "package": "com.elcin31.grandstrategymultiplayer",
+        "versionCode": 9,
+        "versionName": "0.8.1",
+        "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+      },
+      "candidate": {
+        "package": "com.elcin31.grandstrategymultiplayer",
+        "versionCode": 9,
+        "versionName": "0.8.1",
+        "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+      },
+      "appUidRetained": true,
+      "privateCampaignFilesRetained": true,
+      "encryptedPreferenceBytesRetainedBeforeLaunch": true,
+      "actualSecureStorePreferencesAfterUpdate": {
+        "preset": "High",
+        "frameRate": 30,
+        "adaptive": false
+      },
+      "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+      "originalWorld": {
+        "countries": 195,
+        "provinces": 2924,
+        "cities": 5411
+      },
+      "oldSchema": 12,
+      "newSchema": 18,
+      "oldSaveSha256": "a67d4a50763f9fca4bc4edce6bf9b55536f4d19e2f21f8a76f473e105158c764",
+      "migrationBackupSha256": {
+        "before-expansion-v13": "a67d4a50763f9fca4bc4edce6bf9b55536f4d19e2f21f8a76f473e105158c764",
+        "before-espionage-v14": "a67d4a50763f9fca4bc4edce6bf9b55536f4d19e2f21f8a76f473e105158c764",
+        "before-economy-v15": "a67d4a50763f9fca4bc4edce6bf9b55536f4d19e2f21f8a76f473e105158c764",
+        "before-military-v16": "a67d4a50763f9fca4bc4edce6bf9b55536f4d19e2f21f8a76f473e105158c764",
+        "before-technology-v17": "a67d4a50763f9fca4bc4edce6bf9b55536f4d19e2f21f8a76f473e105158c764",
+        "before-focus-v18": "a67d4a50763f9fca4bc4edce6bf9b55536f4d19e2f21f8a76f473e105158c764"
+      },
+      "repeatBackupBytesUnchanged": true,
+      "actualCandidateRestart": true,
+      "finalVersionUpgrade": false,
+      "note": "Real offline ephemeral-emulator package replacement, native save/load/backups and encrypted graphics preference round-trip. No production-session reconnect or hardware FPS claim."
+    }
+  },
+  "correction": {
+    "inputProtocol": "continuous-pointer-v1",
+    "actualNativeMonotonicTimestamps": true,
+    "fiveCompletePointerCycles": true,
+    "injectedIdleMilliseconds": 0,
+    "finishGraceMilliseconds": 100,
+    "allObservedCompositorIntervalsRetained": true,
+    "limitsUnchanged": true,
+    "actualJavaCompilationAndFreshAbbaPending": true,
+    "pythonTests": 84,
+    "pythonSkips": 0,
+    "applicationByteUnchanged": true
+  },
+  "backend": {
+    "project": "dfjsnjxnyjspwugjguhq",
+    "schema18LiveRolloutPending": true
+  },
+  "finalRelease": {
+    "ready": false,
+    "currentVersion": "0.8.1",
+    "currentVersionCode": 9,
+    "higherVersionRequired": true,
+    "filename": "Dominion-grand-strategy-v2-release.apk"
+  }
+}

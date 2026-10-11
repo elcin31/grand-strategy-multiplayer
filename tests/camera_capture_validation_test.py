@@ -45,3 +45,14 @@ class CaptureValidationTests(unittest.TestCase):
         for name in CAPTURES:
             data[name]['results'][0]['surfacePresentation'] = {}
         self.assertTrue(validate_captures(data, 'fixture', 'world')['comparisonGatesPassed'])
+
+    def test_all_four_continuous_launches_require_the_same_actual_input_cadence(self):
+        data=fixture()
+        for capture in data.values():
+            capture['inputProtocol']='continuous-pointer-v1'
+            for row in capture['results'][1:]:
+                row['gestureTiming']=dict(kind='pinch' if row['scenario']=='03-pinch' else 'pan',gapMs=0,
+                                          cycles=[dict(downNs=i*2000+1,upNs=i*2000+1900) for i in range(5)])
+        self.assertTrue(validate_captures(data,'fixture','world')['comparisonGatesPassed'])
+        data['camera-after'].pop('inputProtocol')
+        with self.assertRaisesRegex(AssertionError,'Different camera input protocols'):validate_captures(data,'fixture','world')
