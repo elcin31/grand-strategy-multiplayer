@@ -9,6 +9,9 @@ permissions:
   actions: read
 jobs:
   source-preflight:
+    # Readback commits have zero game-source diff, enforced below; keep source
+    # tests for implementation changes without repeating them for collection.
+    if: "!contains(github.event.head_commit.message, '[native-evidence]')"
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -104,7 +107,9 @@ jobs:
           java-version: '17'
       - run: python -m pip install -r scripts/camera-profile-requirements.txt
       - name: Read exact source artifacts and preserve original gate conclusions
-        run: python scripts/export-expansion-evidence.py .github/renderer-evidence-source.json
+        run: |
+          python -m py_compile scripts/export-expansion-evidence.py
+          python scripts/export-expansion-evidence.py .github/renderer-evidence-source.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
