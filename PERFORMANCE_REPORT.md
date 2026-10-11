@@ -1,3 +1,11 @@
+# Bounded world raster commands — pending source/native verification (2026-10-11)
+
+Actualbf/381714 finished with six non-camera gates PASS, camera six original limits FAIL. Matched CPU381757 SUCCESS verifies60existing camera tests, original complete captures and four actual scoped queries; EXPANSION_UI_LAYER_CPU_QA_2026-10-11.json retains incomplete attribution/vendor warnings. Pinch RenderThread sampled105→131 and Running1069.01→1268.49ms, main946→914 samples; native GL emulator transport dominates. This is diagnostic context, not improvement acceptance.
+
+Candidate world cells160→288 reduce full-world replay45→15 at unchanged2px/unit; original576content-side/580with-gutter cap and32MiB/96/8MiB limits retained. Other bands/culling/LOD/real terrain/borders unchanged. Rejected bounded-UI hardware layers removed, preserving original hosts/touch/layout. New actual-world coverage and CanvasKit pixel tests added; no existing test/threshold relaxed. Source preflight/productionHermes are PENDING real CI because executor is offline; fresh full seven-gate binary required afterward. No measured benefit or physical Redmi performance claimed.
+
+---
+
 # Exact UI camera rejection and next scoped CPU diagnosis — 2026-10-11
 
 Actualbf/381714/691APK camera FAILED six unchanged limits from all36 logged scenarios; all18 matched PSS checks pass. ForwardpinchP99767.16→898.99ms/panelP99102.90→129.86ms;reversepinchP95414.14→583.77ms/P99718.93→1117.00ms/histP95600→750ms;reverseworldP99116.64→150.77ms. Full per-order proof EXPANSION_UI_LAYER_NATIVE_QA_2026-10-11.json. Different emulator baselines are not cross-run improvement proof. Five other gates pass;old native soak remains running.

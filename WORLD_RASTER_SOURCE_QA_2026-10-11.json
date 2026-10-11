@@ -1,0 +1,56 @@
+{
+  "status": "SOURCE_CANDIDATE_AWAITING_REAL_CI",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "parentExpansionHead": "fe44e950371a8369dca2e2837818d0e58ff2c5b3",
+  "parentQaHead": "e939d42e19df6b9688d3a7bcd6dc1552cdd6aacd",
+  "previousRejectedRuntime": "bf05151c94988f7d2511218a8cc51a1858a5a1a7",
+  "previousFullRunId": 38171409180,
+  "verifiedPriorGates": {
+    "build": true,
+    "long10000Ticks": true,
+    "backendLive": true,
+    "nativeUpgrade": true,
+    "nativeOnline": true,
+    "native1800SecondStress": true,
+    "camera": false
+  },
+  "changedRuntimeFiles": [
+    "src/map/cameraCoverage.ts",
+    "CampaignScreen.tsx",
+    "src/components/WorldMap.tsx",
+    "src/components/PerformancePanel.tsx",
+    "src/components/CameraUiLayer.tsx (removed failed experiment)"
+  ],
+  "change": {
+    "worldCellBefore": 160,
+    "worldCellAfter": 288,
+    "worldScaleBefore": 2,
+    "worldScaleAfter": 2,
+    "worldTilesBefore": 45,
+    "expectedWorldTilesAfter": 15,
+    "maximumDecodedSideIncludingGutter": 580,
+    "foregroundBytes": 33554432,
+    "coldBytes": 8388608,
+    "entries": 96,
+    "otherRasterBandsUnchanged": true,
+    "uiHosts": "Original native View/ScrollView restored after six actual camera failures; same layout/keys/props/touch targets."
+  },
+  "validation": {
+    "localExecutor": "409 environment_offline; no new local test claimed",
+    "strictTypecheck": "PENDING CI",
+    "allJsTestsIncludingNewCanvasKitPixels": "PENDING CI",
+    "allPythonTests": "PENDING CI",
+    "all42Art": "PENDING CI",
+    "productionHermes": "PENDING CI",
+    "actualNativeSevenGates": "PENDING fresh binary"
+  },
+  "review": {
+    "hooks": "No new hooks or per-frame callbacks; UI subscription adapters removed.",
+    "ticks": "All gameplay/AI/tick/server systems unchanged.",
+    "memory": "Existing576px content-side test remains unchanged; maximum580px with gutters matches detail band.32MiB/8MiB/96 limits unchanged.",
+    "tests": "No existing test or native threshold removed or relaxed. New real2924-province coverage and actual CanvasKit old/new grid pixel comparisons."
+  },
+  "performanceAccepted": false,
+  "releaseAccepted": false,
+  "physicalRedmiTested": false
+}

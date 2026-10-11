@@ -1,0 +1,1356 @@
+{
+  "status": "ACTUAL_MARKER_SCOPED_CPU_OBSERVED_INCOMPLETE_ATTRIBUTION",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "runtime": "bf05151c94988f7d2511218a8cc51a1858a5a1a7",
+  "apkSha256": "6918422f4d03ddff656a921f19178c6a461b507985c30c62188bcfdb5ef813d0",
+  "auxiliaryRunId": 38175739167,
+  "sourceCommit": "e939d42e19df6b9688d3a7bcd6dc1552cdd6aacd",
+  "jobId": 114577626108,
+  "conclusion": "success",
+  "artifact": {
+    "id": 11716132032,
+    "name": "expansion-pinch-local-cpu-traces",
+    "bytes": 25115603,
+    "githubDeclaredSha256": "850bbe83fc8b5936e2772aff15d038e7082a322f1b2a792fc6f8b6739683061a",
+    "localDownloadVerified": false
+  },
+  "verifiedOnRunner": {
+    "helperCompilation": true,
+    "existingCameraPythonTests": 60,
+    "originalFourCompleteCaptures": true,
+    "realSeparateTraceQueries": 4,
+    "scopedSampleTotalsChecked": true
+  },
+  "observations": [
+    {
+      "capture": "trace-before-pinch",
+      "pid": 2276,
+      "traceSha256": "1a3a2e8a84375c8c5fc8f904441347c28c94e342fce3701ff1bc259347dfdc77",
+      "markerDurationMs": 10574.777877,
+      "cpuProfileObserved": true,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "sampledThreads": [
+        {
+          "tid": 2276,
+          "thread": "tegymultiplayer",
+          "samples": 946,
+          "withStack": 946,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2294,
+          "thread": "RenderThread",
+          "samples": 105,
+          "withStack": 105,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2301,
+          "thread": "mqt_v_js",
+          "samples": 72,
+          "withStack": 72,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2303,
+          "thread": "hades",
+          "samples": 21,
+          "withStack": 21,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2279,
+          "thread": "Jit thread pool",
+          "samples": 4,
+          "withStack": 4,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2280,
+          "thread": "HeapTaskDaemon",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2298,
+          "thread": "HybridData Dest",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2302,
+          "thread": "mqt_v_native",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        }
+      ],
+      "topSelfFrames": [
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 602,
+          "inclusiveSamples": 745
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 83,
+          "inclusiveSamples": 86
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 60,
+          "inclusiveSamples": 88
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 26,
+          "inclusiveSamples": 37
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 25,
+          "inclusiveSamples": 25
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "do_user_addr_fault",
+          "selfSamples": 12,
+          "inclusiveSamples": 25
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 12,
+          "inclusiveSamples": 13
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 12,
+          "inclusiveSamples": 12
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "mod_node_page_state",
+          "selfSamples": 10,
+          "inclusiveSamples": 10
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 7,
+          "inclusiveSamples": 9
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "syscall_enter_from_user_mode",
+          "selfSamples": 6,
+          "inclusiveSamples": 7
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "memset_generic",
+          "selfSamples": 5,
+          "inclusiveSamples": 23
+        },
+        {
+          "thread": "mqt_v_js",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 5,
+          "inclusiveSamples": 5
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "_ZN5scudo9AllocatorINS_19AndroidNormalConfigEXadL_Z21scudo_malloc_postinitEEE8allocateEmNS_5Chunk6OriginEmb",
+          "selfSamples": 4,
+          "inclusiveSamples": 5
+        },
+        {
+          "thread": "hades",
+          "mapping": "base.apk!libhermesvm.so",
+          "function": "pc:25d8bb",
+          "selfSamples": 4,
+          "inclusiveSamples": 4
+        }
+      ],
+      "runningThreads": [
+        {
+          "tid": 2276,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 9410.460964,
+          "samples": 2448
+        },
+        {
+          "tid": 2294,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 1069.011021,
+          "samples": 755
+        },
+        {
+          "tid": 2301,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 761.84816,
+          "samples": 506
+        },
+        {
+          "tid": 2303,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 213.188432,
+          "samples": 89
+        },
+        {
+          "tid": 2279,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 43.766817,
+          "samples": 56
+        },
+        {
+          "tid": 2280,
+          "thread": "HeapTaskDaemon",
+          "state": "Running",
+          "observedMs": 16.778624,
+          "samples": 5
+        },
+        {
+          "tid": 2298,
+          "thread": "HybridData Dest",
+          "state": "Running",
+          "observedMs": 8.187646,
+          "samples": 4
+        },
+        {
+          "tid": 2285,
+          "thread": "binder:2276_2",
+          "state": "Running",
+          "observedMs": 8.120662,
+          "samples": 128
+        },
+        {
+          "tid": 2302,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 8.011072,
+          "samples": 120
+        },
+        {
+          "tid": 2636,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 7.412231,
+          "samples": 283
+        },
+        {
+          "tid": 2284,
+          "thread": "binder:2276_1",
+          "state": "Running",
+          "observedMs": 5.909483,
+          "samples": 81
+        },
+        {
+          "tid": 2320,
+          "thread": "binder:2276_4",
+          "state": "Running",
+          "observedMs": 3.761913,
+          "samples": 104
+        },
+        {
+          "tid": 2340,
+          "thread": "binder:2276_5",
+          "state": "Running",
+          "observedMs": 2.209534,
+          "samples": 51
+        },
+        {
+          "tid": 2281,
+          "thread": "ReferenceQueueD",
+          "state": "Running",
+          "observedMs": 2.039023,
+          "samples": 6
+        },
+        {
+          "tid": 2317,
+          "thread": "binder:2276_4",
+          "state": "Running",
+          "observedMs": 0.577841,
+          "samples": 25
+        },
+        {
+          "tid": 2282,
+          "thread": "FinalizerDaemon",
+          "state": "Running",
+          "observedMs": 0.126037,
+          "samples": 1
+        },
+        {
+          "tid": 2283,
+          "thread": "FinalizerWatchd",
+          "state": "Running",
+          "observedMs": 0.083464,
+          "samples": 2
+        },
+        {
+          "tid": 2637,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.074901,
+          "samples": 4
+        },
+        {
+          "tid": 2304,
+          "thread": "Expo JNI deallo",
+          "state": "Running",
+          "observedMs": 0.029244,
+          "samples": 1
+        },
+        {
+          "tid": 2288,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.025007,
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "capture": "trace-after-pinch",
+      "pid": 2782,
+      "traceSha256": "334ac5a775ec5af338dab580bfc106ec7b1fc0fce10ef416a15a967b9f644a0d",
+      "markerDurationMs": 10667.281204,
+      "cpuProfileObserved": true,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "sampledThreads": [
+        {
+          "tid": 2782,
+          "thread": "tegymultiplayer",
+          "samples": 914,
+          "withStack": 914,
+          "unwindErrorSamples": 1
+        },
+        {
+          "tid": 2797,
+          "thread": "RenderThread",
+          "samples": 131,
+          "withStack": 131,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2803,
+          "thread": "mqt_v_js",
+          "samples": 69,
+          "withStack": 69,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2806,
+          "thread": "hades",
+          "samples": 21,
+          "withStack": 21,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2786,
+          "thread": "Jit thread pool",
+          "samples": 2,
+          "withStack": 2,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3084,
+          "thread": "GPU completion",
+          "samples": 2,
+          "withStack": 2,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2787,
+          "thread": "HeapTaskDaemon",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2791,
+          "thread": "binder:2782_1",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 2815,
+          "thread": "binder:2782_1",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        }
+      ],
+      "topSelfFrames": [
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 590,
+          "inclusiveSamples": 717
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 82,
+          "inclusiveSamples": 105
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 80,
+          "inclusiveSamples": 81
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 19,
+          "inclusiveSamples": 19
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "mod_node_page_state",
+          "selfSamples": 15,
+          "inclusiveSamples": 16
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 12,
+          "inclusiveSamples": 12
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 10,
+          "inclusiveSamples": 27
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "do_user_addr_fault",
+          "selfSamples": 10,
+          "inclusiveSamples": 23
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 10,
+          "inclusiveSamples": 10
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 6,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "hades",
+          "mapping": "base.apk!libhermesvm.so",
+          "function": "pc:25d8bb",
+          "selfSamples": 6,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "_ZN5scudo9AllocatorINS_19AndroidNormalConfigEXadL_Z21scudo_malloc_postinitEEE8allocateEmNS_5Chunk6OriginEmb",
+          "selfSamples": 5,
+          "inclusiveSamples": 10
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 5,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "mqt_v_js",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 5,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "memset_generic",
+          "selfSamples": 4,
+          "inclusiveSamples": 20
+        }
+      ],
+      "runningThreads": [
+        {
+          "tid": 2782,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 9354.889916,
+          "samples": 2543
+        },
+        {
+          "tid": 2797,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 1268.486444,
+          "samples": 818
+        },
+        {
+          "tid": 2803,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 680.211691,
+          "samples": 448
+        },
+        {
+          "tid": 2806,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 209.536649,
+          "samples": 90
+        },
+        {
+          "tid": 2786,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 45.127707,
+          "samples": 63
+        },
+        {
+          "tid": 2787,
+          "thread": "HeapTaskDaemon",
+          "state": "Running",
+          "observedMs": 23.220792,
+          "samples": 12
+        },
+        {
+          "tid": 2791,
+          "thread": "binder:2782_1",
+          "state": "Running",
+          "observedMs": 10.088023,
+          "samples": 176
+        },
+        {
+          "tid": 3084,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 7.323268,
+          "samples": 277
+        },
+        {
+          "tid": 2815,
+          "thread": "binder:2782_1",
+          "state": "Running",
+          "observedMs": 6.939178,
+          "samples": 133
+        },
+        {
+          "tid": 2804,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 4.159625,
+          "samples": 73
+        },
+        {
+          "tid": 2800,
+          "thread": "HybridData Dest",
+          "state": "Running",
+          "observedMs": 3.908358,
+          "samples": 2
+        },
+        {
+          "tid": 2792,
+          "thread": "binder:2782_2",
+          "state": "Running",
+          "observedMs": 3.131461,
+          "samples": 116
+        },
+        {
+          "tid": 2788,
+          "thread": "ReferenceQueueD",
+          "state": "Running",
+          "observedMs": 1.513242,
+          "samples": 3
+        },
+        {
+          "tid": 2836,
+          "thread": "binder:2782_4",
+          "state": "Running",
+          "observedMs": 1.137225,
+          "samples": 38
+        },
+        {
+          "tid": 2848,
+          "thread": "binder:2782_5",
+          "state": "Running",
+          "observedMs": 0.137264,
+          "samples": 3
+        },
+        {
+          "tid": 3085,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.05379,
+          "samples": 3
+        },
+        {
+          "tid": 2789,
+          "thread": "FinalizerDaemon",
+          "state": "Running",
+          "observedMs": 0.051777,
+          "samples": 1
+        },
+        {
+          "tid": 2790,
+          "thread": "FinalizerWatchd",
+          "state": "Running",
+          "observedMs": 0.043584,
+          "samples": 2
+        },
+        {
+          "tid": 2807,
+          "thread": "Expo JNI deallo",
+          "state": "Running",
+          "observedMs": 0.041062,
+          "samples": 1
+        },
+        {
+          "tid": 2795,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.015233,
+          "samples": 2
+        }
+      ]
+    },
+    {
+      "capture": "trace-before-local",
+      "pid": 3225,
+      "traceSha256": "109c104b5164f09c1888af86c86247288b2ae484cace97a82b4c7e2ce9d5b459",
+      "markerDurationMs": 10561.946699,
+      "cpuProfileObserved": true,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "sampledThreads": [
+        {
+          "tid": 3225,
+          "thread": "tegymultiplayer",
+          "samples": 705,
+          "withStack": 705,
+          "unwindErrorSamples": 1
+        },
+        {
+          "tid": 3241,
+          "thread": "RenderThread",
+          "samples": 388,
+          "withStack": 388,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3247,
+          "thread": "mqt_v_js",
+          "samples": 24,
+          "withStack": 24,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3229,
+          "thread": "Jit thread pool",
+          "samples": 5,
+          "withStack": 5,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3235,
+          "thread": "binder:3225_2",
+          "samples": 3,
+          "withStack": 3,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3566,
+          "thread": "GPU completion",
+          "samples": 3,
+          "withStack": 3,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3230,
+          "thread": "HeapTaskDaemon",
+          "samples": 2,
+          "withStack": 2,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3249,
+          "thread": "hades",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3293,
+          "thread": "binder:3225_5",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3365,
+          "thread": "binder:3225_6",
+          "samples": 1,
+          "withStack": 1,
+          "unwindErrorSamples": 0
+        }
+      ],
+      "topSelfFrames": [
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 390,
+          "inclusiveSamples": 582
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 234,
+          "inclusiveSamples": 329
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 118,
+          "inclusiveSamples": 120
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 60,
+          "inclusiveSamples": 60
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 45,
+          "inclusiveSamples": 56
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 26,
+          "inclusiveSamples": 28
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 15,
+          "inclusiveSamples": 27
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 13,
+          "inclusiveSamples": 13
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 11,
+          "inclusiveSamples": 13
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "mod_node_page_state",
+          "selfSamples": 10,
+          "inclusiveSamples": 11
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 7,
+          "inclusiveSamples": 12
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 7,
+          "inclusiveSamples": 9
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "mod_node_page_state",
+          "selfSamples": 6,
+          "inclusiveSamples": 7
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "base.apk!librnskia.so",
+          "function": "pc:96ecd2",
+          "selfSamples": 6,
+          "inclusiveSamples": 7
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "__vfprintf",
+          "selfSamples": 5,
+          "inclusiveSamples": 6
+        }
+      ],
+      "runningThreads": [
+        {
+          "tid": 3225,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 7068.690387,
+          "samples": 3871
+        },
+        {
+          "tid": 3241,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 4029.43283,
+          "samples": 2498
+        },
+        {
+          "tid": 3247,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 211.360177,
+          "samples": 192
+        },
+        {
+          "tid": 3229,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 42.117855,
+          "samples": 48
+        },
+        {
+          "tid": 3566,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 36.672781,
+          "samples": 727
+        },
+        {
+          "tid": 3293,
+          "thread": "binder:3225_5",
+          "state": "Running",
+          "observedMs": 31.349432,
+          "samples": 431
+        },
+        {
+          "tid": 3230,
+          "thread": "HeapTaskDaemon",
+          "state": "Running",
+          "observedMs": 25.853842,
+          "samples": 19
+        },
+        {
+          "tid": 3235,
+          "thread": "binder:3225_2",
+          "state": "Running",
+          "observedMs": 15.958633,
+          "samples": 160
+        },
+        {
+          "tid": 3365,
+          "thread": "binder:3225_6",
+          "state": "Running",
+          "observedMs": 10.542197,
+          "samples": 134
+        },
+        {
+          "tid": 3249,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 6.961731,
+          "samples": 6
+        },
+        {
+          "tid": 3244,
+          "thread": "HybridData Dest",
+          "state": "Running",
+          "observedMs": 6.668877,
+          "samples": 8
+        },
+        {
+          "tid": 3258,
+          "thread": "binder:3225_4",
+          "state": "Running",
+          "observedMs": 5.311082,
+          "samples": 157
+        },
+        {
+          "tid": 3260,
+          "thread": "binder:3225_3",
+          "state": "Running",
+          "observedMs": 5.044148,
+          "samples": 361
+        },
+        {
+          "tid": 3231,
+          "thread": "ReferenceQueueD",
+          "state": "Running",
+          "observedMs": 1.960517,
+          "samples": 6
+        },
+        {
+          "tid": 3248,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 1.799499,
+          "samples": 53
+        },
+        {
+          "tid": 3567,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.431813,
+          "samples": 37
+        },
+        {
+          "tid": 3232,
+          "thread": "FinalizerDaemon",
+          "state": "Running",
+          "observedMs": 0.078186,
+          "samples": 1
+        },
+        {
+          "tid": 3233,
+          "thread": "FinalizerWatchd",
+          "state": "Running",
+          "observedMs": 0.04054,
+          "samples": 2
+        },
+        {
+          "tid": 3250,
+          "thread": "Expo JNI deallo",
+          "state": "Running",
+          "observedMs": 0.032188,
+          "samples": 1
+        },
+        {
+          "tid": 3238,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.009344,
+          "samples": 1
+        },
+        {
+          "tid": 3236,
+          "thread": "binder:3225_3",
+          "state": "Running",
+          "observedMs": 0.003355,
+          "samples": 1
+        }
+      ]
+    },
+    {
+      "capture": "trace-after-local",
+      "pid": 3736,
+      "traceSha256": "55183c6f583719f927a704cd6d3c53bd75337290d16475028235153504b32065",
+      "markerDurationMs": 10566.918839,
+      "cpuProfileObserved": true,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "sampledThreads": [
+        {
+          "tid": 3736,
+          "thread": "tegymultiplayer",
+          "samples": 701,
+          "withStack": 701,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3750,
+          "thread": "RenderThread",
+          "samples": 370,
+          "withStack": 370,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3756,
+          "thread": "mqt_v_js",
+          "samples": 8,
+          "withStack": 8,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3739,
+          "thread": "Jit thread pool",
+          "samples": 7,
+          "withStack": 7,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3747,
+          "thread": "binder:3736_3",
+          "samples": 5,
+          "withStack": 5,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3740,
+          "thread": "HeapTaskDaemon",
+          "samples": 3,
+          "withStack": 3,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3744,
+          "thread": "binder:3736_1",
+          "samples": 3,
+          "withStack": 3,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 3774,
+          "thread": "binder:3736_5",
+          "samples": 3,
+          "withStack": 3,
+          "unwindErrorSamples": 0
+        },
+        {
+          "tid": 4081,
+          "thread": "GPU completion",
+          "samples": 2,
+          "withStack": 2,
+          "unwindErrorSamples": 0
+        }
+      ],
+      "topSelfFrames": [
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 426,
+          "inclusiveSamples": 575
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "goldfish_pipe_read_write",
+          "selfSamples": 228,
+          "inclusiveSamples": 313
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 85,
+          "inclusiveSamples": 86
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "preempt_schedule_irq",
+          "selfSamples": 59,
+          "inclusiveSamples": 61
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 45,
+          "inclusiveSamples": 54
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "internal_get_user_pages_fast",
+          "selfSamples": 19,
+          "inclusiveSamples": 21
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 14,
+          "inclusiveSamples": 16
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 10,
+          "inclusiveSamples": 16
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 10,
+          "inclusiveSamples": 11
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "base.apk!librnskia.so",
+          "function": "pc:96ecd2",
+          "selfSamples": 6,
+          "inclusiveSamples": 12
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "libc.so",
+          "function": "__vfprintf",
+          "selfSamples": 5,
+          "inclusiveSamples": 8
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "exit_to_user_mode_loop",
+          "selfSamples": 5,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "mod_node_page_state",
+          "selfSamples": 5,
+          "inclusiveSamples": 6
+        },
+        {
+          "thread": "tegymultiplayer",
+          "mapping": "/kernel",
+          "function": "_raw_spin_unlock_irqrestore",
+          "selfSamples": 5,
+          "inclusiveSamples": 5
+        },
+        {
+          "thread": "RenderThread",
+          "mapping": "/kernel",
+          "function": "unpin_user_pages",
+          "selfSamples": 4,
+          "inclusiveSamples": 8
+        }
+      ],
+      "runningThreads": [
+        {
+          "tid": 3736,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 7193.226624,
+          "samples": 3741
+        },
+        {
+          "tid": 3750,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 3839.800657,
+          "samples": 2160
+        },
+        {
+          "tid": 3756,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 81.226206,
+          "samples": 120
+        },
+        {
+          "tid": 3739,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 64.731602,
+          "samples": 49
+        },
+        {
+          "tid": 3740,
+          "thread": "HeapTaskDaemon",
+          "state": "Running",
+          "observedMs": 40.649736,
+          "samples": 20
+        },
+        {
+          "tid": 4081,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 20.419725,
+          "samples": 735
+        },
+        {
+          "tid": 3774,
+          "thread": "binder:3736_5",
+          "state": "Running",
+          "observedMs": 15.133248,
+          "samples": 229
+        },
+        {
+          "tid": 3747,
+          "thread": "binder:3736_3",
+          "state": "Running",
+          "observedMs": 10.879273,
+          "samples": 225
+        },
+        {
+          "tid": 3744,
+          "thread": "binder:3736_1",
+          "state": "Running",
+          "observedMs": 8.105738,
+          "samples": 171
+        },
+        {
+          "tid": 3753,
+          "thread": "HybridData Dest",
+          "state": "Running",
+          "observedMs": 4.571995,
+          "samples": 7
+        },
+        {
+          "tid": 3770,
+          "thread": "binder:3736_4",
+          "state": "Running",
+          "observedMs": 3.56722,
+          "samples": 314
+        },
+        {
+          "tid": 3741,
+          "thread": "ReferenceQueueD",
+          "state": "Running",
+          "observedMs": 1.806509,
+          "samples": 2
+        },
+        {
+          "tid": 3757,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 0.706833,
+          "samples": 20
+        },
+        {
+          "tid": 4082,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.231193,
+          "samples": 18
+        },
+        {
+          "tid": 3745,
+          "thread": "binder:3736_2",
+          "state": "Running",
+          "observedMs": 0.112518,
+          "samples": 2
+        },
+        {
+          "tid": 3742,
+          "thread": "FinalizerDaemon",
+          "state": "Running",
+          "observedMs": 0.055763,
+          "samples": 1
+        },
+        {
+          "tid": 3743,
+          "thread": "FinalizerWatchd",
+          "state": "Running",
+          "observedMs": 0.044657,
+          "samples": 2
+        },
+        {
+          "tid": 3759,
+          "thread": "Expo JNI deallo",
+          "state": "Running",
+          "observedMs": 0.042263,
+          "samples": 1
+        },
+        {
+          "tid": 3748,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.016776,
+          "samples": 2
+        }
+      ]
+    }
+  ],
+  "findings": [
+    "Actual pinch samples are dominated by native main-thread goldfish pipe transport/page pinning in this emulator; usable JS samples are much fewer.",
+    "Pinch main sampled counts946→914 and running9410.46→9354.89ms; RenderThread105→131 and1069.01→1268.49ms. These counts/times are independent diagnostic observations, not release-frame acceptance.",
+    "Local pan main705→701samples/7068.69→7193.23ms; RenderThread388→370samples/4029.43→3839.80ms; JS24→8samples. No uniquely causal code-level attribution established.",
+    "All four traces retain36 vendor setup warnings and attributionComplete=false; unwind errors also retained. No nested duration is treated as CPU share or physical FPS.",
+    "Original full paired comparison remains FAILURE with all six numerical violations preserved."
+  ],
+  "physicalHandsetTested": false,
+  "releaseAccepted": false,
+  "nextSourceHypothesis": "Fewer world-grid image replay commands at unchanged2px/unit resolution and the original580px decoded side cap; remove the unaccepted UI hardware-layer experiment. Actual benefit still requires a new binary and all original seven gates."
+}

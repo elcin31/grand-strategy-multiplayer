@@ -5,11 +5,10 @@ import {traceStartup} from './src/performance/startupTrace';
 import {recordMetrics} from './src/performance/telemetry';
 import {LaunchAction} from './src/ui/launchAction';
 import {LandscapeHUD} from './src/components/LandscapeHUD';
-import {CameraLayerView,CameraLayerScrollView} from './src/components/CameraUiLayer';
 import {SECTIONS,SECTION_LABELS,panelWidth,backAction,type Section} from './src/ui/landscape';
 import { campaignStore } from './src/persistence/nativeCampaignStore';
 import { useCallback, useMemo, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, AppState, BackHandler, Keyboard, LayoutAnimation, useWindowDimensions, Pressable, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, AppState, BackHandler, Keyboard, LayoutAnimation, useWindowDimensions, Pressable, StatusBar, StyleSheet, Text, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CountryPicker } from './src/components/CountryPicker';
 import { CountryPanel } from './src/components/CountryPanel';
@@ -201,7 +200,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
       <StatusBar barStyle="light-content" />
       <View style={styles.content}>
         {launchBusy&&<View accessibilityRole="alert" style={{position:"absolute",top:0,bottom:0,left:0,right:0,zIndex:100,backgroundColor:"#101f2b",justifyContent:"center",alignItems:"center"}}><ActivityIndicator size="large" color={colors.gold}/><Text style={styles.exitText}>Запуск кампании…</Text></View>}
-        <CameraLayerView style={styles.topbar}>
+        <View style={styles.topbar}>
           <View style={{maxWidth:gameStarted?115:220}}>
             <Text style={[styles.brand,gameStarted&&{fontSize:15}]}>DOMINION</Text>
             <Text style={styles.subbrand}>{gameStarted ? `Ход ${state.tick} · ${state.phase === 'finished' ? 'КАМПАНИЯ ЗАВЕРШЕНА' : 'КАМПАНИЯ'}` : `Комната ${state.roomCode}`}</Text>
@@ -212,7 +211,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
           <Pressable style={styles.exitButton} onPress={() => setPanelOpen(!panelOpen)}><Text style={styles.exitText}>{panelOpen ? "ЗАКРЫТЬ ПАНЕЛЬ" : "УПРАВЛЕНИЕ"}</Text></Pressable>
           {transport instanceof LocalTransport&&<Pressable accessibilityLabel="Сохранить кампанию" style={styles.exitButton} onPress={()=>void safeAction(async()=>{await campaignStore.save(state);setSaveStatus('Сохранено');})}><Text style={styles.exitText}>СОХРАНИТЬ</Text></Pressable>}
           <Pressable style={styles.exitButton} onPress={confirmExit}><Text style={styles.exitText}>ВЫЙТИ</Text></Pressable>
-        </CameraLayerView>
+        </View>
 
         {transport instanceof LocalTransport&&saveStatus!==''&&<Text style={{color:colors.muted,fontSize:10}}>{saveStatus}</Text>}
         {connectionStatus!==''&&<Text style={{color:"#ffcf85",padding:6}}>{connectionStatus}</Text>}
@@ -233,8 +232,8 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
           onClearSelection={deselectArmy}
         /></View>
 
-        {gameStarted&&<CameraLayerScrollView horizontal style={styles.navigation} contentContainerStyle={{gap:4,flexGrow:1}} showsHorizontalScrollIndicator={false}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onPress={()=>{LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);setSection(tab);setPanelOpen(true);}}><Text style={styles.exitText}>{SECTION_LABELS[tab]}</Text></Pressable>)}</CameraLayerScrollView>}
-        {panelOpen && <CameraLayerScrollView key={section} keyboardShouldPersistTaps="handled" style={[styles.panel,{width:panelWidth(width),bottom:gameStarted?54:154}]} contentContainerStyle={styles.panelContent}>
+        {gameStarted&&<ScrollView horizontal style={styles.navigation} contentContainerStyle={{gap:4,flexGrow:1}} showsHorizontalScrollIndicator={false}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onPress={()=>{LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);setSection(tab);setPanelOpen(true);}}><Text style={styles.exitText}>{SECTION_LABELS[tab]}</Text></Pressable>)}</ScrollView>}
+        {panelOpen && <ScrollView key={section} keyboardShouldPersistTaps="handled" style={[styles.panel,{width:panelWidth(width),bottom:gameStarted?54:154}]} contentContainerStyle={styles.panelContent}>
 
         {!gameStarted && (
           <CountryPanel
@@ -254,7 +253,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
             onCommand={sendCommand}
           />
         )}
-        </CameraLayerScrollView>}
+        </ScrollView>}
         {!gameStarted && <View style={styles.lobbyDock}>
           <LobbyPanel
             busy={launchBusy}

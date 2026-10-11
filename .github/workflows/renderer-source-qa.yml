@@ -1,0 +1,74 @@
+name: Dominion renderer source QA
+on:
+  push:
+    branches: [expansion-camera-qa]
+    paths: [.github/workflows/renderer-source-qa.yml, src/map/cameraCoverage.ts, CampaignScreen.tsx, src/components/WorldMap.tsx, src/components/PerformancePanel.tsx, src/components/CameraUiLayer.tsx, tests/world_raster_batch.test.ts]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --include=dev --no-audit --no-fund
+      - name: Strict typecheck
+        run: npm run typecheck
+      - name: All JS regressions and real CanvasKit pixel comparison
+        run: npm test
+      - name: All Python regressions
+        run: |
+          python -m pip install -r scripts/world-requirements.txt -r scripts/camera-profile-requirements.txt
+          python -m unittest discover -s tests -p '*_test.py'
+      - name: All42 original optimized illustrations
+        run: npm run verify:art
+      - name: Hermes production bundle
+        run: npx expo export --platform android --output-dir source-hermes-qa
+      - name: Preserve runtime identity
+        run: |
+          git rev-parse HEAD > renderer-source-sha.txt
+          git diff --stat fe44e950371a8369dca2e2837818d0e58ff2c5b3 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 38171409180
+          name: android-smoke-evidence
+          path: prior-ui-native-smoke
+      - name: Preserve actual completed prior-binary soak; never accept it for changed source
+        run: |
+          python - <<'PY'
+          import hashlib,json,math,re
+          from pathlib import Path
+          root=Path('prior-ui-native-smoke')
+          durations=list(root.rglob('stress-duration.txt'))
+          assert len(durations)==1,durations
+          duration=float(durations[0].read_text())
+          assert math.isfinite(duration) and duration>=1800,duration
+          memories=sorted(root.rglob('stress-memory-*.txt'))
+          assert len(memories)>=29,len(memories)
+          pss=[]
+          for path in memories:
+              raw=path.read_text()
+              match=re.search(r'TOTAL PSS:\s*(\d+)',raw) or re.search(r'^\s*TOTAL\s+(\d+)',raw,re.M)
+              assert match,path
+              pss.append(int(match[1]))
+          report={'status':'PRIOR_REJECTED_BINARY_SOAK_VERIFIED','runtime':'bf05151c94988f7d2511218a8cc51a1858a5a1a7','runId':38171409180,'apkSha256':'6918422f4d03ddff656a921f19178c6a461b507985c30c62188bcfdb5ef813d0','durationSeconds':duration,'durationFileSha256':hashlib.sha256(durations[0].read_bytes()).hexdigest(),'memorySamples':len(pss),'pssMinKiB':min(pss),'pssMaxKiB':max(pss),'releaseAccepted':False,'note':'Six original camera limits failed. No earlier native gate accepts this changed renderer source.'}
+          Path('PRIOR_UI_SOAK_QA.json').write_text(json.dumps(report,indent=2)+'\n')
+          print('DOMINION_PRIOR_SOAK '+json.dumps(report))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: renderer-source-qa
+          path: |
+            renderer-source-sha.txt
+            PRIOR_UI_SOAK_QA.json
+          retention-days: 14

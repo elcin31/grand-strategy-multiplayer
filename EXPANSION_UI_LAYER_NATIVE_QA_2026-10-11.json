@@ -1,5 +1,5 @@
 {
-  "status": "SOURCE_VERIFIED_NATIVE_REJECTED_CAMERA_SOAK_IN_PROGRESS",
+  "status": "NATIVE_REJECTED_CAMERA_SIX_OTHER_GATES_PASS",
   "repository": "elcin31/grand-strategy-multiplayer",
   "runtime": "bf05151c94988f7d2511218a8cc51a1858a5a1a7",
   "sourceTree": "b49a6e88a03ea1456c68cd305e32ec722fb60c69",
@@ -92,9 +92,7 @@
       "preservedCityBackups": 29
     }
   },
-  "pendingGates": [
-    "android-smoke"
-  ],
+  "pendingGates": [],
   "releaseAccepted": false,
   "physicalRedmi": "UNMEASURED",
   "note": "Actual complete38171409180 signed-binary evidence still required; no preceding gate reused or original threshold changed.",
@@ -4501,6 +4499,21 @@
       }
     ]
   },
-  "nextOperation": "Separate matched exact-binary CPU diagnosis through existing expansion-camera-qa; original complete artifact revalidation and camera tests precede trace-only capture. Source runtime is unchanged. Preserve six numerical failures and await old soak; use no acceptance reroll.",
-  "workspace": "Primary exec server returned409 environment_offline/Environment is not connected during camera download. All code and prior five-gate proof were already clean/published at ac891b8. New QA/report changes use existing GitHub APIs/CI; no local test or CRC claim."
+  "nextOperation": "Verify new bounded world-grid source using existing QA branch/CI, then advance expansion-v2 normally and require all seven original signed-binary gates. Never accept or reroll bf05151 camera evidence.",
+  "workspace": "Primary exec server returned409 environment_offline/Environment is not connected during camera download. All code and prior five-gate proof were already clean/published at ac891b8. New QA/report changes use existing GitHub APIs/CI; no local test or CRC claim.",
+  "nativeSmoke": {
+    "status": "SUCCESS",
+    "jobId": 114567941544,
+    "runId": 38171409180,
+    "stressPassLog": "PASS: continuous release render/simulation/autosave software stress1800seconds",
+    "lastLoggedStressSeconds": 1801,
+    "artifact": {
+      "id": 11715793927,
+      "bytes": 29159069,
+      "githubDeclaredSha256": "503bb6969c6d24398558cb0ea49a911f0aa060c36f6a0fdd4c913619452e5c15",
+      "localDownloadVerified": false
+    },
+    "preciseRawDurationAndPss": "Pending actual artifact readback in renderer source QA; do not invent values."
+  },
+  "currentMatchedCpuDiagnostic": "EXPANSION_UI_LAYER_CPU_QA_2026-10-11.json"
 }

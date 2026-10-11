@@ -1,3 +1,11 @@
+# Previous UI binary rejected; bounded-world candidate awaits source QA (2026-10-11)
+
+Exactbf05151/APK6918422f/full381714 completed FAILURE: all six other gates SUCCESS, including actual1800s native stress; six original camera violations remain. Prior soak raw duration/PSS will be read on existing CI, not guessed. Separate actual CPU381757 SUCCESS validates helper/captures/queries, not release acceptance.
+
+New minimal world-grid correction preserves raster pixel density/surface/byte caps and removes the failed UI layer experiment. Existing QA branch runs full source/pixel/Hermes regressions before expansion-v2 promotion. Fresh exact-binary seven-gate QA, same signature/version upgrade/backend/native multiplayer and scope cleanup remain mandatory. Main unchanged; accepted manifest absent; final APK publication/delivery still pending. Executor offline is recorded honestly; no new local integrity/test result asserted.
+
+---
+
 # Exact UI binary rejected; further source diagnosis required — 2026-10-11
 
 Actual runtimebf05151/run381714/APK6918422f fails six original camera limits; all36CI rows and18 passing PSS comparisons preserved in EXPANSION_UI_LAYER_NATIVE_QA_2026-10-11.json. Build/10000ticks/backend/upgrade/nativeonline pass;1800s native smoke remains in progress. Both reviewed QA rooms removed with combined0rooms/players/receipts and29originalbackups retained. Binary is not accepted for final publication/delivery.
