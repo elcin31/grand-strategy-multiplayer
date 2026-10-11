@@ -12,7 +12,7 @@ Original12 stages:0DONE;1PARTIAL(camera acceptance remains);2DONE;3–8DONE;9DON
 
 Changed files: scripts/android_fixture.py,scripts/android_accessibility.py,scripts/android-camera-profile.py,tests/camera_fixture_test.py,tests/camera_accessibility_test.py,EXPANSION_NATIVE_OFFLINE_ACCEPTANCE_2026-10-11.json,DEVELOPMENT_HANDOFF.md.
 
-Exact next action: publish this checked QA-only unit on expansion-v2; normally merge its verified tree into existing expansion-camera-qa and run ONE corrected complete ABBA on the exact already-built final38133111807/N APK. Do not repeat accepted build/10000/HTTP/upgrade/native online/offline. Inspect actual comparison and fix any remaining measured regression without relaxing limits. Only after actual camera PASS may strict same-binary recovery evidence be accepted, existing main promoted normally, existing apk-delivery publication verified and final APK attached.
+Current published checkpoint **89f324ce20e216ff81d22d6c8c73966710718c3f**. Normal existing camera-branch merge **0ca93184ead1234a637b9516dad20cb2bfb4e9e5** triggered **38147835796/job114494809558 IN_PROGRESS**, on the exact already-built final38133111807/N APK. Exact next action: inspect this corrected complete ABBA and diagnostics; require both orders at original limits. Do not repeat accepted build/10000/HTTP/upgrade/native online/offline. Inspect actual comparison and fix any remaining measured regression without relaxing limits. Only after actual camera PASS may strict same-binary recovery evidence be accepted, existing main promoted normally, existing apk-delivery publication verified and final APK attached.
 
 ---
 

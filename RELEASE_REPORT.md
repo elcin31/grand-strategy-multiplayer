@@ -1,3 +1,11 @@
+# Final2.0 offline and1847s soak PASS; corrected camera active — 2026-10-11
+
+Final signed runtimef794/APK75aa remains unchanged. Actual CI38133111807/android-smoke114455037099 SUCCESS; downloaded ZIP11701132935/29739969bytes/SHAbbf83828788b583459248379c4922743aa8537bfd444dee33f5e163807ad38d4/CRC verified. Actual offline standalone startup/landscape/map/army/Back/12modes/4presets/5layouts/process/reboot/save/game fatal checks pass. Real render/simulation/autosave stress1847.2766113159998s;30PSS samples427745–541261KiB. Reviewed actual native historical construction/focus/military/technology frames. Proof EXPANSION_NATIVE_OFFLINE_ACCEPTANCE_2026-10-11.json. No physical handset or continuous memory-peak claim.
+
+Fresh camera38136189671 failed before candidate samples on wrong injected save MLS label after changed app UID. Corrected QA-only helper89f324c verifies the actual installation context and refuses disabled ancestors;97Python/no skips PASS. Existing expansion-camera-qa0ca93184/run38147835796/job114494809558 is now running full ABBA on the SAME finalAPK. Original failed camera measurements remain failed; frame/compositor/PSS/input thresholds unchanged. All other actual seven-gate components, exactbinary and zero-residue scoped cleanup pass. Final acceptance/main/publication/delivery still require this camera result.
+
+---
+
 # Final2.0 signed online and upgrade PASS; camera/soak pending — 2026-10-11
 
 Exact standalone candidate Dominion-grand-strategy-v2-release.apk, runtimef794ea4a4974f2f826f3ec7bd712a81b5f05291a,142473881bytes/SHA75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3. Version2.0.0(code10),samepackage/certificatefac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c,nondebug/landscape,actualembeddedHermes10690504bytes/fourABIs/all42paintings byte-exact verified. No final ready claim yet.

@@ -1,3 +1,9 @@
+# Final2.0 actual soak verified; camera ABBA still pending — 2026-10-11
+
+Exact finalf794/75aa native1847.2766113159998s render/simulation/autosave soak PASS,30 sampled PSS427745–541261KiB. This is API35 SwiftShader software-emulator evidence, not Redmi FPS/thermal/battery, continuous memory peaks or absence of all leaks. Corrected full paired camera38147835796 is in progress after fixing verified injected-save access failure in fresh installation38136189671. All earlier actual frame regressions and unchanged10%pinch/20%other/memory/rawcompositor/input-cadence guards remain. No renderer or game-source change for this harness correction, and no achieved camera acceptance claimed yet.
+
+---
+
 # Latest actual evidence — 2026-10-11
 
 Actual86 full gapped4x9 ABBA FAILED nine original gates (eight P99 plus reverse terrain memory355081→454055KiB). Old driver injects150ms between1920ms gestures; CPU sampling extends frame capture beyond input. Both APKs now use continuous-pointer-v1/five complete real cycles/actual timestamps/zero injected idle/identical100ms finish grace. Every observed interval and original10/20%/20frames/paint/world limits retained. Fresh actual Java compilation/ABBA pending; no frame or handset FPS acceptance. Full evidence EXPANSION_CONTINUOUS_CAMERA_QA_2026-10-11.json.84Python/no skips PASS; application byte-unchanged86.
