@@ -1,5 +1,5 @@
 {
-  "status": "IN_PROGRESS",
+  "status": "REJECTED_CAMERA",
   "repository": "elcin31/grand-strategy-multiplayer",
   "runtime": "eaa6d6e8171c60807b7d274199c20114e00fac26",
   "sourceTree": "b0f001b9b0be835b3f05527c03a4cec6b7c63e1d",
@@ -292,7 +292,7 @@
     }
   },
   "signedApk": {
-    "status": "PENDING_NATIVE_ACCEPTANCE",
+    "status": "REJECTED_CAMERA",
     "runtime": "eaa6d6e8171c60807b7d274199c20114e00fac26",
     "runId": 38156439244,
     "artifactId": 11709351742,
@@ -321,7 +321,15 @@
   },
   "nativeCamera": {
     "jobId": 114524438348,
-    "status": "IN_PROGRESS"
+    "status": "COMPLETED",
+    "conclusion": "failure",
+    "artifactId": 11708903979,
+    "zipBytes": 17775631,
+    "zipSha256": "d88206ca2683ac548ab24ab355a4f13f07dce226e5655078af9bfa733ff5da26",
+    "crcVerified": true,
+    "all36CapturesComplete": true,
+    "originalThresholdViolations": 4,
+    "report": "EXPANSION_EAA_CAMERA_REJECTED_2026-10-11.json"
   },
   "nativeOfflineSoak": {
     "jobId": 114524438351,
@@ -383,7 +391,43 @@
   },
   "nativeOnline": {
     "jobId": 114524438870,
-    "status": "IN_PROGRESS"
+    "status": "COMPLETED",
+    "conclusion": "success",
+    "artifactId": 11709517326,
+    "zipBytes": 1928982,
+    "zipSha256": "9270475634b0484122be89f2826e1afd4173d6d7c11f2055d3a99e3753ec7f6e",
+    "crcVerified": true,
+    "actualReport": {
+      "roomId": "a34d42ac-9576-483d-821a-b91494cbe6e4",
+      "qaName": "NATIVE ONLINE QA",
+      "stateVersion": 18,
+      "apkSha256": "68150dd1e156c907d581a68df824de49b96817a3d0736c44e3e10582fff34710",
+      "nativeCreate": true,
+      "nativeCountrySelection": "germany",
+      "serverPaused": true,
+      "nativePaidFocus": "eco-audit",
+      "menuReconnect": true,
+      "processReconnect": true,
+      "realHostMigration": true,
+      "nativeOwnerReturn": true,
+      "rebootReconnect": true,
+      "sameNativeUidAndSessionKeys": true,
+      "onceOnlyFocusPaymentRetained": true,
+      "members": 2,
+      "cleanup": "PENDING",
+      "note": "Actual existing production HTTP and signed native controls; no tokens or snapshots in evidence."
+    },
+    "cleanup": {
+      "roomId": "a34d42ac-9576-483d-821a-b91494cbe6e4",
+      "qaName": "NATIVE ONLINE QA",
+      "createdAt": "2026-10-11T17:03:20.184794+00:00",
+      "removedTestRooms": 1,
+      "roomsRemaining": 0,
+      "playersRemaining": 0,
+      "receiptsRemaining": 0,
+      "preservedCityBackups": 29,
+      "method": "Exact UUID + exact creation time + host QA name + QA-only membership + no original backup. Independent SQL zero-row verification."
+    }
   },
   "physicalRedmi": "Not measured",
   "note": "Actual fresh signed-binary QA after deterministic temporary native ownership fix. ece/f794 failed camera measurements remain rejected; no dropped samples, changed original limits, premature acceptance/publication/delivery or gameplay/backend rewrite."

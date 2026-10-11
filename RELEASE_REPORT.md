@@ -1,3 +1,11 @@
+# eaa camera rejected; next safe raster unit requires new signed QA (2026-10-11)
+
+Latest actual eaa run38156439244 build/10000/liveHTTP/upgrade/nativeonline PASS; exact APK68150dd1 is REJECTED by four valid camera limits. Camera artifact11708903979/SHAd88206ca/digest+CRC verified/all36 raw captures retained. Actual nativeonline114524438870/artifact11709517326/SHA92704756 verifies exactAPK paidcourse/session/host/owner/reboot; its exact new QAroom a34d42ac was guarded-cleaned and independently0rooms/players/receipts,29originalbackups preserved. Actual1800s offline114524438351 still running and must be preserved. Full cumulative proof EXPANSION_NATIVE_RECORDING_QA_2026-10-11.json.
+
+Next MapRasterLayer picture/path-builder change has strictTS/306JS/97Python/all42art/productionHermes local PASS. Native acceptance for changed runtime is PENDING, requiring a new standalone release and all unchanged gates. Main dbb354ab and backend22/24/schema18 remain unchanged. RELEASE_ACCEPTANCE_V2.json absent; publication/finaldelivery blocked until same-binary actual acceptance. No physical Redmi measurement claim.
+
+---
+
 # Latest eaa signed runtime — four actual gates PASS, native acceptance pending, 2026-10-11
 
 Runtimeeaa6d6e8171c60807b7d274199c20114e00fac26 / actual38156439244. Build/10000ticks10restores/productionHTTP/native in-place0.8.1→2.0.0 upgrade SUCCESS. Actual standalone APK142477801bytes/SHA68150dd1e156c907d581a68df824de49b96817a3d0736c44e3e10582fff34710; signedartifact11709351742/62289470bytes/digest4d5c3730/CRC verified. EmbeddedHermes10694424bytes/all4ABIs/42byte-exact original paintings/productionbackend/nondebug/landscape/samepackage&certificate/code10. Actual higher-version update keeps all6schema backups,privatecampaignfiles,encryptedpreferences,UID and native restart. First local extracted APK became truncated after checks; atomically restored from immutable verified archive, complete SHA independently matches actualCI checksum. Final copy/upload must verify full bytes/SHA again. Camera114524438348/offline1800s114524438351/nativeonline114524438870 still in progress; no acceptance/publication/delivery. Fullproof EXPANSION_NATIVE_RECORDING_QA_2026-10-11.json.

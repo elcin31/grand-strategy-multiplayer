@@ -1,5 +1,5 @@
 import {memo,useEffect,useMemo,useRef,useState} from 'react';
-import {Group,Image as MapImage,Picture,Skia,PaintStyle,type SkCanvas,type SkImage,type SkPath,type SkPicture} from '@shopify/react-native-skia';
+import {Group,Picture,Skia,PaintStyle,FilterMode,MipmapMode,ClipOp,type SkCanvas,type SkImage,type SkPath,type SkPicture} from '@shopify/react-native-skia';
 import {borderChunks,bordersInBounds,type BorderChunk} from '../map/borderChunks';
 import {rasterLevel} from '../map/cameraCoverage';
 import {visibleRasterTiles,rasterTiles,RasterCache,retainRasterImage,type RasterTile} from '../map/rasterTiles';
@@ -11,6 +11,8 @@ import type {MapScene} from '../map/worldScene';
 import {lakes,rivers,terrainPatches} from '../map/terrain';
 import {recordMetrics,getMetrics} from '../performance/telemetry';
 import {withNativeRecordingObjects} from '../map/nativeRecording';
+import {RecordingPathCache} from '../map/recordingPathCache';
+import {rasterImageDraw} from '../map/rasterImageDraw';
 
 const generations=new WeakMap<object,number>();let generation=0;
 function identity(value:object){let id=generations.get(value);if(id===undefined){id=++generation;generations.set(value,id);}return id;}
@@ -31,9 +33,14 @@ function terrainPath(kind:string){
   }
   terrainPaths.set(kind,path);return path;
 }
-interface Resources {paths:Map<string,SkPath>;pictures:RasterCache<SkPicture>;images:RasterCache<SkImage>}
+interface Resources {paths:RecordingPathCache<SkPath>;pictures:RasterCache<SkPicture>;images:RasterCache<SkImage>}
 interface Drawing {scene:MapScene;features:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;resources:Resources}
-function nativePath(f:MapFeature,d:Drawing){const key=d.lod+':'+f.id;let p=d.resources.paths.get(key);if(!p){const t=performance.now();p=Skia.Path.MakeFromSVGString(featurePath(geometryForLod(f,d.lod)))??Skia.Path.Make();p.setFillType(1);d.resources.paths.set(key,p);recordMetrics({pathBuilds:getMetrics().pathBuilds+1,pathBuildMs:getMetrics().pathBuildMs+performance.now()-t});}return p;}
+function appendNativePath(f:MapFeature,d:Drawing,group:SkPath){
+  d.resources.paths.withPath(d.lod+':'+f.id,()=>{
+    const t=performance.now(),p=Skia.Path.MakeFromSVGString(featurePath(geometryForLod(f,d.lod)))??Skia.Path.Make();p.setFillType(1);
+    recordMetrics({pathBuilds:getMetrics().pathBuilds+1,pathBuildMs:getMetrics().pathBuildMs+performance.now()-t});return p;
+  },path=>{group.addPath(path);});
+}
 function drawTile(tile:RasterTile,d:Drawing,canvas:SkCanvas){
   withNativeRecordingObjects(own=>{
     const paints=new Map<string,ReturnType<typeof Skia.Paint>>();
@@ -42,7 +49,7 @@ function drawTile(tile:RasterTile,d:Drawing,canvas:SkCanvas){
       p=own(Skia.Paint());p.setAntiAlias(true);p.setColor(Skia.Color(color));p.setAlphaf(opacity);if(stroke){p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(stroke);}paints.set(key,p);return p;
     };
     const grouped=new Map<string,SkPath>();
-    for(const f of tile.features){const color=f.provinceId?d.colors.get(f.provinceId)??'#37423f':'#354440';let group=grouped.get(color);if(!group){group=own(Skia.Path.Make());group.setFillType(1);grouped.set(color,group);}group.addPath(nativePath(f,d));}
+    for(const f of tile.features){const color=f.provinceId?d.colors.get(f.provinceId)??'#37423f':'#354440';let group=grouped.get(color);if(!group){group=own(Skia.Path.Make());group.setFillType(1);grouped.set(color,group);}appendNativePath(f,d,group);}
     for(const [color,path]of grouped)canvas.drawPath(path,paint(color));
     if(GRAPHICS[d.preset].terrain&&(d.mode==='Political'||d.mode==='Terrain')){
       canvas.drawPath(terrainPath('mountain'),paint('#d1cfbc',.32));canvas.drawPath(terrainPath('mountain'),paint('#273b36',.8,.3));
@@ -101,11 +108,23 @@ const RasterTileNode=memo(function RasterTileNode({tile,drawing}:{tile:RasterTil
       const image=drawing.resources.images.get(key)??tileImage(tile,drawing,key,picture!);if(image)setReady({key,image});
     });
   },[key,tile,drawing,picture,cached]);
-  const b=tile.bounds,gutter=2/tile.level.scale;
-  return <Group clip={Skia.XYWHRect(b.left,b.top,b.right-b.left,b.bottom-b.top)}>{cached?<MapImage fit="fill" image={cached} x={b.left-gutter} y={b.top-gutter} width={b.right-b.left+gutter*2} height={b.bottom-b.top+gutter*2}/>:<Picture picture={picture!}/>}</Group>;
+  // The UI camera only replays this immutable native picture. Keep Image fit,
+  // paint and clip command preparation off its animated parent recorder.
+  const display=useMemo(()=>withNativeRecordingObjects(own=>{
+    const b=tile.bounds,gutter=2/tile.level.scale,recorder=own(Skia.PictureRecorder());
+    const canvas=recorder.beginRecording(Skia.XYWHRect(b.left-gutter,b.top-gutter,b.right-b.left+gutter*2,b.bottom-b.top+gutter*2));
+    canvas.clipRect(Skia.XYWHRect(b.left,b.top,b.right-b.left,b.bottom-b.top),ClipOp.Intersect,false);
+    if(cached){
+      const rectangles=rasterImageDraw(tile,cached.width(),cached.height());
+      const {source:s,destination:d}=rectangles;
+      canvas.drawImageRectOptions(cached,Skia.XYWHRect(s.x,s.y,s.width,s.height),Skia.XYWHRect(d.x,d.y,d.width,d.height),FilterMode.Linear,MipmapMode.None,own(Skia.Paint()));
+    }else canvas.drawPicture(picture!);
+    return recorder.finishRecordingAsPicture();
+  }),[tile,cached,picture]);
+  return <Picture picture={display}/>;
 });
 export const MapRasterLayer=memo(function MapRasterLayer({scene,features,owners,colors,lod,preset,mode,detail,bounds,zoom,canPrewarm}:{scene:MapScene;features:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;bounds:Bounds;zoom:number;canPrewarm:()=>boolean}){
-  const resources=useMemo<Resources>(()=>({paths:new Map(),pictures:new RasterCache<SkPicture>(1000,96),images:new RasterCache<SkImage>()}),[scene]);
+  const resources=useMemo<Resources>(()=>({paths:new RecordingPathCache<SkPath>(),pictures:new RasterCache<SkPicture>(1000,96),images:new RasterCache<SkImage>()}),[scene]);
   useEffect(()=>()=>{resources.paths.clear();resources.pictures.clear();resources.images.clear();},[resources]);
   const drawing=useMemo<Drawing>(()=>({scene,features,owners,colors,lod,preset,mode,detail,resources}),[scene,features,owners,colors,lod,preset,mode,detail,resources]);
   const level=rasterLevel(zoom),context=useMemo(()=>features===scene.features?features:[...scene.features.filter(f=>!f.provinceId),...features],[scene,features]);

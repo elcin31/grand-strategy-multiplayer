@@ -1,3 +1,9 @@
+# Raster picture replay and bounded source builders — source verified, native pending (2026-10-11)
+
+Actual eaa38156439244 camera FAIL retains all36 captures and four original-limit violations; EXPANSION_EAA_CAMERA_REJECTED_2026-10-11.json contains exact values/artifact provenance. JS/cull work decreased but native UI pinch pressure remains. New scoped MapRasterLayer prepares immutable clipped raster pictures instead of per-frame declarative image fitting/clip commands, preserves linear/strict sampling and gutter pixels, and bounds/disposes exclusively recording-only source builders. Actual WASM raster pixel equality through pan/zoom and picture survival after builder eviction PASS; strictTS/306JS/no skips/97Python/no skips/Hermes/42paintings PASS. RASTER_PICTURE_SOURCE_QA_2026-10-11.json records pinned native API review, source budget estimates and tests. Foreground32MiB/cold8MiB pixel cache and original camera thresholds unchanged. Native timing/PSS effect and full new signed QA PENDING; no physical Redmi claim.
+
+---
+
 # Deterministic temporary native recording cleanup — source verified, 2026-10-11
 
 The next scoped renderer unit releases growing composite native path builders, reused per-recording paints and finished recorders immediately after recording. Cached geometry and returned pictures/images/fonts remain alive. Pinned Skia2.6.2 snapshot/value-copy/finish semantics checked; actual installed Skia WASM CPU picture replay after deletion verified30frames/exact RGBA pixels.302JS/no skips/strictTS/productionHermes/all42originalart PASS. Exact details NATIVE_RECORDING_SOURCE_REVIEW_2026-10-11.json. Android frame-time/PSS effect PENDING a fresh signed binary and full original gates; no physical handset or measured performance improvement claimed. Previous ece/f794 actual failed limits remain rejected.
