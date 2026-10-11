@@ -5,6 +5,9 @@ on:
     paths:
       - '.github/workflows/backend-world-qa.yml'
       - 'scripts/backend-world-smoke.py'
+      - 'scripts/backend_http.py'
+      - 'tests/backend_http_test.py'
+      - 'tests/backend_world_guards_test.py'
       - 'scripts/backend-input-smoke.py'
       - 'supabase/functions/**'
   workflow_dispatch:
@@ -34,3 +37,11 @@ jobs:
           path: /tmp/dominion-world-qa-room-id
           if-no-files-found: warn
           retention-days: 2
+      - name: Preserve sanitized actual expansion results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: world-backend-expansion-evidence
+          path: BACKEND_EXPANSION_QA.json
+          if-no-files-found: warn
+          retention-days: 14
