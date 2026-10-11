@@ -1,3 +1,19 @@
+# Continuation — recovered8fd and deployed existing Dominion backend, 2026-10-11
+
+Recovered actual expansion-v2 HEAD8fd9ae2f39509ad51bc37421b7e8188fc7a6bf96; main remains dbb354ab038713c3e54b969b34a6fc88bf2de11f. Last50 commits, all12 branches, zero open PRs, running/completed/failed Actions and actual artifacts inspected. Workspace initially empty after maintenance; checked out the existing repository/current branch. No unpublished previous edits recoverable beyond its published8fd checkpoint. Current runtime/assets/world/backend source byte-identical86b0f6d; do not repeat implemented gameplay/art.
+
+Actual current host strictTS/292JS/no skips PASS. Reviewed86 backend artifact11693232709 ZIP digest/CRC and each source SHA/byte count verified; independent clean8fd local builds are byte-exact. Existing malformed HTTP10/10 PASS. Existing dedicated project dfjsnjxnyjspwugjguhq only, ACTIVE_HEALTHY; before QA29 rooms/32 memberships/10 receipts/all29 prior city backups retained.
+
+**Actual coordinated deployment completed:** existing game-command23→24 first, then game-room21→22; both ACTIVE/verify_jwt:false, custom hashed-player-session auth/CAS/receipts retained. Source hashes and deployed archive IDs in EXPANSION_BACKEND_ROLLOUT_2026-10-11.json. No SQL schema or user-room edit, replacement project/database/auth/storage, or AssetMind access. Compatible signed86 standalone client already verified by actual release/native/in-place-save gates. Old clients receive426 and need the compatible APK. Exact command23 rollback is preserved; retrieved room21 source remains UNAVAILABLE and accepted reconstruction is explicitly not exact. Forward schema18 fixes only after any migration.
+
+**Exact active operation:** real-clock authenticated HTTP expansion QA is RUNNING in isolated room9cc50b47-6263-4ec7-8d4f-90ded6a453a7, host name WORLD ECONOMY QA. Only this UUID may be cleaned, with original-host-name guard, then verify zero room/player/receipt rows. No success inferred from deployment.
+
+Continuous fullABBA38128760449/job114438523543 is still running; preserve original gates and failures. Separate world/local trace38128760470 SUCCESS, artifact11698996366 ZIP SHA3bd58295efba16b6f64842e2b6407b6bdf931912d40d0152d2e34d8f4ae2af1c/CRC verified. Four actual10.55–10.67s continuous markers and scheduler data exist, but36 ftrace setup errors make attributionComplete=false. Candidate observed JS running time is lower in these traces; no full frame/PSS improvement or handset FPS claimed.
+
+Approved stages:0DONE;2DONE actual native army interaction;1PARTIAL current full continuous camera pending;3–8PARTIAL implemented/host/native/10000 verified, live18 RUNNING;9PARTIAL27 new/all42 packaged originals, final frame gate pending;10PARTIAL live/native reconnect/final integration pending;11PARTIAL checkpoint standalone exists, final2.0 higher version/release/delivery pending. Next: finish actual live QA/cleanup, inspect current fullABBA, add/run real native online reconnect with retained SecureStore, finalize2.0 version/name/publishing and all full gates, then deliver Dominion-grand-strategy-v2-release.apk. Do not stop at recovery/deployment or distribute intermediate0.8.1 as final.
+
+---
+
 # Continuation — actual Android PASS and continuous camera capture, 2026-10-11
 
 Confirmed parent63a40b9b2162403e658b7ad79692987fb50953ac; application/backend/world/assets/dependencies byte-identical86b0f6d83079785ec7c29eb61e137c2613ff0a69. Obtain this QA-only containing SHA from expansion-v2. Scratch maintenance removed an uncommitted correction; restored from GitHub63 with all8c1 auxiliary world/local diagnostics preserved, and verified again:84Python/no skips, pinned Perfetto0.58.2/officialv57.2, compilation/YAML/source/schema/diff checks PASS. Inherit292JS/strictTS/Hermes/all42 from unchanged86. No repeated gameplay development or duplicate APK build.

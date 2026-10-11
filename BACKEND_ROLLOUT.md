@@ -1,3 +1,9 @@
+## Actual schema18 deployment, 2026-10-11
+
+Existing dedicated Dominion game-command24 and game-room22 are now ACTIVE, deployed in that order from the digest/CRC/per-file verified86 CI bundles; independent clean8fd rebuilds match exactly. Custom hashed player sessions, CAS/receipts and verify_jwt:false retained. No DB/schema/user-room edits were part of deployment. Old client schemas require the compatible signed18 APK. Actual real-clock HTTP expansion QA/guarded isolated-room cleanup remain RUNNING/PENDING in EXPANSION_BACKEND_ROLLOUT_2026-10-11.json. Historical preparation below is preserved as history, not current production status. Once18 data exists, use forward18 fixes and never restore12 over migrated rooms.
+
+---
+
 ## Actual rollback preparation, 2026-10-11
 
 Current dedicated production still room21/command23/schema12, ACTIVE/verify_jwt:false; no deployment performed. Exact downloaded command23 source is durably preserved in backend-rollback/game-command-v23/index.js (2091247bytes/SHAf2b16707530850e3fa4ded4204316aff7d75925b46fe8286cabeda48c571cdd1); accepted47 minified rebuild matches byte-for-byte. Original function metadata/ezbr archive hashes and limitations are in backend-rollback/manifest.json. game-room source retrieval returned connector UNAVAILABLE on three attempts despite healthy metadata. Accepted47 reconstruction (2098171bytes/SHA670b0a8f05a78527207345e449ea720d5d618eb3b93d72dca96ec226f36e8c3f) is available as a reviewed recovery source, but an exact deployed-room match is not proven. Never call it an exact backup or invent a retrieval cause. Preserve this distinction in the rollout/rollback decision; no permission requirement is inferred from this local documentation. Once any room migrates to18, use forward18 fixes and never restore12 over migrated state.
