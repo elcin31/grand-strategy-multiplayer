@@ -68,13 +68,14 @@
   },
   "qaCleanup": {
     "roomIds": [
-      "198607b6-2167-4ca2-aa92-3d98de07e2e8"
+      "198607b6-2167-4ca2-aa92-3d98de07e2e8",
+      "9f8277fe-4b45-450a-97e1-5d417f29f523"
     ],
     "roomsRemaining": 0,
     "playersRemaining": 0,
     "receiptsRemaining": 0,
     "preservedCityBackups": 29,
-    "method": "Completed HTTP job; exact UUID, exact creation timestamp, expected WORLD ECONOMY QA membership and all three original-backup fields empty; FK cleanup followed by independent zero-row readback."
+    "method": "Both completed HTTP/native jobs; exact UUID, exact creation timestamp, expected WORLD ECONOMY QA or NATIVE ONLINE QA membership and all three original-backup fields empty; FK cleanup followed by independent zero-row readback for both rooms. Original29citybackups retained. Raw native report keeps its original at-capture PENDING field; completion is this separate verified record."
   },
   "signedApk": {
     "status": "PENDING_NATIVE_ACCEPTANCE",
@@ -174,7 +175,34 @@
   },
   "nativeOnline": {
     "jobId": 114511076358,
-    "status": "IN_PROGRESS"
+    "status": "COMPLETED",
+    "conclusion": "success",
+    "artifactId": 11707995510,
+    "zipBytes": 2068380,
+    "zipSha256": "bc5d999395d910af71501ef31efd5bfe1c40ed2b0b6ac25df3cd5843adc0121d",
+    "sourceRun": 38151928979,
+    "sourceRuntime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
+    "actualReport": {
+      "roomId": "9f8277fe-4b45-450a-97e1-5d417f29f523",
+      "qaName": "NATIVE ONLINE QA",
+      "stateVersion": 18,
+      "apkSha256": "6ba03fb0631ac2db17af7ef2d38e45c83b74b8e5f2cd90b8026671d36c3d2b26",
+      "nativeCreate": true,
+      "nativeCountrySelection": "germany",
+      "serverPaused": true,
+      "nativePaidFocus": "eco-audit",
+      "menuReconnect": true,
+      "processReconnect": true,
+      "realHostMigration": true,
+      "nativeOwnerReturn": true,
+      "rebootReconnect": true,
+      "sameNativeUidAndSessionKeys": true,
+      "onceOnlyFocusPaymentRetained": true,
+      "members": 2,
+      "cleanup": "PENDING",
+      "note": "Actual existing production HTTP and signed native controls; no tokens or snapshots in evidence."
+    },
+    "cleanup": "COMPLETE"
   },
   "longSimulation": {
     "jobId": 114506980677,
