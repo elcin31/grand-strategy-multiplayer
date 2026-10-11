@@ -1,3 +1,9 @@
+# ece99b6 complete native camera rejection — 2026-10-11
+
+Runtimeece99b6 / actual fullrun38151928979 / APK142477053bytes/SHA6ba03fb0631ac2db17af7ef2d38e45c83b74b8e5f2cd90b8026671d36c3d2b26 is REJECTED. All36 valid continuous ABBA captures completed; camera114511075768 fails seven original limits: forwardpinch99,terrain/open/closed-panelPSS,reversemedium99,pinch95,terrain99. Full values/verifiedartifact11707409183/digest71c8e7d9/provenance in EXPANSION_RENDERER_QA_2026-10-11.json. Five other actual gates pass; new actual1800s offline114511075812 remains in progress. No final acceptance/main/publication/delivery. Native heap dominates sampled memory differences; complete causal CPU/GPU attribution unavailable. Next scoped investigation is temporary native recording-resource lifetime with real picture/value-copy semantics, followed by fresh unchanged-threshold signed QA. All earlier failed measurements preserved. Physical Redmi unmeasured.
+
+---
+
 # Complete f794 camera rejection and next bounded drawing revision — 2026-10-11
 
 Actual full fresh38147835796/0ca93184 camera comparison rejected f794 APK: pinch compositor95 regressed18.8% forward/17.2% reverse; medium/world forward99 and reverse panel PSS also fail original limits.36complete raw captures, original limits and artifact digest preserved in EXPANSION_FINAL_CAMERA_REJECTED_F794.json. MLS/Continue harness fix is verified by all four actual valid launches. Actual candidate has lower JS/culling activity but more observed native graphics-buffer commands; traces contain36setup errors, so full CPU/GPU attribution is unavailable.

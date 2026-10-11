@@ -1,5 +1,5 @@
 {
-  "status": "IN_PROGRESS",
+  "status": "REJECTED",
   "runtime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
   "runId": 38151928979,
   "repository": "elcin31/grand-strategy-multiplayer",
@@ -78,7 +78,7 @@
     "method": "Both completed HTTP/native jobs; exact UUID, exact creation timestamp, expected WORLD ECONOMY QA or NATIVE ONLINE QA membership and all three original-backup fields empty; FK cleanup followed by independent zero-row readback for both rooms. Original29citybackups retained. Raw native report keeps its original at-capture PENDING field; completion is this separate verified record."
   },
   "signedApk": {
-    "status": "PENDING_NATIVE_ACCEPTANCE",
+    "status": "REJECTED_CAMERA_GATES",
     "runtime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
     "runId": 38151928979,
     "artifactId": 11707378000,
@@ -114,7 +114,68 @@
   },
   "nativeCamera": {
     "jobId": 114511075768,
-    "status": "IN_PROGRESS"
+    "status": "COMPLETED",
+    "conclusion": "failure",
+    "artifactId": 11707409183,
+    "zipBytes": 17757437,
+    "zipSha256": "71c8e7d92bc13ea78ccf789a43461f7719d76a36dbf645224872caa013a4d6bc",
+    "crcVerified": true,
+    "rawCaptureValidation": {
+      "diagnosticOnly": true,
+      "allFourCapturesComplete": true,
+      "scenariosPerLaunch": 9,
+      "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+      "fixtureStateChecksum": "e8befae1",
+      "comparisonGateViolations": [
+        {
+          "scenario": "forward:03-pinch",
+          "gate": "compositor:p99Ms",
+          "before": 892.909782,
+          "after": 1210.762227
+        },
+        {
+          "scenario": "forward:06-terrain-pan",
+          "gate": "pss20percent",
+          "before": 351596,
+          "after": 433387
+        },
+        {
+          "scenario": "forward:08-panel-open",
+          "gate": "pss20percent",
+          "before": 325043,
+          "after": 402837
+        },
+        {
+          "scenario": "forward:09-panel-closed",
+          "gate": "pss20percent",
+          "before": 354320,
+          "after": 432859
+        },
+        {
+          "scenario": "reverse:02-medium-pan",
+          "gate": "compositor:p99Ms",
+          "before": 153.227516,
+          "after": 186.754902
+        },
+        {
+          "scenario": "reverse:03-pinch",
+          "gate": "compositor:p95Ms",
+          "before": 407.791951,
+          "after": 685.702038
+        },
+        {
+          "scenario": "reverse:06-terrain-pan",
+          "gate": "compositor:p99Ms",
+          "before": 91.836114,
+          "after": 114.060155
+        }
+      ],
+      "comparisonGatesPassed": false,
+      "note": "Original20% PSS/other and10% pinch limits retained. Complete captures allow diagnosis; they do not establish final native or physical-device acceptance."
+    },
+    "attributionComplete": false,
+    "memoryObservation": "Failed forward terrain/open/closed-panel PSS differences are predominantly native heap. Logical active raster RGBA stays near32MiB. All four fixture launches and actual gestures are valid; stale final HUD XML does not invalidate raw measurements. No complete new CPU/GPU trace attribution.",
+    "nextAction": "Review pinned Skia synchronous canvas value-copy semantics; release only temporary recorders/paints/composite path builders after recording, retain all pictures/images/geometry displayed by Canvas. Verify tests and a fresh signed binary at all original gates."
   },
   "nativeOfflineSoak": {
     "jobId": 114511075812,
@@ -400,5 +461,5 @@
     }
   },
   "physicalRedmi": "Not measured",
-  "note": "Same deployed backend, no deployment or gameplay rewrite; earlier failed f794 camera evidence remains preserved. This record does not accept or deliver a binary."
+  "note": "REJECTED: seven actual original-limit camera violations; both orders and all36 captures complete. Native offline/1800s job114511075812 remains running. Five other actual new-binary gates pass. No final acceptance, publication or delivery. Earlier f794 rejection preserved; no deployment or gameplay rewrite."
 }
