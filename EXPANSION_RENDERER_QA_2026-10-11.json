@@ -121,7 +121,56 @@
   },
   "nativeVersionUpgrade": {
     "jobId": 114511075906,
-    "status": "IN_PROGRESS"
+    "status": "COMPLETED",
+    "conclusion": "success",
+    "artifactId": 11707691761,
+    "zipBytes": 2711555,
+    "zipSha256": "0ffef2315e10d593aaa337312fc07fb10163f039988920e3cc49a994a3d02a84",
+    "sourceRun": 38151928979,
+    "sourceRuntime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
+    "actualReport": {
+      "baseline": {
+        "package": "com.elcin31.grandstrategymultiplayer",
+        "versionCode": 9,
+        "versionName": "0.8.1",
+        "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+      },
+      "candidate": {
+        "package": "com.elcin31.grandstrategymultiplayer",
+        "versionCode": 10,
+        "versionName": "2.0.0",
+        "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+      },
+      "appUidRetained": true,
+      "privateCampaignFilesRetained": true,
+      "encryptedPreferenceBytesRetainedBeforeLaunch": true,
+      "actualSecureStorePreferencesAfterUpdate": {
+        "preset": "High",
+        "frameRate": 30,
+        "adaptive": false
+      },
+      "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+      "originalWorld": {
+        "countries": 195,
+        "provinces": 2924,
+        "cities": 5411
+      },
+      "oldSchema": 12,
+      "newSchema": 18,
+      "oldSaveSha256": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180",
+      "migrationBackupSha256": {
+        "before-expansion-v13": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180",
+        "before-espionage-v14": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180",
+        "before-economy-v15": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180",
+        "before-military-v16": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180",
+        "before-technology-v17": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180",
+        "before-focus-v18": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180"
+      },
+      "repeatBackupBytesUnchanged": true,
+      "actualCandidateRestart": true,
+      "finalVersionUpgrade": true,
+      "note": "Real offline ephemeral-emulator package replacement, native save/load/backups and encrypted graphics preference round-trip. No production-session reconnect or hardware FPS claim."
+    }
   },
   "nativeOnline": {
     "jobId": 114511076358,
