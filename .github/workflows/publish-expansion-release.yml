@@ -80,7 +80,7 @@ jobs:
           python scripts/verify-packaged-art.py release/Dominion-grand-strategy-v2-release.apk
           python -c "import shutil;shutil.make_archive('release/Dominion-v2-camera-evidence','zip','camera-evidence')"
           cp RELEASE_ACCEPTANCE_V2.json release/
-          cp upgrade-evidence/android-upgrade/UPGRADE_SAVE_QA.json online-evidence/android-online/NATIVE_ONLINE_QA.json backend-evidence/BACKEND_EXPANSION_QA.json release/
+          python -c "import sys,json;sys.path.insert(0,'scripts');from release_v2_validation import read_evidence;from pathlib import Path;[(Path('release')/name).write_text(json.dumps(read_evidence(folder,name),indent=2)+'\n') for folder,name in [('upgrade-evidence','UPGRADE_SAVE_QA.json'),('online-evidence','NATIVE_ONLINE_QA.json'),('backend-evidence','BACKEND_EXPANSION_QA.json')]]"
           python -c "import zipfile;z=zipfile.ZipFile('release/Dominion-grand-strategy-v2-release.zip','w',zipfile.ZIP_DEFLATED,compresslevel=9);z.write('release/Dominion-grand-strategy-v2-release.apk','Dominion-grand-strategy-v2-release.apk');z.close()"
           (cd release && sha256sum Dominion-grand-strategy-v2-release.apk Dominion-grand-strategy-v2-release.zip > Dominion-v2-checksums.txt)
       - name: Publish exact accepted APK without rebuilding
@@ -99,6 +99,11 @@ jobs:
             mkdir existing-release
             gh release download v2.0.0 --pattern Dominion-grand-strategy-v2-release.apk --dir existing-release
             cmp release/Dominion-grand-strategy-v2-release.apk existing-release/Dominion-grand-strategy-v2-release.apk
+            gh api "repos/$GH_REPO/releases/tags/v2.0.0" --jq '.assets[].name' > existing-assets.txt
+            for artifact in release/*; do
+              name=$(basename "$artifact")
+              if ! rg -Fxq "$name" existing-assets.txt; then gh release upload v2.0.0 "$artifact"; fi
+            done
           else
             gh release create v2.0.0 --target "$MAIN_SHA" --title 'Dominion 2.0 — Grand Strategy Expansion' --notes-file release-notes.md release/*
           fi

@@ -1,13 +1,25 @@
 import copy
 import sys
 import unittest
+import tempfile
+import json
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).parents[1]/'scripts'))
 from release_v2_validation import (assert_accepted_run,assert_binary_evidence,REQUIRED_JOBS,
-                                  PACKAGE,BACKUP_SUFFIXES)
+                                  PACKAGE,BACKUP_SUFFIXES,read_evidence)
 
 
 class ReleaseAcceptanceTest(unittest.TestCase):
+    def test_uploaded_common_root_is_supported_but_missing_or_duplicate_native_evidence_is_rejected(self):
+        with tempfile.TemporaryDirectory() as folder:
+            with self.assertRaises(AssertionError):read_evidence(folder,'NATIVE_ONLINE_QA.json')
+            nested=Path(folder)/'home/runner/work/dominion/android-online'
+            nested.mkdir(parents=True)
+            (nested/'NATIVE_ONLINE_QA.json').write_text(json.dumps({'apkSha256':'b'*64}))
+            self.assertEqual(read_evidence(folder,'NATIVE_ONLINE_QA.json'),{'apkSha256':'b'*64})
+            (Path(folder)/'NATIVE_ONLINE_QA.json').write_text('{}')
+            with self.assertRaises(AssertionError):read_evidence(folder,'NATIVE_ONLINE_QA.json')
+
     def fixture(self):
         acceptance={'status':'ACCEPTED','runtime':'a'*40,'runId':17,'apkSha256':'b'*64,
                     'apkBytes':142473325,'version':'2.0.0','versionCode':10,

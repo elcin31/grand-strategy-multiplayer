@@ -1,3 +1,31 @@
+# Continuation — live acceptance recorded and portable artifact layout, 2026-10-11
+
+Verified parent **081e661e4deecc4781419c45b733dc8c37edb0e2**, runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**, active complete final CI **38133111807**. Backend-live114451355520 SUCCESS, actual evidence/source-bundle digests verified and current deployed22/24 source-byte identity confirmed. Full observed report EXPANSION_LIVE_ACCEPTANCE_2026-10-11.json; stage3–8 live functional gates now PASS. Current native/camera/upgrade/1800s/online still pending, so final release and main promotion remain blocked. Original forwardpinchFAIL retained.
+
+Redundant local HTTP QA e91630eb-1637-41fb-8e6b-688ae7593df5 was stopped through its unified session56184 after identical full actual CI PASS (exit130); partial local output is not promoted to full acceptance. Cleanup must include this exact scoped room and current CI10a12545-03d1-4058-a915-0fbe79f7d0b4 plus the three failed native/HTTP UUIDs already recorded. Do not delete original/user rooms or backups.
+
+Actual native evidence artifact uses a common absolute root when /tmp identifier is uploaded beside workspace files. Publication now requires ONE recursively found exact JSON report (reject missing/duplicates), accepting current real artifact layout; future native uploads copy the sanitized UUID into android-online and keep a relative common root. Publication retries only missing release assets after checking an already-existing identicalAPK, never clobbers a binary/tag. Main/full publication flow uses the same unique-report reader. These are QA/ops fixes only; no app/runtime/assets/backend changes and no identical APK rebuild.
+
+Files: EXPANSION_LIVE_ACCEPTANCE_2026-10-11.json, RELEASE_REPORT.md, DEVELOPMENT_HANDOFF.md, existing publication/online/Android workflow verification lines, release_v2_validation/verify-expansion-release scripts and negative artifact-layout regression. Current **91Python/no skips PASS**, compilation/YAML/diff PASS. Main unchangeddbb354ab, acceptance manifest absent/PENDING until actual native gates and guarded cleanup finish. PhysicalXiaomi unmeasured.
+
+Next exact operation: monitor38133111807/current signed gates, fix confirmed failures, collect exact QA UUIDs/guarded cleanup, record final accepted SHA/digests/version/signature/proofs and stage status; normally promote existing main, trigger existing apk-delivery publication-only workflow, verify/download and attach Dominion-grand-strategy-v2-release.apk.
+
+---
+
+# Continuation — full live backend PASS, final Android pending, 2026-10-11
+
+Verified current published HEAD **081e661e4deecc4781419c45b733dc8c37edb0e2**; actual application runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**. Its required CI **38133111807** backend-live/job114451355520 SUCCESS. Build/10000/native/camera/upgrade/online remain in progress/pending; main unchangeddbb354ab. Publication-prep HEAD is runtime-byte-identicalN, so do not rebuild for these reports/ops.
+
+Actual live schema18 feature and clock/host migration evidence ZIP11699439508/digest340b01b2415175505643cad7cd26c21786031329c58bbf26cc244f6e5ca54a04/CRC verified, exact room10a12545-03d1-4058-a915-0fbe79f7d0b4 (WORLD ECONOMY QA), tick21→47; all auth/version/world/8players/receipt/cost/refund/route/building/army/economy/consent/4spies/once-only course/science/reconnect/time/migration checks PASS. New compiled artifact11700270852/digest31a55ab71b77ef135b9b6f4f95234f22336317d65c8a5b9bd4383774c3074469/CRC verified and both bundles exactly match currently deployed command24/room22 SHA values. Never redeploy unchanged bundles. Full observed report EXPANSION_LIVE_ACCEPTANCE_2026-10-11.json.
+
+Gameplay systems stages3–8 now have integrated host/JS/native/10000tick and actual production schema18 functional evidence. Final overall acceptance still waits for current native/camera/upgrade/online/soak; stage1 remains PARTIAL with preserved earlier pinchFAIL,10/11 PARTIAL. No final release/physicalXiaomi claim. One local duplicate HTTP scenario e91630eb was still running when full identical CI finished; stopping it is permitted to avoid repeating accepted work, but cleanup must include its exact UUID regardless of partial completion. Prior failed scoped rooms9cc50b47/7afc3e4d/ff5c4d14 plus current CI10a room remain for UUID/name-guarded cleanup only; preserve original29city backups.
+
+Files: EXPANSION_LIVE_ACCEPTANCE_2026-10-11.json, RELEASE_REPORT.md, DEVELOPMENT_HANDOFF.md and publication-only retry of missing assets after verifying existing identicalAPK (no clobber/tag overwrite).90Python/no skips/compilation/YAML/diff PASS inherited; final APK gates must be observed, not inferred.
+
+Next exact action: monitor38133111807, inspect real current signed native/camera results and fix concrete failures; guarded cleanup/acceptance manifest, normal promotion and existing apk-delivery publication without duplicate build, download/verify/deliver final2.0APK.
+
+---
+
 # Continuation — exact-artifact publication prepared, 2026-10-11
 
 Verified published runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**; its full required CI **38133111807** is IN PROGRESS (build114451355387,10000ticks114451355479,actual HTTP114451355520). Do not start another identical APK build for this QA/ops-only block. Main remainsdbb354ab and must be promoted normally only after acceptance. Previous candidates38132365346/38132865124 are retained but superseded for release by the current runtime/recovery fix.

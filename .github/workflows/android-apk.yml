@@ -281,7 +281,7 @@ jobs:
         run: |
           test "$(gh api repos/elcin31/grand-strategy-multiplayer/git/ref/heads/main --jq .object.sha)" = "$GITHUB_SHA"
           python -c "import json,os;r=json.load(open('upgrade-evidence/candidate-run.json'));assert r['head_sha']==os.environ['GITHUB_SHA'];u=json.load(open('upgrade-evidence/android-upgrade/UPGRADE_SAVE_QA.json'));assert u['finalVersionUpgrade'] is True;assert u['candidate']['versionCode']>u['baseline']['versionCode']"
-          python -c "import json;r=json.load(open('online-evidence/android-online/NATIVE_ONLINE_QA.json'));assert all(r[k] is True for k in ['nativeCreate','serverPaused','menuReconnect','processReconnect','realHostMigration','nativeOwnerReturn','rebootReconnect','sameNativeUidAndSessionKeys','onceOnlyFocusPaymentRetained'])"
+          python -c "import json;import sys;sys.path.insert(0,'scripts');from release_v2_validation import read_evidence;r=read_evidence('online-evidence','NATIVE_ONLINE_QA.json');assert all(r[k] is True for k in ['nativeCreate','serverPaused','menuReconnect','processReconnect','realHostMigration','nativeOwnerReturn','rebootReconnect','sameNativeUidAndSessionKeys','onceOnlyFocusPaymentRetained'])"
           cp camera-evidence/CAMERA_NATIVE_PAIRED.json .
           python -c "import shutil; shutil.make_archive('camera-native-evidence', 'zip', 'camera-evidence')"
           zip Dominion-grand-strategy-v2-release.zip Dominion-grand-strategy-v2-release.apk

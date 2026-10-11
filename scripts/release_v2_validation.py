@@ -1,12 +1,20 @@
 """Reject publication unless the exact standalone binary has complete actual QA."""
 import math
 import re
+import json
+from pathlib import Path
 from native_upgrade_validation import PACKAGE, BACKUP_SUFFIXES
 
 REPOSITORY = 'elcin31/grand-strategy-multiplayer'
 REQUIRED_JOBS = {'build-apk', 'long-simulation', 'android-smoke', 'camera-comparison',
                  'android-upgrade / release-upgrade-save', 'android-online / native-online',
                  'backend-live / live-world'}
+
+
+def read_evidence(directory, filename):
+    matches = [p for p in Path(directory).rglob(filename) if p.is_file()]
+    assert len(matches) == 1, 'Missing/ambiguous accepted evidence: '+filename
+    return json.loads(matches[0].read_text())
 
 
 def assert_accepted_run(acceptance, run, jobs):
