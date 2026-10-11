@@ -1,3 +1,11 @@
+# Current86 standalone verification and durable upgrade publication gate — 2026-10-11
+
+Actual86 CI38115315485/build114398943630/10000 job114398943518 SUCCESS. Downloaded release ZIP11693595807/62,288,122bytes/SHA928d160e2d34b99ef3edcdcf5830f1f5e251dcfc55e94ddbd96951a0f3dc4f95 digest/CRC PASS; APK142,473,325bytes/SHAb43cf78cf96f63497ffd534fd508f193790388e1f0300ca0bfc442b1ed1d2583, Hermes10,689,948bytes/SHAfe453e21161b3ec4edd517d6c8d0d4a12f0c5ebe5ab1a0e9f706290858ab433a/dedicated backend/four Skia+Hermes ABIs/all42 byte-exact paintings/actual CI manifest+retained signature matching exact APK SHA PASS. Current full camera/native remain in progress, version0.8.1(9), no final release/delivery.
+
+Actual install/save migration workflow is now part of the existing complete Android pipeline through workflow_call. Publication requires that job; main requires actual greater versionCode and finalVersionUpgrade=true and exact source SHA. Real same-version755 migration remains PASS and correctly cannot authorize final2.0 publication. Latest86 upgrade will use its exact successful run without another APK build. Backend/live acceptance, final higher version/tag/title/file and completed unchanged native/frame gates remain pending. Full evidence EXPANSION_RELEASE_GATES_QA_2026-10-11.json. No final APK or hardware smoothness claim.
+
+---
+
 # Current expansion release verification — 2026-10-11
 
 Final Dominion2.0 APK is not ready and has not been delivered. Actual755 build38111539597/build114387963950 SUCCESS and downloaded artifact11691873159 digest/CRC verified: APK142,472,401bytes/SHA950dbdad1c98029618b509cea5cba33aaf78aedef594e3b54dd8c406750b0978; embedded Hermes10,689,024bytes/SHAb57168db40d0c9c78bc17a606d19559a5dfa75c4a358a04a311655be246ec1f2, no Metro, dedicated Dominion backend, four native ABIs/all42 byte-exact paintings, non-debuggable assembleRelease/landscape/V2 retained install certificate verified. Version remains0.8.1(9); current native/full camera failed. Do not present this intermediate binary as final.
