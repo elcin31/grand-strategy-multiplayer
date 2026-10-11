@@ -178,8 +178,142 @@
     "nextAction": "Review pinned Skia synchronous canvas value-copy semantics; release only temporary recorders/paints/composite path builders after recording, retain all pictures/images/geometry displayed by Canvas. Verify tests and a fresh signed binary at all original gates."
   },
   "nativeOfflineSoak": {
+    "status": "COMPLETED",
+    "runId": 38151928979,
+    "runtime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
     "jobId": 114511075812,
-    "status": "IN_PROGRESS"
+    "conclusion": "success",
+    "artifactId": 11709136141,
+    "zipBytes": 30267874,
+    "zipSha256": "567d604c08c29692cec012620e827009257e70bfa8e70b8149617d6e3a497f79",
+    "crcVerified": true,
+    "stressSeconds": 1819.0770538650002,
+    "memorySamples": [
+      {
+        "sample": "stress-memory-00",
+        "pssKiB": 477136
+      },
+      {
+        "sample": "stress-memory-01",
+        "pssKiB": 440193
+      },
+      {
+        "sample": "stress-memory-02",
+        "pssKiB": 426299
+      },
+      {
+        "sample": "stress-memory-03",
+        "pssKiB": 425883
+      },
+      {
+        "sample": "stress-memory-04",
+        "pssKiB": 458404
+      },
+      {
+        "sample": "stress-memory-05",
+        "pssKiB": 483879
+      },
+      {
+        "sample": "stress-memory-06",
+        "pssKiB": 455241
+      },
+      {
+        "sample": "stress-memory-07",
+        "pssKiB": 436168
+      },
+      {
+        "sample": "stress-memory-08",
+        "pssKiB": 512107
+      },
+      {
+        "sample": "stress-memory-09",
+        "pssKiB": 440007
+      },
+      {
+        "sample": "stress-memory-10",
+        "pssKiB": 419186
+      },
+      {
+        "sample": "stress-memory-11",
+        "pssKiB": 446977
+      },
+      {
+        "sample": "stress-memory-12",
+        "pssKiB": 467931
+      },
+      {
+        "sample": "stress-memory-13",
+        "pssKiB": 501699
+      },
+      {
+        "sample": "stress-memory-14",
+        "pssKiB": 444185
+      },
+      {
+        "sample": "stress-memory-15",
+        "pssKiB": 497851
+      },
+      {
+        "sample": "stress-memory-16",
+        "pssKiB": 446557
+      },
+      {
+        "sample": "stress-memory-17",
+        "pssKiB": 444518
+      },
+      {
+        "sample": "stress-memory-18",
+        "pssKiB": 490327
+      },
+      {
+        "sample": "stress-memory-19",
+        "pssKiB": 434411
+      },
+      {
+        "sample": "stress-memory-20",
+        "pssKiB": 448326
+      },
+      {
+        "sample": "stress-memory-21",
+        "pssKiB": 487280
+      },
+      {
+        "sample": "stress-memory-22",
+        "pssKiB": 430430
+      },
+      {
+        "sample": "stress-memory-23",
+        "pssKiB": 491445
+      },
+      {
+        "sample": "stress-memory-24",
+        "pssKiB": 439696
+      },
+      {
+        "sample": "stress-memory-25",
+        "pssKiB": 451989
+      },
+      {
+        "sample": "stress-memory-26",
+        "pssKiB": 482177
+      },
+      {
+        "sample": "stress-memory-27",
+        "pssKiB": 460782
+      },
+      {
+        "sample": "stress-memory-28",
+        "pssKiB": 509813
+      },
+      {
+        "sample": "stress-memory-29",
+        "pssKiB": 517671
+      }
+    ],
+    "minimumPssKiB": 419186,
+    "maximumPssKiB": 517671,
+    "cameraAccepted": false,
+    "note": "Completed real standalone offline/gameplay/process/reboot/save and render/simulation/autosave software-emulator QA. This exact ece binary remains camera-rejected; never substitute this pass for changed eaa runtime. Sampled memory only; no continuous-peak/leak or physical Redmi claim."
   },
   "nativeVersionUpgrade": {
     "jobId": 114511075906,
@@ -461,5 +595,6 @@
     }
   },
   "physicalRedmi": "Not measured",
-  "note": "REJECTED: seven actual original-limit camera violations; both orders and all36 captures complete. Native offline/1800s job114511075812 remains running. Five other actual new-binary gates pass. No final acceptance, publication or delivery. Earlier f794 rejection preserved; no deployment or gameplay rewrite."
+  "note": "REJECTED: seven actual original-limit camera violations; all36 captures complete. All six other exact-ece gates now pass, including actual1819.077s native offline/render/simulation/autosave. Its failed camera prevents acceptance/publication/delivery. eaa changed renderer requires its own new signed native QA; no old-gate substitution.",
+  "runConclusion": "failure"
 }

@@ -1,3 +1,11 @@
+# Latest eaa signed runtime — four actual gates PASS, native acceptance pending, 2026-10-11
+
+Runtimeeaa6d6e8171c60807b7d274199c20114e00fac26 / actual38156439244. Build/10000ticks10restores/productionHTTP/native in-place0.8.1→2.0.0 upgrade SUCCESS. Actual standalone APK142477801bytes/SHA68150dd1e156c907d581a68df824de49b96817a3d0736c44e3e10582fff34710; signedartifact11709351742/62289470bytes/digest4d5c3730/CRC verified. EmbeddedHermes10694424bytes/all4ABIs/42byte-exact original paintings/productionbackend/nondebug/landscape/samepackage&certificate/code10. Actual higher-version update keeps all6schema backups,privatecampaignfiles,encryptedpreferences,UID and native restart. First local extracted APK became truncated after checks; atomically restored from immutable verified archive, complete SHA independently matches actualCI checksum. Final copy/upload must verify full bytes/SHA again. Camera114524438348/offline1800s114524438351/nativeonline114524438870 still in progress; no acceptance/publication/delivery. Fullproof EXPANSION_NATIVE_RECORDING_QA_2026-10-11.json.
+
+Prior ece exact1819.077s/native30PSS samples PASS, six non-camera gates complete, but its seven failed camera limits still reject that binary. Preserve separate evidence; never substitute it for changed eaa native acceptance. Physical Redmi unmeasured.
+
+---
+
 # Current signed ece99b6 candidate rejected — 2026-10-11
 
 Runtimeece99b6 / actual fullrun38151928979 / APK142477053bytes/SHA6ba03fb0631ac2db17af7ef2d38e45c83b74b8e5f2cd90b8026671d36c3d2b26 is REJECTED. All36 valid continuous ABBA captures completed; camera114511075768 fails seven original limits: forwardpinch99,terrain/open/closed-panelPSS,reversemedium99,pinch95,terrain99. Full values/verifiedartifact11707409183/digest71c8e7d9/provenance in EXPANSION_RENDERER_QA_2026-10-11.json. Five other actual gates pass; new actual1800s offline114511075812 remains in progress. No final acceptance/main/publication/delivery. Native heap dominates sampled memory differences; complete causal CPU/GPU attribution unavailable. Next scoped investigation is temporary native recording-resource lifetime with real picture/value-copy semantics, followed by fresh unchanged-threshold signed QA. All earlier failed measurements preserved. Physical Redmi unmeasured.
