@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).parents[1]/'scripts'))
 from release_v2_validation import (assert_accepted_run,assert_binary_evidence,REQUIRED_JOBS,
-                                  PACKAGE,BACKUP_SUFFIXES,read_evidence)
+                                  PACKAGE,BACKUP_SUFFIXES,read_evidence,assert_artifact_source)
 
 
 class ReleaseAcceptanceTest(unittest.TestCase):
@@ -57,6 +57,39 @@ class ReleaseAcceptanceTest(unittest.TestCase):
             wrong={**r,key:value}
             with self.assertRaises(AssertionError):assert_accepted_run(a,wrong,j)
         with self.assertRaises(AssertionError):assert_accepted_run({**a,'status':'PENDING'},r,j)
+
+    def test_corrected_harness_requires_full_green_same_binary_source_without_other_gate_waivers(self):
+        a,r,j,*_=self.fixture()
+        r['conclusion']='failure';reruns={}
+        for n,folder in [('camera-comparison','camera'),('android-online / native-online','online')]:
+            next(x for x in j['jobs'] if x['name']==n)['conclusion']='failure'
+            job='camera-comparison' if folder=='camera' else 'native-online'
+            a.setdefault('gateReruns',{})[n]={'runId':18 if folder=='camera' else 19,
+                'qaRuntime':'e'*40,'jobName':job}
+            reruns[n]={'run':{**r,'id':a['gateReruns'][n]['runId'],'head_sha':'e'*40,'conclusion':'success'},
+                       'jobs':{'jobs':[{'name':job,'status':'completed','conclusion':'success'}]}}
+        assert_accepted_run(a,r,j,reruns);assert_artifact_source(a,r)
+        for n in a['gateReruns']:
+            for status in ['failure','cancelled','in_progress']:
+                wrong=copy.deepcopy(reruns);wrong[n]['run']['conclusion']=status
+                with self.assertRaises(AssertionError):assert_accepted_run(a,r,j,wrong)
+                wrong=copy.deepcopy(reruns);wrong[n]['jobs']['jobs'][0]['conclusion']=status
+                with self.assertRaises(AssertionError):assert_accepted_run(a,r,j,wrong)
+            for key,value in [('id',30),('head_sha','f'*40),('status','in_progress')]:
+                wrong=copy.deepcopy(reruns);wrong[n]['run'][key]=value
+                with self.assertRaises(AssertionError):assert_accepted_run(a,r,j,wrong)
+            wrong=copy.deepcopy(reruns);wrong[n]['jobs']['jobs']*=2
+            with self.assertRaises(AssertionError):assert_accepted_run(a,r,j,wrong)
+        with self.assertRaises(AssertionError):assert_accepted_run(a,r,j)
+        for n in REQUIRED_JOBS-set(a['gateReruns']):
+            wrong=copy.deepcopy(j);next(x for x in wrong['jobs'] if x['name']==n)['conclusion']='failure'
+            with self.assertRaises(AssertionError):assert_accepted_run(a,r,wrong,reruns)
+        wrong=copy.deepcopy(a);wrong['gateReruns']['build-apk']=wrong['gateReruns']['camera-comparison']
+        with self.assertRaises(AssertionError):assert_accepted_run(wrong,r,j,reruns)
+        for key,value in [('head_sha','f'*40),('id',30)]:
+            with self.assertRaises(AssertionError):assert_artifact_source(a,{**r,key:value})
+        wrong=copy.deepcopy(j);wrong['jobs'].append({'name':'another-check','conclusion':'failure'})
+        with self.assertRaises(AssertionError):assert_accepted_run(a,r,wrong,reruns)
 
     def test_wrong_binary_repeated_paid_reward_lower_version_or_unfinished_cleanup_cannot_publish(self):
         a,_,_,u,o,b=self.fixture()

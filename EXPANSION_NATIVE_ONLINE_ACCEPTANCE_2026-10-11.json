@@ -1,0 +1,35 @@
+{
+  "runtime": "f794ea4a4974f2f826f3ec7bd712a81b5f05291a",
+  "apkRunId": 38133111807,
+  "qaRunId": 38135659505,
+  "qaRuntime": "cf93b08b7ce919323ad92893d2851fb2461e5bd1",
+  "qaJobId": 114458872397,
+  "qaStatus": "SUCCESS",
+  "artifactId": 11701170433,
+  "artifactZipSha256": "68fb6886e32f9eb6056fcc42dc9617828c171e6be775463d70fe7f0f041d9097",
+  "report": {
+    "roomId": "43a7c12e-6d87-4afc-b31f-42a1d7f4fd46",
+    "qaName": "NATIVE ONLINE QA",
+    "stateVersion": 18,
+    "apkSha256": "75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3",
+    "nativeCreate": true,
+    "nativeCountrySelection": "germany",
+    "serverPaused": true,
+    "nativePaidFocus": "eco-audit",
+    "menuReconnect": true,
+    "processReconnect": true,
+    "realHostMigration": true,
+    "nativeOwnerReturn": true,
+    "rebootReconnect": true,
+    "sameNativeUidAndSessionKeys": true,
+    "onceOnlyFocusPaymentRetained": true,
+    "members": 2,
+    "cleanup": "PENDING",
+    "note": "Actual existing production HTTP and signed native controls; no tokens or snapshots in evidence."
+  },
+  "earlierFinalHarnessFailure": {
+    "jobId": 114455037604,
+    "reason": "Offscreen native label has inverted clipped bounds; corrected actual flow passed"
+  },
+  "note": "Actual signed production multiplayer QA. Complete release camera/soak acceptance still pending; no physical device claim."
+}
