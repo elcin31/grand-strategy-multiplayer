@@ -1,3 +1,9 @@
+# Deterministic temporary native recording cleanup — source verified, 2026-10-11
+
+The next scoped renderer unit releases growing composite native path builders, reused per-recording paints and finished recorders immediately after recording. Cached geometry and returned pictures/images/fonts remain alive. Pinned Skia2.6.2 snapshot/value-copy/finish semantics checked; actual installed Skia WASM CPU picture replay after deletion verified30frames/exact RGBA pixels.302JS/no skips/strictTS/productionHermes/all42originalart PASS. Exact details NATIVE_RECORDING_SOURCE_REVIEW_2026-10-11.json. Android frame-time/PSS effect PENDING a fresh signed binary and full original gates; no physical handset or measured performance improvement claimed. Previous ece/f794 actual failed limits remain rejected.
+
+---
+
 # ece99b6 complete native camera rejection — 2026-10-11
 
 Runtimeece99b6 / actual fullrun38151928979 / APK142477053bytes/SHA6ba03fb0631ac2db17af7ef2d38e45c83b74b8e5f2cd90b8026671d36c3d2b26 is REJECTED. All36 valid continuous ABBA captures completed; camera114511075768 fails seven original limits: forwardpinch99,terrain/open/closed-panelPSS,reversemedium99,pinch95,terrain99. Full values/verifiedartifact11707409183/digest71c8e7d9/provenance in EXPANSION_RENDERER_QA_2026-10-11.json. Five other actual gates pass; new actual1800s offline114511075812 remains in progress. No final acceptance/main/publication/delivery. Native heap dominates sampled memory differences; complete causal CPU/GPU attribution unavailable. Next scoped investigation is temporary native recording-resource lifetime with real picture/value-copy semantics, followed by fresh unchanged-threshold signed QA. All earlier failed measurements preserved. Physical Redmi unmeasured.

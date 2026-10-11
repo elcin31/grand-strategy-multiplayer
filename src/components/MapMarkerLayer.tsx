@@ -1,6 +1,7 @@
 import {getWorldFlag} from '../world/catalog';
 import {countryFlagBatch,FLAG_ATLAS_COLUMNS,FLAG_ATLAS_CELL_WIDTH,FLAG_ATLAS_CELL_HEIGHT,type CountryGlyph} from '../map/countryTargets';
 import {RasterCache} from '../map/rasterTiles';
+import {withNativeRecordingObjects} from '../map/nativeRecording';
 import {memo,useMemo} from 'react';
 import {Group,Picture,Skia,PaintStyle,BlendMode,type SkFont,type SkImage} from '@shopify/react-native-skia';
 import type {GameState} from '../types/game';
@@ -37,15 +38,19 @@ function countryAtlas(ids:readonly string[]):SkImage|null{
   }finally{surface.dispose();}
 }
 const compact=(value:number)=>value>=1e6?(value/1e6).toFixed(1)+'M':Math.round(value/1e3)+'K';
-function paint(color:string,stroke=0){const p=Skia.Paint();p.setAntiAlias(true);p.setColor(Skia.Color(color));if(stroke){p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(stroke);}return p;}
 interface Props {state:GameState;zoom:number;preset:GraphicsPreset;labels:CountryLabel[];countryGlyphs:CountryGlyph[];cities:MapCity[];cityLabels:Map<string,CityLabelPlacement>;counters:DisplayArmy[];countryId:string|null;armyId?:string|null;cityId?:string|null;provinceId:string|null;geometry:ReadonlyMap<string,MapFeature>;visible:ReadonlySet<string>;font:SkFont;counterFont:SkFont;nationFont:SkFont;labelBudget:number}
 /** One retained native display node replaces hundreds of animated inverse-scale
  * groups. Pan never records glyphs; zoom changes size smoothly until coverage
  * commits, then exact screen-sized glyphs are recorded at the settled scale. */
 export const MapMarkerLayer=memo(function MapMarkerLayer(props:Props){
-  const picture=useMemo(()=>{
+  const picture=useMemo(()=>withNativeRecordingObjects(own=>{
+    const paints=new Map<string,ReturnType<typeof Skia.Paint>>();
+    const paint=(color:string,stroke=0)=>{
+      const key=color+'|'+stroke;let p=paints.get(key);if(p)return p;
+      p=own(Skia.Paint());p.setAntiAlias(true);p.setColor(Skia.Color(color));if(stroke){p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(stroke);}paints.set(key,p);return p;
+    };
     const {state,zoom,preset,countryGlyphs,cities,cityLabels,counters,countryId,armyId,cityId,provinceId,geometry,visible,font,counterFont,nationFont,labelBudget}=props;
-    const recorder=Skia.PictureRecorder(),canvas=recorder.beginRecording(Skia.XYWHRect(-100,-100,1640,920));
+    const recorder=own(Skia.PictureRecorder()),canvas=recorder.beginRecording(Skia.XYWHRect(-100,-100,1640,920));
     const anchor=(x:number,y:number)=>{canvas.save();canvas.translate(x,y);canvas.scale(1/zoom,1/(zoom*TILT));};
     let remaining=labelBudget;
     const selected=provinceId?geometry.get(provinceId):undefined;
@@ -60,7 +65,7 @@ export const MapMarkerLayer=memo(function MapMarkerLayer(props:Props){
       canvas.restore();remaining--;
     }
     if(countryGlyphs.length){
-      const sprites=countryFlagBatch(countryGlyphs,zoom,TILT),atlas=countryAtlas(sprites.map(s=>s.id)),frames=Skia.Path.Make();
+      const sprites=countryFlagBatch(countryGlyphs,zoom,TILT),atlas=countryAtlas(sprites.map(s=>s.id)),frames=own(Skia.Path.Make());
       for(const sprite of sprites){const f=sprite.frame;frames.addRect(Skia.XYWHRect(f.x,f.y,f.width,f.height));}
       canvas.save();canvas.scale(1/zoom,1/(zoom*TILT));canvas.drawPath(frames,paint('#C6A76A'));
       if(atlas)canvas.drawAtlas(atlas,sprites.map(s=>Skia.XYWHRect(s.source.x,s.source.y,s.source.width,s.source.height)),sprites.map(s=>Skia.RSXform(s.scale,0,s.tx,s.ty)),paint('#FFFFFF'),BlendMode.SrcOver,undefined);
@@ -82,7 +87,7 @@ export const MapMarkerLayer=memo(function MapMarkerLayer(props:Props){
       canvas.restore();
     }
     const moving=new Set(state.armies.filter(a=>a.order).map(a=>a.id)),combat=new Set(state.battleLog.filter(b=>state.tick-b.tick<=1).map(b=>b.provinceId));
-    const shield=Skia.Path.MakeFromSVGString('M-29,-6L-16,-6L-17,3L-23,8L-28,3Z')!,swords=Skia.Path.MakeFromSVGString('M-27,-2L-19,4M-19,-2L-27,4')!,arrow=Skia.Path.MakeFromSVGString('M25,-5L31,-2L25,1Z')!;
+    const shield=own(Skia.Path.MakeFromSVGString('M-29,-6L-16,-6L-17,3L-23,8L-28,3Z')!),swords=own(Skia.Path.MakeFromSVGString('M-27,-2L-19,4M-19,-2L-27,4')!),arrow=own(Skia.Path.MakeFromSVGString('M25,-5L31,-2L25,1Z')!);
     for(const counter of counters){
       const selected=counter.ids.includes(armyId??''),mixed=counter.ownerIds.length>1;
       anchor(counter.x,counter.y);
@@ -99,6 +104,6 @@ export const MapMarkerLayer=memo(function MapMarkerLayer(props:Props){
       canvas.drawRect(Skia.XYWHRect(-18,16,36,5),paint('#182633'));canvas.drawRect(Skia.XYWHRect(-18,16,36*(constructionProgress(state,c.provinceId)??0),5),paint('#C6A76A'));canvas.restore();
     }
     return recorder.finishRecordingAsPicture();
-  },[props]);
+  }),[props]);
   return <Group><Picture picture={picture}/></Group>;
 });

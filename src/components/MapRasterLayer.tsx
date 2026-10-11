@@ -10,6 +10,7 @@ import {GRAPHICS,type GraphicsPreset,type MapMode} from '../map/settings';
 import type {MapScene} from '../map/worldScene';
 import {lakes,rivers,terrainPatches} from '../map/terrain';
 import {recordMetrics,getMetrics} from '../performance/telemetry';
+import {withNativeRecordingObjects} from '../map/nativeRecording';
 
 const generations=new WeakMap<object,number>();let generation=0;
 function identity(value:object){let id=generations.get(value);if(id===undefined){id=++generation;generations.set(value,id);}return id;}
@@ -30,33 +31,41 @@ function terrainPath(kind:string){
   }
   terrainPaths.set(kind,path);return path;
 }
-function paint(color:string,opacity=1,stroke=0){const p=Skia.Paint();p.setAntiAlias(true);p.setColor(Skia.Color(color));p.setAlphaf(opacity);if(stroke){p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(stroke);}return p;}
 interface Resources {paths:Map<string,SkPath>;pictures:RasterCache<SkPicture>;images:RasterCache<SkImage>}
 interface Drawing {scene:MapScene;features:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;resources:Resources}
 function nativePath(f:MapFeature,d:Drawing){const key=d.lod+':'+f.id;let p=d.resources.paths.get(key);if(!p){const t=performance.now();p=Skia.Path.MakeFromSVGString(featurePath(geometryForLod(f,d.lod)))??Skia.Path.Make();p.setFillType(1);d.resources.paths.set(key,p);recordMetrics({pathBuilds:getMetrics().pathBuilds+1,pathBuildMs:getMetrics().pathBuildMs+performance.now()-t});}return p;}
 function drawTile(tile:RasterTile,d:Drawing,canvas:SkCanvas){
-  const grouped=new Map<string,SkPath>();
-  for(const f of tile.features){const color=f.provinceId?d.colors.get(f.provinceId)??'#37423f':'#354440';let group=grouped.get(color);if(!group){group=Skia.Path.Make();group.setFillType(1);grouped.set(color,group);}group.addPath(nativePath(f,d));}
-  for(const [color,path]of grouped)canvas.drawPath(path,paint(color));
-  if(GRAPHICS[d.preset].terrain&&(d.mode==='Political'||d.mode==='Terrain')){
-    canvas.drawPath(terrainPath('mountain'),paint('#d1cfbc',.32));canvas.drawPath(terrainPath('mountain'),paint('#273b36',.8,.3));
-    canvas.drawPath(terrainPath('forest'),paint('#183f32',.5));canvas.drawPath(terrainPath('desert'),paint('#c4b185',.3,6));canvas.drawPath(terrainPath('rivers'),paint('#6594a5',.7,.4));
-    for(const lake of lakes)if(overlaps(tile.bounds,{left:lake.point.x-lake.radius,right:lake.point.x+lake.radius,top:lake.point.y-lake.radius,bottom:lake.point.y+lake.radius}))canvas.drawCircle(lake.point.x,lake.point.y,lake.radius,paint('#203c4c'));
-  }
-  const lineZoom=tile.level.key==='world'?1:tile.level.key==='region'?4:tile.level.key==='local'?8:15;
-  const width=GRAPHICS[d.preset].borderWidth/lineZoom;
-  for(const chunk of bordersInBounds(borderChunks(d.scene.edges,d.owners),tile.bounds)){
-    const paths=nativeBorder(chunk);if(d.detail)canvas.drawPath(paths.inner,paint('#273638',.65,width));
-    canvas.drawPath(paths.outer,paint('#101922',1,width*2));
-  }
+  withNativeRecordingObjects(own=>{
+    const paints=new Map<string,ReturnType<typeof Skia.Paint>>();
+    const paint=(color:string,opacity=1,stroke=0)=>{
+      const key=color+'|'+opacity+'|'+stroke;let p=paints.get(key);if(p)return p;
+      p=own(Skia.Paint());p.setAntiAlias(true);p.setColor(Skia.Color(color));p.setAlphaf(opacity);if(stroke){p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(stroke);}paints.set(key,p);return p;
+    };
+    const grouped=new Map<string,SkPath>();
+    for(const f of tile.features){const color=f.provinceId?d.colors.get(f.provinceId)??'#37423f':'#354440';let group=grouped.get(color);if(!group){group=own(Skia.Path.Make());group.setFillType(1);grouped.set(color,group);}group.addPath(nativePath(f,d));}
+    for(const [color,path]of grouped)canvas.drawPath(path,paint(color));
+    if(GRAPHICS[d.preset].terrain&&(d.mode==='Political'||d.mode==='Terrain')){
+      canvas.drawPath(terrainPath('mountain'),paint('#d1cfbc',.32));canvas.drawPath(terrainPath('mountain'),paint('#273b36',.8,.3));
+      canvas.drawPath(terrainPath('forest'),paint('#183f32',.5));canvas.drawPath(terrainPath('desert'),paint('#c4b185',.3,6));canvas.drawPath(terrainPath('rivers'),paint('#6594a5',.7,.4));
+      for(const lake of lakes)if(overlaps(tile.bounds,{left:lake.point.x-lake.radius,right:lake.point.x+lake.radius,top:lake.point.y-lake.radius,bottom:lake.point.y+lake.radius}))canvas.drawCircle(lake.point.x,lake.point.y,lake.radius,paint('#203c4c'));
+    }
+    const lineZoom=tile.level.key==='world'?1:tile.level.key==='region'?4:tile.level.key==='local'?8:15;
+    const width=GRAPHICS[d.preset].borderWidth/lineZoom;
+    for(const chunk of bordersInBounds(borderChunks(d.scene.edges,d.owners),tile.bounds)){
+      const paths=nativeBorder(chunk);if(d.detail)canvas.drawPath(paths.inner,paint('#273638',.65,width));
+      canvas.drawPath(paths.outer,paint('#101922',1,width*2));
+    }
+  });
 }
 function tileKey(tile:RasterTile,d:Drawing){return [identity(d.colors),identity(d.owners),identity(d.features),d.lod,d.preset,d.mode,Number(d.detail),tile.key].join('|');}
 function tilePicture(tile:RasterTile,d:Drawing,key:string){
   const cached=d.resources.pictures.get(key);if(cached)return cached;
-  const recorder=Skia.PictureRecorder(),b=tile.bounds,gutter=2/tile.level.scale;
-  const canvas=recorder.beginRecording(Skia.XYWHRect(b.left-gutter,b.top-gutter,b.right-b.left+gutter*2,b.bottom-b.top+gutter*2));
-  drawTile(tile,d,canvas);const picture=recorder.finishRecordingAsPicture();
-  d.resources.pictures.set(key,picture,1);return picture;
+  return withNativeRecordingObjects(own=>{
+    const recorder=own(Skia.PictureRecorder()),b=tile.bounds,gutter=2/tile.level.scale;
+    const canvas=recorder.beginRecording(Skia.XYWHRect(b.left-gutter,b.top-gutter,b.right-b.left+gutter*2,b.bottom-b.top+gutter*2));
+    drawTile(tile,d,canvas);const picture=recorder.finishRecordingAsPicture();
+    d.resources.pictures.set(key,picture,1);return picture;
+  });
 }
 function tileImage(tile:RasterTile,drawing:Drawing,key:string,picture:SkPicture,cold=false):SkImage|undefined{
   const b=tile.bounds,s=tile.level.scale,w=Math.ceil((b.right-b.left)*s)+4,h=Math.ceil((b.bottom-b.top)*s)+4,bytes=w*h*4;
