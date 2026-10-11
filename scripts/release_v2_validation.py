@@ -9,6 +9,7 @@ REPOSITORY = 'elcin31/grand-strategy-multiplayer'
 REQUIRED_JOBS = {'build-apk', 'long-simulation', 'android-smoke', 'camera-comparison',
                  'android-upgrade / release-upgrade-save', 'android-online / native-online',
                  'backend-live / live-world'}
+RERUN_GATES = {'camera-comparison': 'camera', 'android-online / native-online': 'online'}
 
 
 def read_evidence(directory, filename):
@@ -17,16 +18,46 @@ def read_evidence(directory, filename):
     return json.loads(matches[0].read_text())
 
 
-def assert_accepted_run(acceptance, run, jobs):
+def read_rerun_runs(acceptance, directory='recovered-gates'):
+    return {name: {'run': read_evidence(Path(directory)/RERUN_GATES[name], 'run.json'),
+                   'jobs': read_evidence(Path(directory)/RERUN_GATES[name], 'jobs.json')}
+            for name in acceptance.get('gateReruns', {})}
+
+
+def assert_artifact_source(acceptance, source):
+    assert source['repository']['full_name'] == REPOSITORY
+    assert source['id'] == acceptance['runId'] and source['head_sha'] == acceptance['runtime'], \
+        'Recovered gate tested a different APK source'
+
+
+def assert_accepted_run(acceptance, run, jobs, rerun_runs=None):
     assert acceptance['status'] == 'ACCEPTED', 'Candidate still pending acceptance'
     assert re.fullmatch(r'[0-9a-f]{40}', acceptance['runtime'])
-    assert run['repository']['full_name'] == REPOSITORY
-    assert run['id'] == acceptance['runId'] and run['head_sha'] == acceptance['runtime']
-    assert run['status'] == 'completed' and run['conclusion'] == 'success'
+    assert_artifact_source(acceptance, run)
+    reruns = acceptance.get('gateReruns', {})
+    assert set(reruns) <= set(RERUN_GATES), 'This gate cannot be replaced by a QA harness rerun'
+    assert set(rerun_runs or {}) == set(reruns), 'Missing/unexpected recovered gate provenance'
+    assert run['status'] == 'completed' and run['conclusion'] == ('failure' if reruns else 'success')
     for name in REQUIRED_JOBS:
         matching = [j for j in jobs['jobs'] if j['name'] == name]
-        assert len(matching) == 1 and matching[0]['status'] == 'completed' \
-            and matching[0]['conclusion'] == 'success', 'Missing/unaccepted actual gate: '+name
+        assert len(matching) == 1 and matching[0]['status'] == 'completed', 'Missing/unfinished gate: '+name
+        if name not in reruns:
+            assert matching[0]['conclusion'] == 'success', 'Unaccepted actual gate: '+name
+            continue
+        assert matching[0]['conclusion'] == 'failure', 'A successful gate must not be selectively rerolled'
+        proof, observed = reruns[name], rerun_runs[name]
+        recovered = observed['run']
+        assert re.fullmatch(r'[0-9a-f]{40}', proof['qaRuntime']) and proof['runId'] != run['id']
+        assert recovered['repository']['full_name'] == REPOSITORY
+        assert recovered['id'] == proof['runId'] and recovered['head_sha'] == proof['qaRuntime']
+        assert recovered['status'] == 'completed' and recovered['conclusion'] == 'success', \
+            'Corrected full native QA did not pass: '+name
+        candidates = [j for j in observed['jobs']['jobs'] if j['name'] == proof['jobName']]
+        assert proof['jobName'] == ('camera-comparison' if name == 'camera-comparison' else 'native-online')
+        assert len(candidates) == 1 and candidates[0]['status'] == 'completed' \
+            and candidates[0]['conclusion'] == 'success', 'Missing actual corrected native gate: '+name
+    assert not any(j['conclusion'] in ('failure', 'cancelled') and j['name'] not in reruns
+                   for j in jobs['jobs']), 'An additional source job failed'
 
 
 def assert_binary_evidence(acceptance, apk_sha, apk_bytes, upgrade, online, backend, stress):

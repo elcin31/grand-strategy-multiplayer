@@ -1,3 +1,11 @@
+# Final native online corrected controls verified — 2026-10-11
+
+Actual full signed native38135659505 PASS on finalf794/75aaAPK: free absolute country/readiness/speed CAS synchronization,once-only220M/16PPcourse payment,menu/process/reboot/AI-host recovery and original encrypted session ownership. This confirms the actual client CAS fix against production rather than a simulated snapshot. Paid actions retain reject/receipt rules and cannot be automatically repeated.
+
+Observed test-only failures corrected: Android uppercase exit button requires actual titled confirmation; inverted offscreen course TextView bounds are scrolled into view before exactly one tap; camera reverse version10→9 comparison requires isolated fresh installation. Original failures and all actual frame regression measurements remain preserved. Fresh camera/soak acceptance still pending; no handset result claimed.
+
+---
+
 # Network recovery edge case guard — 2026-10-11
 
 Heartbeat substitution now exists only while delivery is ACTIVE. A failed/uncertain network response leaves its durable intent available for exactly-once recovery and immediately restores normal state polling; it must not freeze the only connected player's server-clock updates. New regression verifies real transport actions create→failedcommand→state, zero blind resend, unchanged pending identity. All4 new native control guards and strictTS PASS; real signed native acceptance remains pending.

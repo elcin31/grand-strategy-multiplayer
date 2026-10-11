@@ -5,10 +5,29 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).parents[1] / 'scripts'))
-from android_fixture import root_test_device, fresh_camera_install
+from android_fixture import root_test_device, fresh_camera_install, label_test_fixture
 
 
 class CameraFixtureTest(unittest.TestCase):
+    def test_fresh_uid_fixture_requires_current_installed_app_label_and_rejects_old_or_wrong_context(self):
+        root='/data/user/0/qa.camera';folder=root+'/files/dominion-campaigns';file=folder+'/fixture.1.json'
+        label='u:object_r:app_data_file:s0:c149,c256,c512,c768'
+        def check(app_label=label,actual=label):
+            calls=[]
+            def adb(*args):
+                calls.append(args)
+                if args==('shell','ls','-Zd',root):return app_label+' '+root
+                if args==('shell','ls','-Zd',file):return actual+' '+file
+                return ''
+            result=label_test_fixture(adb,root,folder,file)
+            self.assertEqual(calls[1],('shell','chcon','-R',label,folder))
+            return result
+        self.assertEqual(check(),label)
+        with self.assertRaisesRegex(AssertionError,'another installation label'):
+            check(actual='u:object_r:app_data_file:s0:c148,c256,c512,c768')
+        with self.assertRaisesRegex(AssertionError,'installed app data label'):
+            check(app_label='u:object_r:shell_data_file:s0')
+
     def test_comparison_replaces_newer_version_only_after_successful_isolated_uninstall(self):
         calls=[]
         def adb(*args,**kwargs):

@@ -9,6 +9,19 @@ import time
 import xml.etree.ElementTree as ET
 
 
+def find_enabled_control(root, label):
+    """An enabled TextView child does not make its disabled Pressable tappable."""
+    if root.get('enabled') == 'false' or root.get('visible-to-user') == 'false':
+        return None
+    if root.get('text') == label or root.get('content-desc') == label:
+        return root
+    for child in root:
+        found = find_enabled_control(child, label)
+        if found is not None:
+            return found
+    return None
+
+
 def assert_no_game_fatal(logs, game_pid):
     """Exclude only the observed external UiAutomation bad-fd crash.
 

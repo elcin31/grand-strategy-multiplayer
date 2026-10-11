@@ -1,3 +1,13 @@
+# Final2.0 signed online and upgrade PASS; camera/soak pending — 2026-10-11
+
+Exact standalone candidate Dominion-grand-strategy-v2-release.apk, runtimef794ea4a4974f2f826f3ec7bd712a81b5f05291a,142473881bytes/SHA75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3. Version2.0.0(code10),samepackage/certificatefac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c,nondebug/landscape,actualembeddedHermes10690504bytes/fourABIs/all42paintings byte-exact verified. No final ready claim yet.
+
+Actual38133111807 higher-version save upgrade PASS9→10/12→18/privatefiles/preferences/UID/sixexactbackups/restarts; artifact11700168017/SHA d31275d22bd7a0621f2eb83179abc80d3d9ff14b8656392081b01a35fca2d1ae verified. Full real signed native online recovery38135659505 PASS on the sameAPK (artifact11701170433/SHA68fb6886e32f9eb6056fcc42dc9617828c171e6be775463d70fe7f0f041d9097): paid eco-audit once,encrypted session/menu/process/hostmigration/AI owner return/reboot. Original frozen harness failed offscreen bounds; preserved as failure. Full liveHTTP/10000 already PASS.
+
+Ten exact QA rooms cleaned by UUID/name/no-original-backup guard, independent0room/player/receipt readback,all29original city backups retained. Sanitized proof files record scope/digests/results. Fresh complete camera38136189671 and1800s soak114455037099 still running. Publication blocks until all seven actual gates plus exactbinary and cleanup pass; no camera threshold relaxed. Physical Redmi FPS/thermal behavior unmeasured.
+
+---
+
 # Final2.0 actual live acceptance — 2026-10-11
 
 Current final runtimef794ea4a/CI38133111807 backend job114451355520 SUCCESS. Downloaded actual sanitized evidence11699439508/ZIP SHA340b01b2415175505643cad7cd26c21786031329c58bbf26cc244f6e5ca54a04/CRC PASS: schema18,195/2924/5411 world,eight players/ninth rejection/auth/spoof/version/receipt/payload guards, payments/refunds/construction/typed armies/commander/reinforcement/budget/cooldowns, human treaty/trade consent, all4 spies/counterintelligence, once-only course/science completion, save/reconnect, real server clock/AI host takeover/same-country human return. Features tick21/final tick47; exact scope10a12545-03d1-4058-a915-0fbe79f7d0b4, cleanup PENDING.

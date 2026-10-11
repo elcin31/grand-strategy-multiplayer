@@ -60,7 +60,8 @@
     "finalTick": 47,
     "finalSchema": 18
   },
-  "cleanup": "PENDING",
+  "cleanup": "COMPLETE",
   "allFinalAndroidGates": "PENDING",
-  "physicalDevice": "Not measured"
+  "physicalDevice": "Not measured",
+  "cleanupEvidence": "EXPANSION_QA_CLEANUP_2026-10-11.json"
 }

@@ -28,15 +28,7 @@ jobs:
       - name: Require exact accepted main runtime and all completed release gates
         id: accepted
         run: |
-          run_id=$(python -c "import json;r=json.load(open('RELEASE_ACCEPTANCE_V2.json'));assert r['status']=='ACCEPTED';print(r['runId'])")
-          [[ "$run_id" =~ ^[0-9]+$ ]]
-          gh api "repos/$GH_REPO/actions/runs/$run_id" > accepted-run.json
-          gh api "repos/$GH_REPO/actions/runs/$run_id/jobs?per_page=100" > accepted-jobs.json
-          python -c "import sys,json;sys.path.insert(0,'scripts');from release_v2_validation import assert_accepted_run;assert_accepted_run(json.load(open('RELEASE_ACCEPTANCE_V2.json')),json.load(open('accepted-run.json')),json.load(open('accepted-jobs.json')))"
-          source_sha=$(python -c "import json;print(json.load(open('accepted-run.json'))['head_sha'])")
-          git diff --exit-code "$source_sha" HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
-          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
-          echo "main_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          python scripts/prepare-expansion-release.py
       - uses: actions/download-artifact@v4
         with:
           name: dominion-camera-illustrated-release
@@ -45,8 +37,8 @@ jobs:
           path: release
       - uses: actions/download-artifact@v4
         with:
-          name: camera-native-paired-evidence
-          run-id: ${{ steps.accepted.outputs.run_id }}
+          name: ${{ steps.accepted.outputs.camera_artifact }}
+          run-id: ${{ steps.accepted.outputs.camera_run_id }}
           github-token: ${{ github.token }}
           path: camera-evidence
       - uses: actions/download-artifact@v4
@@ -58,7 +50,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: dominion-native-online-evidence
-          run-id: ${{ steps.accepted.outputs.run_id }}
+          run-id: ${{ steps.accepted.outputs.online_run_id }}
           github-token: ${{ github.token }}
           path: online-evidence
       - uses: actions/download-artifact@v4

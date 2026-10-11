@@ -9,10 +9,10 @@ from camera_frame_stats import frame_stats,thread_stats
 from camera_telemetry import camera_telemetry
 from camera_surface_stats import map_surface_layer, SurfaceSampler, surface_latency_args
 from camera_gesture import INPUT_PROTOCOL, gesture_command, gesture_timing
-from android_fixture import root_test_device, fresh_camera_install
+from android_fixture import root_test_device, fresh_camera_install, label_test_fixture
 from camera_fixture_projection import assert_paused_fixture
 from map_paint_check import assert_map_painted
-from android_accessibility import dump_hierarchy, assert_no_game_fatal
+from android_accessibility import dump_hierarchy, assert_no_game_fatal, find_enabled_control
 PACKAGE='com.elcin31.grandstrategymultiplayer'
 OUT=Path(os.environ.get('CAMERA_PROFILE_OUT','camera-profile'));OUT.mkdir(exist_ok=True)
 def adb(*args,timeout=None):return subprocess.check_output(['adb',*map(str,args)],text=True,stderr=subprocess.STDOUT,timeout=timeout)
@@ -23,7 +23,8 @@ atexit.register(save_logs)
 def hierarchy(name):
     return dump_hierarchy(adb,PACKAGE,OUT,name,'/sdcard/camera.xml')
 def click(root,label):
-    node=next(n for n in root.iter('node') if n.get('text')==label or n.get('content-desc')==label)
+    node=find_enabled_control(root,label)
+    assert node is not None, 'Missing enabled camera control: '+label
     x1,y1,x2,y2=map(int,re.findall(r'\d+',node.get('bounds')))
     assert x2>x1 and y2>y1, label+' has no hit area'
     print('Tap:',label,node.get('bounds'),flush=True)
@@ -31,7 +32,7 @@ def click(root,label):
 def find_click(label,scroll_x=1080,lower=664):
     for i in range(18):
         root=hierarchy('find-'+str(i))
-        node=next((n for n in root.iter('node') if n.get('text')==label or n.get('content-desc')==label),None)
+        node=find_enabled_control(root,label)
         if node is not None:
             x1,y1,x2,y2=map(int,re.findall(r'\d+',node.get('bounds')))
             if x2>x1 and 24<=y1 and y2<=lower and y2-y1>=12:
@@ -62,7 +63,8 @@ def load_fixed_fixture():
     adb('push',fixture_path,directory+'/'+fixture['state']['id']+'.1.json')
     adb('shell','chown',uid[1]+':'+uid[1],'/data/user/0/'+PACKAGE+'/files')
     adb('shell','chown','-R',uid[1]+':'+uid[1],directory)
-    adb('shell','restorecon','-RF',directory)
+    label=label_test_fixture(adb,'/data/user/0/'+PACKAGE,directory,directory+'/'+fixture['state']['id']+'.1.json')
+    (OUT/'fixture-native-access.txt').write_text('UID='+uid[1]+'\nSELinux='+label+'\n')
     assert_fixture_campaign()
 def assert_fixture_campaign():
     directory='/data/user/0/'+PACKAGE+'/files/dominion-campaigns'
