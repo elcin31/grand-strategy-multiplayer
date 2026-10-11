@@ -1,3 +1,11 @@
+# Complete f794 camera rejection and next bounded drawing revision — 2026-10-11
+
+Actual full fresh38147835796/0ca93184 camera comparison rejected f794 APK: pinch compositor95 regressed18.8% forward/17.2% reverse; medium/world forward99 and reverse panel PSS also fail original limits.36complete raw captures, original limits and artifact digest preserved in EXPANSION_FINAL_CAMERA_REJECTED_F794.json. MLS/Continue harness fix is verified by all four actual valid launches. Actual candidate has lower JS/culling activity but more observed native graphics-buffer commands; traces contain36setup errors, so full CPU/GPU attribution is unavailable.
+
+New scoped source batches existing flag pixels/borders, preserves exact paint/hit locations and country IDs, retains real allocation-failure fallback, bounds flag atlases2MiB/eight contexts and idle-only raster pixels8MiB while keeping32MiB/96entries foreground cache.299JS/strictTS/productionHermes/42originalart PASS. Native effect, PSS and frame acceptance remain PENDING on the new binary. This is a measured-regression continuation, not a new architecture/roadmap or hardware FPS claim.
+
+---
+
 # Final2.0 actual soak verified; camera ABBA still pending — 2026-10-11
 
 Exact finalf794/75aa native1847.2766113159998s render/simulation/autosave soak PASS,30 sampled PSS427745–541261KiB. This is API35 SwiftShader software-emulator evidence, not Redmi FPS/thermal/battery, continuous memory peaks or absence of all leaks. Corrected full paired camera38147835796 is in progress after fixing verified injected-save access failure in fresh installation38136189671. All earlier actual frame regressions and unchanged10%pinch/20%other/memory/rawcompositor/input-cadence guards remain. No renderer or game-source change for this harness correction, and no achieved camera acceptance claimed yet.

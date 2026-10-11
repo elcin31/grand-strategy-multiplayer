@@ -1,3 +1,11 @@
+# f794 final candidate rejected; renderer revision ready for actual signed QA — 2026-10-11
+
+Dominion2.0 is not accepted or delivered yet. The previously verified f794/75aa release candidate passed offline1847s/save/upgrade/online/HTTP but its complete corrected38147835796 camera comparison FAILS five unchanged limits in both orders. Preserve that exact APK and raw history as a rejected checkpoint. EXPANSION_FINAL_CAMERA_REJECTED_F794.json identifies all36raw captures and verified artifact11705562470 digest.
+
+New flag batch/cold-pixel budget revision passes strictTS/299JS/productionHermes/all42originalart; package2.0.0(code10)/certificate/backend/world/schema18 unchanged. A fresh standalone release and all required actual gates must verify this changed renderer before final acceptance/publication/direct APK delivery. No physical Redmi measurement or readiness claim.
+
+---
+
 # Final2.0 offline and1847s soak PASS; corrected camera active — 2026-10-11
 
 Final signed runtimef794/APK75aa remains unchanged. Actual CI38133111807/android-smoke114455037099 SUCCESS; downloaded ZIP11701132935/29739969bytes/SHAbbf83828788b583459248379c4922743aa8537bfd444dee33f5e163807ad38d4/CRC verified. Actual offline standalone startup/landscape/map/army/Back/12modes/4presets/5layouts/process/reboot/save/game fatal checks pass. Real render/simulation/autosave stress1847.2766113159998s;30PSS samples427745–541261KiB. Reviewed actual native historical construction/focus/military/technology frames. Proof EXPANSION_NATIVE_OFFLINE_ACCEPTANCE_2026-10-11.json. No physical handset or continuous memory-peak claim.

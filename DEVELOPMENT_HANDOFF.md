@@ -1,3 +1,27 @@
+# Continuation — actual f794 camera rejection; bounded native drawing revision, 2026-10-11
+
+Verified published parent/current checkpoint **036ee2580a53388ea1c0311d833a6e745f9d27bb**. Complete corrected camera **38147835796/0ca93184ead1234a637b9516dad20cb2bfb4e9e5/job114494809558 FAILURE**, artifact11705562470/29641113bytes/SHA5ea48629e11fa78bedd29ebffa33743b8a39f4b938c807ac4cd722ae591d19bd/CRC verified. All four fresh installations, current MLS labels10148–10151, identical paused fixture/checksum and36continuous scenarios are complete. The injected-save access fix worked. **Old f794/75aa APK remains REJECTED, not ready for delivery.** Evidence EXPANSION_FINAL_CAMERA_REJECTED_F794.json preserves all five original-limit violations:
+
+- forward medium compositor99:155.486846→215.25082ms;
+- forward pinch compositor95:464.731047→552.014204ms;
+- forward world compositor99:112.453094→144.906228ms;
+- reverse pinch compositor95:467.918925→548.349584ms;
+- reverse open-panel PSS329432→434181KiB (>20%).
+
+Both separate real pinch markers/scheduler coverage exist;36ftrace_setup_errors prevent complete attribution. Observed graphics-buffer commands increased in the candidate, while JS/culling work fell. This supports investigation of native drawing/resource retention; it is not complete CPU/GPU causal proof. Physical Redmi unmeasured.
+
+A narrow renderer revision now batches the SAME original country flag rasters into one drawAtlas with one border path, using a bounded2MiB/eight-context atlas cache and identical legacy pixel/hit geometry; actual flag fallback is retained if allocation fails. Native API checked against pinned Skia2.6.2 C++ implementation. Existing active raster cache remains32MiB/96entries; only never-displayed idle prewarm is capped8MiB, with exact promotion/replacement/eviction accounting. Same750ms quiet scheduling, real geographic vectors/pixel fallback, UI-thread camera, all gameplay/tick/AI/save/backend/art systems retained. No server/world/schema/asset/version changes; no claimed timing improvement until actual new APK QA.
+
+**Strict TS /299JS(no skips) PASS**, including legacy affine pixel/touch geometry across pan/pinch/landscape sizes,55-glyph atlas gutters and native-idle budget/promotion/eviction guards. Existing military/pathfinding/authority/diplomacy/espionage/economy/tech/focus/AI/save/multiplayer tests retained.97Python/no skips from the current QA harness remain PASS (Python unchanged). Production Android Metro/Hermes export PASS; all42originalWebPs/3479060bytes verified. Host camera selector/coverage benchmark PASS on uncommitted revision, kept separately as diagnostic only; no native acceptance from host timing. Condensed React review applied to both memoized TSX components: stable cache/event effects, no FPS-driven systems, unchanged accessible/hit controls, bounded native resources, no new network/state subscriptions or render-time world mutation.
+
+Files: src/components/MapMarkerLayer.tsx,src/components/MapRasterLayer.tsx,src/map/countryTargets.ts,src/map/rasterTiles.ts,tests/country_flag_batch.test.ts,tests/idle_raster.test.ts,EXPANSION_FINAL_CAMERA_REJECTED_F794.json,DEVELOPMENT_HANDOFF.md,PERFORMANCE_REPORT.md,RELEASE_REPORT.md. Resolve this new runtime SHA from the logical commit `perf: batch existing country flags and bound cold native pixels`; it replaces f794 only for required signed-binary verification, not its completed system implementations.
+
+Original12 stages:0DONE;1PARTIAL(actual f794 camera rejection; new renderer unverified natively);2DONE;3–8DONE;9DONE;10PARTIAL(new-binary integration/camera acceptance pending);11PARTIAL(new actual standalone release/upgrade/native/soak/online acceptance, publication/delivery pending). Existing main dbb354ab unchanged; RELEASE_ACCEPTANCE_V2.json absent. Backend22/24 and all29original city backups retained; prior10QA rooms already cleaned. Future full live/native run rooms must be recorded and narrowly cleaned separately.
+
+Exact next action: commit/publish this verified renderer unit on existing expansion-v2 to start its full Android pipeline. Collect actual new runtime/run IDs, build/10000/liveHTTP/native/camera/higher-version upgrade/paid native return/1800s gates. Do not reuse old APK native acceptance for changed renderer, repeat deployments or relax original limits. If any measured gate fails, fix that specific regression. Only complete actual new-binary acceptance may promote main normally and publish/deliver Dominion-grand-strategy-v2-release.apk.
+
+---
+
 # Continuation — fresh camera fixture label fixed; final native offline PASS, 2026-10-11
 
 Verified published HEAD/parent **645a4b3d0ede201a48bd17ca63d71d5eac849543** (local previous a9744f8 tree matched exactly before aligning the branch). App runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**, final signed APK142473881bytes/SHA75aa unchanged. No runtime, renderer, world, asset or backend changes in this unit.

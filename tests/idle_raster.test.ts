@@ -10,6 +10,17 @@ class Clock implements SliceTimers {
   clear(token:unknown){this.pending.delete(token as number);}
   advance(ms:number){const end=this.now+ms;for(;;){const first=[...this.pending].sort((a,b)=>a[1].at-b[1].at)[0];if(!first||first[1].at>end)break;this.pending.delete(first[0]);this.now=first[1].at;first[1].run();}this.now=end;}
 }
+test('idle pixels stay within8MiB while promotion preserves the32MiB foreground budget and exact eviction accounting',()=>{
+  const mb=1024*1024,cache=new RasterCache<string>();
+  cache.set('visible','V',16*mb);assert.equal(cache.setCold('world-a','A',4*mb),true);assert.equal(cache.setCold('world-b','B',4*mb),true);
+  assert.equal(cache.coldBytes,8*mb);assert.equal(cache.canFitCold(1),false);assert.equal(cache.setCold('unused','U',mb),false);
+  assert.equal(cache.get('world-a'),'A');assert.equal(cache.coldBytes,4*mb);assert.equal(cache.get('world-a'),'A');assert.equal(cache.coldBytes,4*mb);
+  assert.equal(cache.setCold('world-c','C',4*mb),true);cache.set('new-visible','N',8*mb);
+  assert.equal(cache.peek('world-c'),undefined);assert.equal(cache.peek('visible'),'V');assert.equal(cache.peek('world-a'),'A');assert.equal(cache.bytes,32*mb);assert.equal(cache.coldBytes,4*mb);
+  cache.set('world-b','hot-b',4*mb);assert.equal(cache.coldBytes,0);assert.equal(cache.delete('world-b'),true);assert.equal(cache.bytes,28*mb);
+  assert.equal(cache.setCold('world-d','D',mb),true);assert.equal(cache.delete('world-d'),true);assert.equal(cache.coldBytes,0);
+  cache.setCold('world-e','E',mb);cache.clear();assert.equal(cache.coldBytes,0);assert.equal(cache.bytes,0);
+});
 test('prefetch never evicts foreground tiles or exceeds either cache limit',()=>{
   const cache=new RasterCache<string>(20,4);cache.set('region-a','A',5);cache.set('region-b','B',5);
   assert.equal(cache.setCold('world','W',5),true);

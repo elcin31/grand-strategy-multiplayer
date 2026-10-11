@@ -60,7 +60,7 @@ function tilePicture(tile:RasterTile,d:Drawing,key:string){
 }
 function tileImage(tile:RasterTile,drawing:Drawing,key:string,picture:SkPicture,cold=false):SkImage|undefined{
   const b=tile.bounds,s=tile.level.scale,w=Math.ceil((b.right-b.left)*s)+4,h=Math.ceil((b.bottom-b.top)*s)+4,bytes=w*h*4;
-  if(cold&&!drawing.resources.images.canFit(bytes))return;
+  if(cold&&!drawing.resources.images.canFitCold(bytes))return;
   const start=performance.now(),surface=Skia.Surface.Make(w,h);if(!surface)return;
   try{
     const canvas=surface.getCanvas();canvas.clear(Skia.Color('transparent'));canvas.translate(2-b.left*s,2-b.top*s);canvas.scale(s,s);canvas.drawPicture(picture);surface.flush();
@@ -109,7 +109,7 @@ export const MapRasterLayer=memo(function MapRasterLayer({scene,features,owners,
         const tile=world[index++]!,key=tileKey(tile,drawing);
         if(resources.images.peek(key))continue;
         const b=tile.bounds,s=tile.level.scale,bytes=(Math.ceil((b.right-b.left)*s)+4)*(Math.ceil((b.bottom-b.top)*s)+4)*4;
-        if(!resources.images.canFit(bytes))return false;
+        if(!resources.images.canFitCold(bytes))return false;
         const image=tileImage(tile,drawing,key,tilePicture(tile,drawing,key),true);
         return !!image&&index<world.length;
       }
