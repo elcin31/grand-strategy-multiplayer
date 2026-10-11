@@ -1,3 +1,15 @@
+# Exact new APK verified; all four native gates running — 2026-10-11T20:33Z
+
+Current published report parent **8a119a90efc03f41a60cfd3cf966811b53fc4641**, unchanged runtime **bf05151c94988f7d2511218a8cc51a1858a5a1a7**. Full signed Actions **38171409180 IN_PROGRESS**. Actual build114564617188,10000ticks114564617400,backendHTTP114564617593 all **SUCCESS**. Actual native jobs **smoke114567941544,camera114567941571,upgrade114567941609,online114567941790 IN_PROGRESS**, not yet accepted.
+
+Immutable release artifact11713479644/**62290376bytes/SHA18d306c16a94388e1753eef514908b0e2aa4781de28b5d1861ba6d29ed3342e6** tied by actual workflow_run to38171409180/runtimebf05151; size/SHA/ZIP-CRC verified. Actual APK **142480245bytes/SHA6918422f4d03ddff656a921f19178c6a461b507985c30c62188bcfdb5ef813d0**. Verified2.0.0code10 RELEASE/nondebug/landscape/dedicated Dominion URL/samefac61745certificate, actual embedded Hermes10696868bytes/SHA c6273ec0c82235806a0f705605381aee111c576d6b9b29b3debc41dff5525862/magicc61fbc03c103191f/all4ABIs/42byte-exact original paintings. Actual CI StrictTS/306JS/97Python no skips. Binary is a **native-pending candidate**, not final delivery.
+
+Immutable10000ticks artifact11714406689/**2550bytes/SHA317745085826a672f92a42293c6d4d3f5d159ddb8923f3fa6b3a15d6a2ec7afc** size/SHA/CRC verified: original195/2924/5411,10exactrestores,max451armies/maxsnapshot4487736bytes,P95100.692931ms,2849AIcourses/806discoveries/10000ticks831s. CPU/data result only. HTTP proof and independently guarded exact QA cleanup already complete; all29 original city backups retained. Full partial native ledger EXPANSION_UI_LAYER_NATIVE_QA_2026-10-11.json. Runtime/backend/main unchanged by this report-only unit.
+
+**Exact next operation:** inspect actual complete38171409180 camera/upgrade/online/1800s-soak artifacts, recompute original complete36-scenario ABBA/frame/PSS/paint/input gates on this exact6918422f binary. Preserve any failure and diagnose it rather than rerolling acceptance. New native QA room UUID remains unknown until capture; independently review and clean only it after the online job ends. Update this ledger/handoff, then only all seven same-binary actual PASS allows accepted manifest,normal main promotion,existing publication-only workflow and verified final APK delivery. Stage0DONE;1PARTIAL;2–9DONE;10PARTIAL;11PARTIAL. Previous788/eaa failures preserved. RELEASE_ACCEPTANCE_V2.json absent. Physical Xiaomi unmeasured.
+
+---
+
 # Verified new live-backend proof and scoped cleanup — 2026-10-11T20:29Z
 
 Current published report parent **7851b08097558aae74b8590b170f24b80a182a22**; exact unchanged UI runtime **bf05151c94988f7d2511218a8cc51a1858a5a1a7**. Full signed Actions **38171409180 IN_PROGRESS**. Actual backend-live/live-world job **114564617593 SUCCESS**; build114564617188 is assembling RELEASE;10000ticks114564617400 still running. Native jobs have not started. No finished/native acceptance inferred from elapsed time.
