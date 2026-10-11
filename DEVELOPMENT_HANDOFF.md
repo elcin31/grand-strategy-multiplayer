@@ -1,3 +1,11 @@
+# Active checkpoint — published native drawing revision, 2026-10-11
+
+Published runtime **ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae** on existing `expansion-v2`, parent036ee2580a53388ea1c0311d833a6e745f9d27bb; remote treec4ba86f994685da6e92f6cfd0306f35da45865d5 equals the verified local tree. Workspace aligned normally, no force push or foreign change overwritten. Full Android pipeline **38151928979 IN_PROGRESS**: build-apk114506980751, long-simulation114506980677, backend-live/live-world114506981037. New signed binary and native gates are PENDING; oldf794 camera-rejected APK must not be delivered. Main remainsdbb354ab, accepted manifest absent.
+
+Current action: inspect this exact run's new build and all seven mandatory actual gates. The main pipeline uses its own new APK run for camera/upgrade/online; no standalone old-artifact QA is requested. Collect new live/native room IDs and clean only those exact QA identities with no original backups after completion. Preserve all29original city backups. If new camera fails, retain raw comparisons and fix the specific measured regression at original thresholds. Then complete exact-binary acceptance, normal main promotion, existing publication-only workflow, verified public APK and direct delivery. See the next section for source files,299JS/97Python/TS/Hermes verification and the complete prior rejection.
+
+---
+
 # Continuation — actual f794 camera rejection; bounded native drawing revision, 2026-10-11
 
 Verified published parent/current checkpoint **036ee2580a53388ea1c0311d833a6e745f9d27bb**. Complete corrected camera **38147835796/0ca93184ead1234a637b9516dad20cb2bfb4e9e5/job114494809558 FAILURE**, artifact11705562470/29641113bytes/SHA5ea48629e11fa78bedd29ebffa33743b8a39f4b938c807ac4cd722ae591d19bd/CRC verified. All four fresh installations, current MLS labels10148–10151, identical paused fixture/checksum and36continuous scenarios are complete. The injected-save access fix worked. **Old f794/75aa APK remains REJECTED, not ready for delivery.** Evidence EXPANSION_FINAL_CAMERA_REJECTED_F794.json preserves all five original-limit violations:
