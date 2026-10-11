@@ -1,7 +1,7 @@
 import {memo,useEffect,useMemo,useRef,useState} from 'react';
-import {Group,Picture,Skia,PaintStyle,FilterMode,MipmapMode,ClipOp,type SkCanvas,type SkImage,type SkPath,type SkPicture} from '@shopify/react-native-skia';
+import {Group,Picture,Skia,PaintStyle,FilterMode,MipmapMode,ClipOp,BlendMode,type SkCanvas,type SkImage,type SkPath,type SkPicture} from '@shopify/react-native-skia';
 import {borderChunks,bordersInBounds,type BorderChunk} from '../map/borderChunks';
-import {rasterLevel} from '../map/cameraCoverage';
+import {rasterLevel,WORLD_RASTER_SOURCE_LEVEL} from '../map/cameraCoverage';
 import {visibleRasterTiles,rasterTiles,RasterCache,retainRasterImage,type RasterTile} from '../map/rasterTiles';
 import {scheduleIdleSlices} from '../performance/idleSlices';
 import {geometryForLod,type GeometryLod} from '../map/geometryLod';
@@ -13,6 +13,7 @@ import {recordMetrics,getMetrics} from '../performance/telemetry';
 import {withNativeRecordingObjects} from '../map/nativeRecording';
 import {RecordingPathCache} from '../map/recordingPathCache';
 import {rasterImageDraw} from '../map/rasterImageDraw';
+import {worldRasterCopy} from '../map/worldRasterCopy';
 
 const generations=new WeakMap<object,number>();let generation=0;
 function identity(value:object){let id=generations.get(value);if(id===undefined){id=++generation;generations.set(value,id);}return id;}
@@ -34,7 +35,7 @@ function terrainPath(kind:string){
   terrainPaths.set(kind,path);return path;
 }
 interface Resources {paths:RecordingPathCache<SkPath>;pictures:RasterCache<SkPicture>;images:RasterCache<SkImage>}
-interface Drawing {scene:MapScene;features:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;resources:Resources}
+interface Drawing {scene:MapScene;features:readonly MapFeature[];context:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;resources:Resources}
 function appendNativePath(f:MapFeature,d:Drawing,group:SkPath){
   d.resources.paths.withPath(d.lod+':'+f.id,()=>{
     const t=performance.now(),p=Skia.Path.MakeFromSVGString(featurePath(geometryForLod(f,d.lod)))??Skia.Path.Make();p.setFillType(1);
@@ -79,7 +80,35 @@ function tileImage(tile:RasterTile,drawing:Drawing,key:string,picture:SkPicture,
   if(cold&&!drawing.resources.images.canFitCold(bytes))return;
   const start=performance.now(),surface=Skia.Surface.Make(w,h);if(!surface)return;
   try{
-    const canvas=surface.getCanvas();canvas.clear(Skia.Color('transparent'));canvas.translate(2-b.left*s,2-b.top*s);canvas.scale(s,s);canvas.drawPicture(picture);surface.flush();
+    const canvas=surface.getCanvas();canvas.clear(Skia.Color('transparent'));
+    if(tile.level.key==='world'&&tile.level.cell>WORLD_RASTER_SOURCE_LEVEL.cell){
+      // A larger surface changes Skia's clipping/AA of acute coast vertices.
+      // Copy original small-surface pixels rather than repainting those paths.
+      // Source snapshots are exclusively owned, never cached or displayed.
+      const completed=withNativeRecordingObjects(own=>{
+        const paint=own(Skia.Paint());paint.setBlendMode(BlendMode.Src);
+        const sources=visibleRasterTiles(drawing.context,{left:b.left-1,top:b.top-1,right:b.right+1,bottom:b.bottom+1},WORLD_RASTER_SOURCE_LEVEL);
+        for(const sourceTile of sources){
+          const a=sourceTile.bounds,k=sourceTile.level.scale,sw=Math.ceil((a.right-a.left)*k)+4,sh=Math.ceil((a.bottom-a.top)*k)+4;
+          const sourceSurface=Skia.Surface.Make(sw,sh);if(!sourceSurface)return false;
+          try{
+            const sourceCanvas=sourceSurface.getCanvas();sourceCanvas.clear(Skia.Color('transparent'));sourceCanvas.translate(2-a.left*k,2-a.top*k);sourceCanvas.scale(k,k);drawTile(sourceTile,drawing,sourceCanvas);sourceSurface.flush();
+            const sourceImage=sourceSurface.makeImageSnapshot();
+            try{
+              const plan=worldRasterCopy(sourceTile,tile),c=plan.clip,d=plan.destination;
+              canvas.save();canvas.clipRect(Skia.XYWHRect(c.x,c.y,c.width,c.height),ClipOp.Intersect,false);
+              canvas.drawImageRectOptions(sourceImage,Skia.XYWHRect(0,0,sw,sh),Skia.XYWHRect(d.x,d.y,d.width,d.height),FilterMode.Nearest,MipmapMode.None,paint);canvas.restore();
+              // Both surfaces are immediate CPU rasters. Flush the copied
+              // pixels before releasing this unpublished owned source image.
+              surface.flush();
+            }finally{sourceImage.dispose();}
+          }finally{sourceSurface.dispose();}
+        }
+        return true;
+      });
+      if(!completed)return; // Preserve the real vector fallback on allocation failure.
+    }else{canvas.translate(2-b.left*s,2-b.top*s);canvas.scale(s,s);canvas.drawPicture(picture);}
+    surface.flush();
     const image=surface.makeImageSnapshot();
     retainRasterImage(drawing.resources.images,drawing.resources.pictures,key,image,bytes,cold);
     const elapsed=performance.now()-start,m=getMetrics();
@@ -126,8 +155,9 @@ const RasterTileNode=memo(function RasterTileNode({tile,drawing}:{tile:RasterTil
 export const MapRasterLayer=memo(function MapRasterLayer({scene,features,owners,colors,lod,preset,mode,detail,bounds,zoom,canPrewarm}:{scene:MapScene;features:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;bounds:Bounds;zoom:number;canPrewarm:()=>boolean}){
   const resources=useMemo<Resources>(()=>({paths:new RecordingPathCache<SkPath>(),pictures:new RasterCache<SkPicture>(1000,96),images:new RasterCache<SkImage>()}),[scene]);
   useEffect(()=>()=>{resources.paths.clear();resources.pictures.clear();resources.images.clear();},[resources]);
-  const drawing=useMemo<Drawing>(()=>({scene,features,owners,colors,lod,preset,mode,detail,resources}),[scene,features,owners,colors,lod,preset,mode,detail,resources]);
-  const level=rasterLevel(zoom),context=useMemo(()=>features===scene.features?features:[...scene.features.filter(f=>!f.provinceId),...features],[scene,features]);
+  const context=useMemo(()=>features===scene.features?features:[...scene.features.filter(f=>!f.provinceId),...features],[scene,features]);
+  const drawing=useMemo<Drawing>(()=>({scene,features,context,owners,colors,lod,preset,mode,detail,resources}),[scene,features,context,owners,colors,lod,preset,mode,detail,resources]);
+  const level=rasterLevel(zoom);
   useEffect(()=>{
     if(mode!=='Political'||detail||lod!=='low')return;
     let world:RasterTile[]|undefined,index=0;

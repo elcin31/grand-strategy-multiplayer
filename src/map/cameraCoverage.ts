@@ -22,12 +22,15 @@ export function cameraNeedsCoverage(camera:Camera,prepared:Camera,viewport:Viewp
 export function cameraCoverage(camera:Camera,viewport:Viewport):Bounds{return visibleBounds(camera,viewport,CAMERA_OVERSCAN);}
 /** Stable camera zoom bands bound raster resolution and texture sizes. */
 export const RASTER_LEVELS=[
-  // Fifteen world surfaces replace45 at the same2px/unit resolution.
+  // Fifteen world replay images replace45 at the same2px/unit resolution.
   // Including gutters the580px side cap remains identical to detail tiles.
   {key:'world',cell:288,scale:2},
   {key:'region',cell:96,scale:4},
   {key:'local',cell:64,scale:8},
   {key:'detail',cell:48,scale:12},
 ] as const;
-export type RasterLevel=typeof RASTER_LEVELS[number];
+/** Source-only grid preserves the accepted CPU coast rasterization; it is not
+ * a selectable camera band. Bounded chunks copy these pixels before UI replay. */
+export const WORLD_RASTER_SOURCE_LEVEL={key:'world',cell:160,scale:2} as const;
+export type RasterLevel=typeof RASTER_LEVELS[number]|typeof WORLD_RASTER_SOURCE_LEVEL;
 export function rasterLevel(zoom:number):RasterLevel{return RASTER_LEVELS[zoom<2?0:zoom<6?1:zoom<12?2:3]!;}

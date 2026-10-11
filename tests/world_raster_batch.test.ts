@@ -2,15 +2,16 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 import CanvasKitInit,{type CanvasKit,type Image} from 'canvaskit-wasm';
-import {RASTER_LEVELS,type RasterLevel} from '../src/map/cameraCoverage';
+import {RASTER_LEVELS,WORLD_RASTER_SOURCE_LEVEL,type RasterLevel} from '../src/map/cameraCoverage';
 import {rasterTiles,visibleRasterTiles,RasterCache} from '../src/map/rasterTiles';
 import {rasterImageDraw} from '../src/map/rasterImageDraw';
+import {worldRasterCopy} from '../src/map/worldRasterCopy';
 import {mapSceneFor} from '../src/map/worldScene';
 import {boundsOf,featurePath,overlaps,type MapFeature} from '../src/map/geometry';
 
 const whole={left:0,top:0,right:1440,bottom:720};
 // Immutable historical grid for a pixel comparison, never selected by runtime.
-const legacy={key:'world',cell:160,scale:2} as unknown as RasterLevel;
+const legacy=WORLD_RASTER_SOURCE_LEVEL;
 const require=createRequire(import.meta.url);
 const bytes=(b:typeof whole,scale:number)=>(Math.ceil((b.right-b.left)*scale)+4)*(Math.ceil((b.bottom-b.top)*scale)+4)*4;
 
@@ -60,23 +61,42 @@ test('larger world cells preserve linear raster pixels, transparent terrain and 
   const paths=new Map(features.map(f=>{const p=s.Path.MakeFromSVGString(featurePath(f));assert.ok(p);return [f.id,p] as const;}));
   const river=s.Path.MakeFromSVGString('M0 161.25 L1440 577.375 M288.125 0 L1152.625 720');assert.ok(river);
   const colours=new Map([['transparent',s.TRANSPARENT],['west',s.Color(62,104,83)],['east',s.Color(173,139,98)]]);
+  const raster=(tile:ReturnType<typeof rasterTiles>[number])=>{
+    const b=tile.bounds,k=tile.level.scale,w=Math.ceil((b.right-b.left)*k)+4,h=Math.ceil((b.bottom-b.top)*k)+4;
+    const surface=s.MakeSurface(w,h);assert.ok(surface);
+    try{
+      const c=surface.getCanvas();c.clear(s.TRANSPARENT);c.translate(2-b.left*k,2-b.top*k);c.scale(k,k);
+      paint.setStyle(s.PaintStyle.Fill);
+      for(const f of tile.features){paint.setColor(colours.get(f.id)!);c.drawPath(paths.get(f.id)!,paint);}
+      paint.setColor(s.Color(198,185,123,.35));c.drawCircle(288.125,160.75,96.625,paint);c.drawCircle(1151.875,576.125,74.25,paint);
+      paint.setStyle(s.PaintStyle.Stroke);paint.setStrokeWidth(.4);paint.setColor(s.Color(101,148,165,.7));c.drawPath(river,paint);
+      surface.flush();return surface.makeImageSnapshot();
+    }finally{surface.dispose();}
+  };
+  let releasedOwnedSources=0;
   const make=(level:RasterLevel)=>{
     const images:{tile:ReturnType<typeof rasterTiles>[number];image:Image}[]=[];
     for(const tile of rasterTiles(features,level)){
+      if(level===legacy){images.push({tile,image:raster(tile)});continue;}
       const b=tile.bounds,k=level.scale,w=Math.ceil((b.right-b.left)*k)+4,h=Math.ceil((b.bottom-b.top)*k)+4;
-      const surface=s.MakeSurface(w,h);assert.ok(surface);
+      const surface=s.MakeSurface(w,h);assert.ok(surface);const copyPaint=new s.Paint();copyPaint.setBlendMode(s.BlendMode.Src);
       try{
-        const c=surface.getCanvas();c.clear(s.TRANSPARENT);c.translate(2-b.left*k,2-b.top*k);c.scale(k,k);
-        paint.setStyle(s.PaintStyle.Fill);
-        for(const f of tile.features){paint.setColor(colours.get(f.id)!);c.drawPath(paths.get(f.id)!,paint);}
-        paint.setColor(s.Color(198,185,123,.35));c.drawCircle(288.125,160.75,96.625,paint);c.drawCircle(1151.875,576.125,74.25,paint);
-        paint.setStyle(s.PaintStyle.Stroke);paint.setStrokeWidth(.4);paint.setColor(s.Color(101,148,165,.7));c.drawPath(river,paint);
+        const c=surface.getCanvas();c.clear(s.TRANSPARENT);
+        for(const sourceTile of visibleRasterTiles(features,{left:b.left-1,top:b.top-1,right:b.right+1,bottom:b.bottom+1},legacy)){
+          const image=raster(sourceTile);
+          try{
+            const plan=worldRasterCopy(sourceTile,tile),clip=plan.clip,d=plan.destination;
+            c.save();c.clipRect(s.XYWHRect(clip.x,clip.y,clip.width,clip.height),s.ClipOp.Intersect,false);
+            c.drawImageRectOptions(image,s.XYWHRect(0,0,image.width(),image.height()),s.XYWHRect(d.x,d.y,d.width,d.height),s.FilterMode.Nearest,s.MipmapMode.None,copyPaint);c.restore();surface.flush();
+          }finally{image.delete();releasedOwnedSources++;}
+        }
         surface.flush();images.push({tile,image:surface.makeImageSnapshot()});
-      }finally{surface.dispose();}
+      }finally{copyPaint.delete();surface.dispose();}
     }
     return images;
   };
   const old=make(legacy),batched=make(RASTER_LEVELS[0]),samplePaint=new s.Paint();
+  assert.ok(releasedOwnedSources>=45,'Coarse pixels remain valid after their exclusively owned source snapshots are released');
   const draw=(images:typeof old,x:number,y:number,zoom:number,omitGutter=false)=>{
     const c=output.getCanvas();c.clear(s.Color(32,60,76));c.save();c.translate(32.375-x*zoom,24.125-y*zoom*.86);c.scale(zoom,zoom*.86);
     for(const {tile,image}of images){

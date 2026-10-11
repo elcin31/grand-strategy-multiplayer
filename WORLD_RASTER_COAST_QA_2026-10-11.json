@@ -1,0 +1,862 @@
+{
+  "status": "SOURCE_COAST_AA_CORRECTION_PENDING_ACTUAL_CI",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "previousSource": "52ae67429764fd0410aeedf6852c80196b403d6f",
+  "previousActualPixelFailure": {
+    "runId": 38178095624,
+    "jobId": 114584657203,
+    "frames": 32,
+    "results": [
+      {
+        "zoom": 0.5,
+        "center": [
+          160.125,
+          160.25
+        ],
+        "maxChannelDelta": 1,
+        "rmsChannelDelta": 0.028527216536727403,
+        "changedChannels": 10,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 9216,
+            "actual": 74,
+            "expected": 73
+          },
+          {
+            "channel": 9489,
+            "actual": 118,
+            "expected": 119
+          },
+          {
+            "channel": 9490,
+            "actual": 110,
+            "expected": 111
+          },
+          {
+            "channel": 10306,
+            "actual": 115,
+            "expected": 116
+          }
+        ]
+      },
+      {
+        "zoom": 0.5,
+        "center": [
+          287.875,
+          288.375
+        ],
+        "maxChannelDelta": 2,
+        "rmsChannelDelta": 0.038273277230987154,
+        "changedChannels": 15,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 54,
+            "actual": 115,
+            "expected": 116
+          },
+          {
+            "channel": 866,
+            "actual": 104,
+            "expected": 103
+          },
+          {
+            "channel": 1416,
+            "actual": 110,
+            "expected": 109
+          },
+          {
+            "channel": 1958,
+            "actual": 130,
+            "expected": 129
+          }
+        ]
+      },
+      {
+        "zoom": 0.5,
+        "center": [
+          575.625,
+          576.125
+        ],
+        "maxChannelDelta": 1,
+        "rmsChannelDelta": 0.015625,
+        "changedChannels": 3,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 3130,
+            "actual": 75,
+            "expected": 74
+          },
+          {
+            "channel": 5936,
+            "actual": 56,
+            "expected": 57
+          },
+          {
+            "channel": 10532,
+            "actual": 61,
+            "expected": 62
+          }
+        ]
+      },
+      {
+        "zoom": 0.5,
+        "center": [
+          1152.375,
+          576.875
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 0.5,
+        "center": [
+          1439.25,
+          719.125
+        ],
+        "maxChannelDelta": 3,
+        "rmsChannelDelta": 0.05776321097088238,
+        "changedChannels": 8,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 5888,
+            "actual": 69,
+            "expected": 72
+          },
+          {
+            "channel": 5889,
+            "actual": 80,
+            "expected": 82
+          },
+          {
+            "channel": 5892,
+            "actual": 101,
+            "expected": 104
+          },
+          {
+            "channel": 5893,
+            "actual": 99,
+            "expected": 100
+          }
+        ]
+      },
+      {
+        "zoom": 0.5,
+        "center": [
+          575.625,
+          288.375
+        ],
+        "maxChannelDelta": 1,
+        "rmsChannelDelta": 0.04133986423538423,
+        "changedChannels": 21,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 141,
+            "actual": 96,
+            "expected": 95
+          },
+          {
+            "channel": 378,
+            "actual": 87,
+            "expected": 86
+          },
+          {
+            "channel": 1420,
+            "actual": 36,
+            "expected": 35
+          },
+          {
+            "channel": 1929,
+            "actual": 73,
+            "expected": 72
+          }
+        ]
+      },
+      {
+        "zoom": 0.5,
+        "center": [
+          704.375,
+          18.125
+        ],
+        "maxChannelDelta": 4,
+        "rmsChannelDelta": 0.08365822085525526,
+        "changedChannels": 12,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 6124,
+            "actual": 35,
+            "expected": 32
+          },
+          {
+            "channel": 6125,
+            "actual": 61,
+            "expected": 60
+          },
+          {
+            "channel": 6128,
+            "actual": 43,
+            "expected": 39
+          },
+          {
+            "channel": 6129,
+            "actual": 65,
+            "expected": 64
+          }
+        ]
+      },
+      {
+        "zoom": 0.5,
+        "center": [
+          1398.25,
+          718.875
+        ],
+        "maxChannelDelta": 8,
+        "rmsChannelDelta": 0.1590887953052215,
+        "changedChannels": 32,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 2692,
+            "actual": 33,
+            "expected": 32
+          },
+          {
+            "channel": 5632,
+            "actual": 35,
+            "expected": 36
+          },
+          {
+            "channel": 5634,
+            "actual": 69,
+            "expected": 68
+          },
+          {
+            "channel": 5638,
+            "actual": 65,
+            "expected": 64
+          }
+        ]
+      },
+      {
+        "zoom": 0.875,
+        "center": [
+          160.125,
+          160.25
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 0.875,
+        "center": [
+          287.875,
+          288.375
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 0.875,
+        "center": [
+          575.625,
+          576.125
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 0.875,
+        "center": [
+          1152.375,
+          576.875
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 0.875,
+        "center": [
+          1439.25,
+          719.125
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 0.875,
+        "center": [
+          575.625,
+          288.375
+        ],
+        "maxChannelDelta": 2,
+        "rmsChannelDelta": 0.04133986423538423,
+        "changedChannels": 18,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 201,
+            "actual": 68,
+            "expected": 67
+          },
+          {
+            "channel": 460,
+            "actual": 33,
+            "expected": 32
+          },
+          {
+            "channel": 464,
+            "actual": 45,
+            "expected": 46
+          },
+          {
+            "channel": 1160,
+            "actual": 53,
+            "expected": 52
+          }
+        ]
+      },
+      {
+        "zoom": 0.875,
+        "center": [
+          704.375,
+          18.125
+        ],
+        "maxChannelDelta": 3,
+        "rmsChannelDelta": 0.06567458444228381,
+        "changedChannels": 14,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 6102,
+            "actual": 71,
+            "expected": 72
+          },
+          {
+            "channel": 6124,
+            "actual": 51,
+            "expected": 49
+          },
+          {
+            "channel": 6125,
+            "actual": 71,
+            "expected": 69
+          },
+          {
+            "channel": 6128,
+            "actual": 57,
+            "expected": 55
+          }
+        ]
+      },
+      {
+        "zoom": 0.875,
+        "center": [
+          1398.25,
+          718.875
+        ],
+        "maxChannelDelta": 6,
+        "rmsChannelDelta": 0.13441133229754104,
+        "changedChannels": 34,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 5504,
+            "actual": 91,
+            "expected": 90
+          },
+          {
+            "channel": 5632,
+            "actual": 73,
+            "expected": 79
+          },
+          {
+            "channel": 5633,
+            "actual": 83,
+            "expected": 86
+          },
+          {
+            "channel": 5634,
+            "actual": 82,
+            "expected": 83
+          }
+        ]
+      },
+      {
+        "zoom": 1.3,
+        "center": [
+          160.125,
+          160.25
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 1.3,
+        "center": [
+          287.875,
+          288.375
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 1.3,
+        "center": [
+          575.625,
+          576.125
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 1.3,
+        "center": [
+          1152.375,
+          576.875
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 1.3,
+        "center": [
+          1439.25,
+          719.125
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 1.3,
+        "center": [
+          575.625,
+          288.375
+        ],
+        "maxChannelDelta": 1,
+        "rmsChannelDelta": 0.029919597117385566,
+        "changedChannels": 11,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 648,
+            "actual": 51,
+            "expected": 50
+          },
+          {
+            "channel": 649,
+            "actual": 87,
+            "expected": 86
+          },
+          {
+            "channel": 650,
+            "actual": 80,
+            "expected": 79
+          },
+          {
+            "channel": 1413,
+            "actual": 103,
+            "expected": 102
+          }
+        ]
+      },
+      {
+        "zoom": 1.3,
+        "center": [
+          704.375,
+          18.125
+        ],
+        "maxChannelDelta": 1,
+        "rmsChannelDelta": 0.040343576522993925,
+        "changedChannels": 20,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 6056,
+            "actual": 36,
+            "expected": 35
+          },
+          {
+            "channel": 6070,
+            "actual": 74,
+            "expected": 75
+          },
+          {
+            "channel": 6076,
+            "actual": 44,
+            "expected": 43
+          },
+          {
+            "channel": 6084,
+            "actual": 47,
+            "expected": 46
+          }
+        ]
+      },
+      {
+        "zoom": 1.3,
+        "center": [
+          1398.25,
+          718.875
+        ],
+        "maxChannelDelta": 2,
+        "rmsChannelDelta": 0.07915981329984721,
+        "changedChannels": 44,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 1413,
+            "actual": 102,
+            "expected": 101
+          },
+          {
+            "channel": 5248,
+            "actual": 109,
+            "expected": 107
+          },
+          {
+            "channel": 5249,
+            "actual": 97,
+            "expected": 96
+          },
+          {
+            "channel": 5504,
+            "actual": 103,
+            "expected": 101
+          }
+        ]
+      },
+      {
+        "zoom": 1.95,
+        "center": [
+          160.125,
+          160.25
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 1.95,
+        "center": [
+          287.875,
+          288.375
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 1.95,
+        "center": [
+          575.625,
+          576.125
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 1.95,
+        "center": [
+          1152.375,
+          576.875
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 1.95,
+        "center": [
+          1439.25,
+          719.125
+        ],
+        "maxChannelDelta": 0,
+        "rmsChannelDelta": 0,
+        "changedChannels": 0,
+        "alphaChanges": 0,
+        "firstDifferences": []
+      },
+      {
+        "zoom": 1.95,
+        "center": [
+          575.625,
+          288.375
+        ],
+        "maxChannelDelta": 2,
+        "rmsChannelDelta": 0.046875,
+        "changedChannels": 21,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 1668,
+            "actual": 43,
+            "expected": 42
+          },
+          {
+            "channel": 1669,
+            "actual": 76,
+            "expected": 75
+          },
+          {
+            "channel": 1924,
+            "actual": 38,
+            "expected": 37
+          },
+          {
+            "channel": 1925,
+            "actual": 69,
+            "expected": 68
+          }
+        ]
+      },
+      {
+        "zoom": 1.95,
+        "center": [
+          704.375,
+          18.125
+        ],
+        "maxChannelDelta": 2,
+        "rmsChannelDelta": 0.05103103630798288,
+        "changedChannels": 29,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 6065,
+            "actual": 61,
+            "expected": 60
+          },
+          {
+            "channel": 6073,
+            "actual": 65,
+            "expected": 64
+          },
+          {
+            "channel": 6076,
+            "actual": 43,
+            "expected": 42
+          },
+          {
+            "channel": 6080,
+            "actual": 46,
+            "expected": 45
+          }
+        ]
+      },
+      {
+        "zoom": 1.95,
+        "center": [
+          1398.25,
+          718.875
+        ],
+        "maxChannelDelta": 27,
+        "rmsChannelDelta": 0.3422077143953167,
+        "changedChannels": 58,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 4480,
+            "actual": 130,
+            "expected": 131
+          },
+          {
+            "channel": 4736,
+            "actual": 124,
+            "expected": 123
+          },
+          {
+            "channel": 4737,
+            "actual": 108,
+            "expected": 107
+          },
+          {
+            "channel": 4988,
+            "actual": 171,
+            "expected": 170
+          }
+        ]
+      }
+    ],
+    "violations": [
+      {
+        "zoom": 0.5,
+        "center": [
+          1398.25,
+          718.875
+        ],
+        "maxChannelDelta": 8,
+        "rmsChannelDelta": 0.1590887953052215,
+        "changedChannels": 32,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 2692,
+            "actual": 33,
+            "expected": 32
+          },
+          {
+            "channel": 5632,
+            "actual": 35,
+            "expected": 36
+          },
+          {
+            "channel": 5634,
+            "actual": 69,
+            "expected": 68
+          },
+          {
+            "channel": 5638,
+            "actual": 65,
+            "expected": 64
+          }
+        ]
+      },
+      {
+        "zoom": 0.875,
+        "center": [
+          1398.25,
+          718.875
+        ],
+        "maxChannelDelta": 6,
+        "rmsChannelDelta": 0.13441133229754104,
+        "changedChannels": 34,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 5504,
+            "actual": 91,
+            "expected": 90
+          },
+          {
+            "channel": 5632,
+            "actual": 73,
+            "expected": 79
+          },
+          {
+            "channel": 5633,
+            "actual": 83,
+            "expected": 86
+          },
+          {
+            "channel": 5634,
+            "actual": 82,
+            "expected": 83
+          }
+        ]
+      },
+      {
+        "zoom": 1.95,
+        "center": [
+          1398.25,
+          718.875
+        ],
+        "maxChannelDelta": 27,
+        "rmsChannelDelta": 0.3422077143953167,
+        "changedChannels": 58,
+        "alphaChanges": 0,
+        "firstDifferences": [
+          {
+            "channel": 4480,
+            "actual": 130,
+            "expected": 131
+          },
+          {
+            "channel": 4736,
+            "actual": 124,
+            "expected": 123
+          },
+          {
+            "channel": 4737,
+            "actual": 108,
+            "expected": 107
+          },
+          {
+            "channel": 4988,
+            "actual": 171,
+            "expected": 170
+          }
+        ]
+      }
+    ]
+  },
+  "correction": {
+    "displayWorldCell": 288,
+    "originalSourceCell": 160,
+    "worldScale": 2,
+    "method": "Copy exclusively owned original CPU160-cell RGBA into bounded coarse replay images using exact integer pixel plans/Nearest/Src/non-AA clips; internal original gutters excluded and exterior world gutters retained.",
+    "originalSourceSnapshots": "CPU-only and unpublished; targetCPUflush precedes exclusive source disposal. Display/cache image and picture lifetimes unchanged.",
+    "maximumReplaySide": 580,
+    "maximumSourceSide": 324,
+    "foregroundBytes": 33554432,
+    "coldBytes": 8388608,
+    "entries": 96,
+    "sourceCacheAdded": false,
+    "allocationFailure": "Discard partial coarse CPU surface and retain original real vector fallback.",
+    "rasterMs": "Includes all original-source rasterization and CPU copying; image-node counts are not counts of source surfaces."
+  },
+  "test": {
+    "positiveFrames": 32,
+    "maxChannelDelta": 4,
+    "rmsChannelDelta": 0.125,
+    "compositedAlphaExact": true,
+    "negativeBrokenGutterMustFail": true,
+    "disposedOwnedSourcesRemainCopied": true,
+    "budgetEnlarged": false,
+    "existingTestsAndNativeThresholdsUnchanged": true
+  },
+  "strictTypecheck": "PENDING CI",
+  "allJs": "PENDING CI",
+  "allPythonWithPinnedPerfetto": "PENDING CI",
+  "all42Art": "PENDING CI",
+  "hermesBytesAndMagic": "PENDING CI",
+  "allSevenFreshNativeGates": "PENDING source preflight",
+  "performanceAccepted": false,
+  "releaseAccepted": false,
+  "physicalRedmiTested": false
+}
