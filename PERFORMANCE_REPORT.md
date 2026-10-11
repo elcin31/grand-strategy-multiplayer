@@ -1,3 +1,13 @@
+# Exclusive raster cache ownership — 2026-10-11
+
+Actual755 full unchanged4x9 ABBA is complete but fails six gates: forward pinch HWUI histogramP95 250→600ms, terrain compositorP99 91.625084→141.332038ms, panel-closedP99 92.214825→114.228966ms; reverse pinch compositorP95 471.589329→532.826437ms, worldP99 128.837025→190.818058ms, military PSS330285→397090KiB (748KiB above the20% cap). Local-panP99 passes both orders in this particular capture. Full original rows/digest/fixture preserved in EXPANSION_RASTER_OWNERSHIP_UPGRADE_QA_2026-10-11.json; no overall pass, samples removed or physical FPS claim.
+
+Current bounded change removes a redundant vector cache reference only when same-key raster pixels are actually retained. No live native object disposal, pixel cache reduction, renderer replacement or world change. Cold capacity failures and all invalid/oversized retention preserve fallback and foreground images. Existing native path/border caches, idle prewarm and32MiB/96 pixel LRU remain. Tradeoff: an evicted image can require vector re-recording from cached native geometry.292JS/76Python/strictTS/production Hermes/all42 images PASS; these prove ownership/compatibility, not device frame or memory improvement. Fresh complete unchanged ABBA and native30-minute results are required.
+
+Actual755 current10000 simulation succeeds with ten exact restores/P95101.600633ms/451max armies/4,487,736max snapshot/3.24919x population. Simulation is unchanged by this cache fix; fresh CI repeats it. Actual same-version Android replacement/save12→18/preferences/restart succeeds in separate run38114726798; it is not frame acceptance.
+
+---
+
 ## Continuation 2026-10-11
 
 Direct9-number camera matrix removes six pinnedSkia4x4 compositions per UI update; numerical/host tests/export PASS, native frame effect pending. Actual8df full4×9 camera: pinch passes both orders but six unchanged P99/PSS gates fail; raw EXPANSION_CAMERA_REVIEW_8DF.json retained. No FPS claim or final acceptance.

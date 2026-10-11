@@ -14,7 +14,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from map_paint_check import assert_map_painted, map_paint_stats
 from native_campaign_feedback import campaign_feedback
-from native_diplomacy_feedback import capture_relation_snapshot, assert_relation_mission
+from native_diplomacy_feedback import capture_relation_snapshot, assert_relation_mission, assert_paid_gift
 from android_accessibility import dump_hierarchy, assert_no_game_fatal
 from camera_hud_data import camera_hud_data
 from camera_surface_stats import assert_map_backend
@@ -480,6 +480,18 @@ after_diplomacy=read_relation_snapshot('Бразилия','diplomacy-after')
 read_scrolling('Дипломатическое сотрудничество: ')
 mission_progress=read_scrolling('Улучшение отношений: ')
 (OUT/'diplomacy-mission.json').write_text(json.dumps(assert_relation_mission(before_diplomacy,after_diplomacy,mission_progress,6),ensure_ascii=False,indent=2))
+# A detected operation legitimately lowers the NPC's acceptance. Send a real
+# paid gift to repair relations/trust before testing a consenting pact; do not
+# expect six improving months to force an unconditional NPC treaty.
+click_scrolling('Сумма подарка в миллионах')
+adb('shell','input','keyevent','123')
+for _ in range(3):adb('shell','input','keyevent','67')
+adb('shell','input','text','5000');adb('shell','input','keyevent','4')
+gift_input=next(n for n in hierarchy('diplomacy-gift-input').iter('node') if n.get('content-desc')=='Сумма подарка в миллионах')
+assert gift_input.get('text')=='5000', 'Actual gift input differs from the intended paid amount'
+click_scrolling('Отправить подарок')
+gift_diplomacy=read_relation_snapshot('Бразилия','diplomacy-after-gift')
+(OUT/'diplomacy-gift.json').write_text(json.dumps(assert_paid_gift(after_diplomacy,gift_diplomacy),ensure_ascii=False,indent=2))
 click_scrolling('Предложить: Ненападение')
 assert 'Ненападение' in read_scrolling('Договоры: ')
 screenshot('diplomacy-treaty')
