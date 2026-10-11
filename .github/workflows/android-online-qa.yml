@@ -89,6 +89,11 @@ jobs:
           script: python -u scripts/android-multiplayer-smoke.py '${{ steps.apk.outputs.path }}'
       - name: Preserve sanitized evidence and exact scoped cleanup UUID
         if: always()
+        run: |
+          mkdir -p android-online
+          if [ -f /tmp/dominion-native-online-room-id ]; then cp /tmp/dominion-native-online-room-id android-online/room-id.txt; fi
+      - name: Upload sanitized native online evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: dominion-native-online-evidence
@@ -97,6 +102,5 @@ jobs:
             candidate-run.json
             candidate-jobs.json
             candidate-integrity.txt
-            /tmp/dominion-native-online-room-id
           if-no-files-found: warn
           retention-days: 14

@@ -11,6 +11,7 @@ on:
       - 'scripts/backend-input-smoke.py'
       - 'supabase/functions/**'
   workflow_dispatch:
+  workflow_call:
 permissions:
   contents: read
 concurrency:
@@ -19,9 +20,13 @@ concurrency:
 jobs:
   live-world:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+      - name: Validate compatibility and real spy payload QA guards
+        run: |
+          python -m unittest discover -s tests -p 'backend_http_test.py'
+          python -m unittest discover -s tests -p 'backend_world_guards_test.py'
       - name: Reject malformed and oversized HTTP input
         run: python -u scripts/backend-input-smoke.py
       - name: Verify dedicated backend with an isolated campaign
