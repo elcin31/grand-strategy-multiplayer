@@ -1,3 +1,11 @@
+# Exact UI binary rejected; further source diagnosis required — 2026-10-11
+
+Actual runtimebf05151/run381714/APK6918422f fails six original camera limits; all36CI rows and18 passing PSS comparisons preserved in EXPANSION_UI_LAYER_NATIVE_QA_2026-10-11.json. Build/10000ticks/backend/upgrade/nativeonline pass;1800s native smoke remains in progress. Both reviewed QA rooms removed with combined0rooms/players/receipts and29originalbackups retained. Binary is not accepted for final publication/delivery.
+
+Executor disconnected during camera ZIP download; declared immutable digest/source recorded without false local integrity claim. Existing exact-binary auxiliary CI now performs full capture revalidation and CPU stack queries. Helper validation remains pending CI. Main/backend/runtime unchanged; accepted manifest absent; original seven-gate release requirement and physical-handset honesty retained.
+
+---
+
 # UI composition candidate requires new full signed QA — 2026-10-11
 
 Previous788/3bc release binary is **REJECTED**: six actual gates pass but four original camera gates fail; EXPANSION_RASTER_NATIVE_QA_2026-10-11.json preserves all proof. Separate actual CPU diagnostic run38169301651 SUCCESS confirms marker-scoped sample capture, not release acceptance; missing36 vendor tracepoints and incomplete attribution retained.

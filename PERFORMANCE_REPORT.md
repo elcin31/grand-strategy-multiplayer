@@ -1,3 +1,11 @@
+# Exact UI camera rejection and next scoped CPU diagnosis — 2026-10-11
+
+Actualbf/381714/691APK camera FAILED six unchanged limits from all36 logged scenarios; all18 matched PSS checks pass. ForwardpinchP99767.16→898.99ms/panelP99102.90→129.86ms;reversepinchP95414.14→583.77ms/P99718.93→1117.00ms/histP95600→750ms;reverseworldP99116.64→150.77ms. Full per-order proof EXPANSION_UI_LAYER_NATIVE_QA_2026-10-11.json. Different emulator baselines are not cross-run improvement proof. Five other gates pass;old native soak remains running.
+
+Local executor disconnected during artifact download, so new raw ZIP CRC/SHA is not claimed. Existing auxiliary CI will verify original full captures and exact APK before four separate traces. CPU helper persists original actual-marker/PID-scoped Perfetto query, preserves all missing coverage/unwind errors and checks observed totals. Helper compilation/tests/traces await actual CI; no new measured improvement or physical claim. Runtime and original frame/PSS limits unchanged.
+
+---
+
 # Bounded UI composition source candidate — 2026-10-11
 
 Actual separate trace38169301651 observed scoped99Hz stacks and scheduler/ATrace work for accepted baseline vs exact rejected788/3bc APK. Pinch main925→928samples/9396.53→9385.79ms running, dominated by kernel QEMU goldfish pipe reads/page pinning; EGL synchronization and HWUI RenderThread composition are also visible. JS61→53 scoped samples. Nested slice durations overlap and are not CPU shares/GPU timing. All36 unavailable tracepoint setup warnings and attributionComplete=false retained. Full raw hashes/windows/counts: EXPANSION_NATIVE_CPU_STACK_QA_2026-10-11.json. No physical handset claim or performance acceptance inferred.

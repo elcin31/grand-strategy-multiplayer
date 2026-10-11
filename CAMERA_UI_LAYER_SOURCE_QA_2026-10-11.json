@@ -1,5 +1,5 @@
 {
-  "status": "SOURCE_VERIFIED_NATIVE_PENDING",
+  "status": "SOURCE_VERIFIED_NATIVE_REJECTED_CAMERA",
   "repository": "elcin31/grand-strategy-multiplayer",
   "parentCheckpoint": "878abe0dd4dcd5b5a51f1c45cce3d406b378906e",
   "rejectedRuntime": "788a6bd575a4c9d13ed3ab1c0810eaa0d576ca2f",
@@ -31,11 +31,11 @@
     "reactReview": "Module-level primitive boolean snapshot through useSyncExternalStore, existing throttled telemetry only, memoized leaf subscriptions; parent CampaignScreen/GamePanel receive no camera subscription. No hook condition or missing dependency, additional per-frame React notifications, render-driven simulation, eager image load, changed accessibility label/touch responder/layout/section key. No changed host uses a ref.",
     "diffCheck": "PASS"
   },
-  "nativeAcceptance": "PENDING fresh full signed APK. Do not reuse six earlier successful gates to accept changed JS, reroll rejected binary or relax original10% pinch/20%other/PSS limits.",
+  "nativeAcceptance": "REJECTED actual camera114567941571: all36CI scenario rows available, six unchanged numeric gate violations, all18PSS comparisons pass. Five other native/build/backend gates SUCCESS;1800s soak still IN_PROGRESS. Full raw ZIP local verification blocked by executor disconnect; no claim of final acceptance.",
   "physicalRedmi": "UNMEASURED",
   "runtimeCommit": "bf05151c94988f7d2511218a8cc51a1858a5a1a7",
   "sourceTree": "b49a6e88a03ea1456c68cd305e32ec722fb60c69",
   "fullNativeRunId": 38171409180,
   "fullNativeRunUrl": "https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/38171409180",
-  "fullNativeStatusAtCheckpoint": "QUEUED"
+  "fullNativeStatusAtCheckpoint": "IN_PROGRESS_CAMERA_FAILURE"
 }
