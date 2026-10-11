@@ -19,7 +19,8 @@ from android_fixture import root_test_device
 from backend_http import request
 from map_paint_check import assert_map_painted
 from native_online_validation import (assert_online_campaign, paid_course_fingerprint,
-                                      assert_same_native_session, exit_confirmation_button)
+                                      assert_same_native_session, exit_confirmation_button,
+                                      visible_control_bounds)
 
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 OUT = Path('android-online'); OUT.mkdir(exist_ok=True)
@@ -60,8 +61,8 @@ def screenshot(name):
 
 
 def node_bounds(node):
-    bounds = list(map(int, re.findall(r'\d+', node.get('bounds', ''))))
-    assert len(bounds) == 4 and bounds[2] > bounds[0] and bounds[3] > bounds[1]
+    bounds = visible_control_bounds(node)
+    assert bounds is not None, 'Native control is disabled, clipped or outside the screen'
     return bounds
 
 
@@ -75,12 +76,11 @@ def tap_node(node):
 def find_control(label, scroll=False):
     for attempt in range(14):
         tree = hierarchy('find-'+str(attempt))
-        node = next((n for n in tree.iter('node') if n.get('text') == label
-                     or n.get('content-desc') == label), None)
+        node = next((n for n in tree.iter('node') if (n.get('text') == label
+                     or n.get('content-desc') == label)
+                     and visible_control_bounds(n, 640 if scroll else 720) is not None), None)
         if node is not None:
-            x1, y1, x2, y2 = node_bounds(node)
-            if 0 <= x1 < x2 <= 1280 and 0 <= y1 < y2 <= (640 if scroll else 720):
-                return tree, node
+            return tree, node
         if scroll:
             if attempt == 0:
                 for _ in range(4):

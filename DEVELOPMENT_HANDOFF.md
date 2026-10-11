@@ -1,3 +1,15 @@
+# Continuation — actual offscreen native course control recovery, 2026-10-11
+
+Verified published parent **cac6ad0e0e4b842d0ce2d8f98cb2c1205bac32ed**; exact game runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**, unchanged APK142473881bytes/SHA75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3. Final38133111807 build/10000/liveHTTP/actual0.8.1→2.0save upgrade PASS; camera/1800s native soak IN_PROGRESS. Do not rebuild for this QA-only fix.
+
+Correction to prior handoff expectation: current final native job114455037604 did NOT reach the exit dialog. It and corrected standalone38135164588/job114457434504 failed earlier at finding the actual course control, because UiAutomator retains offscreen TextView bounds **[982,704][1151,610]** (inverted by ScrollView clipping). Downloaded corrected-run artifact11700363401/554343bytes/SHA8b067c35e93843bc8a7b6165f4826e4967b7bf6cb50468125e697b0ef73fb9f6/CRC verified; exact hierarchy21-find-2.xml confirms this. Original882 exit-case failure remains genuine and its fix remains required. No game runtime defect was inferred from this harness failure.
+
+The finder now ignores disabled/outside/clipped/inverted controls while continuing real bounded ScrollView gestures, and taps only valid visible screen coordinates exactly once. Payment/220treasury/16political-power/once-only eco-audit/paused state/session/owner-return/reboot assertions remain unchanged. Five native guards/compilation/diff PASS. Files: scripts/native_online_validation.py,scripts/android-multiplayer-smoke.py,tests/native_online_validation_test.py,DEVELOPMENT_HANDOFF.md.
+
+Additional exact isolated cleanup UUIDs: b18c51ce-00e1-48b4-8977-007d1c01fb19 (failed final native),4a7c4f96-1661-40b1-87b3-0f835983e783 (corrected standalone failure), both NATIVE ONLINE QA. Preserve earlier exact scoped list and all29original city backups/user rooms. Next: run corrected full native flow against the same final APK on existing expansion-qa; finish unchanged camera/soak gates, strict composite proof if frozen old harness remains failed, exact guarded cleanup, accepted main/publication/direct delivery. No physical Xiaomi performance claim.
+
+---
+
 # Continuation — verified final APK and exact native exit harness fix, 2026-10-11
 
 Verified published parent **b30aed95f0f02c027655ba3e88fedbba2329864f**; app runtime **f794ea4a4974f2f826f3ec7bd712a81b5f05291a**. Required CI **38133111807** build114451355387/10000ticks114451355479/liveHTTP114451355520 SUCCESS. Actual release ZIP11700581166/62,287,784bytes/digestea15e7b9941fa8cbfb00495b2ab27b77bb0bca7368876f50015732aaac5063c6/CRC verified. APK **Dominion-grand-strategy-v2-release.apk**,142,473,881bytes/SHA **75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3**, embedded actual Hermes10,690,504bytes/magic/dedicated backend/all4HermesVM ABI/all42 original paintings byte-exact PASS. Actual CI manifest2.0.0(10),nondebug,landscape,signaturefac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c tied to the sameAPK digest. Native/camera/soak/online acceptance still PENDING; do not deliver yet.

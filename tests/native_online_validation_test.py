@@ -5,10 +5,23 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
 from native_online_validation import (assert_online_campaign, paid_course_fingerprint,
-                                      assert_same_native_session, exit_confirmation_button)
+                                      assert_same_native_session, exit_confirmation_button,
+                                      visible_control_bounds)
 
 
 class NativeOnlineValidationTest(unittest.TestCase):
+    def test_offscreen_inverted_bounds_are_scrolled_until_a_real_enabled_control_is_visible(self):
+        def node(bounds, enabled='true'):
+            return ET.Element('node', {'bounds': bounds, 'enabled': enabled})
+        # Actual failed signed native hierarchy: clipped TextView below ScrollView.
+        for bounds in ['[982,704][1151,610]', '[0,0][0,0]', '[-1,2][30,50]',
+                       '[1,2][1281,50]', '[1,2][30,721]', 'missing']:
+            self.assertIsNone(visible_control_bounds(node(bounds)))
+        visible=node('[982,450][1151,490]')
+        self.assertEqual(visible_control_bounds(visible,640),(982,450,1151,490))
+        self.assertIsNone(visible_control_bounds(node('[982,620][1151,670]'),640))
+        self.assertIsNone(visible_control_bounds(node('[982,450][1151,490]','false')))
+
     def test_actual_exit_confirmation_accepts_android_uppercase_and_rejects_other_dialogs_or_duplicate_controls(self):
         def dialog(label='ВЫЙТИ',title='Выйти из кампании?'):
             tree=ET.Element('hierarchy')

@@ -3,6 +3,17 @@ import json
 import re
 
 
+def visible_control_bounds(node, bottom=720):
+    """UiAutomator can retain an offscreen label with inverted clipped bounds."""
+    match = re.fullmatch(r'\[(-?\d+),(-?\d+)\]\[(-?\d+),(-?\d+)\]', node.get('bounds', ''))
+    if not match or node.get('enabled') == 'false':
+        return None
+    x1, y1, x2, y2 = map(int, match.groups())
+    if not (0 <= x1 < x2 <= 1280 and 0 <= y1 < y2 <= bottom):
+        return None
+    return x1, y1, x2, y2
+
+
 def exit_confirmation_button(tree):
     nodes = list(tree.iter('node'))
     assert any(n.get('text') == 'Выйти из кампании?' for n in nodes), 'Missing native exit confirmation'
