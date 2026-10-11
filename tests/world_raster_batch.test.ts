@@ -88,9 +88,19 @@ test('larger world cells preserve linear raster pixels, transparent terrain and 
     const result=c.readPixels(0,0,{width:64,height:48,colorType:s.ColorType.RGBA_8888,alphaType:s.AlphaType.Unpremul,colorSpace:s.ColorSpace.SRGB});assert.ok(result);return new Uint8Array(result);
   };
   try{
+    const differences:{zoom:number;center:number[];maxChannelDelta:number;changedChannels:number;alphaChanges:number;firstDifferences:{channel:number;actual:number;expected:number}[]}[]=[];
     for(const zoom of [.5,.875,1.3,1.95])for(const [x,y]of [[160.125,160.25],[287.875,288.375],[575.625,576.125],[1152.375,576.875],[1439.25,719.125]]){
-      assert.deepEqual(draw(batched,x!,y!,zoom),draw(old,x!,y!,zoom),'zoom '+zoom+', center '+x+','+y);
+      const actual=draw(batched,x!,y!,zoom),expected=draw(old,x!,y!,zoom);
+      let maxChannelDelta=0,changedChannels=0,alphaChanges=0;
+      const firstDifferences:{channel:number;actual:number;expected:number}[]=[];
+      for(let i=0;i<actual.length;i++){
+        const delta=Math.abs(actual[i]!-expected[i]!);maxChannelDelta=Math.max(maxChannelDelta,delta);
+        if(delta){changedChannels++;if(i%4===3)alphaChanges++;if(firstDifferences.length<4)firstDifferences.push({channel:i,actual:actual[i]!,expected:expected[i]!});}
+      }
+      differences.push({zoom,center:[x!,y!],maxChannelDelta,changedChannels,alphaChanges,firstDifferences});
     }
+    console.info('DOMINION_WORLD_PIXEL '+JSON.stringify(differences));
+    assert.ok(differences.every(d=>d.maxChannelDelta===0),'Strict byte equality; all20 measured configurations retained before failure');
   }finally{
     for(const {image}of [...old,...batched])image.delete();
     for(const p of paths.values())p.delete();river.delete();paint.delete();samplePaint.delete();output.dispose();
