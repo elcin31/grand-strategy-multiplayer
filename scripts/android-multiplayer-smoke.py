@@ -96,6 +96,33 @@ def click(label, scroll=False):
     time.sleep(2)
 
 
+def pause_native_campaign():
+    # Server time/presence can advance a snapshot before a host command arrives.
+    # A visible CAS rejection is an explicit rejected intent, not a paid retry.
+    # Wait for the actual native response and fresh sync before another user tap.
+    for attempt in range(3):
+        click('Пауза', scroll=True)
+        deadline = time.monotonic()+35
+        while time.monotonic() < deadline:
+            tree = hierarchy('pause-response-'+str(attempt))
+            if any(n.get('content-desc') == 'Пауза' and n.get('selected') == 'true'
+                   for n in tree.iter('node')):
+                return
+            texts = {n.get('text', '') for n in tree.iter('node')}
+            if 'Действие отклонено' in texts:
+                assert 'Состояние обновилось. Повторите действие после синхронизации' in texts, \
+                    'Native pause was rejected for a reason other than a stale snapshot'
+                ok = next(n for n in tree.iter('node') if n.get('text') == 'OK')
+                tap_node(ok)
+                print('Native pause: explicit CAS rejection; sync before new host tap', flush=True)
+                time.sleep(4)
+                break
+            time.sleep(2)
+        else:
+            raise AssertionError('Native pause did not finish or display a rejection')
+    raise AssertionError('Native host pause failed after explicit synchronized CAS retries')
+
+
 def launch():
     adb('shell', 'am', 'start', '-W', '-n', PACKAGE+'/.MainActivity')
     time.sleep(8)
@@ -181,7 +208,7 @@ for attempt in range(20):
     time.sleep(2)
 assert start is not None and start.get('enabled') == 'true'
 tap_node(start); time.sleep(8)
-click('Раздел Страна'); click('Пауза', scroll=True)
+click('Раздел Страна'); pause_native_campaign()
 paused = assert_online_campaign(snapshot(), room_id, native_id, 'germany')
 assert_map_painted(screenshot('01-online-paused'))
 
@@ -189,7 +216,16 @@ assert_map_painted(screenshot('01-online-paused'))
 # room, replayed payment, progress while paused, or duplicate start/reward.
 before = paused['countries']['germany']
 click('Раздел Нац. курс'); click('Взять национальный курс', scroll=True)
-paid = assert_online_campaign(snapshot(), room_id, native_id, 'germany')
+for attempt in range(6):
+    paid = assert_online_campaign(snapshot(), room_id, native_id, 'germany')
+    if (paid['countries']['germany'].get('nationalFocus') or {}).get('focusId') == 'eco-audit':
+        break
+    tree = hierarchy('course-response-'+str(attempt))
+    assert not any(n.get('text') == 'Действие отклонено' for n in tree.iter('node')), \
+        'Native paid course was rejected; never replay its payment'
+    time.sleep(2)
+else:
+    raise AssertionError('Single native course payment was not acknowledged by the server')
 assert round(before['treasury']-paid['countries']['germany']['treasury'], 3) == 220
 assert before['politicalPower']-paid['countries']['germany']['politicalPower'] == 16
 fingerprint = paid_course_fingerprint(paid, 'germany')
