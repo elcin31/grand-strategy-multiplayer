@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       apk_run_id:
-        description: Compatible signed standalone build
+        description: Exact signed APK for corrected native online acceptance
         required: false
         type: string
   workflow_call:
