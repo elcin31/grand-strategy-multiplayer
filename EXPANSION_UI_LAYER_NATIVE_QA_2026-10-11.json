@@ -4513,7 +4513,21 @@
       "githubDeclaredSha256": "503bb6969c6d24398558cb0ea49a911f0aa060c36f6a0fdd4c913619452e5c15",
       "localDownloadVerified": false
     },
-    "preciseRawDurationAndPss": "Pending actual artifact readback in renderer source QA; do not invent values."
+    "preciseRawDurationAndPss": "Actual artifact read on CI; see rawVerifiedOnCi. No local download/CRC claimed.",
+    "rawVerifiedOnCi": {
+      "runId": 38171409180,
+      "jobId": 114587462307,
+      "status": "PRIOR_REJECTED_BINARY_SOAK_VERIFIED",
+      "runtime": "bf05151c94988f7d2511218a8cc51a1858a5a1a7",
+      "apkSha256": "6918422f4d03ddff656a921f19178c6a461b507985c30c62188bcfdb5ef813d0",
+      "durationSeconds": 1829.044582619,
+      "durationFileSha256": "63adabaae20b41f52761b57b707c1e7ef6a8764e0badfa10232fd33597ef76c7",
+      "memorySamples": 31,
+      "pssMinKiB": 422364,
+      "pssMaxKiB": 531570,
+      "releaseAccepted": false,
+      "note": "Six original camera limits failed. No earlier native gate accepts this changed renderer source."
+    }
   },
   "currentMatchedCpuDiagnostic": "EXPANSION_UI_LAYER_CPU_QA_2026-10-11.json"
 }

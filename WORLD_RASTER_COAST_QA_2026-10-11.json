@@ -1,5 +1,5 @@
 {
-  "status": "SOURCE_COAST_AA_CORRECTION_PENDING_ACTUAL_CI",
+  "status": "SOURCE_VERIFIED_NATIVE_PENDING",
   "repository": "elcin31/grand-strategy-multiplayer",
   "previousSource": "52ae67429764fd0410aeedf6852c80196b403d6f",
   "previousActualPixelFailure": {
@@ -858,5 +858,499 @@
   "allSevenFreshNativeGates": "PENDING source preflight",
   "performanceAccepted": false,
   "releaseAccepted": false,
-  "physicalRedmiTested": false
+  "physicalRedmiTested": false,
+  "verifiedSource": {
+    "status": "SOURCE_VERIFIED_NATIVE_PENDING",
+    "runtime": "8ff217222f8d8f1adae63735185496994bb68119",
+    "tree": "cb0d22131898ca12dfb116556469fa77ddca3a66",
+    "sourceRunId": 38179037438,
+    "sourceJobId": 114587462307,
+    "strictTypecheck": true,
+    "js": {
+      "tests": 309,
+      "pass": 309,
+      "fail": 0,
+      "skip": 0
+    },
+    "python": {
+      "tests": 97,
+      "pass": 97,
+      "skip": 0,
+      "pinnedPerfetto": "0.58.2"
+    },
+    "originalArt": 42,
+    "productionHermes": {
+      "path": "source-hermes-qa/_expo/static/js/android/AppEntry-eeeecedbf7b3b05c64de7257eb486490.hbc",
+      "bytes": 11484254,
+      "sha256": "3b6662739738f11ef7e014b59cfebe1ac94340aaeb0c6ab63db1240a31d00ecd",
+      "magic": "c61fbc03c103191f"
+    },
+    "pixel": {
+      "frames": 32,
+      "results": [
+        {
+          "zoom": 0.5,
+          "center": [
+            160.125,
+            160.25
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            287.875,
+            288.375
+          ],
+          "maxChannelDelta": 1,
+          "rmsChannelDelta": 0.009021097956087902,
+          "changedChannels": 1,
+          "alphaChanges": 0,
+          "firstDifferences": [
+            {
+              "channel": 2240,
+              "actual": 77,
+              "expected": 76
+            }
+          ]
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            575.625,
+            576.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            1152.375,
+            576.875
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            1439.25,
+            719.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            575.625,
+            288.375
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            704.375,
+            18.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.5,
+          "center": [
+            1398.25,
+            718.875
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            160.125,
+            160.25
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            287.875,
+            288.375
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            575.625,
+            576.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            1152.375,
+            576.875
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            1439.25,
+            719.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            575.625,
+            288.375
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            704.375,
+            18.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 0.875,
+          "center": [
+            1398.25,
+            718.875
+          ],
+          "maxChannelDelta": 1,
+          "rmsChannelDelta": 0.009021097956087902,
+          "changedChannels": 1,
+          "alphaChanges": 0,
+          "firstDifferences": [
+            {
+              "channel": 5952,
+              "actual": 44,
+              "expected": 45
+            }
+          ]
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            160.125,
+            160.25
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            287.875,
+            288.375
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            575.625,
+            576.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            1152.375,
+            576.875
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            1439.25,
+            719.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            575.625,
+            288.375
+          ],
+          "maxChannelDelta": 1,
+          "rmsChannelDelta": 0.009021097956087902,
+          "changedChannels": 1,
+          "alphaChanges": 0,
+          "firstDifferences": [
+            {
+              "channel": 2949,
+              "actual": 59,
+              "expected": 58
+            }
+          ]
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            704.375,
+            18.125
+          ],
+          "maxChannelDelta": 1,
+          "rmsChannelDelta": 0.01275775907699572,
+          "changedChannels": 2,
+          "alphaChanges": 0,
+          "firstDifferences": [
+            {
+              "channel": 10878,
+              "actual": 85,
+              "expected": 86
+            },
+            {
+              "channel": 11133,
+              "actual": 115,
+              "expected": 116
+            }
+          ]
+        },
+        {
+          "zoom": 1.3,
+          "center": [
+            1398.25,
+            718.875
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            160.125,
+            160.25
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            287.875,
+            288.375
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            575.625,
+            576.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            1152.375,
+            576.875
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            1439.25,
+            719.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            575.625,
+            288.375
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            704.375,
+            18.125
+          ],
+          "maxChannelDelta": 0,
+          "rmsChannelDelta": 0,
+          "changedChannels": 0,
+          "alphaChanges": 0,
+          "firstDifferences": []
+        },
+        {
+          "zoom": 1.95,
+          "center": [
+            1398.25,
+            718.875
+          ],
+          "maxChannelDelta": 1,
+          "rmsChannelDelta": 0.01275775907699572,
+          "changedChannels": 2,
+          "alphaChanges": 0,
+          "firstDifferences": [
+            {
+              "channel": 4480,
+              "actual": 130,
+              "expected": 131
+            },
+            {
+              "channel": 5248,
+              "actual": 113,
+              "expected": 114
+            }
+          ]
+        }
+      ],
+      "peak": 1,
+      "rms": 0.01275775907699572,
+      "negativeControl": {
+        "maxChannelDelta": 50,
+        "rmsChannelDelta": 3.6504472293074355,
+        "alphaChanges": 0
+      },
+      "fixedBudget": {
+        "peak": 4,
+        "rms": 0.125,
+        "alphaChanges": 0
+      },
+      "ownedSourceLifetimeVerified": true
+    },
+    "priorRejectedUiSoak": {
+      "status": "PRIOR_REJECTED_BINARY_SOAK_VERIFIED",
+      "runtime": "bf05151c94988f7d2511218a8cc51a1858a5a1a7",
+      "runId": 38171409180,
+      "apkSha256": "6918422f4d03ddff656a921f19178c6a461b507985c30c62188bcfdb5ef813d0",
+      "durationSeconds": 1829.044582619,
+      "durationFileSha256": "63adabaae20b41f52761b57b707c1e7ef6a8764e0badfa10232fd33597ef76c7",
+      "memorySamples": 31,
+      "pssMinKiB": 422364,
+      "pssMaxKiB": 531570,
+      "releaseAccepted": false,
+      "note": "Six original camera limits failed. No earlier native gate accepts this changed renderer source."
+    },
+    "performanceAccepted": false,
+    "releaseAccepted": false,
+    "physicalRedmi": false,
+    "workspace": "Executor remains disconnected; these checks are actual existing-repository GitHub CI, not claimed local execution.",
+    "nativeRunId": 38179378823
+  },
+  "pixelCorrectionMeasured": {
+    "directRepaintPeak": 27,
+    "sourceCopyPeak": 1,
+    "directRepaintWorstRms": 0.3422077143953167,
+    "sourceCopyWorstRms": 0.01275775907699572,
+    "comparisonBudgetUnchanged": true
+  }
 }

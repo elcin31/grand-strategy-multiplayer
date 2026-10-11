@@ -1,3 +1,11 @@
+# Bounded source-pixel world replay — source PASS, native pending (2026-10-11)
+
+Actual runtime8ff2172 source38179037438 SUCCESS:309JS/97Python0skips/strictTS/42art/Hermes. Copying original160-cell CPU pixels fixes direct-coarse acute coast AApeak27→1; worst32-caseRMS.3422→.01276 at unchangedfixed4/.125 guard. Broken-gutterpeak50/RMS3.650447 correctly rejected; source lifetimes tested after release. WORLD_RASTER_COAST_QA_2026-10-11.json and WORLD_RASTER_SOURCE_QA_2026-10-11.json retain actual results and earlier failures.
+
+15 replay images at worldcell288/scale2, source324/replay580caps,32MiB/96/8MiB unchanged. No extra retained source cache; metrics include all CPU source/copy work. Other bands/LOD/real terrain/borders/paths/input/AI unchanged; rejected UI layers removed. Fresh original seven-gate standalone run38179378823 is running. No measured native improvement or physical handset claim. Prior rejectedbf soak is actually1829.04458s/31PSS422364–531570KiB; its six camera failures remain and do not accept this new runtime.
+
+---
+
 # Bounded world raster commands — pending source/native verification (2026-10-11)
 
 Actualbf/381714 finished with six non-camera gates PASS, camera six original limits FAIL. Matched CPU381757 SUCCESS verifies60existing camera tests, original complete captures and four actual scoped queries; EXPANSION_UI_LAYER_CPU_QA_2026-10-11.json retains incomplete attribution/vendor warnings. Pinch RenderThread sampled105→131 and Running1069.01→1268.49ms, main946→914 samples; native GL emulator transport dominates. This is diagnostic context, not improvement acceptance.

@@ -1,3 +1,11 @@
+# Exact source8ff passes preflight; final binary QA running (2026-10-11)
+
+Normal expansion-v2 promotion of verified8ff217222f8d8f1adae63735185496994bb68119; source38179037438 passes strictTS/309JS/97Python0skips/42originalart/actualHermes. Coast correction preserves original pixels with32-casefixedbudget and broken-gutter detection; prior failed hypotheses retained. Fresh full standalone run38179378823 must pass all original seven native gates on its own signed2.0.0code10 binary before acceptance. Main/backend unchanged; accepted manifest absent; no final APK delivered or physical Redmi test claimed.
+
+Priorbf/691APK remains rejected despite actual1829.04458s soak and all six other gates. Executor remains disconnected, so actual verification/download/CRC must use existing CI until reconnection; no false local checks. Exact next operation documented inhandoff.
+
+---
+
 # Previous UI binary rejected; bounded-world candidate awaits source QA (2026-10-11)
 
 Exactbf05151/APK6918422f/full381714 completed FAILURE: all six other gates SUCCESS, including actual1800s native stress; six original camera violations remain. Prior soak raw duration/PSS will be read on existing CI, not guessed. Separate actual CPU381757 SUCCESS validates helper/captures/queries, not release acceptance.
