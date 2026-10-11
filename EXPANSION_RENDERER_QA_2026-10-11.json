@@ -1,0 +1,600 @@
+{
+  "status": "REJECTED",
+  "runtime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
+  "runId": 38151928979,
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "backend": {
+    "jobId": 114506981037,
+    "conclusion": "success",
+    "artifactId": 11706743424,
+    "zipBytes": 606,
+    "zipSha256": "80034e801f69eeb5306da4d5ea952d5d080901fbc9d2669080613e80e9b6ba85",
+    "actualServerEvidence": {
+      "roomId": "198607b6-2167-4ca2-aa92-3d98de07e2e8",
+      "stateVersion": 18,
+      "tick": 21,
+      "featuresVerified": true,
+      "hostMigrationVerified": true,
+      "completedFocuses": [
+        {
+          "focusId": "eco-audit",
+          "tick": 9
+        }
+      ],
+      "scientificDiscoveries": [
+        "science-method"
+      ],
+      "spyResults": [
+        {
+          "kind": "PoliticalIntrigue",
+          "tick": 18,
+          "outcome": "Failure",
+          "detected": true
+        },
+        {
+          "kind": "Sabotage",
+          "tick": 16,
+          "outcome": "Failure",
+          "detected": false
+        },
+        {
+          "kind": "IntelligenceGathering",
+          "tick": 6,
+          "outcome": "Success",
+          "detected": false
+        },
+        {
+          "kind": "Counterintelligence",
+          "tick": 5,
+          "outcome": "Success",
+          "detected": false
+        }
+      ],
+      "paidRelationChange": 27,
+      "humanTreaties": [
+        "NonAggression",
+        "TradeAgreement"
+      ],
+      "note": "Scoped existing production HTTP QA. No tokens, player IDs or whole snapshots in evidence.",
+      "finalTick": 47,
+      "finalSchema": 18
+    },
+    "compiledArtifactId": 11706762271,
+    "compiledZipBytes": 913368,
+    "compiledZipSha256": "447e96d8c470f0d18457a3c73c08e6be9bac7c047375f8ebb58d603139378776",
+    "gameCommandSourceSha256": "3072fb293d1ccb9d9b236c56149f511a7ca513a4ccbdd568efed0ac997375959",
+    "gameRoomSourceSha256": "2b3a0cd8077a1dae0863a0bf9fc61fd68d4a94c0dc87535e8267de0dd3f56e6d",
+    "matchesDeployedCommand24Room22": true
+  },
+  "qaCleanup": {
+    "roomIds": [
+      "198607b6-2167-4ca2-aa92-3d98de07e2e8",
+      "9f8277fe-4b45-450a-97e1-5d417f29f523"
+    ],
+    "roomsRemaining": 0,
+    "playersRemaining": 0,
+    "receiptsRemaining": 0,
+    "preservedCityBackups": 29,
+    "method": "Both completed HTTP/native jobs; exact UUID, exact creation timestamp, expected WORLD ECONOMY QA or NATIVE ONLINE QA membership and all three original-backup fields empty; FK cleanup followed by independent zero-row readback for both rooms. Original29citybackups retained. Raw native report keeps its original at-capture PENDING field; completion is this separate verified record."
+  },
+  "signedApk": {
+    "status": "REJECTED_CAMERA_GATES",
+    "runtime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
+    "runId": 38151928979,
+    "artifactId": 11707378000,
+    "zipBytes": 62288920,
+    "zipSha256": "93a7e138d40be2086e7523848ec27b5e0222450bb893c3bf31a1acfa886708a1",
+    "apkBytes": 142477053,
+    "apkSha256": "6ba03fb0631ac2db17af7ef2d38e45c83b74b8e5f2cd90b8026671d36c3d2b26",
+    "hermesBytes": 10693676,
+    "hermesSha256": "7c2f0132049a84625383104d3df98ea6a68deca49be3b579468070c26d35c55e",
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "jobId": 114506980751,
+    "conclusion": "success",
+    "version": "2.0.0",
+    "versionCode": 10,
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "landscapeVerifiedByCI": true,
+    "nonDebuggableVerifiedByCI": true,
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "packagedOriginalPaintings": 42,
+    "packagedOriginalPaintingBytes": 3479060,
+    "jsTests": 299,
+    "jsSkipped": 0,
+    "ciPythonTests": 97,
+    "ciPythonOptionalSkipped": 2,
+    "localPythonTests": 97,
+    "localPythonSkipped": 0,
+    "typecheck": "PASS"
+  },
+  "nativeCamera": {
+    "jobId": 114511075768,
+    "status": "COMPLETED",
+    "conclusion": "failure",
+    "artifactId": 11707409183,
+    "zipBytes": 17757437,
+    "zipSha256": "71c8e7d92bc13ea78ccf789a43461f7719d76a36dbf645224872caa013a4d6bc",
+    "crcVerified": true,
+    "rawCaptureValidation": {
+      "diagnosticOnly": true,
+      "allFourCapturesComplete": true,
+      "scenariosPerLaunch": 9,
+      "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+      "fixtureStateChecksum": "e8befae1",
+      "comparisonGateViolations": [
+        {
+          "scenario": "forward:03-pinch",
+          "gate": "compositor:p99Ms",
+          "before": 892.909782,
+          "after": 1210.762227
+        },
+        {
+          "scenario": "forward:06-terrain-pan",
+          "gate": "pss20percent",
+          "before": 351596,
+          "after": 433387
+        },
+        {
+          "scenario": "forward:08-panel-open",
+          "gate": "pss20percent",
+          "before": 325043,
+          "after": 402837
+        },
+        {
+          "scenario": "forward:09-panel-closed",
+          "gate": "pss20percent",
+          "before": 354320,
+          "after": 432859
+        },
+        {
+          "scenario": "reverse:02-medium-pan",
+          "gate": "compositor:p99Ms",
+          "before": 153.227516,
+          "after": 186.754902
+        },
+        {
+          "scenario": "reverse:03-pinch",
+          "gate": "compositor:p95Ms",
+          "before": 407.791951,
+          "after": 685.702038
+        },
+        {
+          "scenario": "reverse:06-terrain-pan",
+          "gate": "compositor:p99Ms",
+          "before": 91.836114,
+          "after": 114.060155
+        }
+      ],
+      "comparisonGatesPassed": false,
+      "note": "Original20% PSS/other and10% pinch limits retained. Complete captures allow diagnosis; they do not establish final native or physical-device acceptance."
+    },
+    "attributionComplete": false,
+    "memoryObservation": "Failed forward terrain/open/closed-panel PSS differences are predominantly native heap. Logical active raster RGBA stays near32MiB. All four fixture launches and actual gestures are valid; stale final HUD XML does not invalidate raw measurements. No complete new CPU/GPU trace attribution.",
+    "nextAction": "Review pinned Skia synchronous canvas value-copy semantics; release only temporary recorders/paints/composite path builders after recording, retain all pictures/images/geometry displayed by Canvas. Verify tests and a fresh signed binary at all original gates."
+  },
+  "nativeOfflineSoak": {
+    "status": "COMPLETED",
+    "runId": 38151928979,
+    "runtime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
+    "jobId": 114511075812,
+    "conclusion": "success",
+    "artifactId": 11709136141,
+    "zipBytes": 30267874,
+    "zipSha256": "567d604c08c29692cec012620e827009257e70bfa8e70b8149617d6e3a497f79",
+    "crcVerified": true,
+    "stressSeconds": 1819.0770538650002,
+    "memorySamples": [
+      {
+        "sample": "stress-memory-00",
+        "pssKiB": 477136
+      },
+      {
+        "sample": "stress-memory-01",
+        "pssKiB": 440193
+      },
+      {
+        "sample": "stress-memory-02",
+        "pssKiB": 426299
+      },
+      {
+        "sample": "stress-memory-03",
+        "pssKiB": 425883
+      },
+      {
+        "sample": "stress-memory-04",
+        "pssKiB": 458404
+      },
+      {
+        "sample": "stress-memory-05",
+        "pssKiB": 483879
+      },
+      {
+        "sample": "stress-memory-06",
+        "pssKiB": 455241
+      },
+      {
+        "sample": "stress-memory-07",
+        "pssKiB": 436168
+      },
+      {
+        "sample": "stress-memory-08",
+        "pssKiB": 512107
+      },
+      {
+        "sample": "stress-memory-09",
+        "pssKiB": 440007
+      },
+      {
+        "sample": "stress-memory-10",
+        "pssKiB": 419186
+      },
+      {
+        "sample": "stress-memory-11",
+        "pssKiB": 446977
+      },
+      {
+        "sample": "stress-memory-12",
+        "pssKiB": 467931
+      },
+      {
+        "sample": "stress-memory-13",
+        "pssKiB": 501699
+      },
+      {
+        "sample": "stress-memory-14",
+        "pssKiB": 444185
+      },
+      {
+        "sample": "stress-memory-15",
+        "pssKiB": 497851
+      },
+      {
+        "sample": "stress-memory-16",
+        "pssKiB": 446557
+      },
+      {
+        "sample": "stress-memory-17",
+        "pssKiB": 444518
+      },
+      {
+        "sample": "stress-memory-18",
+        "pssKiB": 490327
+      },
+      {
+        "sample": "stress-memory-19",
+        "pssKiB": 434411
+      },
+      {
+        "sample": "stress-memory-20",
+        "pssKiB": 448326
+      },
+      {
+        "sample": "stress-memory-21",
+        "pssKiB": 487280
+      },
+      {
+        "sample": "stress-memory-22",
+        "pssKiB": 430430
+      },
+      {
+        "sample": "stress-memory-23",
+        "pssKiB": 491445
+      },
+      {
+        "sample": "stress-memory-24",
+        "pssKiB": 439696
+      },
+      {
+        "sample": "stress-memory-25",
+        "pssKiB": 451989
+      },
+      {
+        "sample": "stress-memory-26",
+        "pssKiB": 482177
+      },
+      {
+        "sample": "stress-memory-27",
+        "pssKiB": 460782
+      },
+      {
+        "sample": "stress-memory-28",
+        "pssKiB": 509813
+      },
+      {
+        "sample": "stress-memory-29",
+        "pssKiB": 517671
+      }
+    ],
+    "minimumPssKiB": 419186,
+    "maximumPssKiB": 517671,
+    "cameraAccepted": false,
+    "note": "Completed real standalone offline/gameplay/process/reboot/save and render/simulation/autosave software-emulator QA. This exact ece binary remains camera-rejected; never substitute this pass for changed eaa runtime. Sampled memory only; no continuous-peak/leak or physical Redmi claim."
+  },
+  "nativeVersionUpgrade": {
+    "jobId": 114511075906,
+    "status": "COMPLETED",
+    "conclusion": "success",
+    "artifactId": 11707691761,
+    "zipBytes": 2711555,
+    "zipSha256": "0ffef2315e10d593aaa337312fc07fb10163f039988920e3cc49a994a3d02a84",
+    "sourceRun": 38151928979,
+    "sourceRuntime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
+    "actualReport": {
+      "baseline": {
+        "package": "com.elcin31.grandstrategymultiplayer",
+        "versionCode": 9,
+        "versionName": "0.8.1",
+        "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+      },
+      "candidate": {
+        "package": "com.elcin31.grandstrategymultiplayer",
+        "versionCode": 10,
+        "versionName": "2.0.0",
+        "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+      },
+      "appUidRetained": true,
+      "privateCampaignFilesRetained": true,
+      "encryptedPreferenceBytesRetainedBeforeLaunch": true,
+      "actualSecureStorePreferencesAfterUpdate": {
+        "preset": "High",
+        "frameRate": 30,
+        "adaptive": false
+      },
+      "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+      "originalWorld": {
+        "countries": 195,
+        "provinces": 2924,
+        "cities": 5411
+      },
+      "oldSchema": 12,
+      "newSchema": 18,
+      "oldSaveSha256": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180",
+      "migrationBackupSha256": {
+        "before-expansion-v13": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180",
+        "before-espionage-v14": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180",
+        "before-economy-v15": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180",
+        "before-military-v16": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180",
+        "before-technology-v17": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180",
+        "before-focus-v18": "03c4d51ba1b64f705a835354efc8afa41b55732a57a76d742a80bb7be0a34180"
+      },
+      "repeatBackupBytesUnchanged": true,
+      "actualCandidateRestart": true,
+      "finalVersionUpgrade": true,
+      "note": "Real offline ephemeral-emulator package replacement, native save/load/backups and encrypted graphics preference round-trip. No production-session reconnect or hardware FPS claim."
+    }
+  },
+  "nativeOnline": {
+    "jobId": 114511076358,
+    "status": "COMPLETED",
+    "conclusion": "success",
+    "artifactId": 11707995510,
+    "zipBytes": 2068380,
+    "zipSha256": "bc5d999395d910af71501ef31efd5bfe1c40ed2b0b6ac25df3cd5843adc0121d",
+    "sourceRun": 38151928979,
+    "sourceRuntime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
+    "actualReport": {
+      "roomId": "9f8277fe-4b45-450a-97e1-5d417f29f523",
+      "qaName": "NATIVE ONLINE QA",
+      "stateVersion": 18,
+      "apkSha256": "6ba03fb0631ac2db17af7ef2d38e45c83b74b8e5f2cd90b8026671d36c3d2b26",
+      "nativeCreate": true,
+      "nativeCountrySelection": "germany",
+      "serverPaused": true,
+      "nativePaidFocus": "eco-audit",
+      "menuReconnect": true,
+      "processReconnect": true,
+      "realHostMigration": true,
+      "nativeOwnerReturn": true,
+      "rebootReconnect": true,
+      "sameNativeUidAndSessionKeys": true,
+      "onceOnlyFocusPaymentRetained": true,
+      "members": 2,
+      "cleanup": "PENDING",
+      "note": "Actual existing production HTTP and signed native controls; no tokens or snapshots in evidence."
+    },
+    "cleanup": "COMPLETE"
+  },
+  "longSimulation": {
+    "jobId": 114506980677,
+    "conclusion": "success",
+    "artifactId": 11706903540,
+    "zipBytes": 2531,
+    "zipSha256": "7a9b6375cd4318c9f658d6d4c3518e6b59ecf40916f2cab4c4e1d303e3e142d4",
+    "actualReport": {
+      "ticks": 10000,
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411,
+      "restores": 10,
+      "warsObserved": 12618,
+      "peaceCount": 12602,
+      "battles": 4235,
+      "movementTicks": 9946,
+      "maxWarAge": 11,
+      "maxArmies": 451,
+      "maxSnapshotBytes": 4487736,
+      "tickP95Ms": 108.27005500002997,
+      "samples": [
+        {
+          "tick": 1000,
+          "bytes": 4324604,
+          "heapUsed": 52331408,
+          "rss": 379908096,
+          "armies": 237,
+          "wars": 13,
+          "peaceCount": 1274,
+          "bankruptCountries": 9,
+          "treasuryMax": 10190269.335,
+          "population": 13799445475,
+          "populationRatio": 1.8080435510615582,
+          "settlementCapacity": 24472490124,
+          "completedFocuses": 2438,
+          "scientificDiscoveries": 562,
+          "elapsedSeconds": 77
+        },
+        {
+          "tick": 2000,
+          "bytes": 4416670,
+          "heapUsed": 54199368,
+          "rss": 470732800,
+          "armies": 344,
+          "wars": 13,
+          "peaceCount": 2639,
+          "bankruptCountries": 30,
+          "treasuryMax": 27614776.525,
+          "population": 19334995051,
+          "populationRatio": 2.533327384430112,
+          "settlementCapacity": 24683088691,
+          "completedFocuses": 2747,
+          "scientificDiscoveries": 728,
+          "elapsedSeconds": 173
+        },
+        {
+          "tick": 3000,
+          "bytes": 4453454,
+          "heapUsed": 54849864,
+          "rss": 486060032,
+          "armies": 394,
+          "wars": 18,
+          "peaceCount": 3922,
+          "bankruptCountries": 36,
+          "treasuryMax": 49708625.241,
+          "population": 22554812745,
+          "populationRatio": 2.955197279693465,
+          "settlementCapacity": 24777016414,
+          "completedFocuses": 2794,
+          "scientificDiscoveries": 781,
+          "elapsedSeconds": 268
+        },
+        {
+          "tick": 4000,
+          "bytes": 4474767,
+          "heapUsed": 55178576,
+          "rss": 487428096,
+          "armies": 428,
+          "wars": 16,
+          "peaceCount": 5169,
+          "bankruptCountries": 38,
+          "treasuryMax": 73882882.667,
+          "population": 23951578465,
+          "populationRatio": 3.1382055938293525,
+          "settlementCapacity": 24782261878,
+          "completedFocuses": 2819,
+          "scientificDiscoveries": 795,
+          "elapsedSeconds": 363
+        },
+        {
+          "tick": 5000,
+          "bytes": 4471174,
+          "heapUsed": 55436048,
+          "rss": 499490816,
+          "armies": 434,
+          "wars": 18,
+          "peaceCount": 6399,
+          "bankruptCountries": 40,
+          "treasuryMax": 98835927.435,
+          "population": 24481389830,
+          "populationRatio": 3.2076230224863815,
+          "settlementCapacity": 24783227976,
+          "completedFocuses": 2832,
+          "scientificDiscoveries": 797,
+          "elapsedSeconds": 448
+        },
+        {
+          "tick": 6000,
+          "bytes": 4483632,
+          "heapUsed": 55738608,
+          "rss": 499892224,
+          "armies": 435,
+          "wars": 14,
+          "peaceCount": 7628,
+          "bankruptCountries": 40,
+          "treasuryMax": 124038148.644,
+          "population": 24677188293,
+          "populationRatio": 3.2332771075709066,
+          "settlementCapacity": 24800974889,
+          "completedFocuses": 2835,
+          "scientificDiscoveries": 801,
+          "elapsedSeconds": 533
+        },
+        {
+          "tick": 7000,
+          "bytes": 4478898,
+          "heapUsed": 56376920,
+          "rss": 502984704,
+          "armies": 439,
+          "wars": 13,
+          "peaceCount": 8864,
+          "bankruptCountries": 42,
+          "treasuryMax": 149330681.859,
+          "population": 24754528939,
+          "populationRatio": 3.2434105043431587,
+          "settlementCapacity": 24801479404,
+          "completedFocuses": 2841,
+          "scientificDiscoveries": 803,
+          "elapsedSeconds": 616
+        },
+        {
+          "tick": 8000,
+          "bytes": 4484308,
+          "heapUsed": 56533856,
+          "rss": 505339904,
+          "armies": 445,
+          "wars": 15,
+          "peaceCount": 10107,
+          "bankruptCountries": 43,
+          "treasuryMax": 174649965.651,
+          "population": 24783566722,
+          "populationRatio": 3.24721511927391,
+          "settlementCapacity": 24801479404,
+          "completedFocuses": 2844,
+          "scientificDiscoveries": 804,
+          "elapsedSeconds": 702
+        },
+        {
+          "tick": 9000,
+          "bytes": 4487736,
+          "heapUsed": 56622568,
+          "rss": 505835520,
+          "armies": 447,
+          "wars": 9,
+          "peaceCount": 11354,
+          "bankruptCountries": 44,
+          "treasuryMax": 199984024.64,
+          "population": 24794470048,
+          "populationRatio": 3.248643704813462,
+          "settlementCapacity": 24801479404,
+          "completedFocuses": 2846,
+          "scientificDiscoveries": 806,
+          "elapsedSeconds": 791
+        },
+        {
+          "tick": 10000,
+          "bytes": 4484485,
+          "heapUsed": 56800792,
+          "rss": 505987072,
+          "armies": 446,
+          "wars": 16,
+          "peaceCount": 12602,
+          "bankruptCountries": 44,
+          "treasuryMax": 225307782.924,
+          "population": 24798640582,
+          "populationRatio": 3.249190140329066,
+          "settlementCapacity": 24801479404,
+          "completedFocuses": 2849,
+          "scientificDiscoveries": 806,
+          "elapsedSeconds": 878
+        }
+      ],
+      "note": "Full-world deterministic AI simulation; seeded initial legal war, no physical device or network claim"
+    }
+  },
+  "physicalRedmi": "Not measured",
+  "note": "REJECTED: seven actual original-limit camera violations; all36 captures complete. All six other exact-ece gates now pass, including actual1819.077s native offline/render/simulation/autosave. Its failed camera prevents acceptance/publication/delivery. eaa changed renderer requires its own new signed native QA; no old-gate substitution.",
+  "runConclusion": "failure"
+}

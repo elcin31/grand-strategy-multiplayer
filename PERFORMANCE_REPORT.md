@@ -1,3 +1,43 @@
+# Exact raster APK camera rejection and CPU diagnosis — 2026-10-11
+
+Runtime788a6bd/full38161007462: actual camera114537652725 FAILURE; six other same-binary signed gates SUCCESS including1832.626s native soak. Verified all36same-fixture continuousABBA raw captures in artifact11710884121/digest4097b021. Four unchanged-limit failures: forwardpinch compositorP95 191.984328→220.565818ms and histogramP95 150→200ms; reversepinch compositorP99 415.957391→488.647959ms; reversepanel-open compositorP99 73.948650→101.921440ms. All18PSS pairs pass20% guard. Reduced JS/cull/raster preparation does not accept this APK. Complete proof EXPANSION_RASTER_NATIVE_QA_2026-10-11.json.
+
+Next existing auxiliary workflow records exact signed3bc74162 APK pinch/local-pan CPU callstacks at99Hz using linux.perf, retaining scheduler/ATrace/loss and real markers in separate diagnostic launches after complete failed original comparisons. CPU samples/usable symbols/coverage must be observed; no code-level attribution or improvement inferred yet. Original release thresholds remain intact; no same-binary gate reroll, manifest/debug switch or physical Xiaomi claims.
+
+---
+
+# Raster picture replay and bounded source builders — source verified, native pending (2026-10-11)
+
+Actual eaa38156439244 camera FAIL retains all36 captures and four original-limit violations; EXPANSION_EAA_CAMERA_REJECTED_2026-10-11.json contains exact values/artifact provenance. JS/cull work decreased but native UI pinch pressure remains. New scoped MapRasterLayer prepares immutable clipped raster pictures instead of per-frame declarative image fitting/clip commands, preserves linear/strict sampling and gutter pixels, and bounds/disposes exclusively recording-only source builders. Actual WASM raster pixel equality through pan/zoom and picture survival after builder eviction PASS; strictTS/306JS/no skips/97Python/no skips/Hermes/42paintings PASS. RASTER_PICTURE_SOURCE_QA_2026-10-11.json records pinned native API review, source budget estimates and tests. Foreground32MiB/cold8MiB pixel cache and original camera thresholds unchanged. Native timing/PSS effect and full new signed QA PENDING; no physical Redmi claim.
+
+---
+
+# Deterministic temporary native recording cleanup — source verified, 2026-10-11
+
+The next scoped renderer unit releases growing composite native path builders, reused per-recording paints and finished recorders immediately after recording. Cached geometry and returned pictures/images/fonts remain alive. Pinned Skia2.6.2 snapshot/value-copy/finish semantics checked; actual installed Skia WASM CPU picture replay after deletion verified30frames/exact RGBA pixels.302JS/no skips/strictTS/productionHermes/all42originalart PASS. Exact details NATIVE_RECORDING_SOURCE_REVIEW_2026-10-11.json. Android frame-time/PSS effect PENDING a fresh signed binary and full original gates; no physical handset or measured performance improvement claimed. Previous ece/f794 actual failed limits remain rejected.
+
+---
+
+# ece99b6 complete native camera rejection — 2026-10-11
+
+Runtimeece99b6 / actual fullrun38151928979 / APK142477053bytes/SHA6ba03fb0631ac2db17af7ef2d38e45c83b74b8e5f2cd90b8026671d36c3d2b26 is REJECTED. All36 valid continuous ABBA captures completed; camera114511075768 fails seven original limits: forwardpinch99,terrain/open/closed-panelPSS,reversemedium99,pinch95,terrain99. Full values/verifiedartifact11707409183/digest71c8e7d9/provenance in EXPANSION_RENDERER_QA_2026-10-11.json. Five other actual gates pass; new actual1800s offline114511075812 remains in progress. No final acceptance/main/publication/delivery. Native heap dominates sampled memory differences; complete causal CPU/GPU attribution unavailable. Next scoped investigation is temporary native recording-resource lifetime with real picture/value-copy semantics, followed by fresh unchanged-threshold signed QA. All earlier failed measurements preserved. Physical Redmi unmeasured.
+
+---
+
+# Complete f794 camera rejection and next bounded drawing revision — 2026-10-11
+
+Actual full fresh38147835796/0ca93184 camera comparison rejected f794 APK: pinch compositor95 regressed18.8% forward/17.2% reverse; medium/world forward99 and reverse panel PSS also fail original limits.36complete raw captures, original limits and artifact digest preserved in EXPANSION_FINAL_CAMERA_REJECTED_F794.json. MLS/Continue harness fix is verified by all four actual valid launches. Actual candidate has lower JS/culling activity but more observed native graphics-buffer commands; traces contain36setup errors, so full CPU/GPU attribution is unavailable.
+
+New scoped source batches existing flag pixels/borders, preserves exact paint/hit locations and country IDs, retains real allocation-failure fallback, bounds flag atlases2MiB/eight contexts and idle-only raster pixels8MiB while keeping32MiB/96entries foreground cache.299JS/strictTS/productionHermes/42originalart PASS. Native effect, PSS and frame acceptance remain PENDING on the new binary. This is a measured-regression continuation, not a new architecture/roadmap or hardware FPS claim.
+
+---
+
+# Final2.0 actual soak verified; camera ABBA still pending — 2026-10-11
+
+Exact finalf794/75aa native1847.2766113159998s render/simulation/autosave soak PASS,30 sampled PSS427745–541261KiB. This is API35 SwiftShader software-emulator evidence, not Redmi FPS/thermal/battery, continuous memory peaks or absence of all leaks. Corrected full paired camera38147835796 is in progress after fixing verified injected-save access failure in fresh installation38136189671. All earlier actual frame regressions and unchanged10%pinch/20%other/memory/rawcompositor/input-cadence guards remain. No renderer or game-source change for this harness correction, and no achieved camera acceptance claimed yet.
+
+---
+
 # Latest actual evidence — 2026-10-11
 
 Actual86 full gapped4x9 ABBA FAILED nine original gates (eight P99 plus reverse terrain memory355081→454055KiB). Old driver injects150ms between1920ms gestures; CPU sampling extends frame capture beyond input. Both APKs now use continuous-pointer-v1/five complete real cycles/actual timestamps/zero injected idle/identical100ms finish grace. Every observed interval and original10/20%/20frames/paint/world limits retained. Fresh actual Java compilation/ABBA pending; no frame or handset FPS acceptance. Full evidence EXPANSION_CONTINUOUS_CAMERA_QA_2026-10-11.json.84Python/no skips PASS; application byte-unchanged86.

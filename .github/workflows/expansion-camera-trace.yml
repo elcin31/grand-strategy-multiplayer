@@ -1,4 +1,4 @@
-name: Dominion auxiliary world and local pan system traces
+name: Dominion auxiliary pinch and local CPU traces
 on:
   push:
     branches: [expansion-camera-qa]
@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      CAMERA_CANDIDATE_RUNTIME: 86b0f6d83079785ec7c29eb61e137c2613ff0a69
+      CAMERA_CANDIDATE_RUNTIME: 788a6bd575a4c9d13ed3ab1c0810eaa0d576ca2f
       CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-      CAMERA_CANDIDATE_RUN: '38115315485'
+      CAMERA_CANDIDATE_RUN: '38161007462'
       CAMERA_ALLOWED_STATE_VERSION: '18'
     steps:
       - uses: actions/checkout@v4
@@ -28,17 +28,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git diff --exit-code 86b0f6d83079785ec7c29eb61e137c2613ff0a69 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38115315485 > source-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38115315485/jobs > source-jobs.json
-          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='86b0f6d83079785ec7c29eb61e137c2613ff0a69';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
+          git diff --exit-code 788a6bd575a4c9d13ed3ab1c0810eaa0d576ca2f HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38161007462 > source-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38161007462/jobs > source-jobs.json
+          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='788a6bd575a4c9d13ed3ab1c0810eaa0d576ca2f';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
       - name: Require completed paired capture job and preserve its failure status
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38115315485 > paired-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38115315485/jobs > paired-jobs.json
-          python -c "import json;r=json.load(open('paired-run.json'));j=json.load(open('paired-jobs.json'))['jobs'];assert r['head_sha']=='86b0f6d83079785ec7c29eb61e137c2613ff0a69';c=next(x for x in j if x['name']=='camera-comparison');assert c['status']=='completed';assert c['conclusion'] in ['success','failure']"
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38161007462 > paired-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38161007462/jobs > paired-jobs.json
+          python -c "import json;r=json.load(open('paired-run.json'));j=json.load(open('paired-jobs.json'))['jobs'];assert r['head_sha']=='788a6bd575a4c9d13ed3ab1c0810eaa0d576ca2f';c=next(x for x in j if x['name']=='camera-comparison');assert c['status']=='completed';assert c['conclusion']=='failure'"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -62,7 +62,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38115315485
+          run-id: 38161007462
           name: dominion-camera-illustrated-release
       - uses: actions/download-artifact@v4
         with:
@@ -73,7 +73,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38115315485
+          run-id: 38161007462
           name: camera-native-paired-evidence
           path: paired-evidence
       - name: Require all four actual complete captures before separate diagnostics
@@ -81,8 +81,9 @@ jobs:
       - name: Verify standalone checkpoint APK
         id: apk
         run: |
-          python scripts/verify-apk.py Dominion-camera-optimized-illustrated.apk
-          python scripts/verify-release.py Dominion-camera-optimized-illustrated.apk > checkpoint-integrity.txt
+          python scripts/verify-apk.py Dominion-grand-strategy-v2-release.apk
+          python scripts/verify-release.py Dominion-grand-strategy-v2-release.apk > checkpoint-integrity.txt
+          python -c "import hashlib;assert hashlib.sha256(open('Dominion-grand-strategy-v2-release.apk','rb').read()).hexdigest()=='3bc7416204a60aa9613864a828a03e61becc11c63e2d0071d479f99cf9cc8524'"
       - name: Compile identical real gesture driver
         id: gesture
         run: |
@@ -104,25 +105,25 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar
-            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=world-pan CAMERA_PROFILE_OUT=trace-before-world python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
-            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=world-pan CAMERA_PROFILE_OUT=trace-after-world python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
+            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=pinch CAMERA_PROFILE_OUT=trace-before-pinch python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
+            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=pinch CAMERA_PROFILE_OUT=trace-after-pinch python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
             CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=local-pan CAMERA_PROFILE_OUT=trace-before-local python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
-            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=local-pan CAMERA_PROFILE_OUT=trace-after-local python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
+            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=local-pan CAMERA_PROFILE_OUT=trace-after-local python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
       - name: Analyze all four actual traces and preserve incomplete captures
         if: always()
         run: |
           python - <<'PYTRACE'
           import subprocess,sys
-          results=[subprocess.run([sys.executable,'scripts/analyze-camera-trace.py',p]).returncode for p in ['trace-before-world','trace-after-world','trace-before-local','trace-after-local']]
+          results=[subprocess.run([sys.executable,'scripts/analyze-camera-trace.py',p]).returncode for p in ['trace-before-pinch','trace-after-pinch','trace-before-local','trace-after-local']]
           sys.exit(any(results))
           PYTRACE
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: expansion-pan-system-traces
+          name: expansion-pinch-local-cpu-traces
           path: |
-            trace-before-world/
-            trace-after-world/
+            trace-before-pinch/
+            trace-after-pinch/
             trace-before-local/
             trace-after-local/
             checkpoint-integrity.txt

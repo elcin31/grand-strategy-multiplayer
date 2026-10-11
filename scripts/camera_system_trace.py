@@ -2,6 +2,8 @@
 
 Based on Perfetto's public system-tracing configuration/API documentation:
 https://perfetto.dev/docs/getting-started/system-tracing
+CPU callstack sampling follows the Android15/userdebug configuration:
+https://perfetto.dev/docs/getting-started/cpu-profiling
 No app manifest/debug mode, game instrumentation or backend changes needed.
 """
 import hashlib
@@ -33,6 +35,13 @@ data_sources { config { name: "linux.process_stats" process_stats_config {
   proc_stats_poll_ms: 1000
 } } }
 data_sources { config { name: "android.surfaceflinger.frametimeline" } }
+data_sources { config { name: "linux.perf" perf_event_config {
+  timebase { counter: SW_CPU_CLOCK frequency: 99 timestamp_clock: PERF_CLOCK_MONOTONIC }
+  callstack_sampling {
+    scope { target_cmdline: "com.elcin31.grandstrategymultiplayer" }
+    kernel_frames: true
+  }
+} } }
 '''
 
 
@@ -77,9 +86,11 @@ def capture_camera_trace(adb, out, gesture, popen=subprocess.Popen, pause=time.s
               'traceSha256': hashlib.sha256(raw).hexdigest(),
               'configSha256': hashlib.sha256(CONFIG.encode()).hexdigest(),
               'gestureMarker': gesture_marker, 'scenario':scenario, 'traceFile':trace.name,
+              'requestedCpuSamplingHz': 99, 'requestedCpuSamplingPackage': PACKAGE,
               'note': 'Separate trace-only launch AFTER gated comparisons, not their workload. '
                       'No FPS, CPU attribution or performance acceptance inferred from file presence. '
                       'Analyze actual async marker interval and trace loss/coverage before attribution. '
+                      'CPU samples and usable symbols must be observed, never assumed from config. '
                       'Software emulator only; physical Redmi unmeasured.'}
     (out / 'trace-capture.json').write_text(json.dumps(report, indent=2)+'\n')
     return report

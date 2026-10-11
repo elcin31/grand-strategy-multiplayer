@@ -1,0 +1,41 @@
+{
+  "status": "SOURCE_VERIFIED_NATIVE_PENDING",
+  "parentCheckpoint": "f98de2cea0666393172da44995f1503aaaaed592",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "scope": "Temporary geographic/marker recording builders, paints and recorders only. Returned pictures/images, fonts and persistent geometry remain alive; original native camera limits and gameplay unchanged.",
+  "pinnedNativeApi": {
+    "skiaVersion": "2.6.2",
+    "drawPath": "cpp/api/JsiSkCanvas.h: drawPath calls _canvas->drawPath(path->snapshot(), *paint); synchronous snapshot and paint value copied into the recording.",
+    "finishPicture": "cpp/api/JsiSkPictureRecorder.h: finishRecordingAsPicture returns a separate JsiSkPicture; dispose releases only recorder shared_ptr.",
+    "pathPressure": "cpp/api/JsiSkPath.h getMemoryPressure snapshots approximateBytesUsed when JSI host object is created. Initially empty composite builders subsequently grow without a new external-memory-pressure report.",
+    "ownership": "Only temporary objects registered in withNativeRecordingObjects; cleanup is once per object in reverse order, all attempted on error, original recording error preserved."
+  },
+  "verification": {
+    "strictTypecheck": "PASS",
+    "javascriptTests": 302,
+    "javascriptSkipped": 0,
+    "nativeRecordingTests": 3,
+    "skiaWasm": "Installed canvaskit-wasm0.41.0; actual Skia CPU engine,30 independent recordings, mutate builder/paint between draws, dispose builders/paint/recorder, replay retained picture and assert red/blue/transparent RGBA bytes. PASS. This is ownership/value-copy evidence, not Android PSS/FPS acceptance.",
+    "cleanupNegatives": "Recording exception, cleanup exception, repeated ownership and preservation of original error/remaining-resource release PASS.",
+    "productionHermes": {
+      "bytes": 11478537,
+      "sha256": "5a7f5c3fdf81a6b5bfc56cb81d9ad648af8b61f2b1993d62567dcdb36c8b6a22",
+      "magic": "c61fbc03c103191f"
+    },
+    "originalArt": "42 optimized original WebPs,3479060bytes PASS",
+    "diffCheck": "PASS",
+    "reactReview": "Both memoized TSX components retain hooks/dependencies and real rendering; synchronous bounded native scope inside existing useMemo/tile recording, no frame-driven simulation/network/React updates."
+  },
+  "nativePerformance": "PENDING fresh signed binary and complete original-threshold ABBA/1800s/upgrade/native multiplayer/10000/live gates. No measured improvement or physical Xiaomi claim.",
+  "previousRejectedRuntime": "ece99b6e603310ce5cbe7f029cf3a3dd3eda4eae",
+  "previousRun": 38151928979,
+  "previousOfflineStillRunning": 114511075812,
+  "runtime": "eaa6d6e8171c60807b7d274199c20114e00fac26",
+  "runId": 38156439244,
+  "sourceTree": "b0f001b9b0be835b3f05527c03a4cec6b7c63e1d",
+  "nativeJobs": {
+    "build": 114520282712,
+    "longSimulation": 114520283051,
+    "backendLive": 114520282966
+  }
+}

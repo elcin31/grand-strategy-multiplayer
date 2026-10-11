@@ -1,3 +1,55 @@
+# Latest exact signed candidate is rejected — 2026-10-11
+
+Current runtime788a6bd/full38161007462 completed FAILURE because camera114537652725 violates four original gates. Six other actual same-APK gates pass. Downloaded release artifact11710144490/digest7644235e size+SHA+CRC verified; APK142479405bytes/SHA3bc7416204a60aa9613864a828a03e61becc11c63e2d0071d479f99cf9cc8524,2.0.0code10/samecertificate/landscape/nondebug/embeddedHermes/all4ABI/42paintings/dedicatedDominionendpoint. APK is not accepted or delivered. Native soak1832.626s, actual upgrade/backups and native multiplayer verified. Both new scoped QA rooms removed with independent0rooms/players/receipts and29original city backups retained. EXPANSION_RASTER_NATIVE_QA_2026-10-11.json binds all actual source/artifact hashes and original failures.
+
+Main remainsdbb354ab; accepted manifest absent. Next step: exact-APK auxiliary native CPU diagnosis and one measured renderer fix, followed by all original signed-binary gates on the changed runtime. Final publication/delivery remains pending; physical Xiaomi measurements are unavailable.
+
+---
+
+# eaa camera rejected; next safe raster unit requires new signed QA (2026-10-11)
+
+Latest actual eaa run38156439244 build/10000/liveHTTP/upgrade/nativeonline PASS; exact APK68150dd1 is REJECTED by four valid camera limits. Camera artifact11708903979/SHAd88206ca/digest+CRC verified/all36 raw captures retained. Actual nativeonline114524438870/artifact11709517326/SHA92704756 verifies exactAPK paidcourse/session/host/owner/reboot; its exact new QAroom a34d42ac was guarded-cleaned and independently0rooms/players/receipts,29originalbackups preserved. Actual1800s offline114524438351 still running and must be preserved. Full cumulative proof EXPANSION_NATIVE_RECORDING_QA_2026-10-11.json.
+
+Next MapRasterLayer picture/path-builder change has strictTS/306JS/97Python/all42art/productionHermes local PASS. Native acceptance for changed runtime is PENDING, requiring a new standalone release and all unchanged gates. Main dbb354ab and backend22/24/schema18 remain unchanged. RELEASE_ACCEPTANCE_V2.json absent; publication/finaldelivery blocked until same-binary actual acceptance. No physical Redmi measurement claim.
+
+---
+
+# Latest eaa signed runtime — four actual gates PASS, native acceptance pending, 2026-10-11
+
+Runtimeeaa6d6e8171c60807b7d274199c20114e00fac26 / actual38156439244. Build/10000ticks10restores/productionHTTP/native in-place0.8.1→2.0.0 upgrade SUCCESS. Actual standalone APK142477801bytes/SHA68150dd1e156c907d581a68df824de49b96817a3d0736c44e3e10582fff34710; signedartifact11709351742/62289470bytes/digest4d5c3730/CRC verified. EmbeddedHermes10694424bytes/all4ABIs/42byte-exact original paintings/productionbackend/nondebug/landscape/samepackage&certificate/code10. Actual higher-version update keeps all6schema backups,privatecampaignfiles,encryptedpreferences,UID and native restart. First local extracted APK became truncated after checks; atomically restored from immutable verified archive, complete SHA independently matches actualCI checksum. Final copy/upload must verify full bytes/SHA again. Camera114524438348/offline1800s114524438351/nativeonline114524438870 still in progress; no acceptance/publication/delivery. Fullproof EXPANSION_NATIVE_RECORDING_QA_2026-10-11.json.
+
+Prior ece exact1819.077s/native30PSS samples PASS, six non-camera gates complete, but its seven failed camera limits still reject that binary. Preserve separate evidence; never substitute it for changed eaa native acceptance. Physical Redmi unmeasured.
+
+---
+
+# Current signed ece99b6 candidate rejected — 2026-10-11
+
+Runtimeece99b6 / actual fullrun38151928979 / APK142477053bytes/SHA6ba03fb0631ac2db17af7ef2d38e45c83b74b8e5f2cd90b8026671d36c3d2b26 is REJECTED. All36 valid continuous ABBA captures completed; camera114511075768 fails seven original limits: forwardpinch99,terrain/open/closed-panelPSS,reversemedium99,pinch95,terrain99. Full values/verifiedartifact11707409183/digest71c8e7d9/provenance in EXPANSION_RENDERER_QA_2026-10-11.json. Five other actual gates pass; new actual1800s offline114511075812 remains in progress. No final acceptance/main/publication/delivery. Native heap dominates sampled memory differences; complete causal CPU/GPU attribution unavailable. Next scoped investigation is temporary native recording-resource lifetime with real picture/value-copy semantics, followed by fresh unchanged-threshold signed QA. All earlier failed measurements preserved. Physical Redmi unmeasured.
+
+---
+
+# Current signed renderer revision — native acceptance pending, 2026-10-11
+
+Runtimeece99b6e603310ce5cbe7f029cf3a3dd3eda4eae / fullrun38151928979. Build114506980751,10000/10restores and liveHTTP SUCCESS. Downloaded candidate artifact11707378000/62288920bytes/ZIP SHA93a7e138d40be2086e7523848ec27b5e0222450bb893c3bf31a1acfa886708a1/CRC verified. APK142477053bytes/SHA6ba03fb0631ac2db17af7ef2d38e45c83b74b8e5f2cd90b8026671d36c3d2b26: standalone embedded Hermes,fourABIs,all42byte-exact original paintings,sameproduction backend,samepackage/certificate,2.0.0code10,nondebuggable,landscape. Actual in-place native code9→10/schema12→18 upgrade114511075906 SUCCESS; exact source38151928979/ece99b6 and artifact11707691761/digest0ffef231 verified, originalsixbackups/privatefiles/encryptedpreferences/UID/certificate/restart retained. Exactbinary native online114511076358 SUCCESS; artifact11707995510/digestbc5d9993 verified: real create/onefocuspayment/menu/process/hostmigration/ownerreturn/reboot/encryptedkeys/UID. Both new QA rooms cleaned with exactguards; independent0rooms/players/receipts,29originalbackups. Camera/1800s native gates IN_PROGRESS; no acceptance manifest or final delivery yet. Full record EXPANSION_RENDERER_QA_2026-10-11.json. Old f794/75aa camera-rejected binary remains rejected. Physical Redmi unmeasured.
+
+---
+
+# f794 final candidate rejected; renderer revision ready for actual signed QA — 2026-10-11
+
+Dominion2.0 is not accepted or delivered yet. The previously verified f794/75aa release candidate passed offline1847s/save/upgrade/online/HTTP but its complete corrected38147835796 camera comparison FAILS five unchanged limits in both orders. Preserve that exact APK and raw history as a rejected checkpoint. EXPANSION_FINAL_CAMERA_REJECTED_F794.json identifies all36raw captures and verified artifact11705562470 digest.
+
+New flag batch/cold-pixel budget revision passes strictTS/299JS/productionHermes/all42originalart; package2.0.0(code10)/certificate/backend/world/schema18 unchanged. A fresh standalone release and all required actual gates must verify this changed renderer before final acceptance/publication/direct APK delivery. No physical Redmi measurement or readiness claim.
+
+---
+
+# Final2.0 offline and1847s soak PASS; corrected camera active — 2026-10-11
+
+Final signed runtimef794/APK75aa remains unchanged. Actual CI38133111807/android-smoke114455037099 SUCCESS; downloaded ZIP11701132935/29739969bytes/SHAbbf83828788b583459248379c4922743aa8537bfd444dee33f5e163807ad38d4/CRC verified. Actual offline standalone startup/landscape/map/army/Back/12modes/4presets/5layouts/process/reboot/save/game fatal checks pass. Real render/simulation/autosave stress1847.2766113159998s;30PSS samples427745–541261KiB. Reviewed actual native historical construction/focus/military/technology frames. Proof EXPANSION_NATIVE_OFFLINE_ACCEPTANCE_2026-10-11.json. No physical handset or continuous memory-peak claim.
+
+Fresh camera38136189671 failed before candidate samples on wrong injected save MLS label after changed app UID. Corrected QA-only helper89f324c verifies the actual installation context and refuses disabled ancestors;97Python/no skips PASS. Existing expansion-camera-qa0ca93184/run38147835796/job114494809558 is now running full ABBA on the SAME finalAPK. Original failed camera measurements remain failed; frame/compositor/PSS/input thresholds unchanged. All other actual seven-gate components, exactbinary and zero-residue scoped cleanup pass. Final acceptance/main/publication/delivery still require this camera result.
+
+---
+
 # Final2.0 signed online and upgrade PASS; camera/soak pending — 2026-10-11
 
 Exact standalone candidate Dominion-grand-strategy-v2-release.apk, runtimef794ea4a4974f2f826f3ec7bd712a81b5f05291a,142473881bytes/SHA75aa1a2302b59a7d5e613304bbf34f235eb36cd8040ebb8a9933c73096305ae3. Version2.0.0(code10),samepackage/certificatefac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c,nondebug/landscape,actualembeddedHermes10690504bytes/fourABIs/all42paintings byte-exact verified. No final ready claim yet.

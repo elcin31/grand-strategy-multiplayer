@@ -1,0 +1,70 @@
+{
+  "status": "SOURCE_VERIFIED_NATIVE_REJECTED_CAMERA",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "parentCheckpoint": "66f2fb37ea4cb672de8c5462eeb7b0a3c3c0b74f",
+  "rejectedRuntime": "eaa6d6e8171c60807b7d274199c20114e00fac26",
+  "rejectedRun": 38156439244,
+  "scope": "Existing MapRasterLayer only: record unchanged image fit/clip/sampling once; bound and release synchronous recording-only path builders. All imagery, gameplay, hit geometry, foreground32MiB/cold8MiB pixel cache, original camera limits and backend unchanged.",
+  "nativeApiReview": {
+    "skia": "2.6.2",
+    "legacyImage": "cpp/api/recorder/Drawings.h ImageCmd uses full source, fill rects, default linear/no-mipmap sampling and strict source constraint.",
+    "replacementImage": "cpp/api/JsiSkCanvas.h drawImageRectOptions uses the same linear/no-mipmap sampling and strict source constraint. Existing rect clips are non-antialiased in recorder/Paint.h.",
+    "pathOwnership": "cpp/api/JsiSkPathBuilder.h addPath snapshots the borrowed source into the composite builder. Composite drawPath snapshots/copies into the returned picture. Only these source builders are disposed on LRU eviction/scene cleanup; displayed pictures/images/fonts/live props are not disposed.",
+    "memoryEstimate": "8MiB of estimated path points/verbs/builder bytes and2048 entries; not an Android native heap/PSS guarantee."
+  },
+  "verification": {
+    "strictTypecheck": "PASS",
+    "javascriptTests": 306,
+    "javascriptSkipped": 0,
+    "pythonTests": 97,
+    "pythonSkipped": 0,
+    "newMeaningfulTests": 4,
+    "skiaCpuReplay": "Installed CanvasKit0.41.0: byte-exact raster comparison through8 pan/zoom transforms, all4 raster bands/world edges, cached/evicted builder picture survival, oversized/disabled cache exception cleanup.",
+    "originalArt": {
+      "files": 42,
+      "bytes": 3479060,
+      "status": "PASS"
+    },
+    "productionHermes": {
+      "bytes": 11480894,
+      "sha256": "4496574cb53d1f460ce8e2693ce1bcbe6c5803af84806240be9a5f0e0c059ec1",
+      "magic": "c61fbc03c103191f"
+    },
+    "diffCheck": "PASS",
+    "reactReview": "Existing memoized raster component and tile hooks keep stable dependencies. Picture preparation follows tile/image changes; no per-frame allocations added, no render-FPS game/AI/network work. Recording cache never owns images/pictures passed as React props."
+  },
+  "nativeAcceptance": "REJECTED actual full38161007462: six non-camera gates SUCCESS, four original camera-limit violations. Exact full proof EXPANSION_RASTER_NATIVE_QA_2026-10-11.json.",
+  "runtime": "788a6bd575a4c9d13ed3ab1c0810eaa0d576ca2f",
+  "sourceTree": "493f7538265d0f5699b2e192089e65b7971cb4e0",
+  "runId": 38161007462,
+  "nativeJobs": {
+    "build-apk": {
+      "id": 114533716762,
+      "conclusion": "success"
+    },
+    "backend-live / live-world": {
+      "id": 114533716808,
+      "conclusion": "success"
+    },
+    "long-simulation": {
+      "id": 114533716853,
+      "conclusion": "success"
+    },
+    "android-smoke": {
+      "id": 114537652673,
+      "conclusion": "success"
+    },
+    "camera-comparison": {
+      "id": 114537652725,
+      "conclusion": "failure"
+    },
+    "android-upgrade / release-upgrade-save": {
+      "id": 114537652814,
+      "conclusion": "success"
+    },
+    "android-online / native-online": {
+      "id": 114537653078,
+      "conclusion": "success"
+    }
+  }
+}

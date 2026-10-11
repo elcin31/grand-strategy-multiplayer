@@ -1,7 +1,9 @@
 import {getWorldFlag} from '../world/catalog';
-import type {CountryGlyph} from '../map/countryTargets';
+import {countryFlagBatch,FLAG_ATLAS_COLUMNS,FLAG_ATLAS_CELL_WIDTH,FLAG_ATLAS_CELL_HEIGHT,type CountryGlyph} from '../map/countryTargets';
+import {RasterCache} from '../map/rasterTiles';
+import {withNativeRecordingObjects} from '../map/nativeRecording';
 import {memo,useMemo} from 'react';
-import {Group,Picture,Skia,PaintStyle,type SkFont,type SkImage} from '@shopify/react-native-skia';
+import {Group,Picture,Skia,PaintStyle,BlendMode,type SkFont,type SkImage} from '@shopify/react-native-skia';
 import type {GameState} from '../types/game';
 import {TILT} from '../map/camera';
 import type {MapFeature} from '../map/geometry';
@@ -11,6 +13,7 @@ import type {CityLabelPlacement,CountryLabel} from '../map/scene';
 import {constructionProgress} from '../map/overlays';
 import {GRAPHICS,type GraphicsPreset} from '../map/settings';
 const flags=new Map<string,SkImage|null>();
+const flagAtlases=new RasterCache<SkImage>(2*1024*1024,8);
 function countryFlag(id:string){
   if(!flags.has(id)){
     const source=getWorldFlag(id),svg=source?Skia.SVG.MakeFromString(source):null;
@@ -23,16 +26,31 @@ function countryFlag(id:string){
   }
   return flags.get(id);
 }
+function countryAtlas(ids:readonly string[]):SkImage|null{
+  if(!ids.length)return null;
+  const key=ids.join('|'),cached=flagAtlases.get(key);if(cached)return cached;
+  const width=Math.min(FLAG_ATLAS_COLUMNS,ids.length)*FLAG_ATLAS_CELL_WIDTH,height=Math.ceil(ids.length/FLAG_ATLAS_COLUMNS)*FLAG_ATLAS_CELL_HEIGHT;
+  const surface=Skia.Surface.Make(width,height);if(!surface)return null;
+  try{
+    const canvas=surface.getCanvas();canvas.clear(Skia.Color('transparent'));
+    ids.forEach((id,index)=>{const image=countryFlag(id);if(image)canvas.drawImage(image,index%FLAG_ATLAS_COLUMNS*FLAG_ATLAS_CELL_WIDTH+2,Math.floor(index/FLAG_ATLAS_COLUMNS)*FLAG_ATLAS_CELL_HEIGHT+2);});
+    surface.flush();const image=surface.makeImageSnapshot();flagAtlases.set(key,image,width*height*4);return image;
+  }finally{surface.dispose();}
+}
 const compact=(value:number)=>value>=1e6?(value/1e6).toFixed(1)+'M':Math.round(value/1e3)+'K';
-function paint(color:string,stroke=0){const p=Skia.Paint();p.setAntiAlias(true);p.setColor(Skia.Color(color));if(stroke){p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(stroke);}return p;}
 interface Props {state:GameState;zoom:number;preset:GraphicsPreset;labels:CountryLabel[];countryGlyphs:CountryGlyph[];cities:MapCity[];cityLabels:Map<string,CityLabelPlacement>;counters:DisplayArmy[];countryId:string|null;armyId?:string|null;cityId?:string|null;provinceId:string|null;geometry:ReadonlyMap<string,MapFeature>;visible:ReadonlySet<string>;font:SkFont;counterFont:SkFont;nationFont:SkFont;labelBudget:number}
 /** One retained native display node replaces hundreds of animated inverse-scale
  * groups. Pan never records glyphs; zoom changes size smoothly until coverage
  * commits, then exact screen-sized glyphs are recorded at the settled scale. */
 export const MapMarkerLayer=memo(function MapMarkerLayer(props:Props){
-  const picture=useMemo(()=>{
+  const picture=useMemo(()=>withNativeRecordingObjects(own=>{
+    const paints=new Map<string,ReturnType<typeof Skia.Paint>>();
+    const paint=(color:string,stroke=0)=>{
+      const key=color+'|'+stroke;let p=paints.get(key);if(p)return p;
+      p=own(Skia.Paint());p.setAntiAlias(true);p.setColor(Skia.Color(color));if(stroke){p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(stroke);}paints.set(key,p);return p;
+    };
     const {state,zoom,preset,countryGlyphs,cities,cityLabels,counters,countryId,armyId,cityId,provinceId,geometry,visible,font,counterFont,nationFont,labelBudget}=props;
-    const recorder=Skia.PictureRecorder(),canvas=recorder.beginRecording(Skia.XYWHRect(-100,-100,1640,920));
+    const recorder=own(Skia.PictureRecorder()),canvas=recorder.beginRecording(Skia.XYWHRect(-100,-100,1640,920));
     const anchor=(x:number,y:number)=>{canvas.save();canvas.translate(x,y);canvas.scale(1/zoom,1/(zoom*TILT));};
     let remaining=labelBudget;
     const selected=provinceId?geometry.get(provinceId):undefined;
@@ -44,10 +62,19 @@ export const MapMarkerLayer=memo(function MapMarkerLayer(props:Props){
       const {label,name,width,scale}=glyph;
       anchor(label.anchor.x,label.anchor.y);canvas.scale(scale,scale);
       canvas.drawText(name,-width/2+.7,4.7,paint('#0C1721'),nationFont);canvas.drawText(name,-width/2,4,paint('#F1E6CB'),nationFont);
-      canvas.save();canvas.translate(-width/2-25,-8);
-      canvas.drawRect(Skia.XYWHRect(-1,-1,22,16),paint('#C6A76A'));
-      const flag=countryFlag(label.countryId);if(flag)canvas.drawImageRect(flag,Skia.XYWHRect(0,0,60,42),Skia.XYWHRect(0,0,20,14),paint('#FFFFFF'));
-      canvas.restore();canvas.restore();remaining--;
+      canvas.restore();remaining--;
+    }
+    if(countryGlyphs.length){
+      const sprites=countryFlagBatch(countryGlyphs,zoom,TILT),atlas=countryAtlas(sprites.map(s=>s.id)),frames=own(Skia.Path.Make());
+      for(const sprite of sprites){const f=sprite.frame;frames.addRect(Skia.XYWHRect(f.x,f.y,f.width,f.height));}
+      canvas.save();canvas.scale(1/zoom,1/(zoom*TILT));canvas.drawPath(frames,paint('#C6A76A'));
+      if(atlas)canvas.drawAtlas(atlas,sprites.map(s=>Skia.XYWHRect(s.source.x,s.source.y,s.source.width,s.source.height)),sprites.map(s=>Skia.RSXform(s.scale,0,s.tx,s.ty)),paint('#FFFFFF'),BlendMode.SrcOver,undefined);
+      else for(const sprite of sprites){
+        // Preserve real flags if a bounded atlas surface cannot be allocated.
+        const flag=countryFlag(sprite.id);if(!flag)continue;
+        canvas.save();canvas.translate(sprite.tx,sprite.ty);canvas.scale(sprite.scale,sprite.scale);canvas.drawImage(flag,0,0);canvas.restore();
+      }
+      canvas.restore();
     }
     const ordered=[...cities].sort((a,b)=>Number(b.id===cityId)-Number(a.id===cityId)||Number(b.capital)-Number(a.capital)||b.population-a.population);
     for(const city of ordered){
@@ -60,7 +87,7 @@ export const MapMarkerLayer=memo(function MapMarkerLayer(props:Props){
       canvas.restore();
     }
     const moving=new Set(state.armies.filter(a=>a.order).map(a=>a.id)),combat=new Set(state.battleLog.filter(b=>state.tick-b.tick<=1).map(b=>b.provinceId));
-    const shield=Skia.Path.MakeFromSVGString('M-29,-6L-16,-6L-17,3L-23,8L-28,3Z')!,swords=Skia.Path.MakeFromSVGString('M-27,-2L-19,4M-19,-2L-27,4')!,arrow=Skia.Path.MakeFromSVGString('M25,-5L31,-2L25,1Z')!;
+    const shield=own(Skia.Path.MakeFromSVGString('M-29,-6L-16,-6L-17,3L-23,8L-28,3Z')!),swords=own(Skia.Path.MakeFromSVGString('M-27,-2L-19,4M-19,-2L-27,4')!),arrow=own(Skia.Path.MakeFromSVGString('M25,-5L31,-2L25,1Z')!);
     for(const counter of counters){
       const selected=counter.ids.includes(armyId??''),mixed=counter.ownerIds.length>1;
       anchor(counter.x,counter.y);
@@ -77,6 +104,6 @@ export const MapMarkerLayer=memo(function MapMarkerLayer(props:Props){
       canvas.drawRect(Skia.XYWHRect(-18,16,36,5),paint('#182633'));canvas.drawRect(Skia.XYWHRect(-18,16,36*(constructionProgress(state,c.provinceId)??0),5),paint('#C6A76A'));canvas.restore();
     }
     return recorder.finishRecordingAsPicture();
-  },[props]);
+  }),[props]);
   return <Group><Picture picture={picture}/></Group>;
 });
