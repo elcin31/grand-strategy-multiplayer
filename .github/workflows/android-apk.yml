@@ -1,4 +1,4 @@
-name: Android Dominion Expansion 2.0 checkpoint
+name: Android Dominion 2.0 standalone release
 on:
   push:
     branches: [main, world-update, performance-pass-2, performance-pass-3, visual-update, camera-fix, expansion-v2]
@@ -11,6 +11,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 env:
   CI: '1'
 concurrency:
@@ -107,12 +108,12 @@ jobs:
           python scripts/verify-release.py android/app/build/outputs/apk/release/app-release.apk > release-integrity.txt
           sha256sum android/app/build/outputs/apk/release/app-release.apk >> release-integrity.txt
       - name: Package final release
-        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-camera-optimized-illustrated.apk
+        run: cp android/app/build/outputs/apk/release/app-release.apk Dominion-grand-strategy-v2-release.apk
       - uses: actions/upload-artifact@v4
         with:
           name: dominion-camera-illustrated-release
           path: |
-            Dominion-camera-optimized-illustrated.apk
+            Dominion-grand-strategy-v2-release.apk
             release-integrity.txt
             art-packaging.txt
             paired-visual-ci.json
@@ -143,7 +144,7 @@ jobs:
           arch: x86_64
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: DOMINION_EXPECT_MAP_BACKEND=texture DOMINION_STRESS_SECONDS=1800 python scripts/android-smoke.py Dominion-camera-optimized-illustrated.apk
+          script: DOMINION_EXPECT_MAP_BACKEND=texture DOMINION_STRESS_SECONDS=1800 python scripts/android-smoke.py Dominion-grand-strategy-v2-release.apk
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -212,11 +213,11 @@ jobs:
           script: |
             adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar
             CAMERA_PROFILE_OUT=camera-before python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
-            CAMERA_PROFILE_OUT=camera-after python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
+            CAMERA_PROFILE_OUT=camera-after python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
             forward_ok=0
             if python scripts/compare-camera-native.py camera-before/results.json camera-after/results.json; then forward_ok=1; fi
             cp CAMERA_NATIVE_PAIRED.json CAMERA_NATIVE_PAIRED_FORWARD.json
-            CAMERA_PROFILE_OUT=camera-after-reverse python scripts/android-camera-profile.py Dominion-camera-optimized-illustrated.apk
+            CAMERA_PROFILE_OUT=camera-after-reverse python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
             CAMERA_PROFILE_OUT=camera-before-reverse python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
             reverse_ok=0
             if python scripts/compare-camera-native.py camera-before-reverse/results.json camera-after-reverse/results.json; then reverse_ok=1; fi
@@ -242,9 +243,14 @@ jobs:
     uses: ./.github/workflows/android-upgrade-qa.yml
     with:
       apk_run_id: ${{ github.run_id }}
-      require_version_upgrade: ${{ github.ref == 'refs/heads/main' }}
+      require_version_upgrade: true
+  android-online:
+    needs: [build-apk, long-simulation]
+    uses: ./.github/workflows/android-online-qa.yml
+    with:
+      apk_run_id: ${{ github.run_id }}
   publish-release:
-    needs: [build-apk, long-simulation, android-smoke, camera-comparison, android-upgrade]
+    needs: [build-apk, long-simulation, android-smoke, camera-comparison, android-upgrade, android-online]
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
@@ -263,16 +269,21 @@ jobs:
         with:
           name: dominion-upgrade-save-evidence
           path: upgrade-evidence
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion-native-online-evidence
+          path: online-evidence
       - name: Publish the tested standalone APK and verified ZIP fallback
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           test "$(gh api repos/elcin31/grand-strategy-multiplayer/git/ref/heads/main --jq .object.sha)" = "$GITHUB_SHA"
           python -c "import json,os;r=json.load(open('upgrade-evidence/candidate-run.json'));assert r['head_sha']==os.environ['GITHUB_SHA'];u=json.load(open('upgrade-evidence/android-upgrade/UPGRADE_SAVE_QA.json'));assert u['finalVersionUpgrade'] is True;assert u['candidate']['versionCode']>u['baseline']['versionCode']"
+          python -c "import json;r=json.load(open('online-evidence/android-online/NATIVE_ONLINE_QA.json'));assert all(r[k] is True for k in ['nativeCreate','serverPaused','menuReconnect','processReconnect','realHostMigration','nativeOwnerReturn','rebootReconnect','sameNativeUidAndSessionKeys','onceOnlyFocusPaymentRetained'])"
           cp camera-evidence/CAMERA_NATIVE_PAIRED.json .
           python -c "import shutil; shutil.make_archive('camera-native-evidence', 'zip', 'camera-evidence')"
-          zip Dominion-camera-optimized-illustrated.zip Dominion-camera-optimized-illustrated.apk
-          sha256sum Dominion-camera-optimized-illustrated.apk Dominion-camera-optimized-illustrated.zip > camera-release-checksums.txt
-          gh release create v0.8.1-camera-illustrated --target "$GITHUB_SHA" --title 'Dominion 0.8.1 — camera and illustrated panels' --notes 'Standalone release with embedded JavaScript. Retained map raster tiles, cached borders, stable UI-thread gestures, bounded labels/army stacks, original rulers/buildings/government/religion artwork. Physical Redmi smoothness awaits user testing.' Dominion-camera-optimized-illustrated.apk Dominion-camera-optimized-illustrated.zip camera-release-checksums.txt release-integrity.txt CAMERA_NATIVE_PAIRED.json camera-native-evidence.zip
-          curl --fail --location --retry 3 'https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v0.8.1-camera-illustrated/Dominion-camera-optimized-illustrated.apk' -o verified-public.apk
-          cmp Dominion-camera-optimized-illustrated.apk verified-public.apk
+          zip Dominion-grand-strategy-v2-release.zip Dominion-grand-strategy-v2-release.apk
+          sha256sum Dominion-grand-strategy-v2-release.apk Dominion-grand-strategy-v2-release.zip > dominion-v2-checksums.txt
+          gh release create v2.0.0 --target "$GITHUB_SHA" --title 'Dominion 2.0 — Grand Strategy Expansion' --notes 'Standalone Android release with embedded Hermes JavaScript and the existing Dominion backend. Diplomacy, espionage, economy/construction, military/supply, technology tree and national courses; 27 new original illustrations. Includes authoritative long-simulation, native gameplay/stress, camera comparison, in-place 0.8.1→2.0 upgrade and real native multiplayer reconnect gates. Physical Redmi smoothness awaits user testing.' Dominion-grand-strategy-v2-release.apk Dominion-grand-strategy-v2-release.zip dominion-v2-checksums.txt release-integrity.txt CAMERA_NATIVE_PAIRED.json camera-native-evidence.zip
+          curl --fail --location --retry 3 'https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.0.0/Dominion-grand-strategy-v2-release.apk' -o verified-public.apk
+          cmp Dominion-grand-strategy-v2-release.apk verified-public.apk

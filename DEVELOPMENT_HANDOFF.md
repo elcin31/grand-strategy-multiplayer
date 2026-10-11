@@ -1,3 +1,17 @@
+# Continuation — final2.0 standalone candidate, 2026-10-11
+
+Verified published base **ea03ae9e3a844cff308ca75f271fd890eeea2ff9**; main remains **dbb354ab038713c3e54b969b34a6fc88bf2de11f**. QA continuation on existing expansion-qa **90b1ee85b2e9c906cb6acdac5a46a6ee32e34c15**, native online run **38132141380** is IN PROGRESS. Application systems/art/world/backend retain the implemented86 runtime; this block changes release metadata and required QA wiring only.
+
+Final candidate version **2.0.0 / Android code10**, same package com.elcin31.grandstrategymultiplayer, same release signing setup, landscape, embedded Hermes and existing dedicated backend. Final file **Dominion-grand-strategy-v2-release.apk**. Main release pipeline now requires real native online reconnect and actual higher-version0.8.1→2.0 save preservation in addition to strictTS/JS/Python/art/10000ticks/1800s/native cameraABBA. Legacy internal artifact name retained for accepted baseline/checkpoint consumers; actual final filename/tag/title updated to2.0. No release declared before these gates pass.
+
+Files: app.json, package.json/package-lock.json (root versions only, no dependency upgrade), .github/workflows/android-apk.yml/.github/workflows/android-upgrade-qa.yml, README.md, DEVELOPMENT_HANDOFF.md. Current local strict typecheck and **88Python/no skips PASS**, versions/landscape/YAML/diff PASS; unchanged gameplay inherited **292JS PASS** and full new CI will rerun its required checks. Existing production command24/room22 ACTIVE/schema18; live HTTP restarted after tested QA dispatch fix in isolated room **e91630eb-1637-41fb-8e6b-688ae7593df5**, status RUNNING (not PASS). Prior failed scoped rooms9cc50b47-6263-4ec7-8d4f-90ded6a453a7 and7afc3e4d-f379-4bb5-8994-944a6418848f still need exact UUID/name-guarded cleanup;29 existing city backups must remain.
+
+Stage status:0DONE;2DONE;1PARTIAL(one forward pinch300→350ms originalHWUI gate failure retained);3–8PARTIAL(working integrated/host/native/10000tick verified, full live schema18 pending);9PARTIAL(27new/all42 exact packaged verified, final frame gate pending);10PARTIAL(real live/native online final acceptance pending);11PARTIAL(final2.0 build/QA/publication/delivery pending). No new roadmap or repeated gameplay/art implementation. Physical Xiaomi results remain unmeasured.
+
+Next exact operation: start/monitor this candidate's full Actions gates, inspect native38132141380 pause evidence and live HTTP completion; fix concrete failures, record exact QA cleanup, then accept/merge/publish the existing project and deliver the verified final signed standalone APK.
+
+---
+
 # Continuation — exact live QA harness failures, 2026-10-11
 
 Verified parent1e0e140946c49bea664959ec9fb09ad09e7a9ba4; main unchanged. Existing schema18 command24/room22 ACTIVE. Live HTTP first run stopped at spy validation because helper parameter `kind` collided with the real espionage payload; previous actual checks through paid course and two spy starts passed, but full QA is NOT PASS. Rename helper parameter only; regression covers real Sabotage/PoliticalIntrigue payloads. Fresh real HTTP run started; exact QA UUID in its log/`/tmp/dominion-world-qa-room-id`.
