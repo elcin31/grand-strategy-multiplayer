@@ -33,5 +33,13 @@
     "diffCheck": "PASS",
     "reactReview": "Existing memoized raster component and tile hooks keep stable dependencies. Picture preparation follows tile/image changes; no per-frame allocations added, no render-FPS game/AI/network work. Recording cache never owns images/pictures passed as React props."
   },
-  "nativeAcceptance": "PENDING fresh signed binary/full original ABBA/1800s/upgrade/multiplayer/10000/live gates. Historical actual failures retained. No physical Redmi or measured Android improvement claimed."
+  "nativeAcceptance": "PENDING fresh signed binary/full original ABBA/1800s/upgrade/multiplayer/10000/live gates. Historical actual failures retained. No physical Redmi or measured Android improvement claimed.",
+  "runtime": "788a6bd575a4c9d13ed3ab1c0810eaa0d576ca2f",
+  "sourceTree": "493f7538265d0f5699b2e192089e65b7971cb4e0",
+  "runId": 38161007462,
+  "nativeJobs": {
+    "build": 114533716762,
+    "backendLive": 114533716808,
+    "longSimulation": 114533716853
+  }
 }
