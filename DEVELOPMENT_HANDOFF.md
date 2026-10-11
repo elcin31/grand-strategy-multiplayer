@@ -1,3 +1,17 @@
+# Continuation — exact live QA harness failures, 2026-10-11
+
+Verified parent1e0e140946c49bea664959ec9fb09ad09e7a9ba4; main unchanged. Existing schema18 command24/room22 ACTIVE. Live HTTP first run stopped at spy validation because helper parameter `kind` collided with the real espionage payload; previous actual checks through paid course and two spy starts passed, but full QA is NOT PASS. Rename helper parameter only; regression covers real Sabotage/PoliticalIntrigue payloads. Fresh real HTTP run started; exact QA UUID in its log/`/tmp/dominion-world-qa-room-id`.
+
+Native online run38130564619/job114443827687 FAILED after actual room/country/ready/start, at server pause. Artifact11698799308 ZIP SHA77f7464d86bb5e4e701c6d079707bf142c2112cee1036e40d66afd00c12f7ea2/CRC verified; actual stored isolated room still speed1/running/tick9 with5 accepted commands. Add actual native response capture/wait: a visible exact stale-version CAS rejection may be dismissed, synchronized and explicitly retried for idempotent pause only. Paid course remains a single tap and waits for authoritative acknowledgement; no blind paid retries or weakened assertions. Do not claim pause cause without new native evidence.
+
+Failed scoped rooms7afc3e4d-f379-4bb5-8994-944a6418848f (NATIVE ONLINE QA) and9cc50b47-6263-4ec7-8d4f-90ded6a453a7 (WORLD ECONOMY QA) need UUID/name-guarded cleanup; prior delete invocation aborted without deletion. No user rooms edited. Guards4backend/3native and compilation/diff PASS.
+
+Continuous fullABBA38128760449 FAILED only forward pinch HWUI P95 300→350ms at unchanged10% threshold; reverse pinch350→350, other8 scenarios/memory/compositor gates PASS in both orders. Preserve FAIL/artifact11699033408 SHA3e8f4e0091c61630658026abe6950632ad945dbba0cef9275d114fbef6d00df7. Stage1 remains PARTIAL; no physical-handset result inferred.
+
+Next exact operation: publish this QA-only fix to existing expansion-qa, inspect actual native pause response; finish fresh HTTP QA and scoped cleanup; prepare2.0.0(code10) same-package/signature release, all native/integration/camera/upgrade gates and final APK delivery. Gameplay/art/source unchanged86.
+
+---
+
 # Continuation — actual native online QA harness, 2026-10-11
 
 Verified published parent d0de8ae5ce5e17b8710919798f3a82a0b50a3e30 after expected-parent GitData publication (local tree byte-identical); existing command24/room22 ACTIVE/schema18. Native online acceptance was missing, so this logical block adds only actual QA: visible native room creation/country/ready/start/pause/paid course, guest real HTTP corroboration, encrypted SecureStore session/UID, menu/process return, real68s host/AI migration and native owner return, emulator reboot/reconnect, strict same-room/world/member/once-only payment assertions and scoped cleanup UUID. No token/fixture injection, fake clock, user-room edits or new game system. Uses the existing exact86 signed standalone APK38115315485; no identical rebuild/1800s rerun.
