@@ -2,7 +2,7 @@ name: Dominion renderer source QA
 on:
   push:
     branches: [expansion-camera-qa]
-    paths: [.github/workflows/renderer-source-qa.yml, src/map/cameraCoverage.ts, src/map/flagFrameGroups.ts, src/components/MapMarkerLayer.tsx, tests/flag_frame_groups.test.ts, tests/flag_frame_pixels.test.ts, CampaignScreen.tsx, app.json, plugins/withMapTextureOpacity.cjs, tests/map_texture_opacity.test.ts, scripts/verify-native-config.py, src/components/WorldMap.tsx, src/components/PerformancePanel.tsx, src/components/CameraUiLayer.tsx, tests/world_raster_batch.test.ts, scripts/export-expansion-evidence.py, .github/renderer-evidence-source.json]
+    paths: [.github/workflows/renderer-source-qa.yml, src/map/cameraCoverage.ts, src/map/flagFrameGroups.ts, src/components/MapMarkerLayer.tsx, tests/flag_frame_groups.test.ts, tests/flag_frame_pixels.test.ts, CampaignScreen.tsx, app.json, plugins/withMapTextureOpacity.cjs, plugins/withSkiaRecorderLifecycle.cjs, tests/map_texture_opacity.test.ts, tests/skia_recorder_lifecycle.test.ts, scripts/verify-native-config.py, scripts/android-upgrade-qa.py, scripts/android_launcher_dialog.py, tests/android_launcher_dialog_test.py, src/components/WorldMap.tsx, src/components/PerformancePanel.tsx, src/components/CameraUiLayer.tsx, tests/world_raster_batch.test.ts, scripts/export-expansion-evidence.py, .github/renderer-evidence-source.json]
   workflow_dispatch:
 permissions:
   contents: read
@@ -94,6 +94,7 @@ jobs:
             renderer-source-sha.txt
             PRIOR_UI_SOAK_QA.json
             android/map-texture-opacity.json
+            android/skia-recorder-lifecycle.json
           retention-days: 14
 
   native-evidence-readback:

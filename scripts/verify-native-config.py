@@ -24,3 +24,20 @@ if './plugins/withMapTextureOpacity.cjs' in config.get('plugins',[]):
     assert 'mView = new SkiaTextureView(context, this, debug);' in base
     assert 'surfaceAvailable(surface, width, height, false);' in base
     print('PASS: pinned opaque map TextureView source and unchanged presentation backend verified')
+if './plugins/withSkiaRecorderLifecycle.cjs' in config.get('plugins',[]):
+    proof=json.loads(Path('android/skia-recorder-lifecycle.json').read_text())
+    native=Path(proof['nativePath']).read_text()
+    header=Path(proof['recorderPath']).read_text()
+    metadata=json.loads(Path('node_modules/@shopify/react-native-skia/package.json').read_text())
+    assert metadata['version']==proof['skiaVersion']=='2.6.2'
+    assert metadata['react-native']==proof['nativeMetroEntry']=='src/index.ts'
+    assert proof['originalSourceSha256']=='921d99c81ea02318d217dd52386d8b71ac268e1b56138c7f781c1ae2e9935e0b'
+    assert hashlib.sha256(native.encode()).hexdigest()==proof['nativeSourceSha256']
+    assert hashlib.sha256(header.encode()).hexdigest()==proof['recorderHeaderSha256']=='a6b8561f75d993b16003011feb7619d906c88851be802359e184bb92706c86e1'
+    assert proof['retiredCommandsResetOnUi'] is True and proof['stopMapperBeforeReset'] is True
+    assert proof['livePicturesDisposed'] is False and 'DOMINION_RECORDER_LIFECYCLE' in native
+    # Re-run the full source guard; a self-consistent hash alone does not prove
+    # this is the reviewed pinned implementation.
+    import subprocess
+    subprocess.run(['node','-e',"require('./plugins/withSkiaRecorderLifecycle.cjs').applySkiaRecorderLifecycle(process.cwd())"],check=True)
+    print('PASS: pinned native recorder lifetime and UI reset contract verified')

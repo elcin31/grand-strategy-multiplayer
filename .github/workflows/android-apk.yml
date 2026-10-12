@@ -122,6 +122,7 @@ jobs:
             paired-camera-ci.json
             CAMERA_HOST_PAIRED.json
             android/map-texture-opacity.json
+            android/skia-recorder-lifecycle.json
           if-no-files-found: error
           retention-days: 14
   android-smoke:

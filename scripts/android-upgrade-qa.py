@@ -13,6 +13,7 @@ import sys
 import time
 from pathlib import Path
 from android_accessibility import dump_hierarchy, assert_no_game_fatal
+from android_launcher_dialog import quickstep_anr_close_bounds
 from android_fixture import root_test_device
 from camera_fixture_projection import assert_paused_fixture
 from map_paint_check import assert_map_painted
@@ -72,9 +73,23 @@ def hierarchy(name):return dump_hierarchy(adb,PACKAGE,OUT,name,'/sdcard/dominion
 
 def find_readable(label, scroll_x=640):
     labels=(label,) if isinstance(label,str) else label
+    expected_pid=adb('shell','pidof',PACKAGE).strip()
     for attempt in range(12):
-        tree = hierarchy('tap-'+str(click.calls)+'-'+str(attempt))
+        name='tap-'+str(click.calls)+'-'+str(attempt)
+        tree = hierarchy(name)
         click.calls += 1
+        launcher_bounds=quickstep_anr_close_bounds(tree)
+        if launcher_bounds is not None:
+            assert not launcher_anr_dismissals, 'Repeated foreign launcher ANR; preserve failure instead of looping'
+            assert adb('shell','pidof',PACKAGE).strip()==expected_pid, 'Game restarted beneath launcher ANR'
+            logs=adb('logcat','-d');(OUT/(name+'-quickstep-logcat.txt')).write_text(logs)
+            assert_no_game_fatal(logs,expected_pid)
+            assert 'ANR in '+PACKAGE not in logs, 'Game ANR must never be dismissed'
+            x1,y1,x2,y2=launcher_bounds
+            launcher_anr_dismissals.append({'xml':name+'.xml','logcat':name+'-quickstep-logcat.txt','title':"Quickstep isn't responding"})
+            adb('shell','input','tap',(x1+x2)//2,(y1+y2)//2);time.sleep(1)
+            assert adb('shell','pidof',PACKAGE).strip()==expected_pid, 'Game died while closing the foreign launcher dialog'
+            continue
         node = next((n for n in tree.iter('node') if n.get('text') in labels or n.get('content-desc') in labels),None)
         if node is not None:
             bounds = list(map(int,re.findall(r'\d+',node.get('bounds',''))))
@@ -96,6 +111,7 @@ def click(label, scroll_x=640):
 
 click.calls = 0
 game_pids = set()
+launcher_anr_dismissals = []
 
 
 def launch_saved(name):
@@ -191,6 +207,7 @@ report={'baseline':base_meta,'candidate':new_meta,'appUidRetained':True,'private
  'fixtureSha256':hashlib.sha256(fixture_raw).hexdigest(),'originalWorld':{'countries':195,'provinces':2924,'cities':5411},
  'oldSchema':12,'newSchema':json.loads(raw_after)['state']['stateVersion'],'oldSaveSha256':hashlib.sha256(raw_before).hexdigest(),
  'migrationBackupSha256':backup_hashes,'repeatBackupBytesUnchanged':True,'actualCandidateRestart':True,'finalVersionUpgrade':new_meta['versionCode']>base_meta['versionCode'],
+ 'foreignLauncherAnrDismissals':launcher_anr_dismissals,
  'note':'Real offline ephemeral-emulator package replacement, native save/load/backups and encrypted graphics preference round-trip. No production-session reconnect or hardware FPS claim.'}
 (OUT/'UPGRADE_SAVE_QA.json').write_text(json.dumps(report,indent=2)+'\n')
 print('PASS: actual in-place release installation, SecureStore preferences, schema12→18 campaign, original backups and restart')

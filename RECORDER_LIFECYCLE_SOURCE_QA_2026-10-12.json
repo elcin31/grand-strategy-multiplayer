@@ -1,0 +1,69 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "parentCheckpoint": "e41c33b99017833ce56cc5358fdb93d519013e77",
+  "status": "LOCAL_SOURCE_VERIFIED_NATIVE_QA_REQUIRED",
+  "rejectedRuntime": "9ba945903851fe3e13969de7d7693795a4918aa9",
+  "rejectedRunId": 38224321396,
+  "rejectedApkSha256": "07c3e8f06fca5b6f75c749b1092d345861226514fe2c94b95cf744c0acf462da",
+  "reason": {
+    "originalCameraCaptures": 36,
+    "allFrameTimeGatesPassed": true,
+    "onlyCameraViolation": "forward 06-terrain-pan PSS",
+    "baselinePssKiB": 358789,
+    "candidatePssKiB": 460186,
+    "limitKiB": 430546.8,
+    "nativeHeapDeltaKiB": 87348,
+    "reverseTerrainPssKiB": {
+      "baseline": 451884,
+      "candidate": 361929
+    },
+    "causeNotProven": true
+  },
+  "sourceChange": "Reset retired native recorder commands on UI after stopping the old mapper and publishing the replacement picture; reset current commands on unmount. Preserve live cached pictures/images and shared-value redraw protocol. Guard exact pinned Skia native source/reset header/Metro entry during Android prebuild.",
+  "nativeMemoryBenefitMeasured": false,
+  "nativeProof": {
+    "skiaVersion": "2.6.2",
+    "nativeMetroEntry": "src/index.ts",
+    "nativePath": "node_modules/@shopify/react-native-skia/src/sksg/Container.native.ts",
+    "originalSourceSha256": "921d99c81ea02318d217dd52386d8b71ac268e1b56138c7f781c1ae2e9935e0b",
+    "nativeSourceSha256": "60e503c19032521507bf86ccb480e3b96efe791e67f08e97fbcdfd9bab914c1c",
+    "recorderPath": "node_modules/@shopify/react-native-skia/cpp/api/recorder/JsiRecorder.h",
+    "recorderHeaderSha256": "a6b8561f75d993b16003011feb7619d906c88851be802359e184bb92706c86e1",
+    "retiredCommandsResetOnUi": true,
+    "stopMapperBeforeReset": true,
+    "livePicturesDisposed": false
+  },
+  "checks": {
+    "strictTypecheck": "PASS",
+    "allJs": {
+      "status": "PASS",
+      "tests": 324,
+      "skipped": 0
+    },
+    "allPython": {
+      "status": "PASS",
+      "tests": 110,
+      "skipped": 0
+    },
+    "originalOptimizedArt": {
+      "status": "PASS",
+      "assets": 42,
+      "bytes": 3479060
+    },
+    "actualAndroidPrebuild": "PASS",
+    "nativeConfigVerifier": "PASS",
+    "patchedUpstreamVmTests": {
+      "status": "PASS",
+      "tests": 6,
+      "note": "Actual patched source executed against FIFO UI/mapper stubs; not a native PSS proof."
+    },
+    "productionHermes": {
+      "bytes": 11485803,
+      "sha256": "3712180c82d44fd864110969f25c3c37920bd797a517a0682fd25a9b627c59ad",
+      "magic": "c61fbc03c103191f"
+    }
+  },
+  "upgradeHarnessChange": "Dismiss at most one exact android Quickstep ANR close control after preserving raw XML/logcat, checking unchanged game PID and excluding game fatal/ANR. Game/unknown dialogs and repeated launcher ANRs still fail. All UID/signature/save/schema/preferences/backups/restart gates remain unchanged.",
+  "acceptance": false,
+  "nextAction": "Publish source unit on existing expansion-camera-qa. After actual source CI SUCCESS normally advance existing expansion-v2 to the exact tested source, then perform one fresh full signed seven-gate APK QA. Never reroll rejected camera numerics or relax thresholds."
+}

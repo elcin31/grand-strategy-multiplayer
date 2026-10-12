@@ -15,7 +15,8 @@
     },
     "plugins": [
       "expo-secure-store",
-      "./plugins/withMapTextureOpacity.cjs"
+      "./plugins/withMapTextureOpacity.cjs",
+      "./plugins/withSkiaRecorderLifecycle.cjs"
     ]
   }
 }
