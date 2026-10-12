@@ -1,0 +1,141 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "release": "Dominion 2.1 — Grand Strategy Overhaul",
+  "releaseTag": "v2.1.0-playtest.1",
+  "checkpointBranch": "dominion-2.1-overhaul",
+  "runtimeCommit": "08a754500de131c6b0a8947e5cd217e68e52604a",
+  "base20Commit": "11fbeec534af1f03464e91ab8d831b2a91d2d871",
+  "apk": {
+    "name": "Dominion-2.1-playtest.apk",
+    "bytes": 142870908,
+    "sha256": "266be7d09b7ee5b1528d3391538d929aed2e972493e3d30d3f8402ba28f47fc8",
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "versionName": "2.1.0",
+    "versionCode": 11,
+    "configuration": "RELEASE",
+    "debuggable": false,
+    "standalone": true,
+    "landscape": true,
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "embeddedHermesBytes": 10908116,
+    "embeddedHermesSha256": "d8f681b51594641dd50e5246b19c2c31453711fdd76dda1b0f984c57a5810206",
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "correctDominionBackendVerified": true,
+    "versionedEndpointsEmbedded": true,
+    "zipCRCVerified": true
+  },
+  "build": {
+    "runId": 38276146685,
+    "artifactId": 11760500923,
+    "workflow": "android-apk.yml",
+    "conclusion": "success",
+    "url": "https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/38276146685"
+  },
+  "verification": {
+    "strictTypecheck": true,
+    "leanTests": {
+      "tests": 38,
+      "passed": 38,
+      "failed": 0
+    },
+    "actual20SaveMigrationAndRoundtrip": true,
+    "nativeArtifactId": 11759588297,
+    "nativeSmoke": {
+      "releaseColdLaunch": true,
+      "campaignStarted": true,
+      "newHUD": true,
+      "armySplit": true,
+      "saveRestart": true,
+      "mapPainted": true,
+      "noFatalLogs": true,
+      "soak": false
+    },
+    "liveBackend": {
+      "project": "dfjsnjxnyjspwugjguhq",
+      "existingFunctionsPreserved": {
+        "game-room": 22,
+        "game-command": 24
+      },
+      "newFunctions": {
+        "game-room-v21": 2,
+        "game-command-v21": 2
+      },
+      "integrationScenario": {
+        "roomId": "18fc2288-b58a-4489-aebb-a49961c566a1",
+        "createJoinStart": true,
+        "hostSpeedAuthority": true,
+        "actorSpoofRejected": true,
+        "fogProjection": true,
+        "onceOnlyPaidFocusReceipt": true,
+        "researchAndConstructionPersist": true,
+        "warGoal": true,
+        "serverDaysAdvanceWithoutMonthlyDuplicate": true,
+        "reconnect": true,
+        "source": "cb850828ad3148ff426392f44e49235171584c8e",
+        "syntheticRoomCleaned": true
+      },
+      "finalDeploymentProbe": {
+        "roomId": "45cfd083-0c1c-4b9b-a0a7-07e0a3b27613",
+        "source": "08a754500de131c6b0a8947e5cd217e68e52604a",
+        "bundlePin": "7786dece4caf87a83fba891b174c20f92f67a5e0",
+        "schema23": true,
+        "deployedCreateCommandReconnect": true,
+        "actorSpoofRejected": true,
+        "syntheticRoomCleaned": true
+      },
+      "privateSessionsPublished": false
+    }
+  },
+  "server": {
+    "projectId": "dfjsnjxnyjspwugjguhq",
+    "sourceHead": "08a754500de131c6b0a8947e5cd217e68e52604a",
+    "workingTreeClean": true,
+    "note": "Pinned Dominion 2.1 authoritative runtime. Existing database, opaque session authentication, CAS and command receipts retained; original Dominion 2.0 functions untouched.",
+    "functions": [
+      {
+        "name": "game-room",
+        "entrypoint": "index.js",
+        "verifyJwt": false,
+        "bytes": 2996646,
+        "sha256": "71c7a74100bf58559b4dedb5f2a0e34f4e1bd1c932af14aec2436df5b9810650"
+      },
+      {
+        "name": "game-command",
+        "entrypoint": "index.js",
+        "verifyJwt": false,
+        "bytes": 2978952,
+        "sha256": "1f63611a1095d5c71208c8718ce3cce03faef82fd3e4a275fd583a711efaef4e"
+      }
+    ],
+    "protocol": 23,
+    "endpointNames": [
+      "game-room-v21",
+      "game-command-v21"
+    ],
+    "runtimeCommit": "08a754500de131c6b0a8947e5cd217e68e52604a"
+  },
+  "counts": {
+    "regiments": 18,
+    "resources": 35,
+    "buildings": 40,
+    "productionRecipes": 16,
+    "technologies": 100,
+    "focuses": 120,
+    "nationalProjects": 6
+  },
+  "preserved20Release": "v2.0.0-playtest.1",
+  "knownLimitations": [
+    "Inherited camera microstutter deferred; no physical-device smoothness claim.",
+    "Shared modern commander portrait.",
+    "Army-group defense lines use adjacent provinces around a selected target.",
+    "Initial playtest balance.",
+    "Existing 2.0 online rooms remain in 2.0; offline saves migrate."
+  ],
+  "apkUrl": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.0-playtest.1/Dominion-2.1-playtest.apk",
+  "publicationStatus": "VERIFIED_READY_TO_PUBLISH"
+}

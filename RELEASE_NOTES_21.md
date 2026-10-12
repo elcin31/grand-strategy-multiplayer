@@ -13,4 +13,6 @@ Offline Dominion 2.0 saves migrate to schema 23 with a preserved backup. New 2.1
 
 Known limitations: inherited camera microstutter is deferred; the modern commander portrait is shared; group defense lines cover adjacent provinces around a selected target; balancing is an initial playtest pass. Physical-device smoothness has not been measured.
 
+Verification: strict TypeScript check, 38 lean gameplay/save/authority checks, migration from an actual Dominion 2.0 save, live backend command/reconnect/spoof-rejection checks, signed standalone build and short Android launch/HUD/map/army-split/save-restart smoke passed.
+
 Exact binary identity, build/native results and backend pin are recorded in `DOMINION_21_RELEASE_MANIFEST.json` accompanying this release.

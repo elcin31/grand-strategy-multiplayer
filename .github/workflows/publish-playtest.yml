@@ -1,4 +1,4 @@
-name: Publish Dominion 2.0 playtest APK
+name: Publish Dominion playtest APK
 on:
   push:
     branches: [dominion-2-playtest]
@@ -14,6 +14,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   publish:
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -94,4 +95,99 @@ jobs:
             release/Dominion-2.0-playtest.sha256
             release/PLAYTEST_RELEASE_MANIFEST.json
             release/playtest-integrity.txt
+          retention-days: 30
+  publish21:
+    if: github.ref == 'refs/heads/dominion-2.1-overhaul'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: elcin31/grand-strategy-multiplayer
+      DOMINION21_RUNTIME_SHA: 08a754500de131c6b0a8947e5cd217e68e52604a
+      DOMINION21_BUILD_RUN: '38276146685'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Require the exact successful release and short native smoke
+        run: |
+          git diff --exit-code "$DOMINION21_RUNTIME_SHA" HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets tests scripts
+          gh api "repos/$GH_REPO/actions/runs/$DOMINION21_BUILD_RUN" > original-run.json
+          gh api "repos/$GH_REPO/actions/runs/$DOMINION21_BUILD_RUN/jobs?per_page=30" > original-jobs.json
+          gh release view v2.0.0-playtest.1 --json assets > preserved20.json
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          m=json.loads(Path('DOMINION_21_RELEASE_MANIFEST.json').read_text())
+          r=json.loads(Path('original-run.json').read_text())
+          jobs=json.loads(Path('original-jobs.json').read_text())['jobs']
+          assert r['head_sha']==m['runtimeCommit']==os.environ['DOMINION21_RUNTIME_SHA']
+          assert r['status']=='completed' and r['conclusion']=='success'
+          required={'build-apk','android-lean-smoke'}
+          selected=[j for j in jobs if j['name'] in required]
+          assert {j['name'] for j in selected}==required
+          assert all(j['status']=='completed' and j['conclusion']=='success' for j in selected)
+          assert m['verification']['leanTests']=={'tests':38,'passed':38,'failed':0}
+          print('PASS: unchanged runtime, successful release, 38 lean checks and short native smoke')
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion-camera-illustrated-release
+          run-id: 38276146685
+          github-token: ${{ github.token }}
+          path: release
+      - name: Verify and prepare the same APK without rebuilding
+        run: |
+          python scripts/verify-release.py release/Dominion-2.1-playtest.apk > release/dominion21-integrity.txt
+          python - <<'PY'
+          import hashlib,json,zipfile
+          from pathlib import Path
+          m=json.loads(Path('DOMINION_21_RELEASE_MANIFEST.json').read_text())
+          apk=Path('release/Dominion-2.1-playtest.apk')
+          assert apk.stat().st_size==m['apk']['bytes']
+          assert hashlib.sha256(apk.read_bytes()).hexdigest()==m['apk']['sha256']
+          with zipfile.ZipFile(apk) as z:
+              assert z.testzip() is None
+              assert z.read('assets/index.android.bundle')[:8].hex()=='c61fbc03c103191f'
+          Path('release/Dominion-2.1-playtest.apk.sha256').write_text(m['apk']['sha256']+'  Dominion-2.1-playtest.apk\n')
+          PY
+      - name: Publish only the new Dominion 2.1 prerelease
+        run: |
+          if gh release view v2.1.0-playtest.1 >/dev/null 2>&1; then
+            gh release download v2.1.0-playtest.1 --pattern Dominion-2.1-playtest.apk --dir existing-release
+            cmp release/Dominion-2.1-playtest.apk existing-release/Dominion-2.1-playtest.apk
+          else
+            gh release create v2.1.0-playtest.1 release/Dominion-2.1-playtest.apk release/Dominion-2.1-playtest.apk.sha256 --target "$DOMINION21_RUNTIME_SHA" --prerelease --title 'Dominion 2.1 — Grand Strategy Overhaul (Playtest)' --notes-file RELEASE_NOTES_21.md
+          fi
+      - name: Verify concrete public APK bytes and preserve Dominion 2.0
+        run: |
+          curl --fail --location --retry 2 --max-time 180 'https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.0-playtest.1/Dominion-2.1-playtest.apk' -o public-playtest.apk
+          cmp release/Dominion-2.1-playtest.apk public-playtest.apk
+          gh api "repos/$GH_REPO/releases/tags/v2.1.0-playtest.1" > published21.json
+          gh release view v2.0.0-playtest.1 --json assets > after20.json
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          before=json.loads(Path('preserved20.json').read_text())
+          after=json.loads(Path('after20.json').read_text())
+          assert before==after, 'Dominion 2.0 assets changed during publication'
+          m=json.loads(Path('DOMINION_21_RELEASE_MANIFEST.json').read_text())
+          r=json.loads(Path('published21.json').read_text())
+          apk=next(a for a in r['assets'] if a['name']=='Dominion-2.1-playtest.apk')
+          assert not r['draft'] and r['prerelease'] and apk['state']=='uploaded'
+          assert apk['size']==m['apk']['bytes']
+          assert apk['digest']=='sha256:'+m['apk']['sha256']
+          m.update(publicationStatus='PUBLISHED_VERIFIED',publicationRunId=int(os.environ['GITHUB_RUN_ID']),publicationCommit=os.environ['GITHUB_SHA'],releaseId=r['id'],apkAssetId=apk['id'],publicApkByteMatch=True,original20AssetsPreserved=True)
+          Path('release/DOMINION_21_RELEASE_MANIFEST.json').write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\n')
+          PY
+          gh release upload v2.1.0-playtest.1 release/DOMINION_21_RELEASE_MANIFEST.json release/dominion21-integrity.txt --clobber
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dominion-21-publication-checkpoint
+          path: |
+            release/DOMINION_21_RELEASE_MANIFEST.json
+            release/dominion21-integrity.txt
+            published21.json
           retention-days: 30

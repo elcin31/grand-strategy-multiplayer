@@ -1,0 +1,10 @@
+{
+  "releaseColdLaunch": true,
+  "campaignStarted": true,
+  "newHUD": true,
+  "armySplit": true,
+  "saveRestart": true,
+  "mapPainted": true,
+  "noFatalLogs": true,
+  "soak": false
+}
