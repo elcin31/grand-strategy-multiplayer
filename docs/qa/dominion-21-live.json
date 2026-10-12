@@ -1,0 +1,35 @@
+{
+  "project": "dfjsnjxnyjspwugjguhq",
+  "existingFunctionsPreserved": {
+    "game-room": 22,
+    "game-command": 24
+  },
+  "newFunctions": {
+    "game-room-v21": 2,
+    "game-command-v21": 2
+  },
+  "integrationScenario": {
+    "roomId": "18fc2288-b58a-4489-aebb-a49961c566a1",
+    "createJoinStart": true,
+    "hostSpeedAuthority": true,
+    "actorSpoofRejected": true,
+    "fogProjection": true,
+    "onceOnlyPaidFocusReceipt": true,
+    "researchAndConstructionPersist": true,
+    "warGoal": true,
+    "serverDaysAdvanceWithoutMonthlyDuplicate": true,
+    "reconnect": true,
+    "source": "cb850828ad3148ff426392f44e49235171584c8e",
+    "syntheticRoomCleaned": true
+  },
+  "finalDeploymentProbe": {
+    "roomId": "45cfd083-0c1c-4b9b-a0a7-07e0a3b27613",
+    "source": "08a754500de131c6b0a8947e5cd217e68e52604a",
+    "bundlePin": "7786dece4caf87a83fba891b174c20f92f67a5e0",
+    "schema23": true,
+    "deployedCreateCommandReconnect": true,
+    "actorSpoofRejected": true,
+    "syntheticRoomCleaned": true
+  },
+  "privateSessionsPublished": false
+}
