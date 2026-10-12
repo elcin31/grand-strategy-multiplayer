@@ -3,7 +3,7 @@
 - Branch: `dominion-2.1-overhaul`
 - HEAD before this commit: `0263bef6f22dc89876f6c1245a99edebce593e38`
 - Completed: recovery from 11fbeec / v2.0.0-playtest.1; HUD and mini-map; calendar with daily clock, monthly accounting, 1–5 speeds, shared host controls and pause voting; schema 18→19 save migration/backup.
-- Current: Resources 3.0.
+- Current: Construction 3.0.
 - Unfinished: resources/construction/production, technology/focus expansion, additional systems, art, integration and APK.
 - Known: inherited camera microstutter (deferred). Visual reference received; use gold/graphite/navy, compact panels and era-correct historical art.
 - Next: persistent strategic goals and personalities; staggered operational/tactical planning, group and escort orders; integrate with expanded industry.
@@ -12,3 +12,5 @@
 - Preserve Dominion 2.0 branch, release and APK; only this repo and existing Dominion backend.
 
 - AI: persistent six-month strategic memory and six preferences; goal-based policies/research/focuses; staggered tactical support/retreat/assault, group planning and escorts; supply/coalition/reserve guards retained. Typecheck passed.
+
+- Resources: 35 resources, deterministic secondary deposits preserving originals; bounded stockpiles and actual extraction/consumption, shortages and price/producer rankings; consenting trade contracts and bounded auto-buy; economy receives only actual export revenue. Schema 21.

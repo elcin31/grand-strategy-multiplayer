@@ -1,3 +1,4 @@
+import {RESOURCES} from './resourceCatalogue.ts';
 import {NOTIFICATION_CATEGORIES} from './notificationSystem.ts';
 import {technologyNode} from './technologyTree.ts';
 import {focusNode} from './focusCatalogue.ts';
@@ -15,6 +16,10 @@ import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  SET_INDUSTRY_POLICY:['type','playerId','autoTrade','autoRepair','priority'],
+  OFFER_RESOURCE_TRADE:['type','playerId','targetId','resource','quantity','mode'],
+  RESPOND_RESOURCE_TRADE:['type','playerId','contractId','accept'],
+  CANCEL_RESOURCE_TRADE:['type','playerId','contractId'],
   ROUTE_ARMY:['type','playerId','armyId','waypoints','redeploy'],
   MERGE_ARMIES:['type','playerId','armyIds'],
   SPLIT_ARMY:['type','playerId','armyId','percent'],
@@ -29,7 +34,7 @@ const fields: Record<string, readonly string[]> = {
   SET_ECONOMIC_POLICY: ['type','playerId','policy'],
   SET_FUNDING: ['type','playerId','domain','level'],
   QUEUE_BUILD: ['type','playerId','provinceId','buildingType'],
-  CANCEL_CONSTRUCTION: ['type','playerId','constructionId'],
+  CANCEL_CONSTRUCTION: ['type','playerId','constructionId','contractId'],
   START_ESPIONAGE: ['type','playerId','targetId','kind'],
   CANCEL_ESPIONAGE: ['type','playerId','missionId'],
   SET_TAX_RATE: ['type', 'playerId', 'taxRate'],
@@ -80,7 +85,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (typeof type !== 'string' || !Object.hasOwn(fields, type)) throw new Error('Unknown command');
   const allowed = fields[type]!;
   if (Object.keys(command).some(key => !allowed.includes(key)) || allowed.some(key => !Object.hasOwn(command, key))) throw new Error('Invalid command fields');
-  for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId', 'warId','missionId','offerId','treatyId','constructionId']) {
+  for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId', 'warId','missionId','offerId','treatyId','constructionId','contractId']) {
     // Natural Earth retains literal '+' and '?' in a few province IDs. Ownership
     // and exact membership are still checked by the authoritative reducer.
     const pattern = key === 'provinceId' ? /^[A-Za-z0-9_+?-]{1,128}$/ : /^[A-Za-z0-9_-]{1,128}$/;
@@ -115,6 +120,9 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if(type==='SET_FORMATION'&&!['Balanced','Assault','Defensive','Mobile'].includes(command.formation as string))throw Error('Invalid formation');
   if(type==='ESCORT_ARMY'&&(typeof command.targetArmyId!=='string'||!/^[A-Za-z0-9_-]{1,128}$/.test(command.targetArmyId)))throw Error('Invalid escort');
   if(type==='SET_ARMY_GROUP'&&(typeof command.name!=='string'||command.name.length<1||command.name.length>40||!['Defend','Offensive','Reserve','Escort'].includes(command.objective as string)||!['Normal','High'].includes(command.supplyPriority as string)))throw Error('Invalid army group');
+  if(type==='SET_INDUSTRY_POLICY'&&(typeof command.autoTrade!=='boolean'||typeof command.autoRepair!=='boolean'||!['Balanced','Civilian','Military'].includes(command.priority as string)))throw Error('Invalid industry policy');
+  if(type==='OFFER_RESOURCE_TRADE'&&(typeof command.resource!=='string'||!Object.hasOwn(RESOURCES,command.resource)||!Number.isInteger(command.quantity)||Number(command.quantity)<1||Number(command.quantity)>10000||!['Import','Export'].includes(command.mode as string)))throw Error('Invalid resource trade');
+  if(type==='RESPOND_RESOURCE_TRADE'&&typeof command.accept!=='boolean')throw Error('Invalid trade consent');
   if (type === 'SET_READY' && typeof command.ready !== 'boolean') throw new Error('Invalid ready value');
   if (type === 'SET_SPEED' && (typeof command.speed !== 'number' || !Number.isInteger(command.speed) || command.speed < 0 || command.speed > 5)) throw new Error('Invalid game speed');
   if ((type === 'RECRUIT' || type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');

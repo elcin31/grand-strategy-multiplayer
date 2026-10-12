@@ -1,3 +1,4 @@
+import {ResourceTradePanel} from './ResourceTradePanel';
 import {BattleSiegePanel} from './BattleSiegePanel';
 import {NotificationFeed} from './NotificationFeed';
 import {EspionagePanel} from './EspionagePanel';
@@ -109,6 +110,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
         </View>
       </View>}
 
+      {section==='Economy'&&<ResourceTradePanel state={state} playerId={playerId} onCommand={onCommand}/>}
       {section==='Economy'&&budget && <Pressable accessibilityRole="button" onPress={() => { setEconomyOpen(!economyOpen); setGovernmentOpen(false); setReligionOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Экономика {economyOpen ? '▴' : '▾'}</Text></Pressable>}
       {economyOpen && budget && <View style={styles.card}>
         <Text style={styles.eyebrow}>МЕСЯЧНЫЙ БЮДЖЕТ</Text>

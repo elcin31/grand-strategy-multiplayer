@@ -10,6 +10,8 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital';
 
 export interface Country {
+  stockpile?:import('./stockpileSystem.ts').Stockpile;
+  lastResourceCrisis?:boolean;
   aiStrategy?:import('./ai3System.ts').AIStrategy;
   autoPause?: import('./notificationSystem.ts').NotificationCategory[];
   notificationReadThrough?: number;
@@ -63,6 +65,7 @@ export interface Country {
 
 /** Monetary values are millions, with precision to $1,000. Derived forecast. */
 export interface EconomyBudget {
+  importExpense?:number;
   researchMaintenance?: number;
   diplomaticMaintenance?: number;
   productionIncome: number;
@@ -79,6 +82,7 @@ export interface EconomyBudget {
 }
 
 export interface Province {
+  secondaryDeposit?:import('./resourceSystem.ts').ResourceDeposit;
   buildingDamage?:number;
   rebellion?: Rebellion;
   rebellionCooldownUntilTick?: number;
@@ -204,6 +208,9 @@ export interface Leader {
 }
 
 export interface GameState {
+  tradeContracts?:import('./stockpileSystem.ts').ResourceContract[];
+  resourcePrices?:import('./stockpileSystem.ts').ResourceLedger;
+  resourceLeaders?:Partial<Record<import('./resourceCatalogue.ts').ResourceType,string[]>>;
   activeBattles?:import('./military3System.ts').ActiveBattle[];
   sieges?:import('./military3System.ts').Siege[];
   armyGroups?:import('./military3System.ts').ArmyGroup[];
@@ -250,6 +257,10 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'SET_INDUSTRY_POLICY';playerId:string;autoTrade:boolean;autoRepair:boolean;priority:'Balanced'|'Civilian'|'Military'}
+  | {type:'OFFER_RESOURCE_TRADE';playerId:string;targetId:string;resource:import('./resourceCatalogue.ts').ResourceType;quantity:number;mode:'Import'|'Export'}
+  | {type:'RESPOND_RESOURCE_TRADE';playerId:string;contractId:string;accept:boolean}
+  | {type:'CANCEL_RESOURCE_TRADE';playerId:string;contractId:string}
   | {type:'ROUTE_ARMY';playerId:string;armyId:string;waypoints:string[];redeploy:boolean}
   | {type:'MERGE_ARMIES';playerId:string;armyIds:string[]}
   | {type:'SPLIT_ARMY';playerId:string;armyId:string;percent:number}

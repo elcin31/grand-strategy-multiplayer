@@ -7,21 +7,9 @@ import {economicPolicy} from './economy2System.ts';
 import type { Country, GameState, Province } from './gameTypes.ts';
 
 /** Original scenario deposits/prices, not real geological or market data. */
-export const RESOURCES = {
-  food: { name: 'Продовольствие', color: '#87A66B', price: .08 },
-  iron: { name: 'Железо', color: '#A37D70', price: .12 },
-  coal: { name: 'Уголь', color: '#657080', price: .10 },
-  oil: { name: 'Нефть', color: '#9A7DA8', price: .20 },
-  gas: { name: 'Газ', color: '#70AFC0', price: .16 },
-  gold: { name: 'Золото', color: '#D1AF59', price: .35 },
-  copper: { name: 'Медь', color: '#CB9062', price: .14 },
-  uranium: { name: 'Уран', color: '#ADD16D', price: .25 },
-  timber: { name: 'Древесина', color: '#5F9987', price: .09 },
-  rare_materials: { name: 'Редкие материалы', color: '#B995C2', price: .28 },
-} as const;
-export type ResourceType = keyof typeof RESOURCES;
-export interface ResourceDeposit { type: ResourceType; richness: number }
-export const RESOURCE_TYPES = Object.keys(RESOURCES) as ResourceType[];
+import {RESOURCES,RESOURCE_TYPES,type ResourceType} from './resourceCatalogue.ts';
+export {RESOURCES,RESOURCE_TYPES,type ResourceType} from './resourceCatalogue.ts';
+export interface ResourceDeposit {type:ResourceType;richness:number}
 const distribution: ResourceType[] = ['food','food','food','timber','timber','iron','iron','coal','oil','gas','copper','gold','uranium','rare_materials'];
 function hash(value: string): number {
   let result = 2166136261;
@@ -61,7 +49,7 @@ export function provinceProduction(p: Province, country: Country): { units: numb
   const units = Math.round(p.income * richness / 100 * (.5 + development / 100) * (.5 + country.technology / 100) * (1 - unrest / 200) * (1 + techLevel(country, 'Industry') * .05) * 1000) / 1000;
   const revenue = Math.round(units * value / richness * 1000) / 1000;
   if (![units, revenue].every(n => Number.isFinite(n) && n >= 0 && n <= Number.MAX_SAFE_INTEGER / 1000)) throw new Error('Resource production overflow');
-  return { units, revenue };
+  return { units, revenue:country.stockpile?0:revenue };
 }
 export function resourceReport(state: GameState, countryId: string): { type: ResourceType; units: number; revenue: number }[] {
   const country = state.countries[countryId];

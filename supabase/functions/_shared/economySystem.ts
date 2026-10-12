@@ -68,7 +68,7 @@ export function recalcEconomy(state: GameState): void {
     const meanDevelopment = people > 0 ? (development.get(c.id) ?? 0) / people : 0;
     const tradeIncome = money(rawTrade * (.1 + (diplomatic.tradeBonus.get(c.id) ?? 0)) * meanDevelopment / 100 * (.5 + c.stability / 200)*policy.trade*(1+course.trade));
     const sabotage=espionageModifiers(state,c.id).productionMultiplier;
-    const resourceIncome = money((resources.get(c.id) ?? 0)*sabotage*policy.production*(1+course.production)), buildingMaintenance = buildingCosts.get(c.id) ?? 0;
+    const resourceIncome = money(c.stockpile?c.stockpile.tradeRevenue:(resources.get(c.id) ?? 0)*sabotage*policy.production*(1+course.production)), buildingMaintenance = buildingCosts.get(c.id) ?? 0;
     const productionIncome=money((production.get(c.id)??0)*sabotage*policy.production*(1+course.production)),administrationMaintenance=money((administration.get(c.id)??0)*policy.administration*(1-course.administration));
     const monthlyIncome = money(taxIncome + tradeIncome + resourceIncome + productionIncome);
     c.militaryUpkeepBase=money(militaryCosts.get(c.id)??0);
@@ -76,11 +76,12 @@ export function recalcEconomy(state: GameState): void {
     const interest = money(c.debt! * MONTHLY_INTEREST);
     const diplomaticMaintenance = diplomatic.costs.get(c.id) ?? 0;
     const researchMaintenance=researchMonthlyCost(c,state.tick);
-    const monthlyBalance = money(monthlyIncome - armyMaintenance - buildingMaintenance - interest - administrationMaintenance - diplomaticMaintenance-researchMaintenance);
+    const importExpense=c.stockpile?.importExpense??0;
+    const monthlyBalance = money(monthlyIncome - importExpense - armyMaintenance - buildingMaintenance - interest - administrationMaintenance - diplomaticMaintenance-researchMaintenance);
     const creditLimit = state.tick < c.bankruptcyUntilTick! ? 0 : money(monthlyIncome * 24);
     c.income = taxIncome;
     c.army = troops.get(c.id) ?? 0;
-    c.economy = { productionIncome, administrationMaintenance, diplomaticMaintenance,researchMaintenance,taxIncome, tradeIncome, resourceIncome, monthlyIncome, armyMaintenance, buildingMaintenance, interest, monthlyBalance, creditLimit };
+    c.economy = { importExpense,productionIncome, administrationMaintenance, diplomaticMaintenance,researchMaintenance,taxIncome, tradeIncome, resourceIncome, monthlyIncome, armyMaintenance, buildingMaintenance, interest, monthlyBalance, creditLimit };
   }
 }
 
@@ -88,11 +89,11 @@ export function recalcEconomy(state: GameState): void {
 export function refreshArmyBudget(c: Country): void {
   if (!c.economy) return;
   c.economy.armyMaintenance = money((c.militaryUpkeepBase??c.army/1000*ARMY_MAINTENANCE_PER_THOUSAND)*militaryFundingCost(c));
-  c.economy.monthlyBalance = money(c.economy.monthlyIncome - c.economy.armyMaintenance - c.economy.buildingMaintenance - c.economy.interest - c.economy.administrationMaintenance - (c.economy.diplomaticMaintenance??0)-(c.economy.researchMaintenance??0));
+  c.economy.monthlyBalance = money(c.economy.monthlyIncome - (c.economy.importExpense??0) - c.economy.armyMaintenance - c.economy.buildingMaintenance - c.economy.interest - c.economy.administrationMaintenance - (c.economy.diplomaticMaintenance??0)-(c.economy.researchMaintenance??0));
 }
 export function refreshResearchBudget(c:Country):void {
   if(!c.economy)return;c.economy.researchMaintenance=researchMonthlyCost(c);
-  c.economy.monthlyBalance=money(c.economy.monthlyIncome-c.economy.armyMaintenance-c.economy.buildingMaintenance-c.economy.interest-c.economy.administrationMaintenance-(c.economy.diplomaticMaintenance??0)-c.economy.researchMaintenance);
+  c.economy.monthlyBalance=money(c.economy.monthlyIncome-(c.economy.importExpense??0)-c.economy.armyMaintenance-c.economy.buildingMaintenance-c.economy.interest-c.economy.administrationMaintenance-(c.economy.diplomaticMaintenance??0)-c.economy.researchMaintenance);
 }
 
 export function initializeEconomy(state: GameState): void {

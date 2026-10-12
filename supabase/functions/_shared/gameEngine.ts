@@ -1,3 +1,4 @@
+import {extractResources,domesticConsumption,processResourceTrade,updateResourceMarkets,offerResourceTrade} from './stockpileSystem.ts';
 import {periodicMilitaryAI} from './ai3System.ts';
 import {beginBattle,dailyMilitary,mergeArmies,splitArmy,armyInBattle,militaryEntity} from './military3System.ts';
 import {advanceDate,requestPause} from './calendarSystem.ts';
@@ -167,6 +168,13 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
   const next = clone(state);
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   switch (command.type) {
+    case 'SET_INDUSTRY_POLICY':case 'OFFER_RESOURCE_TRADE':case 'RESPOND_RESOURCE_TRADE':case 'CANCEL_RESOURCE_TRADE':{
+      if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const c=countryFor(next,p.countryId);
+      if(command.type==='SET_INDUSTRY_POLICY')Object.assign(c.stockpile!,{autoTrade:command.autoTrade,autoRepair:command.autoRepair,priority:command.priority});
+      else if(command.type==='OFFER_RESOURCE_TRADE')offerResourceTrade(next,c.id,command.targetId,command.resource,command.quantity,command.mode);
+      else {const contract=next.tradeContracts?.find(x=>x.id===command.contractId);if(!contract||![contract.exporterId,contract.importerId].includes(c.id))throw Error('Недоступный контракт');if(command.type==='CANCEL_RESOURCE_TRADE')next.tradeContracts=next.tradeContracts?.filter(x=>x.id!==contract.id);else {if(contract.accepted||contract.offeredBy===c.id)throw Error('Предложение недоступно');if(command.accept)contract.accepted=true;else next.tradeContracts=next.tradeContracts?.filter(x=>x.id!==contract.id);}}
+      recalcEconomy(next);return next;
+    }
     case 'ROUTE_ARMY':case 'MERGE_ARMIES':case 'SPLIT_ARMY':case 'SET_FORMATION':case 'ESCORT_ARMY':case 'SET_ARMY_GROUP':{
       if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const owner=p.countryId;
       if(command.type==='MERGE_ARMIES')mergeArmies(next,owner,command.armyIds);
@@ -393,7 +401,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }
-      monthlyReligionEffects(next); monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
+      monthlyReligionEffects(next);extractResources(next);processResourceTrade(next);domesticConsumption(next);updateResourceMarkets(next); monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
     }
   }
 }
