@@ -138,10 +138,19 @@
   ],
   "apkUrl": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.0-playtest.1/Dominion-2.1-playtest.apk",
   "publicationStatus": "PUBLISHED_VERIFIED",
-  "publicationRunId": 38279775927,
-  "publicationCommit": "163fc9d168275e49717093add3bfbc7dee37fc8e",
+  "publicationRunId": 38281006243,
+  "publicationCommit": "0e98924274fb186781e5ae18377783e5fd912347",
   "releaseId": 410820472,
   "apkAssetId": 634369195,
   "publicApkByteMatch": true,
-  "original20AssetsPreserved": true
+  "original20AssetsPreserved": true,
+  "downloadArchive": {
+    "name": "Dominion-2.1-playtest.zip",
+    "bytes": 61153443,
+    "sha256": "0f5c23a3b4ab3043cdb02dc92d81a7648d237a4e7d80200ddc61e0b2f8f94783",
+    "embeddedApkSha256": "266be7d09b7ee5b1528d3391538d929aed2e972493e3d30d3f8402ba28f47fc8",
+    "url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.0-playtest.1/Dominion-2.1-playtest.zip",
+    "assetId": 634393299,
+    "publicByteMatch": true
+  }
 }
