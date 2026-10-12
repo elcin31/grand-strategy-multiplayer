@@ -9,11 +9,12 @@ import sys
 from pathlib import Path
 from perfetto.trace_processor import TraceProcessor
 from camera_trace_analysis import analyze_trace
+from camera_trace_scenarios import GESTURE_MARKERS, trace_filename
 
 out = Path(sys.argv[1])
 capture = json.loads((out / 'trace-capture.json').read_text())
 filename = capture['traceFile']
-assert filename in ['pinch.pftrace', 'world-pan.pftrace', 'local-pan.pftrace', 'military-pan.pftrace']
+assert filename in [trace_filename(s) for s in GESTURE_MARKERS]
 raw = out / filename
 assert raw.stat().st_size == capture['traceBytes'], 'Wrong raw trace length'
 assert hashlib.sha256(raw.read_bytes()).hexdigest() == capture['traceSha256'], 'Wrong raw trace SHA'

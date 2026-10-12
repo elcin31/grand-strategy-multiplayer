@@ -1,3 +1,11 @@
+# Exact 6f5 native result: six gates passed, camera rejected (2026-10-12)
+
+Run38208776998 is complete. Its exact signed595b3936 APK passes build,10000ticks,liveHTTP,upgrade,native-online and full offline smoke. Verified camera ZIP11729289623/17774895bytes/SHAa2479dc5ae6b5532536305488d03e8ee38e334d9a1e070f997b7bcbdc32ad311 retains all36 raw captures. Two original20% compositorP99 violations: forward terrain69.984243→87.596072ms and reverse closed-panel63.912635→79.419691ms. All18PSS checks pass. Complete original failed gate remains unchanged; no accepted manifest/publication/delivery.
+
+Verified smoke ZIP11732405357/30198232bytes/SHA28ee58b9b4076744957962514bb459a846a588b7453c4f724e3e5e36e7cea252 contains1824.814387959s real native soak and30PSS447769–527020KiB samples. CRC/hash/length verified locally; not handset evidence. Raw target workloads have no raster/path builds, lowJS and greaterUI work. Narrow matched terrain/closed-panel CPU trace diagnostics use this same immutable binary and original paused fixture, with actual PID/markers; they cannot replace original measurements. Current source unit changes only diagnostic scripts/tests/config and reports, not the app or gameplay. Exact details: TEXTURE_OPACITY_NATIVE_QA_2026-10-12.json; DEVELOPMENT_HANDOFF.md. Four guarded QA-fixture deletes remain pending; original29backups protected.
+
+---
+
 # Source-verified native opacity correction awaits fresh exact-binary QA (2026-10-12)
 
 Prior814/382000 completes with six passing gates and two actual reversecameraP99 violations. Original actualnative1844.98005752s/rawPSS/hash verified; prior outcomes preserved, no acceptance. Actual4world/military CPU captures and queries recorded inTEXTURE_OPACITY_SOURCE_QA_2026-10-12.json, with helperfilename correction applied to existing files only. Candidate guardedAndroidTextureView-opacity plugin has313JS/103Python0skips/strictTS/realExpoPrebuild/nativeconfig/sourceproof/productionHermesPASS. App/version/signature/backend/game mechanics/42art/nativeTextureView presentation unchanged. New native source requires its own fresh full seven-gate binary proof before promotion/publication/delivery.

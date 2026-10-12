@@ -1,0 +1,637 @@
+{
+  "status": "REJECTED_CAMERA_P99_SIX_OTHER_GATES_PASSED",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "runtime": "6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2",
+  "runId": 38208776998,
+  "sourceCi": {
+    "runtime": "6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2",
+    "tree": "ba7b49ca1cb4f7f7d3eec4d8216177d4d7a7f17b",
+    "sourceRunId": 38208485498,
+    "sourceJobId": 114677159781,
+    "strictTypecheck": true,
+    "js": {
+      "tests": 313,
+      "passed": 313,
+      "skipped": 0
+    },
+    "python": {
+      "tests": 103,
+      "passed": 103,
+      "skipped": 0,
+      "pinnedPerfetto": "0.58.2"
+    },
+    "actualAndroidPrebuild": true,
+    "nativeTextureAndLandscapeVerifier": true,
+    "originalArt": 42,
+    "hermes": {
+      "path": "source-hermes-qa/_expo/static/js/android/AppEntry-eeeecedbf7b3b05c64de7257eb486490.hbc",
+      "bytes": 11484254,
+      "sha256": "e60a9fd3f6f0a640902a3541cee7d39a39a28cf4d9a24e0f8ea2879a13c20d29",
+      "magic": "c61fbc03c103191f"
+    },
+    "fullRunId": 38208776998,
+    "nativePerformanceAccepted": false,
+    "releaseAccepted": false
+  },
+  "jobs": [
+    {
+      "id": 114678056303,
+      "name": "long-simulation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 114678056315,
+      "name": "build-apk",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 114678056609,
+      "name": "backend-live / live-world",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 114681764304,
+      "name": "camera-comparison",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 114681764310,
+      "name": "android-smoke",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 114681764348,
+      "name": "android-upgrade / release-upgrade-save",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 114681764537,
+      "name": "android-online / native-online",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "artifactMetadata": [
+    {
+      "id": 11729136292,
+      "name": "world-backend-qa-room-id",
+      "bytes": 202,
+      "sha256": "5d7a19138301e2324da3e0a0fa923957f6ae45fe6ccc9f73f17ed72ef7e9cdcd",
+      "sourceRuntime": "6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2"
+    },
+    {
+      "id": 11728727377,
+      "name": "dominion-upgrade-save-evidence",
+      "bytes": 2728765,
+      "sha256": "5cc206109be248fcbaf63885b365c7f27087bf754d45c01f9a0464a32a2758be",
+      "sourceRuntime": "6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2"
+    },
+    {
+      "id": 11728614328,
+      "name": "dominion-native-online-evidence",
+      "bytes": 2193513,
+      "sha256": "fd32ddcc53c886de8e9501f45ba66dc6b9eefbabf29cc6c53ec548a4c1f468e0",
+      "sourceRuntime": "6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2"
+    },
+    {
+      "id": 11728581796,
+      "name": "world-backend-expansion-evidence",
+      "bytes": 608,
+      "sha256": "4982f8edc72e18d27899371fb91dd5ab6c0734dea95577db23af5174475fd46e",
+      "sourceRuntime": "6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2"
+    },
+    {
+      "id": 11728507388,
+      "name": "dominion-camera-illustrated-release",
+      "bytes": 62291806,
+      "sha256": "a135d2b7497498fb2d908f2046a8578dce4afda7eabbffb00e1896b0ef6186f5",
+      "sourceRuntime": "6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2"
+    },
+    {
+      "id": 11728406960,
+      "name": "dominion-backend-bundles",
+      "bytes": 913370,
+      "sha256": "23ab399b29816e40b848d3e45de7bcb61cd6b31a7950dd9105097e59f0b96408",
+      "sourceRuntime": "6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2"
+    },
+    {
+      "id": 11728242870,
+      "name": "final-long-simulation-evidence",
+      "bytes": 2545,
+      "sha256": "2d82214c9605359de07d200e35ee4a82b80959aa80e6eeeb610ad1bf81789356",
+      "sourceRuntime": "6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2"
+    }
+  ],
+  "apk": {
+    "apkSha256": "595b39364782344b7d2ee72809ca6bab91977ed72ef3868351cb90b75923b140",
+    "apkBytes": 142482149,
+    "hermesBytes": 10698748,
+    "hermesSha256": "91cff7aa7526139de133acf85921dc99f470e105b80d254d06e67b080eb6e088",
+    "hermesMagic": "c61fbc03c103191f",
+    "apkCrcVerified": true,
+    "actualNativeTextureProof": {
+      "skiaVersion": "2.6.2",
+      "backend": "TextureView",
+      "textureOpaque": true,
+      "soleCanvas": "src/components/WorldMap.tsx",
+      "fullOpaqueFill": "#203B48",
+      "nativePath": "node_modules/@shopify/react-native-skia/android/src/main/java/com/shopify/reactnative/skia/SkiaTextureView.java",
+      "nativeSourceSha256": "e67324d73e38a3606bffaa88fb6b3218b57b9dfa2abe94b9e9e0be4f950a172a",
+      "baseViewSha256": "e4c9848f898f05463d8b042c52cba5f92d6351a3d572d552415cd4545d4ef84e",
+      "baseViewUnchanged": true
+    }
+  },
+  "backend": {
+    "roomId": "7410ebdc-e5ef-41fc-bb40-7180ca632fda",
+    "stateVersion": 18,
+    "tick": 21,
+    "featuresVerified": true,
+    "hostMigrationVerified": true,
+    "completedFocuses": [
+      {
+        "focusId": "eco-audit",
+        "tick": 9
+      }
+    ],
+    "scientificDiscoveries": [
+      "science-method"
+    ],
+    "spyResults": [
+      {
+        "kind": "PoliticalIntrigue",
+        "tick": 18,
+        "outcome": "Success",
+        "detected": true
+      },
+      {
+        "kind": "Sabotage",
+        "tick": 16,
+        "outcome": "Failure",
+        "detected": true
+      },
+      {
+        "kind": "IntelligenceGathering",
+        "tick": 6,
+        "outcome": "Success",
+        "detected": false
+      },
+      {
+        "kind": "Counterintelligence",
+        "tick": 5,
+        "outcome": "Success",
+        "detected": false
+      }
+    ],
+    "paidRelationChange": 27,
+    "humanTreaties": [
+      "NonAggression",
+      "TradeAgreement"
+    ],
+    "note": "Scoped existing production HTTP QA. No tokens, player IDs or whole snapshots in evidence.",
+    "finalTick": 47,
+    "finalSchema": 18
+  },
+  "longSimulation": {
+    "ticks": 10000,
+    "countries": 195,
+    "provinces": 2924,
+    "cities": 5411,
+    "restores": 10,
+    "warsObserved": 12618,
+    "peaceCount": 12602,
+    "battles": 4235,
+    "movementTicks": 9946,
+    "maxWarAge": 11,
+    "maxArmies": 451,
+    "maxSnapshotBytes": 4487736,
+    "tickP95Ms": 96.99404300001333,
+    "samples": [
+      {
+        "tick": 1000,
+        "bytes": 4324604,
+        "heapUsed": 52265048,
+        "rss": 356622336,
+        "armies": 237,
+        "wars": 13,
+        "peaceCount": 1274,
+        "bankruptCountries": 9,
+        "treasuryMax": 10190269.335,
+        "population": 13799445475,
+        "populationRatio": 1.8080435510615582,
+        "settlementCapacity": 24472490124,
+        "completedFocuses": 2438,
+        "scientificDiscoveries": 562,
+        "elapsedSeconds": 73
+      },
+      {
+        "tick": 2000,
+        "bytes": 4416670,
+        "heapUsed": 54193856,
+        "rss": 453910528,
+        "armies": 344,
+        "wars": 13,
+        "peaceCount": 2639,
+        "bankruptCountries": 30,
+        "treasuryMax": 27614776.525,
+        "population": 19334995051,
+        "populationRatio": 2.533327384430112,
+        "settlementCapacity": 24683088691,
+        "completedFocuses": 2747,
+        "scientificDiscoveries": 728,
+        "elapsedSeconds": 161
+      },
+      {
+        "tick": 3000,
+        "bytes": 4453454,
+        "heapUsed": 54816960,
+        "rss": 459141120,
+        "armies": 394,
+        "wars": 18,
+        "peaceCount": 3922,
+        "bankruptCountries": 36,
+        "treasuryMax": 49708625.241,
+        "population": 22554812745,
+        "populationRatio": 2.955197279693465,
+        "settlementCapacity": 24777016414,
+        "completedFocuses": 2794,
+        "scientificDiscoveries": 781,
+        "elapsedSeconds": 249
+      },
+      {
+        "tick": 4000,
+        "bytes": 4474767,
+        "heapUsed": 55323680,
+        "rss": 464965632,
+        "armies": 428,
+        "wars": 16,
+        "peaceCount": 5169,
+        "bankruptCountries": 38,
+        "treasuryMax": 73882882.667,
+        "population": 23951578465,
+        "populationRatio": 3.1382055938293525,
+        "settlementCapacity": 24782261878,
+        "completedFocuses": 2819,
+        "scientificDiscoveries": 795,
+        "elapsedSeconds": 328
+      },
+      {
+        "tick": 5000,
+        "bytes": 4471174,
+        "heapUsed": 55504888,
+        "rss": 492228608,
+        "armies": 434,
+        "wars": 18,
+        "peaceCount": 6399,
+        "bankruptCountries": 40,
+        "treasuryMax": 98835927.435,
+        "population": 24481389830,
+        "populationRatio": 3.2076230224863815,
+        "settlementCapacity": 24783227976,
+        "completedFocuses": 2832,
+        "scientificDiscoveries": 797,
+        "elapsedSeconds": 408
+      },
+      {
+        "tick": 6000,
+        "bytes": 4483632,
+        "heapUsed": 55823944,
+        "rss": 467775488,
+        "armies": 435,
+        "wars": 14,
+        "peaceCount": 7628,
+        "bankruptCountries": 40,
+        "treasuryMax": 124038148.644,
+        "population": 24677188293,
+        "populationRatio": 3.2332771075709066,
+        "settlementCapacity": 24800974889,
+        "completedFocuses": 2835,
+        "scientificDiscoveries": 801,
+        "elapsedSeconds": 487
+      },
+      {
+        "tick": 7000,
+        "bytes": 4478898,
+        "heapUsed": 56245808,
+        "rss": 472268800,
+        "armies": 439,
+        "wars": 13,
+        "peaceCount": 8864,
+        "bankruptCountries": 42,
+        "treasuryMax": 149330681.859,
+        "population": 24754528939,
+        "populationRatio": 3.2434105043431587,
+        "settlementCapacity": 24801479404,
+        "completedFocuses": 2841,
+        "scientificDiscoveries": 803,
+        "elapsedSeconds": 566
+      },
+      {
+        "tick": 8000,
+        "bytes": 4484308,
+        "heapUsed": 56441664,
+        "rss": 474951680,
+        "armies": 445,
+        "wars": 15,
+        "peaceCount": 10107,
+        "bankruptCountries": 43,
+        "treasuryMax": 174649965.651,
+        "population": 24783566722,
+        "populationRatio": 3.24721511927391,
+        "settlementCapacity": 24801479404,
+        "completedFocuses": 2844,
+        "scientificDiscoveries": 804,
+        "elapsedSeconds": 646
+      },
+      {
+        "tick": 9000,
+        "bytes": 4487736,
+        "heapUsed": 56551096,
+        "rss": 475832320,
+        "armies": 447,
+        "wars": 9,
+        "peaceCount": 11354,
+        "bankruptCountries": 44,
+        "treasuryMax": 199984024.64,
+        "population": 24794470048,
+        "populationRatio": 3.248643704813462,
+        "settlementCapacity": 24801479404,
+        "completedFocuses": 2846,
+        "scientificDiscoveries": 806,
+        "elapsedSeconds": 727
+      },
+      {
+        "tick": 10000,
+        "bytes": 4484485,
+        "heapUsed": 56801416,
+        "rss": 476381184,
+        "armies": 446,
+        "wars": 16,
+        "peaceCount": 12602,
+        "bankruptCountries": 44,
+        "treasuryMax": 225307782.924,
+        "population": 24798640582,
+        "populationRatio": 3.249190140329066,
+        "settlementCapacity": 24801479404,
+        "completedFocuses": 2849,
+        "scientificDiscoveries": 806,
+        "elapsedSeconds": 806
+      }
+    ],
+    "note": "Full-world deterministic AI simulation; seeded initial legal war, no physical device or network claim"
+  },
+  "upgrade": {
+    "baseline": {
+      "package": "com.elcin31.grandstrategymultiplayer",
+      "versionCode": 9,
+      "versionName": "0.8.1",
+      "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+    },
+    "candidate": {
+      "package": "com.elcin31.grandstrategymultiplayer",
+      "versionCode": 10,
+      "versionName": "2.0.0",
+      "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+    },
+    "appUidRetained": true,
+    "privateCampaignFilesRetained": true,
+    "encryptedPreferenceBytesRetainedBeforeLaunch": true,
+    "actualSecureStorePreferencesAfterUpdate": {
+      "preset": "High",
+      "frameRate": 30,
+      "adaptive": false
+    },
+    "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+    "originalWorld": {
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411
+    },
+    "oldSchema": 12,
+    "newSchema": 18,
+    "oldSaveSha256": "f3788582cc53bee5c30ac972dec09be09a896deabd30570542271f02654c99d3",
+    "migrationBackupSha256": {
+      "before-expansion-v13": "f3788582cc53bee5c30ac972dec09be09a896deabd30570542271f02654c99d3",
+      "before-espionage-v14": "f3788582cc53bee5c30ac972dec09be09a896deabd30570542271f02654c99d3",
+      "before-economy-v15": "f3788582cc53bee5c30ac972dec09be09a896deabd30570542271f02654c99d3",
+      "before-military-v16": "f3788582cc53bee5c30ac972dec09be09a896deabd30570542271f02654c99d3",
+      "before-technology-v17": "f3788582cc53bee5c30ac972dec09be09a896deabd30570542271f02654c99d3",
+      "before-focus-v18": "f3788582cc53bee5c30ac972dec09be09a896deabd30570542271f02654c99d3"
+    },
+    "repeatBackupBytesUnchanged": true,
+    "actualCandidateRestart": true,
+    "finalVersionUpgrade": true,
+    "note": "Real offline ephemeral-emulator package replacement, native save/load/backups and encrypted graphics preference round-trip. No production-session reconnect or hardware FPS claim."
+  },
+  "online": {
+    "roomId": "4177cdc8-3cc2-4089-a41d-ef6b9f7c256b",
+    "qaName": "NATIVE ONLINE QA",
+    "stateVersion": 18,
+    "apkSha256": "595b39364782344b7d2ee72809ca6bab91977ed72ef3868351cb90b75923b140",
+    "nativeCreate": true,
+    "nativeCountrySelection": "germany",
+    "serverPaused": true,
+    "nativePaidFocus": "eco-audit",
+    "menuReconnect": true,
+    "processReconnect": true,
+    "realHostMigration": true,
+    "nativeOwnerReturn": true,
+    "rebootReconnect": true,
+    "sameNativeUidAndSessionKeys": true,
+    "onceOnlyFocusPaymentRetained": true,
+    "members": 2,
+    "cleanup": "PENDING",
+    "note": "Actual existing production HTTP and signed native controls; no tokens or snapshots in evidence."
+  },
+  "localArchiveIntegrity": {
+    "release": true,
+    "backend": true,
+    "long": true,
+    "upgrade": true,
+    "online": true
+  },
+  "localStandaloneAndAll42ArtVerifier": true,
+  "qaCleanup": {
+    "status": "PENDING",
+    "roomsRemaining": 4,
+    "playersRemaining": 20,
+    "receiptsRemaining": 118,
+    "preservedCityBackups": 29,
+    "reviews": [
+      {
+        "id": "ee67f680-249f-4c11-aff1-07214c8db1bf",
+        "created_at": "2026-10-12 03:31:10.740389+00",
+        "city_v12_backup_at": null,
+        "original_backup_null": true,
+        "compressed_backup_null": true,
+        "players": 8,
+        "members": [
+          {
+            "host": false,
+            "name": "QA guest 0"
+          },
+          {
+            "host": false,
+            "name": "QA guest 1"
+          },
+          {
+            "host": false,
+            "name": "QA guest 2"
+          },
+          {
+            "host": false,
+            "name": "QA guest 3"
+          },
+          {
+            "host": false,
+            "name": "QA guest 4"
+          },
+          {
+            "host": false,
+            "name": "QA guest 5"
+          },
+          {
+            "host": false,
+            "name": "QA guest 6"
+          },
+          {
+            "host": true,
+            "name": "WORLD ECONOMY QA"
+          }
+        ],
+        "receipts": 52
+      },
+      {
+        "id": "c9d212ad-72d6-4c21-bcdd-5db1f77f4298",
+        "created_at": "2026-10-12 03:50:32.015893+00",
+        "city_v12_backup_at": null,
+        "original_backup_null": true,
+        "compressed_backup_null": true,
+        "players": 2,
+        "members": [
+          {
+            "host": true,
+            "name": "NATIVE ONLINE QA"
+          },
+          {
+            "host": false,
+            "name": "NATIVE ONLINE QA GUEST"
+          }
+        ],
+        "receipts": 7
+      },
+      {
+        "id": "7410ebdc-e5ef-41fc-bb40-7180ca632fda",
+        "created_at": "2026-10-12 05:38:09.80015+00",
+        "city_v12_backup_at": null,
+        "original_backup_null": true,
+        "compressed_backup_null": true,
+        "players": 8,
+        "members": [
+          {
+            "host": false,
+            "name": "QA guest 0"
+          },
+          {
+            "host": false,
+            "name": "QA guest 1"
+          },
+          {
+            "host": false,
+            "name": "QA guest 2"
+          },
+          {
+            "host": false,
+            "name": "QA guest 3"
+          },
+          {
+            "host": false,
+            "name": "QA guest 4"
+          },
+          {
+            "host": false,
+            "name": "QA guest 5"
+          },
+          {
+            "host": false,
+            "name": "QA guest 6"
+          },
+          {
+            "host": true,
+            "name": "WORLD ECONOMY QA"
+          }
+        ],
+        "receipts": 52
+      },
+      {
+        "id": "4177cdc8-3cc2-4089-a41d-ef6b9f7c256b",
+        "created_at": "2026-10-12 05:55:55.797403+00",
+        "city_v12_backup_at": null,
+        "original_backup_null": true,
+        "compressed_backup_null": true,
+        "players": 2,
+        "members": [
+          {
+            "host": true,
+            "name": "NATIVE ONLINE QA"
+          },
+          {
+            "host": false,
+            "name": "NATIVE ONLINE QA GUEST"
+          }
+        ],
+        "receipts": 7
+      }
+    ],
+    "writeFailure": "McpServerError: Invalid or expired requestState",
+    "guardedScript": "QA_CLEANUP_PENDING_2026-10-12.sql",
+    "scriptExecuted": false
+  },
+  "performanceAccepted": false,
+  "releaseAccepted": false,
+  "physicalRedmiTested": false,
+  "camera": {
+    "diagnosticOnly": true,
+    "allFourCapturesComplete": true,
+    "scenariosPerLaunch": 9,
+    "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+    "fixtureStateChecksum": "e8befae1",
+    "comparisonGateViolations": [
+      {
+        "scenario": "forward:06-terrain-pan",
+        "gate": "compositor:p99Ms",
+        "before": 69.984243,
+        "after": 87.596072
+      },
+      {
+        "scenario": "reverse:09-panel-closed",
+        "gate": "compositor:p99Ms",
+        "before": 63.912635,
+        "after": 79.419691
+      }
+    ],
+    "comparisonGatesPassed": false,
+    "note": "Original20% PSS/other and10% pinch limits retained. Complete captures allow diagnosis; they do not establish final native or physical-device acceptance.",
+    "rawArtifactId": 11729289623,
+    "zipBytes": 17774895,
+    "zipSha256": "a2479dc5ae6b5532536305488d03e8ee38e334d9a1e070f997b7bcbdc32ad311"
+  },
+  "smoke": {
+    "jobId": 114681764310,
+    "rawArtifactId": 11732405357,
+    "zipBytes": 30198232,
+    "zipSha256": "28ee58b9b4076744957962514bb459a846a588b7453c4f724e3e5e36e7cea252",
+    "crcVerified": true,
+    "durationSeconds": 1824.8143879589998,
+    "durationFileSha256": "eaafbe34236d872b24b4eeba9b7f81fbe2adaaede0278a6874d290ce0408c0c6",
+    "pssSamples": 30,
+    "pssMinKiB": 447769,
+    "pssMaxKiB": 527020,
+    "note": "Completed API35 software emulator smoke and soak. Does not accept failed camera gates or establish physical-device FPS."
+  }
+}

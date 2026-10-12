@@ -1,9 +1,10 @@
 """Evidence from a real device marker only; incomplete capture stays incomplete."""
+from camera_trace_scenarios import GESTURE_MARKERS
 
 
 def analyze_trace(trace, pid, digest, marker='DOMINION_PINCH_TRACE'):
     assert isinstance(pid, int) and not isinstance(pid, bool) and pid > 0
-    assert marker in ['DOMINION_PINCH_TRACE','DOMINION_WORLD_PAN_TRACE','DOMINION_LOCAL_PAN_TRACE','DOMINION_MILITARY_PAN_TRACE'], 'Unsupported real-gesture marker'
+    assert marker in GESTURE_MARKERS.values(), 'Unsupported real-gesture marker'
     diagnostics = [dict(name=r.name, index=r.idx, value=r.value, severity=r.severity)
                    for r in trace.query("SELECT name,idx,value,severity FROM stats WHERE value>0 AND "
                                         "(severity IN ('error','data_loss') OR name LIKE '%overrun%' "

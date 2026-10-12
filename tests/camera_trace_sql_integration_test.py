@@ -14,6 +14,25 @@ except ImportError:
 
 @unittest.skipIf(TraceProcessor is None, 'Pinned host-only trace analyzer is installed in diagnostic CI')
 class TraceSqlIntegrationTest(unittest.TestCase):
+    def test_new_workloads_resolve_only_the_actual_marker_and_game_pid(self):
+        for marker in ['DOMINION_TERRAIN_PAN_TRACE', 'DOMINION_PANEL_CLOSED_PAN_TRACE']:
+            with self.subTest(marker=marker):
+                raw = ('# tracer: nop\n'
+                       f' writer-101 ( 101) [000] .... 1.000000: tracing_mark_write: S|42|{marker}|101\n'
+                       f' writer-102 ( 102) [000] .... 1.001000: tracing_mark_write: S|99|{marker}|101\n'
+                       ' writer-103 ( 103) [000] .... 1.002000: tracing_mark_write: S|42|DOMINION_PINCH_TRACE|101\n'
+                       f' writer-104 ( 104) [000] .... 1.013000: tracing_mark_write: F|42|{marker}|101\n'
+                       f' writer-105 ( 105) [000] .... 1.020000: tracing_mark_write: F|99|{marker}|101\n'
+                       ' writer-106 ( 106) [000] .... 1.030000: tracing_mark_write: F|42|DOMINION_PINCH_TRACE|101\n')
+                with tempfile.NamedTemporaryFile(mode='w', suffix='.systrace') as f:
+                    f.write(raw); f.flush()
+                    with TraceProcessor(trace=f.name) as trace:
+                        report = analyze_trace(trace, 42, 'synthetic', marker)
+                self.assertTrue(report['markerValid'])
+                self.assertAlmostEqual(report['markerDurationMs'], 13, places=5)
+                self.assertEqual(len(report['markerCandidates']), 1)
+                self.assertFalse(report['attributionComplete'])
+
     def test_async_android_marker_from_separate_shell_writers_matches_only_game_pid(self):
         # The real capture writes from two short-lived shell processes, while
         # the async marker's explicit PID identifies the live game process.

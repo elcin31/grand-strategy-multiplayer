@@ -1,8 +1,8 @@
-name: Dominion auxiliary world and military CPU traces
+name: Dominion auxiliary terrain and closed-panel CPU traces
 on:
   push:
     branches: [expansion-camera-qa]
-    paths: [.github/workflows/expansion-camera-trace.yml, scripts/analyze-camera-cpu.py, scripts/camera_system_trace.py, scripts/camera_trace_analysis.py, scripts/analyze-camera-trace.py, scripts/camera-trace-requirements.txt, scripts/camera_capture_validation.py, scripts/verify-camera-capture.py, tests/camera_capture_validation_test.py, tests/camera_system_trace_test.py, tests/camera_trace_analysis_test.py, tests/camera_trace_sql_integration_test.py]
+    paths: [.github/workflows/expansion-camera-trace.yml, scripts/analyze-camera-cpu.py, scripts/camera_system_trace.py, scripts/camera_trace_scenarios.py, scripts/camera_trace_analysis.py, scripts/analyze-camera-trace.py, scripts/camera-trace-requirements.txt, scripts/camera_capture_validation.py, scripts/verify-camera-capture.py, tests/camera_capture_validation_test.py, tests/camera_system_trace_test.py, tests/camera_trace_scenarios_test.py, tests/camera_trace_analysis_test.py, tests/camera_trace_sql_integration_test.py]
   workflow_dispatch:
 permissions:
   contents: read
@@ -18,9 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      CAMERA_CANDIDATE_RUNTIME: 4947ed0591732a9571f7031b7df57534492da6ee
+      CAMERA_CANDIDATE_RUNTIME: 6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2
       CAMERA_FIXTURE_PATH: camera-fixture/camera-fixture-101.1.json
-      CAMERA_CANDIDATE_RUN: '38200048313'
+      CAMERA_CANDIDATE_RUN: '38208776998'
       CAMERA_ALLOWED_STATE_VERSION: '18'
     steps:
       - uses: actions/checkout@v4
@@ -31,17 +31,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          git diff --exit-code 4947ed0591732a9571f7031b7df57534492da6ee HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38200048313 > source-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38200048313/jobs > source-jobs.json
-          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='4947ed0591732a9571f7031b7df57534492da6ee';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
+          git diff --exit-code 6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38208776998 > source-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38208776998/jobs > source-jobs.json
+          python -c "import json;r=json.load(open('source-run.json'));j=json.load(open('source-jobs.json'))['jobs'];assert r['head_sha']=='6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2';assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
       - name: Require completed paired capture job and preserve its failure status
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38200048313 > paired-run.json
-          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38200048313/jobs > paired-jobs.json
-          python -c "import json;r=json.load(open('paired-run.json'));j=json.load(open('paired-jobs.json'))['jobs'];assert r['head_sha']=='4947ed0591732a9571f7031b7df57534492da6ee';c=next(x for x in j if x['name']=='camera-comparison');assert c['status']=='completed';assert c['conclusion']=='failure'"
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38208776998 > paired-run.json
+          gh api repos/elcin31/grand-strategy-multiplayer/actions/runs/38208776998/jobs > paired-jobs.json
+          python -c "import json;r=json.load(open('paired-run.json'));j=json.load(open('paired-jobs.json'))['jobs'];assert r['head_sha']=='6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2';c=next(x for x in j if x['name']=='camera-comparison');assert c['status']=='completed';assert c['conclusion']=='failure'"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -65,7 +65,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38200048313
+          run-id: 38208776998
           name: dominion-camera-illustrated-release
       - uses: actions/download-artifact@v4
         with:
@@ -76,7 +76,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ github.token }}
-          run-id: 38200048313
+          run-id: 38208776998
           name: camera-native-paired-evidence
           path: paired-evidence
       - name: Require all four actual complete captures before separate diagnostics
@@ -86,7 +86,7 @@ jobs:
         run: |
           python scripts/verify-apk.py Dominion-grand-strategy-v2-release.apk
           python scripts/verify-release.py Dominion-grand-strategy-v2-release.apk > checkpoint-integrity.txt
-          python -c "import hashlib;assert hashlib.sha256(open('Dominion-grand-strategy-v2-release.apk','rb').read()).hexdigest()=='81484b477e8efb9ceb1809e2d3ae771c33683a96b2e54ce903d1c786b043acea'"
+          python -c "import hashlib;assert hashlib.sha256(open('Dominion-grand-strategy-v2-release.apk','rb').read()).hexdigest()=='595b39364782344b7d2ee72809ca6bab91977ed72ef3868351cb90b75923b140'"
       - name: Compile identical real gesture driver
         id: gesture
         run: |
@@ -108,16 +108,16 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar
-            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=world-pan CAMERA_PROFILE_OUT=trace-before-world python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
-            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=world-pan CAMERA_PROFILE_OUT=trace-after-world python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
-            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=military-pan CAMERA_PROFILE_OUT=trace-before-military python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
-            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=military-pan CAMERA_PROFILE_OUT=trace-after-military python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
+            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=terrain-pan CAMERA_PROFILE_OUT=trace-before-terrain python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
+            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=terrain-pan CAMERA_PROFILE_OUT=trace-after-terrain python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
+            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=panel-closed-pan CAMERA_PROFILE_OUT=trace-before-closed python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
+            CAMERA_TRACE_ONLY=1 CAMERA_TRACE_SCENARIO=panel-closed-pan CAMERA_PROFILE_OUT=trace-after-closed python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
       - name: Analyze all four actual traces and preserve incomplete captures
         if: always()
         run: |
           python - <<'PYTRACE'
           import subprocess,sys
-          results=[subprocess.run([sys.executable,'scripts/analyze-camera-trace.py',p]).returncode for p in ['trace-before-world','trace-after-world','trace-before-military','trace-after-military']]
+          results=[subprocess.run([sys.executable,'scripts/analyze-camera-trace.py',p]).returncode for p in ['trace-before-terrain','trace-after-terrain','trace-before-closed','trace-after-closed']]
           sys.exit(any(results))
           PYTRACE
       - name: Inspect actual scoped CPU samples; config is not evidence
@@ -125,18 +125,18 @@ jobs:
         run: |
           python - <<'PYCPU'
           import subprocess,sys
-          results=[subprocess.run([sys.executable,'scripts/analyze-camera-cpu.py',p]).returncode for p in ['trace-before-world','trace-after-world','trace-before-military','trace-after-military']]
+          results=[subprocess.run([sys.executable,'scripts/analyze-camera-cpu.py',p]).returncode for p in ['trace-before-terrain','trace-after-terrain','trace-before-closed','trace-after-closed']]
           sys.exit(any(results))
           PYCPU
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: expansion-world-military-cpu-traces
+          name: expansion-terrain-closed-cpu-traces
           path: |
-            trace-before-world/
-            trace-after-world/
-            trace-before-military/
-            trace-after-military/
+            trace-before-terrain/
+            trace-after-terrain/
+            trace-before-closed/
+            trace-after-closed/
             checkpoint-integrity.txt
             paired-run.json
             paired-jobs.json

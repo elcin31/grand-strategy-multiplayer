@@ -11,11 +11,11 @@ import json
 import subprocess
 import time
 from android_accessibility import assert_no_game_fatal
+from camera_trace_scenarios import GESTURE_MARKERS, trace_filename
 
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 DEVICE_TRACE = '/data/misc/perfetto-traces/dominion-camera.pftrace'
 MARKER = '/sys/kernel/tracing/trace_marker'
-GESTURE_MARKERS={'pinch':'DOMINION_PINCH_TRACE','world-pan':'DOMINION_WORLD_PAN_TRACE','local-pan':'DOMINION_LOCAL_PAN_TRACE','military-pan':'DOMINION_MILITARY_PAN_TRACE'}
 # The first real 20s capture wrote 22.9MiB and overwrote its start marker in
 # the old 16MiB ring. This is a separate diagnostic launch, never the benchmark.
 CONFIG = '''buffers { size_kb: 65536 fill_policy: RING_BUFFER }
@@ -46,7 +46,7 @@ data_sources { config { name: "linux.perf" perf_event_config {
 
 
 def capture_camera_trace(adb, out, gesture, popen=subprocess.Popen, pause=time.sleep, scenario='pinch'):
-    assert scenario in GESTURE_MARKERS, 'Unsupported trace-only camera scenario'
+    filename = trace_filename(scenario)
     gesture_marker=GESTURE_MARKERS[scenario]
     assert adb('shell', 'id', '-u').strip() == '0', 'Trace-only mode requires its own rooted CI emulator'
     pid = adb('shell', 'pidof', PACKAGE).strip()
@@ -78,7 +78,7 @@ def capture_camera_trace(adb, out, gesture, popen=subprocess.Popen, pause=time.s
     logs = adb('logcat', '-d')
     (out / 'trace-logcat.txt').write_text(logs)
     assert_no_game_fatal(logs,pid)
-    trace = out / (scenario+'.pftrace')
+    trace = out / filename
     adb('pull', DEVICE_TRACE, trace)
     raw = trace.read_bytes()
     assert len(raw) > 1024, 'Missing/empty system trace'

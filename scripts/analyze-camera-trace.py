@@ -9,11 +9,12 @@ import sys
 from pathlib import Path
 from perfetto.trace_processor import TraceProcessor
 from camera_trace_analysis import analyze_trace
+from camera_trace_scenarios import GESTURE_MARKERS, trace_filename
 
 out = Path(sys.argv[1])
 capture = json.loads((out / 'trace-capture.json').read_text())
 trace_file=capture.get('traceFile','pinch.pftrace')
-assert trace_file in ['pinch.pftrace','world-pan.pftrace','local-pan.pftrace','military-pan.pftrace'], 'Unsupported trace file'
+assert trace_file in [trace_filename(s) for s in GESTURE_MARKERS], 'Unsupported trace file'
 assert hashlib.sha256((out / trace_file).read_bytes()).hexdigest() == capture['traceSha256'], 'Corrupted/wrong trace file'
 with TraceProcessor(trace=str(out / trace_file)) as trace:
     report = analyze_trace(trace, capture['pid'], capture['traceSha256'],capture.get('gestureMarker','DOMINION_PINCH_TRACE'))

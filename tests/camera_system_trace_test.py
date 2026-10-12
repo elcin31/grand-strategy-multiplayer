@@ -62,7 +62,7 @@ class SystemTraceTest(unittest.TestCase):
             self.assertFalse(any(c[:2]==('shell','sh') for c in calls))
 
     def test_pan_marker_and_trace_file_identify_actual_selected_gesture(self):
-        for scenario,marker in [('world-pan','DOMINION_WORLD_PAN_TRACE'),('local-pan','DOMINION_LOCAL_PAN_TRACE'),('military-pan','DOMINION_MILITARY_PAN_TRACE')]:
+        for scenario,marker in [('world-pan','DOMINION_WORLD_PAN_TRACE'),('local-pan','DOMINION_LOCAL_PAN_TRACE'),('military-pan','DOMINION_MILITARY_PAN_TRACE'),('terrain-pan','DOMINION_TERRAIN_PAN_TRACE'),('panel-closed-pan','DOMINION_PANEL_CLOSED_PAN_TRACE')]:
             with tempfile.TemporaryDirectory() as directory:
                 result,calls,_=self.capture(Path(directory),scenario=scenario)
                 self.assertEqual(result['gestureMarker'],marker);self.assertEqual(result['traceFile'],scenario+'.pftrace')
