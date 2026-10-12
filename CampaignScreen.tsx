@@ -5,7 +5,7 @@ import {traceStartup} from './src/performance/startupTrace';
 import {recordMetrics} from './src/performance/telemetry';
 import {LaunchAction} from './src/ui/launchAction';
 import {LandscapeHUD} from './src/components/LandscapeHUD';
-import {SECTIONS,SECTION_LABELS,panelWidth,backAction,type Section} from './src/ui/landscape';
+import {SECTIONS,SECTION_LABELS,SECTION_ICONS,panelWidth,backAction,type Section} from './src/ui/landscape';
 import { campaignStore } from './src/persistence/nativeCampaignStore';
 import { useCallback, useMemo, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, AppState, BackHandler, Keyboard, LayoutAnimation, useWindowDimensions, Pressable, StatusBar, StyleSheet, Text, View, ScrollView } from 'react-native';
@@ -201,16 +201,16 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
       <View style={styles.content}>
         {launchBusy&&<View accessibilityRole="alert" style={{position:"absolute",top:0,bottom:0,left:0,right:0,zIndex:100,backgroundColor:"#101f2b",justifyContent:"center",alignItems:"center"}}><ActivityIndicator size="large" color={colors.gold}/><Text style={styles.exitText}>Запуск кампании…</Text></View>}
         <View style={styles.topbar}>
-          <View style={{maxWidth:gameStarted?115:220}}>
+          {!gameStarted&&<View style={{maxWidth:220}}>
             <Text style={[styles.brand,gameStarted&&{fontSize:15}]}>DOMINION</Text>
             <Text style={styles.subbrand}>{gameStarted ? `Ход ${state.tick} · ${state.phase === 'finished' ? 'КАМПАНИЯ ЗАВЕРШЕНА' : 'КАМПАНИЯ'}` : `Комната ${state.roomCode}`}</Text>
-          </View>
-          {selectedArmyId&&<Pressable accessibilityRole="button" style={styles.exitButton} onPress={deselectArmy}><Text style={styles.exitText}>СНЯТЬ ВЫБОР</Text></Pressable>}
-          {gameStarted&&<LandscapeHUD state={state} playerId={playerId??''} onCommand={sendCommand}/> }
+          </View>}
+          {selectedArmyId&&<Pressable accessibilityRole="button" style={styles.exitButton} onPress={deselectArmy}><Text style={styles.exitText}>↙</Text></Pressable>}
+          {gameStarted&&<LandscapeHUD state={state} playerId={playerId??''} onCommand={sendCommand} onNotifications={()=>{setSection('Notifications');setPanelOpen(v=>section==='Notifications'?!v:true);}}/> }
           {!gameStarted && <CountryPicker state={state} onPreview={id => { setPreviewCountryId(id); setFocusCountryId(id); setPanelOpen(true); }} />}
-          <Pressable style={styles.exitButton} onPress={() => setPanelOpen(!panelOpen)}><Text style={styles.exitText}>{panelOpen ? "ЗАКРЫТЬ ПАНЕЛЬ" : "УПРАВЛЕНИЕ"}</Text></Pressable>
-          {transport instanceof LocalTransport&&<Pressable accessibilityLabel="Сохранить кампанию" style={styles.exitButton} onPress={()=>void safeAction(async()=>{await campaignStore.save(state);setSaveStatus('Сохранено');})}><Text style={styles.exitText}>СОХРАНИТЬ</Text></Pressable>}
-          <Pressable style={styles.exitButton} onPress={confirmExit}><Text style={styles.exitText}>ВЫЙТИ</Text></Pressable>
+          <Pressable style={styles.exitButton} onPress={() => setPanelOpen(!panelOpen)}><Text style={styles.exitText}>{panelOpen ? '✕' : '☰'}</Text></Pressable>
+          {transport instanceof LocalTransport&&<Pressable accessibilityLabel="Сохранить кампанию" style={styles.exitButton} onPress={()=>void safeAction(async()=>{await campaignStore.save(state);setSaveStatus('Сохранено');})}><Text style={styles.exitText}>▣</Text></Pressable>}
+          <Pressable style={styles.exitButton} onPress={confirmExit}><Text style={styles.exitText}>↪</Text></Pressable>
         </View>
 
         {transport instanceof LocalTransport&&saveStatus!==''&&<Text style={{color:colors.muted,fontSize:10}}>{saveStatus}</Text>}
@@ -232,8 +232,8 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
           onClearSelection={deselectArmy}
         /></View>
 
-        {gameStarted&&<ScrollView horizontal style={styles.navigation} contentContainerStyle={{gap:4,flexGrow:1}} showsHorizontalScrollIndicator={false}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onPress={()=>{LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);setSection(tab);setPanelOpen(true);}}><Text style={styles.exitText}>{SECTION_LABELS[tab]}</Text></Pressable>)}</ScrollView>}
-        {panelOpen && <ScrollView key={section} keyboardShouldPersistTaps="handled" style={[styles.panel,{width:panelWidth(width),bottom:gameStarted?54:154}]} contentContainerStyle={styles.panelContent}>
+        {gameStarted&&<ScrollView style={styles.navigation} contentContainerStyle={{gap:4,flexGrow:1}} showsHorizontalScrollIndicator={false}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onPress={()=>{LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);setSection(tab);setPanelOpen(true);}}><Text style={{color:colors.gold,fontSize:19}}>{SECTION_ICONS[tab]}</Text><Text style={styles.exitText}>{SECTION_LABELS[tab]}</Text></Pressable>)}</ScrollView>}
+        {panelOpen && <ScrollView key={section} keyboardShouldPersistTaps="handled" style={[styles.panel,{width:panelWidth(width),bottom:gameStarted?8:154}]} contentContainerStyle={styles.panelContent}>
 
         {!gameStarted && (
           <CountryPanel
@@ -272,17 +272,17 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.graphite },
   entryWrap: { flexGrow: 1, justifyContent: 'center', padding: 18, gap: 12, maxWidth: 600, width: '100%', alignSelf: 'center' },
   content: { flex: 1 },
-  mapArea: { flex: 1 },
-  navigation:{position:'absolute',left:8,right:8,bottom:4,height:46,backgroundColor:'#101B26F5',borderRadius:tokens.radius.panel},
-  navButton:{flex:1,minWidth:90,minHeight:44,paddingHorizontal:12,alignItems:'center',justifyContent:'center',borderRadius:9},
+  mapArea: { flex: 1, marginLeft:76 },
+  navigation:{position:'absolute',left:4,top:78,bottom:4,width:68,backgroundColor:'#101B26F5',borderRadius:tokens.radius.panel},
+  navButton:{minHeight:44,paddingHorizontal:3,paddingVertical:4,alignItems:'center',justifyContent:'center',borderRadius:9},
   lobbyDock: {position:'absolute',left:8,right:8,bottom:8},
-  panel: { position: 'absolute', right: 8, top: 62, bottom: 12, width: '34%', maxWidth: 410, minWidth: 250, backgroundColor: '#17222DF5', borderWidth:1,borderColor:colors.border, borderRadius:tokens.radius.panel },
+  panel: { position: 'absolute', right: 8, top: 78, bottom: 12, width: '34%', maxWidth: 410, minWidth: 250, backgroundColor: '#17222DF5', borderWidth:1,borderColor:colors.border, borderRadius:tokens.radius.panel },
   panelContent: { padding: 8, gap: 10 },
   topbar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 6, gap: 8 },
   brand: { fontFamily:tokens.typography.display, color:colors.parchment, fontSize: 22, fontWeight: '900', letterSpacing: 2.2 },
   tagline: { color: '#61718A', fontSize: 10, fontWeight: '800', letterSpacing: 1.4, marginBottom: 5 },
   subbrand: { fontFamily:tokens.typography.display, color:colors.muted, fontSize: 11, marginTop: 2 },
   footer: { color: '#46546A', textAlign: 'center', fontSize: 10, letterSpacing: 0.4 },
-  exitButton: { backgroundColor:colors.surface, borderRadius:tokens.radius.panel, paddingHorizontal: 13, paddingVertical: 9, minHeight:44,justifyContent:'center' },
+  exitButton: { backgroundColor:colors.surface, borderRadius:tokens.radius.panel, paddingHorizontal: 9, paddingVertical: 9, minHeight:44,justifyContent:'center' },
   exitText: { color: colors.muted, fontWeight: '900', fontSize: 10 },
 });

@@ -1,3 +1,5 @@
+import {NotificationFeed} from './NotificationFeed';
+import {EspionagePanel} from './EspionagePanel';
 import {AtlasArt} from './AtlasArt';
 import {BUILDING_ART,GOVERNMENT_ART,RELIGION_ART} from '../ui/artCatalogue';
 import {ExpansionArt} from './ExpansionArt';
@@ -40,7 +42,7 @@ const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).t
 const currency = (value: number) => `${value < 0 ? '−' : ''}$${Math.abs(value) >= 1000 ? (Math.abs(value)/1000).toFixed(1)+'B' : Math.abs(value).toFixed(3).replace(/\.?0+$/, '')+'M'}`;
 
 export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
-  const [buildOpen,setBuildOpen]=useState(false);
+  const [buildOpen,setBuildOpen]=useState(section==='Construction');
   const [religionOpen, setReligionOpen] = useState(section==='Religion');
   const [governmentOpen, setGovernmentOpen] = useState(section==='Government');
   const [economyOpen, setEconomyOpen] = useState(section==='Economy');
@@ -72,6 +74,10 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
   const bankruptcyMonths = Math.max(0, (nation.bankruptcyUntilTick ?? 0) - state.tick);
   const economicActionsEnabled = state.phase === 'running' || state.phase === 'paused';
 
+  if(section==='Notifications')return <NotificationFeed state={state} playerId={playerId} onCommand={onCommand} onFocus={onFocusProvince??(()=>{})}/>;
+  if(section==='Intelligence')return <><DiplomacyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} initialTargetId={diplomacyCountryId??undefined}/><EspionagePanel state={state} playerId={playerId} onCommand={onCommand} from={countryId} to={diplomacyCountryId??undefined}/></>;
+  if(section==='Statistics')return <View style={styles.card}><Text style={styles.title}>Мировая статистика</Text>{Object.values(state.countries).sort((a,b)=>b.income-a.income).slice(0,25).map((c,i)=><Text key={c.id} style={styles.hint}>{i+1}. {c.name} · доход {currency(c.income)} · население {compact(c.population)} · армия {compact(c.army)}</Text>)}</View>;
+  if(section==='Construction'&&!selected)return <View style={styles.card}><Text style={styles.title}>Строительство</Text><Text style={styles.hint}>Выберите свою провинцию на карте.</Text>{state.provinces.filter(p=>p.ownerId===countryId).sort((a,b)=>b.income-a.income).slice(0,12).map(p=><Pressable key={p.id} style={styles.secondaryButton} onPress={()=>onFocusProvince?.(p.id)}><Text style={styles.secondaryText}>{p.name}</Text></Pressable>)}</View>;
   return (
     <View style={styles.wrap}>
       {(section==='Military'||section==='Diplomacy'||section==='Economy')&&<View style={{overflow:'hidden',borderWidth:1,borderColor:colors.border}}><ExpansionArt name={section==='Military'?'military-staff':section==='Diplomacy'?'diplomacy-embassy':'theme-economy'} label={'Иллюстрация Dominion: '+(section==='Military'?'military':section==='Diplomacy'?'diplomacy':'economy')}/><View style={{padding:10,flexDirection:'row',alignItems:'center',gap:10}}><Crest/><Text style={{fontFamily:'serif',fontSize:20,color:colors.parchment}}>{section==='Military'?'Военный совет':section==='Diplomacy'?'Дипломатический корпус':'Государственная казна'}</Text></View></View>}
@@ -189,7 +195,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
       {section==='Focus'&&<NationalFocusPanel state={state} playerId={playerId} onCommand={onCommand}/>}
 
       {section==='Military'&&<View style={styles.card}><Text style={styles.eyebrow}>АРМИИ · {compact(nation.army)}</Text>{state.armies.filter(a=>a.ownerId===countryId).map(a=><Pressable key={a.id} style={styles.secondaryButton} onPress={()=>onFocusProvince?.(a.provinceId)}><Text style={styles.secondaryText}>{state.provinces.find(p=>p.id===a.provinceId)?.name} · {compact(a.troops)}</Text><Text style={styles.hint}>Мораль {a.morale?.toFixed(0)} · организация {a.organization?.toFixed(0)}</Text></Pressable>)}</View>}
-      {section==='Context'&&<View style={styles.card}>
+      {(section==='Context'||section==='Construction')&&<View style={styles.card}>
         <Text style={styles.eyebrow}>КОМАНДОВАНИЕ</Text>
         {!selected ? (
           <Text style={styles.hint}>Нажми на провинцию на карте. Там будут армия, строительство, набор и доступные направления движения.</Text>

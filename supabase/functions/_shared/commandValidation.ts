@@ -1,3 +1,4 @@
+import {NOTIFICATION_CATEGORIES} from './notificationSystem.ts';
 import {technologyNode} from './technologyTree.ts';
 import {focusNode} from './focusCatalogue.ts';
 import { assertPeaceTerms } from './warSystem.ts';
@@ -14,6 +15,8 @@ import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  ACK_NOTIFICATIONS:['type','playerId'],
+  SET_AUTOPAUSE:['type','playerId','categories'],
   SET_ECONOMIC_POLICY: ['type','playerId','policy'],
   SET_FUNDING: ['type','playerId','domain','level'],
   QUEUE_BUILD: ['type','playerId','provinceId','buildingType'],
@@ -96,6 +99,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (type === 'CHANGE_RELIGION') assertReligion(command.religionId);
   if (type === 'CHANGE_GOVERNMENT' && (typeof command.governmentType !== 'string' || !GOVERNMENT_TYPES.includes(command.governmentType as GovernmentType))) throw new Error('Invalid government type');
   if(type==='SET_REINFORCEMENT'&&typeof command.enabled!=='boolean')throw Error('Invalid reinforcement toggle');
+  if(type==='SET_AUTOPAUSE'&&(!Array.isArray(command.categories)||command.categories.length>8||new Set(command.categories).size!==command.categories.length||command.categories.some(x=>typeof x!=='string'||!Object.hasOwn(NOTIFICATION_CATEGORIES,x))))throw Error('Invalid autopause categories');
   if (type === 'SET_READY' && typeof command.ready !== 'boolean') throw new Error('Invalid ready value');
   if (type === 'SET_SPEED' && (typeof command.speed !== 'number' || !Number.isInteger(command.speed) || command.speed < 0 || command.speed > 4)) throw new Error('Invalid game speed');
   if ((type === 'RECRUIT' || type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');

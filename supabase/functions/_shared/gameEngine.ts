@@ -1,3 +1,4 @@
+import {collectNotifications} from './notificationSystem.ts';
 import {setArmyOrder,advanceArmyOrders} from './armyOrders.ts';
 import {cloneGameState} from './cloneGameState.ts';
 import {recordMovement} from './movementHistory.ts';
@@ -157,11 +158,14 @@ function runAi(state: GameState) {
 }
 function checkWinner(state: GameState) { if (new Set(state.provinces.map((province) => province.ownerId)).size === 1) state.phase = 'finished'; }
 
-export function applyCommand(state: GameState, command: GameCommand, validatedLocalState = false): GameState {
+function applyCoreCommand(state: GameState, command: GameCommand, validatedLocalState = false): GameState {
   assertGameCommand(command, Object.keys(state.countries));
   const next = clone(state);
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   switch (command.type) {
+    case 'ACK_NOTIFICATIONS':case 'SET_AUTOPAUSE':{
+      if(!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const c=countryFor(next,p.countryId);if(command.type==='ACK_NOTIFICATIONS')c.notificationReadThrough=next.notificationSequence??0;else c.autoPause=[...command.categories];return next;
+    }
     case 'SET_ECONOMIC_POLICY':
     case 'SET_FUNDING':
     case 'SET_TAX_RATE':
@@ -373,3 +377,5 @@ export function applyCommand(state: GameState, command: GameCommand, validatedLo
     }
   }
 }
+
+export function applyCommand(state:GameState,command:GameCommand,validatedLocalState=false):GameState {const next=applyCoreCommand(state,command,validatedLocalState);collectNotifications(state,next);return next;}

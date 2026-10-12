@@ -10,6 +10,8 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital';
 
 export interface Country {
+  autoPause?: import('./notificationSystem.ts').NotificationCategory[];
+  notificationReadThrough?: number;
   economicPolicy?: import('./economy2System.ts').EconomicPolicy;
   researchFunding?: import('./economy2System.ts').FundingLevel;
   militaryFunding?: import('./economy2System.ts').FundingLevel;
@@ -193,6 +195,8 @@ export interface Leader {
 }
 
 export interface GameState {
+  notifications?: import('./notificationSystem.ts').CampaignNotification[];
+  notificationSequence?: number;
   focusEvents?:import('./focusSystem.ts').FocusEvent[];
   constructionQueue?: import('./constructionQueueSystem.ts').QueuedConstruction[];
   spyMissions?: import('./espionageSystem.ts').SpyMission[];
@@ -231,6 +235,8 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'ACK_NOTIFICATIONS';playerId:string}
+  | {type:'SET_AUTOPAUSE';playerId:string;categories:import('./notificationSystem.ts').NotificationCategory[]}
   | {type:'SET_ECONOMIC_POLICY';playerId:string;policy:import('./economy2System.ts').EconomicPolicy}
   | {type:'SET_FUNDING';playerId:string;domain:'Research'|'Military';level:import('./economy2System.ts').FundingLevel}
   | {type:'QUEUE_BUILD';playerId:string;provinceId:string;buildingType:BuildingType}

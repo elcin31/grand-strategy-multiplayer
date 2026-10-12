@@ -1,3 +1,4 @@
+import {MiniMap} from './MiniMap';
 import {countryGlyph,hitCountryGlyph,type CountryGlyph} from '../map/countryTargets';
 import {cameraMatrix} from '../map/cameraMatrix';
 import {CameraWorkGate,nextFrameDeadline,frameBucket,frameQuantile,createFrameAccumulator,recordFrameInterval,finishFrameSample} from '../performance/framePacing';
@@ -286,6 +287,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
         </Group>
       </Canvas>
     </GestureDetector>
+    <MiniMap state={state} scene={scene} camera={snapshot} viewport={viewport} onMove={animateCamera}/>
     <View style={styles.toolbar}>
       <Pressable accessibilityLabel="Настройки карты" style={styles.button} onPress={() => setSettingsOpen(!settingsOpen)}><Text style={styles.text}>{MODE_LABELS[mode]} · {preset} ▾</Text></Pressable>
       <Pressable accessibilityLabel="Обзор мира" style={styles.button} onPress={() => animateCamera({ x: 720, y: 310, zoom: Math.max(0.5, viewport.width / 1450) })}><Text style={styles.text}>МИР</Text></Pressable>
