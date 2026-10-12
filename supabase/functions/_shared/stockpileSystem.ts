@@ -28,7 +28,7 @@ export function initializeStockpiles(s:GameState,migrate:boolean):void{
 export function extractResources(s:GameState):void{
  const started=new Set<string>();for(const c of Object.values(s.countries)){const v=c.stockpile!;if(v.lastTick===s.tick)continue;started.add(c.id);v.capacity=Math.max(stockpileCapacity(s,c.id),...Object.values(v.amounts).map(n=>n??0));v.produced={};v.consumed={};v.deficits={};v.tradeRevenue=0;v.importExpense=0;v.industrialIncome=0;v.lastTick=s.tick;}
  for(const p of s.provinces){if(!started.has(p.ownerId)||p.rebellion||(p.controllerId??p.ownerId)!==p.ownerId||!p.resourceDeposit)continue;const c=s.countries[p.ownerId]!,factor=(1+provinceBuildingModifiers(p).resourcePercent/100)*economicPolicy(c).production*espionageModifiers(s,c.id).productionMultiplier*(1+focusBonuses(c).production)*(1-(p.buildingDamage??0));
-  for(const r of p.resourceMix??[{...p.resourceDeposit,weight:1}])addStock(c,r.type,provinceProduction({...p,income:p.income*r.weight,resourceDeposit:r,resourceMix:undefined},c).units*factor,true);
+  for(const r of p.resourceMix??[{...p.resourceDeposit,weight:1}])addStock(c,r.type,provinceProduction({...p,income:p.income*r.weight,resourceDeposit:{type:r.type,richness:r.richness},resourceMix:undefined},c).units*factor,true);
   if(p.secondaryDeposit)addStock(c,p.secondaryDeposit.type,provinceProduction({...p,income:p.income*.3,resourceDeposit:p.secondaryDeposit,resourceMix:undefined},c).units*factor,true);
   if(p.buildings?.Farm)addStock(c,'grain',p.buildings.Farm*8*factor,true);
  }
