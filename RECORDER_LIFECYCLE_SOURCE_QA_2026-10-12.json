@@ -1,7 +1,7 @@
 {
   "repository": "elcin31/grand-strategy-multiplayer",
   "parentCheckpoint": "e41c33b99017833ce56cc5358fdb93d519013e77",
-  "status": "LOCAL_SOURCE_VERIFIED_NATIVE_QA_REQUIRED",
+  "status": "SOURCE_CI_SUCCESS_FRESH_NATIVE_QA_RUNNING",
   "rejectedRuntime": "9ba945903851fe3e13969de7d7693795a4918aa9",
   "rejectedRunId": 38224321396,
   "rejectedApkSha256": "07c3e8f06fca5b6f75c749b1092d345861226514fe2c94b95cf744c0acf462da",
@@ -65,5 +65,36 @@
   },
   "upgradeHarnessChange": "Dismiss at most one exact android Quickstep ANR close control after preserving raw XML/logcat, checking unchanged game PID and excluding game fatal/ANR. Game/unknown dialogs and repeated launcher ANRs still fail. All UID/signature/save/schema/preferences/backups/restart gates remain unchanged.",
   "acceptance": false,
-  "nextAction": "Publish source unit on existing expansion-camera-qa. After actual source CI SUCCESS normally advance existing expansion-v2 to the exact tested source, then perform one fresh full signed seven-gate APK QA. Never reroll rejected camera numerics or relax thresholds."
+  "nextAction": "Inspect exact fresh full38234126548 signed APK and all seven original gates. Each new QA fixture requires reviewed guarded cleanup and independent readback. No earlier gate accepts this changed source.",
+  "runtime": "a180f5851d47c717f9b8fa44e794070bcba625ef",
+  "tree": "15d380d17a61f18719ed1b36e4bc6a121838083e",
+  "sourceCi": {
+    "runId": 38233670169,
+    "jobId": 114758953760,
+    "conclusion": "success",
+    "jsTests": 324,
+    "pythonTests": 110,
+    "skipped": 0,
+    "artAssets": 42,
+    "actualAndroidPrebuild": "PASS",
+    "nativeProofVerified": true,
+    "hermes": {
+      "bytes": 11485803,
+      "sha256": "3ca339c3ee28aa779204cce7e27d18dce8afd5cb433aa124c959a22e682c392d",
+      "magic": "c61fbc03c103191f"
+    },
+    "artifact": {
+      "id": 11739981296,
+      "bytes": 1729,
+      "sha256": "eb59482d2d419b08f59c6ab44c903df87e3ea7f51353e7b0005345be2eb638e1",
+      "crcVerified": true
+    }
+  },
+  "fullReleaseRunId": 38234126548,
+  "priorFullRunScopedCleanup": {
+    "rooms": 0,
+    "players": 0,
+    "receipts": 0,
+    "protectedCityBackups": 29
+  }
 }

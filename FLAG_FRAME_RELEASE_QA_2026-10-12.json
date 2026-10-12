@@ -358,7 +358,7 @@
       "receipts": 7,
       "backups": 29
     },
-    "mutationSucceeded": false,
+    "mutationSucceeded": true,
     "transportError": "McpServerError: Invalid or expired requestState",
     "combinedIndependentReadback": {
       "rooms": 1,
@@ -366,12 +366,19 @@
       "receipts": 7,
       "preservedCityBackups": 29
     },
-    "status": "PENDING",
+    "status": "CLEANED_INDEPENDENT_READBACK_VERIFIED",
     "mutationRetryError": "McpServerError: Invalid or expired requestState",
     "independentRetryReadback": {
       "rooms": 1,
       "players": 2,
       "receipts": 7,
+      "protectedCityBackups": 29
+    },
+    "method": "Locked CTE with exact room UUID/creation time/two known QA names and host roles/seven receipts/null city-backup fields/29 preserved backups; delete only that reviewed room; cascaded children.",
+    "finalIndependentReadback": {
+      "rooms": 0,
+      "players": 0,
+      "receipts": 0,
       "protectedCityBackups": 29
     }
   },
@@ -418,5 +425,15 @@
     "memorySamples": 30,
     "pssMinKiB": 434170,
     "pssMaxKiB": 546226
+  },
+  "finalCombinedCleanup": {
+    "reviewedRoomIds": [
+      "96a25875-bf8c-4705-9ae1-44bea57711f5",
+      "dfef50f6-6d05-4e66-b347-5801a598c3f6"
+    ],
+    "rooms": 0,
+    "players": 0,
+    "receipts": 0,
+    "protectedCityBackups": 29
   }
 }
