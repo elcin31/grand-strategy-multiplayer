@@ -12,6 +12,7 @@ import type {DisplayArmy} from '../map/markerBudget';
 import type {CityLabelPlacement,CountryLabel} from '../map/scene';
 import {constructionProgress} from '../map/overlays';
 import {GRAPHICS,type GraphicsPreset} from '../map/settings';
+import {flagFrameGroups} from '../map/flagFrameGroups';
 const flags=new Map<string,SkImage|null>();
 const flagAtlases=new RasterCache<SkImage>(2*1024*1024,8);
 function countryFlag(id:string){
@@ -65,9 +66,15 @@ export const MapMarkerLayer=memo(function MapMarkerLayer(props:Props){
       canvas.restore();remaining--;
     }
     if(countryGlyphs.length){
-      const sprites=countryFlagBatch(countryGlyphs,zoom,TILT),atlas=countryAtlas(sprites.map(s=>s.id)),frames=own(Skia.Path.Make());
-      for(const sprite of sprites){const f=sprite.frame;frames.addRect(Skia.XYWHRect(f.x,f.y,f.width,f.height));}
-      canvas.save();canvas.scale(1/zoom,1/(zoom*TILT));canvas.drawPath(frames,paint('#C6A76A'));
+      const sprites=countryFlagBatch(countryGlyphs,zoom,TILT),atlas=countryAtlas(sprites.map(s=>s.id));
+      canvas.save();canvas.scale(1/zoom,1/(zoom*TILT));
+      // Use analytic rectangles with the existing bounds and gold paint.
+      // A single sparse compound path creates a large GPU mask at each camera
+      // translation. Only genuinely neighboring frames need a winding union.
+      for(const group of flagFrameGroups(sprites.map(s=>s.frame))){
+        if(group.length===1){const f=group[0]!;canvas.drawRect(Skia.XYWHRect(f.x,f.y,f.width,f.height),paint('#C6A76A'));}
+        else{const frames=own(Skia.Path.Make());for(const f of group)frames.addRect(Skia.XYWHRect(f.x,f.y,f.width,f.height));canvas.drawPath(frames,paint('#C6A76A'));}
+      }
       if(atlas)canvas.drawAtlas(atlas,sprites.map(s=>Skia.XYWHRect(s.source.x,s.source.y,s.source.width,s.source.height)),sprites.map(s=>Skia.RSXform(s.scale,0,s.tx,s.ty)),paint('#FFFFFF'),BlendMode.SrcOver,undefined);
       else for(const sprite of sprites){
         // Preserve real flags if a bounded atlas surface cannot be allocated.

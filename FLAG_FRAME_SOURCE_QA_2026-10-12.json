@@ -1,0 +1,782 @@
+{
+  "status": "SOURCE_VERIFIED_NATIVE_BENEFIT_PENDING",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "parentCheckpoint": "7c61feef68ad54ef4dbaa52ef588d3dc04a87e74",
+  "rejectedRuntime": "6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2",
+  "rejectedApkSha256": "595b39364782344b7d2ee72809ca6bab91977ed72ef3868351cb90b75923b140",
+  "rejectedFullRunId": 38208776998,
+  "actualDiagnosticRunId": 38216945309,
+  "actualDiagnosticJobId": 114703787632,
+  "actualDiagnosticConclusion": "success",
+  "rawArtifact": {
+    "id": 11732791536,
+    "bytes": 24861087,
+    "sha256": "8bafbaff2f8e58b3dc840d879b1f9bd891aa5592e60920610c09cbfd4e38cf4a",
+    "localLengthHashCrcAndFourTraceDigestsVerified": true
+  },
+  "traces": {
+    "trace-after-closed": {
+      "capture": {
+        "diagnosticOnly": true,
+        "pid": 4415,
+        "traceBytes": 20099517,
+        "traceSha256": "5f895b2c3895602bfb1d24a9f60ba1527e89e36683aec299dbf65f01f511a3da",
+        "configSha256": "1578c5790df64013aeac3c11e431a7b9c5c86a3a9aa760baf9c98e25b8c7cda7",
+        "gestureMarker": "DOMINION_PANEL_CLOSED_PAN_TRACE",
+        "scenario": "panel-closed-pan",
+        "traceFile": "panel-closed-pan.pftrace",
+        "requestedCpuSamplingHz": 99,
+        "requestedCpuSamplingPackage": "com.elcin31.grandstrategymultiplayer",
+        "note": "Separate trace-only launch AFTER gated comparisons, not their workload. No FPS, CPU attribution or performance acceptance inferred from file presence. Analyze actual async marker interval and trace loss/coverage before attribution. CPU samples and usable symbols must be observed, never assumed from config. Software emulator only; physical Redmi unmeasured."
+      },
+      "markerValid": true,
+      "markerDurationMs": 10587.716421,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "observedRunningThreads": [
+        {
+          "tid": 4415,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 7069.394645,
+          "samples": 3714
+        },
+        {
+          "tid": 4429,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 3873.788065,
+          "samples": 2104
+        },
+        {
+          "tid": 4435,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 114.662075,
+          "samples": 124
+        },
+        {
+          "tid": 4437,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 78.75014,
+          "samples": 35
+        },
+        {
+          "tid": 4419,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 48.235196,
+          "samples": 52
+        },
+        {
+          "tid": 4428,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 22.399356,
+          "samples": 11
+        },
+        {
+          "tid": 4447,
+          "thread": "binder:4415_3",
+          "state": "Running",
+          "observedMs": 17.44266,
+          "samples": 290
+        },
+        {
+          "tid": 4424,
+          "thread": "binder:4415_1",
+          "state": "Running",
+          "observedMs": 14.34921,
+          "samples": 216
+        },
+        {
+          "tid": 5031,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 13.992314,
+          "samples": 647
+        },
+        {
+          "tid": 4426,
+          "thread": "binder:4415_3",
+          "state": "Running",
+          "observedMs": 12.701564,
+          "samples": 190
+        },
+        {
+          "tid": 4482,
+          "thread": "binder:4415_5",
+          "state": "Running",
+          "observedMs": 10.164099,
+          "samples": 110
+        },
+        {
+          "tid": 4470,
+          "thread": "binder:4415_4",
+          "state": "Running",
+          "observedMs": 7.195543,
+          "samples": 152
+        },
+        {
+          "tid": 4436,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 0.498592,
+          "samples": 2
+        },
+        {
+          "tid": 5032,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 0.188693,
+          "samples": 7
+        },
+        {
+          "tid": 4420,
+          "thread": "HeapTaskDaemon",
+          "state": "Running",
+          "observedMs": 0.113803,
+          "samples": 1
+        },
+        {
+          "tid": 4423,
+          "thread": "FinalizerWatchd",
+          "state": "Running",
+          "observedMs": 0.023654,
+          "samples": 1
+        }
+      ],
+      "textureEvents": [
+        {
+          "thread": "tegymultiplayer",
+          "name": "glTexSubImage2D encode",
+          "count": 242,
+          "totalMs": 215.426224,
+          "firstMs": 168.540501,
+          "lastMs": 9757.381521,
+          "maxMs": 11.400229
+        },
+        {
+          "thread": "tegymultiplayer",
+          "name": "glGenTextures encode",
+          "count": 19,
+          "totalMs": 94.296523,
+          "firstMs": 462.11566,
+          "lastMs": 1761.563568,
+          "maxMs": 17.523808
+        },
+        {
+          "thread": "tegymultiplayer",
+          "name": "TextureView#draw()",
+          "count": 231,
+          "totalMs": 5.144723,
+          "firstMs": 198.398921,
+          "lastMs": 9809.62414,
+          "maxMs": 3.187374
+        }
+      ]
+    },
+    "trace-after-terrain": {
+      "capture": {
+        "diagnosticOnly": true,
+        "pid": 2990,
+        "traceBytes": 19966492,
+        "traceSha256": "bed8709ad277d9bcb0c1c2e404e94028fb859f13e8b90243e0da64613c79b7d3",
+        "configSha256": "1578c5790df64013aeac3c11e431a7b9c5c86a3a9aa760baf9c98e25b8c7cda7",
+        "gestureMarker": "DOMINION_TERRAIN_PAN_TRACE",
+        "scenario": "terrain-pan",
+        "traceFile": "terrain-pan.pftrace",
+        "requestedCpuSamplingHz": 99,
+        "requestedCpuSamplingPackage": "com.elcin31.grandstrategymultiplayer",
+        "note": "Separate trace-only launch AFTER gated comparisons, not their workload. No FPS, CPU attribution or performance acceptance inferred from file presence. Analyze actual async marker interval and trace loss/coverage before attribution. CPU samples and usable symbols must be observed, never assumed from config. Software emulator only; physical Redmi unmeasured."
+      },
+      "markerValid": true,
+      "markerDurationMs": 10593.704481,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "observedRunningThreads": [
+        {
+          "tid": 2990,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 7286.176006,
+          "samples": 3607
+        },
+        {
+          "tid": 3004,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 3930.082065,
+          "samples": 2200
+        },
+        {
+          "tid": 3010,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 119.318251,
+          "samples": 109
+        },
+        {
+          "tid": 2994,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 52.407613,
+          "samples": 50
+        },
+        {
+          "tid": 3108,
+          "thread": "binder:2990_5",
+          "state": "Running",
+          "observedMs": 35.524736,
+          "samples": 372
+        },
+        {
+          "tid": 2995,
+          "thread": "HeapTaskDaemon",
+          "state": "Running",
+          "observedMs": 29.91854,
+          "samples": 15
+        },
+        {
+          "tid": 3486,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 12.002026,
+          "samples": 582
+        },
+        {
+          "tid": 3012,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 11.208489,
+          "samples": 3
+        },
+        {
+          "tid": 2999,
+          "thread": "binder:2990_1",
+          "state": "Running",
+          "observedMs": 9.413103,
+          "samples": 230
+        },
+        {
+          "tid": 3007,
+          "thread": "HybridData Dest",
+          "state": "Running",
+          "observedMs": 5.05253,
+          "samples": 3
+        },
+        {
+          "tid": 3135,
+          "thread": "binder:2990_6",
+          "state": "Running",
+          "observedMs": 4.903027,
+          "samples": 112
+        },
+        {
+          "tid": 3023,
+          "thread": "binder:2990_3",
+          "state": "Running",
+          "observedMs": 3.472001,
+          "samples": 307
+        },
+        {
+          "tid": 3487,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 1.821816,
+          "samples": 22
+        },
+        {
+          "tid": 2996,
+          "thread": "ReferenceQueueD",
+          "state": "Running",
+          "observedMs": 0.767784,
+          "samples": 5
+        },
+        {
+          "tid": 3011,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 0.478905,
+          "samples": 2
+        },
+        {
+          "tid": 3022,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 0.399096,
+          "samples": 1
+        },
+        {
+          "tid": 2997,
+          "thread": "FinalizerDaemon",
+          "state": "Running",
+          "observedMs": 0.100708,
+          "samples": 2
+        },
+        {
+          "tid": 3138,
+          "thread": "binder:2990_7",
+          "state": "Running",
+          "observedMs": 0.064421,
+          "samples": 5
+        },
+        {
+          "tid": 2998,
+          "thread": "FinalizerWatchd",
+          "state": "Running",
+          "observedMs": 0.060133,
+          "samples": 2
+        },
+        {
+          "tid": 3013,
+          "thread": "Expo JNI deallo",
+          "state": "Running",
+          "observedMs": 0.049433,
+          "samples": 1
+        },
+        {
+          "tid": 3003,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.008195,
+          "samples": 1
+        }
+      ],
+      "textureEvents": [
+        {
+          "thread": "tegymultiplayer",
+          "name": "glTexSubImage2D encode",
+          "count": 240,
+          "totalMs": 221.821839,
+          "firstMs": 180.740455,
+          "lastMs": 9778.833439,
+          "maxMs": 10.859096
+        },
+        {
+          "thread": "tegymultiplayer",
+          "name": "glGenTextures encode",
+          "count": 18,
+          "totalMs": 127.641916,
+          "firstMs": 447.748069,
+          "lastMs": 1760.809138,
+          "maxMs": 17.487118
+        },
+        {
+          "thread": "tegymultiplayer",
+          "name": "TextureView#draw()",
+          "count": 227,
+          "totalMs": 1.77264,
+          "firstMs": 213.473485,
+          "lastMs": 9830.56958,
+          "maxMs": 0.067396
+        }
+      ]
+    },
+    "trace-before-closed": {
+      "capture": {
+        "diagnosticOnly": true,
+        "pid": 3648,
+        "traceBytes": 21088794,
+        "traceSha256": "0fc818d238bf86e946b1ab3873a93d0394e23d3bc56028e52722e06a311ca859",
+        "configSha256": "1578c5790df64013aeac3c11e431a7b9c5c86a3a9aa760baf9c98e25b8c7cda7",
+        "gestureMarker": "DOMINION_PANEL_CLOSED_PAN_TRACE",
+        "scenario": "panel-closed-pan",
+        "traceFile": "panel-closed-pan.pftrace",
+        "requestedCpuSamplingHz": 99,
+        "requestedCpuSamplingPackage": "com.elcin31.grandstrategymultiplayer",
+        "note": "Separate trace-only launch AFTER gated comparisons, not their workload. No FPS, CPU attribution or performance acceptance inferred from file presence. Analyze actual async marker interval and trace loss/coverage before attribution. CPU samples and usable symbols must be observed, never assumed from config. Software emulator only; physical Redmi unmeasured."
+      },
+      "markerValid": true,
+      "markerDurationMs": 10607.083951,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "observedRunningThreads": [
+        {
+          "tid": 3648,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 6830.359659,
+          "samples": 3696
+        },
+        {
+          "tid": 3662,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 4219.779407,
+          "samples": 2507
+        },
+        {
+          "tid": 3668,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 319.104047,
+          "samples": 187
+        },
+        {
+          "tid": 3670,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 102.666965,
+          "samples": 44
+        },
+        {
+          "tid": 4269,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 43.898945,
+          "samples": 685
+        },
+        {
+          "tid": 3651,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 41.46491,
+          "samples": 45
+        },
+        {
+          "tid": 3661,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 27.867841,
+          "samples": 9
+        },
+        {
+          "tid": 3656,
+          "thread": "binder:3648_1",
+          "state": "Running",
+          "observedMs": 23.589728,
+          "samples": 320
+        },
+        {
+          "tid": 3676,
+          "thread": "binder:3648_4",
+          "state": "Running",
+          "observedMs": 16.610187,
+          "samples": 206
+        },
+        {
+          "tid": 3793,
+          "thread": "binder:3648_5",
+          "state": "Running",
+          "observedMs": 6.028749,
+          "samples": 139
+        },
+        {
+          "tid": 3681,
+          "thread": "binder:3648_4",
+          "state": "Running",
+          "observedMs": 5.593661,
+          "samples": 322
+        },
+        {
+          "tid": 3991,
+          "thread": "binder:3648_7",
+          "state": "Running",
+          "observedMs": 2.975492,
+          "samples": 18
+        },
+        {
+          "tid": 3657,
+          "thread": "binder:3648_2",
+          "state": "Running",
+          "observedMs": 2.905798,
+          "samples": 76
+        },
+        {
+          "tid": 4270,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 2.67047,
+          "samples": 21
+        },
+        {
+          "tid": 3669,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 1.703175,
+          "samples": 8
+        },
+        {
+          "tid": 3652,
+          "thread": "HeapTaskDaemon",
+          "state": "Running",
+          "observedMs": 0.141344,
+          "samples": 1
+        },
+        {
+          "tid": 3655,
+          "thread": "FinalizerWatchd",
+          "state": "Running",
+          "observedMs": 0.02704,
+          "samples": 1
+        },
+        {
+          "tid": 3794,
+          "thread": "binder:3648_6",
+          "state": "Running",
+          "observedMs": 0.004448,
+          "samples": 1
+        }
+      ],
+      "textureEvents": [
+        {
+          "thread": "tegymultiplayer",
+          "name": "glTexSubImage2D encode",
+          "count": 17,
+          "totalMs": 118.86401,
+          "firstMs": 175.980912,
+          "lastMs": 9934.905261,
+          "maxMs": 13.92364
+        },
+        {
+          "thread": "tegymultiplayer",
+          "name": "glGenTextures encode",
+          "count": 2,
+          "totalMs": 12.72844,
+          "firstMs": 457.396942,
+          "lastMs": 468.192076,
+          "maxMs": 9.974505
+        },
+        {
+          "thread": "tegymultiplayer",
+          "name": "TextureView#draw()",
+          "count": 248,
+          "totalMs": 1.745354,
+          "firstMs": 188.538828,
+          "lastMs": 9989.354501,
+          "maxMs": 0.060383
+        }
+      ]
+    },
+    "trace-before-terrain": {
+      "capture": {
+        "diagnosticOnly": true,
+        "pid": 2311,
+        "traceBytes": 21173362,
+        "traceSha256": "c2de31ba14ebd9e7bfab280fd866b895e7e532c3aac2ac61ec21af59863c654d",
+        "configSha256": "1578c5790df64013aeac3c11e431a7b9c5c86a3a9aa760baf9c98e25b8c7cda7",
+        "gestureMarker": "DOMINION_TERRAIN_PAN_TRACE",
+        "scenario": "terrain-pan",
+        "traceFile": "terrain-pan.pftrace",
+        "requestedCpuSamplingHz": 99,
+        "requestedCpuSamplingPackage": "com.elcin31.grandstrategymultiplayer",
+        "note": "Separate trace-only launch AFTER gated comparisons, not their workload. No FPS, CPU attribution or performance acceptance inferred from file presence. Analyze actual async marker interval and trace loss/coverage before attribution. CPU samples and usable symbols must be observed, never assumed from config. Software emulator only; physical Redmi unmeasured."
+      },
+      "markerValid": true,
+      "markerDurationMs": 10607.782797,
+      "attributionComplete": false,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "observedRunningThreads": [
+        {
+          "tid": 2311,
+          "thread": "tegymultiplayer",
+          "state": "Running",
+          "observedMs": 7053.455714,
+          "samples": 3624
+        },
+        {
+          "tid": 2340,
+          "thread": "RenderThread",
+          "state": "Running",
+          "observedMs": 4137.069571,
+          "samples": 2340
+        },
+        {
+          "tid": 2346,
+          "thread": "mqt_v_js",
+          "state": "Running",
+          "observedMs": 275.726808,
+          "samples": 233
+        },
+        {
+          "tid": 2349,
+          "thread": "hades",
+          "state": "Running",
+          "observedMs": 99.373001,
+          "samples": 48
+        },
+        {
+          "tid": 2315,
+          "thread": "Jit thread pool",
+          "state": "Running",
+          "observedMs": 59.959089,
+          "samples": 51
+        },
+        {
+          "tid": 2838,
+          "thread": "GPU completion",
+          "state": "Running",
+          "observedMs": 25.816353,
+          "samples": 718
+        },
+        {
+          "tid": 2320,
+          "thread": "binder:2311_1",
+          "state": "Running",
+          "observedMs": 19.831066,
+          "samples": 210
+        },
+        {
+          "tid": 2357,
+          "thread": "binder:2311_4",
+          "state": "Running",
+          "observedMs": 18.081948,
+          "samples": 282
+        },
+        {
+          "tid": 2322,
+          "thread": "binder:2311_3",
+          "state": "Running",
+          "observedMs": 10.286804,
+          "samples": 146
+        },
+        {
+          "tid": 2448,
+          "thread": "binder:2311_6",
+          "state": "Running",
+          "observedMs": 7.133307,
+          "samples": 140
+        },
+        {
+          "tid": 2347,
+          "thread": "mqt_v_native",
+          "state": "Running",
+          "observedMs": 5.055445,
+          "samples": 53
+        },
+        {
+          "tid": 2360,
+          "thread": "binder:2311_4",
+          "state": "Running",
+          "observedMs": 3.383496,
+          "samples": 331
+        },
+        {
+          "tid": 2839,
+          "thread": "HWC release",
+          "state": "Running",
+          "observedMs": 2.277743,
+          "samples": 14
+        },
+        {
+          "tid": 2316,
+          "thread": "HeapTaskDaemon",
+          "state": "Running",
+          "observedMs": 0.134301,
+          "samples": 2
+        },
+        {
+          "tid": 2319,
+          "thread": "FinalizerWatchd",
+          "state": "Running",
+          "observedMs": 0.027,
+          "samples": 1
+        },
+        {
+          "tid": 2339,
+          "thread": "Profile Saver",
+          "state": "Running",
+          "observedMs": 0.014958,
+          "samples": 2
+        }
+      ],
+      "textureEvents": [
+        {
+          "thread": "tegymultiplayer",
+          "name": "glTexSubImage2D encode",
+          "count": 16,
+          "totalMs": 118.301821,
+          "firstMs": 166.814814,
+          "lastMs": 9882.955151,
+          "maxMs": 17.756041
+        },
+        {
+          "thread": "tegymultiplayer",
+          "name": "glGenTextures encode",
+          "count": 2,
+          "totalMs": 11.553894,
+          "firstMs": 424.803872,
+          "lastMs": 436.051484,
+          "maxMs": 10.820073
+        },
+        {
+          "thread": "tegymultiplayer",
+          "name": "TextureView#draw()",
+          "count": 253,
+          "totalMs": 4.810978,
+          "firstMs": 191.127746,
+          "lastMs": 9914.99253,
+          "maxMs": 3.078729
+        }
+      ]
+    }
+  },
+  "finding": "Actual scoped uploads during terrain: baseline16 vs candidate240; closed-panel17 vs242. Native main/RenderThread goldfish transport still dominates; JS decreases. These diagnostics do not replace failed original P99 measurements.",
+  "sourceHypothesis": "A newly combined sparse country-frame path can rasterize a viewport-wide GPU coverage mask under changing camera translation. Preserve analytic rectangle drawing for isolated frames, and keep connected/near frame components in their original compound winding union. This is a source-specific hypothesis, not proven total causality.",
+  "sourceChange": {
+    "files": [
+      "src/map/flagFrameGroups.ts",
+      "src/components/MapMarkerLayer.tsx"
+    ],
+    "unchanged": [
+      "original frame coordinates and gold paint",
+      "flag atlas/images, labels, hit testing",
+      "camera cadence, tiles, caches, geometry/LOD",
+      "simulation/backend/authority/saves/artwork",
+      "all original seven native gates and thresholds"
+    ],
+    "visualNote": "Isolated frame edges return to the analytic rectangle primitive used before the atlas grouping; neighboring winding-union overlap is retained. This changes AA implementation for isolated outlines relative to the rejected sparse compound path."
+  },
+  "localValidation": {
+    "strictTypecheck": true,
+    "fullJsBeforeTwoNewPixelTests": {
+      "tests": 316,
+      "passed": 316,
+      "skipped": 0
+    },
+    "targetedFlagsGroupsAndTwoNewRealCanvasKitPixelTests": {
+      "tests": 7,
+      "passed": 7,
+      "skipped": 0
+    },
+    "python": {
+      "tests": 107,
+      "passed": 107,
+      "skipped": 0
+    },
+    "originalArt": 42,
+    "whitespace": true
+  },
+  "releaseAccepted": false,
+  "physicalRedmiTested": false
+}

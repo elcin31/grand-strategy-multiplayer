@@ -1,3 +1,9 @@
+# Scoped flag-outline GPU mask correction (2026-10-12)
+
+Actual matched diagnostics38216945309/114703787632 SUCCESS; raw ZIP/four traces/digests verified and actual local Perfetto SQL executed. Rejected6f5 terrain/closed-panel uploads16→240 and17→242 versus baseline, with dominant native transport and retained incomplete attribution. A sparse country-outline compound path is a source hypothesis. Isolated frames now use analytic rectangles; only neighboring overlap needs a compound union. Original frame geometry/colour/flag pixels/hits and all map/game/cache/camera/backend systems remain. Real CanvasKit analytic-frame/overlap pixels and source regressions pass. AA implementation for isolated outlines changes relative to the rejected compound path; source verification is not measured native performance acceptance. Fresh exact-binary seven original gates remain mandatory. Detailed immutable evidence and tests: FLAG_FRAME_SOURCE_QA_2026-10-12.json. Original382087 camera failure is retained; final APK remains pending.
+
+---
+
 # Exact 6f5 native result: six gates passed, camera rejected (2026-10-12)
 
 Run38208776998 is complete. Its exact signed595b3936 APK passes build,10000ticks,liveHTTP,upgrade,native-online and full offline smoke. Verified camera ZIP11729289623/17774895bytes/SHAa2479dc5ae6b5532536305488d03e8ee38e334d9a1e070f997b7bcbdc32ad311 retains all36 raw captures. Two original20% compositorP99 violations: forward terrain69.984243→87.596072ms and reverse closed-panel63.912635→79.419691ms. All18PSS checks pass. Complete original failed gate remains unchanged; no accepted manifest/publication/delivery.
