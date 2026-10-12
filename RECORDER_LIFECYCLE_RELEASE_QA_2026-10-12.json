@@ -1,0 +1,283 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "runtime": "a180f5851d47c717f9b8fa44e794070bcba625ef",
+  "runId": 38234126548,
+  "status": "FULL_NATIVE_QA_IN_PROGRESS",
+  "sourceCiRunId": 38233670169,
+  "releaseAccepted": false,
+  "physicalRedmiTested": false,
+  "backendArtifact": {
+    "bytes": 603,
+    "sha256": "d6a996cdf749773fcd84d5733ebd428bea0b90ec24fe1ef73f33dc5fc4ab07c9",
+    "crcVerified": true,
+    "id": 11740053446
+  },
+  "longArtifact": {
+    "bytes": 2540,
+    "sha256": "8e1e47fcbb9cbb015b9dbef38c5ea69771e81d5bd4076b6c700c49d9690f50d7",
+    "crcVerified": true,
+    "id": 11739459927
+  },
+  "backend": {
+    "roomId": "5f87118c-a869-461a-8e19-7bb90ff11b5c",
+    "stateVersion": 18,
+    "tick": 21,
+    "featuresVerified": true,
+    "hostMigrationVerified": true,
+    "completedFocuses": [
+      {
+        "focusId": "eco-audit",
+        "tick": 9
+      }
+    ],
+    "scientificDiscoveries": [
+      "science-method"
+    ],
+    "spyResults": [
+      {
+        "kind": "PoliticalIntrigue",
+        "tick": 18,
+        "outcome": "Failure",
+        "detected": false
+      },
+      {
+        "kind": "Sabotage",
+        "tick": 16,
+        "outcome": "Failure",
+        "detected": false
+      },
+      {
+        "kind": "IntelligenceGathering",
+        "tick": 6,
+        "outcome": "Success",
+        "detected": false
+      },
+      {
+        "kind": "Counterintelligence",
+        "tick": 5,
+        "outcome": "Success",
+        "detected": false
+      }
+    ],
+    "paidRelationChange": 27,
+    "humanTreaties": [
+      "NonAggression",
+      "TradeAgreement"
+    ],
+    "note": "Scoped existing production HTTP QA. No tokens, player IDs or whole snapshots in evidence.",
+    "finalTick": 47,
+    "finalSchema": 18
+  },
+  "backendJobId": 114760489563,
+  "backendConclusion": "success",
+  "longConclusion": "success",
+  "longJobId": 114760488988,
+  "longSimulation": {
+    "ticks": 10000,
+    "countries": 195,
+    "provinces": 2924,
+    "cities": 5411,
+    "restores": 10,
+    "warsObserved": 12618,
+    "peaceCount": 12602,
+    "battles": 4235,
+    "movementTicks": 9946,
+    "maxWarAge": 11,
+    "maxArmies": 451,
+    "maxSnapshotBytes": 4487736,
+    "tickP95Ms": 66.87392100000216,
+    "samples": [
+      {
+        "tick": 1000,
+        "bytes": 4324604,
+        "heapUsed": 51826072,
+        "rss": 366686208,
+        "armies": 237,
+        "wars": 13,
+        "peaceCount": 1274,
+        "bankruptCountries": 9,
+        "treasuryMax": 10190269.335,
+        "population": 13799445475,
+        "populationRatio": 1.8080435510615582,
+        "settlementCapacity": 24472490124,
+        "completedFocuses": 2438,
+        "scientificDiscoveries": 562,
+        "elapsedSeconds": 51
+      },
+      {
+        "tick": 2000,
+        "bytes": 4416670,
+        "heapUsed": 54157320,
+        "rss": 449089536,
+        "armies": 344,
+        "wars": 13,
+        "peaceCount": 2639,
+        "bankruptCountries": 30,
+        "treasuryMax": 27614776.525,
+        "population": 19334995051,
+        "populationRatio": 2.533327384430112,
+        "settlementCapacity": 24683088691,
+        "completedFocuses": 2747,
+        "scientificDiscoveries": 728,
+        "elapsedSeconds": 106
+      },
+      {
+        "tick": 3000,
+        "bytes": 4453454,
+        "heapUsed": 54826712,
+        "rss": 459317248,
+        "armies": 394,
+        "wars": 18,
+        "peaceCount": 3922,
+        "bankruptCountries": 36,
+        "treasuryMax": 49708625.241,
+        "population": 22554812745,
+        "populationRatio": 2.955197279693465,
+        "settlementCapacity": 24777016414,
+        "completedFocuses": 2794,
+        "scientificDiscoveries": 781,
+        "elapsedSeconds": 164
+      },
+      {
+        "tick": 4000,
+        "bytes": 4474767,
+        "heapUsed": 55326520,
+        "rss": 463732736,
+        "armies": 428,
+        "wars": 16,
+        "peaceCount": 5169,
+        "bankruptCountries": 38,
+        "treasuryMax": 73882882.667,
+        "population": 23951578465,
+        "populationRatio": 3.1382055938293525,
+        "settlementCapacity": 24782261878,
+        "completedFocuses": 2819,
+        "scientificDiscoveries": 795,
+        "elapsedSeconds": 217
+      },
+      {
+        "tick": 5000,
+        "bytes": 4471174,
+        "heapUsed": 55454456,
+        "rss": 465047552,
+        "armies": 434,
+        "wars": 18,
+        "peaceCount": 6399,
+        "bankruptCountries": 40,
+        "treasuryMax": 98835927.435,
+        "population": 24481389830,
+        "populationRatio": 3.2076230224863815,
+        "settlementCapacity": 24783227976,
+        "completedFocuses": 2832,
+        "scientificDiscoveries": 797,
+        "elapsedSeconds": 274
+      },
+      {
+        "tick": 6000,
+        "bytes": 4483632,
+        "heapUsed": 55753080,
+        "rss": 467218432,
+        "armies": 435,
+        "wars": 14,
+        "peaceCount": 7628,
+        "bankruptCountries": 40,
+        "treasuryMax": 124038148.644,
+        "population": 24677188293,
+        "populationRatio": 3.2332771075709066,
+        "settlementCapacity": 24800974889,
+        "completedFocuses": 2835,
+        "scientificDiscoveries": 801,
+        "elapsedSeconds": 332
+      },
+      {
+        "tick": 7000,
+        "bytes": 4478898,
+        "heapUsed": 56312008,
+        "rss": 494956544,
+        "armies": 439,
+        "wars": 13,
+        "peaceCount": 8864,
+        "bankruptCountries": 42,
+        "treasuryMax": 149330681.859,
+        "population": 24754528939,
+        "populationRatio": 3.2434105043431587,
+        "settlementCapacity": 24801479404,
+        "completedFocuses": 2841,
+        "scientificDiscoveries": 803,
+        "elapsedSeconds": 388
+      },
+      {
+        "tick": 8000,
+        "bytes": 4484308,
+        "heapUsed": 56473232,
+        "rss": 471592960,
+        "armies": 445,
+        "wars": 15,
+        "peaceCount": 10107,
+        "bankruptCountries": 43,
+        "treasuryMax": 174649965.651,
+        "population": 24783566722,
+        "populationRatio": 3.24721511927391,
+        "settlementCapacity": 24801479404,
+        "completedFocuses": 2844,
+        "scientificDiscoveries": 804,
+        "elapsedSeconds": 444
+      },
+      {
+        "tick": 9000,
+        "bytes": 4487736,
+        "heapUsed": 57144768,
+        "rss": 475848704,
+        "armies": 447,
+        "wars": 9,
+        "peaceCount": 11354,
+        "bankruptCountries": 44,
+        "treasuryMax": 199984024.64,
+        "population": 24794470048,
+        "populationRatio": 3.248643704813462,
+        "settlementCapacity": 24801479404,
+        "completedFocuses": 2846,
+        "scientificDiscoveries": 806,
+        "elapsedSeconds": 498
+      },
+      {
+        "tick": 10000,
+        "bytes": 4484485,
+        "heapUsed": 56654504,
+        "rss": 476233728,
+        "armies": 446,
+        "wars": 16,
+        "peaceCount": 12602,
+        "bankruptCountries": 44,
+        "treasuryMax": 225307782.924,
+        "population": 24798640582,
+        "populationRatio": 3.249190140329066,
+        "settlementCapacity": 24801479404,
+        "completedFocuses": 2849,
+        "scientificDiscoveries": 806,
+        "elapsedSeconds": 552
+      }
+    ],
+    "note": "Full-world deterministic AI simulation; seeded initial legal war, no physical device or network claim"
+  },
+  "backendCleanup": {
+    "project": "dfjsnjxnyjspwugjguhq",
+    "roomId": "5f87118c-a869-461a-8e19-7bb90ff11b5c",
+    "createdAt": "2026-10-12T10:05:51.633244Z",
+    "before": {
+      "rooms": 1,
+      "players": 8,
+      "receipts": 52,
+      "protectedCityBackups": 29
+    },
+    "status": "CLEANED_INDEPENDENT_READBACK_VERIFIED",
+    "guardedLockedCteSucceeded": true,
+    "after": {
+      "rooms": 0,
+      "players": 0,
+      "receipts": 0,
+      "protectedCityBackups": 29
+    },
+    "review": "Completed actual backend job; exact UUID/time/eight distinct QA names/host roles/52receipts/null backup fields/29 original backups, reviewed before scoped deletion."
+  }
+}

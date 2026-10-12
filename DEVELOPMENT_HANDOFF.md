@@ -1,3 +1,15 @@
+# New exact-run simulation and backend evidence verified (2026-10-12)
+
+Published metadata parent **b5066eee76843fe5b319f24e161023e828cf797e**; runtime remains **a180f5851d47c717f9b8fa44e794070bcba625ef**. Full **38234126548**: long-simulation114760488988 and backend114760489563 **SUCCESS**; build114760489108 stillGradle at10:22:49Z, four native gates await the exactAPK. No failed/cancelled new job or acceptedbinary currently. Main unchangeddbb354ab; sourceCI38233670169 SUCCESS.
+
+Long artifact11739459927/2540bytes/SHA8e1e47fcbb9cbb015b9dbef38c5ea69771e81d5bd4076b6c700c49d9690f50d7 CRC-checked:10000ticks,195countries/2924provinces/5411cities,10restores,12618wars/12602peaces/4235battles,451maxarmies,4487736maxsnapshotbytes. Actual runner tickP95=66.87392100000216ms; not an Android-frame result. HTTP artifact11740053446/603bytes/SHAd6a996cdf749773fcd84d5733ebd428bea0b90ec24fe1ef73f33dc5fc4ab07c9 CRC-checked:authoritative schema18/finaltick47,once-paidfocus,research,allfour realspy-mission results,diplomacy/trade and host migration PASS.
+
+This completed HTTPfixture **5f87118c-a869-461a-8e19-7bb90ff11b5c** was reviewed(created10:05:51.633244Z,8distinctknownQA members with originalhost,52receipts,nullbackupfields), then deleted only with exactUUID/time/name/role/count/backup guards in lockedCTE. Mutation returned exactUUID; fresh independent **0rooms/0players/0receipts/29protected original backups**. Prior six completedfixtures remaincleaned. Each later new nativeonline fixture requires its own reviewedcleanup after itsjob. Sanitized actual data and pending exactbinary gates are retained in **RECORDER_LIFECYCLE_RELEASE_QA_2026-10-12.json**; no credentials/whole production snapshots stored.
+
+**Next exact action:** wait for the current original signed build; verify newAPK/artifact CRC/hash/Hermes/signature/landscape/42art/nativeRecorderproof, then inspect its unchanged36camera/PSS/input,actual1800ssoak,in-placeupgrade/nativeonline. Preserve all originalnew outcomes; fix source for genuinefailures without numericreroll/thresholdrelaxation. All seven exactbinary gates+freshscopedcleanup required before acceptance/main/publisher/directAPK. Stages0DONE/1PARTIAL/2–9DONE/10PARTIAL/11PARTIAL. No physicalRedmi or finalAPK acceptance claim.
+
+---
+
 # Verified recorder source published; fresh full Android QA38234126548 (2026-10-12)
 
 Current implementation/runtime HEAD **a180f5851d47c717f9b8fa44e794070bcba625ef**, exact tree15d380d17a61f18719ed1b36e4bc6a121838083e. Published on existingQA, actual **sourceCI38233670169/job114758953760 SUCCESS**: strictTS,324JS/110Python0skips,42art,realAndroidprebuild/landscape/opaqueTexture/guardednativeRecorder contract and Hermes11485803bytes/SHA3ca339c3ee28aa779204cce7e27d18dce8afd5cb433aa124c959a22e682c392d. Sourceproof artifact11739981296/1729bytes/SHAeb59482d2d419b08f59c6ab44c903df87e3ea7f51353e7b0005345be2eb638e1 CRC/runtime/nativehash checked against localprebuild. Existing expansion-v2 normally advanced frome41 to this exact tested source; noforce/newbranch/project/main/backend change.
