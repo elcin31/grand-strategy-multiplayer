@@ -1,3 +1,20 @@
+# KNOWN ISSUE — CAMERA MICROSTUTTER / PAN-ZOOM PERFORMANCE
+
+**Status: deliberately deferred by the user on 2026-10-12. NON-BLOCKING for Dominion 2.0 playtest.**
+This instruction supersedes historical camera-gate/publication requirements below. Stop camera debugging, renderer changes, SVG/Skia migration, profiling and pan/zoom optimization in this session. Fix only a crash, a broken map or a build blocker. Do not claim ideal performance or release-level camera acceptance.
+
+- Confirmed symptoms: intermittent stutter while moving, panning and zooming the map on the user's Android device. Actual emulator comparisons also retain frame-tail and memory regressions. Physical Xiaomi Redmi Note 12 performance has not been measured by automation.
+- Retained improvements: gesture/UI-runtime camera transforms, bounded coverage and raster/picture preparation, batched map markers/flag frames, separated stable HUD targets and timing telemetry, opaque Android TextureView, and guarded Skia recorder lifecycle cleanup. These are already in the signed APK; no unfinished runtime edit is being added for this playtest.
+- Experiments did not establish a complete solution: opaque SurfaceView had a prior paired regression and was rejected; raster ownership and texture-opacity changes did not satisfy all original tail/memory gates; recorder cleanup does not prove microstutter resolved. The sparse country-outline experiment exists in checkpoint history, but no unpublished experiment or harness edit is added to this binary.
+- Existing measurements only: the prior 9ba9459 / run 38224321396 passed all 36 frame/time captures but failed forward terrain-pan PSS (358789 -> 460186 KiB; 20% limit 430546.8 KiB; native heap +87348 KiB). The current a180f585 / run 38234126548 recorded 18 forward captures; all nine forward PSS gates passed, terrain PSS 348328 -> 325530 KiB, but local-labels-armies compositor P99 increased 81.826292 -> 115.942316 ms. Reverse captures were not completed after a fixture read failed with adb exit 255; underlying output was not preserved by that caller. The camera job remains failed and incomplete, never relabeled successful.
+- Possible causes requiring later investigation: native picture/recorder retention, local label/army compositing, UI/render scheduling and device GPU/driver behavior. These are hypotheses, not established attribution.
+- A separate update may investigate native allocation ownership, compositor/frame tails and real-device traces, then choose a bounded fix. No new measurements, repeat camera experiments or renderer rewrite are required for this APK.
+- Evidence remains in RECORDER_LIFECYCLE_RELEASE_QA_2026-10-12.json, FLAG_FRAME_RELEASE_QA_2026-10-12.json and the original Actions artifacts. Historical failed results are preserved.
+
+Current release scope: standalone signed release APK from runtime a180f5851d47c717f9b8fa44e794070bcba625ef, version 2.0.0 (10), package com.elcin31.grandstrategymultiplayer. Gameplay, install, launch and save/load checks remain required; camera smoothness is not a playtest blocker.
+
+---
+
 # Final native online corrected controls verified — 2026-10-11
 
 Actual full signed native38135659505 PASS on finalf794/75aaAPK: free absolute country/readiness/speed CAS synchronization,once-only220M/16PPcourse payment,menu/process/reboot/AI-host recovery and original encrypted session ownership. This confirms the actual client CAS fix against production rather than a simulated snapshot. Paid actions retain reject/receipt rules and cannot be automatically repeated.

@@ -1,3 +1,28 @@
+# Dominion 2.0 playtest checkpoint — camera work intentionally stopped (2026-10-12)
+
+**The user explicitly postponed camera microstutter until the next update. Deliver Dominion-2.0-playtest.apk and stop.**
+This takes precedence over the historical all-seven-gates/ideal-camera/main-publication instructions below. The original camera failure stays recorded; it is a known, non-blocking playtest issue.
+
+- Recovered repository HEAD: 018b4972df48354114754c8602605722956d80b9 on the existing expansion-v2 history.
+- Exact built gameplay/runtime commit: a180f5851d47c717f9b8fa44e794070bcba625ef. Every later checkpoint through the recovered HEAD changes documentation/evidence only; no runtime difference. Main remains untouched.
+- Final publication commit: resolve tag v2.0.0-playtest.1; its exact full SHA is recorded as finalCommit in the published PLAYTEST_RELEASE_MANIFEST.json and GitHub Release notes. The tag points to the documentation/publication checkpoint; runtimeCommit separately identifies the actual APK source.
+- Completed and integrated: Diplomacy 2.0, espionage and diplomatic AI; Economy 2.0 and construction queues; Military 2.0, selection/deselection and supply; Technology Tree 2.0; national focuses/courses; historical art and gameplay panels; existing multiplayer, command receipts/reconnect/host migration and save/load/migrations. Actual panel consumers and existing subsystem tests were inspected; no gameplay system is removed or rewritten.
+- 42 paintings are embedded byte-exactly (15 inherited + 27 new). The same world contains 195 countries, 2924 provinces and 5411 cities.
+- Stable release build: Actions 38234126548, build job 114760489108 SUCCESS; artifact 11741660079, dominion-camera-illustrated-release. Archive size 62293780 bytes, SHA-256 556af3b662ca09cc93d5c3ac1822b729a7da1568ce69f45c31c662ecc253613c.
+- APK: Dominion-2.0-playtest.apk, 142483341 bytes; SHA-256 0bb66262090e66bbdfa4151aea1869e78fdc83b76423847093b1fc4ecd023448. The file is the same verified signed release binary, renamed only. Embedded Hermes, all four Hermes/Skia ABIs, non-debuggable manifest, landscape, Dominion endpoint and minimum Android API 24 are verified.
+- Signing: the existing certificate fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c is retained so existing installations can update. It is the project's inherited development signing certificate; Gradle configuration and packaged app are RELEASE/non-debuggable.
+- Existing source and build CI: strict typecheck PASS, 324 JS tests PASS, 110 Python tests PASS with zero skips, artwork/native config/Hermes checks PASS. Source CI 38233670169 binds the exact runtime. Original 10000-tick/10-restore simulation and existing Dominion backend integration PASS.
+- Exact-binary in-place 0.8.1 code9 -> 2.0.0 code10 upgrade PASS (114768021521): UID/private campaign files/encrypted preferences preserved, schema12 -> 18, six immutable migration backups, actual restart/load.
+- Exact-binary native multiplayer PASS (114768021930): creation, Germany selection, paused authoritative schema18, once-paid eco-audit course, menu/process/reboot reconnect, host takeover and native ownership return. Eight reviewed QA fixtures were already cleaned with fresh 0 rooms/0 players/0 receipts and 29 protected original backups, as recorded at recovered HEAD.
+- The already running exact-binary Android smoke (114768021212) must complete; reuse its menu/start/map/pan/province/army/diplomacy/save/load/crash evidence. Do not start another performance pass. Its final result and artifact are recorded in PLAYTEST_RELEASE_MANIFEST.json.
+- Known incomplete item: camera microstutter/performance acceptance; see BUG_REPORT.md. Real-device FPS, ideal pan/zoom and complete camera ABBA acceptance are not claimed.
+- Unpublished working-tree edits in the recovered directory affect camera QA/harness/evidence only and are excluded from the playtest checkpoint; the original directory is left intact and a patch was preserved in the current scratch workspace. No gameplay rollback was performed.
+- Publication: existing repository only, prerelease tag v2.0.0-playtest.1. .github/workflows/publish-playtest.yml downloads and verifies the exact existing APK without rebuilding or running camera profiling. The standard final-release acceptance workflow remains unchanged. APK location: https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.0.0-playtest.1/Dominion-2.0-playtest.apk
+
+Next action after delivery: stop. Resume camera work only in a separately authorized update after the user's Android playtest feedback. Never touch AssetMind or another project's infrastructure.
+
+---
+
 # Actual in-place upgrade and native online PASS; original camera and soak pending (2026-10-12)
 
 Published metadata parent **ecf0a9a7d5fb1f4e0f75cfa945660e7d2acbb6e4**; exactruntime **a180f5851d47c717f9b8fa44e794070bcba625ef**, full **38234126548**, verifiedAPK **0bb66262090e66bbdfa4151aea1869e78fdc83b76423847093b1fc4ecd023448/142483341bytes**. Five originalgates **SUCCESS**:build,10000ticks,HTTPbackend,actualin-placeupgrade114768021521,nativeonline114768021930. Original36camera/PSS114768021075 and actual1800ssoak114768021212 stillIN_PROGRESS. Main remainsdbb354ab/noacceptedmanifest/publication.

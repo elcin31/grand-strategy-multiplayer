@@ -1,0 +1,155 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "release": "Dominion 2.0 playtest",
+  "releaseTag": "v2.0.0-playtest.1",
+  "checkpointBranch": "dominion-2-playtest",
+  "recoveredHead": "018b4972df48354114754c8602605722956d80b9",
+  "runtimeCommit": "a180f5851d47c717f9b8fa44e794070bcba625ef",
+  "finalCommit": "Resolved by release tag; exact SHA written to published manifest",
+  "publicationStatus": "PREPARED_AWAITING_EXISTING_NATIVE_SMOKE",
+  "sourceCiRunId": 38233670169,
+  "originalReleaseRunId": 38234126548,
+  "apk": {
+    "name": "Dominion-2.0-playtest.apk",
+    "bytes": 142483341,
+    "sha256": "0bb66262090e66bbdfa4151aea1869e78fdc83b76423847093b1fc4ecd023448",
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "versionName": "2.0.0",
+    "versionCode": 10,
+    "configuration": "RELEASE",
+    "debuggable": false,
+    "standalone": true,
+    "landscape": true,
+    "minSdk": 24,
+    "targetSdk": 36,
+    "embeddedHermesBytes": 10699920,
+    "embeddedHermesSha256": "d2b287ce8ebcffcef06238686de2e1366fc3af74c7bcdffe518a2d93abb1b270",
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "signingNote": "Existing inherited development certificate retained for update compatibility; packaged build is RELEASE/non-debuggable",
+    "correctDominionBackendVerified": true,
+    "embeddedIllustrations": 42,
+    "allZipCRCVerified": true,
+    "directUrl": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.0.0-playtest.1/Dominion-2.0-playtest.apk"
+  },
+  "originalArtifact": {
+    "id": 11741660079,
+    "name": "dominion-camera-illustrated-release",
+    "runId": 38234126548,
+    "bytes": 62293780,
+    "zipSha256": "556af3b662ca09cc93d5c3ac1822b729a7da1568ce69f45c31c662ecc253613c",
+    "downloadedAndExtracted": true,
+    "crcVerified": true
+  },
+  "completedFeatures": [
+    "Diplomacy 2.0",
+    "Espionage",
+    "Diplomatic AI",
+    "Economy 2.0",
+    "Construction",
+    "Military 2.0",
+    "Army selection and deselection",
+    "Supply",
+    "Technology Tree 2.0",
+    "National Focus System",
+    "Historical Illustrations",
+    "Gameplay panels",
+    "Multiplayer",
+    "Save/load and schema12-to-18 migrations",
+    "Existing performance improvements"
+  ],
+  "world": {
+    "countries": 195,
+    "provinces": 2924,
+    "cities": 5411
+  },
+  "sourceChecks": {
+    "typecheck": "PASS",
+    "jsTests": {
+      "passed": 324,
+      "failed": 0
+    },
+    "pythonTests": {
+      "passed": 110,
+      "failed": 0,
+      "skipped": 0
+    },
+    "artwork": "PASS",
+    "nativeConfiguration": "PASS",
+    "hermesBundle": "PASS"
+  },
+  "essentialNativeJobs": {
+    "build": {
+      "id": 114760489108,
+      "status": "SUCCESS"
+    },
+    "longSimulation": {
+      "id": 114760488988,
+      "status": "SUCCESS",
+      "ticks": 10000,
+      "restores": 10
+    },
+    "backend": {
+      "id": 114760489563,
+      "status": "SUCCESS"
+    },
+    "upgrade": {
+      "id": 114768021521,
+      "status": "SUCCESS",
+      "artifactId": 11741765593,
+      "uidRetained": true,
+      "campaignsRetained": true,
+      "encryptedPreferencesRetained": true,
+      "immutableMigrationBackups": 6,
+      "actualRestart": true
+    },
+    "online": {
+      "id": 114768021930,
+      "status": "SUCCESS",
+      "artifactId": 11741711319,
+      "reconnectAfterMenuProcessReboot": true,
+      "hostMigration": true,
+      "onceOnlyFocusPayment": true
+    },
+    "smoke": {
+      "id": 114768021212,
+      "status": "IN_PROGRESS"
+    }
+  },
+  "knownIssues": [
+    {
+      "title": "KNOWN ISSUE — CAMERA MICROSTUTTER / PAN-ZOOM PERFORMANCE",
+      "status": "INTENTIONALLY_DEFERRED_BY_USER",
+      "blocksPlaytest": false,
+      "originalJobId": 114768021075,
+      "originalConclusion": "failure",
+      "existingForwardCompositorP99Ms": {
+        "baseline": 81.826292,
+        "candidate": 115.942316
+      },
+      "originalComparisonIncomplete": true,
+      "physicalXiaomiPerformanceMeasured": false,
+      "noNewCameraProfilingOrRendererChanges": true,
+      "references": [
+        "BUG_REPORT.md",
+        "RECORDER_LIFECYCLE_RELEASE_QA_2026-10-12.json",
+        "FLAG_FRAME_RELEASE_QA_2026-10-12.json"
+      ]
+    }
+  ],
+  "workingTreePolicy": "Original recovery directory and unpublished camera QA edits preserved; final checkpoint uses committed runtime only",
+  "backendQaCleanup": {
+    "alreadyVerifiedAtRecoveredHead": true,
+    "reviewedFixtures": 8,
+    "remainingQaRooms": 0,
+    "remainingQaPlayers": 0,
+    "remainingQaReceipts": 0,
+    "protectedOriginalBackups": 29
+  },
+  "userDecision": "2026-10-12: stop camera debugging; preserve completed gameplay; deliver current standalone release APK for Android playtest"
+}

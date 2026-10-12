@@ -1,0 +1,97 @@
+name: Publish Dominion 2.0 playtest APK
+on:
+  push:
+    branches: [dominion-2-playtest]
+    paths:
+      - .github/workflows/publish-playtest.yml
+      - PLAYTEST_RELEASE_MANIFEST.json
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: dominion-2-playtest-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: elcin31/grand-strategy-multiplayer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Bind unchanged runtime and original completed essential checks
+        run: |
+          git diff --exit-code a180f5851d47c717f9b8fa44e794070bcba625ef HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets tests scripts
+          gh api repos/$GH_REPO/actions/runs/38234126548 > original-run.json
+          gh api 'repos/'"$GH_REPO"'/actions/runs/38234126548/jobs?per_page=30' > original-jobs.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          run=json.loads(Path('original-run.json').read_text())
+          jobs=json.loads(Path('original-jobs.json').read_text())['jobs']
+          manifest=json.loads(Path('PLAYTEST_RELEASE_MANIFEST.json').read_text())
+          assert run['head_sha']==manifest['runtimeCommit']
+          assert run['status']=='completed', 'Wait for the existing essential smoke; do not start a new performance run'
+          required={'build-apk','long-simulation','backend-live / live-world','android-smoke','android-upgrade / release-upgrade-save','android-online / native-online'}
+          selected=[job for job in jobs if job['name'] in required]
+          assert {job['name'] for job in selected}==required
+          assert all(job['status']=='completed' and job['conclusion']=='success' for job in selected), [(j['name'],j['conclusion']) for j in selected]
+          camera=[job for job in jobs if job['name']=='camera-comparison']
+          assert len(camera)==1 and camera[0]['status']=='completed'
+          print('PASS: exact original release and essential checks. Camera result remains',camera[0]['conclusion'],'and is deliberately non-blocking for this playtest.')
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion-camera-illustrated-release
+          run-id: 38234126548
+          github-token: ${{ github.token }}
+          path: release
+      - name: Verify exact standalone APK without rebuilding
+        run: |
+          python scripts/verify-apk.py release/Dominion-grand-strategy-v2-release.apk
+          python scripts/verify-packaged-art.py release/Dominion-grand-strategy-v2-release.apk
+          python scripts/verify-release.py release/Dominion-grand-strategy-v2-release.apk > release/playtest-integrity.txt
+          python - <<'PY'
+          import hashlib,json,os,zipfile,shutil
+          from pathlib import Path
+          manifest=json.loads(Path('PLAYTEST_RELEASE_MANIFEST.json').read_text())
+          original=Path('release/Dominion-grand-strategy-v2-release.apk')
+          assert original.stat().st_size==manifest['apk']['bytes']
+          assert hashlib.sha256(original.read_bytes()).hexdigest()==manifest['apk']['sha256']
+          with zipfile.ZipFile(original) as z:
+              assert z.testzip() is None
+              assert z.read('assets/index.android.bundle')[:8].hex()=='c61fbc03c103191f'
+          shutil.copyfile(original,'release/Dominion-2.0-playtest.apk')
+          manifest['finalCommit']=os.environ['GITHUB_SHA']
+          manifest['publicationRunId']=int(os.environ['GITHUB_RUN_ID'])
+          manifest['publicationStatus']='PUBLISHED_PLAYTEST_WITH_DEFERRED_CAMERA_ISSUE'
+          jobs=json.loads(Path('original-jobs.json').read_text())['jobs']
+          manifest['originalJobResults']=[{'id':j['id'],'name':j['name'],'status':j['status'],'conclusion':j['conclusion']} for j in jobs]
+          Path('release/PLAYTEST_RELEASE_MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          Path('release/Dominion-2.0-playtest.sha256').write_text(manifest['apk']['sha256']+'  Dominion-2.0-playtest.apk\n')
+          notes=Path('RELEASE_NOTES_PLAYTEST.md').read_text()
+          notes+='\nFinal publication commit: '+os.environ['GITHUB_SHA']+'\n'
+          Path('publish-notes.md').write_text(notes)
+          PY
+      - name: Publish prerelease and checkpoint tag in the existing Dominion repository
+        run: |
+          gh release create v2.0.0-playtest.1 --target "$GITHUB_SHA" --prerelease --title 'Dominion 2.0 — Playtest' --notes-file publish-notes.md release/Dominion-2.0-playtest.apk release/Dominion-2.0-playtest.sha256 release/PLAYTEST_RELEASE_MANIFEST.json release/playtest-integrity.txt
+      - name: Verify actual public APK bytes
+        run: |
+          curl --fail --location --retry 2 --max-time 180 'https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.0.0-playtest.1/Dominion-2.0-playtest.apk' -o public-playtest.apk
+          cmp release/Dominion-2.0-playtest.apk public-playtest.apk
+          gh release view v2.0.0-playtest.1 --json url,tagName,assets
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dominion-2-playtest-release-checkpoint
+          path: |
+            release/Dominion-2.0-playtest.apk
+            release/Dominion-2.0-playtest.sha256
+            release/PLAYTEST_RELEASE_MANIFEST.json
+            release/playtest-integrity.txt
+          retention-days: 30
