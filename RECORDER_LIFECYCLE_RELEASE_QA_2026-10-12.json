@@ -323,5 +323,118 @@
     "smoke": 114768021212,
     "upgrade": 114768021521,
     "online": 114768021930
+  },
+  "upgradeConclusion": "success",
+  "upgradeArtifact": {
+    "id": 11741765593,
+    "bytes": 2729343,
+    "sha256": "013abd6aa8a365b819cd6ac5e2fd1d47bbf5bac1a8a11e1f26d64e5abadbd3f2",
+    "crcVerified": true
+  },
+  "upgrade": {
+    "baseline": {
+      "package": "com.elcin31.grandstrategymultiplayer",
+      "versionCode": 9,
+      "versionName": "0.8.1",
+      "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+    },
+    "candidate": {
+      "package": "com.elcin31.grandstrategymultiplayer",
+      "versionCode": 10,
+      "versionName": "2.0.0",
+      "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+    },
+    "appUidRetained": true,
+    "privateCampaignFilesRetained": true,
+    "encryptedPreferenceBytesRetainedBeforeLaunch": true,
+    "actualSecureStorePreferencesAfterUpdate": {
+      "preset": "High",
+      "frameRate": 30,
+      "adaptive": false
+    },
+    "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+    "originalWorld": {
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411
+    },
+    "oldSchema": 12,
+    "newSchema": 18,
+    "oldSaveSha256": "989872ed785bc7a1203f93f3f4fb2ef1ed76e6b1f5932a0bbbd6bc9b42173b58",
+    "migrationBackupSha256": {
+      "before-expansion-v13": "989872ed785bc7a1203f93f3f4fb2ef1ed76e6b1f5932a0bbbd6bc9b42173b58",
+      "before-espionage-v14": "989872ed785bc7a1203f93f3f4fb2ef1ed76e6b1f5932a0bbbd6bc9b42173b58",
+      "before-economy-v15": "989872ed785bc7a1203f93f3f4fb2ef1ed76e6b1f5932a0bbbd6bc9b42173b58",
+      "before-military-v16": "989872ed785bc7a1203f93f3f4fb2ef1ed76e6b1f5932a0bbbd6bc9b42173b58",
+      "before-technology-v17": "989872ed785bc7a1203f93f3f4fb2ef1ed76e6b1f5932a0bbbd6bc9b42173b58",
+      "before-focus-v18": "989872ed785bc7a1203f93f3f4fb2ef1ed76e6b1f5932a0bbbd6bc9b42173b58"
+    },
+    "repeatBackupBytesUnchanged": true,
+    "actualCandidateRestart": true,
+    "finalVersionUpgrade": true,
+    "foreignLauncherAnrDismissals": [],
+    "note": "Real offline ephemeral-emulator package replacement, native save/load/backups and encrypted graphics preference round-trip. No production-session reconnect or hardware FPS claim."
+  },
+  "onlineConclusion": "success",
+  "onlineArtifact": {
+    "id": 11741711319,
+    "bytes": 1982388,
+    "sha256": "308c080575aa0035961e910cf4469a5c7c9d937d9c924b2cc6fe0a941bc0709a",
+    "crcVerified": true
+  },
+  "online": {
+    "roomId": "8b8d6f24-ada3-4685-95bc-2a1d9130b9c2",
+    "qaName": "NATIVE ONLINE QA",
+    "stateVersion": 18,
+    "apkSha256": "0bb66262090e66bbdfa4151aea1869e78fdc83b76423847093b1fc4ecd023448",
+    "nativeCreate": true,
+    "nativeCountrySelection": "germany",
+    "serverPaused": true,
+    "nativePaidFocus": "eco-audit",
+    "menuReconnect": true,
+    "processReconnect": true,
+    "realHostMigration": true,
+    "nativeOwnerReturn": true,
+    "rebootReconnect": true,
+    "sameNativeUidAndSessionKeys": true,
+    "onceOnlyFocusPaymentRetained": true,
+    "members": 2,
+    "cleanup": "PENDING",
+    "note": "Actual existing production HTTP and signed native controls; no tokens or snapshots in evidence."
+  },
+  "nativeCleanup": {
+    "project": "dfjsnjxnyjspwugjguhq",
+    "roomId": "8b8d6f24-ada3-4685-95bc-2a1d9130b9c2",
+    "createdAt": "2026-10-12T10:29:26.545361Z",
+    "before": {
+      "rooms": 1,
+      "players": 2,
+      "receipts": 7,
+      "protectedCityBackups": 29
+    },
+    "status": "CLEANED_INDEPENDENT_READBACK_VERIFIED",
+    "guardedLockedCteSucceeded": true,
+    "after": {
+      "rooms": 0,
+      "players": 0,
+      "receipts": 0,
+      "protectedCityBackups": 29
+    }
+  },
+  "combinedIndependentCleanup": {
+    "roomIds": [
+      "ee67f680-249f-4c11-aff1-07214c8db1bf",
+      "c9d212ad-72d6-4c21-bcdd-5db1f77f4298",
+      "7410ebdc-e5ef-41fc-bb40-7180ca632fda",
+      "4177cdc8-3cc2-4089-a41d-ef6b9f7c256b",
+      "96a25875-bf8c-4705-9ae1-44bea57711f5",
+      "dfef50f6-6d05-4e66-b347-5801a598c3f6",
+      "5f87118c-a869-461a-8e19-7bb90ff11b5c",
+      "8b8d6f24-ada3-4685-95bc-2a1d9130b9c2"
+    ],
+    "roomsRemaining": 0,
+    "playersRemaining": 0,
+    "receiptsRemaining": 0,
+    "preservedCityBackups": 29
   }
 }
