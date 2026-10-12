@@ -433,7 +433,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }
-      monthlyReligionEffects(next);extractResources(next);monthlyNationalProjects(next);monthlyDecisions(next);processResourceTrade(next);monthlyProduction(next);domesticConsumption(next);updateResourceMarkets(next); monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next);monthlyInternalPolitics(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
+      monthlyReligionEffects(next);if(next.dataset){extractResources(next);monthlyNationalProjects(next);monthlyDecisions(next);processResourceTrade(next);monthlyProduction(next);domesticConsumption(next);updateResourceMarkets(next);} monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next);monthlyInternalPolitics(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
     }
   }
 }
