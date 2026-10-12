@@ -1,3 +1,4 @@
+import {CalendarProgress} from './CalendarProgress';
 import {AudioPressable as Pressable} from './AudioPressable';
 import {useEffect,useRef,useState} from 'react';
 import {SvgXml} from 'react-native-svg';
@@ -19,7 +20,7 @@ export function LandscapeHUD({state,playerId,onCommand,onNotifications}:{state:G
   <Pressable accessibilityLabel="Все показатели страны" accessibilityRole="button" style={{...control,flexDirection:'row',maxWidth:110,gap:5}} onPress={()=>setDetails(v=>!v)}><SvgXml xml={getWorldFlag(c.id)??'<svg xmlns="http://www.w3.org/2000/svg"/>'} width={27} height={18}/><Text numberOfLines={1} style={[text,{flexShrink:1}]}>{c.name}</Text><Text style={text}>▾</Text></Pressable>
   <View style={{flex:1,flexDirection:'row',gap:5,justifyContent:'space-around'}}>{metrics.slice(0,width>=1000?6:width>=780?4:2).map(([label,value])=><View key={label}><Text style={{fontSize:8,color:colors.muted}}>{label}</Text><Text style={text}>{value}</Text></View>)}</View>
   <Pressable accessibilityLabel={`Уведомления: ${unread}`} accessibilityRole="button" style={control} onPress={onNotifications}><Text style={text}>♧ {unread}</Text></Pressable>
-  <Text style={[text,{fontSize:10}]}>{`${String(state.day??1).padStart(2,'0')}.${String(state.month).padStart(2,'0')}.${state.year}`}</Text>
+  <View><Text style={[text,{fontSize:10}]}>{`${String(state.day??1).padStart(2,'0')}.${String(state.month).padStart(2,'0')}.${state.year}`}</Text><CalendarProgress state={state}/></View>
   <Pressable accessibilityRole="button" accessibilityLabel={state.speed?'Пауза':'Продолжить'} style={control} onPress={()=>me?.isHost?speed(state.speed?0:resume.current):onCommand({type:'REQUEST_PAUSE',playerId})}><Text style={text}>{state.speed?'Ⅱ':'▶'}</Text></Pressable>
   <Pressable accessibilityRole="button" accessibilityLabel="Выбрать скорость кампании" style={control} disabled={!me?.isHost} onPress={()=>setSpeeds(v=>!v)}><Text style={text}>{state.speed||resume.current}× ▾</Text></Pressable>
   {details&&<View style={{position:'absolute',left:0,top:44,backgroundColor:colors.surface,padding:10,borderWidth:1,borderColor:colors.gold,flexDirection:'row',flexWrap:'wrap',gap:14,maxWidth:440}}><Text style={[text,{width:'100%'}]}>{c.name}</Text>{metrics.map(([label,value])=><View key={label}><Text style={{color:colors.muted,fontSize:10}}>{label}</Text><Text style={text}>{value}</Text></View>)}</View>}

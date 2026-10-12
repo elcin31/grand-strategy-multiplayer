@@ -1,0 +1,3085 @@
+[
+  {
+    "id": "m01-spearmen",
+    "filename": "military/m01-spearmen.webp",
+    "titleRu": "Копейные полки на рассвете",
+    "description": "Infantry marching toward a medieval castle",
+    "category": "military",
+    "era": "1200–1400",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 304,
+    "bytes": 48462,
+    "sha256": "ff9f79f089fa8e77b90bbd66b598556adebe238e9169134e96e0e8a98575860a",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-82a04662-b29e-4e1e-a902-ff8d8cd3564a.png",
+      "sourceSha256": "b8940930f71506831e786a764bdfe368a91fac2dc76b7f803bd44a15983a44f1",
+      "panel": 1,
+      "cropRect": [
+        1,
+        1,
+        511,
+        305
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m02-cavalry",
+    "filename": "military/m02-cavalry.webp",
+    "titleRu": "Кавалерийский дозор",
+    "description": "Cavalry patrol in open fields",
+    "category": "military",
+    "era": "1600–1750",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 304,
+    "bytes": 49386,
+    "sha256": "3c047abe7f748e742ca2f964104a0c29e805057091355969e9b2764ae7b93778",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-82a04662-b29e-4e1e-a902-ff8d8cd3564a.png",
+      "sourceSha256": "b8940930f71506831e786a764bdfe368a91fac2dc76b7f803bd44a15983a44f1",
+      "panel": 2,
+      "cropRect": [
+        513,
+        1,
+        1023,
+        305
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m03-musketeers",
+    "filename": "military/m03-musketeers.webp",
+    "titleRu": "Мушкетный строй",
+    "description": "Musketeer regiment training",
+    "category": "military",
+    "era": "1600–1750",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 48020,
+    "sha256": "72612ea22035a20a7fd2f292ae6a6ccd9038eae121a4295730f8e2add7e663af",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-82a04662-b29e-4e1e-a902-ff8d8cd3564a.png",
+      "sourceSha256": "b8940930f71506831e786a764bdfe368a91fac2dc76b7f803bd44a15983a44f1",
+      "panel": 3,
+      "cropRect": [
+        1,
+        307,
+        511,
+        612
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m04-artillery",
+    "filename": "military/m04-artillery.webp",
+    "titleRu": "Артиллерийская позиция",
+    "description": "Artillery crew protected by infantry",
+    "category": "military",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 46562,
+    "sha256": "f059b836424575e6341cdd6aff0949f43ea632fecc36d39427f37cdcc76e2f36",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-82a04662-b29e-4e1e-a902-ff8d8cd3564a.png",
+      "sourceSha256": "b8940930f71506831e786a764bdfe368a91fac2dc76b7f803bd44a15983a44f1",
+      "panel": 4,
+      "cropRect": [
+        513,
+        307,
+        1023,
+        612
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m05-engineers",
+    "filename": "military/m05-engineers.webp",
+    "titleRu": "Военные инженеры",
+    "description": "Engineers building a river bridge",
+    "category": "military",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 306,
+    "bytes": 57874,
+    "sha256": "740716752bcd22f9ec7be5d1823d2c894b916c69d2300ed8b5c4f3168ba8e535",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-82a04662-b29e-4e1e-a902-ff8d8cd3564a.png",
+      "sourceSha256": "b8940930f71506831e786a764bdfe368a91fac2dc76b7f803bd44a15983a44f1",
+      "panel": 5,
+      "cropRect": [
+        1,
+        614,
+        511,
+        920
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m06-siege",
+    "filename": "military/m06-siege.webp",
+    "titleRu": "Осадный парк",
+    "description": "Siege engineers before a stone fortress",
+    "category": "military",
+    "era": "1200–1400",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 306,
+    "bytes": 45080,
+    "sha256": "a4b25c58c32503c9a9136af0f47d7006ade409333cf99f3e5178407f83089815",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-82a04662-b29e-4e1e-a902-ff8d8cd3564a.png",
+      "sourceSha256": "b8940930f71506831e786a764bdfe368a91fac2dc76b7f803bd44a15983a44f1",
+      "panel": 6,
+      "cropRect": [
+        513,
+        614,
+        1023,
+        920
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m07-logistics",
+    "filename": "military/m07-logistics.webp",
+    "titleRu": "Обоз снабжения",
+    "description": "Supply wagons arriving in camp",
+    "category": "military",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 279,
+    "bytes": 51470,
+    "sha256": "aceb344f5f4a252c17ffae2e5dceefd0611af5fa2a9127870691e9a333d23e4d",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-82a04662-b29e-4e1e-a902-ff8d8cd3564a.png",
+      "sourceSha256": "b8940930f71506831e786a764bdfe368a91fac2dc76b7f803bd44a15983a44f1",
+      "panel": 7,
+      "cropRect": [
+        1,
+        922,
+        511,
+        1201
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m08-mountain",
+    "filename": "military/m08-mountain.webp",
+    "titleRu": "Альпийский марш",
+    "description": "Mountain infantry climbing a pass",
+    "category": "military",
+    "era": "1800–1910",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 279,
+    "bytes": 45784,
+    "sha256": "cf33da387514365081a72e308358df1f7cd51947807bf2bb355e3807912dbb18",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-82a04662-b29e-4e1e-a902-ff8d8cd3564a.png",
+      "sourceSha256": "b8940930f71506831e786a764bdfe368a91fac2dc76b7f803bd44a15983a44f1",
+      "panel": 8,
+      "cropRect": [
+        513,
+        922,
+        1023,
+        1201
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m09-general",
+    "filename": "military/m09-general.webp",
+    "titleRu": "Штаб при свечах",
+    "description": "General studying maps by lamplight",
+    "category": "military",
+    "era": "1800–1910",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 332,
+    "bytes": 41586,
+    "sha256": "274da9de6ff20c87b8c64fed4ba89c371d4c6506b0df8c9cda6f39245dc4fdfb",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-82a04662-b29e-4e1e-a902-ff8d8cd3564a.png",
+      "sourceSha256": "b8940930f71506831e786a764bdfe368a91fac2dc76b7f803bd44a15983a44f1",
+      "panel": 9,
+      "cropRect": [
+        1,
+        1203,
+        511,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m10-regroup",
+    "filename": "military/m10-regroup.webp",
+    "titleRu": "После сражения",
+    "description": "Army regrouping after battle",
+    "category": "military",
+    "era": "1800–1910",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 332,
+    "bytes": 44662,
+    "sha256": "663dbf48aaed385d5509bd1eeeeae66adf4cf182661d124c7d2bca59a59cbede",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-82a04662-b29e-4e1e-a902-ff8d8cd3564a.png",
+      "sourceSha256": "b8940930f71506831e786a764bdfe368a91fac2dc76b7f803bd44a15983a44f1",
+      "panel": 10,
+      "cropRect": [
+        513,
+        1203,
+        1023,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m11-infantry",
+    "filename": "military/m11-infantry.webp",
+    "titleRu": "Лесной патруль",
+    "description": "Modern infantry patrol in a forest",
+    "category": "military",
+    "era": "1950–2000",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 280,
+    "bytes": 52768,
+    "sha256": "1a7d1f74a29a0317122894f56aa01aad32ec67d86bb4607777c622b3481e9ca8",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-e9f1f236-2711-4a3b-baa7-6f54661c44ff.png",
+      "sourceSha256": "c31ffa6874cad541c464be11e6aaa87e8ef66d19d89a6c1226015fb11e36cb8b",
+      "panel": 1,
+      "cropRect": [
+        1,
+        1,
+        511,
+        281
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m12-armor",
+    "filename": "military/m12-armor.webp",
+    "titleRu": "Бронетанковая колонна",
+    "description": "Armored column on a dusty road",
+    "category": "military",
+    "era": "1920–1950",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 280,
+    "bytes": 41854,
+    "sha256": "4707c8cc99c144d522f81fc50ce0c4059c717e660ffaa58ce0b9ba5d65ea42ab",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-e9f1f236-2711-4a3b-baa7-6f54661c44ff.png",
+      "sourceSha256": "c31ffa6874cad541c464be11e6aaa87e8ef66d19d89a6c1226015fb11e36cb8b",
+      "panel": 2,
+      "cropRect": [
+        513,
+        1,
+        1023,
+        281
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m13-medics",
+    "filename": "military/m13-medics.webp",
+    "titleRu": "Полевой госпиталь",
+    "description": "Medical support treating soldiers",
+    "category": "military",
+    "era": "1910–1940",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 278,
+    "bytes": 40696,
+    "sha256": "b07a4bb096bdb624cfaa491ee930c3ec12f14d6c667a1cdfdb5963daf18ec32d",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-e9f1f236-2711-4a3b-baa7-6f54661c44ff.png",
+      "sourceSha256": "c31ffa6874cad541c464be11e6aaa87e8ef66d19d89a6c1226015fb11e36cb8b",
+      "panel": 3,
+      "cropRect": [
+        1,
+        283,
+        511,
+        561
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m14-marines",
+    "filename": "military/m14-marines.webp",
+    "titleRu": "Морской десант",
+    "description": "Marines landing on a contested coast",
+    "category": "military",
+    "era": "1940–1960",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 278,
+    "bytes": 44768,
+    "sha256": "517bcdb6007bcc3c49bb32258645008867da2ef93ddd620a6e2c0d9e6320d362",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-e9f1f236-2711-4a3b-baa7-6f54661c44ff.png",
+      "sourceSha256": "c31ffa6874cad541c464be11e6aaa87e8ef66d19d89a6c1226015fb11e36cb8b",
+      "panel": 4,
+      "cropRect": [
+        513,
+        283,
+        1023,
+        561
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m15-air-defense",
+    "filename": "military/m15-air-defense.webp",
+    "titleRu": "Расчёт ПВО",
+    "description": "Air-defense crew on duty",
+    "category": "military",
+    "era": "1960–2000",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 276,
+    "bytes": 37408,
+    "sha256": "bd74967a5c91f934f21c7eda1f43736adc457d35502b31f4a6015332e5828bb3",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-e9f1f236-2711-4a3b-baa7-6f54661c44ff.png",
+      "sourceSha256": "c31ffa6874cad541c464be11e6aaa87e8ef66d19d89a6c1226015fb11e36cb8b",
+      "panel": 5,
+      "cropRect": [
+        1,
+        563,
+        511,
+        839
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m16-drones",
+    "filename": "military/m16-drones.webp",
+    "titleRu": "Воздушная разведка",
+    "description": "Drone operators at a field command post",
+    "category": "military",
+    "era": "2000–2030",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 276,
+    "bytes": 37042,
+    "sha256": "9f08aa4b205976ff5240d38a35bcaa2459b537ff791e017ab3c50c3455582866",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-e9f1f236-2711-4a3b-baa7-6f54661c44ff.png",
+      "sourceSha256": "c31ffa6874cad541c464be11e6aaa87e8ef66d19d89a6c1226015fb11e36cb8b",
+      "panel": 6,
+      "cropRect": [
+        513,
+        563,
+        1023,
+        839
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m17-trenches",
+    "filename": "military/m17-trenches.webp",
+    "titleRu": "Укреплённая линия",
+    "description": "Trench fortifications under an overcast sky",
+    "category": "military",
+    "era": "1910–1930",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 314,
+    "bytes": 46772,
+    "sha256": "7c85c0a27d186c8de86340b030d9616d92ad5b6004608d0d69170bef835a98f1",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-e9f1f236-2711-4a3b-baa7-6f54661c44ff.png",
+      "sourceSha256": "c31ffa6874cad541c464be11e6aaa87e8ef66d19d89a6c1226015fb11e36cb8b",
+      "panel": 7,
+      "cropRect": [
+        1,
+        841,
+        511,
+        1155
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m18-battle",
+    "filename": "military/m18-battle.webp",
+    "titleRu": "Битва с командного холма",
+    "description": "A prolonged battle viewed from a hill",
+    "category": "military",
+    "era": "1800–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 314,
+    "bytes": 46958,
+    "sha256": "590334e1ea87147105b9db50e1aa8a647fa1ced071797163434789540b97bea7",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-e9f1f236-2711-4a3b-baa7-6f54661c44ff.png",
+      "sourceSha256": "c31ffa6874cad541c464be11e6aaa87e8ef66d19d89a6c1226015fb11e36cb8b",
+      "panel": 8,
+      "cropRect": [
+        513,
+        841,
+        1023,
+        1155
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m19-surrender",
+    "filename": "military/m19-surrender.webp",
+    "titleRu": "Капитуляция крепости",
+    "description": "Soldiers receiving a fortress surrender",
+    "category": "military",
+    "era": "1650–1800",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 378,
+    "bytes": 64026,
+    "sha256": "436caa96c58ac2c484d38395cd3fc8f3c58f14366f7f64c1b0f115a7b151213e",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-e9f1f236-2711-4a3b-baa7-6f54661c44ff.png",
+      "sourceSha256": "c31ffa6874cad541c464be11e6aaa87e8ef66d19d89a6c1226015fb11e36cb8b",
+      "panel": 9,
+      "cropRect": [
+        1,
+        1157,
+        511,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "m20-staff",
+    "filename": "military/m20-staff.webp",
+    "titleRu": "Современный военный штаб",
+    "description": "Military staff coordinating logistics",
+    "category": "military",
+    "era": "2000–2030",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "MilitaryPanel",
+      "BattleSiegePanel",
+      "ArmyDock"
+    ],
+    "width": 510,
+    "height": 378,
+    "bytes": 35920,
+    "sha256": "8735eec53d66653fda1921dc56ce2f44f5d20a60b495819cf0a9b1d197c47e11",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-e9f1f236-2711-4a3b-baa7-6f54661c44ff.png",
+      "sourceSha256": "c31ffa6874cad541c464be11e6aaa87e8ef66d19d89a6c1226015fb11e36cb8b",
+      "panel": 10,
+      "cropRect": [
+        513,
+        1157,
+        1023,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e01-harvest",
+    "filename": "economy/e01-harvest.webp",
+    "titleRu": "Хлебные поля",
+    "description": "Wheat harvest in a fertile valley",
+    "category": "economy",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 55280,
+    "sha256": "852262b419da990dbedb67bd44626b78130212eb2126f51e0d92a79a51374c72",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-06c73dfc-c8fd-4135-81e6-625d8efe0c03.png",
+      "sourceSha256": "6cdd0c69441c06ed58211f1539463ff32470c7e892ae6a899a291e29c278265c",
+      "panel": 1,
+      "cropRect": [
+        1,
+        1,
+        511,
+        306
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e02-timber",
+    "filename": "economy/e02-timber.webp",
+    "titleRu": "Лесопильный промысел",
+    "description": "Timber workers at a river sawmill",
+    "category": "economy",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 58998,
+    "sha256": "22c14864c429c1cba89ec78e4882faa162883b831b7ac507b1455bf018d12619",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-06c73dfc-c8fd-4135-81e6-625d8efe0c03.png",
+      "sourceSha256": "6cdd0c69441c06ed58211f1539463ff32470c7e892ae6a899a291e29c278265c",
+      "panel": 2,
+      "cropRect": [
+        513,
+        1,
+        1023,
+        306
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e03-ore",
+    "filename": "economy/e03-ore.webp",
+    "titleRu": "Железная руда",
+    "description": "Iron ore miners at a hillside mine",
+    "category": "economy",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 58450,
+    "sha256": "4c11d5d4d552ae132ed4102726961de3a4705c14bcabe911a0089578a98571fd",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-06c73dfc-c8fd-4135-81e6-625d8efe0c03.png",
+      "sourceSha256": "6cdd0c69441c06ed58211f1539463ff32470c7e892ae6a899a291e29c278265c",
+      "panel": 3,
+      "cropRect": [
+        1,
+        308,
+        511,
+        613
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e04-coal",
+    "filename": "economy/e04-coal.webp",
+    "titleRu": "Угольная шахта",
+    "description": "Coal extraction and freight wagons",
+    "category": "economy",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 41732,
+    "sha256": "58f48d1c6fce76e14c8b7a36d2cc88bc07805a9b566956c31d07ad8aff5e3f0a",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-06c73dfc-c8fd-4135-81e6-625d8efe0c03.png",
+      "sourceSha256": "6cdd0c69441c06ed58211f1539463ff32470c7e892ae6a899a291e29c278265c",
+      "panel": 4,
+      "cropRect": [
+        513,
+        308,
+        1023,
+        613
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e05-oil",
+    "filename": "economy/e05-oil.webp",
+    "titleRu": "Нефтяной промысел",
+    "description": "Oil drilling and refinery towers",
+    "category": "economy",
+    "era": "1930–1980",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 306,
+    "bytes": 44918,
+    "sha256": "d50f3efdd0f1075e17f3f1fe518f16a622bf3685d760317369df33618ffb13d3",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-06c73dfc-c8fd-4135-81e6-625d8efe0c03.png",
+      "sourceSha256": "6cdd0c69441c06ed58211f1539463ff32470c7e892ae6a899a291e29c278265c",
+      "panel": 5,
+      "cropRect": [
+        1,
+        615,
+        511,
+        921
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e06-harbor",
+    "filename": "economy/e06-harbor.webp",
+    "titleRu": "Торговая гавань",
+    "description": "Merchant harbor with loaded cargo",
+    "category": "economy",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 306,
+    "bytes": 56210,
+    "sha256": "277c2064fa2f101745fa0563f4bf7c1ffadd0eff4a1146298fc9501d37648ae0",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-06c73dfc-c8fd-4135-81e6-625d8efe0c03.png",
+      "sourceSha256": "6cdd0c69441c06ed58211f1539463ff32470c7e892ae6a899a291e29c278265c",
+      "panel": 6,
+      "cropRect": [
+        513,
+        615,
+        1023,
+        921
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e07-rail",
+    "filename": "economy/e07-rail.webp",
+    "titleRu": "Железнодорожный узел",
+    "description": "Steam freight railway station",
+    "category": "economy",
+    "era": "1850–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 46690,
+    "sha256": "1bf6d8aa212821e417abb27b8b041139aef5c842218e596097a831245575bd90",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-06c73dfc-c8fd-4135-81e6-625d8efe0c03.png",
+      "sourceSha256": "6cdd0c69441c06ed58211f1539463ff32470c7e892ae6a899a291e29c278265c",
+      "panel": 7,
+      "cropRect": [
+        1,
+        923,
+        511,
+        1228
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e08-market",
+    "filename": "economy/e08-market.webp",
+    "titleRu": "Рынок гильдий",
+    "description": "Medieval merchants and a guild hall",
+    "category": "economy",
+    "era": "1400–1550",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 54058,
+    "sha256": "a4baa658b688abc0a5d391e88ae6d2720a182d697f71fa6920284ac52e2e078a",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-06c73dfc-c8fd-4135-81e6-625d8efe0c03.png",
+      "sourceSha256": "6cdd0c69441c06ed58211f1539463ff32470c7e892ae6a899a291e29c278265c",
+      "panel": 8,
+      "cropRect": [
+        513,
+        923,
+        1023,
+        1228
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e09-textiles",
+    "filename": "economy/e09-textiles.webp",
+    "titleRu": "Текстильная мануфактура",
+    "description": "Looms and workers at a textile mill",
+    "category": "economy",
+    "era": "1800–1870",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 51754,
+    "sha256": "0313618366333e4ba3c87a0ff30a3e454bfedfab9f3e1f9a2880925d5db13760",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-06c73dfc-c8fd-4135-81e6-625d8efe0c03.png",
+      "sourceSha256": "6cdd0c69441c06ed58211f1539463ff32470c7e892ae6a899a291e29c278265c",
+      "panel": 9,
+      "cropRect": [
+        1,
+        1230,
+        511,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e10-steel",
+    "filename": "economy/e10-steel.webp",
+    "titleRu": "Сталь и огонь",
+    "description": "Steel foundry lit by molten metal",
+    "category": "economy",
+    "era": "1850–1920",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 45102,
+    "sha256": "a66663ebf7e193b79bac1c26b7dbf26603897d9b3ce98abbc5c378a54c508524",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-06c73dfc-c8fd-4135-81e6-625d8efe0c03.png",
+      "sourceSha256": "6cdd0c69441c06ed58211f1539463ff32470c7e892ae6a899a291e29c278265c",
+      "panel": 10,
+      "cropRect": [
+        513,
+        1230,
+        1023,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e11-chemistry",
+    "filename": "economy/e11-chemistry.webp",
+    "titleRu": "Химическая промышленность",
+    "description": "Chemists supervising a chemical plant",
+    "category": "economy",
+    "era": "1900–1950",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 587,
+    "height": 304,
+    "bytes": 51066,
+    "sha256": "0cfcb2498e8dc868476095ca13758d04dadc830bf2a3ff67d33f817d5add16bf",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-0679683e-4082-4f53-bcfd-818c237813ae.png",
+      "sourceSha256": "7d68a5c99b1e9f576d50b5816af84a7d7231dcb2c4a6ef2b91caa3eb0a877425",
+      "panel": 1,
+      "cropRect": [
+        1,
+        1,
+        588,
+        305
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e12-electronics",
+    "filename": "economy/e12-electronics.webp",
+    "titleRu": "Электронное производство",
+    "description": "Technicians assembling electronics",
+    "category": "economy",
+    "era": "1960–2000",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 433,
+    "height": 304,
+    "bytes": 33814,
+    "sha256": "2b2104c71ea3e9b49f51f670f4760659d8b4ed42c27bbb9bd573a0e1e97ee8bf",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-0679683e-4082-4f53-bcfd-818c237813ae.png",
+      "sourceSha256": "7d68a5c99b1e9f576d50b5816af84a7d7231dcb2c4a6ef2b91caa3eb0a877425",
+      "panel": 2,
+      "cropRect": [
+        590,
+        1,
+        1023,
+        305
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e13-arms",
+    "filename": "economy/e13-arms.webp",
+    "titleRu": "Оружейная мастерская",
+    "description": "Skilled gunsmiths making firearms",
+    "category": "economy",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 44806,
+    "sha256": "87c46456a5adaa29a8a0fef5763dc81a9425b1e9cab6d7bd88d1c9ceacc985b4",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-0679683e-4082-4f53-bcfd-818c237813ae.png",
+      "sourceSha256": "7d68a5c99b1e9f576d50b5816af84a7d7231dcb2c4a6ef2b91caa3eb0a877425",
+      "panel": 3,
+      "cropRect": [
+        1,
+        307,
+        511,
+        612
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e14-depot",
+    "filename": "economy/e14-depot.webp",
+    "titleRu": "Складской район",
+    "description": "Railway depots and warehouses",
+    "category": "economy",
+    "era": "1880–1940",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 49556,
+    "sha256": "d6f2664cb892a260c7895470bd5c44c0cbaa57b82506cdeeb177d3fcd7c6e9f4",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-0679683e-4082-4f53-bcfd-818c237813ae.png",
+      "sourceSha256": "7d68a5c99b1e9f576d50b5816af84a7d7231dcb2c4a6ef2b91caa3eb0a877425",
+      "panel": 4,
+      "cropRect": [
+        513,
+        307,
+        1023,
+        612
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e15-port-build",
+    "filename": "economy/e15-port-build.webp",
+    "titleRu": "Строительство порта",
+    "description": "Dock engineers building a cargo harbor",
+    "category": "economy",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 306,
+    "bytes": 57590,
+    "sha256": "c03bb8812de8ce343c276cc59a993a932318dbe0e132c718f76ec44ddf747dcb",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-0679683e-4082-4f53-bcfd-818c237813ae.png",
+      "sourceSha256": "7d68a5c99b1e9f576d50b5816af84a7d7231dcb2c4a6ef2b91caa3eb0a877425",
+      "panel": 5,
+      "cropRect": [
+        1,
+        614,
+        511,
+        920
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e16-power",
+    "filename": "economy/e16-power.webp",
+    "titleRu": "Энергия реки",
+    "description": "Hydroelectric power station construction",
+    "category": "economy",
+    "era": "1920–1950",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 306,
+    "bytes": 52964,
+    "sha256": "432c0f2aeac959525f2f713fc311b72800589c77253c9bdcf3c97715ee190f47",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-0679683e-4082-4f53-bcfd-818c237813ae.png",
+      "sourceSha256": "7d68a5c99b1e9f576d50b5816af84a7d7231dcb2c4a6ef2b91caa3eb0a877425",
+      "panel": 6,
+      "cropRect": [
+        513,
+        614,
+        1023,
+        920
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e17-university",
+    "filename": "economy/e17-university.webp",
+    "titleRu": "Новая университетская библиотека",
+    "description": "Builders erecting a university library",
+    "category": "economy",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 49382,
+    "sha256": "5a8ec7151fcbd2929313633df99e5c8ecba67180e8d7bd78d25276662dcf0580",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-0679683e-4082-4f53-bcfd-818c237813ae.png",
+      "sourceSha256": "7d68a5c99b1e9f576d50b5816af84a7d7231dcb2c4a6ef2b91caa3eb0a877425",
+      "panel": 7,
+      "cropRect": [
+        1,
+        922,
+        511,
+        1227
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "e18-hospital",
+    "filename": "economy/e18-hospital.webp",
+    "titleRu": "Общественная больница",
+    "description": "Workers building a public hospital",
+    "category": "economy",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "ConstructionPanel",
+      "ResourceTradePanel",
+      "ProductionPanel",
+      "GamePanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 50850,
+    "sha256": "e697bf32fe87afda36e17001919ee982aeba77075ecffe36fa085bad0cc3af4a",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-0679683e-4082-4f53-bcfd-818c237813ae.png",
+      "sourceSha256": "7d68a5c99b1e9f576d50b5816af84a7d7231dcb2c4a6ef2b91caa3eb0a877425",
+      "panel": 8,
+      "cropRect": [
+        513,
+        922,
+        1023,
+        1227
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "g01-council",
+    "filename": "government/g01-council.webp",
+    "titleRu": "Государственный совет",
+    "description": "Elected council in a government chamber",
+    "category": "government",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "GamePanel",
+      "StrategyCouncil",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 542,
+    "height": 306,
+    "bytes": 41072,
+    "sha256": "1ee3b92782a2a1b3985ee62ec674afd6665df8e4f23819a373ea35544914c953",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-0679683e-4082-4f53-bcfd-818c237813ae.png",
+      "sourceSha256": "7d68a5c99b1e9f576d50b5816af84a7d7231dcb2c4a6ef2b91caa3eb0a877425",
+      "panel": 9,
+      "cropRect": [
+        1,
+        1229,
+        543,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "g02-monarch",
+    "filename": "government/g02-monarch.webp",
+    "titleRu": "Монарх и советники",
+    "description": "Monarch receiving advisers",
+    "category": "government",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "GamePanel",
+      "StrategyCouncil",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 478,
+    "height": 306,
+    "bytes": 50836,
+    "sha256": "be443079b15dca63bffac6d8ba83bf1c87b78feeb780651956fbe4d1d317f3e1",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-0679683e-4082-4f53-bcfd-818c237813ae.png",
+      "sourceSha256": "7d68a5c99b1e9f576d50b5816af84a7d7231dcb2c4a6ef2b91caa3eb0a877425",
+      "panel": 10,
+      "cropRect": [
+        545,
+        1229,
+        1023,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t01-geometry",
+    "filename": "technology/t01-geometry.webp",
+    "titleRu": "Геометрия и расчёты",
+    "description": "Scholars studying geometry",
+    "category": "technology",
+    "era": "1300–1500",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 510,
+    "height": 258,
+    "bytes": 32502,
+    "sha256": "60025f129b9bf9f506c21aba8a92260ce6701dcfc5a9d6e309dc4acd95110e47",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-8e9cb98c-0c41-4387-a3bb-4febb92e0066.png",
+      "sourceSha256": "9f2ed9af433efb431c9c1b855cee897ac3d97daed5dac509acdea14192051bda",
+      "panel": 1,
+      "cropRect": [
+        1,
+        1,
+        511,
+        259
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t02-printing",
+    "filename": "technology/t02-printing.webp",
+    "titleRu": "Печатный станок",
+    "description": "An early printing press workshop",
+    "category": "technology",
+    "era": "1450–1600",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 510,
+    "height": 258,
+    "bytes": 32780,
+    "sha256": "e25a945d66daf90e5f0ccc9be2cd5a81eba07435f069ac29b576a92821f300ea",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-8e9cb98c-0c41-4387-a3bb-4febb92e0066.png",
+      "sourceSha256": "9f2ed9af433efb431c9c1b855cee897ac3d97daed5dac509acdea14192051bda",
+      "panel": 2,
+      "cropRect": [
+        513,
+        1,
+        1023,
+        259
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t03-astronomy",
+    "filename": "technology/t03-astronomy.webp",
+    "titleRu": "Звёздная обсерватория",
+    "description": "Astronomers with brass instruments",
+    "category": "technology",
+    "era": "1600–1800",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 510,
+    "height": 279,
+    "bytes": 30244,
+    "sha256": "c5b4ee072352b75785ff325daae049fa215d3de8219f7299030bb9a99dc9d9ba",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-8e9cb98c-0c41-4387-a3bb-4febb92e0066.png",
+      "sourceSha256": "9f2ed9af433efb431c9c1b855cee897ac3d97daed5dac509acdea14192051bda",
+      "panel": 3,
+      "cropRect": [
+        1,
+        261,
+        511,
+        540
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t04-cartography",
+    "filename": "technology/t04-cartography.webp",
+    "titleRu": "Карты побережий",
+    "description": "Cartographers charting coastlines",
+    "category": "technology",
+    "era": "1500–1750",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 510,
+    "height": 279,
+    "bytes": 37120,
+    "sha256": "5bafbd8ecf7c69c76adb5564cfad8fa5b799bad49aff7805bfc19fe2e58afe98",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-8e9cb98c-0c41-4387-a3bb-4febb92e0066.png",
+      "sourceSha256": "9f2ed9af433efb431c9c1b855cee897ac3d97daed5dac509acdea14192051bda",
+      "panel": 4,
+      "cropRect": [
+        513,
+        261,
+        1023,
+        540
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t05-steam",
+    "filename": "technology/t05-steam.webp",
+    "titleRu": "Паровая машина",
+    "description": "Inventor inspecting a steam engine",
+    "category": "technology",
+    "era": "1750–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 571,
+    "height": 296,
+    "bytes": 41674,
+    "sha256": "da2e291ca67a8ea3dc61168733a2bbd483aa6fd0a6703ed2635cfa46e3ddebdb",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-8e9cb98c-0c41-4387-a3bb-4febb92e0066.png",
+      "sourceSha256": "9f2ed9af433efb431c9c1b855cee897ac3d97daed5dac509acdea14192051bda",
+      "panel": 5,
+      "cropRect": [
+        1,
+        542,
+        572,
+        838
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t06-chemistry",
+    "filename": "technology/t06-chemistry.webp",
+    "titleRu": "Исследовательская лаборатория",
+    "description": "Chemical research with glass retorts",
+    "category": "technology",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 449,
+    "height": 296,
+    "bytes": 30636,
+    "sha256": "47ccefd0109723ed40d38ca9c9b46ff23152b87dc04b884cdf2bdd5a0b98d5a1",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-8e9cb98c-0c41-4387-a3bb-4febb92e0066.png",
+      "sourceSha256": "9f2ed9af433efb431c9c1b855cee897ac3d97daed5dac509acdea14192051bda",
+      "panel": 6,
+      "cropRect": [
+        574,
+        542,
+        1023,
+        838
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t07-electricity",
+    "filename": "technology/t07-electricity.webp",
+    "titleRu": "Первые электрические системы",
+    "description": "Electrical researchers and coils",
+    "category": "technology",
+    "era": "1850–1920",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 510,
+    "height": 298,
+    "bytes": 29530,
+    "sha256": "98b509468da4b7aed1d8df3357290ecc96800ba9ce5d0fe22f76900828d03b44",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-8e9cb98c-0c41-4387-a3bb-4febb92e0066.png",
+      "sourceSha256": "9f2ed9af433efb431c9c1b855cee897ac3d97daed5dac509acdea14192051bda",
+      "panel": 7,
+      "cropRect": [
+        1,
+        840,
+        511,
+        1138
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t08-viaduct",
+    "filename": "technology/t08-viaduct.webp",
+    "titleRu": "Инженерные изыскания",
+    "description": "Engineers surveying a railway viaduct",
+    "category": "technology",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 510,
+    "height": 298,
+    "bytes": 43562,
+    "sha256": "077d410c76f84ac790d594a85b7a21131828f61920539b59687ba9f2c73fbcec",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-8e9cb98c-0c41-4387-a3bb-4febb92e0066.png",
+      "sourceSha256": "9f2ed9af433efb431c9c1b855cee897ac3d97daed5dac509acdea14192051bda",
+      "panel": 8,
+      "cropRect": [
+        513,
+        840,
+        1023,
+        1138
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t09-medicine",
+    "filename": "technology/t09-medicine.webp",
+    "titleRu": "Медицина и санитария",
+    "description": "Physician researching sanitation",
+    "category": "technology",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 496,
+    "height": 384,
+    "bytes": 39712,
+    "sha256": "c4f7fdebd5ee7bbe354c609bc50d2c2b37c41c3215c688d6110c44331c337439",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-8e9cb98c-0c41-4387-a3bb-4febb92e0066.png",
+      "sourceSha256": "9f2ed9af433efb431c9c1b855cee897ac3d97daed5dac509acdea14192051bda",
+      "panel": 9,
+      "cropRect": [
+        1,
+        1140,
+        511,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t10-shipbuilding",
+    "filename": "technology/t10-shipbuilding.webp",
+    "titleRu": "Корабельное проектирование",
+    "description": "Shipbuilders designing a naval vessel",
+    "category": "technology",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 496,
+    "height": 384,
+    "bytes": 56618,
+    "sha256": "10ef4ed44fb3a663bdaa6df7609e808045776f451114054c60b5f284dedc6964",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-8e9cb98c-0c41-4387-a3bb-4febb92e0066.png",
+      "sourceSha256": "9f2ed9af433efb431c9c1b855cee897ac3d97daed5dac509acdea14192051bda",
+      "panel": 10,
+      "cropRect": [
+        513,
+        1140,
+        1023,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t11-radio",
+    "filename": "technology/t11-radio.webp",
+    "titleRu": "Радиосвязь",
+    "description": "Radio researchers assembling equipment",
+    "category": "technology",
+    "era": "1920–1950",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 510,
+    "height": 286,
+    "bytes": 37892,
+    "sha256": "4681ad9c0f1403a5ba0fa941423576ccd9b0bcf971f234636d247556161f83a1",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-59748e3f-ef15-4abf-9298-9403ec7d6eea.png",
+      "sourceSha256": "b531c891d2791641f5468c27d0edcc84052fef14679090b9884c8b7e2ee16992",
+      "panel": 1,
+      "cropRect": [
+        1,
+        1,
+        511,
+        287
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t12-aviation",
+    "filename": "technology/t12-aviation.webp",
+    "titleRu": "Исследования авиации",
+    "description": "Engineers examining an early aircraft",
+    "category": "technology",
+    "era": "1910–1940",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 510,
+    "height": 286,
+    "bytes": 42698,
+    "sha256": "cafd1675ae228096e8da5b77df7d63e464d53b7ab63611e63b839388d5405994",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-59748e3f-ef15-4abf-9298-9403ec7d6eea.png",
+      "sourceSha256": "b531c891d2791641f5468c27d0edcc84052fef14679090b9884c8b7e2ee16992",
+      "panel": 2,
+      "cropRect": [
+        513,
+        1,
+        1023,
+        287
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t13-computing",
+    "filename": "technology/t13-computing.webp",
+    "titleRu": "Вычислительный институт",
+    "description": "Pioneering computer researchers",
+    "category": "technology",
+    "era": "1950–1980",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 510,
+    "height": 284,
+    "bytes": 32138,
+    "sha256": "5992a651d875599cf384ccbd126d91586e61316b9d4bfd5427cc65ed486a6cdb",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-59748e3f-ef15-4abf-9298-9403ec7d6eea.png",
+      "sourceSha256": "b531c891d2791641f5468c27d0edcc84052fef14679090b9884c8b7e2ee16992",
+      "panel": 3,
+      "cropRect": [
+        1,
+        289,
+        511,
+        573
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t14-solar",
+    "filename": "technology/t14-solar.webp",
+    "titleRu": "Солнечная энергетика",
+    "description": "Engineers constructing a solar laboratory",
+    "category": "technology",
+    "era": "2000–2030",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 510,
+    "height": 284,
+    "bytes": 38040,
+    "sha256": "b8590928adc61a3e76727097378a110faa790aec90d84834aee342b82c819fb4",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-59748e3f-ef15-4abf-9298-9403ec7d6eea.png",
+      "sourceSha256": "b531c891d2791641f5468c27d0edcc84052fef14679090b9884c8b7e2ee16992",
+      "panel": 4,
+      "cropRect": [
+        513,
+        289,
+        1023,
+        573
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "t15-satellite",
+    "filename": "technology/t15-satellite.webp",
+    "titleRu": "Спутниковые исследования",
+    "description": "Scientists working with satellite observations",
+    "category": "technology",
+    "era": "2000–2030",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "TechnologyTreePanel"
+    ],
+    "width": 418,
+    "height": 280,
+    "bytes": 31252,
+    "sha256": "cb415e95124a8a383cecb87f23566cc07d80e665fd86ee4c64571f9defbe93ab",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-59748e3f-ef15-4abf-9298-9403ec7d6eea.png",
+      "sourceSha256": "b531c891d2791641f5468c27d0edcc84052fef14679090b9884c8b7e2ee16992",
+      "panel": 5,
+      "cropRect": [
+        1,
+        575,
+        419,
+        855
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f01-agriculture",
+    "filename": "focuses/f01-agriculture.webp",
+    "titleRu": "Аграрная модернизация",
+    "description": "Planners inspecting agricultural modernization",
+    "category": "focuses",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 602,
+    "height": 280,
+    "bytes": 51778,
+    "sha256": "5be13ff1892fd5675580ff555791daef61315d3a100234a142df6f219ac06ac8",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-59748e3f-ef15-4abf-9298-9403ec7d6eea.png",
+      "sourceSha256": "b531c891d2791641f5468c27d0edcc84052fef14679090b9884c8b7e2ee16992",
+      "panel": 6,
+      "cropRect": [
+        421,
+        575,
+        1023,
+        855
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f02-railway",
+    "filename": "focuses/f02-railway.webp",
+    "titleRu": "Транспортная программа",
+    "description": "Officials approving railway infrastructure",
+    "category": "focuses",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 293,
+    "bytes": 38726,
+    "sha256": "8a66adcc3074935ef239d409ac7f5c0173bc5f40293d5d632b97a6874bb0127e",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-59748e3f-ef15-4abf-9298-9403ec7d6eea.png",
+      "sourceSha256": "b531c891d2791641f5468c27d0edcc84052fef14679090b9884c8b7e2ee16992",
+      "panel": 7,
+      "cropRect": [
+        1,
+        857,
+        511,
+        1150
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f03-academy",
+    "filename": "focuses/f03-academy.webp",
+    "titleRu": "Военная школа реформ",
+    "description": "Training at a military reform academy",
+    "category": "focuses",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 293,
+    "bytes": 39796,
+    "sha256": "e8eac7decd721c33cc4987b566598c2a2150014e1249601f51543ca7380a30d2",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-59748e3f-ef15-4abf-9298-9403ec7d6eea.png",
+      "sourceSha256": "b531c891d2791641f5468c27d0edcc84052fef14679090b9884c8b7e2ee16992",
+      "panel": 8,
+      "cropRect": [
+        513,
+        857,
+        1023,
+        1150
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f04-trade",
+    "filename": "focuses/f04-trade.webp",
+    "titleRu": "Внешнеторговый курс",
+    "description": "Trade delegation reviewing shipping routes",
+    "category": "focuses",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 383,
+    "bytes": 56726,
+    "sha256": "041f850e2b1e78fb3e8f52c39fdfbbce1e906ffbd0668715c97ffc93c10fb2a7",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-59748e3f-ef15-4abf-9298-9403ec7d6eea.png",
+      "sourceSha256": "b531c891d2791641f5468c27d0edcc84052fef14679090b9884c8b7e2ee16992",
+      "panel": 9,
+      "cropRect": [
+        1,
+        1152,
+        511,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f05-education",
+    "filename": "focuses/f05-education.webp",
+    "titleRu": "Народное образование",
+    "description": "Reformers opening a public school",
+    "category": "focuses",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 383,
+    "bytes": 48932,
+    "sha256": "b8e0078fdf1f636dd1cf739fde25ee2de53f815c9e6551f073e76e5a054ba531",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-59748e3f-ef15-4abf-9298-9403ec7d6eea.png",
+      "sourceSha256": "b531c891d2791641f5468c27d0edcc84052fef14679090b9884c8b7e2ee16992",
+      "panel": 10,
+      "cropRect": [
+        513,
+        1152,
+        1023,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f06-industry",
+    "filename": "focuses/f06-industry.webp",
+    "titleRu": "Промышленный план",
+    "description": "Planners reviewing a factory district",
+    "category": "focuses",
+    "era": "1880–1930",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 297,
+    "bytes": 40516,
+    "sha256": "2b88a98670364bc20437d2620e3dd4d809e29507be397e0dd27b33aede32010e",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-81aa9ea2-a41b-4124-a55d-94d7f1b1005b.png",
+      "sourceSha256": "af2878cb975c49eaf174304d0445d34e5f0bc148c4e4befd51f0b348f5c75a62",
+      "panel": 1,
+      "cropRect": [
+        1,
+        1,
+        511,
+        298
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f07-constitution",
+    "filename": "focuses/f07-constitution.webp",
+    "titleRu": "Конституционные преобразования",
+    "description": "Parliament debating constitutional reform",
+    "category": "focuses",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 297,
+    "bytes": 38264,
+    "sha256": "f4b0d0a32f338b69554df999afeee3f8fc2572065c26d2504cdc53875092d069",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-81aa9ea2-a41b-4124-a55d-94d7f1b1005b.png",
+      "sourceSha256": "af2878cb975c49eaf174304d0445d34e5f0bc148c4e4befd51f0b348f5c75a62",
+      "panel": 2,
+      "cropRect": [
+        513,
+        1,
+        1023,
+        298
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f08-health",
+    "filename": "focuses/f08-health.webp",
+    "titleRu": "Национальная программа здоровья",
+    "description": "Public-health nurses helping families",
+    "category": "focuses",
+    "era": "1910–1950",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 298,
+    "bytes": 40186,
+    "sha256": "c027669c6cb827174176540c9373753e9be0f19f0fec9002cd809d3402c2a7f0",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-81aa9ea2-a41b-4124-a55d-94d7f1b1005b.png",
+      "sourceSha256": "af2878cb975c49eaf174304d0445d34e5f0bc148c4e4befd51f0b348f5c75a62",
+      "panel": 3,
+      "cropRect": [
+        1,
+        300,
+        511,
+        598
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f09-navy",
+    "filename": "focuses/f09-navy.webp",
+    "titleRu": "Обновление флота",
+    "description": "Naval modernization at dry docks",
+    "category": "focuses",
+    "era": "1880–1930",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 298,
+    "bytes": 47790,
+    "sha256": "4343e2c6a62276fb0ec3b186123900c2b592da77d8937848086f77fef5ddc508",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-81aa9ea2-a41b-4124-a55d-94d7f1b1005b.png",
+      "sourceSha256": "af2878cb975c49eaf174304d0445d34e5f0bc148c4e4befd51f0b348f5c75a62",
+      "panel": 4,
+      "cropRect": [
+        513,
+        300,
+        1023,
+        598
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f10-reserve",
+    "filename": "focuses/f10-reserve.webp",
+    "titleRu": "Подготовка резервов",
+    "description": "Recruitment reorganized at a rural barracks",
+    "category": "focuses",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 317,
+    "bytes": 47246,
+    "sha256": "f5890c15d2a0085e955c12e8f3501b99f9e83e459c6f1c8f70f7737e7bffe133",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-81aa9ea2-a41b-4124-a55d-94d7f1b1005b.png",
+      "sourceSha256": "af2878cb975c49eaf174304d0445d34e5f0bc148c4e4befd51f0b348f5c75a62",
+      "panel": 5,
+      "cropRect": [
+        1,
+        600,
+        511,
+        917
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f11-regional",
+    "filename": "focuses/f11-regional.webp",
+    "titleRu": "Региональное развитие",
+    "description": "Administrators coordinating mountain roads",
+    "category": "focuses",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 317,
+    "bytes": 56424,
+    "sha256": "baaacf6837a5670708fc5a832b20b1287f50b423d0c90b459cc33227e00c7928",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-81aa9ea2-a41b-4124-a55d-94d7f1b1005b.png",
+      "sourceSha256": "af2878cb975c49eaf174304d0445d34e5f0bc148c4e4befd51f0b348f5c75a62",
+      "panel": 6,
+      "cropRect": [
+        513,
+        600,
+        1023,
+        917
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f12-culture",
+    "filename": "focuses/f12-culture.webp",
+    "titleRu": "Культурные связи",
+    "description": "International cultural conference",
+    "category": "focuses",
+    "era": "1880–1930",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 284,
+    "bytes": 42884,
+    "sha256": "ddd27dda0d2e6bfd6943b2e572fe80fada457071f7aa42ee86b305543e35e258",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-81aa9ea2-a41b-4124-a55d-94d7f1b1005b.png",
+      "sourceSha256": "af2878cb975c49eaf174304d0445d34e5f0bc148c4e4befd51f0b348f5c75a62",
+      "panel": 7,
+      "cropRect": [
+        1,
+        919,
+        511,
+        1203
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f13-science",
+    "filename": "focuses/f13-science.webp",
+    "titleRu": "Научная академия",
+    "description": "Scientists opening a state academy",
+    "category": "focuses",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 284,
+    "bytes": 35286,
+    "sha256": "b4b205248d6b256076b543944e88afa53d9127e8f28142d2354e81d518679976",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-81aa9ea2-a41b-4124-a55d-94d7f1b1005b.png",
+      "sourceSha256": "af2878cb975c49eaf174304d0445d34e5f0bc148c4e4befd51f0b348f5c75a62",
+      "panel": 8,
+      "cropRect": [
+        513,
+        919,
+        1023,
+        1203
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f14-rebuild",
+    "filename": "focuses/f14-rebuild.webp",
+    "titleRu": "Восстановление страны",
+    "description": "Civic leaders rebuilding after war",
+    "category": "focuses",
+    "era": "1940–1960",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 330,
+    "bytes": 53058,
+    "sha256": "af51a673afef6c7f4f17031e6fd5b8ce14ead83aefbe8009343d450164ec47a7",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-81aa9ea2-a41b-4124-a55d-94d7f1b1005b.png",
+      "sourceSha256": "af2878cb975c49eaf174304d0445d34e5f0bc148c4e4befd51f0b348f5c75a62",
+      "panel": 9,
+      "cropRect": [
+        1,
+        1205,
+        511,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "f15-watershed",
+    "filename": "focuses/f15-watershed.webp",
+    "titleRu": "Речной проект",
+    "description": "Planners managing a river watershed",
+    "category": "focuses",
+    "era": "2000–2030",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NationalFocusPanel",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 330,
+    "bytes": 48360,
+    "sha256": "c7506fd8f1c2e027c53117bc76ac07a83575a2dcaf50b262cc8f89fec1adb227",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-81aa9ea2-a41b-4124-a55d-94d7f1b1005b.png",
+      "sourceSha256": "af2878cb975c49eaf174304d0445d34e5f0bc148c4e4befd51f0b348f5c75a62",
+      "panel": 10,
+      "cropRect": [
+        513,
+        1205,
+        1023,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "d01-envoys",
+    "filename": "diplomacy/d01-envoys.webp",
+    "titleRu": "Посольская миссия",
+    "description": "Envoys arriving at an embassy",
+    "category": "diplomacy",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "DiplomacyPanel",
+      "PeaceNegotiations",
+      "EspionagePanel"
+    ],
+    "width": 510,
+    "height": 290,
+    "bytes": 39832,
+    "sha256": "7870a8c1ab7c60365b78294c5baf76f1812b971de20f7954afe6fb741b7b6877",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-25b0e4fe-31e5-41e6-833e-d0efa8c58889.png",
+      "sourceSha256": "443c740cd4671f5495b206561b24eaceb9d5dcb6d5bdd56355179e19183a462f",
+      "panel": 1,
+      "cropRect": [
+        1,
+        1,
+        511,
+        291
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "d02-alliance",
+    "filename": "diplomacy/d02-alliance.webp",
+    "titleRu": "Союзные обязательства",
+    "description": "Allied generals signing an alliance",
+    "category": "diplomacy",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "DiplomacyPanel",
+      "PeaceNegotiations",
+      "EspionagePanel"
+    ],
+    "width": 510,
+    "height": 290,
+    "bytes": 37570,
+    "sha256": "381864011f6fc2a706d304e9d5709b36908889530922bd77c9c9173fa9428ab8",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-25b0e4fe-31e5-41e6-833e-d0efa8c58889.png",
+      "sourceSha256": "443c740cd4671f5495b206561b24eaceb9d5dcb6d5bdd56355179e19183a462f",
+      "panel": 2,
+      "cropRect": [
+        513,
+        1,
+        1023,
+        291
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "d03-war",
+    "filename": "diplomacy/d03-war.webp",
+    "titleRu": "Объявление войны",
+    "description": "Ambassador delivering a sealed declaration",
+    "category": "diplomacy",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "DiplomacyPanel",
+      "PeaceNegotiations",
+      "EspionagePanel"
+    ],
+    "width": 510,
+    "height": 277,
+    "bytes": 30542,
+    "sha256": "5d5c76b2ab1d9f8e9207a3c75417d7accd6b52e6e6ae37d9d6f286e2dfc08c88",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-25b0e4fe-31e5-41e6-833e-d0efa8c58889.png",
+      "sourceSha256": "443c740cd4671f5495b206561b24eaceb9d5dcb6d5bdd56355179e19183a462f",
+      "panel": 3,
+      "cropRect": [
+        1,
+        293,
+        511,
+        570
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "d04-peace",
+    "filename": "diplomacy/d04-peace.webp",
+    "titleRu": "Мирный договор",
+    "description": "Negotiators signing peace by candlelight",
+    "category": "diplomacy",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "DiplomacyPanel",
+      "PeaceNegotiations",
+      "EspionagePanel"
+    ],
+    "width": 510,
+    "height": 277,
+    "bytes": 26046,
+    "sha256": "7412edb48ca3f418013cd632496cfde4c98013f28ec29687a41246c29164cfdc",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-25b0e4fe-31e5-41e6-833e-d0efa8c58889.png",
+      "sourceSha256": "443c740cd4671f5495b206561b24eaceb9d5dcb6d5bdd56355179e19183a462f",
+      "panel": 4,
+      "cropRect": [
+        513,
+        293,
+        1023,
+        570
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "d05-reparations",
+    "filename": "diplomacy/d05-reparations.webp",
+    "titleRu": "Выплата репараций",
+    "description": "Officials transferring treasury chests",
+    "category": "diplomacy",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "DiplomacyPanel",
+      "PeaceNegotiations",
+      "EspionagePanel"
+    ],
+    "width": 510,
+    "height": 291,
+    "bytes": 34654,
+    "sha256": "44ba5d89ea777f97857b449e4eda5ac7f90650722449ce2fcd5c8ea0edc268fd",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-25b0e4fe-31e5-41e6-833e-d0efa8c58889.png",
+      "sourceSha256": "443c740cd4671f5495b206561b24eaceb9d5dcb6d5bdd56355179e19183a462f",
+      "panel": 5,
+      "cropRect": [
+        1,
+        572,
+        511,
+        863
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "d06-guarantee",
+    "filename": "diplomacy/d06-guarantee.webp",
+    "titleRu": "Гарантия независимости",
+    "description": "Envoys pledging protection to a kingdom",
+    "category": "diplomacy",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "DiplomacyPanel",
+      "PeaceNegotiations",
+      "EspionagePanel"
+    ],
+    "width": 510,
+    "height": 291,
+    "bytes": 39824,
+    "sha256": "28173fcbe16350bed1897dbf77eaec914137dc08b08d462afe9b805088e2b1b8",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-25b0e4fe-31e5-41e6-833e-d0efa8c58889.png",
+      "sourceSha256": "443c740cd4671f5495b206561b24eaceb9d5dcb6d5bdd56355179e19183a462f",
+      "panel": 6,
+      "cropRect": [
+        513,
+        572,
+        1023,
+        863
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "d07-liberation",
+    "filename": "diplomacy/d07-liberation.webp",
+    "titleRu": "Освобождённое государство",
+    "description": "Liberated citizens welcoming a delegation",
+    "category": "diplomacy",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "DiplomacyPanel",
+      "PeaceNegotiations",
+      "EspionagePanel"
+    ],
+    "width": 510,
+    "height": 297,
+    "bytes": 43860,
+    "sha256": "7c96c86188d0f1c0ddc43b19299774679aedc7752375d204ee7586e256e5d1f0",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-25b0e4fe-31e5-41e6-833e-d0efa8c58889.png",
+      "sourceSha256": "443c740cd4671f5495b206561b24eaceb9d5dcb6d5bdd56355179e19183a462f",
+      "panel": 7,
+      "cropRect": [
+        1,
+        865,
+        511,
+        1162
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "d08-vassal",
+    "filename": "diplomacy/d08-vassal.webp",
+    "titleRu": "Вассальная присяга",
+    "description": "Vassal ruler paying homage",
+    "category": "diplomacy",
+    "era": "1300–1500",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "DiplomacyPanel",
+      "PeaceNegotiations",
+      "EspionagePanel"
+    ],
+    "width": 510,
+    "height": 297,
+    "bytes": 36674,
+    "sha256": "c9be692fa27ed1cbaa6bb3cf09e463ad15cba86b643a067596cbd04ec8794ca2",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-25b0e4fe-31e5-41e6-833e-d0efa8c58889.png",
+      "sourceSha256": "443c740cd4671f5495b206561b24eaceb9d5dcb6d5bdd56355179e19183a462f",
+      "panel": 8,
+      "cropRect": [
+        513,
+        865,
+        1023,
+        1162
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "d09-disarm",
+    "filename": "diplomacy/d09-disarm.webp",
+    "titleRu": "Ограничение вооружений",
+    "description": "Inspectors supervising artillery disarmament",
+    "category": "diplomacy",
+    "era": "1910–1930",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "DiplomacyPanel",
+      "PeaceNegotiations",
+      "EspionagePanel"
+    ],
+    "width": 510,
+    "height": 371,
+    "bytes": 43790,
+    "sha256": "7d3fb619ccf495379ca495ea169738e2466d8e14044048ed0438a5f0be09279c",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-25b0e4fe-31e5-41e6-833e-d0efa8c58889.png",
+      "sourceSha256": "443c740cd4671f5495b206561b24eaceb9d5dcb6d5bdd56355179e19183a462f",
+      "panel": 9,
+      "cropRect": [
+        1,
+        1164,
+        511,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "d10-intelligence",
+    "filename": "diplomacy/d10-intelligence.webp",
+    "titleRu": "Тайная дипломатия",
+    "description": "Intelligence agents exchanging documents",
+    "category": "diplomacy",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "DiplomacyPanel",
+      "PeaceNegotiations",
+      "EspionagePanel"
+    ],
+    "width": 510,
+    "height": 371,
+    "bytes": 27580,
+    "sha256": "1044e7f02a4043c8a2c3662c753bf006e8225cd82782877162e62487a6f2b207",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-25b0e4fe-31e5-41e6-833e-d0efa8c58889.png",
+      "sourceSha256": "443c740cd4671f5495b206561b24eaceb9d5dcb6d5bdd56355179e19183a462f",
+      "panel": 10,
+      "cropRect": [
+        513,
+        1164,
+        1023,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "d11-congress",
+    "filename": "diplomacy/d11-congress.webp",
+    "titleRu": "Конгресс коалиций",
+    "description": "Multilateral coalition congress",
+    "category": "diplomacy",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "DiplomacyPanel",
+      "PeaceNegotiations",
+      "EspionagePanel"
+    ],
+    "width": 511,
+    "height": 303,
+    "bytes": 45348,
+    "sha256": "37b787f15dc3483edcdfec30b5514e13bc7f569fdf2f9379f13803efd54d4d1f",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-99ce5a11-5fa2-4620-9a92-3af9ccff7404.png",
+      "sourceSha256": "ed54f2f72c78748873c42fd54362ad468295c7ad1265c93e28b97dcb2971eff5",
+      "panel": 1,
+      "cropRect": [
+        1,
+        1,
+        512,
+        304
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "d12-prisoners",
+    "filename": "diplomacy/d12-prisoners.webp",
+    "titleRu": "Обмен пленными",
+    "description": "Officers organizing an exchange of prisoners",
+    "category": "diplomacy",
+    "era": "1750–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "DiplomacyPanel",
+      "PeaceNegotiations",
+      "EspionagePanel"
+    ],
+    "width": 509,
+    "height": 303,
+    "bytes": 39430,
+    "sha256": "29676583f18a70f5aeaa3f2af2a4f878a557c635c17d619e0483d4cd9ab00af6",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-99ce5a11-5fa2-4620-9a92-3af9ccff7404.png",
+      "sourceSha256": "ed54f2f72c78748873c42fd54362ad468295c7ad1265c93e28b97dcb2971eff5",
+      "panel": 2,
+      "cropRect": [
+        514,
+        1,
+        1023,
+        304
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "h01-coronation",
+    "filename": "events/h01-coronation.webp",
+    "titleRu": "Коронационные торжества",
+    "description": "A royal coronation procession",
+    "category": "events",
+    "era": "1600–1750",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NotificationFeed",
+      "WorldStatistics",
+      "QuickTutorial",
+      "LoadingScreen"
+    ],
+    "width": 511,
+    "height": 306,
+    "bytes": 52494,
+    "sha256": "6a5b516631478ee8f53b6e0d90ece30c5b6afccc17eb66694a48b487a605ec13",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-99ce5a11-5fa2-4620-9a92-3af9ccff7404.png",
+      "sourceSha256": "ed54f2f72c78748873c42fd54362ad468295c7ad1265c93e28b97dcb2971eff5",
+      "panel": 3,
+      "cropRect": [
+        1,
+        306,
+        512,
+        612
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "h02-festival",
+    "filename": "events/h02-festival.webp",
+    "titleRu": "Праздник урожая",
+    "description": "A city celebrating a harvest festival",
+    "category": "events",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NotificationFeed",
+      "WorldStatistics",
+      "QuickTutorial",
+      "LoadingScreen"
+    ],
+    "width": 509,
+    "height": 306,
+    "bytes": 55374,
+    "sha256": "4f3124d852aa66a709c68cf5406199d79bbaf2ce65be06e38cbd3c6399524290",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-99ce5a11-5fa2-4620-9a92-3af9ccff7404.png",
+      "sourceSha256": "ed54f2f72c78748873c42fd54362ad468295c7ad1265c93e28b97dcb2971eff5",
+      "panel": 4,
+      "cropRect": [
+        514,
+        306,
+        1023,
+        612
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "h03-workers",
+    "filename": "events/h03-workers.webp",
+    "titleRu": "Собрание рабочих",
+    "description": "Industrial workers at a peaceful assembly",
+    "category": "events",
+    "era": "1850–1920",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NotificationFeed",
+      "WorldStatistics",
+      "QuickTutorial",
+      "LoadingScreen"
+    ],
+    "width": 511,
+    "height": 305,
+    "bytes": 30530,
+    "sha256": "7b77771a6a94fed448c1a85698312b7c252526a94e23bdd3a908cd4b1aceaa65",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-99ce5a11-5fa2-4620-9a92-3af9ccff7404.png",
+      "sourceSha256": "ed54f2f72c78748873c42fd54362ad468295c7ad1265c93e28b97dcb2971eff5",
+      "panel": 5,
+      "cropRect": [
+        1,
+        614,
+        512,
+        919
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "h04-fire",
+    "filename": "events/h04-fire.webp",
+    "titleRu": "Пожар в порту",
+    "description": "Firefighters battling warehouse flames",
+    "category": "events",
+    "era": "1700–1800",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NotificationFeed",
+      "WorldStatistics",
+      "QuickTutorial",
+      "LoadingScreen"
+    ],
+    "width": 509,
+    "height": 305,
+    "bytes": 41636,
+    "sha256": "3e4389a37cbc62b7a65f25ab70a4f639bd0c60ffa7483b517e6e35c4e3933a14",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-99ce5a11-5fa2-4620-9a92-3af9ccff7404.png",
+      "sourceSha256": "ed54f2f72c78748873c42fd54362ad468295c7ad1265c93e28b97dcb2971eff5",
+      "panel": 6,
+      "cropRect": [
+        514,
+        614,
+        1023,
+        919
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "h05-earthquake",
+    "filename": "events/h05-earthquake.webp",
+    "titleRu": "Восстановление после землетрясения",
+    "description": "Volunteers rebuilding a damaged city",
+    "category": "events",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NotificationFeed",
+      "WorldStatistics",
+      "QuickTutorial",
+      "LoadingScreen"
+    ],
+    "width": 511,
+    "height": 289,
+    "bytes": 46290,
+    "sha256": "f791c26466504743c09b215f4511a56a75ae79a6f11787f087b1240c344596c4",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-99ce5a11-5fa2-4620-9a92-3af9ccff7404.png",
+      "sourceSha256": "ed54f2f72c78748873c42fd54362ad468295c7ad1265c93e28b97dcb2971eff5",
+      "panel": 7,
+      "cropRect": [
+        1,
+        921,
+        512,
+        1210
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "h06-petition",
+    "filename": "events/h06-petition.webp",
+    "titleRu": "Крестьянская петиция",
+    "description": "A peaceful peasant petition",
+    "category": "events",
+    "era": "1750–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NotificationFeed",
+      "WorldStatistics",
+      "QuickTutorial",
+      "LoadingScreen"
+    ],
+    "width": 509,
+    "height": 289,
+    "bytes": 31694,
+    "sha256": "39af9d0001b7fce1e733a2e40c24afb52974f359a9b037d622ce05f699af316d",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-99ce5a11-5fa2-4620-9a92-3af9ccff7404.png",
+      "sourceSha256": "ed54f2f72c78748873c42fd54362ad468295c7ad1265c93e28b97dcb2971eff5",
+      "panel": 8,
+      "cropRect": [
+        514,
+        921,
+        1023,
+        1210
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "h07-relief",
+    "filename": "events/h07-relief.webp",
+    "titleRu": "Помощь перемещённым семьям",
+    "description": "Families boarding a relief train",
+    "category": "events",
+    "era": "1910–1940",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NotificationFeed",
+      "WorldStatistics",
+      "QuickTutorial",
+      "LoadingScreen"
+    ],
+    "width": 511,
+    "height": 323,
+    "bytes": 39460,
+    "sha256": "67a06c56c22c98369ff5a140b87fe8f654d58ddd79ea759e663d3ee9d5bbdac4",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-99ce5a11-5fa2-4620-9a92-3af9ccff7404.png",
+      "sourceSha256": "ed54f2f72c78748873c42fd54362ad468295c7ad1265c93e28b97dcb2971eff5",
+      "panel": 9,
+      "cropRect": [
+        1,
+        1212,
+        512,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "h08-exhibition",
+    "filename": "events/h08-exhibition.webp",
+    "titleRu": "Выставка достижений",
+    "description": "Visitors at a scientific exhibition",
+    "category": "events",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NotificationFeed",
+      "WorldStatistics",
+      "QuickTutorial",
+      "LoadingScreen"
+    ],
+    "width": 509,
+    "height": 323,
+    "bytes": 58878,
+    "sha256": "73156e3926c9bd9d3167f84e08a4e6df033ec5f9e9cdabd0b2a36e1b7417ef6b",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-99ce5a11-5fa2-4620-9a92-3af9ccff7404.png",
+      "sourceSha256": "ed54f2f72c78748873c42fd54362ad468295c7ad1265c93e28b97dcb2971eff5",
+      "panel": 10,
+      "cropRect": [
+        514,
+        1212,
+        1023,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "h09-breakthrough",
+    "filename": "events/h09-breakthrough.webp",
+    "titleRu": "Дипломатический прорыв",
+    "description": "Diplomats celebrating an international breakthrough",
+    "category": "events",
+    "era": "1950–1980",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NotificationFeed",
+      "WorldStatistics",
+      "QuickTutorial",
+      "LoadingScreen"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 40684,
+    "sha256": "1fa4dea7e005d9ac1fb1fa1d37870d7f472544d591d8298a48ff03ed48a6ced4",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-3c5e0764-677e-483f-8b86-cbfc07c49593.png",
+      "sourceSha256": "f40e9f6f3e6c8df95d02f68828562985032f86b88800d1b3d547e4faf24ad677",
+      "panel": 1,
+      "cropRect": [
+        1,
+        1,
+        511,
+        306
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "h10-grain-aid",
+    "filename": "events/h10-grain-aid.webp",
+    "titleRu": "Гуманитарное зерно",
+    "description": "Grain relief reaching a rural village",
+    "category": "events",
+    "era": "1850–1920",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "NotificationFeed",
+      "WorldStatistics",
+      "QuickTutorial",
+      "LoadingScreen"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 44632,
+    "sha256": "aa42cb8351d825d76d6d845f720c67da0ce249b7d1487a6269aec3332e73e4b1",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-3c5e0764-677e-483f-8b86-cbfc07c49593.png",
+      "sourceSha256": "f40e9f6f3e6c8df95d02f68828562985032f86b88800d1b3d547e4faf24ad677",
+      "panel": 2,
+      "cropRect": [
+        513,
+        1,
+        1023,
+        306
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "g03-administration",
+    "filename": "government/g03-administration.webp",
+    "titleRu": "Гражданская администрация",
+    "description": "Clerks managing public records",
+    "category": "government",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "GamePanel",
+      "StrategyCouncil",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 38716,
+    "sha256": "e972a1a2b060ec999d34e99538b39734c3920afb3bb721dc83288556fd534888",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-3c5e0764-677e-483f-8b86-cbfc07c49593.png",
+      "sourceSha256": "f40e9f6f3e6c8df95d02f68828562985032f86b88800d1b3d547e4faf24ad677",
+      "panel": 3,
+      "cropRect": [
+        1,
+        308,
+        511,
+        613
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "g04-courts",
+    "filename": "government/g04-courts.webp",
+    "titleRu": "Судебная реформа",
+    "description": "Judges discussing a reform",
+    "category": "government",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "GamePanel",
+      "StrategyCouncil",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 29078,
+    "sha256": "2d8a052d1e7289234449f23741c8d5ae0443fd998780ad52914d0308ebdf38af",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-3c5e0764-677e-483f-8b86-cbfc07c49593.png",
+      "sourceSha256": "f40e9f6f3e6c8df95d02f68828562985032f86b88800d1b3d547e4faf24ad677",
+      "panel": 4,
+      "cropRect": [
+        513,
+        308,
+        1023,
+        613
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "g05-cathedral",
+    "filename": "government/g05-cathedral.webp",
+    "titleRu": "Кафедральный собор",
+    "description": "Catholic worship in a stone cathedral",
+    "category": "government",
+    "era": "1600–1800",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "GamePanel",
+      "StrategyCouncil",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 47542,
+    "sha256": "c74b1bc832cb05bc7a2fdc60344d5e098e541a59e9cabce8473caab0ca6e038b",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-3c5e0764-677e-483f-8b86-cbfc07c49593.png",
+      "sourceSha256": "f40e9f6f3e6c8df95d02f68828562985032f86b88800d1b3d547e4faf24ad677",
+      "panel": 5,
+      "cropRect": [
+        1,
+        615,
+        511,
+        920
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "g06-mosque",
+    "filename": "government/g06-mosque.webp",
+    "titleRu": "Двор мечети",
+    "description": "Islamic mosque courtyard and scholars",
+    "category": "government",
+    "era": "1500–1700",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "GamePanel",
+      "StrategyCouncil",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 44490,
+    "sha256": "8436f4472815e9193065f5c7dd5a9d9e1cdb7e6679361b5f89bb5ebbafb184ad",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-3c5e0764-677e-483f-8b86-cbfc07c49593.png",
+      "sourceSha256": "f40e9f6f3e6c8df95d02f68828562985032f86b88800d1b3d547e4faf24ad677",
+      "panel": 6,
+      "cropRect": [
+        513,
+        615,
+        1023,
+        920
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "g07-orthodox",
+    "filename": "government/g07-orthodox.webp",
+    "titleRu": "Православный монастырь",
+    "description": "Monastery and pilgrims in winter",
+    "category": "government",
+    "era": "1600–1800",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "GamePanel",
+      "StrategyCouncil",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 306,
+    "bytes": 53570,
+    "sha256": "fe45a49403b085d7bd575ab8114ea6748c88bd715cc14180ca8e1e2e42664707",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-3c5e0764-677e-483f-8b86-cbfc07c49593.png",
+      "sourceSha256": "f40e9f6f3e6c8df95d02f68828562985032f86b88800d1b3d547e4faf24ad677",
+      "panel": 7,
+      "cropRect": [
+        1,
+        922,
+        511,
+        1228
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "g08-hindu",
+    "filename": "government/g08-hindu.webp",
+    "titleRu": "Храмовый двор",
+    "description": "Hindu temple with devotees",
+    "category": "government",
+    "era": "1700–1850",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "GamePanel",
+      "StrategyCouncil",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 306,
+    "bytes": 52950,
+    "sha256": "6b3ce7d5f2dca09d13bd811dcc3ad8ae252bb3a6e7be7f9257e825834f8948ba",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-3c5e0764-677e-483f-8b86-cbfc07c49593.png",
+      "sourceSha256": "f40e9f6f3e6c8df95d02f68828562985032f86b88800d1b3d547e4faf24ad677",
+      "panel": 8,
+      "cropRect": [
+        513,
+        922,
+        1023,
+        1228
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "g09-buddhist",
+    "filename": "government/g09-buddhist.webp",
+    "titleRu": "Монастырский сад",
+    "description": "Buddhist monks in a mountain garden",
+    "category": "government",
+    "era": "1400–1600",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "GamePanel",
+      "StrategyCouncil",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 60724,
+    "sha256": "a6c385bbc6007cb396b58ccc2dc26b5d9e06727a1986e20430b9ec00f9b501ec",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-3c5e0764-677e-483f-8b86-cbfc07c49593.png",
+      "sourceSha256": "f40e9f6f3e6c8df95d02f68828562985032f86b88800d1b3d547e4faf24ad677",
+      "panel": 9,
+      "cropRect": [
+        1,
+        1230,
+        511,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  },
+  {
+    "id": "g10-civic",
+    "filename": "government/g10-civic.webp",
+    "titleRu": "Гражданское собрание",
+    "description": "Secular civic assembly in a public square",
+    "category": "government",
+    "era": "1800–1900",
+    "purpose": "Illustrates the corresponding real Dominion system; historical flavor, not a new mechanic",
+    "screens": [
+      "GamePanel",
+      "StrategyCouncil",
+      "PoliticalDecisionsPanel"
+    ],
+    "width": 510,
+    "height": 305,
+    "bytes": 39054,
+    "sha256": "1742ebd5c5d8e11ab6e8bcf4404c25d8a4f73f5a5e53a891f62bdf80d6cb01b1",
+    "origin": {
+      "generator": "OpenAI image_gen",
+      "sourceSheet": "exec-3c5e0764-677e-483f-8b86-cbfc07c49593.png",
+      "sourceSha256": "f40e9f6f3e6c8df95d02f68828562985032f86b88800d1b3d547e4faf24ad677",
+      "panel": 10,
+      "cropRect": [
+        513,
+        1230,
+        1023,
+        1535
+      ]
+    },
+    "rights": "Original AI-assisted project artwork generated for Dominion; use permitted under applicable OpenAI terms; no third-party game assets"
+  }
+]

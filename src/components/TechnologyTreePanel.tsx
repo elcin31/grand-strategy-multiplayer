@@ -1,11 +1,11 @@
+import {HistoricalIllustration} from './HistoricalIllustration';
+import {technologyScene} from '../art/curation';
 import {AudioPressable as Pressable} from './AudioPressable';
 import {CampaignArt} from './CampaignArt';
 import {useMemo,useState} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import Svg,{Path} from 'react-native-svg';
 import {colors} from '../ui/tokens';
-import {BUILDING_ART} from '../ui/artCatalogue';
-import {AtlasArt} from './AtlasArt';
 import {styles} from './strategyStyles';
 import type {StrategyProps} from './StrategyPanel';
 import {TECHNOLOGIES,TECHNOLOGY_BRANCHES,techLevel} from '../../supabase/functions/_shared/technologySystem';
@@ -35,9 +35,9 @@ export function TechnologyTreePanel({state,playerId,onCommand}:StrategyProps){
     <View style={[styles.row,{flexDirection:'row',alignItems:'center'}]}><Pressable accessibilityRole="button" accessibilityLabel="Уменьшить дерево технологий" disabled={zoom<=.85} style={styles.button} onPress={()=>setZoom(.85)}><Text style={styles.title}>−</Text></Pressable><Text style={styles.text}>{Math.round(zoom*100)}% · прокрутите дерево вбок</Text><Pressable accessibilityRole="button" accessibilityLabel="Увеличить дерево технологий" disabled={zoom>=1.15} style={styles.button} onPress={()=>setZoom(1.15)}><Text style={styles.title}>+</Text></Pressable></View>
     <ScrollView horizontal nestedScrollEnabled><View style={{width:width*5,height:height*Math.ceil(nodes.length/5)}}>
       <Svg width={width*5} height={height*Math.ceil(nodes.length/5)} style={{position:'absolute'}} accessible={false}>{nodes.flatMap(id=>TECHNOLOGY_NODES[id]!.prerequisites.map(p=>{const a=positions.get(p as TechnologyId),b=positions.get(id);return a&&b?<Path key={p+'>'+id} d={`M ${a.x+cardWidth} ${a.y+cardHeight/2} L ${b.x} ${b.y+cardHeight/2}`} stroke={hasTechnology(c,p)?colors.parchment:colors.muted} strokeWidth={2}/>:null;}))}</Svg>
-      {nodes.map(id=>{const n=TECHNOLOGY_NODES[id]!,p=positions.get(id)!,owned=hasTechnology(c,id),active=c.research?.nodeId===id;return <Pressable key={id} accessibilityRole="button" accessibilityLabel={'Технология: '+n.name} accessibilityState={{selected:id===selected}} style={[styles.option,{position:'absolute',left:p.x,top:p.y,width:cardWidth,height:cardHeight,borderWidth:id===selected?2:1,borderColor:id===selected?colors.parchment:colors.raised,padding:8,gap:4}]} onPress={()=>setSelected(id)}><AtlasArt atlas="buildings" index={BUILDING_ART[n.art]} width={40} height={25} label={'Иллюстрация: '+n.name}/><Text numberOfLines={3} style={styles.title}>{n.name}</Text><Text style={styles.text}>{n.year} · {owned?'Открыто':active?'Исследуется':n.level+' уровень'}</Text></Pressable>;})}
+      {nodes.map(id=>{const n=TECHNOLOGY_NODES[id]!,p=positions.get(id)!,owned=hasTechnology(c,id),active=c.research?.nodeId===id;return <Pressable key={id} accessibilityRole="button" accessibilityLabel={'Технология: '+n.name} accessibilityState={{selected:id===selected}} style={[styles.option,{position:'absolute',left:p.x,top:p.y,width:cardWidth,height:cardHeight,borderWidth:id===selected?2:1,borderColor:id===selected?colors.parchment:colors.raised,padding:8,gap:4}]} onPress={()=>setSelected(id)}><HistoricalIllustration id={technologyScene(id,n.direction,n.year,n.name)} width={72} height={32} label={n.name}/><Text numberOfLines={3} style={styles.title}>{n.name}</Text><Text style={styles.text}>{n.year} · {owned?'Открыто':active?'Исследуется':n.level+' уровень'}</Text></Pressable>;})}
     </View></ScrollView>
-    <Text style={styles.title}>{selectedNode.name}</Text><Text style={styles.text}>{selectedNode.effect}</Text>
+    <HistoricalIllustration id={technologyScene(selected,selectedNode.direction,selectedNode.year,selectedNode.name)} height={90}/><Text style={styles.title}>{selectedNode.name}</Text><Text style={styles.text}>{selectedNode.effect}</Text>
     <Text style={styles.text}>Эпоха: с {selectedNode.year} года · {quote.cost} млн · {quote.months} базовых месяцев · {(selectedNode.legacy?10:15)*selectedNode.level*researchFunding(c)} млн / мес.</Text>
     {selectedNode.prerequisites.map(id=><Pressable key={id} accessibilityRole="button" accessibilityLabel={'Перейти к предшественнику: '+technologyNode(id)!.name} style={styles.button} onPress={()=>go(id as TechnologyId)}><Text style={styles.text}>{hasTechnology(c,id)?'✓':'○'} {technologyNode(id)!.name}</Text></Pressable>)}
     {quote.reason&&<Text style={styles.text}>{quote.reason}</Text>}

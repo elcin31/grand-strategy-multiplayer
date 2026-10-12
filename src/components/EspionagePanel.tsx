@@ -1,6 +1,6 @@
+import {HistoricalIllustration} from './HistoricalIllustration';
 import {AudioPressable as Pressable} from './AudioPressable';
 import {useState} from 'react';
-import {ExpansionArt} from './ExpansionArt';
 import {Text, View} from 'react-native';
 import {ESPIONAGE_MISSIONS,espionageQuote,espionageCapacity,espionageModifiers,type EspionageKind} from '../../supabase/functions/_shared/espionageSystem';
 import {DiplomacyButton} from './DiplomacyActions';
@@ -12,7 +12,7 @@ export function EspionagePanel({state,playerId,onCommand,from,to}:StrategyProps&
   const counter=espionageModifiers(state,from).counterintelligence;
   return <View style={styles.wrap}>
     <Pressable accessibilityRole="button" accessibilityState={{expanded:open}} onPress={()=>setOpen(v=>!v)} style={styles.button}><Text style={styles.title}>Разведка и контрразведка {open?'▴':'▾'}</Text></Pressable>
-    {open&&<View style={styles.card}><ExpansionArt name="theme-espionage"/>
+    {open&&<View style={styles.card}><HistoricalIllustration id="d10-intelligence"/>
       <Text style={styles.text}>Группы: {missions.length}/{espionageCapacity(state,from)} · контрразведка {counter?'действует':'не активна'}. Операции завершаются по игровым месяцам. Отзыв сохраняет расходы и cooldown.</Text>
       {targets.map(({kind,id})=>{const rule=ESPIONAGE_MISSIONS[kind],q=espionageQuote(state,from,id,kind);return <View key={kind} style={styles.card}>
         <Text style={styles.title}>{rule.name} · {state.countries[id]!.name}</Text>

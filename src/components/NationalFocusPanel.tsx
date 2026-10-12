@@ -1,3 +1,5 @@
+import {HistoricalIllustration} from './HistoricalIllustration';
+import {focusScene} from '../art/curation';
 import {AudioPressable as Pressable} from './AudioPressable';
 import {CampaignArt} from './CampaignArt';
 import {PoliticalDecisionsPanel} from './PoliticalDecisionsPanel';
@@ -5,9 +7,7 @@ import {useMemo,useState} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import Svg,{Path} from 'react-native-svg';
 import {colors} from '../ui/tokens';
-import {BUILDING_ART} from '../ui/artCatalogue';
 import {styles} from './strategyStyles';
-import {AtlasArt} from './AtlasArt';
 import type {StrategyProps} from './StrategyPanel';
 import {FOCUS_BRANCHES,FOCUS_IDS,FOCUS_NODES,focusBelongsTo,focusNode,hasFocus,focusRewardLines,type FocusBranch,type FocusId} from '../../supabase/functions/_shared/focusCatalogue';
 import {focusAvailability} from '../../supabase/functions/_shared/focusSystem';
@@ -37,9 +37,9 @@ export function NationalFocusPanel({state,playerId,onCommand}:StrategyProps){
   <Text style={styles.text}>Пролистайте дерево вбок. Кнопки предшественников ниже переходят к нужной ветке.</Text>
   <ScrollView horizontal nestedScrollEnabled><View style={{width,height}}>
    <Svg width={width} height={height} style={{position:'absolute'}} accessible={false}>{nodes.flatMap(id=>[...FOCUS_NODES[id]!.prerequisites,...FOCUS_NODES[id]!.eitherPrerequisites??[]].map(parent=>{const a=positions.get(parent as FocusId),b=positions.get(id);return a&&b?<Path key={parent+'>'+id} d={`M ${a.x+164} ${a.y+64} L ${b.x} ${b.y+64}`} stroke={hasFocus(c,parent)?colors.parchment:colors.muted} strokeWidth={2}/>:null;}))}</Svg>
-   {nodes.map(id=>{const node=FOCUS_NODES[id]!,p=positions.get(id)!,completed=hasFocus(c,id);return <Pressable key={id} accessibilityRole="button" accessibilityLabel={'Курс: '+node.name} accessibilityState={{selected:id===selected}} style={[styles.option,{position:'absolute',left:p.x,top:p.y,width:164,height:132,padding:8,gap:4,borderWidth:id===selected?2:1,borderColor:id===selected?colors.parchment:colors.raised}]} onPress={()=>setSelected(id)}><AtlasArt atlas="buildings" index={BUILDING_ART[node.art]} width={40} height={25} label={'Иллюстрация курса: '+node.name}/><Text numberOfLines={3} style={styles.title}>{node.name}</Text><Text style={styles.text}>{completed?'Завершено':project?.focusId===id?'Выполняется':node.duration+' месяцев'}</Text></Pressable>;})}
+   {nodes.map(id=>{const node=FOCUS_NODES[id]!,p=positions.get(id)!,completed=hasFocus(c,id);return <Pressable key={id} accessibilityRole="button" accessibilityLabel={'Курс: '+node.name} accessibilityState={{selected:id===selected}} style={[styles.option,{position:'absolute',left:p.x,top:p.y,width:164,height:132,padding:8,gap:4,borderWidth:id===selected?2:1,borderColor:id===selected?colors.parchment:colors.raised}]} onPress={()=>setSelected(id)}><HistoricalIllustration id={focusScene(id,node.branch,node.art,node.name)} width={72} height={32} label={node.name}/><Text numberOfLines={3} style={styles.title}>{node.name}</Text><Text style={styles.text}>{completed?'Завершено':project?.focusId===id?'Выполняется':node.duration+' месяцев'}</Text></Pressable>;})}
   </View></ScrollView>
-  <Text style={styles.title}>{n.name}</Text><Text style={styles.text}>{n.cost} млн · {n.pp} PP · {n.duration} месяцев</Text>
+  <HistoricalIllustration id={focusScene(selected,n.branch,n.art,n.name)} height={90}/><Text style={styles.title}>{n.name}</Text><Text style={styles.text}>{n.cost} млн · {n.pp} PP · {n.duration} месяцев</Text>
   {focusRewardLines(selected).map(line=><Text key={line} style={styles.text}>{line}</Text>)}
   {n.exclusiveGroup&&<Text style={styles.text}>Взаимоисключающий выбор. Альтернатива: {FOCUS_IDS.filter(id=>id!==selected&&FOCUS_NODES[id]!.exclusiveGroup===n.exclusiveGroup).map(id=>FOCUS_NODES[id]!.name).join(', ')}.</Text>}
   {n.eitherPrerequisites&&<Text style={styles.text}>Нужна одна из следующих альтернатив:</Text>}

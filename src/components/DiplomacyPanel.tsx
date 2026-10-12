@@ -1,9 +1,9 @@
+import {HistoricalIllustration} from './HistoricalIllustration';
 import {AudioPressable as Pressable} from './AudioPressable';
 import {WarGoalsPanel} from './WarGoalsPanel';
 import {colors} from '../ui/tokens';
 import {useEffect,useState} from 'react';
 import {ScrollView, Text, TextInput, View} from 'react-native';
-import {HistoricalArt} from './HistoricalArt';
 import {TREATIES,pairKey,warBetween} from '../../supabase/functions/_shared/diplomacySystem';
 import {diplomaticTermsLabel,diplomacyResponseAvailability} from '../../supabase/functions/_shared/diplomacy2System';
 import {DiplomacyActions,DiplomacyButton} from './DiplomacyActions';
@@ -20,7 +20,7 @@ export function DiplomacyPanel({state,playerId,onCommand,initialOpen,initialTarg
   return <View style={styles.wrap}>
     <Pressable accessibilityRole="button" accessibilityState={{expanded:open}} style={styles.button} onPress={()=>setOpen(previous=>!previous)}><Text style={styles.title}>Дипломатия {open?'▴':'▾'}</Text></Pressable>
     {open&&<View style={styles.card}>
-      <HistoricalArt name="diplomacy"/>
+      <HistoricalIllustration id={war?'d03-war':link?.treaties.includes('Alliance')?'d02-alliance':'d01-envoys'}/>
       <TextInput accessibilityLabel="Поиск страны для дипломатии" placeholder="Название страны" placeholderTextColor={colors.muted} value={query} onChangeText={setQuery} style={[styles.button,styles.title]}/>
       <ScrollView horizontal contentContainerStyle={styles.row}>{Object.values(state.countries).filter(c=>c.id!==id&&c.provinceIds?.length&&`${c.name} ${c.id} ${c.shortName}`.toLowerCase().includes(query.toLowerCase())).slice(0,20).map(c=><Pressable accessibilityRole="button" accessibilityState={{selected:targetId===c.id}} key={c.id} style={styles.option} onPress={()=>setTargetId(c.id)}><Text style={styles.title}>{c.name}{targetId===c.id?' ✓':''}</Text></Pressable>)}</ScrollView>
       <EspionagePanel state={state} playerId={playerId} onCommand={onCommand} from={id} to={target?.id}/>

@@ -1,3 +1,5 @@
+import {HistoricalIllustration} from './HistoricalIllustration';
+import {governmentScene211,religionScene211} from '../art/curation';
 import {AudioSettings} from './AudioSettings';
 import {AudioPressable as Pressable} from './AudioPressable';
 import {PanelTabs} from './PanelTabs';
@@ -13,7 +15,7 @@ import {EspionagePanel} from './EspionagePanel';
 import {AtlasArt} from './AtlasArt';
 import {BUILDING_ART,GOVERNMENT_ART,RELIGION_ART} from '../ui/artCatalogue';
 import {ExpansionArt} from './ExpansionArt';
-import {governmentScene,religionScene,constructionScene} from '../ui/expansionArt';
+import {constructionScene} from '../ui/expansionArt';
 import {LeaderPortrait,Crest} from './Heraldry';
 import {colors,tokens} from '../ui/tokens';
 import type {Section} from '../ui/landscape';
@@ -104,7 +106,7 @@ export function GamePanel({ onOpenPeace,diplomacyCountryId,onSelectArmy,onDesele
   return (
     <View style={styles.wrap}>
       {tabbar}
-      {(section==='Military'||section==='Diplomacy'||section==='Economy')&&<View style={{overflow:'hidden',borderWidth:1,borderColor:colors.border}}><ExpansionArt name={section==='Military'?'military-staff':section==='Diplomacy'?'diplomacy-embassy':'theme-economy'} label={'Иллюстрация Dominion: '+(section==='Military'?'military':section==='Diplomacy'?'diplomacy':'economy')}/><View style={{padding:10,flexDirection:'row',alignItems:'center',gap:10}}><Crest/><Text style={{fontFamily:'serif',fontSize:20,color:colors.parchment}}>{section==='Military'?'Военный совет':section==='Diplomacy'?'Дипломатический корпус':'Государственная казна'}</Text></View></View>}
+      {(section==='Military'||section==='Diplomacy'||section==='Economy')&&<View style={{overflow:'hidden',borderWidth:1,borderColor:colors.border}}><ExpansionArt height={64} name={section==='Military'?'military-staff':section==='Diplomacy'?'diplomacy-embassy':'theme-economy'} label={'Иллюстрация Dominion: '+(section==='Military'?'military':section==='Diplomacy'?'diplomacy':'economy')}/><View style={{padding:10,flexDirection:'row',alignItems:'center',gap:10}}><Crest/><Text style={{fontFamily:'serif',fontSize:15,color:colors.parchment}}>{section==='Military'?'Военный совет':section==='Diplomacy'?'Дипломатический корпус':'Государственная казна'}</Text></View></View>}
       {section==='Country'&&<View style={styles.card}>
         <View style={styles.header}>
           <View>
@@ -167,7 +169,7 @@ export function GamePanel({ onOpenPeace,diplomacyCountryId,onSelectArmy,onDesele
 
       {section==='Government'&&state.dataset && <Pressable accessibilityRole="button" onPress={() => { setGovernmentOpen(!governmentOpen); setReligionOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Правительство {governmentOpen ? '▴' : '▾'}</Text></Pressable>}
       {governmentOpen && state.dataset && <View style={styles.card}>
-        <ExpansionArt name={governmentScene(nation.governmentType??'Parliamentary Republic')} height={92} label="Иллюстрация формы правления"/>
+        <HistoricalIllustration id={governmentScene211(nation.governmentType??'Parliamentary Republic')} height={84}/>
         <Text style={styles.eyebrow}>ФОРМА ПРАВЛЕНИЯ · {Math.floor(politicalPower)} PP</Text>
         <Text style={styles.govCurrent}>{nation.governmentType}</Text>
         <Text style={styles.hint}>Смена: {GOVERNMENT_CHANGE_COST} PP, −{GOVERNMENT_STABILITY_COST} стабильности; cooldown {GOVERNMENT_COOLDOWN_TICKS} мес.</Text>
@@ -191,7 +193,7 @@ export function GamePanel({ onOpenPeace,diplomacyCountryId,onSelectArmy,onDesele
 
       {section==='Religion'&&state.dataset && <Pressable accessibilityRole="button" onPress={() => { setReligionOpen(!religionOpen); setGovernmentOpen(false); setEconomyOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Религия {religionOpen ? '▴' : '▾'}</Text></Pressable>}
       {religionOpen && state.dataset && <View style={styles.card}>
-        {religionScene(nation.religion??'secular')?<ExpansionArt name={religionScene(nation.religion??'secular')!} height={92} label="Иллюстрация религиозной архитектуры"/>:<AtlasArt atlas="religion" index={RELIGION_ART[nation.religion??'secular']??7} height={92} label="Иллюстрация религиозной архитектуры"/>}
+        <HistoricalIllustration id={religionScene211(nation.religion??'secular')} height={84}/>
         <Text style={styles.eyebrow}>ГОСУДАРСТВЕННАЯ РЕЛИГИЯ · {Math.floor(politicalPower)} PP</Text>
         <Text style={styles.govCurrent}>{RELIGIONS[nation.religion ?? 'secular']?.name}</Text>
         <Text style={styles.hint}>Religious Unity: {nation.religiousUnity?.toFixed(1)}% · unrest {nation.unrest?.toFixed(1)}</Text>
@@ -218,7 +220,7 @@ export function GamePanel({ onOpenPeace,diplomacyCountryId,onSelectArmy,onDesele
       {section==='Technology'&&<StrategyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
       {section==='Focus'&&<NationalFocusPanel state={state} playerId={playerId} onCommand={onCommand}/>}
 
-      {section==='Military'&&<View style={styles.card}><Text style={styles.eyebrow}>АРМИИ · {compact(nation.army)}</Text>{state.armies.filter(a=>a.ownerId===countryId).map(a=><Pressable key={a.id} style={styles.secondaryButton} onPress={()=>onFocusProvince?.(a.provinceId)}><Text style={styles.secondaryText}>{state.provinces.find(p=>p.id===a.provinceId)?.name} · {compact(a.troops)}</Text><Text style={styles.hint}>Мораль {a.morale?.toFixed(0)} · организация {a.organization?.toFixed(0)}</Text></Pressable>)}</View>}
+      {section==='Military'&&<View style={styles.card}><Text style={styles.eyebrow}>АРМИИ · {compact(nation.army)}</Text>{state.armies.filter(a=>a.ownerId===countryId).map((a,i)=><Pressable key={a.id} accessibilityRole="button" accessibilityLabel={'Выбрать армию '+(i+1)} style={styles.secondaryButton} onPress={()=>onSelectArmy?.(a.id,a.provinceId)}><Text style={styles.secondaryText}>{state.provinces.find(p=>p.id===a.provinceId)?.name} · {compact(a.troops)}</Text><Text style={styles.hint}>Мораль {a.morale?.toFixed(0)} · организация {a.organization?.toFixed(0)}</Text></Pressable>)}</View>}
       {section==='Context'&&<View style={styles.card}>
         <Text style={styles.eyebrow}>КОМАНДОВАНИЕ</Text>
         {!selected ? (
