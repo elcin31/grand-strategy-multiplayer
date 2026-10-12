@@ -10,6 +10,7 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital';
 
 export interface Country {
+  aiStrategy?:import('./ai3System.ts').AIStrategy;
   autoPause?: import('./notificationSystem.ts').NotificationCategory[];
   notificationReadThrough?: number;
   economicPolicy?: import('./economy2System.ts').EconomicPolicy;

@@ -1,3 +1,4 @@
+import {ensureStrategy,reviewStrategy} from './ai3System.ts';
 import type { Army, BuildingType, GameState, Province } from './gameTypes.ts';
 import { BUILDINGS, buildingQuote,buildingRequirementReason,provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
 import {policyAvailability,setEconomicPolicy,fundingAvailability,setFunding,type EconomicPolicy} from './economy2System.ts';
@@ -18,6 +19,7 @@ export const AI_PERSONALITIES = ['Defensive','Diplomatic','Expansionist','Econom
 export type AIPersonality = typeof AI_PERSONALITIES[number];
 export function initializeAI(s:GameState):void {
   if(!s.dataset)return;
+  for(const c of Object.values(s.countries)){const plan=ensureStrategy(s,c);if(!['Economy','Science','Integration','Modernization','Defense','Influence','Recovery'].includes(plan.goal)||!Number.isSafeInteger(plan.reviewTick)||plan.reviewTick<0)throw Error('Invalid strategic memory');}
   for(const leader of Object.values(s.leaders??{})){
     leader.aiPersonality ??= AI_PERSONALITIES[leader.portraitSeed%5]!;
     if(!AI_PERSONALITIES.includes(leader.aiPersonality))throw new Error('Invalid AI personality');
@@ -46,7 +48,7 @@ export function warDecisionScore(s:GameState,id:string,target:string,context:AIS
   if([...defenders].some(d=>{const link=s.diplomacy?.[pairKey(id,d)];return link?.treaties.length||s.tick<(link?.truceUntilTick??0);}))return -Infinity;
   const power=[...defenders].reduce((n,i)=>n+s.countries[i]!.army,0);
   const ratio=context.militaryStrength/Math.max(10000,power);
-  if(ratio<1.6)return -Infinity;
+  if(ratio<1.6||s.armies.filter(a=>a.ownerId===id).some(a=>(a.supply??100)<45)||context.incomeBalance<0)return -Infinity;
   const bias={Defensive:-55,Diplomatic:-45,Economic:-30,Expansionist:25,Militarist:10}[personality(s,id)];
   const claims=Math.min(20,(claimCount??s.provinces.filter(p=>p.ownerId===target&&p.originalOwnerId===id).length)*5);
   return 30*(ratio-1)+bias+claims-(l?.relation??0)*.5-c.aggressiveExpansion!*.8-context.warExhaustion;
@@ -101,8 +103,9 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
     if(!home.length)continue;
     const capital=capitals.get(c.capitalCityId??'')??home[0]!.id;
     if(s.tick%6===index%6){
+      const plan=reviewStrategy(s,c);
       const affordable=(cost:number)=>c.treasury-cost>=context().treasuryReserve&&s.tick>=c.bankruptcyUntilTick!;
-      const desiredPolicy:EconomicPolicy=context().incomeBalance<0?'Austerity':w?'Mobilization':style==='Economic'?'Investment':style==='Diplomatic'?'OpenMarkets':'Balanced';
+      const desiredPolicy:EconomicPolicy=context().incomeBalance<0?'Austerity':w?'Mobilization':plan.goal==='Science'||plan.goal==='Economy'&&plan.personality!=='Trade'?'Investment':plan.personality==='Trade'||plan.goal==='Integration'?'OpenMarkets':'Balanced';
       if(affordable(50)&&!policyAvailability(s,id,desiredPolicy))setEconomicPolicy(s,id,desiredPolicy);
       const militaryLevel=context().incomeBalance<0?'Low':w&&affordable((c.economy?.armyMaintenance??0)*6)?'High':'Standard';
       if(!fundingAvailability(s,id,'Military',militaryLevel))setFunding(s,id,'Military',militaryLevel);
@@ -134,13 +137,13 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
         }
       }
       if(!c.research){
-        const branches:TechnologyBranch[]=style==='Economic'?['Economy','Industry','Administration','Military','Diplomacy']:style==='Diplomatic'?['Diplomacy','Economy','Administration','Military','Industry']:['Military','Economy','Administration','Industry','Diplomacy'];
+        const branches:TechnologyBranch[]=plan.goal==='Economy'||plan.goal==='Science'?['Economy','Industry','Administration','Military','Diplomacy']:style==='Diplomatic'?['Diplomacy','Economy','Administration','Military','Industry']:['Military','Economy','Administration','Industry','Diplomacy'];
         const science= scienceLevel(c)<Math.min(...branches.map(b=>techLevel(c,b)))?TECHNOLOGY_IDS.find(id=>technologyNode(id)!.direction==='Science'&&!namedResearchQuote(s,c,id).reason):undefined;
         const candidates=[science,...branches.filter(b=>techLevel(c,b)<5).sort((a,b)=>techLevel(c,a)-techLevel(c,b)).map(b=>legacyTechnologyNode(b,techLevel(c,b)+1))];
         const id=candidates.find(id=>id&&!namedResearchQuote(s,c,id).reason&&affordable(namedResearchQuote(s,c,id).cost));if(id)startTechnology(s,c,id);
       }
       if(!c.nationalFocus){
-        const branch=style==='Economic'?'Economic':style==='Diplomatic'?'Diplomatic':style==='Defensive'?'Political':'Military';
+        const branch=plan.goal==='Economy'?'Economic':plan.goal==='Integration'||plan.goal==='Influence'?'Diplomatic':plan.goal==='Science'||plan.goal==='Recovery'?'Political':'Military';
         const candidates=FOCUS_IDS.filter(id=>focusBelongsTo(c,FOCUS_NODES[id])&&!focusAvailability(s,c.id,id));
         candidates.sort((a,b)=>Number(FOCUS_NODES[b].branch===branch)-Number(FOCUS_NODES[a].branch===branch)||Number(FOCUS_NODES[b].category==='Unique')-Number(FOCUS_NODES[a].category==='Unique')||FOCUS_NODES[a].cost-FOCUS_NODES[b].cost);
         const id=candidates.find(id=>affordable(FOCUS_NODES[id].cost));if(id)startFocus(s,c.id,id);

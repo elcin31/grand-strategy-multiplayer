@@ -1,3 +1,4 @@
+import {periodicMilitaryAI} from './ai3System.ts';
 import {beginBattle,dailyMilitary,mergeArmies,splitArmy,armyInBattle,militaryEntity} from './military3System.ts';
 import {advanceDate,requestPause} from './calendarSystem.ts';
 import {collectNotifications} from './notificationSystem.ts';
@@ -359,7 +360,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       recalcCountryStats(next); return next;
     }
     case 'ADVANCE_DAY': {
-      if(next.phase!=='running'||next.speed===0)return next;const monthly=advanceDate(next);advanceArmyOrders(next,resolveMovement,true);dailyMilitary(next);
+      if(next.phase!=='running'||next.speed===0)return next;const monthly=advanceDate(next);advanceArmyOrders(next,resolveMovement,true);dailyMilitary(next);periodicMilitaryAI(next);
       return monthly?applyCoreCommand(next,{type:'ADVANCE_TICK'},true,true):next;
     }
     case 'ADVANCE_TICK': {
