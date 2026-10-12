@@ -1,3 +1,5 @@
+import {ArmyDock} from './src/components/ArmyDock';
+import {StrategyIcon} from './src/components/StrategyIcon';
 import {QuickTutorial} from './src/components/QuickTutorial';
 import {projectFogOfWar} from './supabase/functions/_shared/strategy3System';
 import {dayDelay} from './supabase/functions/_shared/calendarSystem';
@@ -8,7 +10,7 @@ import {traceStartup} from './src/performance/startupTrace';
 import {recordMetrics} from './src/performance/telemetry';
 import {LaunchAction} from './src/ui/launchAction';
 import {LandscapeHUD} from './src/components/LandscapeHUD';
-import {SECTIONS,SECTION_LABELS,SECTION_ICONS,panelWidth,backAction,type Section} from './src/ui/landscape';
+import {SECTIONS,SECTION_LABELS,panelWidth,backAction,type Section} from './src/ui/landscape';
 import { campaignStore } from './src/persistence/nativeCampaignStore';
 import { useCallback, useMemo, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, AppState, BackHandler, Keyboard, LayoutAnimation, useWindowDimensions, Pressable, StatusBar, StyleSheet, Text, View, ScrollView } from 'react-native';
@@ -236,8 +238,9 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
           onClearSelection={deselectArmy}
         /></View>
 
+        {gameStarted&&selectedArmyId&&<ArmyDock state={state} armyId={selectedArmyId} playerId={playerId??''} width={Math.max(230,Math.min(460,width-(panelOpen?panelWidth(width):190)-100))} onInspect={()=>{setSection('Context');setPanelOpen(true);}} onDeselect={deselectArmy} onCommand={sendCommand}/>}
         {gameStarted&&<QuickTutorial state={state} playerId={playerId??''} onCommand={sendCommand}/>}
-        {gameStarted&&<ScrollView style={styles.navigation} contentContainerStyle={{gap:4,flexGrow:1}} showsHorizontalScrollIndicator={false}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onPress={()=>{LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);setSection(tab);setPanelOpen(true);}}><Text style={{color:colors.gold,fontSize:19}}>{SECTION_ICONS[tab]}</Text><Text style={styles.exitText}>{SECTION_LABELS[tab]}</Text></Pressable>)}</ScrollView>}
+        {gameStarted&&<ScrollView style={styles.navigation} contentContainerStyle={{gap:4,flexGrow:1}} showsHorizontalScrollIndicator={false}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onPress={()=>{LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);setSection(tab);setPanelOpen(true);}}><StrategyIcon section={tab}/><Text style={styles.exitText}>{SECTION_LABELS[tab]}</Text></Pressable>)}</ScrollView>}
         {panelOpen && <ScrollView key={section} keyboardShouldPersistTaps="handled" style={[styles.panel,{width:panelWidth(width),bottom:gameStarted?8:154}]} contentContainerStyle={styles.panelContent}>
 
         {!gameStarted && (

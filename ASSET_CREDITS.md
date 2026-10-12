@@ -64,3 +64,7 @@ Age of History 3 screenshots on Steam, SteamDB and developer/community pages wer
 ## Derived coastal construction sites — 2026-10-10
 
 `supabase/functions/_shared/waterAccess.ts` and `WATER_ACCESS_REPORT.json` derive approximate port sites from the existing public-domain Natural Earth province geometry, using `scripts/derive-water-access.py`. Only exterior shores count; internal simplification holes or unrepresented land are excluded. No province/city/geometry is removed or modified, and no runtime GIS dependency is added. The report pins the unchanged source SHA. This is a game approximation, not maritime navigation data.
+
+## Dominion 2.1 original art
+
+Three original AI-generated oil illustrations (modern campaign, science/industry and a fictional modern commander), produced for this update on 2026-10-12. Source images remain in the session Library; packaged WebP copies are in `assets/art/overhaul/`. These are contemporary 2026 scenes, separate from retained 2.0 historical illustrations. The commander image is a shared fictional archetype, not an individual portrait of every commander. Original SVG navigation icons are drawn in `StrategyIcon.tsx`. No reference-game artwork was copied.

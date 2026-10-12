@@ -3,7 +3,7 @@
 - Branch: `dominion-2.1-overhaul`
 - HEAD before this commit: `0263bef6f22dc89876f6c1245a99edebce593e38`
 - Completed: recovery from 11fbeec / v2.0.0-playtest.1; HUD and mini-map; calendar with daily clock, monthly accounting, 1–5 speeds, shared host controls and pause voting; schema 18→19 save migration/backup.
-- Current: Art & UI integration.
+- Current: final integration / lean QA / Android release.
 - Unfinished: resources/construction/production, technology/focus expansion, additional systems, art, integration and APK.
 - Known: inherited camera microstutter (deferred). Visual reference received; use gold/graphite/navy, compact panels and era-correct historical art.
 - Next: persistent strategic goals and personalities; staggered operational/tactical planning, group and escort orders; integrate with expanded industry.
@@ -23,3 +23,5 @@
 
 - Focuses: 120 original nodes, eight countries with unique branches, exclusive paths, eight spirits, eight timed decisions and once-only event choices. Two targeted focus/decision/save checks pass.
 - Strategy: fog projections for client/server, war goals including allied intervention, constrained peace demands, reparations/guarantees/disarmament; exhaustion economy/politics; vassal autonomy and consent-based integration; four advisers, world chronicle and six rankings; optional eight-step tutorial. Two targeted authority/fog/war/save checks pass. Schema 23.
+
+- Art/UI: official visual reference adapted into compact gold/navy controls, original SVG icons, army context dock, actual SVG flags and three new era-appropriate optimized WebP paintings. All 2.0 illustrations retained.

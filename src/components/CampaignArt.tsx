@@ -1,0 +1,6 @@
+import {memo} from 'react';
+import {Image} from 'react-native';
+import {ExpansionArt} from './ExpansionArt';
+/** Packaged references; only an open panel decodes its era-appropriate image. */
+export const CampaignArt=memo(function CampaignArt({kind,year,height=84}:{kind:'Military'|'Industry'|'Science'|'Project';year:number;height?:number}){if(year<1950)return <ExpansionArt name={kind==='Military'?'military-staff':kind==='Science'?'theme-technology':'construction-factory'} height={height}/>;return <Image source={kind==='Military'?require('../../assets/art/overhaul/modern-military.webp'):require('../../assets/art/overhaul/modern-industry.webp')} resizeMode="cover" fadeDuration={0} accessibilityLabel={'Оригинальная картина Dominion 2.1: '+(kind==='Military'?'современная военная кампания':'современная наука и промышленность')} style={{width:'100%',height}}/>;});
+export const CommanderPortrait=memo(function CommanderPortrait({year,size=40}:{year:number;size?:number}){return <Image source={require('../../assets/art/overhaul/modern-commander.webp')} resizeMode="cover" fadeDuration={0} accessibilityLabel={'Образ вымышленного современного командующего · '+year} style={{width:size,height:size*1.25,borderRadius:3}}/>;});

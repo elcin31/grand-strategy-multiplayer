@@ -1,10 +1,10 @@
+import {CampaignArt} from './CampaignArt';
 import {useMemo,useState} from 'react';
 import {Pressable,ScrollView,Text,View} from 'react-native';
 import Svg,{Path} from 'react-native-svg';
 import {colors} from '../ui/tokens';
 import {BUILDING_ART} from '../ui/artCatalogue';
 import {AtlasArt} from './AtlasArt';
-import {ExpansionArt} from './ExpansionArt';
 import {styles} from './strategyStyles';
 import type {StrategyProps} from './StrategyPanel';
 import {TECHNOLOGIES,TECHNOLOGY_BRANCHES,techLevel} from '../../supabase/functions/_shared/technologySystem';
@@ -24,7 +24,7 @@ export function TechnologyTreePanel({state,playerId,onCommand}:StrategyProps){
   const go=(id:TechnologyId)=>{setSelected(id);setDirection(TECHNOLOGY_NODES[id]!.direction);};
   const researchName=c.research?.branch==='Science'?'Наука':c.research?TECHNOLOGIES[c.research.branch].name:'';
   return <View style={styles.card}>
-    <ExpansionArt name="theme-technology" label="Иллюстрация технологий: университет"/>
+    <CampaignArt year={state.year} kind="Science"/>
     <Text accessibilityLiveRegion="polite" style={styles.text}>{c.research?`${researchName}: ${c.research.progress.toFixed(1)} / ${c.research.required} мес. исследования`:'Выберите исследование. Одновременно доступен один проект.'}</Text>
     {c.research?.nodeId&&<Text style={styles.title}>{technologyNode(c.research.nodeId)?.name}</Text>}
     <Text style={styles.text}>Бюджет оплачивает каждый месяц работы. Университеты, научные открытия и правительство ускоряют исследования; банкротство приостанавливает их.</Text>

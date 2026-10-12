@@ -1,3 +1,4 @@
+import {CampaignArt} from './CampaignArt';
 import {PoliticalDecisionsPanel} from './PoliticalDecisionsPanel';
 import {useMemo,useState} from 'react';
 import {Pressable,ScrollView,Text,View} from 'react-native';
@@ -6,7 +7,6 @@ import {colors} from '../ui/tokens';
 import {BUILDING_ART} from '../ui/artCatalogue';
 import {styles} from './strategyStyles';
 import {AtlasArt} from './AtlasArt';
-import {ExpansionArt} from './ExpansionArt';
 import type {StrategyProps} from './StrategyPanel';
 import {FOCUS_BRANCHES,FOCUS_IDS,FOCUS_NODES,focusBelongsTo,focusNode,hasFocus,focusRewardLines,type FocusBranch,type FocusId} from '../../supabase/functions/_shared/focusCatalogue';
 import {focusAvailability} from '../../supabase/functions/_shared/focusSystem';
@@ -28,7 +28,7 @@ export function NationalFocusPanel({state,playerId,onCommand}:StrategyProps){
   <Text style={[styles.title,{fontSize:17}]}>DOMINION — НАЦИОНАЛЬНЫЙ КУРС</Text>
   <View style={{flexDirection:'row',gap:6}}><Pressable style={styles.button} onPress={()=>setDecisions(false)}><Text style={styles.title}>Фокусы (120)</Text></Pressable><Pressable style={styles.button} onPress={()=>setDecisions(true)}><Text style={styles.title}>Особенности и решения</Text></Pressable></View>
   {decisions?<PoliticalDecisionsPanel state={state} playerId={playerId} onCommand={onCommand}/>:<>
-  <ExpansionArt name="theme-focus" label="Иллюстрация национального курса"/>
+  <CampaignArt year={state.year} kind="Project"/>
   <Text style={styles.text}>Одна программа одновременно. Цена оплачивается при выборе, результаты действуют после завершения. Альтернативные программы исключают друг друга; прерывание теряет вложения и прогресс.</Text>
   <Text style={styles.title}>Завершено курсов: {c.completedFocuses?.length??0}</Text>
   {project&&<View style={styles.card}><Text accessibilityLiveRegion="polite" style={styles.title}>Национальный курс: {FOCUS_NODES[project.focusId]!.name} · {project.progress}/{FOCUS_NODES[project.focusId]!.duration} мес.</Text>{state.tick<(c.bankruptcyUntilTick??0)&&<Text style={styles.text}>Работа приостановлена до выхода из банкротства.</Text>}<Pressable accessibilityRole="button" accessibilityLabel="Прервать национальный курс" accessibilityState={{disabled:!enabled}} disabled={!enabled} style={styles.button} onPress={()=>onCommand({type:'CANCEL_NATIONAL_FOCUS',playerId})}><Text style={styles.title}>Прервать курс</Text></Pressable></View>}
