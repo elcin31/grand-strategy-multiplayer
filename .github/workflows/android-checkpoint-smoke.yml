@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       apk_run_id:
-        description: Successful build run containing dominion-optimized-release
+        description: Build run containing the standalone Dominion APK
         required: false
         type: string
 permissions:
@@ -17,7 +17,7 @@ permissions:
 jobs:
   smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: ${{ github.ref == 'refs/heads/dominion-2.1.1-warfare-interface-art' && 15 || 50 }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,12 +32,15 @@ jobs:
           echo "run_id=$APK_RUN_ID" >> "$GITHUB_OUTPUT"
           [[ "$APK_RUN_ID" =~ ^[0-9]+$ ]]
           artifact_sha=$(gh api "repos/elcin31/grand-strategy-multiplayer/actions/runs/$APK_RUN_ID" --jq .head_sha)
-          git diff --exit-code "$artifact_sha" HEAD -- App.tsx app.json package.json package-lock.json src supabase/functions plugins
+          git diff --exit-code "$artifact_sha" HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json metro.config.js assets src supabase/functions plugins
       - uses: actions/download-artifact@v4
         with:
-          name: dominion-optimized-release
+          name: ${{ github.ref == 'refs/heads/dominion-2.1.1-warfare-interface-art' && 'dominion-camera-illustrated-release' || 'dominion-optimized-release' }}
           run-id: ${{ steps.source.outputs.run_id }}
           github-token: ${{ github.token }}
+      - name: Install short screenshot verifier
+        if: github.ref == 'refs/heads/dominion-2.1.1-warfare-interface-art'
+        run: python -m pip install -r scripts/camera-profile-requirements.txt
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -49,10 +52,17 @@ jobs:
           arch: x86_64
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: DOMINION_STRESS_SECONDS=1200 python scripts/android-smoke.py Dominion-optimized-release.apk
+          script: |
+            if [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.1-warfare-interface-art' ]; then
+              python scripts/android211-smoke.py Dominion-2.1.1-playtest.apk
+            else
+              DOMINION_STRESS_SECONDS=1200 python scripts/android-smoke.py Dominion-optimized-release.apk
+            fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: android-smoke-evidence
-          path: android-smoke/
+          name: ${{ github.ref == 'refs/heads/dominion-2.1.1-warfare-interface-art' && 'dominion211-short-native-smoke' || 'android-smoke-evidence' }}
+          path: |
+            android-smoke/
+            android-lean-smoke/
           retention-days: 14
