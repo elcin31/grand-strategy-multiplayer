@@ -778,5 +778,31 @@
     "whitespace": true
   },
   "releaseAccepted": false,
-  "physicalRedmiTested": false
+  "physicalRedmiTested": false,
+  "publishedRuntime": "9ba945903851fe3e13969de7d7693795a4918aa9",
+  "publishedTree": "32c3c21c6a1313338af0604d8b8169c01ae08a27",
+  "actualSourceCi": {
+    "runId": 38223923166,
+    "jobId": 114726658153,
+    "conclusion": "success",
+    "strictTypecheck": true,
+    "js": {
+      "tests": 318,
+      "passed": 318,
+      "skipped": 0
+    },
+    "python": {
+      "tests": 107,
+      "passed": 107,
+      "skipped": 0
+    },
+    "actualAndroidPrebuildAndNativeContractVerified": true,
+    "originalArt": 42,
+    "productionHermes": {
+      "bytes": 11485182,
+      "sha256": "72793fe0de615bf0f89226fe35d1c9f1a8c176000d0fd48faa75a9b56b85ea5f",
+      "magic": "c61fbc03c103191f"
+    }
+  },
+  "freshFullReleaseRunId": 38224321396
 }
