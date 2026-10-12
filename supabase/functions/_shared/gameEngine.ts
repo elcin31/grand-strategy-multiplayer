@@ -321,12 +321,12 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       if (next.phase !== 'lobby') throw new Error('Кампания уже запущена');
       const player = getPlayer(next, command.playerId); if (!player.isHost) throw new Error('Только хост может начать игру');
       if (next.players.some((candidate) => !candidate.countryId || !candidate.ready)) throw new Error('Все игроки должны выбрать страну и подтвердить готовность');
-      next.phase = 'running'; return next;
+      next.phase = 'running';next.clockNeedsReset=true; return next;
     }
     case 'SET_SPEED': {
       if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId); if (!player.isHost) throw new Error('Скорость меняет хост');
-      next.pauseRequests=[];next.speed = command.speed; next.phase = command.speed === 0 ? 'paused' : 'running'; return next;
+      next.clockNeedsReset=true;next.pauseRequests=[];next.speed = command.speed; next.phase = command.speed === 0 ? 'paused' : 'running'; return next;
     }
     case 'ASSIGN_COMMANDER': {
       if (!next.dataset || !['running','paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');

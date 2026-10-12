@@ -1,6 +1,6 @@
 {
   "name": "grand-strategy-multiplayer",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -14,7 +14,8 @@
     "test:long": "node --expose-gc --import tsx scripts/long-simulation.ts",
     "benchmark:visual": "node --import tsx scripts/benchmark-visual.ts",
     "verify:art": "python scripts/verify-art.py",
-    "benchmark:camera": "node --import tsx scripts/benchmark-camera.ts"
+    "benchmark:camera": "node --import tsx scripts/benchmark-camera.ts",
+    "test:lean": "node --import tsx --test tests/dominion21_*.test.ts tests/army_selection.test.ts tests/state_wire.test.ts tests/security.test.ts tests/final_security.test.ts tests/command_fuzz.test.ts tests/edge_persistence.test.ts"
   },
   "dependencies": {
     "@shopify/react-native-skia": "2.6.2",

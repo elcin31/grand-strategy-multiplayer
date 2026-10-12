@@ -15,10 +15,11 @@ export function applyPresence(state:GameState,members:Presence[],now:number):boo
 /** Any authenticated member can drive the server clock. No caller can select tick count or speed. Long offline gaps are bounded. */
 export function pumpClock(state:GameState,clockAt:number,now:number):{state:GameState;clockAt:number;ticks:number} {
  const delay=dayDelay(state.speed);
+ if(state.clockNeedsReset){state.clockNeedsReset=false;return{state,clockAt:now,ticks:0};}
  if(state.phase!=='running'||!state.speed||!state.players.some(p=>p.connected))return{state,clockAt:now,ticks:0};
- const count=Math.max(0,Math.min(3,Math.floor((now-clockAt)/delay)));let next=state;
+ const count=Math.max(0,Math.min(6,Math.floor((now-clockAt)/delay)));let next=state;
  let advanced=0;for(let i=0;i<count&&next.phase==='running';i++){next=applyCommand(next,{type:'ADVANCE_DAY'});advanced++;}
- return{state:next,clockAt:count?now:clockAt,ticks:advanced};
+ return{state:next,clockAt:advanced?(now-clockAt>delay*6||next.phase!=='running'?now:clockAt+advanced*delay):clockAt,ticks:advanced};
 }
 export function stateChecksum(state:GameState):string {const text=JSON.stringify(state);let h=2166136261;for(let i=0;i<text.length;i++)h=Math.imul(h^text.charCodeAt(i),16777619);return(h>>>0).toString(16).padStart(8,'0');}
 export function assertEnvelope(body:Record<string,unknown>):asserts body is Record<string,unknown>&{gameId:string;playerId:string;token:string;command:GameCommand;commandId:string;expectedVersion:number} {

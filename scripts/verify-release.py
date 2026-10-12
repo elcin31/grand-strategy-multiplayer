@@ -23,6 +23,16 @@ assert 'Verified' in signature or 'Verifies' in signature
 with zipfile.ZipFile(apk) as archive:
     bundle=archive.read('assets/index.android.bundle')
     assert b'dfjsnjxnyjspwugjguhq.supabase.co' in bundle, 'Dedicated production backend missing'
+baseline=json.loads((Path(__file__).resolve().parent.parent/'PLAYTEST_RELEASE_MANIFEST.json').read_text())['apk']
+if config['android']['versionCode']>baseline['versionCode']:
+    digest=re.search(r'certificate SHA-256 digest: ([0-9a-fA-F]+)',signature)
+    assert digest and digest.group(1).lower()==baseline['certificateSha256'].lower(), 'Signing certificate changed from 2.0'
+    print('PASS: installation-compatible Dominion 2.0 certificate retained')
+with zipfile.ZipFile(apk) as archive:
+    import hashlib
+    packaged={hashlib.sha256(archive.read(n)).hexdigest() for n in archive.namelist() if n.endswith(('.webp','.png'))}
+    for art in (Path(__file__).resolve().parent.parent/'assets/art/overhaul').glob('*.webp'):
+        assert hashlib.sha256(art.read_bytes()).hexdigest() in packaged, 'New artwork missing: '+art.name
 print(badging)
 print(signature)
 print(f"PASS: release manifest, version {config['version']} ({config['android']['versionCode']}), landscape, embedded production backend, verified signature")

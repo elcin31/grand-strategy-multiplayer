@@ -27,3 +27,7 @@
 - Art/UI: official visual reference adapted into compact gold/navy controls, original SVG icons, army context dock, actual SVG flags and three new era-appropriate optimized WebP paintings. All 2.0 illustrations retained.
 
 - Integration: AI now chooses deficit-driven buildings/recipes, research directions, national projects, advisers and subject policies. Mini-map paths/colors are retained across unchanged ownership; no renderer/camera rewrite. Save backup preserves pre-overhaul v23 snapshot.
+
+- Lean QA: typecheck and 37 targeted gameplay/save/authority/wire/receipt/security checks pass; actual 11fbeec v18 state migrates to v23 preserving deposits, treasury, date and roundtrip.
+- Release preparation: 2.1.0 (11), same package and certificate verification; versioned `game-room-v21` / `game-command-v21` use the existing Dominion database/auth/CAS. Original 2.0 endpoints/rooms stay intact; old offline saves migrate, old online campaigns stay in 2.0.
+- Android workflow reuses existing Gradle/prebuild/integrity stages. For the 2.1 branch, explicit lean QA and short launch/army/save smoke replace optional long simulation, camera comparison and soak.

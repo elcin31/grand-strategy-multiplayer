@@ -6,7 +6,7 @@ export function notify(s:GameState,countryId:string,category:NotificationCategor
  if(!s.countries[countryId])return;
  const id=(s.notificationSequence??0)+1;if(!Number.isSafeInteger(id))throw Error('Notification overflow');s.notificationSequence=id;
  s.notifications??=[];s.notifications.unshift({id,countryId,category,tick:s.tick,message,...(provinceId?{provinceId}:{})});s.notifications.length=Math.min(240,s.notifications.length);
- if(s.countries[countryId]!.autoPause?.includes(category)&&s.players.some(p=>p.countryId===countryId&&!p.aiControlled)){s.speed=0;if(s.phase==='running')s.phase='paused';}
+ if(s.countries[countryId]!.autoPause?.includes(category)&&s.players.some(p=>p.countryId===countryId&&!p.aiControlled)){s.speed=0;s.clockNeedsReset=true;if(s.phase==='running')s.phase='paused';}
 }
 export function collectNotifications(before:GameState,after:GameState):void{
  for(const [id,c] of Object.entries(after.countries)){

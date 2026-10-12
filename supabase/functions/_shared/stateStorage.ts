@@ -1,4 +1,4 @@
-import {normalizeGameState} from './stateMigrations.ts';
+import {CURRENT_STATE_VERSION,normalizeGameState} from './stateMigrations.ts';
 import type { GameState } from './gameTypes.ts';
 
 export interface StoredRoomState {
@@ -64,11 +64,13 @@ export async function unpackRoomState(row: StoredRoomState): Promise<GameState> 
       throw new Error('Corrupted persisted campaign state');
     }
     assertState(decoded);
+    if((decoded.stateVersion??1)<CURRENT_STATE_VERSION)throw Error('Эта сетевая кампания сохранена для Dominion 2.0. Продолжите её в 2.0; для 2.1 создайте новую комнату.');
     normalizeGameState(decoded);
     return decoded;
   }
   if (row.state) {
     assertState(row.state);
+    if((row.state.stateVersion??1)<CURRENT_STATE_VERSION)throw Error('Сетевая кампания Dominion 2.0 сохранена без изменений.');
     const restored=structuredClone(row.state);normalizeGameState(restored);return restored;
   }
   throw new Error('Campaign state is missing');

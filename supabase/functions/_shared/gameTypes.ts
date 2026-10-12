@@ -229,6 +229,7 @@ export interface Leader {
 }
 
 export interface GameState {
+  clockNeedsReset?:boolean;
   resourceLeaderOutput?:Partial<Record<import('./resourceCatalogue.ts').ResourceType,{countryId:string;units:number}[]>>;
   fogViewerId?:string;
   chronicle?:import('./strategy3System.ts').ChronicleEntry[];

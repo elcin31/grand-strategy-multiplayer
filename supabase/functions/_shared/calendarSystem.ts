@@ -1,5 +1,5 @@
 import type {GameState,GameSpeed} from './gameTypes.ts';
-export const DAY_DELAYS:Record<Exclude<GameSpeed,0>,number>={1:1200,2:750,3:450,4:280,5:160};
+export const DAY_DELAYS:Record<Exclude<GameSpeed,0>,number>={1:1200,2:600,3:400,4:300,5:240};
 export function dayDelay(speed:GameSpeed):number{return speed?DAY_DELAYS[speed]:DAY_DELAYS[1];}
 export function monthDays(year:number,month:number):number{return month===2?(year%4===0&&(year%100!==0||year%400===0)?29:28):[4,6,9,11].includes(month)?30:31;}
 export function initializeCalendar(s:GameState,migrate:boolean):void{
@@ -19,5 +19,5 @@ export function dateAfterDays(s:Pick<GameState,'year'|'month'|'day'>,days:number
 export function projectEndDate(s:GameState,months:number):string{const total=s.year*12+s.month-1+Math.max(0,Math.ceil(months));return `01.${String(total%12+1).padStart(2,'0')}.${Math.floor(total/12)}`;}
 export function requestPause(s:GameState,playerId:string,accept=true):void{
  s.pauseRequests=(s.pauseRequests??[]).filter(id=>id!==playerId);if(accept)s.pauseRequests.push(playerId);
- const voters=s.players.filter(p=>p.connected!==false&&!p.aiControlled);if(s.pauseRequests.filter(id=>voters.some(p=>p.id===id)).length>voters.length/2){s.speed=0;s.phase='paused';s.pauseRequests=[];}
+ const voters=s.players.filter(p=>p.connected!==false&&!p.aiControlled);if(s.pauseRequests.filter(id=>voters.some(p=>p.id===id)).length>voters.length/2){s.speed=0;s.phase='paused';s.clockNeedsReset=true;s.pauseRequests=[];}
 }

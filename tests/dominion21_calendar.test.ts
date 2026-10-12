@@ -23,6 +23,6 @@ test('server authority, bounded catchup, shared pause vote and five distinct spe
  assert.throws(()=>applyServerCommand(s,{type:'SET_SPEED',playerId:'guest',speed:5},'guest'));
  assert.throws(()=>applyServerCommand(s,{type:'ADVANCE_DAY'},'guest'));
  assert.equal(new Set(([1,2,3,4,5] as const).map(dayDelay)).size,5);
- const fast=applyServerCommand(s,{type:'SET_SPEED',playerId:'host',speed:5},'host');const pumped=pumpClock(fast,0,10000);assert.equal(pumped.ticks,3);assert.equal(pumped.state.simulationDay,(fast.simulationDay??0)+3);
+ const fast=applyServerCommand(s,{type:'SET_SPEED',playerId:'host',speed:5},'host');const reset=pumpClock(fast,0,100000);assert.equal(reset.ticks,0);const pumped=pumpClock(reset.state,reset.clockAt,reset.clockAt+10000);assert.equal(pumped.ticks,6);assert.equal(pumped.state.simulationDay,(fast.simulationDay??0)+6);
  const requested=applyServerCommand(fast,{type:'REQUEST_PAUSE',playerId:'guest'},'guest');assert.equal(requested.phase,'running');const paused=applyServerCommand(requested,{type:'VOTE_PAUSE',playerId:'host',accept:true},'host');assert.equal(paused.phase,'paused');assert.equal(pumpClock(paused,0,10000).ticks,0);
 });
