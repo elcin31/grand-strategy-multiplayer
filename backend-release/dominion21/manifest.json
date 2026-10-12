@@ -1,22 +1,22 @@
 {
   "projectId": "dfjsnjxnyjspwugjguhq",
-  "sourceHead": "cb850828ad3148ff426392f44e49235171584c8e",
+  "sourceHead": "fbe30a7646ae848f8d1ce016a506e2ac9c03a8ef",
   "workingTreeClean": true,
-  "note": "Pinned compiled source for 2.1 protocol functions on the existing Dominion database, custom session authentication and transactional receipts. Existing 2.0 functions are preserved.",
+  "note": "Final 2.1 server protocol source; retains existing database/session/CAS and fixes battle route/save and retreat participation. 2.0 functions remain untouched.",
   "functions": [
     {
       "name": "game-room",
       "entrypoint": "index.js",
       "verifyJwt": false,
-      "bytes": 2994395,
-      "sha256": "d082738049feadcc6119f6a6621c0810b77a47ad8623d628c3ca5e3fd983e134"
+      "bytes": 2995313,
+      "sha256": "c307c6a2123b010b32e6aa0d984ac221dcfe9b8b992a05a9ba58630b6f6af661"
     },
     {
       "name": "game-command",
       "entrypoint": "index.js",
       "verifyJwt": false,
-      "bytes": 2976983,
-      "sha256": "b49d58f6fed3e1cb5fab65140f4c56f1c4df6e9b4d6a32e835d41ecd474c3a9c"
+      "bytes": 2977901,
+      "sha256": "56a47c860f79f73e0a1bd127cff2c96c66c2da6f70f766d02531400898cb8b52"
     }
   ],
   "protocol": 23,
@@ -24,5 +24,5 @@
     "game-room-v21",
     "game-command-v21"
   ],
-  "runtimeCommit": "cb850828ad3148ff426392f44e49235171584c8e"
+  "runtimeCommit": "fbe30a7646ae848f8d1ce016a506e2ac9c03a8ef"
 }

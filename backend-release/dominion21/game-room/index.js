@@ -3227,103 +3227,6 @@ function initializeProduction(s) {
   }
 }
 
-// supabase/functions/_shared/constructionQueueSystem.ts
-var MAX_PROVINCE_CONSTRUCTIONS = 4;
-var MAX_COUNTRY_QUEUED_CONSTRUCTIONS = 32;
-function queuedBuildingQuote(s, p, type) {
-  const reserved = Number(s.constructions?.some((c) => c.provinceId === p.id && c.buildingType === type)) + (s.constructionQueue?.filter((c) => c.provinceId === p.id && c.buildingType === type).length ?? 0);
-  return buildingQuote({ ...p, buildings: { ...p.buildings, [type]: buildingLevel(p, type) + reserved } }, type);
-}
-function constructionQueueAvailability(s, owner, p, type) {
-  if (!s.dataset || !["running", "paused"].includes(s.phase)) return "\u0421\u043D\u0430\u0447\u0430\u043B\u0430 \u043D\u0430\u0447\u043D\u0438\u0442\u0435 \u043A\u0430\u043C\u043F\u0430\u043D\u0438\u044E";
-  if (p.ownerId !== owner || (p.controllerId ?? p.ownerId) !== owner || p.rebellion) return "\u041D\u0443\u0436\u043D\u0430 \u0441\u0432\u043E\u044F \u043A\u043E\u043D\u0442\u0440\u043E\u043B\u0438\u0440\u0443\u0435\u043C\u0430\u044F \u043F\u0440\u043E\u0432\u0438\u043D\u0446\u0438\u044F";
-  if ((s.constructions?.filter((c2) => c2.provinceId === p.id).length ?? 0) + (s.constructionQueue?.filter((c2) => c2.provinceId === p.id).length ?? 0) >= MAX_PROVINCE_CONSTRUCTIONS) return "\u0412 \u043F\u0440\u043E\u0432\u0438\u043D\u0446\u0438\u0438 \u0434\u043E\u043F\u0443\u0441\u043A\u0430\u044E\u0442\u0441\u044F 4 \u043F\u0440\u043E\u0435\u043A\u0442\u0430, \u0432\u043A\u043B\u044E\u0447\u0430\u044F \u0442\u0435\u043A\u0443\u0449\u0438\u0439";
-  if ((s.constructionQueue?.filter((c2) => c2.ownerId === owner).length ?? 0) >= MAX_COUNTRY_QUEUED_CONSTRUCTIONS) return "\u041E\u0447\u0435\u0440\u0435\u0434\u044C \u0441\u0442\u0440\u0430\u043D\u044B \u0437\u0430\u043F\u043E\u043B\u043D\u0435\u043D\u0430";
-  const c = countryFor(s, owner);
-  if (s.tick < (c.bankruptcyUntilTick ?? 0)) return "\u0421\u0442\u0440\u043E\u0438\u0442\u0435\u043B\u044C\u0441\u0442\u0432\u043E \u043D\u0435\u0434\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u043F\u043E\u0441\u043B\u0435 \u0431\u0430\u043D\u043A\u0440\u043E\u0442\u0441\u0442\u0432\u0430";
-  try {
-    const q = queuedBuildingQuote(s, p, type), reason = buildingRequirementReason(s, p, type, q.targetLevel);
-    if (reason) return reason;
-    const missing = materialReason(c, buildingMaterials(type, q.targetLevel, s.year));
-    if (missing) return missing;
-    if (c.treasury < q.cost) return "\u041D\u0435\u0434\u043E\u0441\u0442\u0430\u0442\u043E\u0447\u043D\u043E \u0441\u0440\u0435\u0434\u0441\u0442\u0432";
-    if (!Number.isSafeInteger(s.tick + q.buildTime)) return "Construction date overflow";
-  } catch (e) {
-    return e instanceof Error ? e.message : "\u0417\u0434\u0430\u043D\u0438\u0435 \u043D\u0435\u0434\u043E\u0441\u0442\u0443\u043F\u043D\u043E";
-  }
-  return null;
-}
-function queueConstruction(s, owner, p, type) {
-  const reason = constructionQueueAvailability(s, owner, p, type);
-  if (reason) throw Error(reason);
-  if (s.constructions.filter((q2) => q2.ownerId === owner).length < civilianConstructionSlots(s, countryFor(s, owner)) && !s.constructions.some((q2) => q2.provinceId === p.id) && !s.constructionQueue.some((q2) => q2.provinceId === p.id)) {
-    startConstruction(s, owner, p, type);
-    return;
-  }
-  const q = queuedBuildingQuote(s, p, type), seq = s.nextEntityId;
-  if (!Number.isSafeInteger(seq) || seq < 1 || seq >= Number.MAX_SAFE_INTEGER) throw Error("Construction entity overflow");
-  const materials = buildingMaterials(type, q.targetLevel, s.year);
-  payMaterials(countryFor(s, owner), materials);
-  countryFor(s, owner).treasury = money(countryFor(s, owner).treasury - q.cost);
-  s.nextEntityId = seq + 1;
-  s.constructionQueue.push({ materials, id: "cq-" + s.id + "-" + seq, ownerId: owner, provinceId: p.id, buildingType: type, targetLevel: q.targetLevel, cost: q.cost, buildTime: q.buildTime, queuedTick: s.tick });
-}
-function processConstructionQueue(s) {
-  if (!s.dataset || !s.constructionQueue?.length) return;
-  const provinces2 = new Map(s.provinces.map((p) => [p.id, p])), active = new Set(s.constructions.map((c) => c.provinceId)), remaining = [];
-  for (const q of s.constructionQueue) {
-    const p = provinces2.get(q.provinceId);
-    if (!p || p.ownerId !== q.ownerId || (p.controllerId ?? p.ownerId) !== q.ownerId || p.rebellion) continue;
-    if (s.constructions.filter((c) => c.ownerId === q.ownerId).length >= civilianConstructionSlots(s, countryFor(s, q.ownerId)) || active.has(p.id) || s.tick < (s.countries[q.ownerId].bankruptcyUntilTick ?? 0) || buildingRequirementReason(s, p, q.buildingType, q.targetLevel)) {
-      remaining.push(q);
-      continue;
-    }
-    if (buildingLevel(p, q.buildingType) + 1 !== q.targetLevel) throw Error("Construction queue target changed");
-    const end = s.tick + q.buildTime;
-    if (!Number.isSafeInteger(end)) throw Error("Construction date overflow");
-    s.constructions.push({ materials: q.materials, id: q.id, ownerId: q.ownerId, provinceId: p.id, buildingType: q.buildingType, targetLevel: q.targetLevel, cost: q.cost, startedTick: s.tick, completeTick: end });
-    active.add(p.id);
-  }
-  s.constructionQueue = remaining;
-}
-function cancelConstruction(s, owner, id) {
-  const active = s.constructions.find((c2) => c2.id === id && c2.ownerId === owner), queued = s.constructionQueue.find((c2) => c2.id === id && c2.ownerId === owner), selected = active ?? queued;
-  if (!selected) throw Error("\u041F\u0440\u043E\u0435\u043A\u0442 \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D");
-  const affected = s.constructionQueue.filter((q) => q.ownerId === owner && q.provinceId === selected.provinceId && q.buildingType === selected.buildingType && q.targetLevel >= selected.targetLevel), remove = new Set(affected.map((q) => q.id));
-  const refund = money(affected.reduce((n, q) => n + q.cost * 0.5, 0) + (active ? active.cost * 0.5 * Math.max(0, Math.min(1, 1 - (active.workDone ?? s.tick - active.startedTick) / (active.completeTick - active.startedTick))) : 0));
-  const c = countryFor(s, owner);
-  for (const q of affected) if (q.materials) refundMaterials(c, q.materials, 0.5);
-  if (active?.materials) refundMaterials(c, active.materials, 0.25);
-  const cash = money(c.treasury + refund);
-  s.constructions = s.constructions.filter((q) => q.id !== active?.id);
-  s.constructionQueue = s.constructionQueue.filter((q) => !remove.has(q.id));
-  c.treasury = cash;
-  processConstructionQueue(s);
-}
-function initializeConstructionQueue(s, migrate) {
-  if (!s.dataset) return;
-  if (migrate) s.constructionQueue ??= [];
-  if (!Array.isArray(s.constructionQueue) || s.constructionQueue.length > 9e3) throw Error("Invalid construction waiting queue");
-  const ids = new Set(s.constructions.map((c) => c.id)), provinces2 = new Map(s.provinces.map((p) => [p.id, p])), perProvince = /* @__PURE__ */ new Map(), perCountry = /* @__PURE__ */ new Map(), levels = /* @__PURE__ */ new Map();
-  for (const q of s.constructions) {
-    perProvince.set(q.provinceId, 1);
-    levels.set(q.provinceId + ":" + q.buildingType, q.targetLevel);
-  }
-  for (const q of s.constructionQueue) {
-    if (!q || typeof q !== "object") throw Error("Invalid queued construction");
-    const p = provinces2.get(q.provinceId);
-    if (!p || p.ownerId !== q.ownerId || !s.countries[q.ownerId] || typeof q.buildingType !== "string" || !Object.hasOwn(BUILDINGS, q.buildingType) || typeof q.id !== "string" || !/^[A-Za-z0-9_-]{1,128}$/.test(q.id) || ids.has(q.id) || !Number.isSafeInteger(q.queuedTick) || q.queuedTick < 0 || q.queuedTick > s.tick) throw Error("Invalid queued construction");
-    ids.add(q.id);
-    const count = (perProvince.get(q.provinceId) ?? 0) + 1, owned = (perCountry.get(q.ownerId) ?? 0) + 1;
-    if (count > MAX_PROVINCE_CONSTRUCTIONS || owned > MAX_COUNTRY_QUEUED_CONSTRUCTIONS) throw Error("Construction queue capacity exceeded");
-    perProvince.set(q.provinceId, count);
-    perCountry.set(q.ownerId, owned);
-    const key2 = p.id + ":" + q.buildingType, current = levels.get(key2) ?? buildingLevel(p, q.buildingType), quote = buildingQuote({ ...p, buildings: { ...p.buildings, [q.buildingType]: current } }, q.buildingType);
-    if (q.targetLevel !== quote.targetLevel || q.cost !== quote.cost || q.buildTime !== quote.buildTime) throw Error("Invalid queued construction quote");
-    levels.set(key2, q.targetLevel);
-  }
-}
-
 // supabase/functions/_shared/supplySystem.ts
 var indices = /* @__PURE__ */ new WeakMap();
 function invalidateSupply(s) {
@@ -3657,6 +3560,11 @@ function retreatArmy(s, owner, id, targetId, forced = false) {
   if (!a || !p || !origin || !origin.neighbors.includes(targetId) || p.rebellion || warBetween(s, owner, p.controllerId ?? p.ownerId) || !canEnterTerritory(s, owner, p.controllerId ?? p.ownerId) || s.armies.some((e) => e.provinceId === targetId && warBetween(s, owner, e.ownerId))) throw Error("\u041D\u0435\u0442 \u0431\u0435\u0437\u043E\u043F\u0430\u0441\u043D\u043E\u0433\u043E \u0441\u043E\u0441\u0435\u0434\u043D\u0435\u0433\u043E \u043F\u0443\u0442\u0438 \u043E\u0442\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u044F");
   if (!forced && s.tick < (a.retreatUntilTick ?? 0)) throw Error("\u041E\u0442\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u0435 \u0443\u0436\u0435 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u043E");
   if (!Number.isSafeInteger(s.tick + 2)) throw Error("Retreat date overflow");
+  for (const b2 of s.activeBattles ?? []) {
+    b2.attackerArmyIds = b2.attackerArmyIds.filter((x) => x !== id);
+    b2.defenderArmyIds = b2.defenderArmyIds.filter((x) => x !== id);
+  }
+  for (const siege of s.sieges ?? []) siege.armyIds = siege.armyIds.filter((x) => x !== id);
   recordMovement(s, { armyId: id, ownerId: owner, from: origin.id, to: p.id, tick: s.tick });
   a.provinceId = p.id;
   delete a.order;
@@ -3916,6 +3824,340 @@ function monthlyWar(state) {
     const lord = countryFor(state, c.overlordId), tribute = money(Math.min(c.treasury, Math.max(0, c.economy?.monthlyBalance ?? 0) * 0.1));
     c.treasury = money(c.treasury - tribute);
     lord.treasury = money(lord.treasury + tribute);
+  }
+}
+
+// supabase/functions/_shared/military3System.ts
+function militaryEntity(s, prefix) {
+  const seq = s.nextEntityId ?? 1;
+  if (!Number.isSafeInteger(seq) || seq >= Number.MAX_SAFE_INTEGER) throw Error("Military sequence exhausted");
+  s.nextEntityId = seq + 1;
+  return `${prefix}-${seq}`;
+}
+function armyInBattle(s, id) {
+  return !!s.activeBattles?.some((b2) => b2.attackerArmyIds.includes(id) || b2.defenderArmyIds.includes(id));
+}
+function armyFormation(a) {
+  const parts = armyParts(a), rows = { Front: 0, Rear: 0, Flank: 0, Support: 0 };
+  for (const t of UNIT_TYPES) rows[UNITS[t].role] += parts[t] ?? 0;
+  const covered = rows.Front + rows.Flank;
+  return { ...rows, attack: (a.formation === "Assault" ? 1.12 : a.formation === "Defensive" ? 0.9 : 1) * (covered ? 1 : 0.7) * (rows.Rear && covered ? 1.08 : 1), defense: a.formation === "Defensive" ? 1.16 : a.formation === "Assault" ? 0.9 : 1, speed: a.formation === "Mobile" ? 1.2 : a.formation === "Defensive" ? 0.85 : 1 };
+}
+function armyTravelDays(_s, a, p) {
+  const parts = armyParts(a), speed = UNIT_TYPES.reduce((n, t) => n + (parts[t] ?? 0) * UNITS[t].speed, 0) / Math.max(1, a.troops), terrain = p.terrain === "mountain" ? 1.6 : p.terrain === "forest" || p.terrain === "desert" ? 1.3 : 1, roads = 1 + (p.buildings?.Infrastructure ?? 0) * 0.08;
+  return Math.max(1, Math.ceil(3 * terrain / (Math.max(0.4, speed) * roads * armyFormation(a).speed) * (a.order?.redeploy ? 0.65 : 1) * (1 + Math.max(0, 50 - (a.supply ?? 100)) / 100)));
+}
+function occupy(s, a, p) {
+  p.controllerId = a.ownerId;
+  a.provinceId = p.id;
+  invalidateSupply(s);
+}
+function beginSiege(s, a, p) {
+  const defender = p.controllerId ?? p.ownerId, existing = s.sieges?.find((x) => x.provinceId === p.id && x.attackerId === a.ownerId);
+  a.provinceId = p.id;
+  if (existing) {
+    if (!existing.armyIds.includes(a.id)) existing.armyIds.push(a.id);
+    return;
+  }
+  const fortress = p.buildings?.Fort ?? 0;
+  if (!fortress) {
+    occupy(s, a, p);
+    return;
+  }
+  s.sieges ??= [];
+  s.sieges.push({ id: militaryEntity(s, "siege"), provinceId: p.id, attackerId: a.ownerId, defenderId: defender, armyIds: [a.id], startedDay: s.simulationDay ?? 0, progress: 0, fortress, garrison: 1500 + fortress * 1500, losses: 0 });
+  notify(s, a.ownerId, "Siege", "\u041D\u0430\u0447\u0430\u043B\u0430\u0441\u044C \u043E\u0441\u0430\u0434\u0430: " + p.name, p.id);
+  notify(s, defender, "Siege", "\u041E\u0441\u0430\u0434\u0430 \u0432\u0430\u0448\u0435\u0439 \u043A\u0440\u0435\u043F\u043E\u0441\u0442\u0438: " + p.name, p.id);
+}
+function beginBattle(s, a, p) {
+  const existing = s.activeBattles?.find((b2) => b2.provinceId === p.id && b2.attackerId === a.ownerId);
+  if (existing) {
+    if (!existing.attackerArmyIds.includes(a.id)) {
+      existing.attackerArmyIds.push(a.id);
+      existing.attackerInitial += a.troops;
+    }
+    return;
+  }
+  const defender = p.controllerId ?? p.ownerId, defenders = s.armies.filter((d) => d.provinceId === p.id && warBetween(s, a.ownerId, d.ownerId));
+  if (!defenders.length) {
+    beginSiege(s, a, p);
+    return;
+  }
+  s.activeBattles ??= [];
+  s.activeBattles.push({ id: militaryEntity(s, "battle"), provinceId: p.id, attackerId: a.ownerId, defenderId: defender, attackerArmyIds: [a.id], defenderArmyIds: defenders.map((d) => d.id), startedDay: s.simulationDay ?? 0, attackerInitial: a.troops, defenderInitial: defenders.reduce((n, d) => n + d.troops, 0), attackerLosses: 0, defenderLosses: 0, reasons: [`\u041C\u0435\u0441\u0442\u043D\u043E\u0441\u0442\u044C: ${p.terrain ?? "plains"}`, `\u0423\u043A\u0440\u0435\u043F\u043B\u0435\u043D\u0438\u044F: ${p.buildings?.Fort ?? 0}`] });
+}
+function distributeLosses(rows, loss) {
+  let remaining = loss, total = rows.reduce((n, a) => n + a.troops, 0), sum = 0;
+  for (const a of rows) {
+    const hit = takeArmyLosses(a, Math.min(a.troops, Math.round(remaining * a.troops / Math.max(1, total))));
+    total -= a.troops + hit;
+    remaining -= hit;
+    sum += hit;
+  }
+  return sum;
+}
+function finishBattle(s, b2, attackers, defenders, attackerWins) {
+  const p = s.provinces.find((p2) => p2.id === b2.provinceId);
+  const winners = attackerWins ? attackers : defenders, losers = attackerWins ? defenders : attackers;
+  for (const a of losers) {
+    delete a.order;
+    const target = retreatDestination(s, a, p.id);
+    if (target) retreatArmy(s, a.ownerId, a.id, target.id, true);
+    else if (attackerWins) {
+      b2.defenderLosses += takeArmyLosses(a, a.troops);
+    }
+  }
+  if (attackerWins) for (const a of winners.filter((a2) => a2.troops > 0)) {
+    beginSiege(s, a, p);
+    if (a.order?.route[0] === p.id) {
+      a.order.route.shift();
+      if (!a.order.route.length) delete a.order;
+    }
+  }
+  const winner = attackerWins ? b2.attackerId : b2.defenderId, days = Math.max(1, (s.simulationDay ?? 0) - b2.startedDay + 1);
+  const report2 = { id: b2.id, tick: s.tick, provinceId: p.id, attackerId: b2.attackerId, defenderId: b2.defenderId, attackerLosses: b2.attackerLosses, defenderLosses: b2.defenderLosses, winnerId: winner, captured: attackerWins && !s.sieges?.some((x) => x.provinceId === p.id), message: `${s.countries[winner].shortName}: \u043F\u043E\u0431\u0435\u0434\u0430 \u0443 ${p.name}`, durationDays: days, attackerInitial: b2.attackerInitial, defenderInitial: b2.defenderInitial, reasons: [...b2.reasons, `\u0410\u0442\u0430\u043A\u0443\u044E\u0449\u0438\u0435: \u0441\u043D\u0430\u0431\u0436\u0435\u043D\u0438\u0435 ${Math.round(attackers.reduce((n, a) => n + (a.supply ?? 100), 0) / Math.max(1, attackers.length))}%`, `\u0418\u0441\u0445\u043E\u0434: ${attackerWins ? "\u043E\u0431\u043E\u0440\u043E\u043D\u0430 \u043F\u043E\u0442\u0435\u0440\u044F\u043B\u0430 \u043E\u0440\u0433\u0430\u043D\u0438\u0437\u0430\u0446\u0438\u044E" : "\u043D\u0430\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u0435 \u043E\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043E \u043F\u043E\u0442\u0435\u0440\u044F\u043C\u0438 \u0438 \u043E\u0440\u0433\u0430\u043D\u0438\u0437\u0430\u0446\u0438\u0435\u0439"}`], experience: 3 };
+  s.battleLog.unshift(report2);
+  s.battleLog = s.battleLog.slice(0, 30);
+  recordWarBattle(s, report2);
+  awardBattleExperience(s, [...winners, ...losers], winner);
+  for (const c of [b2.attackerId, b2.defenderId]) notify(s, c, "War", `${report2.message} \xB7 ${days} \u0434\u043D.`, p.id);
+}
+function siegeSupply(s, owner, p) {
+  let best = 0;
+  for (const id of p.neighbors) best = Math.max(best, supplyAt(s, owner, id).score * 0.85);
+  return best;
+}
+function dailyMilitary(s) {
+  const provinces2 = new Map(s.provinces.map((p) => [p.id, p]));
+  for (const b2 of [...s.activeBattles ?? []]) {
+    if (!warBetween(s, b2.attackerId, b2.defenderId)) {
+      s.activeBattles = s.activeBattles?.filter((x) => x.id !== b2.id);
+      continue;
+    }
+    const attackers = s.armies.filter((a) => b2.attackerArmyIds.includes(a.id) && a.troops > 0), defenders = s.armies.filter((a) => b2.defenderArmyIds.includes(a.id) && a.troops > 0 && a.provinceId === b2.provinceId), p = provinces2.get(b2.provinceId);
+    const power = (rows, defending) => rows.reduce((n, a) => n + a.troops * combatMultiplier(s, a, p, defending) * (defending ? armyFormation(a).defense : armyFormation(a).attack) * (a.order?.redeploy ? 0.55 : 1), 0);
+    const atk = power(attackers, false), def = power(defenders, true) * (1 + (p.buildings?.Fort ?? 0) * 0.04);
+    b2.attackerLosses += distributeLosses(attackers, Math.max(0, Math.round(def * 0.025)));
+    b2.defenderLosses += distributeLosses(defenders, Math.max(0, Math.round(atk * 0.025)));
+    for (const a of [...attackers, ...defenders]) {
+      a.organization = Math.max(0, (a.organization ?? 80) - 2.5 - (100 - (a.supply ?? 100)) * 0.025);
+      a.morale = Math.max(0, (a.morale ?? 80) - 1.5);
+    }
+    const broken = (rows) => !rows.some((a) => a.troops > 0 && (a.organization ?? 80) > 20 && (a.morale ?? 80) > 20);
+    if (broken(attackers) || broken(defenders) || (s.simulationDay ?? 0) - b2.startedDay >= 45) {
+      const wins = !broken(attackers) && (broken(defenders) || atk > def * 1.25);
+      finishBattle(s, b2, attackers, defenders, wins);
+      s.activeBattles = s.activeBattles?.filter((x) => x.id !== b2.id);
+    }
+  }
+  for (const siege of [...s.sieges ?? []]) {
+    const p = provinces2.get(siege.provinceId), armies = s.armies.filter((a) => siege.armyIds.includes(a.id) && a.provinceId === p.id && a.troops > 0);
+    if (!armies.length || !warBetween(s, siege.attackerId, siege.defenderId) || (p.controllerId ?? p.ownerId) === siege.attackerId) {
+      s.sieges = s.sieges?.filter((x) => x.id !== siege.id);
+      continue;
+    }
+    const supply = siegeSupply(s, siege.attackerId, p), troops = armies.reduce((n, a) => n + a.troops, 0), siegeTroops = armies.reduce((n, a) => n + (armyParts(a).SiegeTrain ?? 0) + (armyParts(a).Artillery ?? 0) * 0.6 + (armyParts(a).Engineers ?? 0) * 0.4, 0);
+    const generals = armies.reduce((n, a) => Math.max(n, a.commanderId ? s.commanders?.[a.commanderId]?.siege ?? 0 : 0), 0);
+    siege.progress = Math.min(100, siege.progress + Math.max(0.2, (troops / Math.max(1e3, siege.garrison) * 0.65 + siegeTroops / 3e3) * (supply / 100 + 0.15) * (1 + generals / 100) / (1 + siege.fortress * 0.4)));
+    for (const a of armies) {
+      a.supply = supply;
+      siege.losses += takeArmyLosses(a, Math.min(a.troops, Math.floor(a.troops * (1e-3 + (100 - supply) * 2e-5))));
+    }
+    if (siege.progress >= 100) {
+      for (const a of armies) occupy(s, a, p);
+      p.buildingDamage = Math.min(0.85, (p.buildingDamage ?? 0) + 0.15);
+      notify(s, siege.attackerId, "Siege", "\u041A\u0440\u0435\u043F\u043E\u0441\u0442\u044C \u043A\u0430\u043F\u0438\u0442\u0443\u043B\u0438\u0440\u043E\u0432\u0430\u043B\u0430: " + p.name, p.id);
+      notify(s, siege.defenderId, "Siege", "\u041A\u0440\u0435\u043F\u043E\u0441\u0442\u044C \u043F\u043E\u0442\u0435\u0440\u044F\u043D\u0430: " + p.name, p.id);
+      s.sieges = s.sieges?.filter((x) => x.id !== siege.id);
+    }
+  }
+  const fighting = new Set((s.activeBattles ?? []).flatMap((b2) => [...b2.attackerArmyIds, ...b2.defenderArmyIds]));
+  for (const a of s.armies) {
+    const p = provinces2.get(a.provinceId);
+    if (!fighting.has(a.id) && !s.sieges?.some((x) => x.armyIds.includes(a.id))) {
+      const supply = supplyAt(s, a.ownerId, p.id).score;
+      a.supply = supply;
+      const friendly = (p.controllerId ?? p.ownerId) === a.ownerId;
+      a.organization = Math.min(100, (a.organization ?? 80) + (friendly ? 0.5 : 0.15) * supply / 100);
+      a.morale = Math.min(100, (a.morale ?? 80) + 0.2 * supply / 100);
+      if (supply < 40) takeArmyLosses(a, Math.min(a.troops, Math.floor(a.troops * (40 - supply) / 12e4)));
+    }
+  }
+  s.armies = s.armies.filter((a) => a.troops > 0);
+  for (const c of Object.values(s.countries)) c.army = 0;
+  for (const a of s.armies) s.countries[a.ownerId].army += a.troops;
+  refreshSupplyLoads(s);
+}
+function mergeArmies(s, owner, ids) {
+  const armies = ids.map((id) => s.armies.find((a) => a.id === id && a.ownerId === owner));
+  if (armies.some((a) => !a) || armies.length < 2) throw Error("\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0445\u043E\u0442\u044F \u0431\u044B \u0434\u0432\u0435 \u0441\u0432\u043E\u0438 \u0430\u0440\u043C\u0438\u0438");
+  const target = armies[0];
+  if (armies.some((a) => a.provinceId !== target.provinceId || armyInBattle(s, a.id) || a.order)) throw Error("\u041E\u0431\u044A\u0435\u0434\u0438\u043D\u044F\u044E\u0442\u0441\u044F \u043D\u0435\u043F\u043E\u0434\u0432\u0438\u0436\u043D\u044B\u0435 \u0430\u0440\u043C\u0438\u0438 \u0432 \u043E\u0434\u043D\u043E\u0439 \u043F\u0440\u043E\u0432\u0438\u043D\u0446\u0438\u0438");
+  const total = armies.reduce((n, a) => n + a.troops, 0);
+  target.experience = armies.reduce((n, a) => n + a.troops * (a.experience ?? 0), 0) / total;
+  const parts = {}, template = {};
+  for (const a of armies) for (const t of UNIT_TYPES) {
+    parts[t] = (parts[t] ?? 0) + (armyParts(a)[t] ?? 0);
+    template[t] = (template[t] ?? 0) + (a.template?.[t] ?? armyParts(a)[t] ?? 0);
+  }
+  for (const t of UNIT_TYPES) {
+    if (!parts[t]) delete parts[t];
+    if (!template[t]) delete template[t];
+  }
+  target.composition = parts;
+  target.template = template;
+  target.troops = total;
+  target.morale = Math.min(...armies.map((a) => a.morale ?? 80));
+  target.organization = Math.min(...armies.map((a) => a.organization ?? 80));
+  s.armies = s.armies.filter((a) => a.id === target.id || !ids.includes(a.id));
+  for (const group of s.armyGroups ?? []) group.armyIds = group.armyIds.filter((id) => !ids.includes(id) || id === target.id);
+  invalidateSupply(s);
+}
+function splitArmy(s, owner, id, percent) {
+  const a = s.armies.find((a2) => a2.id === id && a2.ownerId === owner);
+  if (!a || a.troops < 2e3 || a.order || armyInBattle(s, id)) throw Error("\u0420\u0430\u0437\u0434\u0435\u043B\u0435\u043D\u0438\u0435 \u043D\u0435\u0434\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u0434\u0432\u0438\u0436\u0443\u0449\u0435\u0439\u0441\u044F \u0438\u043B\u0438 \u0441\u0440\u0430\u0436\u0430\u044E\u0449\u0435\u0439\u0441\u044F \u0430\u0440\u043C\u0438\u0438");
+  const composition = {}, template = {};
+  let troops = 0;
+  for (const t of UNIT_TYPES) {
+    const n = Math.floor((armyParts(a)[t] ?? 0) * percent / 100), target = Math.floor((a.template?.[t] ?? 0) * percent / 100);
+    if (n) {
+      composition[t] = n;
+      troops += n;
+      a.composition[t] -= n;
+      if (!a.composition[t]) delete a.composition[t];
+    }
+    if (target) {
+      template[t] = target;
+      a.template[t] -= target;
+      if (!a.template[t]) delete a.template[t];
+    }
+  }
+  if (!troops) throw Error("\u0421\u043B\u0438\u0448\u043A\u043E\u043C \u043C\u0430\u043B\u043E \u0441\u043E\u043B\u0434\u0430\u0442");
+  a.troops -= troops;
+  const next = { ...a, id: militaryEntity(s, "army"), troops, composition, template };
+  delete next.commanderId;
+  delete next.escortArmyId;
+  initializeArmyComposition(next);
+  s.armies.push(next);
+  invalidateSupply(s);
+}
+function initializeMilitary3(s, migrate) {
+  if (migrate) {
+    s.activeBattles ??= [];
+    s.sieges ??= [];
+    s.armyGroups ??= [];
+  }
+  const armies = new Set(s.armies.map((a) => a.id)), provinces2 = new Set(s.provinces.map((p) => p.id));
+  for (const rows of [s.activeBattles, s.sieges, s.armyGroups]) if (!Array.isArray(rows) || rows.length > 600 || new Set(rows.map((r2) => r2.id)).size !== rows.length) throw Error("Invalid military projects");
+  for (const b2 of s.activeBattles) {
+    if (!provinces2.has(b2.provinceId) || !s.countries[b2.attackerId] || !s.countries[b2.defenderId] || ![b2.startedDay, b2.attackerInitial, b2.defenderInitial, b2.attackerLosses, b2.defenderLosses].every((n) => Number.isSafeInteger(n) && n >= 0) || b2.startedDay > (s.simulationDay ?? 0) || !Array.isArray(b2.attackerArmyIds) || !Array.isArray(b2.defenderArmyIds)) throw Error("Invalid battle");
+  }
+  for (const x of s.sieges) {
+    if (!provinces2.has(x.provinceId) || !s.countries[x.attackerId] || !s.countries[x.defenderId] || ![x.progress, x.fortress, x.garrison, x.losses].every((n) => Number.isFinite(n) && n >= 0) || x.progress > 100 || !Number.isSafeInteger(x.startedDay) || x.startedDay > (s.simulationDay ?? 0) || !Array.isArray(x.armyIds)) throw Error("Invalid siege");
+  }
+  for (const g of s.armyGroups) {
+    if (!s.countries[g.ownerId] || !provinces2.has(g.targetProvinceId) || !["Defend", "Offensive", "Reserve", "Escort"].includes(g.objective) || !["Normal", "High"].includes(g.supplyPriority) || !Array.isArray(g.armyIds) || g.armyIds.length > 20 || g.armyIds.some((id) => armies.has(id) && !s.armies.some((a) => a.id === id && a.ownerId === g.ownerId))) throw Error("Invalid army group");
+  }
+  for (const a of s.armies) {
+    if (a.formation !== void 0 && !["Balanced", "Assault", "Defensive", "Mobile"].includes(a.formation)) throw Error("Invalid formation");
+    if (a.order?.travelProgress !== void 0 && (!Number.isSafeInteger(a.order.travelProgress) || a.order.travelProgress < 0 || a.order.travelProgress > 20)) throw Error("Invalid route progress");
+  }
+}
+
+// supabase/functions/_shared/constructionQueueSystem.ts
+var MAX_PROVINCE_CONSTRUCTIONS = 4;
+var MAX_COUNTRY_QUEUED_CONSTRUCTIONS = 32;
+function queuedBuildingQuote(s, p, type) {
+  const reserved = Number(s.constructions?.some((c) => c.provinceId === p.id && c.buildingType === type)) + (s.constructionQueue?.filter((c) => c.provinceId === p.id && c.buildingType === type).length ?? 0);
+  return buildingQuote({ ...p, buildings: { ...p.buildings, [type]: buildingLevel(p, type) + reserved } }, type);
+}
+function constructionQueueAvailability(s, owner, p, type) {
+  if (!s.dataset || !["running", "paused"].includes(s.phase)) return "\u0421\u043D\u0430\u0447\u0430\u043B\u0430 \u043D\u0430\u0447\u043D\u0438\u0442\u0435 \u043A\u0430\u043C\u043F\u0430\u043D\u0438\u044E";
+  if (p.ownerId !== owner || (p.controllerId ?? p.ownerId) !== owner || p.rebellion) return "\u041D\u0443\u0436\u043D\u0430 \u0441\u0432\u043E\u044F \u043A\u043E\u043D\u0442\u0440\u043E\u043B\u0438\u0440\u0443\u0435\u043C\u0430\u044F \u043F\u0440\u043E\u0432\u0438\u043D\u0446\u0438\u044F";
+  if ((s.constructions?.filter((c2) => c2.provinceId === p.id).length ?? 0) + (s.constructionQueue?.filter((c2) => c2.provinceId === p.id).length ?? 0) >= MAX_PROVINCE_CONSTRUCTIONS) return "\u0412 \u043F\u0440\u043E\u0432\u0438\u043D\u0446\u0438\u0438 \u0434\u043E\u043F\u0443\u0441\u043A\u0430\u044E\u0442\u0441\u044F 4 \u043F\u0440\u043E\u0435\u043A\u0442\u0430, \u0432\u043A\u043B\u044E\u0447\u0430\u044F \u0442\u0435\u043A\u0443\u0449\u0438\u0439";
+  if ((s.constructionQueue?.filter((c2) => c2.ownerId === owner).length ?? 0) >= MAX_COUNTRY_QUEUED_CONSTRUCTIONS) return "\u041E\u0447\u0435\u0440\u0435\u0434\u044C \u0441\u0442\u0440\u0430\u043D\u044B \u0437\u0430\u043F\u043E\u043B\u043D\u0435\u043D\u0430";
+  const c = countryFor(s, owner);
+  if (s.tick < (c.bankruptcyUntilTick ?? 0)) return "\u0421\u0442\u0440\u043E\u0438\u0442\u0435\u043B\u044C\u0441\u0442\u0432\u043E \u043D\u0435\u0434\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u043F\u043E\u0441\u043B\u0435 \u0431\u0430\u043D\u043A\u0440\u043E\u0442\u0441\u0442\u0432\u0430";
+  try {
+    const q = queuedBuildingQuote(s, p, type), reason = buildingRequirementReason(s, p, type, q.targetLevel);
+    if (reason) return reason;
+    const missing = materialReason(c, buildingMaterials(type, q.targetLevel, s.year));
+    if (missing) return missing;
+    if (c.treasury < q.cost) return "\u041D\u0435\u0434\u043E\u0441\u0442\u0430\u0442\u043E\u0447\u043D\u043E \u0441\u0440\u0435\u0434\u0441\u0442\u0432";
+    if (!Number.isSafeInteger(s.tick + q.buildTime)) return "Construction date overflow";
+  } catch (e) {
+    return e instanceof Error ? e.message : "\u0417\u0434\u0430\u043D\u0438\u0435 \u043D\u0435\u0434\u043E\u0441\u0442\u0443\u043F\u043D\u043E";
+  }
+  return null;
+}
+function queueConstruction(s, owner, p, type) {
+  const reason = constructionQueueAvailability(s, owner, p, type);
+  if (reason) throw Error(reason);
+  if (s.constructions.filter((q2) => q2.ownerId === owner).length < civilianConstructionSlots(s, countryFor(s, owner)) && !s.constructions.some((q2) => q2.provinceId === p.id) && !s.constructionQueue.some((q2) => q2.provinceId === p.id)) {
+    startConstruction(s, owner, p, type);
+    return;
+  }
+  const q = queuedBuildingQuote(s, p, type), seq = s.nextEntityId;
+  if (!Number.isSafeInteger(seq) || seq < 1 || seq >= Number.MAX_SAFE_INTEGER) throw Error("Construction entity overflow");
+  const materials = buildingMaterials(type, q.targetLevel, s.year);
+  payMaterials(countryFor(s, owner), materials);
+  countryFor(s, owner).treasury = money(countryFor(s, owner).treasury - q.cost);
+  s.nextEntityId = seq + 1;
+  s.constructionQueue.push({ materials, id: "cq-" + s.id + "-" + seq, ownerId: owner, provinceId: p.id, buildingType: type, targetLevel: q.targetLevel, cost: q.cost, buildTime: q.buildTime, queuedTick: s.tick });
+}
+function processConstructionQueue(s) {
+  if (!s.dataset || !s.constructionQueue?.length) return;
+  const provinces2 = new Map(s.provinces.map((p) => [p.id, p])), active = new Set(s.constructions.map((c) => c.provinceId)), remaining = [];
+  for (const q of s.constructionQueue) {
+    const p = provinces2.get(q.provinceId);
+    if (!p || p.ownerId !== q.ownerId || (p.controllerId ?? p.ownerId) !== q.ownerId || p.rebellion) continue;
+    if (s.constructions.filter((c) => c.ownerId === q.ownerId).length >= civilianConstructionSlots(s, countryFor(s, q.ownerId)) || active.has(p.id) || s.tick < (s.countries[q.ownerId].bankruptcyUntilTick ?? 0) || buildingRequirementReason(s, p, q.buildingType, q.targetLevel)) {
+      remaining.push(q);
+      continue;
+    }
+    if (buildingLevel(p, q.buildingType) + 1 !== q.targetLevel) throw Error("Construction queue target changed");
+    const end = s.tick + q.buildTime;
+    if (!Number.isSafeInteger(end)) throw Error("Construction date overflow");
+    s.constructions.push({ materials: q.materials, id: q.id, ownerId: q.ownerId, provinceId: p.id, buildingType: q.buildingType, targetLevel: q.targetLevel, cost: q.cost, startedTick: s.tick, completeTick: end });
+    active.add(p.id);
+  }
+  s.constructionQueue = remaining;
+}
+function cancelConstruction(s, owner, id) {
+  const active = s.constructions.find((c2) => c2.id === id && c2.ownerId === owner), queued = s.constructionQueue.find((c2) => c2.id === id && c2.ownerId === owner), selected = active ?? queued;
+  if (!selected) throw Error("\u041F\u0440\u043E\u0435\u043A\u0442 \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D");
+  const affected = s.constructionQueue.filter((q) => q.ownerId === owner && q.provinceId === selected.provinceId && q.buildingType === selected.buildingType && q.targetLevel >= selected.targetLevel), remove = new Set(affected.map((q) => q.id));
+  const refund = money(affected.reduce((n, q) => n + q.cost * 0.5, 0) + (active ? active.cost * 0.5 * Math.max(0, Math.min(1, 1 - (active.workDone ?? s.tick - active.startedTick) / (active.completeTick - active.startedTick))) : 0));
+  const c = countryFor(s, owner);
+  for (const q of affected) if (q.materials) refundMaterials(c, q.materials, 0.5);
+  if (active?.materials) refundMaterials(c, active.materials, 0.25);
+  const cash = money(c.treasury + refund);
+  s.constructions = s.constructions.filter((q) => q.id !== active?.id);
+  s.constructionQueue = s.constructionQueue.filter((q) => !remove.has(q.id));
+  c.treasury = cash;
+  processConstructionQueue(s);
+}
+function initializeConstructionQueue(s, migrate) {
+  if (!s.dataset) return;
+  if (migrate) s.constructionQueue ??= [];
+  if (!Array.isArray(s.constructionQueue) || s.constructionQueue.length > 9e3) throw Error("Invalid construction waiting queue");
+  const ids = new Set(s.constructions.map((c) => c.id)), provinces2 = new Map(s.provinces.map((p) => [p.id, p])), perProvince = /* @__PURE__ */ new Map(), perCountry = /* @__PURE__ */ new Map(), levels = /* @__PURE__ */ new Map();
+  for (const q of s.constructions) {
+    perProvince.set(q.provinceId, 1);
+    levels.set(q.provinceId + ":" + q.buildingType, q.targetLevel);
+  }
+  for (const q of s.constructionQueue) {
+    if (!q || typeof q !== "object") throw Error("Invalid queued construction");
+    const p = provinces2.get(q.provinceId);
+    if (!p || p.ownerId !== q.ownerId || !s.countries[q.ownerId] || typeof q.buildingType !== "string" || !Object.hasOwn(BUILDINGS, q.buildingType) || typeof q.id !== "string" || !/^[A-Za-z0-9_-]{1,128}$/.test(q.id) || ids.has(q.id) || !Number.isSafeInteger(q.queuedTick) || q.queuedTick < 0 || q.queuedTick > s.tick) throw Error("Invalid queued construction");
+    ids.add(q.id);
+    const count = (perProvince.get(q.provinceId) ?? 0) + 1, owned = (perCountry.get(q.ownerId) ?? 0) + 1;
+    if (count > MAX_PROVINCE_CONSTRUCTIONS || owned > MAX_COUNTRY_QUEUED_CONSTRUCTIONS) throw Error("Construction queue capacity exceeded");
+    perProvince.set(q.provinceId, count);
+    perCountry.set(q.ownerId, owned);
+    const key2 = p.id + ":" + q.buildingType, current = levels.get(key2) ?? buildingLevel(p, q.buildingType), quote = buildingQuote({ ...p, buildings: { ...p.buildings, [q.buildingType]: current } }, q.buildingType);
+    if (q.targetLevel !== quote.targetLevel || q.cost !== quote.cost || q.buildTime !== quote.buildTime) throw Error("Invalid queued construction quote");
+    levels.set(key2, q.targetLevel);
   }
 }
 
@@ -4425,7 +4667,7 @@ function runStrategicAI(s, actions) {
     indexArmies();
     const armies = [...byOwner.get(id) ?? []].sort((a, b2) => b2.troops - a.troops).slice(0, 3);
     for (const army of armies) {
-      if (army.order) continue;
+      if (army.order || armyInBattle(s, army.id) || s.sieges?.some((x) => x.armyIds.includes(army.id))) continue;
       indexArmies();
       const origin = provinces2.get(army.provinceId);
       if (!origin) continue;
@@ -4457,243 +4699,6 @@ function runStrategicAI(s, actions) {
 }
 function activeEnemies(s, id) {
   return [...new Set((s.wars ?? []).flatMap((w) => w.attackers.includes(id) ? w.defenders : w.defenders.includes(id) ? w.attackers : []))];
-}
-
-// supabase/functions/_shared/military3System.ts
-function militaryEntity(s, prefix) {
-  const seq = s.nextEntityId ?? 1;
-  if (!Number.isSafeInteger(seq) || seq >= Number.MAX_SAFE_INTEGER) throw Error("Military sequence exhausted");
-  s.nextEntityId = seq + 1;
-  return `${prefix}-${seq}`;
-}
-function armyInBattle(s, id) {
-  return !!s.activeBattles?.some((b2) => b2.attackerArmyIds.includes(id) || b2.defenderArmyIds.includes(id));
-}
-function armyFormation(a) {
-  const parts = armyParts(a), rows = { Front: 0, Rear: 0, Flank: 0, Support: 0 };
-  for (const t of UNIT_TYPES) rows[UNITS[t].role] += parts[t] ?? 0;
-  const covered = rows.Front + rows.Flank;
-  return { ...rows, attack: (a.formation === "Assault" ? 1.12 : a.formation === "Defensive" ? 0.9 : 1) * (covered ? 1 : 0.7) * (rows.Rear && covered ? 1.08 : 1), defense: a.formation === "Defensive" ? 1.16 : a.formation === "Assault" ? 0.9 : 1, speed: a.formation === "Mobile" ? 1.2 : a.formation === "Defensive" ? 0.85 : 1 };
-}
-function armyTravelDays(_s, a, p) {
-  const parts = armyParts(a), speed = UNIT_TYPES.reduce((n, t) => n + (parts[t] ?? 0) * UNITS[t].speed, 0) / Math.max(1, a.troops), terrain = p.terrain === "mountain" ? 1.6 : p.terrain === "forest" || p.terrain === "desert" ? 1.3 : 1, roads = 1 + (p.buildings?.Infrastructure ?? 0) * 0.08;
-  return Math.max(1, Math.ceil(3 * terrain / (Math.max(0.4, speed) * roads * armyFormation(a).speed) * (a.order?.redeploy ? 0.65 : 1) * (1 + Math.max(0, 50 - (a.supply ?? 100)) / 100)));
-}
-function occupy(s, a, p) {
-  p.controllerId = a.ownerId;
-  a.provinceId = p.id;
-  invalidateSupply(s);
-}
-function beginSiege(s, a, p) {
-  const defender = p.controllerId ?? p.ownerId, existing = s.sieges?.find((x) => x.provinceId === p.id && x.attackerId === a.ownerId);
-  a.provinceId = p.id;
-  if (existing) {
-    if (!existing.armyIds.includes(a.id)) existing.armyIds.push(a.id);
-    return;
-  }
-  const fortress = p.buildings?.Fort ?? 0;
-  if (!fortress) {
-    occupy(s, a, p);
-    return;
-  }
-  s.sieges ??= [];
-  s.sieges.push({ id: militaryEntity(s, "siege"), provinceId: p.id, attackerId: a.ownerId, defenderId: defender, armyIds: [a.id], startedDay: s.simulationDay ?? 0, progress: 0, fortress, garrison: 1500 + fortress * 1500, losses: 0 });
-  notify(s, a.ownerId, "Siege", "\u041D\u0430\u0447\u0430\u043B\u0430\u0441\u044C \u043E\u0441\u0430\u0434\u0430: " + p.name, p.id);
-  notify(s, defender, "Siege", "\u041E\u0441\u0430\u0434\u0430 \u0432\u0430\u0448\u0435\u0439 \u043A\u0440\u0435\u043F\u043E\u0441\u0442\u0438: " + p.name, p.id);
-}
-function beginBattle(s, a, p) {
-  const existing = s.activeBattles?.find((b2) => b2.provinceId === p.id && b2.attackerId === a.ownerId);
-  if (existing) {
-    if (!existing.attackerArmyIds.includes(a.id)) {
-      existing.attackerArmyIds.push(a.id);
-      existing.attackerInitial += a.troops;
-    }
-    return;
-  }
-  const defender = p.controllerId ?? p.ownerId, defenders = s.armies.filter((d) => d.provinceId === p.id && warBetween(s, a.ownerId, d.ownerId));
-  if (!defenders.length) {
-    beginSiege(s, a, p);
-    return;
-  }
-  s.activeBattles ??= [];
-  s.activeBattles.push({ id: militaryEntity(s, "battle"), provinceId: p.id, attackerId: a.ownerId, defenderId: defender, attackerArmyIds: [a.id], defenderArmyIds: defenders.map((d) => d.id), startedDay: s.simulationDay ?? 0, attackerInitial: a.troops, defenderInitial: defenders.reduce((n, d) => n + d.troops, 0), attackerLosses: 0, defenderLosses: 0, reasons: [`\u041C\u0435\u0441\u0442\u043D\u043E\u0441\u0442\u044C: ${p.terrain ?? "plains"}`, `\u0423\u043A\u0440\u0435\u043F\u043B\u0435\u043D\u0438\u044F: ${p.buildings?.Fort ?? 0}`] });
-}
-function distributeLosses(rows, loss) {
-  let remaining = loss, total = rows.reduce((n, a) => n + a.troops, 0), sum = 0;
-  for (const a of rows) {
-    const hit = takeArmyLosses(a, Math.min(a.troops, Math.round(remaining * a.troops / Math.max(1, total))));
-    total -= a.troops + hit;
-    remaining -= hit;
-    sum += hit;
-  }
-  return sum;
-}
-function finishBattle(s, b2, attackers, defenders, attackerWins) {
-  const p = s.provinces.find((p2) => p2.id === b2.provinceId);
-  const winners = attackerWins ? attackers : defenders, losers = attackerWins ? defenders : attackers;
-  for (const a of losers) {
-    delete a.order;
-    const target = retreatDestination(s, a, p.id);
-    if (target) retreatArmy(s, a.ownerId, a.id, target.id, true);
-    else if (attackerWins) {
-      b2.defenderLosses += takeArmyLosses(a, a.troops);
-    }
-  }
-  if (attackerWins) for (const a of winners.filter((a2) => a2.troops > 0)) {
-    beginSiege(s, a, p);
-    if (a.order?.route[0] === p.id) {
-      a.order.route.shift();
-      if (!a.order.route.length) delete a.order;
-    }
-  }
-  const winner = attackerWins ? b2.attackerId : b2.defenderId, days = Math.max(1, (s.simulationDay ?? 0) - b2.startedDay + 1);
-  const report2 = { id: b2.id, tick: s.tick, provinceId: p.id, attackerId: b2.attackerId, defenderId: b2.defenderId, attackerLosses: b2.attackerLosses, defenderLosses: b2.defenderLosses, winnerId: winner, captured: attackerWins && !s.sieges?.some((x) => x.provinceId === p.id), message: `${s.countries[winner].shortName}: \u043F\u043E\u0431\u0435\u0434\u0430 \u0443 ${p.name}`, durationDays: days, attackerInitial: b2.attackerInitial, defenderInitial: b2.defenderInitial, reasons: [...b2.reasons, `\u0410\u0442\u0430\u043A\u0443\u044E\u0449\u0438\u0435: \u0441\u043D\u0430\u0431\u0436\u0435\u043D\u0438\u0435 ${Math.round(attackers.reduce((n, a) => n + (a.supply ?? 100), 0) / Math.max(1, attackers.length))}%`, `\u0418\u0441\u0445\u043E\u0434: ${attackerWins ? "\u043E\u0431\u043E\u0440\u043E\u043D\u0430 \u043F\u043E\u0442\u0435\u0440\u044F\u043B\u0430 \u043E\u0440\u0433\u0430\u043D\u0438\u0437\u0430\u0446\u0438\u044E" : "\u043D\u0430\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u0435 \u043E\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u043E \u043F\u043E\u0442\u0435\u0440\u044F\u043C\u0438 \u0438 \u043E\u0440\u0433\u0430\u043D\u0438\u0437\u0430\u0446\u0438\u0435\u0439"}`], experience: 3 };
-  s.battleLog.unshift(report2);
-  s.battleLog = s.battleLog.slice(0, 30);
-  recordWarBattle(s, report2);
-  awardBattleExperience(s, [...winners, ...losers], winner);
-  for (const c of [b2.attackerId, b2.defenderId]) notify(s, c, "War", `${report2.message} \xB7 ${days} \u0434\u043D.`, p.id);
-}
-function siegeSupply(s, owner, p) {
-  let best = 0;
-  for (const id of p.neighbors) best = Math.max(best, supplyAt(s, owner, id).score * 0.85);
-  return best;
-}
-function dailyMilitary(s) {
-  const provinces2 = new Map(s.provinces.map((p) => [p.id, p]));
-  for (const b2 of [...s.activeBattles ?? []]) {
-    if (!warBetween(s, b2.attackerId, b2.defenderId)) {
-      s.activeBattles = s.activeBattles?.filter((x) => x.id !== b2.id);
-      continue;
-    }
-    const attackers = s.armies.filter((a) => b2.attackerArmyIds.includes(a.id) && a.troops > 0), defenders = s.armies.filter((a) => b2.defenderArmyIds.includes(a.id) && a.troops > 0 && a.provinceId === b2.provinceId), p = provinces2.get(b2.provinceId);
-    const power = (rows, defending) => rows.reduce((n, a) => n + a.troops * combatMultiplier(s, a, p, defending) * (defending ? armyFormation(a).defense : armyFormation(a).attack) * (a.order?.redeploy ? 0.55 : 1), 0);
-    const atk = power(attackers, false), def = power(defenders, true) * (1 + (p.buildings?.Fort ?? 0) * 0.04);
-    b2.attackerLosses += distributeLosses(attackers, Math.max(0, Math.round(def * 0.025)));
-    b2.defenderLosses += distributeLosses(defenders, Math.max(0, Math.round(atk * 0.025)));
-    for (const a of [...attackers, ...defenders]) {
-      a.organization = Math.max(0, (a.organization ?? 80) - 2.5 - (100 - (a.supply ?? 100)) * 0.025);
-      a.morale = Math.max(0, (a.morale ?? 80) - 1.5);
-    }
-    const broken = (rows) => !rows.some((a) => a.troops > 0 && (a.organization ?? 80) > 20 && (a.morale ?? 80) > 20);
-    if (broken(attackers) || broken(defenders) || (s.simulationDay ?? 0) - b2.startedDay >= 45) {
-      const wins = !broken(attackers) && (broken(defenders) || atk > def * 1.25);
-      finishBattle(s, b2, attackers, defenders, wins);
-      s.activeBattles = s.activeBattles?.filter((x) => x.id !== b2.id);
-    }
-  }
-  for (const siege of [...s.sieges ?? []]) {
-    const p = provinces2.get(siege.provinceId), armies = s.armies.filter((a) => siege.armyIds.includes(a.id) && a.provinceId === p.id && a.troops > 0);
-    if (!armies.length || !warBetween(s, siege.attackerId, siege.defenderId) || (p.controllerId ?? p.ownerId) === siege.attackerId) {
-      s.sieges = s.sieges?.filter((x) => x.id !== siege.id);
-      continue;
-    }
-    const supply = siegeSupply(s, siege.attackerId, p), troops = armies.reduce((n, a) => n + a.troops, 0), siegeTroops = armies.reduce((n, a) => n + (armyParts(a).SiegeTrain ?? 0) + (armyParts(a).Artillery ?? 0) * 0.6 + (armyParts(a).Engineers ?? 0) * 0.4, 0);
-    const generals = armies.reduce((n, a) => Math.max(n, a.commanderId ? s.commanders?.[a.commanderId]?.siege ?? 0 : 0), 0);
-    siege.progress = Math.min(100, siege.progress + Math.max(0.2, (troops / Math.max(1e3, siege.garrison) * 0.65 + siegeTroops / 3e3) * (supply / 100 + 0.15) * (1 + generals / 100) / (1 + siege.fortress * 0.4)));
-    for (const a of armies) {
-      a.supply = supply;
-      siege.losses += takeArmyLosses(a, Math.min(a.troops, Math.floor(a.troops * (1e-3 + (100 - supply) * 2e-5))));
-    }
-    if (siege.progress >= 100) {
-      for (const a of armies) occupy(s, a, p);
-      p.buildingDamage = Math.min(0.85, (p.buildingDamage ?? 0) + 0.15);
-      notify(s, siege.attackerId, "Siege", "\u041A\u0440\u0435\u043F\u043E\u0441\u0442\u044C \u043A\u0430\u043F\u0438\u0442\u0443\u043B\u0438\u0440\u043E\u0432\u0430\u043B\u0430: " + p.name, p.id);
-      notify(s, siege.defenderId, "Siege", "\u041A\u0440\u0435\u043F\u043E\u0441\u0442\u044C \u043F\u043E\u0442\u0435\u0440\u044F\u043D\u0430: " + p.name, p.id);
-      s.sieges = s.sieges?.filter((x) => x.id !== siege.id);
-    }
-  }
-  const fighting = new Set((s.activeBattles ?? []).flatMap((b2) => [...b2.attackerArmyIds, ...b2.defenderArmyIds]));
-  for (const a of s.armies) {
-    const p = provinces2.get(a.provinceId);
-    if (!fighting.has(a.id) && !s.sieges?.some((x) => x.armyIds.includes(a.id))) {
-      const supply = supplyAt(s, a.ownerId, p.id).score;
-      a.supply = supply;
-      const friendly = (p.controllerId ?? p.ownerId) === a.ownerId;
-      a.organization = Math.min(100, (a.organization ?? 80) + (friendly ? 0.5 : 0.15) * supply / 100);
-      a.morale = Math.min(100, (a.morale ?? 80) + 0.2 * supply / 100);
-      if (supply < 40) takeArmyLosses(a, Math.min(a.troops, Math.floor(a.troops * (40 - supply) / 12e4)));
-    }
-  }
-  s.armies = s.armies.filter((a) => a.troops > 0);
-  for (const c of Object.values(s.countries)) c.army = 0;
-  for (const a of s.armies) s.countries[a.ownerId].army += a.troops;
-  refreshSupplyLoads(s);
-}
-function mergeArmies(s, owner, ids) {
-  const armies = ids.map((id) => s.armies.find((a) => a.id === id && a.ownerId === owner));
-  if (armies.some((a) => !a) || armies.length < 2) throw Error("\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0445\u043E\u0442\u044F \u0431\u044B \u0434\u0432\u0435 \u0441\u0432\u043E\u0438 \u0430\u0440\u043C\u0438\u0438");
-  const target = armies[0];
-  if (armies.some((a) => a.provinceId !== target.provinceId || armyInBattle(s, a.id) || a.order)) throw Error("\u041E\u0431\u044A\u0435\u0434\u0438\u043D\u044F\u044E\u0442\u0441\u044F \u043D\u0435\u043F\u043E\u0434\u0432\u0438\u0436\u043D\u044B\u0435 \u0430\u0440\u043C\u0438\u0438 \u0432 \u043E\u0434\u043D\u043E\u0439 \u043F\u0440\u043E\u0432\u0438\u043D\u0446\u0438\u0438");
-  const total = armies.reduce((n, a) => n + a.troops, 0);
-  target.experience = armies.reduce((n, a) => n + a.troops * (a.experience ?? 0), 0) / total;
-  const parts = {}, template = {};
-  for (const a of armies) for (const t of UNIT_TYPES) {
-    parts[t] = (parts[t] ?? 0) + (armyParts(a)[t] ?? 0);
-    template[t] = (template[t] ?? 0) + (a.template?.[t] ?? armyParts(a)[t] ?? 0);
-  }
-  for (const t of UNIT_TYPES) {
-    if (!parts[t]) delete parts[t];
-    if (!template[t]) delete template[t];
-  }
-  target.composition = parts;
-  target.template = template;
-  target.troops = total;
-  target.morale = Math.min(...armies.map((a) => a.morale ?? 80));
-  target.organization = Math.min(...armies.map((a) => a.organization ?? 80));
-  s.armies = s.armies.filter((a) => a.id === target.id || !ids.includes(a.id));
-  for (const group of s.armyGroups ?? []) group.armyIds = group.armyIds.filter((id) => !ids.includes(id) || id === target.id);
-  invalidateSupply(s);
-}
-function splitArmy(s, owner, id, percent) {
-  const a = s.armies.find((a2) => a2.id === id && a2.ownerId === owner);
-  if (!a || a.troops < 2e3 || a.order || armyInBattle(s, id)) throw Error("\u0420\u0430\u0437\u0434\u0435\u043B\u0435\u043D\u0438\u0435 \u043D\u0435\u0434\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u0434\u0432\u0438\u0436\u0443\u0449\u0435\u0439\u0441\u044F \u0438\u043B\u0438 \u0441\u0440\u0430\u0436\u0430\u044E\u0449\u0435\u0439\u0441\u044F \u0430\u0440\u043C\u0438\u0438");
-  const composition = {}, template = {};
-  let troops = 0;
-  for (const t of UNIT_TYPES) {
-    const n = Math.floor((armyParts(a)[t] ?? 0) * percent / 100), target = Math.floor((a.template?.[t] ?? 0) * percent / 100);
-    if (n) {
-      composition[t] = n;
-      troops += n;
-      a.composition[t] -= n;
-      if (!a.composition[t]) delete a.composition[t];
-    }
-    if (target) {
-      template[t] = target;
-      a.template[t] -= target;
-      if (!a.template[t]) delete a.template[t];
-    }
-  }
-  if (!troops) throw Error("\u0421\u043B\u0438\u0448\u043A\u043E\u043C \u043C\u0430\u043B\u043E \u0441\u043E\u043B\u0434\u0430\u0442");
-  a.troops -= troops;
-  const next = { ...a, id: militaryEntity(s, "army"), troops, composition, template };
-  delete next.commanderId;
-  delete next.escortArmyId;
-  initializeArmyComposition(next);
-  s.armies.push(next);
-  invalidateSupply(s);
-}
-function initializeMilitary3(s, migrate) {
-  if (migrate) {
-    s.activeBattles ??= [];
-    s.sieges ??= [];
-    s.armyGroups ??= [];
-  }
-  const armies = new Set(s.armies.map((a) => a.id)), provinces2 = new Set(s.provinces.map((p) => p.id));
-  for (const rows of [s.activeBattles, s.sieges, s.armyGroups]) if (!Array.isArray(rows) || rows.length > 600 || new Set(rows.map((r2) => r2.id)).size !== rows.length) throw Error("Invalid military projects");
-  for (const b2 of s.activeBattles) {
-    if (!provinces2.has(b2.provinceId) || !s.countries[b2.attackerId] || !s.countries[b2.defenderId] || ![b2.startedDay, b2.attackerInitial, b2.defenderInitial, b2.attackerLosses, b2.defenderLosses].every((n) => Number.isSafeInteger(n) && n >= 0) || b2.startedDay > (s.simulationDay ?? 0) || !Array.isArray(b2.attackerArmyIds) || !Array.isArray(b2.defenderArmyIds)) throw Error("Invalid battle");
-  }
-  for (const x of s.sieges) {
-    if (!provinces2.has(x.provinceId) || !s.countries[x.attackerId] || !s.countries[x.defenderId] || ![x.progress, x.fortress, x.garrison, x.losses].every((n) => Number.isFinite(n) && n >= 0) || x.progress > 100 || !Number.isSafeInteger(x.startedDay) || x.startedDay > (s.simulationDay ?? 0) || !Array.isArray(x.armyIds)) throw Error("Invalid siege");
-  }
-  for (const g of s.armyGroups) {
-    if (!s.countries[g.ownerId] || !provinces2.has(g.targetProvinceId) || !["Defend", "Offensive", "Reserve", "Escort"].includes(g.objective) || !["Normal", "High"].includes(g.supplyPriority) || !Array.isArray(g.armyIds) || g.armyIds.length > 20 || g.armyIds.some((id) => armies.has(id) && !s.armies.some((a) => a.id === id && a.ownerId === g.ownerId))) throw Error("Invalid army group");
-  }
-  for (const a of s.armies) {
-    if (a.formation !== void 0 && !["Balanced", "Assault", "Defensive", "Mobile"].includes(a.formation)) throw Error("Invalid formation");
-    if (a.order?.travelProgress !== void 0 && (!Number.isSafeInteger(a.order.travelProgress) || a.order.travelProgress < 0 || a.order.travelProgress > 20)) throw Error("Invalid route progress");
-  }
 }
 
 // supabase/functions/_shared/armyOrders.ts
@@ -4728,8 +4733,10 @@ function findArmyRoute(state, army, targetId) {
 function setArmyOrder(state, ownerId, armyId, targetId, redeploy = false) {
   const army = state.armies.find((a) => a.id === armyId);
   if (!army || army.ownerId !== ownerId) throw Error("\u041C\u043E\u0436\u043D\u043E \u043E\u0442\u0434\u0430\u0432\u0430\u0442\u044C \u043F\u0440\u0438\u043A\u0430\u0437\u044B \u0442\u043E\u043B\u044C\u043A\u043E \u0441\u0432\u043E\u0435\u0439 \u0430\u0440\u043C\u0438\u0438");
+  if (armyInBattle(state, army.id)) throw Error("\u0421\u043D\u0430\u0447\u0430\u043B\u0430 \u0437\u0430\u0432\u0435\u0440\u0448\u0438\u0442\u0435 \u0431\u043E\u0439 \u0438\u043B\u0438 \u043E\u0442\u0434\u0430\u0439\u0442\u0435 \u043F\u0440\u0438\u043A\u0430\u0437 \u043E\u0442\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u044F");
   const route = findArmyRoute(state, army, targetId), target = state.provinces.find((p) => p.id === targetId);
   if (warBetween(state, ownerId, target.controllerId ?? target.ownerId) && state.tick < (army.retreatUntilTick ?? 0)) throw Error("\u041F\u043E\u0441\u043B\u0435 \u043E\u0442\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u044F \u043D\u0430\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u0435 \u0432\u0440\u0435\u043C\u0435\u043D\u043D\u043E \u043D\u0435\u0434\u043E\u0441\u0442\u0443\u043F\u043D\u043E");
+  for (const siege of state.sieges ?? []) if (siege.armyIds.includes(army.id) && targetId !== siege.provinceId) siege.armyIds = siege.armyIds.filter((id) => id !== army.id);
   army.order = route.length ? { type: warBetween(state, ownerId, target.controllerId ?? target.ownerId) || !state.dataset && (target.controllerId ?? target.ownerId) !== ownerId ? "ATTACK" : "MOVE", targetProvinceId: targetId, route, issuedTick: state.tick, travelProgress: 0, redeploy } : void 0;
 }
 function advanceArmyOrders(state, move, daily = false) {
@@ -6059,13 +6066,15 @@ function applyCoreCommand(state, command, validatedLocalState = false, monthlyFr
         }
       }
       monthlyReligionEffects(next);
-      extractResources(next);
-      monthlyNationalProjects(next);
-      monthlyDecisions(next);
-      processResourceTrade(next);
-      monthlyProduction(next);
-      domesticConsumption(next);
-      updateResourceMarkets(next);
+      if (next.dataset) {
+        extractResources(next);
+        monthlyNationalProjects(next);
+        monthlyDecisions(next);
+        processResourceTrade(next);
+        monthlyProduction(next);
+        domesticConsumption(next);
+        updateResourceMarkets(next);
+      }
       monthlyEconomy(next);
       monthlyResearch(next);
       monthlyFocus(next);

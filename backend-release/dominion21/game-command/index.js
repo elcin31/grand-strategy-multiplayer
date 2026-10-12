@@ -3424,6 +3424,11 @@ function retreatArmy(s, owner, id, targetId, forced = false) {
   if (!a || !p || !origin || !origin.neighbors.includes(targetId) || p.rebellion || warBetween(s, owner, p.controllerId ?? p.ownerId) || !canEnterTerritory(s, owner, p.controllerId ?? p.ownerId) || s.armies.some((e) => e.provinceId === targetId && warBetween(s, owner, e.ownerId))) throw Error("\u041D\u0435\u0442 \u0431\u0435\u0437\u043E\u043F\u0430\u0441\u043D\u043E\u0433\u043E \u0441\u043E\u0441\u0435\u0434\u043D\u0435\u0433\u043E \u043F\u0443\u0442\u0438 \u043E\u0442\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u044F");
   if (!forced && s.tick < (a.retreatUntilTick ?? 0)) throw Error("\u041E\u0442\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u0435 \u0443\u0436\u0435 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u043E");
   if (!Number.isSafeInteger(s.tick + 2)) throw Error("Retreat date overflow");
+  for (const b2 of s.activeBattles ?? []) {
+    b2.attackerArmyIds = b2.attackerArmyIds.filter((x) => x !== id);
+    b2.defenderArmyIds = b2.defenderArmyIds.filter((x) => x !== id);
+  }
+  for (const siege of s.sieges ?? []) siege.armyIds = siege.armyIds.filter((x) => x !== id);
   recordMovement(s, { armyId: id, ownerId: owner, from: origin.id, to: p.id, tick: s.tick });
   a.provinceId = p.id;
   delete a.order;
@@ -4175,8 +4180,10 @@ function findArmyRoute(state, army, targetId) {
 function setArmyOrder(state, ownerId, armyId, targetId, redeploy = false) {
   const army = state.armies.find((a) => a.id === armyId);
   if (!army || army.ownerId !== ownerId) throw Error("\u041C\u043E\u0436\u043D\u043E \u043E\u0442\u0434\u0430\u0432\u0430\u0442\u044C \u043F\u0440\u0438\u043A\u0430\u0437\u044B \u0442\u043E\u043B\u044C\u043A\u043E \u0441\u0432\u043E\u0435\u0439 \u0430\u0440\u043C\u0438\u0438");
+  if (armyInBattle(state, army.id)) throw Error("\u0421\u043D\u0430\u0447\u0430\u043B\u0430 \u0437\u0430\u0432\u0435\u0440\u0448\u0438\u0442\u0435 \u0431\u043E\u0439 \u0438\u043B\u0438 \u043E\u0442\u0434\u0430\u0439\u0442\u0435 \u043F\u0440\u0438\u043A\u0430\u0437 \u043E\u0442\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u044F");
   const route = findArmyRoute(state, army, targetId), target = state.provinces.find((p) => p.id === targetId);
   if (warBetween(state, ownerId, target.controllerId ?? target.ownerId) && state.tick < (army.retreatUntilTick ?? 0)) throw Error("\u041F\u043E\u0441\u043B\u0435 \u043E\u0442\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u044F \u043D\u0430\u0441\u0442\u0443\u043F\u043B\u0435\u043D\u0438\u0435 \u0432\u0440\u0435\u043C\u0435\u043D\u043D\u043E \u043D\u0435\u0434\u043E\u0441\u0442\u0443\u043F\u043D\u043E");
+  for (const siege of state.sieges ?? []) if (siege.armyIds.includes(army.id) && targetId !== siege.provinceId) siege.armyIds = siege.armyIds.filter((id) => id !== army.id);
   army.order = route.length ? { type: warBetween(state, ownerId, target.controllerId ?? target.ownerId) || !state.dataset && (target.controllerId ?? target.ownerId) !== ownerId ? "ATTACK" : "MOVE", targetProvinceId: targetId, route, issuedTick: state.tick, travelProgress: 0, redeploy } : void 0;
 }
 function advanceArmyOrders(state, move, daily = false) {
@@ -4804,7 +4811,7 @@ function runStrategicAI(s, actions) {
     indexArmies();
     const armies = [...byOwner.get(id) ?? []].sort((a, b2) => b2.troops - a.troops).slice(0, 3);
     for (const army of armies) {
-      if (army.order) continue;
+      if (army.order || armyInBattle(s, army.id) || s.sieges?.some((x) => x.armyIds.includes(army.id))) continue;
       indexArmies();
       const origin = provinces.get(army.provinceId);
       if (!origin) continue;
@@ -5971,13 +5978,15 @@ function applyCoreCommand(state, command, validatedLocalState = false, monthlyFr
         }
       }
       monthlyReligionEffects(next);
-      extractResources(next);
-      monthlyNationalProjects(next);
-      monthlyDecisions(next);
-      processResourceTrade(next);
-      monthlyProduction(next);
-      domesticConsumption(next);
-      updateResourceMarkets(next);
+      if (next.dataset) {
+        extractResources(next);
+        monthlyNationalProjects(next);
+        monthlyDecisions(next);
+        processResourceTrade(next);
+        monthlyProduction(next);
+        domesticConsumption(next);
+        updateResourceMarkets(next);
+      }
       monthlyEconomy(next);
       monthlyResearch(next);
       monthlyFocus(next);
