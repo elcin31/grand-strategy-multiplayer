@@ -1,0 +1,28 @@
+{
+  "projectId": "dfjsnjxnyjspwugjguhq",
+  "sourceHead": "cb850828ad3148ff426392f44e49235171584c8e",
+  "workingTreeClean": true,
+  "note": "Pinned compiled source for 2.1 protocol functions on the existing Dominion database, custom session authentication and transactional receipts. Existing 2.0 functions are preserved.",
+  "functions": [
+    {
+      "name": "game-room",
+      "entrypoint": "index.js",
+      "verifyJwt": false,
+      "bytes": 2994395,
+      "sha256": "d082738049feadcc6119f6a6621c0810b77a47ad8623d628c3ca5e3fd983e134"
+    },
+    {
+      "name": "game-command",
+      "entrypoint": "index.js",
+      "verifyJwt": false,
+      "bytes": 2976983,
+      "sha256": "b49d58f6fed3e1cb5fab65140f4c56f1c4df6e9b4d6a32e835d41ecd474c3a9c"
+    }
+  ],
+  "protocol": 23,
+  "endpointNames": [
+    "game-room-v21",
+    "game-command-v21"
+  ],
+  "runtimeCommit": "cb850828ad3148ff426392f44e49235171584c8e"
+}
