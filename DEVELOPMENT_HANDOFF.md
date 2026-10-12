@@ -3,7 +3,7 @@
 - Branch: `dominion-2.1-overhaul`
 - HEAD before this commit: `0263bef6f22dc89876f6c1245a99edebce593e38`
 - Completed: recovery from 11fbeec / v2.0.0-playtest.1; HUD and mini-map; calendar with daily clock, monthly accounting, 1–5 speeds, shared host controls and pause voting; schema 18→19 save migration/backup.
-- Current: Technology Tree 3.0.
+- Current: National Focuses 3.0.
 - Unfinished: resources/construction/production, technology/focus expansion, additional systems, art, integration and APK.
 - Known: inherited camera microstutter (deferred). Visual reference received; use gold/graphite/navy, compact panels and era-correct historical art.
 - Next: persistent strategic goals and personalities; staggered operational/tactical planning, group and escort orders; integrate with expanded industry.
@@ -18,3 +18,5 @@
 - Construction: 40 building types, paid material requirements, technology/era/deposit/coast restrictions; real national capacity/queue priorities/bulk orders; suspension under occupation, damage/repair and opt-in auto-repair; six staged national projects; full filtered catalogue UI.
 
 - Production: 15 material/energy-limited recipes, per-enterprise specialization and orders, civil/military allocation, actual recruitment/reinforcement equipment spending and shortages. Typecheck and six focused industry/trade/calendar/save/authority checks passed after fixing extraction of weighted legacy deposits.
+
+- Technology: 100 original connected nodes in nine directions; graph/prerequisite validation, institution requirements, actual capabilities and bounded effects across economy/army/logistics/research/construction/intelligence. Modern new campaigns receive foundational knowledge; old save discoveries and paid progress retained. Direction-filtered graph stays independent of map camera. Typecheck and two targeted DAG/research/save/capability checks passed.

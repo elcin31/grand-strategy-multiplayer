@@ -1,3 +1,4 @@
+import {hasTechnology,unlockTechnology,technologyBonuses} from './technologyTree.ts';
 import {monthlyProduction,recipeReason,equipmentReason,payEquipment} from './productionSystem.ts';
 import {repairProvince,startNationalProject,monthlyNationalProjects} from './construction3System.ts';
 import {extractResources,domesticConsumption,processResourceTrade,updateResourceMarkets,offerResourceTrade} from './stockpileSystem.ts';
@@ -126,6 +127,7 @@ function recruit(state: GameState, ownerId: CountryId, province: Province, troop
   if (province.rebellion || province.ownerId !== ownerId || (state.dataset && (province.controllerId ?? province.ownerId) !== ownerId)) throw new Error('Нельзя нанимать войска в чужой провинции');
   if (!Number.isInteger(troops) || troops < 1_000 || troops > 100_000) throw new Error('Недопустимый размер набора');
   const nation = countryFor(state, ownerId);
+  const unlock=unlockTechnology('units',unitType);if(unlock&&!hasTechnology(nation,unlock))throw Error('Требуется исследование: '+unlock);
   if (state.dataset && state.tick < nation.bankruptcyUntilTick!) throw new Error('Набор недоступен после банкротства');
   if (state.dataset && techLevel(nation, 'Military') < UNITS[unitType].unlock) throw new Error('Нужен более высокий уровень военной технологии');
   if(state.dataset&&state.year<UNITS[unitType].era)throw Error('Тип войск недоступен в этой эпохе');
@@ -414,7 +416,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
         if (government) {
           nation.politicalPower = Math.min(500, nation.politicalPower! + POLITICAL_POWER_MONTHLY);
           nation.technology = Math.min(100, nation.technology + .025 * (1 + (government.researchPercent + (buildings?.researchPercent ?? 0)) / 100));
-          nation.stability = Math.min(100, Math.max(0, nation.stability + (government.stabilityPerYear + (buildings?.stabilityPerYear ?? 0) + techLevel(nation, 'Administration') * .6) / 12));
+          nation.stability = Math.min(100, Math.max(0, nation.stability + (technologyBonuses(nation).stability+government.stabilityPerYear + (buildings?.stabilityPerYear ?? 0) + techLevel(nation, 'Administration') * .6) / 12));
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }

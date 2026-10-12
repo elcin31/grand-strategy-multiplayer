@@ -1,3 +1,4 @@
+import {seedScenarioTechnologies} from './technologyTree.ts';
 import {initializeArmyComposition} from './armyComposition.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import { initializeResources } from './resourceSystem.ts';
@@ -45,7 +46,7 @@ export function createWorldState(gameId: string, roomCode: string, playerId: str
   initializeReligions(state);
   initializeResources(state);
   initializeBuildings(state);
-  normalizeGameState(state);
+  normalizeGameState(state);seedScenarioTechnologies(state);
   initializeEconomy(state);
   return state;
 }
@@ -55,6 +56,6 @@ export async function createWorldStateAsync(gameId:string,roomCode:string,player
  const yieldUI=()=>new Promise<void>(resolve=>setTimeout(resolve,0));
  onStage("Создание стран и провинций");await yieldUI();
  const state=createWorldState(gameId,roomCode,playerId,displayName,undefined,true);
- for(const [name,initialize] of [["Население",initializePopulation],["Религии",initializeReligions],["Ресурсы",initializeResources],["Здания",initializeBuildings],["Армии и дипломатия",normalizeGameState],["Экономика",initializeEconomy]] as const){onStage(name);await yieldUI();initialize(state);}
+ for(const [name,initialize] of [["Население",initializePopulation],["Религии",initializeReligions],["Ресурсы",initializeResources],["Здания",initializeBuildings],["Армии и дипломатия",(s:GameState)=>{normalizeGameState(s);seedScenarioTechnologies(s);}],["Экономика",initializeEconomy]] as const){onStage(name);await yieldUI();initialize(state);}
  return state;
 }

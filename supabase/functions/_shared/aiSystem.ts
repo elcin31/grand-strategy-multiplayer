@@ -142,7 +142,8 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
       if(!c.research){
         const branches:TechnologyBranch[]=plan.goal==='Economy'||plan.goal==='Science'?['Economy','Industry','Administration','Military','Diplomacy']:style==='Diplomatic'?['Diplomacy','Economy','Administration','Military','Industry']:['Military','Economy','Administration','Industry','Diplomacy'];
         const science= scienceLevel(c)<Math.min(...branches.map(b=>techLevel(c,b)))?TECHNOLOGY_IDS.find(id=>technologyNode(id)!.direction==='Science'&&!namedResearchQuote(s,c,id).reason):undefined;
-        const candidates=[science,...branches.filter(b=>techLevel(c,b)<5).sort((a,b)=>techLevel(c,a)-techLevel(c,b)).map(b=>legacyTechnologyNode(b,techLevel(c,b)+1))];
+        const advanced=TECHNOLOGY_IDS.filter(id=>!technologyNode(id)!.legacy&&!namedResearchQuote(s,c,id).reason).sort((a,b)=>Number(technologyNode(b)!.direction===(plan.goal==='Science'?'Science':plan.goal==='Economy'?'Industry':plan.goal==='Integration'?'State':'Military'))-Number(technologyNode(a)!.direction===(plan.goal==='Science'?'Science':plan.goal==='Economy'?'Industry':plan.goal==='Integration'?'State':'Military'))||technologyNode(a)!.cost-technologyNode(b)!.cost);
+        const candidates=[...advanced,science,...branches.filter(b=>techLevel(c,b)<5).sort((a,b)=>techLevel(c,a)-techLevel(c,b)).map(b=>legacyTechnologyNode(b,techLevel(c,b)+1))];
         const id=candidates.find(id=>id&&!namedResearchQuote(s,c,id).reason&&affordable(namedResearchQuote(s,c,id).cost));if(id)startTechnology(s,c,id);
       }
       if(!c.nationalFocus){

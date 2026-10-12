@@ -2,7 +2,7 @@ import {EXPANDED_BUILDINGS} from './buildingCatalogue.ts';
 import {buildingMaterials,civilianConstructionSlots} from './construction3System.ts';
 import {payMaterials,materialReason} from './stockpileSystem.ts';
 import {focusBonuses} from './focusCatalogue.ts';
-import {scienceLevel} from './technologyTree.ts';
+import {scienceLevel,hasTechnology,unlockTechnology,technologyBonuses} from './technologyTree.ts';
 import {espionageModifiers} from './espionageSystem.ts';
 import type { BuildingType, Construction, CountryId, GameState, Province } from './gameTypes.ts';
 import {WATER_ACCESS} from './waterAccess.ts';
@@ -55,6 +55,7 @@ export const BUILDING_TYPES = Object.keys(BUILDINGS) as BuildingType[];
  * new projects. Levels3–5 require the corresponding technological capability. */
 export function buildingRequirementReason(s:GameState,p:Province,type:BuildingType,targetLevel=buildingLevel(p,type)+1):string|null {
   const c=s.countries[p.ownerId]!;
+  const capability=unlockTechnology('buildings',type);if(capability&&!hasTechnology(c,capability))return 'Требуется исследование: '+capability;
   const def=BUILDINGS[type];if(s.year<(def.year??1000))return `Доступно с ${def.year} года`;if(def.depositTypes&&![...(p.resourceMix??(p.resourceDeposit?[p.resourceDeposit]:[])),...(p.secondaryDeposit?[p.secondaryDeposit]:[])].some(r=>def.depositTypes!.includes(r.type)))return 'Нужен подходящий ресурсный район';if((type==='Fishery'||type==='CargoPort'||type==='CoastalFort')&&!WATER_ACCESS.has(p.id))return 'Нужен выход к воде';
   const branch=def.branch??({Farm:'Economy',Mine:'Industry',Factory:'Industry',Barracks:'Military',Fort:'Military',University:'Administration',Port:'Diplomacy',Infrastructure:'Administration',Administration:'Administration',Hospital:'Administration'} as Partial<Record<BuildingType,import('./technologySystem.ts').TechnologyBranch>>)[type]??'Industry';
   if((c.technologies?.[branch]??0)<Math.max(def.unlockLevel??0,targetLevel-2))return `Требуется технология ${branch} уровня ${targetLevel-2}`;
@@ -125,7 +126,7 @@ function validateConstruction(state: GameState, construction: Construction): voi
   // Industry(10%), science(5%) and bounded course rewards(35%) can earn at
   // most1.5 work units per elapsed month. Delayed jobs may pass their quote's
   // date, but a save cannot invent completed work or future work ticks.
-  if(construction.workDone!==undefined||construction.workTick!==undefined){if(!Number.isFinite(construction.workDone)||construction.workDone!<0||construction.workDone!>=quote.buildTime||!Number.isSafeInteger(construction.workTick)||construction.workTick!<construction.startedTick||construction.workTick!>state.tick||construction.workDone!>(construction.workTick!-construction.startedTick)*1.5+1e-9)throw Error('Invalid construction progress');}
+  if(construction.workDone!==undefined||construction.workTick!==undefined){if(!Number.isFinite(construction.workDone)||construction.workDone!<0||construction.workDone!>=quote.buildTime||!Number.isSafeInteger(construction.workTick)||construction.workTick!<construction.startedTick||construction.workTick!>state.tick||construction.workDone!>(construction.workTick!-construction.startedTick)*2+1e-9)throw Error('Invalid construction progress');}
 }
 /** Modern save migration/validation. Missing building maps stay sparse to avoid inflating 4k-province snapshots. */
 export function initializeBuildings(state: GameState): void {
@@ -168,7 +169,7 @@ export function cancelConstructionInProvince(state: GameState, provinceId: strin
 }
 function constructionRate(state:GameState,ownerId:CountryId):number {
   const c=state.countries[ownerId]!;
-  return (1+(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01+focusBonuses(c).construction)*espionageModifiers(state,ownerId).productionMultiplier;
+  return (1+(c.technologies?.Industry??0)*.02+scienceLevel(c)*.01+focusBonuses(c).construction+technologyBonuses(c).construction)*espionageModifiers(state,ownerId).productionMultiplier;
 }
 export function constructionProgress(state:GameState,job:Construction):{percent:number;months:number}{
   const duration=job.completeTick-job.startedTick,done=job.workDone??state.tick-job.startedTick,rate=constructionRate(state,job.ownerId);

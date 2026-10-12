@@ -1,3 +1,4 @@
+import {hasTechnology,unlockTechnology,technologyBonuses} from './technologyTree.ts';
 import type {Country,GameState,Province,BuildingType} from './gameTypes.ts';
 import type {ResourceType} from './resourceCatalogue.ts';
 import {RESOURCES} from './resourceCatalogue.ts';
@@ -29,9 +30,9 @@ export const PRODUCTION_RECIPES={
 export type RecipeId=keyof typeof PRODUCTION_RECIPES;
 export interface ProductionOrder {id:string;buildingType:BuildingType;recipeId:RecipeId;quantity:number;produced:number}
 export interface ProductionResult {buildingType:BuildingType;recipeId:RecipeId;output:number;efficiency:number;reason?:string}
-export function recipeReason(s:GameState,c:Country,p:Province,buildingType:BuildingType,id:RecipeId):string|null{const r=PRODUCTION_RECIPES[id];if(p.ownerId!==c.id||(p.controllerId??p.ownerId)!==c.id||p.rebellion)return 'Нужна своя контролируемая провинция';if(!(p.buildings?.[buildingType]??0)||!r.buildings.includes(buildingType))return 'Нужное предприятие отсутствует';if(s.year<r.year||(c.technologies?.Industry??0)<r.level)return 'Требуется промышленная технология и соответствующая эпоха';return null;}
+export function recipeReason(s:GameState,c:Country,p:Province,buildingType:BuildingType,id:RecipeId):string|null{const r=PRODUCTION_RECIPES[id],unlock=unlockTechnology('recipes',id);if(unlock&&!hasTechnology(c,unlock))return 'Нужно исследование: '+unlock;if(p.ownerId!==c.id||(p.controllerId??p.ownerId)!==c.id||p.rebellion)return 'Нужна своя контролируемая провинция';if(!(p.buildings?.[buildingType]??0)||!r.buildings.includes(buildingType))return 'Нужное предприятие отсутствует';if(s.year<r.year||(c.technologies?.Industry??0)<r.level)return 'Требуется промышленная технология и соответствующая эпоха';return null;}
 export function productionCapacity(s:GameState,c:Country,p:Province,t:BuildingType,id:RecipeId):number{const r=PRODUCTION_RECIPES[id],priority=c.stockpile?.priority,allocation=priority==='Balanced'?1:priority==='Military'?r.military?1.25:.75:r.military?.75:1.25;
- return r.baseOutput*(p.buildings?.[t]??0)*(1-(p.buildingDamage??0))*(1+(p.development??40)/500)*economicPolicy(c).production*espionageModifiers(s,c.id).productionMultiplier*(1+focusBonuses(c).production)*allocation*(p.specialization==='Industry'?1.1:1)*(s.countries[c.id]?.industrialTechnologyBonus??1);}
+ return r.baseOutput*(p.buildings?.[t]??0)*(1-(p.buildingDamage??0))*(1+(p.development??40)/500)*economicPolicy(c).production*espionageModifiers(s,c.id).productionMultiplier*(1+focusBonuses(c).production)*allocation*(p.specialization==='Industry'?1.1:1)*(1+technologyBonuses(c).production);}
 export function monthlyProduction(s:GameState):void{
  const energy=new Map<string,number>();for(const p of s.provinces)if((p.controllerId??p.ownerId)===p.ownerId&&!p.rebellion)energy.set(p.ownerId,(energy.get(p.ownerId)??0)+30+(p.buildings?.PowerGrid??0)*120+(p.buildings?.Infrastructure??0)*10);
  for(const p of s.provinces){if(p.lastProductionTick===s.tick)continue;p.lastProductionTick=s.tick;p.productionResults=[];if(p.rebellion||(p.controllerId??p.ownerId)!==p.ownerId)continue;const c=s.countries[p.ownerId]!;

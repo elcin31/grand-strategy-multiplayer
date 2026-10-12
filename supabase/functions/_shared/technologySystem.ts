@@ -4,7 +4,7 @@ import { buildingModifierTotals } from './buildingSystem.ts';
 import { governmentModifiers } from './governmentSystem.ts';
 import { money,refreshResearchBudget } from './economySystem.ts';
 import {economicPolicy,researchFunding} from './economy2System.ts';
-import {scienceLevel,technologyNode,legacyTechnologyNode,namedResearchQuote,grantTechnology,type TechnologyId} from './technologyTree.ts';
+import {technologyBonuses,scienceLevel,technologyNode,legacyTechnologyNode,namedResearchQuote,grantTechnology,type TechnologyId} from './technologyTree.ts';
 
 export const TECHNOLOGIES = {
   Economy: { name: 'Экономика', effect: '+4% налогов / уровень' },
@@ -31,7 +31,7 @@ export function initializeTechnology(state: GameState): void {
       const r = c.research;
       if (r.branch!=='Science'&&!Object.hasOwn(TECHNOLOGIES, r.branch)) throw new Error('Invalid research branch');
       const n=r.nodeId?technologyNode(r.nodeId):undefined;
-      const q = r.branch==='Science'?{targetLevel:scienceLevel(c)+1,months:n?.months}:researchQuote(c, r.branch);
+      const q = r.branch==='Science'?{targetLevel:n?.level,months:n?.months}:researchQuote(c, r.branch);
       if (r.targetLevel !== q.targetLevel || r.targetLevel > 5 || r.required !== q.months || !Number.isFinite(r.progress) || r.progress < 0 || r.progress >= r.required || !Number.isSafeInteger(r.startedTick) || r.startedTick < 0 || r.startedTick > state.tick || !Number.isSafeInteger(r.startedTick+r.required)) throw new Error('Invalid research project');
     }
   }
@@ -50,7 +50,7 @@ export function monthlyResearch(state: GameState): void {
   for (const c of Object.values(state.countries)) {
     const r = c.research;
     if (!r || !c.provinceIds?.length || state.tick < c.bankruptcyUntilTick!) continue;
-    r.progress += (1 + (governmentModifiers(c.governmentType).researchPercent + (totals.get(c.id)?.researchPercent ?? 0)+scienceLevel(c)*5+focusBonuses(c).research*100) / 100)*researchFunding(c)*economicPolicy(c).research;
+    r.progress += (1 + (governmentModifiers(c.governmentType).researchPercent + (totals.get(c.id)?.researchPercent ?? 0)+scienceLevel(c)*5+focusBonuses(c).research*100) / 100)*researchFunding(c)*economicPolicy(c).research*(1+technologyBonuses(c).research);
     if (r.progress + 1e-9 >= r.required) {delete c.research; if(r.branch==='Science')grantTechnology(state,c,r.nodeId!);else c.technologies![r.branch]=r.targetLevel;refreshResearchBudget(c); }
   }
 }
