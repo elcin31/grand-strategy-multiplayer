@@ -42,7 +42,7 @@ export function monthlyMilitaryLogistics(s:GameState):void {
   const provinces=new Map(s.provinces.map(p=>[p.id,p]));
   for(const {a,score} of qualities){const p=provinces.get(a.provinceId)!;a.supply=score;a.lastSupplyTick=s.tick;
     const harsh=(p.terrain==='desert'||p.terrain==='mountain')&&score<70?.002:0;
-    const rate=Math.max(0,40-score)/4000+harsh;if(rate>0)takeArmyLosses(a,Math.min(a.troops,Math.max(1,Math.floor(a.troops*rate))));
+    const rate=Math.max(0,40-score)/4000+harsh;if(s.day===undefined&&rate>0)takeArmyLosses(a,Math.min(a.troops,Math.max(1,Math.floor(a.troops*rate))));
     if(score<40){a.morale=Math.max(0,(a.morale??80)-(40-score)*.1);a.organization=Math.max(0,(a.organization??80)-(40-score)*.15);}
   }
   s.armies=s.armies.filter(a=>a.troops>0);refreshSupplyLoads(s);
@@ -61,5 +61,5 @@ export function retreatArmy(s:GameState,owner:string,id:string,targetId:string,f
   a.morale=Math.max(0,(a.morale??80)-5);a.organization=Math.max(0,(a.organization??80)-10);refreshSupplyLoads(s);
 }
 export function awardBattleExperience(s:GameState,armies:Army[],winner:string):void {
-  const seen=new Set<string>(),seenArmies=new Set<string>();for(const a of armies){if(seenArmies.has(a.id))continue;seenArmies.add(a.id);a.experience=Math.min(100,(a.experience??0)+(a.ownerId===winner?3:1));if(a.commanderId&&!seen.has(a.commanderId)){seen.add(a.commanderId);const g=s.commanders?.[a.commanderId];if(g){g.experience=(g.experience??0)+2;if(g.experience>=20){g.skill=Math.min(100,g.skill+1);g.experience-=20;}}}}
+  const seen=new Set<string>(),seenArmies=new Set<string>();for(const a of armies){if(seenArmies.has(a.id))continue;seenArmies.add(a.id);a.experience=Math.min(100,(a.experience??0)+(a.ownerId===winner?3:1));if(a.commanderId&&!seen.has(a.commanderId)){seen.add(a.commanderId);const g=s.commanders?.[a.commanderId];if(g){g.experience=(g.experience??0)+2;if(g.experience>=20){g.skill=Math.min(100,g.skill+1);g.level=Math.min(10,(g.level??1)+1);g.commandLimit=(g.commandLimit??50000)+5000;g.experience-=20;}}}}
 }

@@ -1,0 +1,22 @@
+import {useState} from 'react';
+import {Pressable,Text,View,ScrollView} from 'react-native';
+import type {Army,GameState,GameCommand} from '../types/game';
+import {armyETA,armyFormation,type Formation} from '../../supabase/functions/_shared/military3System';
+import {dateAfterDays} from '../../supabase/functions/_shared/calendarSystem';
+import {styles} from './strategyStyles';
+const labels:Record<Formation,string>={Balanced:'Сбалансированная',Assault:'Штурмовая',Defensive:'Оборонительная',Mobile:'Манёвренная'};
+export function ArmyOperations({state,army,playerId,onCommand}:{state:GameState;army:Army;playerId:string;onCommand:(c:GameCommand)=>void}){
+ const [waypoints,setWaypoints]=useState<string[]>([]),rows=armyFormation(army),others=state.armies.filter(a=>a.id!==army.id&&a.ownerId===army.ownerId&&a.provinceId===army.provinceId&&!a.order);
+ const from=waypoints.at(-1)??army.provinceId,province=state.provinces.find(p=>p.id===from);
+ return <View style={styles.card}>
+ <Text style={styles.title}>ВОЕННЫЙ ПРИКАЗ</Text>{army.order&&<Text style={styles.text}>Прибытие: {dateAfterDays(state,armyETA(state,army))} · {armyETA(state,army)} дн. · {army.order.redeploy?'переброска':'марш'}</Text>}
+ <Text style={styles.text}>Передняя линия {rows.Front.toLocaleString()} · задняя {rows.Rear.toLocaleString()} · фланги {rows.Flank.toLocaleString()} · поддержка {rows.Support.toLocaleString()}</Text>
+ <ScrollView horizontal contentContainerStyle={styles.row}>{(Object.keys(labels) as Formation[]).map(formation=><Pressable key={formation} accessibilityRole="button" accessibilityState={{selected:(army.formation??'Balanced')===formation}} style={styles.button} onPress={()=>onCommand({type:'SET_FORMATION',playerId,armyId:army.id,formation})}><Text style={styles.text}>{labels[formation]}</Text></Pressable>)}</ScrollView>
+ <View style={{flexDirection:'row',gap:5,flexWrap:'wrap'}}><Pressable style={styles.button} onPress={()=>onCommand({type:'SPLIT_ARMY',playerId,armyId:army.id,percent:50})}><Text style={styles.text}>Разделить 50%</Text></Pressable><Pressable style={[styles.button,!others.length&&styles.disabled]} disabled={!others.length} onPress={()=>onCommand({type:'MERGE_ARMIES',playerId,armyIds:[army.id,...others.slice(0,19).map(a=>a.id)]})}><Text style={styles.text}>Объединить ({others.length+1})</Text></Pressable></View>
+ <Text style={styles.title}>Маршрут с промежуточными точками</Text><Text style={styles.text}>{waypoints.map(id=>state.provinces.find(p=>p.id===id)?.name).join(' → ')||'Выберите соседние провинции; обычный приказ можно отдать на карте.'}</Text>
+ <ScrollView horizontal contentContainerStyle={styles.row}>{province?.neighbors.filter(id=>!waypoints.includes(id)).slice(0,16).map(id=><Pressable key={id} style={styles.button} disabled={waypoints.length>=12} onPress={()=>setWaypoints(v=>[...v,id])}><Text style={styles.text}>{state.provinces.find(p=>p.id===id)?.name}</Text></Pressable>)}</ScrollView>
+ {waypoints.length>0&&<View style={{flexDirection:'row',gap:4}}>{[false,true].map(redeploy=><Pressable key={String(redeploy)} style={styles.button} onPress={()=>{onCommand({type:'ROUTE_ARMY',playerId,armyId:army.id,waypoints,redeploy});setWaypoints([]);}}><Text style={styles.text}>{redeploy?'Переброска':'Марш'}</Text></Pressable>)}<Pressable style={styles.button} onPress={()=>setWaypoints([])}><Text style={styles.text}>Сброс</Text></Pressable></View>}
+ <Text style={styles.title}>Армейская группа</Text><View style={{flexDirection:'row',flexWrap:'wrap',gap:4}}>{(['Defend','Offensive','Reserve'] as const).map(objective=><Pressable key={objective} style={styles.button} onPress={()=>onCommand({type:'SET_ARMY_GROUP',playerId,armyIds:[army.id,...others.slice(0,19).map(a=>a.id)],name:'Группа '+army.id,objective,provinceId:army.order?.targetProvinceId??army.provinceId,supplyPriority:'High'})}><Text style={styles.text}>{objective==='Defend'?'Линия обороны':objective==='Offensive'?'Наступление':'Резерв'}</Text></Pressable>)}</View>
+ <Text style={styles.title}>Сопровождение</Text><ScrollView horizontal>{state.armies.filter(a=>a.id!==army.id&&(a.ownerId===army.ownerId||state.diplomacy&&Object.values(state.diplomacy).some(l=>[l.a,l.b].includes(army.ownerId)&&[l.a,l.b].includes(a.ownerId)&&l.treaties.includes('Alliance')))).slice(0,12).map(a=><Pressable key={a.id} style={styles.button} onPress={()=>onCommand({type:'ESCORT_ARMY',playerId,armyId:army.id,targetArmyId:a.id})}><Text style={styles.text}>{state.countries[a.ownerId]?.shortName} · {a.troops.toLocaleString()}</Text></Pressable>)}</ScrollView>
+ </View>;
+}

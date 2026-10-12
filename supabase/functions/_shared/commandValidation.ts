@@ -15,6 +15,12 @@ import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  ROUTE_ARMY:['type','playerId','armyId','waypoints','redeploy'],
+  MERGE_ARMIES:['type','playerId','armyIds'],
+  SPLIT_ARMY:['type','playerId','armyId','percent'],
+  SET_FORMATION:['type','playerId','armyId','formation'],
+  ESCORT_ARMY:['type','playerId','armyId','targetArmyId'],
+  SET_ARMY_GROUP:['type','playerId','armyIds','name','objective','provinceId','supplyPriority'],
   ADVANCE_DAY:['type'],
   REQUEST_PAUSE:['type','playerId'],
   VOTE_PAUSE:['type','playerId','accept'],
@@ -103,6 +109,12 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (type === 'CHANGE_GOVERNMENT' && (typeof command.governmentType !== 'string' || !GOVERNMENT_TYPES.includes(command.governmentType as GovernmentType))) throw new Error('Invalid government type');
   if(type==='SET_REINFORCEMENT'&&typeof command.enabled!=='boolean')throw Error('Invalid reinforcement toggle');
   if(type==='SET_AUTOPAUSE'&&(!Array.isArray(command.categories)||command.categories.length>8||new Set(command.categories).size!==command.categories.length||command.categories.some(x=>typeof x!=='string'||!Object.hasOwn(NOTIFICATION_CATEGORIES,x))))throw Error('Invalid autopause categories');
+  for(const key of ['armyIds','waypoints'])if(allowed.includes(key)&&(!Array.isArray(command[key])||(command[key] as unknown[]).length<1||(command[key] as unknown[]).length>(key==='armyIds'?20:12)||new Set(command[key] as unknown[]).size!==(command[key] as unknown[]).length||(command[key] as unknown[]).some(id=>typeof id!=='string'||!/^[A-Za-z0-9_+?-]{1,128}$/.test(id))))throw Error('Invalid military list');
+  if(type==='SPLIT_ARMY'&&![25,50,75].includes(command.percent as number))throw Error('Invalid split');
+  if(type==='ROUTE_ARMY'&&typeof command.redeploy!=='boolean')throw Error('Invalid redeployment');
+  if(type==='SET_FORMATION'&&!['Balanced','Assault','Defensive','Mobile'].includes(command.formation as string))throw Error('Invalid formation');
+  if(type==='ESCORT_ARMY'&&(typeof command.targetArmyId!=='string'||!/^[A-Za-z0-9_-]{1,128}$/.test(command.targetArmyId)))throw Error('Invalid escort');
+  if(type==='SET_ARMY_GROUP'&&(typeof command.name!=='string'||command.name.length<1||command.name.length>40||!['Defend','Offensive','Reserve','Escort'].includes(command.objective as string)||!['Normal','High'].includes(command.supplyPriority as string)))throw Error('Invalid army group');
   if (type === 'SET_READY' && typeof command.ready !== 'boolean') throw new Error('Invalid ready value');
   if (type === 'SET_SPEED' && (typeof command.speed !== 'number' || !Number.isInteger(command.speed) || command.speed < 0 || command.speed > 5)) throw new Error('Invalid game speed');
   if ((type === 'RECRUIT' || type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');

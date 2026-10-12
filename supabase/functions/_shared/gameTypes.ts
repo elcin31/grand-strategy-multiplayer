@@ -78,6 +78,7 @@ export interface EconomyBudget {
 }
 
 export interface Province {
+  buildingDamage?:number;
   rebellion?: Rebellion;
   rebellionCooldownUntilTick?: number;
   originalOwnerId?: string;
@@ -121,6 +122,8 @@ export interface Construction {
 }
 
 export interface Army {
+  formation?:import('./military3System.ts').Formation;
+  escortArmyId?:string;
   composition?:import('./armyComposition.ts').Composition;
   template?:import('./armyComposition.ts').Composition;
   experience?:number;
@@ -153,6 +156,11 @@ export interface Player {
 }
 
 export interface BattleEvent {
+  durationDays?:number;
+  attackerInitial?:number;
+  defenderInitial?:number;
+  reasons?:string[];
+  experience?:number;
   id: string;
   tick: number;
   provinceId: string;
@@ -195,6 +203,9 @@ export interface Leader {
 }
 
 export interface GameState {
+  activeBattles?:import('./military3System.ts').ActiveBattle[];
+  sieges?:import('./military3System.ts').Siege[];
+  armyGroups?:import('./military3System.ts').ArmyGroup[];
   day?:number;
   simulationDay?:number;
   pauseRequests?:string[];
@@ -238,6 +249,12 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'ROUTE_ARMY';playerId:string;armyId:string;waypoints:string[];redeploy:boolean}
+  | {type:'MERGE_ARMIES';playerId:string;armyIds:string[]}
+  | {type:'SPLIT_ARMY';playerId:string;armyId:string;percent:number}
+  | {type:'SET_FORMATION';playerId:string;armyId:string;formation:import('./military3System.ts').Formation}
+  | {type:'ESCORT_ARMY';playerId:string;armyId:string;targetArmyId:string}
+  | {type:'SET_ARMY_GROUP';playerId:string;armyIds:string[];name:string;objective:import('./military3System.ts').ArmyGroup['objective'];provinceId:string;supplyPriority:'Normal'|'High'}
   | {type:'ADVANCE_DAY'}
   | {type:'REQUEST_PAUSE';playerId:string}
   | {type:'VOTE_PAUSE';playerId:string;accept:boolean}

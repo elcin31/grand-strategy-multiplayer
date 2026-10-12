@@ -1,6 +1,7 @@
+import {beginBattle,dailyMilitary,mergeArmies,splitArmy,armyInBattle,militaryEntity} from './military3System.ts';
 import {advanceDate,requestPause} from './calendarSystem.ts';
 import {collectNotifications} from './notificationSystem.ts';
-import {setArmyOrder,advanceArmyOrders} from './armyOrders.ts';
+import {setArmyOrder,setArmyRoute,advanceArmyOrders} from './armyOrders.ts';
 import {cloneGameState} from './cloneGameState.ts';
 import {recordMovement} from './movementHistory.ts';
 import { runStrategicAI } from './aiSystem.ts';
@@ -83,6 +84,7 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
   if (state.dataset && !warBetween(state, ownerId, controller)) throw new Error('Сначала объявите войну');
   if(state.dataset&&state.tick<(army.retreatUntilTick??0))throw Error('После отступления наступление временно недоступно');
   recordMovement(state,{armyId,ownerId,from:origin.id,to:destination.id,tick:state.tick});
+  if(state.day!==undefined){beginBattle(state,army,destination);return;}
   const defenderId = controller, defenders = armiesIn(state, destination.id, defenderId), defenderTroops = totalTroops(defenders);
   const attackerNation = countryFor(state, ownerId), defenderNation = countryFor(state, defenderId);
   const attackPower = army.troops * (1 + attackerNation.technology / 200) * (0.75 + attackerNation.stability / 200) * combatMultiplier(state, army, destination, false);
@@ -136,7 +138,7 @@ function recruit(state: GameState, ownerId: CountryId, province: Province, troop
   if (state.dataset) {nation.militaryUpkeepBase=money((nation.militaryUpkeepBase??(nation.army-troops)/1000*1.25)+troops/1000*1.25*UNITS[unitType].upkeep);refreshArmyBudget(nation);invalidateSupply(state);}
 }
 function runAi(state: GameState) {
-  if(state.dataset){runStrategicAI(state,{recruit,move:resolveMovement});return;}
+  if(state.dataset){runStrategicAI(state,{recruit,move:(s,o,a,p)=>setArmyOrder(s,o,a,p)});return;}
   const humanCountries = new Set(state.players.map((player) => player.countryId).filter(Boolean) as CountryId[]);
   for (const id of countryIds(state)) {
     if (humanCountries.has(id)) continue;
@@ -164,6 +166,16 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
   const next = clone(state);
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   switch (command.type) {
+    case 'ROUTE_ARMY':case 'MERGE_ARMIES':case 'SPLIT_ARMY':case 'SET_FORMATION':case 'ESCORT_ARMY':case 'SET_ARMY_GROUP':{
+      if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const owner=p.countryId;
+      if(command.type==='MERGE_ARMIES')mergeArmies(next,owner,command.armyIds);
+      else if(command.type==='SPLIT_ARMY')splitArmy(next,owner,command.armyId,command.percent);
+      else if(command.type==='SET_ARMY_GROUP'){if(command.armyIds.some(id=>!next.armies.some(a=>a.id===id&&a.ownerId===owner))||!provinceById(next,command.provinceId))throw Error('Недоступная армия или цель');next.armyGroups??=[];const existing=next.armyGroups.find(g=>g.ownerId===owner&&g.name===command.name);const group={id:existing?.id??militaryEntity(next,'group'),ownerId:owner,name:command.name,armyIds:[...command.armyIds],objective:command.objective,targetProvinceId:command.provinceId,supplyPriority:command.supplyPriority};next.armyGroups=next.armyGroups.filter(g=>g.id!==group.id);if(next.armyGroups.filter(g=>g.ownerId===owner).length>=12)throw Error('Лимит групп');next.armyGroups.push(group);}
+      else {const a=next.armies.find(a=>a.id===command.armyId&&a.ownerId===owner);if(!a)throw Error('Можно командовать только своей армией');if(command.type==='SET_FORMATION')a.formation=command.formation;
+        else if(command.type==='ROUTE_ARMY'){if(armyInBattle(next,a.id))throw Error('Сначала отступите из боя');setArmyRoute(next,owner,a.id,command.waypoints,command.redeploy);delete a.escortArmyId;}
+        else {const target=next.armies.find(t=>t.id===command.targetArmyId);if(!target||target.id===a.id||!canEnterTerritory(next,owner,target.ownerId)||warBetween(next,owner,target.ownerId))throw Error('Сопровождение требует союзника и права прохода');a.escortArmyId=target.id;}}
+      recalcCountryStats(next);return next;
+    }
     case 'REQUEST_PAUSE':case 'VOTE_PAUSE':{if(!['running','paused'].includes(next.phase))throw Error('Нужна кампания');getPlayer(next,command.playerId);requestPause(next,command.playerId,command.type==='REQUEST_PAUSE'||command.accept);return next;}
     case 'ACK_NOTIFICATIONS':case 'SET_AUTOPAUSE':{
       if(!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const c=countryFor(next,p.countryId);if(command.type==='ACK_NOTIFICATIONS')c.notificationReadThrough=next.notificationSequence??0;else c.autoPause=[...command.categories];return next;
@@ -304,7 +316,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       if (!['running','paused'].includes(next.phase)) throw Error('Сначала начните кампанию');
       const player=getPlayer(next,command.playerId),army=next.armies.find(a=>a.id===command.armyId);
       if(!player.countryId||!army||army.ownerId!==player.countryId)throw Error('Можно отдавать приказы только своей армии');
-      if(command.type==='CANCEL_ARMY_ORDER')delete army.order;
+      if(command.type==='CANCEL_ARMY_ORDER'){delete army.order;delete army.escortArmyId;}
       else setArmyOrder(next,player.countryId,army.id,command.provinceId);
       return next;
     }
@@ -312,6 +324,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId); if (!player.countryId) throw new Error('Страна не выбрана');
       const army=next.armies.find(a=>a.id===command.armyId),order=army?.order;
+      if(next.day!==undefined){setArmyOrder(next,player.countryId,command.armyId,command.provinceId);return next;}
       resolveMovement(next, player.countryId, command.armyId, command.provinceId);
       // Legacy one-step clients may complete the first waypoint of a saved
       // route. Consume it once; a different manual destination replaces it.
@@ -346,7 +359,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       recalcCountryStats(next); return next;
     }
     case 'ADVANCE_DAY': {
-      if(next.phase!=='running'||next.speed===0)return next;const monthly=advanceDate(next);advanceArmyOrders(next,resolveMovement);
+      if(next.phase!=='running'||next.speed===0)return next;const monthly=advanceDate(next);advanceArmyOrders(next,resolveMovement,true);dailyMilitary(next);
       return monthly?applyCoreCommand(next,{type:'ADVANCE_TICK'},true,true):next;
     }
     case 'ADVANCE_TICK': {

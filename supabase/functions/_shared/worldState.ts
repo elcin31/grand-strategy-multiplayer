@@ -8,7 +8,7 @@ import { initializePopulation } from './populationSystem.ts';
 import { initializeEconomy } from './economySystem.ts';
 import { initializeReligions } from './religionSystem.ts';
 import { governmentIncome, initializeGovernment } from './governmentSystem.ts';
-import { normalizeGameState, CURRENT_STATE_VERSION } from './stateMigrations.ts';
+import { normalizeGameState } from './stateMigrations.ts';
 
 function seedForCampaign(id: string): number {
   let seed = 2166136261;
@@ -39,7 +39,7 @@ export function createWorldState(gameId: string, roomCode: string, playerId: str
     country.income = governmentIncome(monthly, country.governmentType);
     if (troops) {const army={ id: 'army-capital-'+definition.id, ownerId: definition.id, provinceId: capital.provinceId, troops };initializeArmyComposition(army);armies.push(army);}
   }
-  const state: GameState = { stateVersion: CURRENT_STATE_VERSION, dataset: 'modern-world-v2', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', day:1,simulationDay:0,pauseRequests:[],notifications:[],notificationSequence:0,tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, leaders, constructions: [],constructionQueue:[],relationMissions: [], diplomaticOffers: [], diplomaticHistory: [], politicalUnions: [], spyMissions: [], spyReports: [], spyEffects: [],focusEvents:[], armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };
+  const state: GameState = { stateVersion: 18, dataset: 'modern-world-v2', campaignSeed, nextEntityId: 1, id: gameId, roomCode, phase: 'lobby', day:1,simulationDay:0,pauseRequests:[],notifications:[],notificationSequence:0,tick: 0, year: 2026, month: 1, speed: 1, countries, provinces, cities, leaders, constructions: [],constructionQueue:[],relationMissions: [], diplomaticOffers: [], diplomaticHistory: [], politicalUnions: [], spyMissions: [], spyReports: [], spyEffects: [],focusEvents:[], armies, players: [{ id: playerId, displayName, countryId: null, isHost: true, ready: false }], selectedCountryId: null, battleLog: [] };
   if(deferred)return state;
   initializePopulation(state);
   initializeReligions(state);

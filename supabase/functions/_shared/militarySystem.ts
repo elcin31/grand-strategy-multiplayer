@@ -11,7 +11,7 @@ export {UNITS,UNIT_TYPES,type UnitType} from './unitCatalogue.ts';
 import {armyParts} from './armyComposition.ts';
 import {supplyAt} from './supplySystem.ts';
 export type TerrainType = 'plains' | 'forest' | 'mountain' | 'desert' | 'urban';
-export interface Commander { id: string; countryId: string; name: string; skill: number;experience?:number }
+export interface Commander { id: string; countryId: string; name: string; skill: number;experience?:number;level?:number;specialization?:'Offense'|'Defense'|'Logistics'|'Siege';commandLimit?:number;offense?:number;defense?:number;logistics?:number;siege?:number }
 function hash(s: string) { let h=2166136261;for(let i=0;i<s.length;i++)h=Math.imul(h^s.charCodeAt(i),16777619);return h>>>0; }
 /** Original deterministic scenario terrain, not a real-world elevation survey. */
 export function initialTerrain(p: Province): TerrainType {
@@ -28,6 +28,7 @@ export function initializeMilitary(state: GameState): void {
     }
   }
   for(const g of Object.values(state.commanders))if((state.stateVersion??1)<16)g.experience??=0;
+  for(const g of Object.values(state.commanders)){g.level??=1;g.specialization??=(['Offense','Defense','Logistics','Siege'] as const)[hash(g.id)%4];g.commandLimit??=30000+g.skill*500;g.offense??=Math.floor(g.skill*.4);g.defense??=Math.floor(g.skill*.4);g.logistics??=Math.floor(g.skill*.3);g.siege??=Math.floor(g.skill*.3);}
   for(const [id,c] of Object.entries(state.commanders)) if(id!==c.id || !Object.hasOwn(state.countries,c.countryId) || !Number.isFinite(c.skill) || c.skill<0 || c.skill>100 || typeof c.name!=='string'||!Number.isFinite(c.experience)||c.experience!<0||c.experience!>=20) throw new Error('Invalid commander');
   for(const p of state.provinces) {
     const regions=mergedRegions.get(p.id);
@@ -52,6 +53,8 @@ export function assignCommander(state: GameState,countryId: string,armyId: strin
 }
 export function combatMultiplier(state: GameState,army: Army,province: Province,defending: boolean): number {
   if(!state.dataset)return 1;
+  const general=army.commanderId?state.commanders?.[army.commanderId]:undefined;
+  const command=(1+(defending?general?.defense??0:general?.offense??0)/300)*Math.min(1,Math.max(.65,(general?.commandLimit??50000)/Math.max(1,army.troops)));
   const skill=army.commanderId ? state.commanders?.[army.commanderId]?.skill ?? 0 : 0;
   const terrain=province.terrain ?? 'plains',parts=armyParts(army);
   const terrainDefense=defending?({plains:1,forest:1.15,mountain:1.35,desert:1.05,urban:1.3}[terrain]):1;
@@ -59,7 +62,7 @@ export function combatMultiplier(state: GameState,army: Army,province: Province,
   const combined=(parts.Artillery??0)>0&&((parts.Infantry??0)+(parts.Mechanized??0))>0?1.08:1;
   const logistics=.5+supplyAt(state,army.ownerId,army.provinceId).score/200;
   const intel=!defending&&espionageModifiers(state,army.ownerId).intelTargets.has(province.controllerId??province.ownerId)?1.08:1;
-  return strength*combined*logistics*(1+(army.experience??0)/500)*(.4+(army.morale??80)/200+(army.organization??80)/200)*(1+skill/500)*(1+techLevel(state.countries[army.ownerId]!,'Military')*.06)*intel*militaryReadiness(state.countries[army.ownerId]!)*(1+focusBonuses(state.countries[army.ownerId]!).combat);
+  return command*strength*combined*logistics*(1+(army.experience??0)/500)*(.4+(army.morale??80)/200+(army.organization??80)/200)*(1+skill/500)*(1+techLevel(state.countries[army.ownerId]!,'Military')*.06)*intel*militaryReadiness(state.countries[army.ownerId]!)*(1+focusBonuses(state.countries[army.ownerId]!).combat);
 }
 export function recoverMilitary(state: GameState): void {
   if(!state.dataset)return;

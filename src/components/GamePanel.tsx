@@ -1,3 +1,4 @@
+import {BattleSiegePanel} from './BattleSiegePanel';
 import {NotificationFeed} from './NotificationFeed';
 import {EspionagePanel} from './EspionagePanel';
 import {AtlasArt} from './AtlasArt';
@@ -194,6 +195,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
       {section==='Technology'&&<StrategyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
       {section==='Focus'&&<NationalFocusPanel state={state} playerId={playerId} onCommand={onCommand}/>}
 
+      {section==='Military'&&<BattleSiegePanel state={state} countryId={countryId}/>}
       {section==='Military'&&<View style={styles.card}><Text style={styles.eyebrow}>АРМИИ · {compact(nation.army)}</Text>{state.armies.filter(a=>a.ownerId===countryId).map(a=><Pressable key={a.id} style={styles.secondaryButton} onPress={()=>onFocusProvince?.(a.provinceId)}><Text style={styles.secondaryText}>{state.provinces.find(p=>p.id===a.provinceId)?.name} · {compact(a.troops)}</Text><Text style={styles.hint}>Мораль {a.morale?.toFixed(0)} · организация {a.organization?.toFixed(0)}</Text></Pressable>)}</View>}
       {(section==='Context'||section==='Construction')&&<View style={styles.card}>
         <Text style={styles.eyebrow}>КОМАНДОВАНИЕ</Text>
