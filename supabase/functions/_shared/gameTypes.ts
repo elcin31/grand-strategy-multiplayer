@@ -7,9 +7,11 @@ import type { ResourceDeposit } from './resourceSystem.ts';
 export type CountryId = string;
 export type GameSpeed = 0 | 1 | 2 | 3 | 4 | 5;
 export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' | 'Semi-Presidential Republic' | 'Constitutional Monarchy' | 'Absolute Monarchy' | 'Military Junta' | 'Theocracy' | 'One-Party State' | 'Federation' | 'Tribal Government';
-export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital';
+export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital' | 'Ranch' | 'Fishery' | 'FoodProcessor' | 'IronMine' | 'CoalMine' | 'OilWell' | 'GasField' | 'Quarry' | 'RareMine' | 'Steelworks' | 'Refinery' | 'ChemicalPlant' | 'TextileMill' | 'Machinery' | 'ElectronicsPlant' | 'ArmsFactory' | 'AmmoFactory' | 'VehicleFactory' | 'MilitaryDepot' | 'RailHub' | 'TransportTerminal' | 'Warehouse' | 'PowerGrid' | 'CargoPort' | 'ResearchCenter' | 'Laboratory' | 'Embassy' | 'IntelligenceCenter' | 'CoastalFort' | 'MilitaryBase';
 
 export interface Country {
+  nationalProject?:import('./construction3System.ts').NationalProject;
+  completedProjects?:import('./construction3System.ts').NationalProjectId[];
   stockpile?:import('./stockpileSystem.ts').Stockpile;
   lastResourceCrisis?:boolean;
   aiStrategy?:import('./ai3System.ts').AIStrategy;
@@ -114,6 +116,7 @@ export interface Province {
 }
 
 export interface Construction {
+  materials?:import('./stockpileSystem.ts').ResourceLedger;
   id: string;
   provinceId: string;
   ownerId: CountryId;
@@ -257,6 +260,10 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'BULK_BUILD';playerId:string;provinceIds:string[];buildingType:BuildingType}
+  | {type:'PRIORITIZE_CONSTRUCTION';playerId:string;constructionId:string}
+  | {type:'REPAIR_PROVINCE';playerId:string;provinceId:string}
+  | {type:'START_NATIONAL_PROJECT';playerId:string;provinceId:string;projectId:import('./construction3System.ts').NationalProjectId}
   | {type:'SET_INDUSTRY_POLICY';playerId:string;autoTrade:boolean;autoRepair:boolean;priority:'Balanced'|'Civilian'|'Military'}
   | {type:'OFFER_RESOURCE_TRADE';playerId:string;targetId:string;resource:import('./resourceCatalogue.ts').ResourceType;quantity:number;mode:'Import'|'Export'}
   | {type:'RESPOND_RESOURCE_TRADE';playerId:string;contractId:string;accept:boolean}

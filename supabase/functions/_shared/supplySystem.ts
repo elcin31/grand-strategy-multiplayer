@@ -34,7 +34,7 @@ function networkFor(s:GameState,owner:string,i:SupplyIndex):Map<string,SupplyNod
   else for(const p of i.owned.get(owner)??[])if((p.controllerId??p.ownerId)===owner&&!p.rebellion&&(p.buildings?.Infrastructure??0)>=2&&(p.buildings?.Barracks??0)>=1)seed(p.id,55,p.id);
   const propagate=()=>{for(let score=100;score>0;score--){const pending=buckets[score]!;buckets[score]=[];for(let at=0;at<pending.length;at++){const id=pending[at]!,current=nodes.get(id)!;if(current.score!==score)continue;const p=i.provinces.get(id)!;for(const next of p.neighbors){const q=i.provinces.get(next);if(!q||!passable(s,owner,q,i))continue;
       const base=q.terrain==='mountain'||q.terrain==='desert'?3:q.terrain==='forest'?2:1;
-      const cost=Math.max(1,Math.round(base-Math.min(2,(q.buildings?.Infrastructure??0)*.4)))+(q.ownerId!==owner?((q.controllerId??q.ownerId)===owner?3:2):0);
+      const cost=Math.max(1,Math.round(base-Math.min(2,(q.buildings?.Infrastructure??0)*.4+(q.buildings?.RailHub??0)*.5)))+(q.ownerId!==owner?((q.controllerId??q.ownerId)===owner?3:2):0);
       seed(next,score-cost,current.sourceId,current.sea,id);
     }}};};propagate();
   // A real connected port is required at both ends. Hostile coastal garrisons
@@ -53,7 +53,7 @@ export function supplyAt(s:GameState,owner:string,provinceId:string):SupplyQuote
   // is known without traversing its entire country. Distal/occupied armies
   // still use the complete controlled-route graph and port interdiction.
   const node=capital&&(p.controllerId??p.ownerId)===owner&&!p.rebellion?{score:100,sourceId:p.id,sea:false}:networkFor(s,owner,i).get(p.id);
-  const capacity=Math.floor((8000+(p.development??40)*200+(p.buildings?.Infrastructure??0)*10000+(p.buildings?.Barracks??0)*6000+(p.buildings?.Port??0)*12000+(capital?150000:0))*(1+techLevel(c,'Industry')*.04)*(1+focusBonuses(c).supply));
+  const capacity=Math.floor((8000+(p.development??40)*200+(p.buildings?.Infrastructure??0)*10000+(p.buildings?.Warehouse??0)*12000+(p.buildings?.MilitaryDepot??0)*15000+(p.buildings?.RailHub??0)*15000+(p.buildings?.CargoPort??0)*10000+(p.buildings?.Barracks??0)*6000+(p.buildings?.Port??0)*12000+(capital?150000:0))*(1+techLevel(c,'Industry')*.04)*(1+focusBonuses(c).supply));
   const load=i.loads.get(owner+':'+p.id)??0,overload=load>capacity?capacity/load:1;
   const support=s.armies.filter(a=>a.ownerId===owner&&a.provinceId===provinceId).reduce((n,a)=>n+(a.composition?.Logistics??0)+(a.composition?.Engineers??0)*.5,0);
   const priority=s.armyGroups?.some(g=>g.ownerId===owner&&g.supplyPriority==='High'&&g.armyIds.some(id=>s.armies.some(a=>a.id===id&&a.provinceId===provinceId)))?5:0;

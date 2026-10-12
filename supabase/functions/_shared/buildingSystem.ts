@@ -1,3 +1,6 @@
+import {EXPANDED_BUILDINGS} from './buildingCatalogue.ts';
+import {buildingMaterials,civilianConstructionSlots} from './construction3System.ts';
+import {payMaterials,materialReason} from './stockpileSystem.ts';
 import {focusBonuses} from './focusCatalogue.ts';
 import {scienceLevel} from './technologyTree.ts';
 import {espionageModifiers} from './espionageSystem.ts';
@@ -17,6 +20,13 @@ export interface BuildingModifiers {
   unrestPerYear: number;
 }
 export interface BuildingDefinition {
+  category?:string;
+  year?:number;
+  branch?:import('./technologySystem.ts').TechnologyBranch;
+  unlockLevel?:number;
+  technology?:import('./technologyTree.ts').TechnologyId;
+  materials?:import('./stockpileSystem.ts').ResourceLedger;
+  depositTypes?:import('./resourceCatalogue.ts').ResourceType[];
   name: string;
   baseCost: number;
   baseBuildTime: number;
@@ -27,7 +37,8 @@ export interface BuildingDefinition {
 const zero = (): BuildingModifiers => ({ taxPercent: 0, tradePercent: 0, resourcePercent: 0, manpowerPercent: 0, researchPercent: 0, defensePercent: 0, populationGrowthPercent: 0, stabilityPerYear: 0, unrestPerYear: 0 });
 
 /** Original game balance. Costs/bonuses are abstractions, not real-world estimates. */
-export const BUILDINGS: Record<BuildingType, BuildingDefinition> = {
+export const BUILDINGS = {
+  ...EXPANDED_BUILDINGS,
   Farm: { name: 'Ферма', baseCost: 120, baseBuildTime: 6, maintenance: 2, maxLevel: 5, modifiers: { populationGrowthPercent: 2, taxPercent: 1 } },
   Mine: { name: 'Шахта', baseCost: 180, baseBuildTime: 8, maintenance: 3, maxLevel: 5, modifiers: { resourcePercent: 8 } },
   Factory: { name: 'Фабрика', baseCost: 320, baseBuildTime: 12, maintenance: 7, maxLevel: 5, modifiers: { taxPercent: 3, tradePercent: 3 } },
@@ -38,14 +49,15 @@ export const BUILDINGS: Record<BuildingType, BuildingDefinition> = {
   Infrastructure: { name: 'Инфраструктура', baseCost: 280, baseBuildTime: 11, maintenance: 5, maxLevel: 5, modifiers: { taxPercent: 2, tradePercent: 2, resourcePercent: 2 } },
   Administration: { name: 'Администрация', baseCost: 240, baseBuildTime: 10, maintenance: 4, maxLevel: 5, modifiers: { taxPercent: 2, stabilityPerYear: .3 } },
   Hospital: { name: 'Госпиталь', baseCost: 300, baseBuildTime: 12, maintenance: 6, maxLevel: 5, modifiers: { populationGrowthPercent: 3, unrestPerYear: -.2 } },
-};
+} as Record<BuildingType,BuildingDefinition>;
 export const BUILDING_TYPES = Object.keys(BUILDINGS) as BuildingType[];
 /** Existing buildings survive migration/conquest; requirements govern only
  * new projects. Levels3–5 require the corresponding technological capability. */
 export function buildingRequirementReason(s:GameState,p:Province,type:BuildingType,targetLevel=buildingLevel(p,type)+1):string|null {
   const c=s.countries[p.ownerId]!;
-  const branch=({Farm:'Economy',Mine:'Industry',Factory:'Industry',Barracks:'Military',Fort:'Military',University:'Administration',Port:'Diplomacy',Infrastructure:'Administration',Administration:'Administration',Hospital:'Administration'} as const)[type];
-  if((c.technologies?.[branch]??0)<Math.max(0,targetLevel-2))return `Требуется технология ${branch} уровня ${targetLevel-2}`;
+  const def=BUILDINGS[type];if(s.year<(def.year??1000))return `Доступно с ${def.year} года`;if(def.depositTypes&&![...(p.resourceMix??(p.resourceDeposit?[p.resourceDeposit]:[])),...(p.secondaryDeposit?[p.secondaryDeposit]:[])].some(r=>def.depositTypes!.includes(r.type)))return 'Нужен подходящий ресурсный район';if((type==='Fishery'||type==='CargoPort'||type==='CoastalFort')&&!WATER_ACCESS.has(p.id))return 'Нужен выход к воде';
+  const branch=def.branch??({Farm:'Economy',Mine:'Industry',Factory:'Industry',Barracks:'Military',Fort:'Military',University:'Administration',Port:'Diplomacy',Infrastructure:'Administration',Administration:'Administration',Hospital:'Administration'} as Partial<Record<BuildingType,import('./technologySystem.ts').TechnologyBranch>>)[type]??'Industry';
+  if((c.technologies?.[branch]??0)<Math.max(def.unlockLevel??0,targetLevel-2))return `Требуется технология ${branch} уровня ${targetLevel-2}`;
   if(type==='Mine'&&!(p.resourceMix??(p.resourceDeposit?[p.resourceDeposit]:[])).some(r=>!['food','timber'].includes(r.type)))return 'Требуется минеральное месторождение';
   if(type==='Port'&&!WATER_ACCESS.has(p.id))return 'Нужен выход к воде на карте';
   if(type==='Port'&&buildingLevel(p,'Infrastructure')<1)return 'Требуется инфраструктура уровня 1';
@@ -75,7 +87,7 @@ export function provinceBuildingModifiers(province: Province): BuildingModifiers
   for (const type of BUILDING_TYPES) {
     const level = buildingLevel(province, type);
     if (!level) continue;
-    for (const [key, value] of Object.entries(BUILDINGS[type].modifiers) as [keyof BuildingModifiers, number][]) result[key] += value * level;
+    for (const [key, value] of Object.entries(BUILDINGS[type].modifiers) as [keyof BuildingModifiers, number][]) result[key] += value * level*(1-(province.buildingDamage??0));
   }
   return result;
 }
@@ -134,15 +146,17 @@ export function startConstruction(state: GameState, ownerId: CountryId, province
   if (state.constructions!.some(item => item.provinceId === province.id)||state.constructionQueue?.some(item=>item.provinceId===province.id)) throw new Error('В провинции уже идёт строительство');
   const nation = state.countries[ownerId];
   if (!nation) throw new Error('Страна не найдена');
+  if(state.constructions!.filter(q=>q.ownerId===ownerId).length>=civilianConstructionSlots(state,state.countries[ownerId]!))throw Error('Строительные мощности заняты; добавьте в очередь');
   const quote = buildingQuote(province, buildingType);
   const reason=buildingRequirementReason(state,province,buildingType,quote.targetLevel);if(reason)throw Error(reason);
   if(state.tick<(nation.bankruptcyUntilTick??0))throw Error('Строительство недоступно после банкротства');
   if(!Number.isSafeInteger(state.tick+quote.buildTime))throw Error('Construction date overflow');
   if (nation.treasury < quote.cost) throw new Error('Недостаточно средств для строительства');
+  const materials=buildingMaterials(buildingType,quote.targetLevel,state.year),missing=materialReason(nation,materials);if(missing)throw Error(missing);payMaterials(nation,materials);
   if (state.nextEntityId === undefined) state.nextEntityId = 1;
   if (!Number.isSafeInteger(state.nextEntityId) || state.nextEntityId < 1 || state.nextEntityId >= Number.MAX_SAFE_INTEGER) throw new Error('Entity sequence exhausted');
   const id = `construction-${state.id}-${state.nextEntityId++}`;
-  const construction: Construction = { id, provinceId: province.id, ownerId, buildingType, targetLevel: quote.targetLevel, startedTick: state.tick, completeTick: state.tick + quote.buildTime, cost: quote.cost };
+  const construction: Construction = { materials,id, provinceId: province.id, ownerId, buildingType, targetLevel: quote.targetLevel, startedTick: state.tick, completeTick: state.tick + quote.buildTime, cost: quote.cost };
   nation.treasury = precise(nation.treasury - quote.cost);
   state.constructions!.push(construction);
   return construction;
@@ -164,6 +178,7 @@ export function completeConstructions(state: GameState): void {
   if (!state.dataset || !state.constructions?.length) return;
   const remaining: Construction[] = [];
   for (const construction of state.constructions) {
+    const site=state.provinces.find(p=>p.id===construction.provinceId);if(site&&(site.controllerId??site.ownerId)!==construction.ownerId){construction.workDone??=Math.max(0,state.tick-construction.startedTick-1);construction.workTick=state.tick;remaining.push(construction);continue;}
     const rate=constructionRate(state,construction.ownerId);
     if(rate!==1||construction.workDone!==undefined){
       // Old paid jobs retain their quoted duration. A newly opened capability

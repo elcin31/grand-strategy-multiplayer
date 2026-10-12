@@ -1,3 +1,4 @@
+import {repairProvince,startNationalProject,monthlyNationalProjects} from './construction3System.ts';
 import {extractResources,domesticConsumption,processResourceTrade,updateResourceMarkets,offerResourceTrade} from './stockpileSystem.ts';
 import {periodicMilitaryAI} from './ai3System.ts';
 import {beginBattle,dailyMilitary,mergeArmies,splitArmy,armyInBattle,militaryEntity} from './military3System.ts';
@@ -168,6 +169,13 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
   const next = clone(state);
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   switch (command.type) {
+    case 'BULK_BUILD':case 'PRIORITIZE_CONSTRUCTION':case 'REPAIR_PROVINCE':case 'START_NATIONAL_PROJECT':{
+      if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const c=countryFor(next,p.countryId);
+      if(command.type==='BULK_BUILD')for(const id of command.provinceIds){const province=provinceById(next,id);if(!province)throw Error('Провинция не найдена');queueConstruction(next,c.id,province,command.buildingType);}
+      else if(command.type==='PRIORITIZE_CONSTRUCTION'){const q=next.constructionQueue?.find(q=>q.id===command.constructionId&&q.ownerId===c.id);if(!q)throw Error('Ожидающий проект не найден');if(next.constructionQueue!.some(x=>x.provinceId===q.provinceId&&x.buildingType===q.buildingType&&x.targetLevel<q.targetLevel))throw Error('Сначала требуется предыдущий уровень');next.constructionQueue=next.constructionQueue!.filter(x=>x.id!==q.id);next.constructionQueue.unshift(q);}
+      else {const province=provinceById(next,command.provinceId);if(!province)throw Error('Провинция не найдена');if(command.type==='REPAIR_PROVINCE')repairProvince(next,c.id,province);else startNationalProject(next,c,command.projectId,province);}
+      recalcEconomy(next);return next;
+    }
     case 'SET_INDUSTRY_POLICY':case 'OFFER_RESOURCE_TRADE':case 'RESPOND_RESOURCE_TRADE':case 'CANCEL_RESOURCE_TRADE':{
       if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const c=countryFor(next,p.countryId);
       if(command.type==='SET_INDUSTRY_POLICY')Object.assign(c.stockpile!,{autoTrade:command.autoTrade,autoRepair:command.autoRepair,priority:command.priority});
@@ -382,7 +390,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       // Newly completed sabotage affects all six dated monthly work periods,
       // including this month's construction, budget and supply.
       completeConstructions(next);
-      processConstructionQueue(next);
+      processConstructionQueue(next);monthlyNationalProjects(next);
       recoverMilitary(next);
       // The monthly treasury phase recalculates the budget after government
       // and religion changes below. Avoid a redundant earlier province pass.

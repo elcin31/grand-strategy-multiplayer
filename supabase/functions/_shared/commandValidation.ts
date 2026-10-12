@@ -1,3 +1,4 @@
+import {NATIONAL_PROJECTS} from './construction3System.ts';
 import {RESOURCES} from './resourceCatalogue.ts';
 import {NOTIFICATION_CATEGORIES} from './notificationSystem.ts';
 import {technologyNode} from './technologyTree.ts';
@@ -16,6 +17,10 @@ import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  BULK_BUILD:['type','playerId','provinceIds','buildingType'],
+  PRIORITIZE_CONSTRUCTION:['type','playerId','constructionId'],
+  REPAIR_PROVINCE:['type','playerId','provinceId'],
+  START_NATIONAL_PROJECT:['type','playerId','provinceId','projectId'],
   SET_INDUSTRY_POLICY:['type','playerId','autoTrade','autoRepair','priority'],
   OFFER_RESOURCE_TRADE:['type','playerId','targetId','resource','quantity','mode'],
   RESPOND_RESOURCE_TRADE:['type','playerId','contractId','accept'],
@@ -109,7 +114,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if(type==='START_TECHNOLOGY'&&(typeof command.nodeId!=='string'||!technologyNode(command.nodeId)))throw Error('Invalid named technology');
   if(type==='START_NATIONAL_FOCUS'&&(typeof command.focusId!=='string'||!focusNode(command.focusId)))throw Error('Invalid national course');
   if (type === 'START_RESEARCH' && (typeof command.branch !== 'string' || !Object.hasOwn(TECHNOLOGIES, command.branch))) throw new Error('Invalid research branch');
-  if ((type === 'BUILD'||type==='QUEUE_BUILD') && (typeof command.buildingType !== 'string' || !BUILDING_TYPES.includes(command.buildingType as BuildingType))) throw new Error('Invalid building type');
+  if ((type === 'BUILD'||type==='QUEUE_BUILD'||type==='BULK_BUILD') && (typeof command.buildingType !== 'string' || !BUILDING_TYPES.includes(command.buildingType as BuildingType))) throw new Error('Invalid building type');
   if (type === 'CHANGE_RELIGION') assertReligion(command.religionId);
   if (type === 'CHANGE_GOVERNMENT' && (typeof command.governmentType !== 'string' || !GOVERNMENT_TYPES.includes(command.governmentType as GovernmentType))) throw new Error('Invalid government type');
   if(type==='SET_REINFORCEMENT'&&typeof command.enabled!=='boolean')throw Error('Invalid reinforcement toggle');
@@ -123,6 +128,8 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if(type==='SET_INDUSTRY_POLICY'&&(typeof command.autoTrade!=='boolean'||typeof command.autoRepair!=='boolean'||!['Balanced','Civilian','Military'].includes(command.priority as string)))throw Error('Invalid industry policy');
   if(type==='OFFER_RESOURCE_TRADE'&&(typeof command.resource!=='string'||!Object.hasOwn(RESOURCES,command.resource)||!Number.isInteger(command.quantity)||Number(command.quantity)<1||Number(command.quantity)>10000||!['Import','Export'].includes(command.mode as string)))throw Error('Invalid resource trade');
   if(type==='RESPOND_RESOURCE_TRADE'&&typeof command.accept!=='boolean')throw Error('Invalid trade consent');
+  if(type==='BULK_BUILD'&&(!Array.isArray(command.provinceIds)||command.provinceIds.length<1||command.provinceIds.length>12||new Set(command.provinceIds).size!==command.provinceIds.length||command.provinceIds.some(id=>typeof id!=='string'||!/^[A-Za-z0-9_+?-]{1,128}$/.test(id))))throw Error('Invalid bulk construction');
+  if(type==='START_NATIONAL_PROJECT'&&(typeof command.projectId!=='string'||!Object.hasOwn(NATIONAL_PROJECTS,command.projectId)))throw Error('Invalid national project');
   if (type === 'SET_READY' && typeof command.ready !== 'boolean') throw new Error('Invalid ready value');
   if (type === 'SET_SPEED' && (typeof command.speed !== 'number' || !Number.isInteger(command.speed) || command.speed < 0 || command.speed > 5)) throw new Error('Invalid game speed');
   if ((type === 'RECRUIT' || type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');

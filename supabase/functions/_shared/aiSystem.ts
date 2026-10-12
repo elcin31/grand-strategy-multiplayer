@@ -1,6 +1,8 @@
+import {constructionQueueAvailability,queueConstruction} from './constructionQueueSystem.ts';
+import {aiConstructionPreference} from './ai3System.ts';
 import {ensureStrategy,reviewStrategy} from './ai3System.ts';
 import type { Army, BuildingType, GameState, Province } from './gameTypes.ts';
-import { BUILDINGS, buildingQuote,buildingRequirementReason,provinceBuildingModifiers, startConstruction } from './buildingSystem.ts';
+import { BUILDINGS, buildingQuote,buildingRequirementReason,provinceBuildingModifiers } from './buildingSystem.ts';
 import {policyAvailability,setEconomicPolicy,fundingAvailability,setFunding,type EconomicPolicy} from './economy2System.ts';
 import { combatMultiplier } from './militarySystem.ts';
 import {UNITS,type UnitType} from './unitCatalogue.ts';
@@ -150,7 +152,7 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
       }
       if(!s.constructions?.some(q=>q.ownerId===id)&&context().incomeBalance>15){
         const site=[...home].filter(p=>!p.rebellion).sort((a,b)=>b.income-a.income)[0];
-        if(site){const kinds:BuildingType[]=style==='Defensive'?['Fort','Administration','Farm']:site.resourceDeposit?['Mine','Factory','University','Infrastructure']:['Factory','University','Farm'];const kind=kinds.find(k=>(site.buildings?.[k]??0)<BUILDINGS[k].maxLevel&&!buildingRequirementReason(s,site,k));if(kind){const q=buildingQuote(site,kind);if(affordable(q.cost)&&context().incomeBalance>BUILDINGS[kind].maintenance*3)startConstruction(s,id,site,kind);}}
+        if(site){const kinds=[...aiConstructionPreference(c,site).filter(t=>Object.hasOwn(BUILDINGS,t)) as BuildingType[],...style==='Defensive'?['Fort','Administration','Farm']:site.resourceDeposit?['Mine','Factory','University','Infrastructure']:['Factory','University','Farm']] as BuildingType[];const kind=kinds.find(k=>(site.buildings?.[k]??0)<BUILDINGS[k].maxLevel&&!buildingRequirementReason(s,site,k)&&!constructionQueueAvailability(s,id,site,k));if(kind){const q=buildingQuote(site,kind);if(affordable(q.cost)&&context().incomeBalance>BUILDINGS[kind].maintenance*3)queueConstruction(s,id,site,kind);}}
       }
       const cap=home.find(p=>p.id===capital)??home[0]!;
       indexArmies();

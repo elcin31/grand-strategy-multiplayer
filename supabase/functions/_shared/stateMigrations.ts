@@ -1,3 +1,4 @@
+import {initializeNationalProjects} from './construction3System.ts';
 import {initializeStockpiles} from './stockpileSystem.ts';
 import {initializeMilitary3} from './military3System.ts';
 import {initializeCalendar} from './calendarSystem.ts';
@@ -50,6 +51,7 @@ export function normalizeGameState(state:GameState):void {
  initializeCalendar(state,version<19);
  initializeMilitary3(state,version<20);
  initializeStockpiles(state,version<21);
+ initializeNationalProjects(state);
  validateArmyOrders(state);
  state.stateVersion=CURRENT_STATE_VERSION;
 }
