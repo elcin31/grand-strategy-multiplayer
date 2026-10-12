@@ -2,12 +2,12 @@ import {useState} from 'react';
 import {Text,View,Pressable,ScrollView} from 'react-native';
 import type {StrategyProps} from './StrategyPanel';
 import {RESOURCES,RESOURCE_TYPES,type ResourceType} from '../../supabase/functions/_shared/resourceCatalogue';
-import {resourcePrice,stock,tradeEfficiency} from '../../supabase/functions/_shared/stockpileSystem';
+import {resourcePrice,stock} from '../../supabase/functions/_shared/stockpileSystem';
 import {ExpansionArt} from './ExpansionArt';
 import {styles} from './strategyStyles';
 export function ResourceTradePanel({state,playerId,onCommand}:StrategyProps){
  const [group,setGroup]=useState('All'),[resource,setResource]=useState<ResourceType>('food'),[target,setTarget]=useState<string>(),[mode,setMode]=useState<'Import'|'Export'>('Import');
- const id=state.players.find(p=>p.id===playerId)?.countryId,c=id?state.countries[id]:undefined;if(!c?.stockpile)return null;const v=c.stockpile,partners=Object.values(state.countries).filter(p=>p.id!==c.id&&tradeEfficiency(state,c.id,p.id)>0),partner=target??partners[0]?.id;
+ const id=state.players.find(p=>p.id===playerId)?.countryId,c=id?state.countries[id]:undefined;if(!c?.stockpile)return null;const v=c.stockpile,partners=Object.values(state.countries).filter(p=>p.id!==c.id&&(state.diplomacy&&Object.values(state.diplomacy).some(l=>[l.a,l.b].includes(c.id)&&[l.a,l.b].includes(p.id)&&l.treaties.some(t=>['TradeAgreement','Alliance','PoliticalUnion'].includes(t))))),partner=target??partners[0]?.id;
  return <View style={styles.card}><ExpansionArt name="diplomacy-trade" height={76}/><Text style={styles.title}>РЕСУРСЫ, ЗАПАСЫ И ТОРГОВЛЯ</Text><Text style={styles.text}>Вместимость каждого склада: {v.capacity.toLocaleString()} ед. · экспорт ${v.tradeRevenue.toFixed(2)}M · импорт ${v.importExpense.toFixed(2)}M / мес.</Text>
  <ScrollView horizontal contentContainerStyle={styles.row}>{['All','Food','Raw','Industrial','Advanced','Military'].map(g=><Pressable key={g} style={styles.button} accessibilityState={{selected:g===group}} onPress={()=>setGroup(g)}><Text style={styles.title}>{{All:'Все',Food:'Пища',Raw:'Сырьё',Industrial:'Промышленность',Advanced:'Передовые',Military:'Военные'}[g]}</Text></Pressable>)}</ScrollView>
  <View style={{flexDirection:'row',justifyContent:'space-between'}}><Text style={styles.text}>Ресурс · запас</Text><Text style={styles.text}>Выпуск / расход · цена</Text></View>

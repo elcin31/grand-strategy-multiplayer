@@ -11,6 +11,7 @@ import type {UnitType} from './unitCatalogue.ts';
 export interface ProductionRecipe {name:string;output:ResourceType;inputs:ResourceLedger;buildings:BuildingType[];baseOutput:number;energy:number;year:number;level:number;military:boolean;technology?:string}
 const r=(name:string,output:ResourceType,inputs:ResourceLedger,buildings:BuildingType[],baseOutput:number,energy=0,year=1800,level=1,military=false):ProductionRecipe=>({name,output,inputs,buildings,baseOutput,energy,year,level,military});
 export const PRODUCTION_RECIPES={
+ armsWorkshop:r('Полковые оружейные мастерские','weapons',{iron:.6,timber:.4},['Barracks'],8,0,1000,0,true),
  food:r('Переработка продовольствия','food',{grain:1,livestock:.2},['FoodProcessor'],30,0,1700,0),
  steel:r('Выплавка стали','steel',{iron:1,coal:.7},['Steelworks','Factory'],18,1,1850),
  aluminium:r('Электролиз алюминия','aluminium',{bauxite:1.5},['Steelworks'],16,2,1900,2),

@@ -9,7 +9,7 @@ import {RESOURCE_TYPES} from '../supabase/functions/_shared/resourceCatalogue';
 import {pairKey} from '../supabase/functions/_shared/diplomacySystem';
 import {encodeCampaign,decodeCampaign} from '../src/persistence/campaignCodec';
 test('35 resources and 40 buildings; factories cannot create steel without coal; output consumes inputs once',()=>{
- const s=createWorldState('factory','FAC001','host','QA',21),c=s.countries.germany!,p=s.provinces.find(p=>p.ownerId===c.id)!;assert.equal(RESOURCE_TYPES.length,35);assert.equal(BUILDING_TYPES.length,40);c.technologies!.Industry=2;p.buildings={Steelworks:1};c.stockpile!.amounts.iron=100;c.stockpile!.amounts.coal=0;const steel=stock(c,'steel');s.tick++;monthlyProduction(s);assert.equal(stock(c,'steel'),steel);assert.equal(p.productionResults![0]!.output,0);
+ const s=createWorldState('factory','FAC001','host','QA',21),c=s.countries.germany!,p=s.provinces.find(p=>p.ownerId===c.id)!;assert.equal(RESOURCE_TYPES.length,35);assert.equal(BUILDING_TYPES.length,40);c.technologies!.Industry=3;p.buildings={Steelworks:1};c.stockpile!.amounts.iron=100;c.stockpile!.amounts.coal=0;const steel=stock(c,'steel');s.tick++;monthlyProduction(s);assert.equal(stock(c,'steel'),steel);assert.equal(p.productionResults![0]!.output,0);
  c.stockpile!.amounts.coal=50;s.tick++;const iron=stock(c,'iron');monthlyProduction(s);assert.ok(stock(c,'steel')>steel);assert.ok(stock(c,'iron')<iron);const once=stock(c,'steel');monthlyProduction(s);assert.equal(stock(c,'steel'),once);decodeCampaign(encodeCampaign(s,1));
 });
 test('contract partial fulfillment respects supply, money and once-only import/export accounting',()=>{

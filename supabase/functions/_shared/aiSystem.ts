@@ -1,3 +1,6 @@
+import {NATIONAL_PROJECTS,nationalProjectReason,startNationalProject,type NationalProjectId} from './construction3System.ts';
+import {appointAdviser,vassalPolicy} from './strategy3System.ts';
+import {PRODUCTION_RECIPES,recipeReason,type RecipeId} from './productionSystem.ts';
 import {decisionReason,startDecision,resolveFocusChoice} from './politicalDecisions.ts';
 import {hasTechnology,unlockTechnology} from './technologyTree.ts';
 import {equipmentReason} from './productionSystem.ts';
@@ -146,7 +149,8 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
       if(!c.research){
         const branches:TechnologyBranch[]=plan.goal==='Economy'||plan.goal==='Science'?['Economy','Industry','Administration','Military','Diplomacy']:style==='Diplomatic'?['Diplomacy','Economy','Administration','Military','Industry']:['Military','Economy','Administration','Industry','Diplomacy'];
         const science= scienceLevel(c)<Math.min(...branches.map(b=>techLevel(c,b)))?TECHNOLOGY_IDS.find(id=>technologyNode(id)!.direction==='Science'&&!namedResearchQuote(s,c,id).reason):undefined;
-        const advanced=TECHNOLOGY_IDS.filter(id=>!technologyNode(id)!.legacy&&!namedResearchQuote(s,c,id).reason).sort((a,b)=>Number(technologyNode(b)!.direction===(plan.goal==='Science'?'Science':plan.goal==='Economy'?'Industry':plan.goal==='Integration'?'State':'Military'))-Number(technologyNode(a)!.direction===(plan.goal==='Science'?'Science':plan.goal==='Economy'?'Industry':plan.goal==='Integration'?'State':'Military'))||technologyNode(a)!.cost-technologyNode(b)!.cost);
+        const desiredDirection=Object.keys(c.stockpile?.deficits??{}).length?'Industry':plan.goal==='Science'?'Science':plan.goal==='Economy'?'Industry':plan.goal==='Integration'?'State':'Military';
+        const advanced=TECHNOLOGY_IDS.filter(id=>!technologyNode(id)!.legacy&&!namedResearchQuote(s,c,id).reason).sort((a,b)=>Number(technologyNode(b)!.direction===desiredDirection)-Number(technologyNode(a)!.direction===desiredDirection)||technologyNode(a)!.cost-technologyNode(b)!.cost);
         const candidates=[...advanced,science,...branches.filter(b=>techLevel(c,b)<5).sort((a,b)=>techLevel(c,a)-techLevel(c,b)).map(b=>legacyTechnologyNode(b,techLevel(c,b)+1))];
         const id=candidates.find(id=>id&&!namedResearchQuote(s,c,id).reason&&affordable(namedResearchQuote(s,c,id).cost));if(id)startTechnology(s,c,id);
       }
@@ -160,6 +164,10 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
         const site=[...home].filter(p=>!p.rebellion).sort((a,b)=>b.income-a.income)[0];
         if(site){const kinds=[...aiConstructionPreference(c,site).filter(t=>Object.hasOwn(BUILDINGS,t)) as BuildingType[],...style==='Defensive'?['Fort','Administration','Farm']:site.resourceDeposit?['Mine','Factory','University','Infrastructure']:['Factory','University','Farm']] as BuildingType[];const kind=kinds.find(k=>(site.buildings?.[k]??0)<BUILDINGS[k].maxLevel&&!buildingRequirementReason(s,site,k)&&!constructionQueueAvailability(s,id,site,k));if(kind){const q=buildingQuote(site,kind);if(affordable(q.cost)&&context().incomeBalance>BUILDINGS[kind].maintenance*3)queueConstruction(s,id,site,kind);}}
       }
+      for(const site of home.filter(p=>Object.keys(p.buildings??{}).length).slice(0,3)){for(const kind of Object.keys(site.buildings??{}) as BuildingType[]){const candidates=(Object.keys(PRODUCTION_RECIPES) as RecipeId[]).filter(r=>!recipeReason(s,c,site,kind,r));const target=candidates.sort((a,b)=>(c.stockpile?.deficits[PRODUCTION_RECIPES[b].output]??0)-(c.stockpile?.deficits[PRODUCTION_RECIPES[a].output]??0))[0];if(target){site.factoryAssignments??={};site.factoryAssignments[kind]=target;}}}
+      if(!c.nationalProject){const project:NationalProjectId=plan.goal==='Science'?'ScientificComplex':plan.goal==='Defense'||plan.goal==='Modernization'?'MilitaryProgram':plan.goal==='Recovery'?'RegionalModernization':'TransportNetwork';const site=home.find(p=>p.id===capital)??home[0]!;if(affordable(NATIONAL_PROJECTS[project].cost)&&!nationalProjectReason(s,c,project,site))startNationalProject(s,c,project,site);}
+      if(!Object.keys(c.advisers??{}).length&&(c.economy?.monthlyBalance??0)>20&&c.politicalPower!>50&&affordable(100))appointAdviser(s,c,plan.goal==='Science'?'Science':w?'Military':plan.goal==='Integration'?'Diplomacy':'Economy');
+      const subject=Object.values(s.countries).find(v=>v.overlordId===c.id);if(subject&&c.politicalPower!>80){const policy=(subject.unrest??0)>40?'Raise':(subject.vassalAutonomy??65)>30?'Lower':'Integrate';try{vassalPolicy(s,c,subject.id,policy);}catch{}}
       const cap=home.find(p=>p.id===capital)??home[0]!;
       indexArmies();
       const capitalTroops=(byProvince.get(capital)??[]).filter(a=>a.ownerId===id).reduce((n,a)=>n+a.troops,0);

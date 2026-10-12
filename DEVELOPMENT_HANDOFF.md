@@ -25,3 +25,5 @@
 - Strategy: fog projections for client/server, war goals including allied intervention, constrained peace demands, reparations/guarantees/disarmament; exhaustion economy/politics; vassal autonomy and consent-based integration; four advisers, world chronicle and six rankings; optional eight-step tutorial. Two targeted authority/fog/war/save checks pass. Schema 23.
 
 - Art/UI: official visual reference adapted into compact gold/navy controls, original SVG icons, army context dock, actual SVG flags and three new era-appropriate optimized WebP paintings. All 2.0 illustrations retained.
+
+- Integration: AI now chooses deficit-driven buildings/recipes, research directions, national projects, advisers and subject policies. Mini-map paths/colors are retained across unchanged ownership; no renderer/camera rewrite. Save backup preserves pre-overhaul v23 snapshot.

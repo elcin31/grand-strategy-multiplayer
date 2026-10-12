@@ -1,3 +1,4 @@
+import {hasTechnology,unlockTechnology} from './technologyTree.ts';
 import type {GameState,Province,Country,BuildingType} from './gameTypes.ts';
 import {BUILDINGS} from './buildingSystem.ts';
 import {materialReason,payMaterials,addStock,type ResourceLedger} from './stockpileSystem.ts';
@@ -17,7 +18,7 @@ export const NATIONAL_PROJECTS={
 } as const;
 export type NationalProjectId=keyof typeof NATIONAL_PROJECTS;
 export interface NationalProject {id:NationalProjectId;provinceId:string;startedTick:number;lastTick:number;work:number;stage:number}
-export function nationalProjectReason(_s:GameState,c:Country,id:NationalProjectId,p:Province):string|null{const n=NATIONAL_PROJECTS[id];if(c.nationalProject)return 'Национальный проект уже выполняется';if(c.completedProjects?.includes(id))return 'Проект уже завершён';if(p.ownerId!==c.id||(p.controllerId??p.ownerId)!==c.id||p.rebellion)return 'Нужна своя провинция';if((c.technologies?.[n.branch]??0)<n.level)return 'Недостаточная технология проекта';if(id==='GrandPort'&&!(p.buildings?.Port??0))return 'Выберите провинцию с портом';if(c.treasury<n.cost)return 'Недостаточно средств';return materialReason(c,n.materials);}
+export function nationalProjectReason(_s:GameState,c:Country,id:NationalProjectId,p:Province):string|null{const n=NATIONAL_PROJECTS[id],unlock=unlockTechnology('projects',id);if(unlock&&!hasTechnology(c,unlock))return 'Требуется специальная технология: '+unlock;if(c.nationalProject)return 'Национальный проект уже выполняется';if(c.completedProjects?.includes(id))return 'Проект уже завершён';if(p.ownerId!==c.id||(p.controllerId??p.ownerId)!==c.id||p.rebellion)return 'Нужна своя провинция';if((c.technologies?.[n.branch]??0)<n.level)return 'Недостаточная технология проекта';if(id==='GrandPort'&&!(p.buildings?.Port??0))return 'Выберите провинцию с портом';if(c.treasury<n.cost)return 'Недостаточно средств';return materialReason(c,n.materials);}
 export function startNationalProject(s:GameState,c:Country,id:NationalProjectId,p:Province):void{const reason=nationalProjectReason(s,c,id,p);if(reason)throw Error(reason);const n=NATIONAL_PROJECTS[id];payMaterials(c,n.materials);c.treasury=money(c.treasury-n.cost);c.nationalProject={id,provinceId:p.id,startedTick:s.tick,lastTick:s.tick,work:0,stage:0};}
 export function monthlyNationalProjects(s:GameState):void{
  for(const c of Object.values(s.countries)){

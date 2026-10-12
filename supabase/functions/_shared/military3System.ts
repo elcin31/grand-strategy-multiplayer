@@ -10,7 +10,7 @@ import {notify} from './notificationSystem.ts';
 export type Formation='Balanced'|'Assault'|'Defensive'|'Mobile';
 export interface ActiveBattle {id:string;provinceId:string;attackerId:string;defenderId:string;attackerArmyIds:string[];defenderArmyIds:string[];startedDay:number;attackerInitial:number;defenderInitial:number;attackerLosses:number;defenderLosses:number;reasons:string[]}
 export interface Siege {id:string;provinceId:string;attackerId:string;defenderId:string;armyIds:string[];startedDay:number;progress:number;fortress:number;garrison:number;losses:number}
-export interface ArmyGroup {id:string;ownerId:string;name:string;armyIds:string[];objective:'Defend'|'Offensive'|'Reserve'|'Escort';targetProvinceId:string;supplyPriority:'Normal'|'High';}
+export interface ArmyGroup {id:string;ownerId:string;name:string;armyIds:string[];objective:'Defend'|'Offensive'|'Reserve'|'Escort';targetProvinceId:string;supplyPriority:'Normal'|'High';frontProvinceIds?:string[];}
 export function militaryEntity(s:GameState,prefix:string):string{const seq=s.nextEntityId??1;if(!Number.isSafeInteger(seq)||seq>=Number.MAX_SAFE_INTEGER)throw Error('Military sequence exhausted');s.nextEntityId=seq+1;return `${prefix}-${seq}`;}
 export function armyInBattle(s:GameState,id:string):boolean{return !!s.activeBattles?.some(b=>b.attackerArmyIds.includes(id)||b.defenderArmyIds.includes(id));}
 export function armyFormation(a:Army){const parts=armyParts(a),rows={Front:0,Rear:0,Flank:0,Support:0};for(const t of UNIT_TYPES)rows[UNITS[t].role]+=parts[t]??0;const covered=rows.Front+rows.Flank;
