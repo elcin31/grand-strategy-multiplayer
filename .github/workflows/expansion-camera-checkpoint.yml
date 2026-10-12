@@ -2,7 +2,7 @@ name: Dominion fixed-world native camera checkpoint
 on:
   push:
     branches: [expansion-camera-qa]
-    paths: [.github/workflows/expansion-camera-checkpoint.yml, scripts/android-camera-profile.py, scripts/CameraGesture.java, scripts/camera_gesture.py, tests/camera_gesture_test.py, scripts/android_accessibility.py, scripts/compare-camera-native.py, scripts/export-camera-evidence.py, scripts/make-camera-fixture.ts, scripts/camera_frame_stats.py, tests/camera_frame_stats_test.py, tests/camera_protocol_test.py, tests/camera_accessibility_test.py, scripts/camera_telemetry.py, tests/camera_telemetry_test.py, scripts/camera_surface_stats.py, tests/camera_surface_stats_test.py, scripts/android_fixture.py, tests/camera_fixture_test.py]
+    paths: [.github/workflows/expansion-camera-checkpoint.yml, scripts/android-camera-profile.py, scripts/CameraGesture.java, scripts/camera_gesture.py, tests/camera_gesture_test.py, scripts/android_accessibility.py, scripts/compare-camera-native.py, scripts/compare-camera-orders.py, tests/camera_orders_test.py, scripts/export-camera-evidence.py, scripts/make-camera-fixture.ts, scripts/camera_frame_stats.py, tests/camera_frame_stats_test.py, tests/camera_protocol_test.py, tests/camera_accessibility_test.py, scripts/camera_telemetry.py, tests/camera_telemetry_test.py, scripts/camera_surface_stats.py, tests/camera_surface_stats_test.py, scripts/android_fixture.py, tests/camera_fixture_test.py]
   workflow_dispatch:
 permissions:
   contents: read
@@ -90,16 +90,9 @@ jobs:
             adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar
             CAMERA_PROFILE_OUT=camera-before python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
             CAMERA_PROFILE_OUT=camera-after python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
-            forward_ok=0
-            if python scripts/compare-camera-native.py camera-before/results.json camera-after/results.json; then forward_ok=1; fi
-            cp CAMERA_NATIVE_PAIRED.json CAMERA_NATIVE_PAIRED_FORWARD.json
             CAMERA_PROFILE_OUT=camera-after-reverse python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
             CAMERA_PROFILE_OUT=camera-before-reverse python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
-            reverse_ok=0
-            if python scripts/compare-camera-native.py camera-before-reverse/results.json camera-after-reverse/results.json; then reverse_ok=1; fi
-            cp CAMERA_NATIVE_PAIRED.json CAMERA_NATIVE_PAIRED_REVERSE.json
-            cp CAMERA_NATIVE_PAIRED_FORWARD.json CAMERA_NATIVE_PAIRED.json
-            test "$forward_ok" = 1 && test "$reverse_ok" = 1
+            python scripts/compare-camera-orders.py
       - name: Install pinned host-only trace analyzer
         id: trace_tools
         if: always() && steps.source.outcome == 'success' && steps.apk.outcome == 'success' && steps.gesture.outcome == 'success'
@@ -135,6 +128,7 @@ jobs:
             CAMERA_NATIVE_PAIRED.json
             CAMERA_NATIVE_PAIRED_FORWARD.json
             CAMERA_NATIVE_PAIRED_REVERSE.json
+            CAMERA_ABBA_QA.json
             EXPANSION_CAMERA_REVIEW.json
             checkpoint-integrity.txt
             source-run.json

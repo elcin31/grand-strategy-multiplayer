@@ -216,16 +216,9 @@ jobs:
             adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar
             CAMERA_PROFILE_OUT=camera-before python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
             CAMERA_PROFILE_OUT=camera-after python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
-            forward_ok=0
-            if python scripts/compare-camera-native.py camera-before/results.json camera-after/results.json; then forward_ok=1; fi
-            cp CAMERA_NATIVE_PAIRED.json CAMERA_NATIVE_PAIRED_FORWARD.json
             CAMERA_PROFILE_OUT=camera-after-reverse python scripts/android-camera-profile.py Dominion-grand-strategy-v2-release.apk
             CAMERA_PROFILE_OUT=camera-before-reverse python scripts/android-camera-profile.py baseline-apk/Dominion-camera-optimized-illustrated.apk
-            reverse_ok=0
-            if python scripts/compare-camera-native.py camera-before-reverse/results.json camera-after-reverse/results.json; then reverse_ok=1; fi
-            cp CAMERA_NATIVE_PAIRED.json CAMERA_NATIVE_PAIRED_REVERSE.json
-            cp CAMERA_NATIVE_PAIRED_FORWARD.json CAMERA_NATIVE_PAIRED.json
-            test "$forward_ok" = 1 && test "$reverse_ok" = 1
+            python scripts/compare-camera-orders.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -238,6 +231,7 @@ jobs:
             CAMERA_NATIVE_PAIRED.json
             CAMERA_NATIVE_PAIRED_FORWARD.json
             CAMERA_NATIVE_PAIRED_REVERSE.json
+            CAMERA_ABBA_QA.json
             camera-fixture/manifest.json
           retention-days: 14
   android-upgrade:

@@ -1,3 +1,11 @@
+# Original8ff camera numbers PASS; CI harness correction verified (2026-10-12)
+
+Exact381793 camera rawZIP11717968485 downloaded locally and verified against declared17766098bytes/SHA8d51556cb29230a5f67d54d96d25806eb90d4545c4b707f86f56e3d1b08f9fe1/CRC. All four9-scenario launches/continuous gestures/fixed fixture/complete compositor captures and18 PSS checks satisfy the unchanged10%pinch/20%other+memory limits: zero numeric violations. Both original comparisons printed PASS, but the final emulator-runner command lost separately assigned shell flags and failed. This actual evidence accepts no failed numerical measurement.
+
+One-process aggregation now calls both unchanged comparators, keeps both reports even on failure and checks complete ABBA raw data. It passed against the original captures locally; negative tests still reject forward/reverse pinch and memory failures. No rendering/gameplay/cache/LOD/pacing/threshold change in this commit. Fresh full seven-gate native QA remains required, including actual1800s soak: the original smoke ended at a stale benchmark XML while its following screenshot showed12ticks/OK, before stress began.102Python regressions/0skips PASS. Physical Redmi performance remains unmeasured; no final release acceptance yet.
+
+---
+
 # Bounded source-pixel world replay — source PASS, native pending (2026-10-11)
 
 Actual runtime8ff2172 source38179037438 SUCCESS:309JS/97Python0skips/strictTS/42art/Hermes. Copying original160-cell CPU pixels fixes direct-coarse acute coast AApeak27→1; worst32-caseRMS.3422→.01276 at unchangedfixed4/.125 guard. Broken-gutterpeak50/RMS3.650447 correctly rejected; source lifetimes tested after release. WORLD_RASTER_COAST_QA_2026-10-11.json and WORLD_RASTER_SOURCE_QA_2026-10-11.json retain actual results and earlier failures.

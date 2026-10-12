@@ -1,5 +1,5 @@
 {
-  "status": "SOURCE_VERIFIED_NATIVE_PARTIAL",
+  "status": "ORIGINAL_RUN_FAILED_HARNESS_CORRECTION_VERIFIED",
   "repository": "elcin31/grand-strategy-multiplayer",
   "runtime": "8ff217222f8d8f1adae63735185496994bb68119",
   "runId": 38179378823,
@@ -490,26 +490,48 @@
     "workspace": "Executor remains disconnected; these checks are actual existing-repository GitHub CI, not claimed local execution.",
     "nativeRunId": 38179378823
   },
-  "nativeJobs": [
-    {
+  "nativeJobs": {
+    "build-apk": {
       "id": 114588486142,
-      "name": "build-apk",
-      "status": "in_progress",
-      "conclusion": null
+      "status": "completed",
+      "conclusion": "success"
     },
-    {
+    "backend-live / live-world": {
       "id": 114588486365,
-      "name": "backend-live / live-world",
       "status": "completed",
       "conclusion": "success"
     },
-    {
+    "long-simulation": {
       "id": 114588486410,
-      "name": "long-simulation",
       "status": "completed",
       "conclusion": "success"
+    },
+    "android-smoke": {
+      "id": 114592608530,
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    "android-upgrade / release-upgrade-save": {
+      "id": 114592608640,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "camera-comparison": {
+      "id": 114592608690,
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    "android-online / native-online": {
+      "id": 114592608975,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "publish-release": {
+      "id": 114599660950,
+      "status": "completed",
+      "conclusion": "skipped"
     }
-  ],
+  },
   "artifactReadback": {
     "runId": 38179378823,
     "jobId": 114591432562,
@@ -860,9 +882,72 @@
         }
       }
     ],
-    "nativeOnlineRoom": "PENDING actual completed native-online job/UUID; do not guess or delete."
+    "nativeOnlineRoom": "PENDING actual completed native-online job/UUID; do not guess or delete.",
+    "roomIds": [
+      "f2b4feb8-3da7-4c39-894f-cae4ac95d3e7",
+      "ce4e6190-6e22-4387-8eba-509d3557e736"
+    ],
+    "nativeRoomReview": {
+      "id": "ce4e6190-6e22-4387-8eba-509d3557e736",
+      "created_at": "2026-10-11 22:33:49.069335+00",
+      "city_v12_backup_at": null,
+      "original_backup_null": true,
+      "compressed_backup_null": true,
+      "players": 2,
+      "members": [
+        {
+          "host": true,
+          "name": "NATIVE ONLINE QA"
+        },
+        {
+          "host": false,
+          "name": "NATIVE ONLINE QA GUEST"
+        }
+      ],
+      "receipts": 7
+    },
+    "nativeRoomDeleted": {
+      "id": "ce4e6190-6e22-4387-8eba-509d3557e736",
+      "created_at": "2026-10-11 22:33:49.069335+00"
+    },
+    "combinedReadback": {
+      "rooms_remaining": 0,
+      "players_remaining": 0,
+      "receipts_remaining": 0,
+      "original_city_backups": 29
+    }
   },
   "performanceAccepted": false,
   "releaseAccepted": false,
-  "physicalRedmiTested": false
+  "physicalRedmiTested": false,
+  "ciHarnessRecoveryReport": "CI_HARNESS_RECOVERY_2026-10-12.json",
+  "originalCameraRawVerification": {
+    "artifactId": 11717968485,
+    "zipBytes": 17766098,
+    "zipSha256": "8d51556cb29230a5f67d54d96d25806eb90d4545c4b707f86f56e3d1b08f9fe1",
+    "zipCrcVerifiedLocally": true,
+    "allFourCapturesComplete": true,
+    "scenariosPerLaunch": 9,
+    "pssComparisons": 18,
+    "originalGateViolations": [],
+    "comparisonGatesPassed": true,
+    "originalForwardCompareExit": 0,
+    "originalReverseCompareExit": 0,
+    "originalWorkflowFailure": "Final shell test used variables assigned in separate emulator runner shells.",
+    "correctedAggregateReplayedAgainstExactOriginalCaptures": true,
+    "performanceThresholdsChanged": false,
+    "nativeCaptureRerolled": false
+  },
+  "originalNativeSmokeVerification": {
+    "artifactId": 11717508858,
+    "zipBytes": 28869410,
+    "zipSha256": "2e3cef8ebbc17fae781ec3580880a2eb6a18dea22d1159039065b165f82a00f0",
+    "zipCrcVerifiedLocally": true,
+    "originalFailure": "Benchmark ticks assertion read pre-benchmark XML with 0 ticks; immediately following screenshot visibly shows 12 ticks and OK.",
+    "screenshotSha256": "fdf27f2054eb0e7ba0c74edd5a86a49b6e16cc2ca507b57b4654df8523fdcbd0",
+    "zeroTickXmlSha256": "0e19613c442f9bba0952c2e30746cd8eb740410fb6252d3f5add8b8dd6a4713b",
+    "nativeStressCompleted": false,
+    "stressAcceptanceSeconds": 1800,
+    "correctedFreshHierarchyAndCompletionPolling": true
+  }
 }

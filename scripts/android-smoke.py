@@ -631,7 +631,16 @@ map_control('Performance overlay: Выкл')
 root=hierarchy('developer-overlay-enabled')
 assert any(n.get('text')=='Performance overlay: Вкл' or n.get('content-desc')=='Performance overlay: Вкл' for n in root.iter('node')), 'Performance overlay toggle did not apply'
 map_control('Performance Benchmark')
-time.sleep(50)
+deadline=time.monotonic()+180
+attempt=0
+while time.monotonic()<deadline:
+    root=hierarchy('developer-benchmark-progress-'+str(attempt));attempt+=1
+    metrics=camera_hud_data(root)
+    assert not metrics.get('benchmarkError'), 'Actual benchmark failed: '+str(metrics.get('benchmarkError'))
+    running=any(n.get('text','').startswith('Benchmark: ') for n in root.iter('node'))
+    if metrics.get('benchmarkTicks')==12 and not running:break
+    time.sleep(2)
+else:raise AssertionError('Benchmark failed to execute twelve simulation ticks before deadline')
 root=hierarchy('developer-benchmark-finished');screenshot('developer-benchmark')
 assert not any(n.get('text','').startswith('Benchmark: ') for n in root.iter('node')), 'Benchmark did not finish'
 assert any('GPU FPS unavailable' in n.get('text','') for n in root.iter('node')), 'Performance overlay missing'

@@ -9,6 +9,10 @@ import time
 import xml.etree.ElementTree as ET
 
 
+class HierarchyNotWritten(RuntimeError):
+    """UIAutomator returned without publishing a new hierarchy."""
+
+
 def find_enabled_control(root, label):
     """An enabled TextView child does not make its disabled Pressable tappable."""
     if root.get('enabled') == 'false' or root.get('visible-to-user') == 'false':
@@ -45,11 +49,17 @@ def dump_hierarchy(adb, package, output, name, device_path, pause=time.sleep):
     assert expected_pid, 'Game is not running before accessibility lookup: ' + name
     for attempt in range(3):
         try:
-            adb('shell', 'uiautomator', 'dump', device_path, timeout=20)
+            # A successful process exit can still report "could not get idle
+            # state". Never read the preceding lookup's XML in that case.
+            adb('shell', 'rm', '-f', device_path, timeout=10)
+            result = adb('shell', 'uiautomator', 'dump', device_path, timeout=20)
+            (output / (name + '-dump-' + str(attempt) + '.txt')).write_text(result)
+            if 'dumped to: ' + device_path not in result:
+                raise HierarchyNotWritten(result)
             xml = adb('shell', 'cat', device_path, timeout=10)
             (output / (name + '.xml')).write_text(xml)
             return ET.fromstring(xml)
-        except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired, HierarchyNotWritten) as error:
             if isinstance(error, subprocess.CalledProcessError) and error.returncode != 137:
                 raise
             assert adb('shell', 'pidof', package).strip() == expected_pid, 'Game died/restarted during accessibility lookup: ' + name

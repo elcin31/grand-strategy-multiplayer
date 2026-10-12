@@ -27,6 +27,8 @@ class AccessibilityTest(unittest.TestCase):
                 return '42' if len(calls) == 1 else pid
             if args[:2] == ('shell', 'uiautomator') and failures:
                 raise failures.pop(0)
+            if args[:2] == ('shell', 'uiautomator'):
+                return 'UI hierchary dumped to: /sdcard/camera.xml'
             if args[:2] == ('shell', 'cat'):
                 return '<hierarchy><node content-desc="Обзор мира" /></hierarchy>'
             if args[0] == 'logcat':
@@ -36,6 +38,41 @@ class AccessibilityTest(unittest.TestCase):
             root = module.dump_hierarchy(adb, 'app', Path(directory), 'camera', '/sdcard/camera.xml', pause=lambda _: None)
             self.assertEqual(root[0].get('content-desc'), 'Обзор мира')
         return calls
+
+    def test_zero_exit_without_new_dump_never_reads_previous_benchmark_xml(self):
+        calls=[]
+        attempts=0
+        def adb(*args,**kwargs):
+            nonlocal attempts
+            calls.append(args)
+            if args[:2]==('shell','pidof'):return '42'
+            if args[:2]==('shell','uiautomator'):
+                attempts+=1
+                return 'ERROR: could not get idle state.' if attempts==1 else 'UI hierchary dumped to: /sdcard/camera.xml'
+            if args[:2]==('shell','cat'):
+                return '<hierarchy><node text="Benchmark ticks: 12 · OK" /></hierarchy>'
+            return ''
+        with tempfile.TemporaryDirectory() as directory:
+            root=module.dump_hierarchy(adb,'app',Path(directory),'benchmark','/sdcard/camera.xml',pause=lambda _:None)
+            self.assertEqual(root[0].get('text'),'Benchmark ticks: 12 · OK')
+            self.assertIn('could not get idle state', (Path(directory)/'benchmark-dump-0.txt').read_text())
+        self.assertEqual(sum(c[:2]==('shell','cat') for c in calls),1)
+        self.assertEqual(sum(c[:3]==('shell','rm','-f') for c in calls),2)
+
+    def test_missing_dump_is_bounded_and_still_checks_game_fatals(self):
+        def adb(*args,**kwargs):
+            if args[:2]==('shell','pidof'):return '42'
+            if args[:2]==('shell','uiautomator'):return 'ERROR: could not get idle state.'
+            if args[:2]==('shell','cat'):self.fail('Must not read a stale hierarchy')
+            return ''
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaises(module.HierarchyNotWritten):
+                module.dump_hierarchy(adb,'app',Path(directory),'benchmark','/sdcard/camera.xml',pause=lambda _:None)
+        def fatal_adb(*args,**kwargs):
+            return 'JavascriptException: broken campaign' if args[0]=='logcat' else adb(*args,**kwargs)
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(AssertionError,'Fatal error'):
+                module.dump_hierarchy(fatal_adb,'app',Path(directory),'benchmark','/sdcard/camera.xml',pause=lambda _:None)
 
     def test_transient_kill_retries_and_returns_real_hierarchy(self):
         calls = self.exercise([subprocess.CalledProcessError(137, 'uiautomator')])

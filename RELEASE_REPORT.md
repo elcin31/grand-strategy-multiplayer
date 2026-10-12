@@ -1,3 +1,11 @@
+# Original binary remains unaccepted; native CI harness fixed (2026-10-12)
+
+Original381793 completed FAILURE with five actual gates SUCCESS. APKc8ad88db/142482125bytes remains unaccepted: all42art/Hermes/releaseconfig/installupgrade/nativeonline proofs are verified, paired raw camera has zero numeric violations, but two native jobs failed in CI harness and the1800s stress never started. Camera final shell flags were lost between emulator-runner commands; smoke consumed a pre-benchmark XML even though the subsequent original screenshot shows12ticks/OK. These failures remain in CI_HARNESS_RECOVERY_2026-10-12.json.
+
+Corrected aggregation/fresh accessibility/completion polling is locally verified with102Python tests/0skips, exact-original raw camera replay and zero game-source diff. Both exact completed QA rooms cleaned by guarded deletion; independent combined0rooms/players/receipts and29originalbackups preserved. A fresh full original seven-gate pipeline follows this commit, without modifying release acceptance rules or camera/input/stress limits. Only its successful exact source/binary/raw checks permit normalmain promotion and verifiedAPK publication/delivery. Main/backend unchanged; accepted manifest absent; physical Xiaomi testing unclaimed.
+
+---
+
 # Exact source8ff passes preflight; final binary QA running (2026-10-11)
 
 Normal expansion-v2 promotion of verified8ff217222f8d8f1adae63735185496994bb68119; source38179037438 passes strictTS/309JS/97Python0skips/42originalart/actualHermes. Coast correction preserves original pixels with32-casefixedbudget and broken-gutter detection; prior failed hypotheses retained. Fresh full standalone run38179378823 must pass all original seven native gates on its own signed2.0.0code10 binary before acceptance. Main/backend unchanged; accepted manifest absent; no final APK delivered or physical Redmi test claimed.
