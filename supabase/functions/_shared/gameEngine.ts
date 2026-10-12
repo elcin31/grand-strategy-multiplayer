@@ -1,3 +1,4 @@
+import {monthlyProduction,recipeReason,equipmentReason,payEquipment} from './productionSystem.ts';
 import {repairProvince,startNationalProject,monthlyNationalProjects} from './construction3System.ts';
 import {extractResources,domesticConsumption,processResourceTrade,updateResourceMarkets,offerResourceTrade} from './stockpileSystem.ts';
 import {periodicMilitaryAI} from './ai3System.ts';
@@ -134,6 +135,7 @@ function recruit(state: GameState, ownerId: CountryId, province: Province, troop
   if (nation.treasury < cost) throw new Error('Недостаточно средств');
   if (nation.manpower < troops) throw new Error('Недостаточно людских ресурсов');
   nation.treasury = state.dataset ? money(nation.treasury - cost) : nation.treasury - cost;
+  if(nation.stockpile){const missing=equipmentReason(state,nation,unitType,troops);if(missing)throw Error(missing);payEquipment(state,nation,unitType,troops);}
   nation.manpower -= troops;
   if(existing){if(state.dataset)addArmyRegiment(existing,unitType,troops);else existing.troops+=troops;}
   else {const army={ id: entityId(state, 'army'), ownerId, provinceId: province.id, troops, ...(state.dataset ? { unitType, morale: 80, organization: 60 } : {}) };if(state.dataset)initializeArmyComposition(army);state.armies.push(army);}
@@ -169,6 +171,13 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
   const next = clone(state);
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   switch (command.type) {
+    case 'SET_FACTORY_PRODUCTION':case 'QUEUE_PRODUCTION':case 'CANCEL_PRODUCTION':case 'SET_REGION_SPECIALIZATION':{
+      if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const player=getPlayer(next,command.playerId);if(!player.countryId)throw Error('Страна не выбрана');const c=countryFor(next,player.countryId),p=provinceById(next,command.provinceId);if(!p||p.ownerId!==c.id||(p.controllerId??p.ownerId)!==c.id)throw Error('Недоступная провинция');
+      if(command.type==='SET_REGION_SPECIALIZATION'){if(c.treasury<50||(c.politicalPower??0)<5)throw Error('Нужны 50 млн и 5 политической власти');c.treasury=money(c.treasury-50);c.politicalPower!-=5;p.specialization=command.specialization;}
+      else if(command.type==='CANCEL_PRODUCTION'){if(!p.productionQueue?.some(q=>q.id===command.orderId))throw Error('Заказ не найден');p.productionQueue=p.productionQueue.filter(q=>q.id!==command.orderId);}
+      else {const reason=recipeReason(next,c,p,command.buildingType,command.recipeId);if(reason)throw Error(reason);if(command.type==='SET_FACTORY_PRODUCTION'){p.factoryAssignments??={};p.factoryAssignments[command.buildingType]=command.recipeId;}else {p.productionQueue??=[];if(p.productionQueue.length>=8)throw Error('Очередь производства заполнена');p.productionQueue.push({id:militaryEntity(next,'production'),buildingType:command.buildingType,recipeId:command.recipeId,quantity:command.quantity,produced:0});}}
+      recalcEconomy(next);return next;
+    }
     case 'BULK_BUILD':case 'PRIORITIZE_CONSTRUCTION':case 'REPAIR_PROVINCE':case 'START_NATIONAL_PROJECT':{
       if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const c=countryFor(next,p.countryId);
       if(command.type==='BULK_BUILD')for(const id of command.provinceIds){const province=provinceById(next,id);if(!province)throw Error('Провинция не найдена');queueConstruction(next,c.id,province,command.buildingType);}
@@ -390,7 +399,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       // Newly completed sabotage affects all six dated monthly work periods,
       // including this month's construction, budget and supply.
       completeConstructions(next);
-      processConstructionQueue(next);monthlyNationalProjects(next);
+      processConstructionQueue(next);
       recoverMilitary(next);
       // The monthly treasury phase recalculates the budget after government
       // and religion changes below. Avoid a redundant earlier province pass.
@@ -409,7 +418,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }
-      monthlyReligionEffects(next);extractResources(next);processResourceTrade(next);domesticConsumption(next);updateResourceMarkets(next); monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
+      monthlyReligionEffects(next);extractResources(next);monthlyNationalProjects(next);processResourceTrade(next);monthlyProduction(next);domesticConsumption(next);updateResourceMarkets(next); monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
     }
   }
 }

@@ -1,3 +1,4 @@
+import {PRODUCTION_RECIPES} from './productionSystem.ts';
 import {NATIONAL_PROJECTS} from './construction3System.ts';
 import {RESOURCES} from './resourceCatalogue.ts';
 import {NOTIFICATION_CATEGORIES} from './notificationSystem.ts';
@@ -17,6 +18,10 @@ import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  SET_FACTORY_PRODUCTION:['type','playerId','provinceId','buildingType','recipeId'],
+  QUEUE_PRODUCTION:['type','playerId','provinceId','buildingType','recipeId','quantity'],
+  CANCEL_PRODUCTION:['type','playerId','provinceId','orderId'],
+  SET_REGION_SPECIALIZATION:['type','playerId','provinceId','specialization'],
   BULK_BUILD:['type','playerId','provinceIds','buildingType'],
   PRIORITIZE_CONSTRUCTION:['type','playerId','constructionId'],
   REPAIR_PROVINCE:['type','playerId','provinceId'],
@@ -39,7 +44,7 @@ const fields: Record<string, readonly string[]> = {
   SET_ECONOMIC_POLICY: ['type','playerId','policy'],
   SET_FUNDING: ['type','playerId','domain','level'],
   QUEUE_BUILD: ['type','playerId','provinceId','buildingType'],
-  CANCEL_CONSTRUCTION: ['type','playerId','constructionId','contractId'],
+  CANCEL_CONSTRUCTION: ['type','playerId','constructionId'],
   START_ESPIONAGE: ['type','playerId','targetId','kind'],
   CANCEL_ESPIONAGE: ['type','playerId','missionId'],
   SET_TAX_RATE: ['type', 'playerId', 'taxRate'],
@@ -90,7 +95,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (typeof type !== 'string' || !Object.hasOwn(fields, type)) throw new Error('Unknown command');
   const allowed = fields[type]!;
   if (Object.keys(command).some(key => !allowed.includes(key)) || allowed.some(key => !Object.hasOwn(command, key))) throw new Error('Invalid command fields');
-  for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId', 'warId','missionId','offerId','treatyId','constructionId','contractId']) {
+  for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId', 'warId','missionId','offerId','treatyId','constructionId','contractId','orderId']) {
     // Natural Earth retains literal '+' and '?' in a few province IDs. Ownership
     // and exact membership are still checked by the authoritative reducer.
     const pattern = key === 'provinceId' ? /^[A-Za-z0-9_+?-]{1,128}$/ : /^[A-Za-z0-9_-]{1,128}$/;
@@ -114,7 +119,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if(type==='START_TECHNOLOGY'&&(typeof command.nodeId!=='string'||!technologyNode(command.nodeId)))throw Error('Invalid named technology');
   if(type==='START_NATIONAL_FOCUS'&&(typeof command.focusId!=='string'||!focusNode(command.focusId)))throw Error('Invalid national course');
   if (type === 'START_RESEARCH' && (typeof command.branch !== 'string' || !Object.hasOwn(TECHNOLOGIES, command.branch))) throw new Error('Invalid research branch');
-  if ((type === 'BUILD'||type==='QUEUE_BUILD'||type==='BULK_BUILD') && (typeof command.buildingType !== 'string' || !BUILDING_TYPES.includes(command.buildingType as BuildingType))) throw new Error('Invalid building type');
+  if ((type === 'BUILD'||type==='QUEUE_BUILD'||type==='BULK_BUILD'||type==='SET_FACTORY_PRODUCTION'||type==='QUEUE_PRODUCTION') && (typeof command.buildingType !== 'string' || !BUILDING_TYPES.includes(command.buildingType as BuildingType))) throw new Error('Invalid building type');
   if (type === 'CHANGE_RELIGION') assertReligion(command.religionId);
   if (type === 'CHANGE_GOVERNMENT' && (typeof command.governmentType !== 'string' || !GOVERNMENT_TYPES.includes(command.governmentType as GovernmentType))) throw new Error('Invalid government type');
   if(type==='SET_REINFORCEMENT'&&typeof command.enabled!=='boolean')throw Error('Invalid reinforcement toggle');
@@ -130,6 +135,9 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if(type==='RESPOND_RESOURCE_TRADE'&&typeof command.accept!=='boolean')throw Error('Invalid trade consent');
   if(type==='BULK_BUILD'&&(!Array.isArray(command.provinceIds)||command.provinceIds.length<1||command.provinceIds.length>12||new Set(command.provinceIds).size!==command.provinceIds.length||command.provinceIds.some(id=>typeof id!=='string'||!/^[A-Za-z0-9_+?-]{1,128}$/.test(id))))throw Error('Invalid bulk construction');
   if(type==='START_NATIONAL_PROJECT'&&(typeof command.projectId!=='string'||!Object.hasOwn(NATIONAL_PROJECTS,command.projectId)))throw Error('Invalid national project');
+  if(['SET_FACTORY_PRODUCTION','QUEUE_PRODUCTION'].includes(type)&&(typeof command.recipeId!=='string'||!Object.hasOwn(PRODUCTION_RECIPES,command.recipeId)))throw Error('Invalid production recipe');
+  if(type==='QUEUE_PRODUCTION'&&(!Number.isInteger(command.quantity)||Number(command.quantity)<1||Number(command.quantity)>10000))throw Error('Invalid production quantity');
+  if(type==='SET_REGION_SPECIALIZATION'&&!['Agriculture','Extraction','Industry','Research'].includes(command.specialization as string))throw Error('Invalid regional specialization');
   if (type === 'SET_READY' && typeof command.ready !== 'boolean') throw new Error('Invalid ready value');
   if (type === 'SET_SPEED' && (typeof command.speed !== 'number' || !Number.isInteger(command.speed) || command.speed < 0 || command.speed > 5)) throw new Error('Invalid game speed');
   if ((type === 'RECRUIT' || type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');

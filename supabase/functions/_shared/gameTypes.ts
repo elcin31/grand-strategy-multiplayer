@@ -10,6 +10,7 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital' | 'Ranch' | 'Fishery' | 'FoodProcessor' | 'IronMine' | 'CoalMine' | 'OilWell' | 'GasField' | 'Quarry' | 'RareMine' | 'Steelworks' | 'Refinery' | 'ChemicalPlant' | 'TextileMill' | 'Machinery' | 'ElectronicsPlant' | 'ArmsFactory' | 'AmmoFactory' | 'VehicleFactory' | 'MilitaryDepot' | 'RailHub' | 'TransportTerminal' | 'Warehouse' | 'PowerGrid' | 'CargoPort' | 'ResearchCenter' | 'Laboratory' | 'Embassy' | 'IntelligenceCenter' | 'CoastalFort' | 'MilitaryBase';
 
 export interface Country {
+  industrialTechnologyBonus?:number;
   nationalProject?:import('./construction3System.ts').NationalProject;
   completedProjects?:import('./construction3System.ts').NationalProjectId[];
   stockpile?:import('./stockpileSystem.ts').Stockpile;
@@ -84,6 +85,11 @@ export interface EconomyBudget {
 }
 
 export interface Province {
+  factoryAssignments?:Partial<Record<BuildingType,import('./productionSystem.ts').RecipeId>>;
+  productionQueue?:import('./productionSystem.ts').ProductionOrder[];
+  productionResults?:import('./productionSystem.ts').ProductionResult[];
+  lastProductionTick?:number;
+  specialization?:'Agriculture'|'Extraction'|'Industry'|'Research';
   secondaryDeposit?:import('./resourceSystem.ts').ResourceDeposit;
   buildingDamage?:number;
   rebellion?: Rebellion;
@@ -260,6 +266,10 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'SET_FACTORY_PRODUCTION';playerId:string;provinceId:string;buildingType:BuildingType;recipeId:import('./productionSystem.ts').RecipeId}
+  | {type:'QUEUE_PRODUCTION';playerId:string;provinceId:string;buildingType:BuildingType;recipeId:import('./productionSystem.ts').RecipeId;quantity:number}
+  | {type:'CANCEL_PRODUCTION';playerId:string;provinceId:string;orderId:string}
+  | {type:'SET_REGION_SPECIALIZATION';playerId:string;provinceId:string;specialization:'Agriculture'|'Extraction'|'Industry'|'Research'}
   | {type:'BULK_BUILD';playerId:string;provinceIds:string[];buildingType:BuildingType}
   | {type:'PRIORITIZE_CONSTRUCTION';playerId:string;constructionId:string}
   | {type:'REPAIR_PROVINCE';playerId:string;provinceId:string}

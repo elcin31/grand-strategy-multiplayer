@@ -1,3 +1,5 @@
+import {equipmentMaterials} from './productionSystem.ts';
+import {payMaterials} from './stockpileSystem.ts';
 import type {Army,GameState,Province} from './gameTypes.ts';
 import {UNITS,UNIT_TYPES,type UnitType} from './unitCatalogue.ts';
 import {armyParts,compositionTotal,addArmyRegiment,takeArmyLosses,weightedTroops} from './armyComposition.ts';
@@ -21,15 +23,17 @@ export function reinforcementQuote(s:GameState,a:Army):ReinforcementQuote {
   if(supply<50)return empty('Нужно снабжение не менее 50%');
   const funding=c.militaryFunding==='Low'?.04:c.militaryFunding==='High'?.12:.08;
   let limit=Math.min(missing,c.manpower,Math.floor((target*funding+(p.buildings?.Barracks??0)*500)*supply/100)),cash=c.treasury;
+  const equipmentAvailable={...c.stockpile?.amounts};
   const parts:Partial<Record<UnitType,number>>={};let troops=0,cost=0;
   for(const t of UNIT_TYPES){const needed=(template[t]??0)-(armyParts(a)[t]??0),price=UNITS[t].cost*.65/1000,count=Math.min(Math.max(0,needed),limit,Math.floor((cash+1e-9)/price));if(count<1)continue;
-    const paid=money(count*price);if(paid>cash)continue;parts[t]=count;troops+=count;cost=money(cost+paid);cash=money(cash-paid);limit-=count;
+    let equipped=count;if(c.stockpile)for(const [resource,qty] of Object.entries(equipmentMaterials(s,t,count)))if(qty!>0)equipped=Math.min(equipped,Math.floor(count*(equipmentAvailable[resource as keyof typeof equipmentAvailable]??0)/qty!));if(equipped<1)continue;for(const [r,qty] of Object.entries(equipmentMaterials(s,t,equipped)))equipmentAvailable[r as keyof typeof equipmentAvailable]=Math.max(0,(equipmentAvailable[r as keyof typeof equipmentAvailable]??0)-qty!);const paid=money(equipped*price);if(paid>cash)continue;parts[t]=equipped;troops+=equipped;cost=money(cost+paid);cash=money(cash-paid);limit-=equipped;
   }
   return troops?{troops,cost,parts,reason:null}:empty('Недостаточно средств или резерва');
 }
 export function reinforceArmy(s:GameState,owner:string,id:string):void {
   const a=s.armies.find(a=>a.id===id&&a.ownerId===owner);if(!a)throw Error('Армия не найдена');const q=reinforcementQuote(s,a);if(q.reason)throw Error(q.reason);
   const c=s.countries[owner]!;c.treasury=money(c.treasury-q.cost);c.manpower-=q.troops;
+  if(c.stockpile)for(const t of UNIT_TYPES)if(q.parts[t])payMaterials(c,equipmentMaterials(s,t,q.parts[t]!));
   const previous=weightedTroops(a);
   for(const t of UNIT_TYPES)if(q.parts[t])addArmyRegiment(a,t,q.parts[t]!,false);
   a.lastReinforcementTick=s.tick;a.lastReinforcementCost=q.cost;a.organization=Math.max(0,(a.organization??80)-5);updateSupplyLoad(s,a,previous);

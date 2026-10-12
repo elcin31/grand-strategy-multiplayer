@@ -1,3 +1,4 @@
+import {ProductionPanel} from './ProductionPanel';
 import {ConstructionPanel} from './ConstructionPanel';
 import {ResourceTradePanel} from './ResourceTradePanel';
 import {BattleSiegePanel} from './BattleSiegePanel';
@@ -111,6 +112,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
         </View>
       </View>}
 
+      {section==='Economy'&&<ProductionPanel state={state} playerId={playerId} onCommand={onCommand}/>}
       {section==='Economy'&&<ResourceTradePanel state={state} playerId={playerId} onCommand={onCommand}/>}
       {section==='Economy'&&budget && <Pressable accessibilityRole="button" onPress={() => { setEconomyOpen(!economyOpen); setGovernmentOpen(false); setReligionOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Экономика {economyOpen ? '▴' : '▾'}</Text></Pressable>}
       {economyOpen && budget && <View style={styles.card}>

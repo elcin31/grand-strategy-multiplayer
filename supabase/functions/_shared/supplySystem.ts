@@ -55,9 +55,10 @@ export function supplyAt(s:GameState,owner:string,provinceId:string):SupplyQuote
   const node=capital&&(p.controllerId??p.ownerId)===owner&&!p.rebellion?{score:100,sourceId:p.id,sea:false}:networkFor(s,owner,i).get(p.id);
   const capacity=Math.floor((8000+(p.development??40)*200+(p.buildings?.Infrastructure??0)*10000+(p.buildings?.Warehouse??0)*12000+(p.buildings?.MilitaryDepot??0)*15000+(p.buildings?.RailHub??0)*15000+(p.buildings?.CargoPort??0)*10000+(p.buildings?.Barracks??0)*6000+(p.buildings?.Port??0)*12000+(capital?150000:0))*(1+techLevel(c,'Industry')*.04)*(1+focusBonuses(c).supply));
   const load=i.loads.get(owner+':'+p.id)??0,overload=load>capacity?capacity/load:1;
+  const fuelPenalty=c.stockpile?.deficits.fuel?10:0;
   const support=s.armies.filter(a=>a.ownerId===owner&&a.provinceId===provinceId).reduce((n,a)=>n+(a.composition?.Logistics??0)+(a.composition?.Engineers??0)*.5,0);
   const priority=s.armyGroups?.some(g=>g.ownerId===owner&&g.supplyPriority==='High'&&g.armyIds.some(id=>s.armies.some(a=>a.id===id&&a.provinceId===provinceId)))?5:0;
-  const score=Math.max(0,Math.min(100,Math.round(((node?.score??0)+Math.min(10,support/1000)+priority)*overload*militaryReadiness(c)*(s.tick<(c.bankruptcyUntilTick??0)?.65:1)-espionageModifiers(s,owner).supplyPenalty)));
+  const score=Math.max(0,Math.min(100,Math.round(((node?.score??0)+Math.min(10,support/1000)+priority)*overload*militaryReadiness(c)*(s.tick<(c.bankruptcyUntilTick??0)?.65:1)-espionageModifiers(s,owner).supplyPenalty-fuelPenalty)));
   return {score,capacity,load,sourceId:node?.sourceId,sea:node?.sea??false,reason:!node?'Нет пути от контролируемой столицы или резервного узла':overload<1?'Превышена пропускная способность':score<50?'Недостаточное снабжение':null};
 }
 /** Reconstruct only on demand (UI request/tests), never a rendered map frame. */

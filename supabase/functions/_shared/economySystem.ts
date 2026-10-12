@@ -44,7 +44,7 @@ export function recalcEconomy(state: GameState): void {
     validMoney(p.income);
     if (p.rebellion || (p.controllerId ?? p.ownerId) !== p.ownerId) continue; // Occupation suspends local income and building upkeep.
     const modifiers = provinceBuildingModifiers(p), country = state.countries[p.ownerId]!;
-    production.set(p.ownerId,money((production.get(p.ownerId)??0)+(3*(p.buildings?.Farm??0)+12*(p.buildings?.Factory??0))*(.5+(p.development??40)/100)));
+    production.set(p.ownerId,money((production.get(p.ownerId)??0)+(3*(p.buildings?.Farm??0)+(!country.stockpile?12*(p.buildings?.Factory??0):0))*(.5+(p.development??40)/100)));
     administration.set(p.ownerId,money((administration.get(p.ownerId)??0)+p.income*.02*(1-Math.min(.5,(p.buildings?.Administration??0)*.1))));
     resources.set(p.ownerId, money((resources.get(p.ownerId) ?? 0) + provinceProduction(p, country).revenue * (1 + modifiers.resourcePercent / 100)));
     taxBase.set(p.ownerId, money((taxBase.get(p.ownerId) ?? 0) + p.income * (1 + modifiers.taxPercent / 100)));
@@ -69,7 +69,7 @@ export function recalcEconomy(state: GameState): void {
     const tradeIncome = money(rawTrade * (.1 + (diplomatic.tradeBonus.get(c.id) ?? 0)) * meanDevelopment / 100 * (.5 + c.stability / 200)*policy.trade*(1+course.trade));
     const sabotage=espionageModifiers(state,c.id).productionMultiplier;
     const resourceIncome = money(c.stockpile?c.stockpile.tradeRevenue:(resources.get(c.id) ?? 0)*sabotage*policy.production*(1+course.production)), buildingMaintenance = buildingCosts.get(c.id) ?? 0;
-    const productionIncome=money((production.get(c.id)??0)*sabotage*policy.production*(1+course.production)),administrationMaintenance=money((administration.get(c.id)??0)*policy.administration*(1-course.administration));
+    const productionIncome=money((c.stockpile?.industrialIncome??0)+(production.get(c.id)??0)*sabotage*policy.production*(1+course.production)),administrationMaintenance=money((administration.get(c.id)??0)*policy.administration*(1-course.administration));
     const monthlyIncome = money(taxIncome + tradeIncome + resourceIncome + productionIncome);
     c.militaryUpkeepBase=money(militaryCosts.get(c.id)??0);
     const armyMaintenance = money(c.militaryUpkeepBase*militaryFundingCost(c));
