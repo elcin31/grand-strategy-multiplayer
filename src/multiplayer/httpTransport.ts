@@ -12,7 +12,11 @@ const indexKey='dominion.sessions.v1',key=(id:string)=>'dominion.session.'+id;
 export class HttpTransport implements MultiplayerTransport {
  private sessions=new Map<string,RemoteSession>();private checksums=new Map<string,string>();private queues=new Map<string,Promise<void>>();private listeners=new Map<string,(s:GameState)=>void>();private delivering=new Set<string>();
  constructor(private baseUrl:string,private store:KeyStore=secureSessionStore,private endpointSuffix=''){this.baseUrl=baseUrl.replace(/\/+$/,'');}
- private async request<T>(path:string,body:unknown):Promise<T>{const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);try{const started=performance.now();const response=await fetch(`${this.baseUrl}/${path}${this.endpointSuffix}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body as object,clientStateVersion:CURRENT_STATE_VERSION,...path==='game-room'?{wireVersion:1}:{}}),signal:controller.signal});const text=await response.text();const result=JSON.parse(text);recordMetrics({networkMs:performance.now()-started,networkBytes:new TextEncoder().encode(text).byteLength});if(!response.ok)throw new RemoteError(result.error??`Server ${response.status}`,response.status);return result.stateEncoding?decodeSnapshot(result):result;}finally{clearTimeout(timer);}}
+ private async request<T>(path:string,body:unknown):Promise<T>{
+  const controller=new AbortController();let timer:ReturnType<typeof setTimeout>|undefined;
+  const timeout=new Promise<never>((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(new Error('Сервер не ответил за 15 секунд. Повторите синхронизацию этой комнаты.'));},15000);});
+  try{return await Promise.race([timeout,(async()=>{const started=performance.now();const response=await fetch(`${this.baseUrl}/${path}${this.endpointSuffix}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body as object,clientStateVersion:CURRENT_STATE_VERSION,...path==='game-room'?{wireVersion:1}:{}}),signal:controller.signal});const text=await response.text();let result;try{result=JSON.parse(text);}catch{throw new Error('Некорректный ответ сервера. Повторите синхронизацию.');}recordMetrics({networkMs:performance.now()-started,networkBytes:new TextEncoder().encode(text).byteLength});if(!response.ok)throw new RemoteError(result.error??`Server ${response.status}`,response.status);return result.stateEncoding?decodeSnapshot(result):result;})()]);}finally{clearTimeout(timer);}
+ }
  async savedSessions():Promise<RemoteSession[]>{const ids=JSON.parse(await this.store.get(indexKey)??'[]') as string[];const rows=await Promise.all(ids.map(id=>this.store.get(key(id))));return rows.filter((r):r is string=>r!==null).map(r=>JSON.parse(r) as RemoteSession).sort((a,b)=>b.lastPlayed-a.lastPlayed);}
  private async persist(s:RemoteSession){await this.store.set(key(s.gameId),JSON.stringify(s));const ids=JSON.parse(await this.store.get(indexKey)??'[]') as string[];if(!ids.includes(s.gameId))await this.store.set(indexKey,JSON.stringify([...ids,s.gameId]));}
  async forget(gameId:string){this.sessions.delete(gameId);await this.store.remove(key(gameId));const ids=JSON.parse(await this.store.get(indexKey)??'[]') as string[];await this.store.set(indexKey,JSON.stringify(ids.filter(id=>id!==gameId)));}
@@ -27,7 +31,7 @@ export class HttpTransport implements MultiplayerTransport {
   const pending=s.pending;
   // Only absolute, unpaid controls can be rebased after an explicit CAS refusal.
   // Paid/relative intents retain the existing visible rejection behavior.
-  const rebasable=['SELECT_COUNTRY','SET_READY','SET_SPEED'].includes(pending.command.type);
+  const rebasable=['SELECT_COUNTRY','SET_READY','START_GAME','SET_SPEED'].includes(pending.command.type);
   this.delivering.add(s.gameId);
   try{
   for(let attempt=0;;attempt++){
@@ -39,17 +43,23 @@ export class HttpTransport implements MultiplayerTransport {
      'Stale campaign version','Состояние обновилось. Повторите действие после синхронизации'
     ].includes(error.message);
     if(stale&&rebasable&&attempt<2){
-     await this.refresh(s);pending.expectedVersion=s.version;await this.persist(s);continue;
+     const fresh=await this.refresh(s);
+     if(pending.command.type==='START_GAME'&&fresh.state.phase!=='lobby'){delete s.pending;await this.persist(s);return;}
+     pending.expectedVersion=s.version;await this.persist(s);continue;
     }
     if(error instanceof RemoteError&&[400,401,409,429].includes(error.status)){
      delete s.pending;await this.persist(s);if(error.status!==401)await this.refresh(s);
+    }
+    if(pending.command.type==='START_GAME'&&!(error instanceof RemoteError)){
+     try{const fresh=await this.refresh(s);if(fresh.state.phase!=='lobby'){delete s.pending;await this.persist(s);return;}}catch{/* Durable command id is retained for retry/reconnect. */}
     }
     throw error;
    }
   }
   }finally{this.delivering.delete(s.gameId);}
  }
- async sendCommand(gameId:string,command:GameCommand):Promise<void>{if(command.type==='ADVANCE_TICK')return;const previous=this.queues.get(gameId)??Promise.resolve();const next=previous.catch(()=>{}).then(async()=>{const s=this.sessions.get(gameId);if(!s)throw new Error('Сессия потеряна');if(s.pending)await this.deliver(s);s.pending={command,commandId:`cmd-${Date.now()}-${Math.random().toString(36).slice(2,14)}`,expectedVersion:s.version};await this.persist(s);await this.deliver(s);});this.queues.set(gameId,next);return next;}
+ async synchronize(gameId:string):Promise<GameState>{const s=this.sessions.get(gameId);if(!s)throw new Error('Сессия потеряна');return(await this.refresh(s)).state;}
+ async sendCommand(gameId:string,command:GameCommand):Promise<void>{if(command.type==='ADVANCE_TICK')return;const previous=this.queues.get(gameId)??Promise.resolve();const next=previous.catch(()=>{}).then(async()=>{const s=this.sessions.get(gameId);if(!s)throw new Error('Сессия потеряна');if(s.pending){const recoveringStart=s.pending.command.type==='START_GAME'&&command.type==='START_GAME';await this.deliver(s);if(recoveringStart)return;}s.pending={command,commandId:`cmd-${Date.now()}-${Math.random().toString(36).slice(2,14)}`,expectedVersion:s.version};await this.persist(s);await this.deliver(s);});this.queues.set(gameId,next);return next;}
  subscribe(gameId:string,onState:(s:GameState)=>void,onStatus?:(status:string)=>void):Unsubscribe{let stopped=false,inFlight=false;this.listeners.set(gameId,onState);const poll=async()=>{const s=this.sessions.get(gameId);if(stopped||inFlight||!s)return;inFlight=true;try{if(this.delivering.has(gameId)){await this.request('game-room',{action:'heartbeat',gameId,playerId:s.playerId,token:s.token});if(!stopped)onStatus?.('');}else{const r=await this.request<RoomResponse>('game-room',{action:'state',gameId,playerId:s.playerId,token:s.token,version:s.version,checksum:this.checksums.get(gameId)});if(!stopped){if(!r.unchanged)this.adopt(s,r);onStatus?.('');}}}catch(error){if(!stopped){if(error instanceof RemoteError&&error.status===426){stopped=true;clearInterval(timer);onStatus?.(error.message);}else onStatus?.(error instanceof RemoteError&&error.status===401?'Сессия истекла. Вернитесь к списку кампаний.':'Связь потеряна — восстанавливаем…');}}finally{inFlight=false;}};const timer=setInterval(poll,1500);void poll();return()=>{stopped=true;clearInterval(timer);this.listeners.delete(gameId);};}
  async leave(gameId:string){const s=this.sessions.get(gameId);if(s){s.lastPlayed=Date.now();await this.persist(s);}this.sessions.delete(gameId);}
 }

@@ -7,7 +7,10 @@ export class LaunchAction {
     const tapAt=performance.now();
     this.busy = true;
     this.changed(true);
-    try { await this.paint(); this.started(performance.now()-tapAt); await action(); return true; }
-    finally { this.busy = false; this.changed(false); }
+    // Android can suspend RAF while another surface is being prepared.
+    // Painting is a courtesy, never a precondition for dispatching the action.
+    let timer:ReturnType<typeof setTimeout>|undefined;
+    try { await Promise.race([this.paint(),new Promise<void>(r=>{timer=setTimeout(r,100);})]);clearTimeout(timer); this.started(performance.now()-tapAt); await action(); return true; }
+    finally {clearTimeout(timer); this.busy = false; this.changed(false); }
   }
 }

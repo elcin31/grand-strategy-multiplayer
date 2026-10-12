@@ -3,14 +3,15 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { GameState } from '../types/game';
 
-export function LobbyPanel({ state, playerId, onReady, onStart, busy=false }: { state: GameState; playerId: string; busy?: boolean; onReady: (ready: boolean) => void; onStart: () => void }) {
-  const me = state.players.find((player) => player.id === playerId) ?? state.players[0];
+export function LobbyPanel({ state, playerId, onReady, onStart, busy=false,pending=null }: { state: GameState; playerId: string; busy?: boolean; pending?:'country'|'ready'|'start'|null; onReady: (ready: boolean) => void; onStart: () => void }) {
+  const me = state.players.find((player) => player.id === playerId);
   const allReady = state.players.length > 0 && state.players.every((player) => player.ready && player.countryId);
   return (
     <View style={styles.card}>
-      <Text numberOfLines={1} style={styles.playerCountry}>{state.players.map(p=>`${p.displayName}: ${p.countryId?state.countries[p.countryId]?.name:"выбирает страну"} (${p.ready?"готов":"не готов"})`).join(" · ")}</Text>
+      <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>{state.players.map(p=><View key={p.id} style={{minWidth:150,flexGrow:1}}><Text style={styles.playerName}>{p.isHost?'♛ ':''}{p.displayName}{p.id===playerId?' · Вы':''}</Text><Text style={[styles.playerCountry,p.ready&&styles.ready]}>{p.countryId?state.countries[p.countryId]?.name:'Выбирает страну'} · {p.ready?'Готов':'Не готов'}</Text></View>)}</View>
       <Text style={styles.playerCountry}>{allReady?"Все игроки готовы":!me?.countryId?"Выберите страну для начала игры":!me.ready?"Подтвердите готовность":"Ожидание других игроков"} · {state.players.length} игрок(ов)</Text>
-      <View style={styles.actions}><Pressable style={[styles.secondary, me?.ready && styles.secondaryActive]} disabled={busy} onPress={() => onReady(!me?.ready)}><Text style={styles.secondaryText}>{me?.ready ? 'СНЯТЬ ГОТОВНОСТЬ' : 'Я ГОТОВ'}</Text></Pressable>{me?.isHost && <Pressable style={[styles.primary, !allReady && styles.disabled]} accessibilityLabel="Начать игру" accessibilityRole="button" accessibilityState={{disabled:!allReady||busy,busy}} disabled={!allReady||busy} onPress={onStart}><Text style={styles.primaryText}>{busy?"ЗАПУСК КАМПАНИИ…":"НАЧАТЬ ИГРУ"}</Text></Pressable>}</View>
+      <View style={styles.actions}><Pressable accessibilityRole="button" accessibilityLabel={me?.ready?'Снять готовность':'Я готов'} accessibilityState={{disabled:busy||!me?.countryId,busy:pending==='ready'}} style={[styles.secondary, me?.ready && styles.secondaryActive,(!me?.countryId||busy)&&styles.disabled]} disabled={busy||!me?.countryId} onPress={() => onReady(!me?.ready)}><Text style={styles.secondaryText}>{pending==='ready'?'ПОДТВЕРЖДЕНИЕ…':me?.ready ? 'СНЯТЬ ГОТОВНОСТЬ' : 'Я ГОТОВ'}</Text></Pressable>{me?.isHost && <Pressable style={[styles.primary, (!allReady||busy) && styles.disabled]} accessibilityLabel="Начать игру" accessibilityRole="button" accessibilityState={{disabled:!allReady||busy,busy:pending==='start'}} disabled={!allReady||busy} onPress={onStart}><Text style={styles.primaryText}>{pending==='start'?"ЗАПУСК…":"НАЧАТЬ ИГРУ"}</Text></Pressable>}</View>
+      {!me?.isHost&&<Text style={styles.playerCountry}>{allReady?'Хозяин комнаты может запустить кампанию.':'Запуск доступен хозяину после готовности всех игроков.'}</Text>}
     </View>
   );
 }

@@ -5,10 +5,10 @@ import { SvgXml } from 'react-native-svg';
 import { getWorldFlag } from '../world/catalog';
 import type { Country, Leader, Province } from '../types/game';
 
-interface CountryPanelProps { country: Country | null; leader?: Leader | null; provinces: Province[]; locked: boolean; onChoose: () => void; }
+interface CountryPanelProps { country: Country | null; leader?: Leader | null; provinces: Province[]; locked: boolean; pending?:boolean; occupied?:boolean; disabled?:boolean; onChoose: () => void; }
 const compact = (value: number) => new Intl.NumberFormat('ru-RU', { notation: 'compact', maximumFractionDigits: 1 }).format(value);
 
-export function CountryPanel({ country, leader, provinces, locked, onChoose }: CountryPanelProps) {
+export function CountryPanel({ country, leader, provinces, locked, pending=false,occupied=false,disabled=false,onChoose }: CountryPanelProps) {
   if (!country) return <View style={styles.card}><Text style={styles.title}>Государство не выбрано</Text><Text style={styles.muted}>Нажмите на страну на карте.</Text></View>;
   const flag = country.flag ? getWorldFlag(country.id) : null;
   return (
@@ -18,7 +18,7 @@ export function CountryPanel({ country, leader, provinces, locked, onChoose }: C
       <View style={styles.metrics}>
         <Metric label="Казна" value={`$${compact(country.treasury)}M`} /><Metric label="Доход" value={`+$${compact(country.income)}M`} /><Metric label="Население" value={compact(country.population)} /><Metric label="Армия" value={compact(country.army)} />
       </View>
-      <Pressable onPress={onChoose} disabled={locked} style={({ pressed }) => [styles.button, pressed && !locked && styles.buttonPressed, locked && styles.buttonDisabled]}><Text style={styles.buttonText}>{locked ? 'УЖЕ ВЫБРАНО' : 'ИГРАТЬ ЗА ЭТУ СТРАНУ'}</Text></Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel="Играть за эту страну" accessibilityState={{disabled:locked||occupied||disabled,busy:pending}} onPress={onChoose} disabled={locked||occupied||disabled} style={({ pressed }) => [styles.button, pressed && styles.buttonPressed, (locked||occupied||disabled) && styles.buttonDisabled]}><Text style={[styles.buttonText,(locked||occupied||disabled)&&{color:colors.parchment}]}>{pending?'ПОДТВЕРЖДЕНИЕ…':occupied?'СТРАНА ЗАНЯТА':locked ? 'ВЫБРАНО' : 'ИГРАТЬ ЗА ЭТУ СТРАНУ'}</Text></Pressable>
     </View>
   );
 }

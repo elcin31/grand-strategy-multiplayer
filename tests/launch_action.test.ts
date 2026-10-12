@@ -7,7 +7,7 @@ for(const name of ['singleplayer','start game'])test(name+': first tap starts ex
  const gate=new LaunchAction(v=>statuses.push(v),()=>new Promise(r=>paint=r));
  const action=async()=>{calls++;await new Promise<void>(r=>finish=r);navigations++;};
  const first=gate.run(action);assert.deepEqual(statuses,[true]);assert.equal(await gate.run(action),false);assert.equal(calls,0);
- paint();await Promise.resolve();assert.equal(calls,1);assert.equal(await gate.run(action),false);
+ paint();await new Promise(r=>setImmediate(r));assert.equal(calls,1);assert.equal(await gate.run(action),false);
  finish();assert.equal(await first,true);assert.equal(navigations,1);assert.deepEqual(statuses,[true,false]);
 });
 test('failure clears loading and permits retry; previous session does not block a new launch',async()=>{

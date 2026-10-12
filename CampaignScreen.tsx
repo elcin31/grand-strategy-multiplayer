@@ -48,6 +48,11 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   const cameraWork=useRef(new CameraWorkGate());
   const cameraActivity=useCallback((active:boolean)=>cameraWork.current.activity(active),[]);
   const [connectionStatus,setConnectionStatus]=useState('');
+  const [lobbyOperation,setLobbyOperation]=useState<'country'|'ready'|'start'|null>(null);
+  const lobbyLatch=useRef(false);
+  const [lobbyError,setLobbyError]=useState('');
+  const [launchSlow,setLaunchSlow]=useState(false);
+  useEffect(()=>{if(lobbyOperation!=='start'){setLaunchSlow(false);return;}const timer=setTimeout(()=>setLaunchSlow(true),12000);return()=>clearTimeout(timer);},[lobbyOperation]);
 
   const [transport, setTransport] = useState<MultiplayerTransport>(() => new HttpTransport(remoteUrl,undefined,'-v21'));
   const [state, setState] = useState<GameState | null>(null);
@@ -110,9 +115,18 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   };
 
 
+  const lobbyAction = async (kind:'country'|'ready'|'start',command:GameCommand) => {
+    if(!state||lobbyLatch.current)return;
+    lobbyLatch.current=true;setLobbyOperation(kind);setLobbyError('');
+    try{await transport.sendCommand(state.id,command);}
+    catch(error){
+      if(kind==='start'&&transport instanceof HttpTransport){try{const fresh=await transport.synchronize(state.id);if(fresh.phase!=='lobby')return;}catch{}}
+      setLobbyError(error instanceof Error?error.message:'Не удалось подтвердить действие');
+    }finally{lobbyLatch.current=false;setLobbyOperation(null);}
+  };
   const chooseCountry = () => {
     if (!state || !selectedCountryId || !playerId) return;
-    safeAction(() => transport.sendCommand(state.id, { type: 'SELECT_COUNTRY', playerId, countryId: selectedCountryId }));
+    void lobbyAction('country',{ type: 'SELECT_COUNTRY', playerId, countryId: selectedCountryId });
   };
 
   const sendCommand = (command: GameCommand) => {
@@ -205,7 +219,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="light-content" />
       <View style={styles.content}>
-        {launchBusy&&<View accessibilityRole="alert" style={{position:"absolute",top:0,bottom:0,left:0,right:0,zIndex:100,backgroundColor:"#101f2b",justifyContent:"center",alignItems:"center"}}><ActivityIndicator size="large" color={colors.gold}/><Text style={styles.exitText}>Запуск кампании…</Text></View>}
+        {launchBusy&&!gameStarted&&<View accessibilityRole="alert" style={{position:"absolute",top:0,bottom:0,left:0,right:0,zIndex:100,backgroundColor:"#101f2b",justifyContent:"center",alignItems:"center"}}><ActivityIndicator size="large" color={colors.gold}/><Text style={styles.exitText}>Подключение к кампании…</Text></View>}
         <View style={styles.topbar}>
           {!gameStarted&&<View style={{maxWidth:220}}>
             <Text style={[styles.brand,gameStarted&&{fontSize:15}]}>DOMINION</Text>
@@ -249,6 +263,8 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
             leader={selectedCountry?.rulerId ? state.leaders?.[selectedCountry.rulerId] ?? null : null}
             provinces={selectedProvinces}
             locked={Boolean(selectedCountryId && myCountryId === selectedCountryId)}
+            pending={lobbyOperation==='country'} disabled={lobbyOperation!==null}
+            occupied={state.players.some(p=>p.id!==playerId&&p.countryId===selectedCountryId)}
             onChoose={chooseCountry}
           />
         )}
@@ -263,12 +279,14 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
         )}
         </ScrollView>}
         {!gameStarted && <View style={styles.lobbyDock}>
+          {lobbyError!==''&&<View style={{backgroundColor:colors.surface,padding:8}}><Text accessibilityRole="alert" style={{color:colors.gold,fontSize:12}}>{lobbyError}</Text><Pressable accessibilityRole="button" style={styles.exitButton} onPress={()=>{setLobbyError('');if(transport instanceof HttpTransport)void safeAction(async()=>{await transport.synchronize(state.id);});}}><Text style={styles.exitText}>Синхронизировать эту комнату</Text></Pressable></View>}
+          {lobbyOperation==='start'&&<Text style={{color:colors.gold,backgroundColor:colors.surface,padding:8}}>{launchSlow?'Проверяем подтверждение сервера. Комната сохранена; после ошибки запуск можно повторить.':'Сервер подтверждает запуск кампании…'}</Text>}
           <LobbyPanel
-            busy={launchBusy}
+            busy={launchBusy||lobbyOperation!==null} pending={lobbyOperation}
             state={presentation??state}
             playerId={playerId ?? ''}
-            onReady={(ready) => playerId && safeAction(() => transport.sendCommand(state.id, { type: 'SET_READY', playerId, ready }))}
-            onStart={() => playerId && safeAction(async () => {await launch.current!.run(()=>transport.sendCommand(state.id, { type: 'START_GAME', playerId }));})}
+            onReady={(ready) => {if(playerId)void lobbyAction('ready',{type:'SET_READY',playerId,ready});}}
+            onStart={() => {if(playerId)void lobbyAction('start',{type:'START_GAME',playerId});}}
           />
         </View>}
       </View>
