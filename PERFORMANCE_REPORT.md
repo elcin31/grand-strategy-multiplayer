@@ -1,3 +1,11 @@
+# Actual native transport diagnosis; guarded texture-opacity candidate (2026-10-12)
+
+814/382000 remains rejected at reverseworld/military compositorP99; six other gates nowPASS, including actual1844.98005752s native soak/30PSS450043–556550KiB. Matched4trace382049/source6734 captures+CPUqueries verified fromZIP/hash/CRC/raw trace digests. All actual marker/PID scopes valid; vendor warnings/incomplete attribution preserved. Source helper's military filename guard fixed and same traces reanalyzed locally, without rerolling original numbers. Native GL/emulator transport dominates samples; JS/preparation is low. This does not establish physical handset causality or successful optimization.
+
+Pinned Skia2.6.2 uses transparentTextureView although this soleCanvas always starts with opaqueOceanFill. A guarded Android prebuild plugin tests marking the existingTextureView opaque, leaving baseView/callbacks/native presentation and all raster/LOD/geometry/pixels/gameplay unchanged. Real generatednativehash/config verified locally. Unknown/extra/transparent/conditional/explicitopaque-prop canvases fail the contract.313JS/103Python0skips/typecheck/actualprebuild/Hermes/coast/ownership/sourceverifierPASS; new exactAPK/full7native checks pending. No threshold or input/stress limit relaxed; no improvement/Redmi claim.
+
+---
+
 # Fresh4947 camera has two real reverseP99 regressions (2026-10-12)
 
 Exact382000/814APK all36 raw scenarios/PSS/input/world/compositor capture checks preserved in WORLD_RASTER_NATIVE_QA_2026-10-12.json. Original camera job now correctly rejects reverseworldP99139.194239→176.488806ms against20%limit167.0330868, plus military89.170892→109.417984 against107.0050704. Forward passes;18PSS comparisons pass. Earlier8ff paired success does not override this rejection. No limit changed or numerical reroll accepted.

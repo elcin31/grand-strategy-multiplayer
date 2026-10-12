@@ -1,3 +1,11 @@
+# Source-verified native opacity correction awaits fresh exact-binary QA (2026-10-12)
+
+Prior814/382000 completes with six passing gates and two actual reversecameraP99 violations. Original actualnative1844.98005752s/rawPSS/hash verified; prior outcomes preserved, no acceptance. Actual4world/military CPU captures and queries recorded inTEXTURE_OPACITY_SOURCE_QA_2026-10-12.json, with helperfilename correction applied to existing files only. Candidate guardedAndroidTextureView-opacity plugin has313JS/103Python0skips/strictTS/realExpoPrebuild/nativeconfig/sourceproof/productionHermesPASS. App/version/signature/backend/game mechanics/42art/nativeTextureView presentation unchanged. New native source requires its own fresh full seven-gate binary proof before promotion/publication/delivery.
+
+Scoped newQA cleanup remainsPENDING because SQLwrite connector returnedInvalid/expiredrequestState; no0counts or acceptance exception fabricated. Main/backend unchanged; acceptedmanifestabsent; physicalXiaomi unmeasured. Existingexact-artifact publisher remains ready after legitimate complete acceptance.
+
+---
+
 # Fresh814 binary rejected; renderer diagnosis continues (2026-10-12)
 
 Exact4947/full382000 APK81484b477e8efb9ceb1809e2d3ae771c33683a96b2e54ce903d1c786b043acea/142482125bytes: strictTS/309JS/102Python0skips/42art/build,10000ticks/livebackend,actual higher-version save installation and native signed reconnect allPASS. Full rawcamera rejects two reverse compositorP99 limits; original longsmoke still runs. No final acceptance/main promotion/release/attachment. Preserve both failures; prior8ff success cannot substitute. Matched native world/military CPU diagnosis is next; no gameplay rewrite.

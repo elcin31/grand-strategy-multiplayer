@@ -14,7 +14,8 @@
       "versionCode": 10
     },
     "plugins": [
-      "expo-secure-store"
+      "expo-secure-store",
+      "./plugins/withMapTextureOpacity.cjs"
     ]
   }
 }

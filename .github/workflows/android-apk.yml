@@ -121,6 +121,7 @@ jobs:
             paired-visual-ci.json
             paired-camera-ci.json
             CAMERA_HOST_PAIRED.json
+            android/map-texture-opacity.json
           if-no-files-found: error
           retention-days: 14
   android-smoke:

@@ -12,6 +12,9 @@ concurrency:
   cancel-in-progress: true
 jobs:
   pan-system-diagnostics:
+    # A matched auxiliary trace is explicitly requested after a failed original
+    # camera gate; a new renderer implementation must use source/full QA first.
+    if: contains(github.event.head_commit.message, '[trace-only]') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
