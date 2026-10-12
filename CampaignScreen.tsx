@@ -1,4 +1,5 @@
 import {ArmyDock} from './src/components/ArmyDock';
+import {DraggableWindow} from './src/components/DraggableWindow';
 import {StrategyIcon} from './src/components/StrategyIcon';
 import {QuickTutorial} from './src/components/QuickTutorial';
 import {projectFogOfWar} from './supabase/functions/_shared/strategy3System';
@@ -13,7 +14,7 @@ import {LandscapeHUD} from './src/components/LandscapeHUD';
 import {SECTIONS,SECTION_LABELS,panelWidth,backAction,type Section} from './src/ui/landscape';
 import { campaignStore } from './src/persistence/nativeCampaignStore';
 import { useCallback, useMemo, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, AppState, BackHandler, Keyboard, LayoutAnimation, useWindowDimensions, Pressable, StatusBar, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { ActivityIndicator, Alert, AppState, BackHandler, Keyboard, useWindowDimensions, Pressable, StatusBar, StyleSheet, Text, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CountryPicker } from './src/components/CountryPicker';
 import { CountryPanel } from './src/components/CountryPanel';
@@ -254,8 +255,8 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
 
         {gameStarted&&selectedArmyId&&<ArmyDock state={state} armyId={selectedArmyId} playerId={playerId??''} width={Math.max(230,Math.min(460,width-(panelOpen?panelWidth(width):190)-100))} onInspect={()=>{setSection('Context');setPanelOpen(true);}} onDeselect={deselectArmy} onCommand={sendCommand}/>}
         {gameStarted&&<QuickTutorial state={state} playerId={playerId??''} onCommand={sendCommand}/>}
-        {gameStarted&&<ScrollView style={styles.navigation} contentContainerStyle={{gap:4,flexGrow:1}} showsHorizontalScrollIndicator={false}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onPress={()=>{LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);setSection(tab);setPanelOpen(true);}}><StrategyIcon section={tab}/><Text style={styles.exitText}>{SECTION_LABELS[tab]}</Text></Pressable>)}</ScrollView>}
-        {panelOpen && <ScrollView key={section} keyboardShouldPersistTaps="handled" style={[styles.panel,{width:panelWidth(width),bottom:gameStarted?8:154}]} contentContainerStyle={styles.panelContent}>
+        {gameStarted&&<ScrollView style={styles.navigation} contentContainerStyle={{gap:0,flexGrow:1}}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onLongPress={()=>Alert.alert(SECTION_LABELS[tab])} onPress={()=>{setSection(tab);setPanelOpen(v=>section===tab?!v:true);}}><StrategyIcon section={tab} size={20}/></Pressable>)}</ScrollView>}
+        {panelOpen&&!gameStarted && <ScrollView keyboardShouldPersistTaps="always" style={[styles.panel,{width:panelWidth(width),bottom:154}]} contentContainerStyle={styles.panelContent}>
 
         {!gameStarted && (
           <CountryPanel
@@ -269,15 +270,15 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
           />
         )}
 
-        {gameStarted && (
+        </ScrollView>}
+        {gameStarted&&panelOpen&&<DraggableWindow key={section} title={selectedArmyId&&section==='Context'?'Армия':SECTION_LABELS[section]} onClose={()=>setPanelOpen(false)}>
           <GamePanel diplomacyCountryId={diplomacyCountryId} onSelectArmy={selectArmy} onDeselectArmy={deselectArmy} focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedArmyId(state.armies.find(a=>a.provinceId===id&&a.ownerId===myCountryId)?.id??null);setSelectedProvinceId(id);setSection('Context');setFocusCountryId(myCountryId);}}
             state={presentation??state}
             playerId={playerId ?? ''}
             selectedProvinceId={selectedProvinceId}
             onCommand={sendCommand}
           />
-        )}
-        </ScrollView>}
+        </DraggableWindow>}
         {!gameStarted && <View style={styles.lobbyDock}>
           {lobbyError!==''&&<View style={{backgroundColor:colors.surface,padding:8}}><Text accessibilityRole="alert" style={{color:colors.gold,fontSize:12}}>{lobbyError}</Text><Pressable accessibilityRole="button" style={styles.exitButton} onPress={()=>{setLobbyError('');if(transport instanceof HttpTransport)void safeAction(async()=>{await transport.synchronize(state.id);});}}><Text style={styles.exitText}>Синхронизировать эту комнату</Text></Pressable></View>}
           {lobbyOperation==='start'&&<Text style={{color:colors.gold,backgroundColor:colors.surface,padding:8}}>{launchSlow?'Проверяем подтверждение сервера. Комната сохранена; после ошибки запуск можно повторить.':'Сервер подтверждает запуск кампании…'}</Text>}
@@ -298,17 +299,17 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.graphite },
   entryWrap: { flexGrow: 1, justifyContent: 'center', padding: 18, gap: 12, maxWidth: 600, width: '100%', alignSelf: 'center' },
   content: { flex: 1 },
-  mapArea: { flex: 1, marginLeft:76 },
-  navigation:{position:'absolute',left:4,top:78,bottom:4,width:68,backgroundColor:'#101B26F5',borderRadius:tokens.radius.panel},
-  navButton:{minHeight:44,paddingHorizontal:3,paddingVertical:4,alignItems:'center',justifyContent:'center',borderRadius:9},
+  mapArea: { flex: 1, marginLeft:52 },
+  navigation:{position:'absolute',left:2,top:50,bottom:4,width:48,backgroundColor:'#101B26F5',borderRadius:4},
+  navButton:{height:44,width:48,alignItems:'center',justifyContent:'center',borderRadius:4},
   lobbyDock: {position:'absolute',left:8,right:8,bottom:8},
   panel: { position: 'absolute', right: 8, top: 78, bottom: 12, width: '34%', maxWidth: 410, minWidth: 250, backgroundColor: '#17222DF5', borderWidth:1,borderColor:colors.border, borderRadius:tokens.radius.panel },
   panelContent: { padding: 8, gap: 10 },
-  topbar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 12, paddingVertical: 6, gap: 8 },
+  topbar: { height:48,zIndex:35,flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 4, gap: 2 },
   brand: { fontFamily:tokens.typography.display, color:colors.parchment, fontSize: 22, fontWeight: '900', letterSpacing: 2.2 },
   tagline: { color: '#61718A', fontSize: 10, fontWeight: '800', letterSpacing: 1.4, marginBottom: 5 },
   subbrand: { fontFamily:tokens.typography.display, color:colors.muted, fontSize: 11, marginTop: 2 },
   footer: { color: '#46546A', textAlign: 'center', fontSize: 10, letterSpacing: 0.4 },
-  exitButton: { backgroundColor:colors.surface, borderRadius:tokens.radius.panel, paddingHorizontal: 9, paddingVertical: 9, minHeight:44,justifyContent:'center' },
+  exitButton: { backgroundColor:colors.surface, borderRadius:4, width:44,minHeight:44,alignItems:'center',justifyContent:'center' },
   exitText: { color: colors.muted, fontWeight: '900', fontSize: 10 },
 });

@@ -1,3 +1,5 @@
+import {PanelTabs} from './PanelTabs';
+import {PoliticalDecisionsPanel} from './PoliticalDecisionsPanel';
 import {StrategyCouncil} from './StrategyCouncil';
 import {WorldStatistics} from './WorldStatistics';
 import {ProductionPanel} from './ProductionPanel';
@@ -48,6 +50,9 @@ const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).t
 const currency = (value: number) => `${value < 0 ? '−' : ''}$${Math.abs(value) >= 1000 ? (Math.abs(value)/1000).toFixed(1)+'B' : Math.abs(value).toFixed(3).replace(/\.?0+$/, '')+'M'}`;
 
 export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
+  const [page,setPage]=useState('Обзор');
+  const tabs=section==='Government'?['Обзор','Законы','Реформы','Советники','Внутренняя политика']:section==='Economy'?['Обзор','Производство','Ресурсы и торговля']:section==='Diplomacy'?['Обзор','Войны и мир']:section==='Military'?['Обзор','Сражения и осады']:section==='Religion'?['Обзор','Вероисповедание']:[];
+  const tabbar=tabs.length?<PanelTabs tabs={tabs} value={page} onChange={setPage}/>:null;
   const [buildOpen,setBuildOpen]=useState(section==='Construction');
   const [religionOpen, setReligionOpen] = useState(section==='Religion');
   const [governmentOpen, setGovernmentOpen] = useState(section==='Government');
@@ -80,12 +85,20 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
   const bankruptcyMonths = Math.max(0, (nation.bankruptcyUntilTick ?? 0) - state.tick);
   const economicActionsEnabled = state.phase === 'running' || state.phase === 'paused';
 
+  if(section==='Government'&&page==='Советники')return <>{tabbar}<StrategyCouncil state={state} playerId={playerId} onCommand={onCommand}/></>;
+  if(section==='Government'&&page==='Реформы')return <>{tabbar}<PoliticalDecisionsPanel state={state} playerId={playerId} onCommand={onCommand}/></>;
+  if(section==='Government'&&page==='Внутренняя политика')return <>{tabbar}<StabilityPanel initialOpen state={state} playerId={playerId} onCommand={onCommand}/></>;
+  if(section==='Economy'&&page==='Производство')return <>{tabbar}<ProductionPanel state={state} playerId={playerId} onCommand={onCommand}/></>;
+  if(section==='Economy'&&page==='Ресурсы и торговля')return <>{tabbar}<ResourceTradePanel state={state} playerId={playerId} onCommand={onCommand}/></>;
+  if(section==='Diplomacy'&&page==='Войны и мир')return <>{tabbar}<WarPanel initialOpen state={state} playerId={playerId} onCommand={onCommand}/></>;
+  if(section==='Military'&&page==='Сражения и осады')return <>{tabbar}<BattleSiegePanel state={state} countryId={countryId}/></>;
   if(section==='Notifications')return <NotificationFeed state={state} playerId={playerId} onCommand={onCommand} onFocus={onFocusProvince??(()=>{})}/>;
   if(section==='Intelligence')return <><DiplomacyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} initialTargetId={diplomacyCountryId??undefined}/><EspionagePanel state={state} playerId={playerId} onCommand={onCommand} from={countryId} to={diplomacyCountryId??undefined}/></>;
   if(section==='Statistics')return <WorldStatistics state={state}/>;
   if(section==='Construction')return <ConstructionPanel state={state} playerId={playerId} onCommand={onCommand} provinceId={selectedProvinceId} onFocus={onFocusProvince??(()=>{})}/>;
   return (
     <View style={styles.wrap}>
+      {tabbar}
       {(section==='Military'||section==='Diplomacy'||section==='Economy')&&<View style={{overflow:'hidden',borderWidth:1,borderColor:colors.border}}><ExpansionArt name={section==='Military'?'military-staff':section==='Diplomacy'?'diplomacy-embassy':'theme-economy'} label={'Иллюстрация Dominion: '+(section==='Military'?'military':section==='Diplomacy'?'diplomacy':'economy')}/><View style={{padding:10,flexDirection:'row',alignItems:'center',gap:10}}><Crest/><Text style={{fontFamily:'serif',fontSize:20,color:colors.parchment}}>{section==='Military'?'Военный совет':section==='Diplomacy'?'Дипломатический корпус':'Государственная казна'}</Text></View></View>}
       {section==='Country'&&<View style={styles.card}>
         <View style={styles.header}>
@@ -114,8 +127,6 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
         </View>
       </View>}
 
-      {section==='Economy'&&<ProductionPanel state={state} playerId={playerId} onCommand={onCommand}/>}
-      {section==='Economy'&&<ResourceTradePanel state={state} playerId={playerId} onCommand={onCommand}/>}
       {section==='Economy'&&budget && <Pressable accessibilityRole="button" onPress={() => { setEconomyOpen(!economyOpen); setGovernmentOpen(false); setReligionOpen(false); }} style={styles.secondaryButton}><Text style={styles.secondaryText}>Экономика {economyOpen ? '▴' : '▾'}</Text></Pressable>}
       {economyOpen && budget && <View style={styles.card}>
         <Text style={styles.eyebrow}>МЕСЯЧНЫЙ БЮДЖЕТ</Text>
@@ -156,7 +167,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
         <Text style={styles.govCurrent}>{nation.governmentType}</Text>
         <Text style={styles.hint}>Смена: {GOVERNMENT_CHANGE_COST} PP, −{GOVERNMENT_STABILITY_COST} стабильности; cooldown {GOVERNMENT_COOLDOWN_TICKS} мес.</Text>
         {cooldown > 0 && <Text style={styles.hint}>Следующая смена через {cooldown} мес.</Text>}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.routes}>
+        {page==='Законы'&&<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.routes}>
           {GOVERNMENT_TYPES.map(governmentType => {
             const modifiers = governmentModifiers(governmentType);
             const active = governmentType === nation.governmentType;
@@ -169,7 +180,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
               <Text style={styles.govDetails}>Стабильность {signed(modifiers.stabilityPerYear)}/год · Unrest {signed(modifiers.unrestPerYear)}/год</Text>
             </Pressable>;
           })}
-        </ScrollView>
+        </ScrollView>}
         <Text style={styles.hint}>Репутация: {nation.diplomaticReputation?.toFixed(0)} · стабильность {nation.stability.toFixed(1)} · unrest {nation.unrest?.toFixed(1)}</Text>
       </View>}
 
@@ -181,7 +192,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
         <Text style={styles.hint}>Religious Unity: {nation.religiousUnity?.toFixed(1)}% · unrest {nation.unrest?.toFixed(1)}</Text>
         <Text style={styles.hint}>Смена: {RELIGION_CHANGE_COST} PP, −{RELIGION_STABILITY_COST} стабильности, unrest в провинциях другой веры; cooldown {RELIGION_COOLDOWN_TICKS} мес.</Text>
         {religionCooldown > 0 && <Text style={styles.hint}>Следующая смена религии через {religionCooldown} мес.</Text>}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.routes}>
+        {page==='Вероисповедание'&&<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.routes}>
           {RELIGION_IDS.map(religionId => {
             const active = religionId === nation.religion;
             const disabled = active || religionCooldown > 0 || politicalPower < RELIGION_CHANGE_COST;
@@ -192,18 +203,16 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
               <Text style={styles.govDetails}>{active ? 'Действует' : 'Принять · 120 PP'}</Text>
             </Pressable>;
           })}
-        </ScrollView>
+        </ScrollView>}
         <Text style={styles.hint}>Все религии используют одинаковые правила. Низкое единство повышает unrest; смена не обращает население автоматически.</Text>
       </View>}
 
       {section==='Country'&&<StrategyCouncil state={state} playerId={playerId} onCommand={onCommand}/>}
       {section==='Country'&&<StabilityPanel state={state} playerId={playerId} onCommand={onCommand} />}
-      {section==='Diplomacy'&&<WarPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
       {section==='Diplomacy'&&<DiplomacyPanel initialOpen initialTargetId={diplomacyCountryId??undefined} state={state} playerId={playerId} onCommand={onCommand} />}
       {section==='Technology'&&<StrategyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
       {section==='Focus'&&<NationalFocusPanel state={state} playerId={playerId} onCommand={onCommand}/>}
 
-      {section==='Military'&&<BattleSiegePanel state={state} countryId={countryId}/>}
       {section==='Military'&&<View style={styles.card}><Text style={styles.eyebrow}>АРМИИ · {compact(nation.army)}</Text>{state.armies.filter(a=>a.ownerId===countryId).map(a=><Pressable key={a.id} style={styles.secondaryButton} onPress={()=>onFocusProvince?.(a.provinceId)}><Text style={styles.secondaryText}>{state.provinces.find(p=>p.id===a.provinceId)?.name} · {compact(a.troops)}</Text><Text style={styles.hint}>Мораль {a.morale?.toFixed(0)} · организация {a.organization?.toFixed(0)}</Text></Pressable>)}</View>}
       {section==='Context'&&<View style={styles.card}>
         <Text style={styles.eyebrow}>КОМАНДОВАНИЕ</Text>

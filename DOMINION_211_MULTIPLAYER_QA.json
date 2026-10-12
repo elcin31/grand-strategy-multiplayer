@@ -1,0 +1,13 @@
+{
+  "roomId": "dfbaf27e-049e-4fcb-97a6-22c94b601872",
+  "createJoin": true,
+  "countries": true,
+  "ready": true,
+  "start": true,
+  "twoAuthoritativeSnapshots": true,
+  "mapGeometryPreparedBoth": true,
+  "ordersBoth": true,
+  "sharedCalendar": true,
+  "reconnect": true,
+  "nativeMapRender": false
+}

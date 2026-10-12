@@ -289,13 +289,8 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
         </Group>
       </Canvas>
     </GestureDetector>
-    <MiniMap state={state} scene={scene} camera={snapshot} viewport={viewport} onMove={animateCamera}/>
-    <View style={styles.toolbar}>
-      <Pressable accessibilityLabel="Настройки карты" style={styles.button} onPress={() => setSettingsOpen(!settingsOpen)}><Text style={styles.text}>{MODE_LABELS[mode]} · {preset} ▾</Text></Pressable>
-      <Pressable accessibilityLabel="Обзор мира" style={styles.button} onPress={() => animateCamera({ x: 720, y: 310, zoom: Math.max(0.5, viewport.width / 1450) })}><Text style={styles.text}>МИР</Text></Pressable>
-      <Pressable accessibilityLabel="Фокус выбранной провинции или страны" style={styles.button} onPress={()=>{const selected=selectedProvinceId?provinceGeometry.get(selectedProvinceId)?.anchor:undefined;const capital=mapCities.find(c=>c.id===state.countries[selectedCountryId??'']?.capitalCityId)?.point;const target=selected??capital;if(target)animateCamera({...target,zoom:6});}}><Text style={styles.text}>К ВЫБРАННОМУ</Text></Pressable>
-      <Pressable accessibilityLabel="Европа" style={styles.button} onPress={() => animateCamera(defaults)}><Text style={styles.text}>ЕВРОПА</Text></Pressable>
-    </View>
+    <MiniMap state={state} scene={scene} camera={snapshot} viewport={viewport} onMove={animateCamera} onWorld={()=>animateCamera({x:720,y:310,zoom:Math.max(.5,viewport.width/1450)})} onFocus={()=>{const selected=selectedProvinceId?provinceGeometry.get(selectedProvinceId)?.anchor:undefined;const capital=mapCities.find(c=>c.id===state.countries[selectedCountryId??'']?.capitalCityId)?.point;const target=selected??capital;if(target)animateCamera({...target,zoom:6});}}/>
+    <View style={styles.toolbar}><Pressable accessibilityRole="button" accessibilityLabel="Режимы и настройки карты" style={styles.button} onPress={()=>setSettingsOpen(!settingsOpen)}><Text style={styles.zoomText}>▱</Text></Pressable></View>
     <View style={styles.zoomControls}>
       {[1.5, 1 / 1.5].map((factor, i) => <Pressable key={i} accessibilityLabel={i ? 'Отдалить' : 'Приблизить'} style={styles.button} onPress={() => animateCamera(zoomAt({ x: x.value, y: y.value, zoom: zoom.value }, factor, { x: viewport.width / 2, y: viewport.height / 2 }, viewport))}><Text style={styles.zoomText}>{i ? '−' : '+'}</Text></Pressable>)}
     </View>
@@ -303,20 +298,22 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
       <Text style={styles.heading}>РЕЖИМ КАРТЫ</Text><View style={styles.options}>{AVAILABLE_MODES.filter(m => m !== 'Resources' || state.provinces.some(p => p.resourceDeposit)).map(m => <Pressable accessibilityLabel={`Режим ${MODE_LABELS[m]}`} accessibilityState={{selected:mode===m}} key={m} style={[styles.option, mode === m && styles.active]} onPress={() => { setMode(m); setSettingsOpen(false); }}><Text style={styles.text}>{MODE_LABELS[m]}</Text></Pressable>)}</View>
       <Text style={styles.heading}>КАЧЕСТВО ГРАФИКИ</Text><View style={styles.options}>{(Object.keys(GRAPHICS) as GraphicsPreset[]).map(p => <Pressable key={p} style={[styles.option, preset === p && styles.active]} onPress={() => choosePreset(p)}><Text style={styles.text}>{p}</Text></Pressable>)}</View>
       <PerformanceControls frameRate={frameRate} onFrameRate={setFrameRate} overlay={overlay} onOverlay={setOverlay} adaptive={adaptive} onAdaptive={setAdaptive} running={benchmarkRunning} onBenchmark={()=>void startBenchmark()}/>
+      <View style={styles.options}><Pressable accessibilityRole="button" style={styles.option} onPress={()=>{animateCamera(defaults);setSettingsOpen(false);}}><Text style={styles.text}>Европа</Text></Pressable><Pressable accessibilityRole="button" style={styles.option} onPress={()=>setSettingsOpen(false)}><Text style={styles.text}>Закрыть ×</Text></Pressable></View>
+    <View style={{gap:6}}><Text style={styles.note}>{MODE_LABELS[mode]}{(mode==='Diplomatic'||mode==='Relations')?` · ${state.countries[selectedCountryId??'']?.name??'Выберите страну'}`:''}</Text><ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap:9}}>{legend.map(item=><View key={item.label} style={{flexDirection:'row',alignItems:'center',gap:4}}><View style={{width:10,height:10,backgroundColor:item.color}}/><Text style={styles.note}>{item.label}</Text></View>)}</ScrollView></View>
     </ScrollView>}
     {benchmarkRunning&&<View pointerEvents="none" style={{position:'absolute',top:54,left:12,backgroundColor:'#17242a',padding:8}}><Text style={styles.text}>Benchmark: {MODE_LABELS[mode]} · тестовая симуляция не изменяет кампанию</Text></View>}
     {overlay&&<PerformanceOverlay/>}
-    <View style={styles.legend}><Text style={styles.note}>{MODE_LABELS[mode]}{(mode==='Diplomatic'||mode==='Relations')?` · ${state.countries[selectedCountryId??'']?.name??'Выберите страну'}`:''}</Text><ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap:9}}>{legend.map(item=><View key={item.label} style={{flexDirection:'row',alignItems:'center',gap:4}}><View style={{width:10,height:10,backgroundColor:item.color}}/><Text style={styles.note}>{item.label}</Text></View>)}</ScrollView></View>
+
   </View>;
 });
 const styles = StyleSheet.create({
   frame: { flex: 1, backgroundColor: '#101f2b', overflow: 'hidden' },
-  toolbar: { position: 'absolute', top: 12, left: 12, right: 60, flexDirection: 'row', gap: 6, flexWrap: 'wrap' },
-  button: { backgroundColor: '#17242aee', borderWidth: 1, borderColor: '#485953', paddingHorizontal: 12, paddingVertical: 10,minHeight:44,justifyContent:'center', borderRadius: 5 },
+  toolbar: { position:'absolute',top:4,right:4 },
+  button: { backgroundColor: '#17242aee', borderWidth: 1, borderColor: '#485953', width:44,height:44,alignItems:'center',justifyContent:'center', borderRadius: 5 },
   text: { color: '#dddcca', fontSize: 11, fontWeight: '600' },
   zoomText: { color: '#dddcca', fontSize: 20, textAlign: 'center' },
-  zoomControls: { position: 'absolute', right: 10, bottom: 108, gap: 6 },
-  settings: { zIndex: 10, position: 'absolute', left: 12, top: 60, width: 420, maxWidth: '65%', maxHeight:'75%', backgroundColor: '#17242af5', borderRadius: 6, borderWidth: 1, borderColor: '#485953' },
+  zoomControls: {position:'absolute',right:4,top:52,gap:2},
+  settings: { zIndex: 10, position: 'absolute', right:52, top:4, width:420, maxWidth: '65%', maxHeight:'75%', backgroundColor: '#17242af5', borderRadius: 6, borderWidth: 1, borderColor: '#485953' },
   heading: { color: '#98a79e', fontSize: 10, letterSpacing: 1 }, options: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   option: { padding: 10,minHeight:44,justifyContent:'center', backgroundColor: '#2a383d', borderRadius: 4 }, active: { backgroundColor: '#625b40' },
   legend: { position: 'absolute', left: 12, bottom: 54, width:'55%',maxWidth:600,backgroundColor:'#17242acc',padding:4,borderRadius:6 }, note: { color: '#c1c7b6', fontSize: 9, backgroundColor: '#17242acc', padding: 5, alignSelf: 'flex-start' },
