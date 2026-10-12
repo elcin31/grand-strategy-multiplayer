@@ -2413,5 +2413,35 @@
       "magic": "c61fbc03c103191f"
     }
   },
-  "rawTraceDetails": "Original four complete raw trace files and full CPU queries remain in exact source-bound artifact11727401182; summaries retain losses/incomplete attribution."
+  "rawTraceDetails": "Original four complete raw trace files and full CPU queries remain in exact source-bound artifact11727401182; summaries retain losses/incomplete attribution.",
+  "actualSourceCi": {
+    "runtime": "6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2",
+    "tree": "ba7b49ca1cb4f7f7d3eec4d8216177d4d7a7f17b",
+    "sourceRunId": 38208485498,
+    "sourceJobId": 114677159781,
+    "strictTypecheck": true,
+    "js": {
+      "tests": 313,
+      "passed": 313,
+      "skipped": 0
+    },
+    "python": {
+      "tests": 103,
+      "passed": 103,
+      "skipped": 0,
+      "pinnedPerfetto": "0.58.2"
+    },
+    "actualAndroidPrebuild": true,
+    "nativeTextureAndLandscapeVerifier": true,
+    "originalArt": 42,
+    "hermes": {
+      "path": "source-hermes-qa/_expo/static/js/android/AppEntry-eeeecedbf7b3b05c64de7257eb486490.hbc",
+      "bytes": 11484254,
+      "sha256": "e60a9fd3f6f0a640902a3541cee7d39a39a28cf4d9a24e0f8ea2879a13c20d29",
+      "magic": "c61fbc03c103191f"
+    },
+    "fullRunId": 38208776998,
+    "nativePerformanceAccepted": false,
+    "releaseAccepted": false
+  }
 }

@@ -1,3 +1,13 @@
+# Exact6f5 source/prebuildCI PASS; fresh full native382087 running (2026-10-12)
+
+**Published/tested implementation HEAD6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2**, treeba7b49ca1cb4f7f7d3eec4d8216177d4d7a7f17b. Actual source38208485498/job114677159781 SUCCESS: strictTS/313JS/103Python0skips/42art,realExpoAndroidprebuild/pinnedopaqueTextureView+landscape verifier,productionHermes11484254bytes/SHAe60a9fd3f6f0a640902a3541cee7d39a39a28cf4d9a24e0f8ea2879a13c20d29/magicc61fbc03c103191f. Normal QA→expansion-v2 promotion froma49 preserves histories; local clean checkout matches6f5. No force/foreign overwrite/main/backend change. New fully tested source is an opacity hypothesis, not a measured performance success.
+
+Fresh original complete standalone **38208776998** runs on exact6f5: build114678056315,10000ticks114678056303,backend114678056609 in progress. All seven original real native checks/limits/1800s stress and exact signature/version/save/reconnect proof remain mandatory. New binary cannot reuse prior814's six passes. Prior814 camera two actual reverseP99 failures,1844.98s soak and four real matched CPU diagnostics remain recorded. Acceptedmanifestabsent; final APK not yetready/delivered; physical Redmi unmeasured. Source report updated with actual CI/Hermes versus separately recorded local export hash.
+
+**Next exact action:** inspect new382087 build/native proof and downloaded exactAPK/raw artifacts; handle any genuine gate failure with a new measured source correction, never numerical reroll. Review/clean only its completed new QA UUIDs and pending prior814 fixtures, with independent0/0/0/29backupreadback. If truly all gates pass, update acceptance/handoff, normalmain, exactartifactpublisher/public-byte verification and attachment. Supabase scoped write transport currentlyInvalid/expiredrequestState; do not inventcleanup. Metadata[skip ci] checkpoints preserve this full run.
+
+---
+
 # Guarded Android map TextureView opacity candidate — source verified (2026-10-12)
 
 Current checked parent **6734c72275ffb50d649aaa16f69b9c29741425ac** on existing expansion-camera-qa; expansion-v2 remainsa49ec25/game4947/full382000. Main remainsdbb354ab/dedicated backend unchanged. Exact814APK remains **REJECTED** by two original reverse compositorP99 limits; six other full gates nowSUCCESS. Actual completed native1844.98005752s/30PSS450043–556550KiB/rawdurationSHA792fe836694e4c656cc50e1b81231bfd244c8008200abeb1de77d46c8af13935 verified locally from smokeZIP11726599227/32940197/SHA baf52109bd1afd8f32926749c88776de7d080ced3773f91ce7806908a792e17f/CRC. Full smoke harness fix is working; old failure and both current numeric regressions remain preserved.
