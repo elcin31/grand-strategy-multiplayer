@@ -1,39 +1,11 @@
 # Dominion 2.1 checkpoint
 
-- Branch: `dominion-2.1-overhaul`
-- HEAD before this commit: `0263bef6f22dc89876f6c1245a99edebce593e38`
-- Completed: recovery from 11fbeec / v2.0.0-playtest.1; HUD and mini-map; calendar with daily clock, monthly accounting, 1–5 speeds, shared host controls and pause voting; schema 18→19 save migration/backup.
-- Current: final integration / lean QA / Android release.
-- Unfinished: resources/construction/production, technology/focus expansion, additional systems, art, integration and APK.
-- Known: inherited camera microstutter (deferred). Visual reference received; use gold/graphite/navy, compact panels and era-correct historical art.
-- Next: persistent strategic goals and personalities; staggered operational/tactical planning, group and escort orders; integrate with expanded industry.
-- Military: 18 regiment types, formations, multi-waypoint routes/ETA/redeployment, split/merge/escort and group commands, commanders, daily battles/sieges and reports. Legal ownership retained under occupation.
-- Checks: six focused military/selection tests pass; typecheck; three focused calendar/save/server-authority tests pass. No long simulations or camera benchmarks.
-- Preserve Dominion 2.0 branch, release and APK; only this repo and existing Dominion backend.
-
-- AI: persistent six-month strategic memory and six preferences; goal-based policies/research/focuses; staggered tactical support/retreat/assault, group planning and escorts; supply/coalition/reserve guards retained. Typecheck passed.
-
-- Resources: 35 resources, deterministic secondary deposits preserving originals; bounded stockpiles and actual extraction/consumption, shortages and price/producer rankings; consenting trade contracts and bounded auto-buy; economy receives only actual export revenue. Schema 21.
-
-- Construction: 40 building types, paid material requirements, technology/era/deposit/coast restrictions; real national capacity/queue priorities/bulk orders; suspension under occupation, damage/repair and opt-in auto-repair; six staged national projects; full filtered catalogue UI.
-
-- Production: 15 material/energy-limited recipes, per-enterprise specialization and orders, civil/military allocation, actual recruitment/reinforcement equipment spending and shortages. Typecheck and six focused industry/trade/calendar/save/authority checks passed after fixing extraction of weighted legacy deposits.
-
-- Technology: 100 original connected nodes in nine directions; graph/prerequisite validation, institution requirements, actual capabilities and bounded effects across economy/army/logistics/research/construction/intelligence. Modern new campaigns receive foundational knowledge; old save discoveries and paid progress retained. Direction-filtered graph stays independent of map camera. Typecheck and two targeted DAG/research/save/capability checks passed.
-
-- Focuses: 120 original nodes, eight countries with unique branches, exclusive paths, eight spirits, eight timed decisions and once-only event choices. Two targeted focus/decision/save checks pass.
-- Strategy: fog projections for client/server, war goals including allied intervention, constrained peace demands, reparations/guarantees/disarmament; exhaustion economy/politics; vassal autonomy and consent-based integration; four advisers, world chronicle and six rankings; optional eight-step tutorial. Two targeted authority/fog/war/save checks pass. Schema 23.
-
-- Art/UI: official visual reference adapted into compact gold/navy controls, original SVG icons, army context dock, actual SVG flags and three new era-appropriate optimized WebP paintings. All 2.0 illustrations retained.
-
-- Integration: AI now chooses deficit-driven buildings/recipes, research directions, national projects, advisers and subject policies. Mini-map paths/colors are retained across unchanged ownership; no renderer/camera rewrite. Save backup preserves pre-overhaul v23 snapshot.
-
-- Lean QA: typecheck and 37 targeted gameplay/save/authority/wire/receipt/security checks pass; actual 11fbeec v18 state migrates to v23 preserving deposits, treasury, date and roundtrip.
-- Release preparation: 2.1.0 (11), same package and certificate verification; versioned `game-room-v21` / `game-command-v21` use the existing Dominion database/auth/CAS. Original 2.0 endpoints/rooms stay intact; old offline saves migrate, old online campaigns stay in 2.0.
-- Android workflow reuses existing Gradle/prebuild/integrity stages. For the 2.1 branch, explicit lean QA and short launch/army/save smoke replace optional long simulation, camera comparison and soak.
-
-- Release-critical military correction: active-battle route replacement could leave an invalid saved path after victory. Block replacement until withdrawal; retreat removes battle/siege participation, and AI skips fighting stacks. A targeted regression covers route rejection, retreat and save roundtrip. Candidate cb85082 is superseded and must not be published.
-
-- Native candidate: standalone build/signature/art integrity passed in run 38265480011; smoke stopped at country selection because the new harness used a short ADB tap and swiped outside the context panel. Use the existing 100-ms press convention and actual scroll-view bounds; no game/renderer changes for that harness issue. Final candidate includes a8bd2ac route/save fix.
-
-- Final rule integration: continuous battles now read all building defense modifiers (including coastal forts and military bases); commander specialties/logistics and regiment organization/fuel drive actual calculations; intelligence views also hide unrelated diplomatic preparations. Targeted military/save/authority checks cover this final integration.
+- Branch: `dominion-2.1-overhaul`; runtime HEAD before this checkpoint: `31299e8187ec35a54d1187809224d7f05f3f0713`.
+- Base: `11fbeec` / `v2.0.0-playtest.1`; Dominion 2.0 branch, endpoints, release and APK preserved. Only `elcin31/grand-strategy-multiplayer` and its existing backend are used.
+- Completed: compact concept-inspired HUD/mini-map; daily calendar and 1–5 speeds with monthly accounting; 18 regiment types, routes/groups/formations, continuous battles/sieges; persistent layered AI; 35 resources with stockpiles/trade; 40 buildings, queues/damage/repair and six national projects; 16 material-limited production recipes; 100 technologies; 120 focuses, spirits/decisions/choices; fog, war goals/peace/exhaustion/vassals/advisers/chronicle/rankings/tutorial; three original WebP paintings and all previous art.
+- Saves: schema 23, versioned backup and migration from actual 2.0 schema-18 source preserve deposits, treasury/date and roundtrip.
+- Multiplayer: host time and validated server commands/receipts/CAS; separate `game-room-v21` / `game-command-v21` functions in the same Dominion project. Original 2.0 functions untouched. Old online rooms continue in 2.0; old offline saves migrate.
+- Checks completed: typecheck, 37 lean gameplay/save/authority/security tests before final battle regression; targeted regression now covers invalid routes and retreat participation. Live create/join/start/host controls/spoof rejection/focus replay/research/build/war/time/reconnect passed; synthetic room and sessions cleaned from the database.
+- Current: final backend pin and Android release. Prior standalone builds passed release/signature/embedded-bundle/art integrity. Short native smoke revealed landscape keyboard overlay during country selection; disable fullscreen extraction and dismiss keyboard before selecting. Candidate also includes final commander/logistics/defense/regiment effects.
+- Known limitations: inherited camera microstutter deferred; modern commander portrait shared; defense groups use adjacent provinces around the selected target; balance is first-playtest tuning.
+- Next: build final candidate, complete short native smoke, download/verify APK, publish new `v2.1.0-playtest.1` prerelease and verify the concrete APK link. Do not publish superseded candidates or replace the 2.0 release.

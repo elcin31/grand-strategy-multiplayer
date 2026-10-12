@@ -1,6 +1,6 @@
 import {colors,tokens} from '../ui/tokens';
 import { useMemo, useState } from 'react';
-import { FlatList, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { FlatList, Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getWorldCountry } from '../world/catalog';
 import type { GameState, Country } from '../types/game';
@@ -15,7 +15,7 @@ export function CountryPicker({ state, onPreview }: { state: GameState; onPrevie
     }).sort((a, b) => a.name.localeCompare(b.name, 'ru'));
   }, [state.countries, query]);
   const occupied = new Set(state.players.map(p => p.countryId).filter(Boolean));
-  const renderRow = ({ item }: { item: Country }) => <Pressable accessibilityLabel={'Государство: '+item.name} style={styles.row} onPress={() => { onPreview(item.id); setOpen(false); }}>
+  const renderRow = ({ item }: { item: Country }) => <Pressable accessibilityLabel={'Государство: '+item.name} style={styles.row} onPress={() => { Keyboard.dismiss(); onPreview(item.id); setOpen(false); }}>
     <View style={[styles.swatch, { backgroundColor: item.color }]} />
     <Text style={styles.name}>{item.name}</Text><Text style={styles.code}>{occupied.has(item.id) ? 'ЗАНЯТО' : item.shortName}</Text>
   </Pressable>;
@@ -24,7 +24,7 @@ export function CountryPicker({ state, onPreview }: { state: GameState; onPrevie
     <Modal visible={open} transparent animationType="fade" onRequestClose={() => setOpen(false)}>
       <SafeAreaView style={styles.overlay}><View style={styles.dialog}>
         <View style={styles.header}><Text style={styles.title}>ВЫБОР ГОСУДАРСТВА</Text><Pressable onPress={() => setOpen(false)}><Text style={styles.text}>ЗАКРЫТЬ</Text></Pressable></View>
-        <TextInput accessibilityLabel="Поиск государства" placeholder="Название или ISO-код" placeholderTextColor="#87968f" autoCorrect={false} value={query} onChangeText={setQuery} style={styles.input} />
+        <TextInput accessibilityLabel="Поиск государства" placeholder="Название или ISO-код" placeholderTextColor="#87968f" autoCorrect={false} disableFullscreenUI returnKeyType="done" onSubmitEditing={Keyboard.dismiss} value={query} onChangeText={setQuery} style={styles.input} />
         <FlatList data={rows} keyExtractor={c => c.id} renderItem={renderRow} keyboardShouldPersistTaps="handled" initialNumToRender={8} maxToRenderPerBatch={12} windowSize={5} ListEmptyComponent={<Text style={styles.text}>Государства не найдены</Text>} />
       </View></SafeAreaView>
     </Modal>

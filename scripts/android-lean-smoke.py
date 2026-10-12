@@ -33,12 +33,15 @@ def launch():
     adb('shell','am','force-stop',PACKAGE);adb('shell','am','start','-W','-n',PACKAGE+'/.MainActivity');time.sleep(10)
 try:
     adb('install','-r',sys.argv[1]);adb('logcat','-c');adb('shell','settings','put','system','accelerometer_rotation','0');adb('shell','settings','put','system','user_rotation','1');launch();capture('01-menu')
-    control('Одиночная игра','single');time.sleep(12);control('СТРАНЫ · 195','countries');tree=root('search');node=find_enabled_control(tree,'Поиск государства');assert node is not None;tap(node);adb('shell','input','text','Germany');time.sleep(1);control('Государство: Германия','germany');time.sleep(1);control('ИГРАТЬ ЗА ЭТУ СТРАНУ','choose',True);control('Я ГОТОВ','ready');control('Начать игру','start');time.sleep(3)
+    control('Одиночная игра','single');time.sleep(12);control('СТРАНЫ · 195','countries');tree=root('search');node=find_enabled_control(tree,'Поиск государства');assert node is not None;tap(node);adb('shell','input','text','Germany');time.sleep(1);adb('shell','input','keyevent','4');time.sleep(1);control('Государство: Германия','germany');time.sleep(1);control('ИГРАТЬ ЗА ЭТУ СТРАНУ','choose',True);control('Я ГОТОВ','ready');control('Начать игру','start');time.sleep(3)
     control('Пауза','pause');tree=root('hud');assert find_enabled_control(tree,'Скорость кампании') is not None;capture('02-campaign');assert_map_painted(OUT/'02-campaign.png')
     control('Раздел Армия','army');tree=root('army-list');row=next((n for n in tree.iter('node') if n.get('text','').startswith('Берлин · ')),None);assert row is not None,'Own army is missing';tap(row);time.sleep(1);control('Разделить 50%','split',True);time.sleep(1);control('Снять выделение армии','deselect');control('Сохранить кампанию','save');time.sleep(3)
     launch();control('Продолжить','continue');time.sleep(12);tree=root('restored');assert find_enabled_control(tree,'Скорость кампании') is not None;capture('03-restored');assert_map_painted(OUT/'03-restored.png')
     logs=adb('logcat','-d');(OUT/'logcat.txt').write_text(logs);assert_no_game_fatal(logs,adb('shell','pidof',PACKAGE).strip());assert not re.search(r'TypeError:|ReferenceError:|JavascriptException|Cannot read property|undefined is not',logs),'Runtime JS error'
     (OUT/'result.json').write_text(json.dumps({'releaseColdLaunch':True,'campaignStarted':True,'newHUD':True,'armySplit':True,'saveRestart':True,'mapPainted':True,'noFatalLogs':True,'soak':False},indent=2));print('PASS: standalone launch, new HUD/map, army split and save/restart')
 finally:
+    if not (OUT/'result.json').exists():
+        try:capture('failure')
+        except Exception:pass
     try:(OUT/'final-logcat.txt').write_text(adb('logcat','-d'))
     except Exception:pass
