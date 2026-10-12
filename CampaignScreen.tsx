@@ -160,7 +160,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
     const intent=mapTapIntent(selectedArmyId,myCountryId,{army});
     if(intent.type==='deselect'){deselectArmy();return;}
     if(intent.type==='diplomacy'){selectCountry(intent.countryId);return;}
-    setSelectedArmyId(id);setSelectedCityId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(true);
+    setSelectedArmyId(id);setSelectedCityId(null);setSelectedProvinceId(province);setSection('Context');setPanelOpen(false);
   },[selectedArmyId,myCountryId,deselectArmy,selectCountry]);
   const selectCity=useCallback((id:string,province:string)=>{
     const p=latestState.current?.provinces.find(p=>p.id===province);if(!p)return;
@@ -185,13 +185,13 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
     let tickDue=performance.now()+delay;
     const advance = async () => {
       if (disposed || inFlight) return;
-      if(cameraWork.current.defer(performance.now(),350,tickDue)){timer=setTimeout(()=>void advance(),80);return;}
+      if(latestState.current?.phase!=='running'||latestState.current.speed!==state.speed)return;
       inFlight = true;
       try { await transport.sendCommand(state.id, { type: 'ADVANCE_DAY' }); }
       catch { /* A transient authoritative conflict must not create a request pile-up. */ }
       finally {
         inFlight = false;
-        if (!disposed) {tickDue=performance.now()+delay;timer = setTimeout(() => { void advance(); }, delay);}
+        if (!disposed) {tickDue=Math.max(tickDue+delay,performance.now()+16);timer = setTimeout(() => { void advance(); }, Math.max(16,tickDue-performance.now()));}
       }
     };
     timer = setTimeout(() => { void advance(); }, delay);
@@ -272,7 +272,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
 
         </ScrollView>}
         {gameStarted&&panelOpen&&<DraggableWindow key={section} title={selectedArmyId&&section==='Context'?'Армия':SECTION_LABELS[section]} onClose={()=>setPanelOpen(false)}>
-          <GamePanel diplomacyCountryId={diplomacyCountryId} onSelectArmy={selectArmy} onDeselectArmy={deselectArmy} focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedArmyId(state.armies.find(a=>a.provinceId===id&&a.ownerId===myCountryId)?.id??null);setSelectedProvinceId(id);setSection('Context');setFocusCountryId(myCountryId);}}
+          <GamePanel diplomacyCountryId={diplomacyCountryId} onSelectArmy={selectArmy} onDeselectArmy={deselectArmy} focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedArmyId(section==='Construction'?null:state.armies.find(a=>a.provinceId===id&&a.ownerId===myCountryId)?.id??null);setSelectedProvinceId(id);if(section!=='Construction')setSection('Context');setFocusCountryId(myCountryId);}}
             state={presentation??state}
             playerId={playerId ?? ''}
             selectedProvinceId={selectedProvinceId}

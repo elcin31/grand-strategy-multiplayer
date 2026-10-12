@@ -1,3 +1,4 @@
+import {warBetween} from './diplomacySystem.ts';
 import {technologyBonuses} from './technologyTree.ts';
 import {resourceCombatFactor} from './stockpileSystem.ts';
 import {focusBonuses} from './focusCatalogue.ts';
@@ -60,12 +61,16 @@ export function combatMultiplier(state: GameState,army: Army,province: Province,
   const skill=army.commanderId ? state.commanders?.[army.commanderId]?.skill ?? 0 : 0;
   const terrain=province.terrain ?? 'plains',parts=armyParts(army);
   const terrainDefense=defending?({plains:1,forest:1.15,mountain:1.35,desert:1.05,urban:1.3}[terrain]):1;
-  const strength=UNIT_TYPES.reduce((n,type)=>{let factor=terrainDefense;if(!defending&&type==='Armor'&&['mountain','urban','forest'].includes(terrain))factor*=.65;if((type==='SpecialForces'||type==='Mountain')&&terrain==='mountain')factor*=1.25;return n+(parts[type]??0)*(defending?UNITS[type].defense:UNITS[type].attack)*factor;},0)/Math.max(1,army.troops);
+  const front=UNIT_TYPES.filter(t=>UNITS[t].role==='Front'||UNITS[t].role==='Flank').reduce((n,t)=>n+(parts[t]??0),0),rear=UNIT_TYPES.filter(t=>UNITS[t].role==='Rear').reduce((n,t)=>n+(parts[t]??0),0);
+  const screen=rear?Math.min(1,.5+front/Math.max(1,rear)*.5):1;
+  const enemyAirDefense=state.armies.filter(a=>a.ownerId!==army.ownerId&&a.provinceId===province.id&&warBetween(state,army.ownerId,a.ownerId)).reduce((n,a)=>n+(armyParts(a).AirDefense??0),0);
+  const strength=UNIT_TYPES.reduce((n,type)=>{let factor=terrainDefense;if(UNITS[type].role==='Rear')factor*=screen;if(type==='Cavalry'||type==='Armor')factor*=terrain==='plains'?1.12:terrain==='forest'||terrain==='mountain'?.85:1;if(type==='Drones')factor*=1-Math.min(.4,enemyAirDefense/Math.max(1000,army.troops));if(!defending&&type==='Armor'&&['mountain','urban','forest'].includes(terrain))factor*=.65;if((type==='SpecialForces'||type==='Mountain')&&terrain==='mountain')factor*=1.25;return n+(parts[type]??0)*(defending?UNITS[type].defense:UNITS[type].attack)*factor;},0)/Math.max(1,army.troops);
+  const engineer=1+Math.min(.12,(parts.Engineers??0)/Math.max(1,army.troops)*.6)*(defending||(province.buildings?.Fort??0)>0?1:0);
   const combined=(parts.Artillery??0)>0&&((parts.Infantry??0)+(parts.Mechanized??0))>0?1.08:1;
   const logistics=.5+supplyAt(state,army.ownerId,army.provinceId).score/200;
   const intel=!defending&&espionageModifiers(state,army.ownerId).intelTargets.has(province.controllerId??province.ownerId)?1.08:1;
   const specialization=general?.specialization===(defending?'Defense':'Offense')?1.05:1;
-  return specialization*resourceCombatFactor(state.countries[army.ownerId]!)*command*strength*combined*logistics*(1+(army.experience??0)/500)*(.4+(army.morale??80)/200+(army.organization??80)/200)*(1+skill/500)*(1+techLevel(state.countries[army.ownerId]!,'Military')*.06)*intel*militaryReadiness(state.countries[army.ownerId]!)*(1+focusBonuses(state.countries[army.ownerId]!).combat+technologyBonuses(state.countries[army.ownerId]!).combat);
+  return engineer*specialization*resourceCombatFactor(state.countries[army.ownerId]!)*command*strength*combined*logistics*(1+(army.experience??0)/500)*(.4+(army.morale??80)/200+(army.organization??80)/200)*(1+skill/500)*(1+techLevel(state.countries[army.ownerId]!,'Military')*.06)*intel*militaryReadiness(state.countries[army.ownerId]!)*(1+focusBonuses(state.countries[army.ownerId]!).combat+technologyBonuses(state.countries[army.ownerId]!).combat);
 }
 export function recoverMilitary(state: GameState): void {
   if(!state.dataset)return;

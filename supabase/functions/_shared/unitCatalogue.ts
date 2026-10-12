@@ -1,5 +1,5 @@
 /** Original Dominion regiments. Values are per thousand troops. */
-const unit=(name:string,cost:number,attack:number,defense:number,unlock:number,upkeep:number,era:number,speed=1,role:'Front'|'Rear'|'Flank'|'Support'='Front',fuel=0)=>({name,cost,attack,defense,unlock,upkeep,era,speed,role,fuel,organization:role==='Support'?90:75,morale:80,supply:upkeep});
+const unit=(name:string,cost:number,attack:number,defense:number,unlock:number,upkeep:number,era:number,speed=1,role:'Front'|'Rear'|'Flank'|'Support'='Front',fuel=0)=>({name,cost,attack,defense,unlock,upkeep,era,speed,role,fuel,range:role==='Rear'?3:role==='Support'?2:1,organization:role==='Support'?90:75,morale:80,supply:upkeep});
 export const UNITS={
  Infantry:unit('Пехота',20,1,1,0,1,1000),
  Mechanized:unit('Механизированная пехота',35,1.25,1.15,1,1.3,1940,1.6,'Front',.3),

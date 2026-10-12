@@ -16,9 +16,22 @@ export function militaryEntity(s:GameState,prefix:string):string{const seq=s.nex
 export function armyInBattle(s:GameState,id:string):boolean{return !!s.activeBattles?.some(b=>b.attackerArmyIds.includes(id)||b.defenderArmyIds.includes(id));}
 export function armyFormation(a:Army){const parts=armyParts(a),rows={Front:0,Rear:0,Flank:0,Support:0};for(const t of UNIT_TYPES)rows[UNITS[t].role]+=parts[t]??0;const covered=rows.Front+rows.Flank;
  return {...rows,attack:(a.formation==='Assault'?1.12:a.formation==='Defensive'?.9:1)*(covered?1:0.7)*(rows.Rear&&covered?1.08:1),defense:a.formation==='Defensive'?1.16:a.formation==='Assault'?.9:1,speed:a.formation==='Mobile'?1.2:a.formation==='Defensive'?.85:1};}
-export function armyTravelDays(_s:GameState,a:Army,p:Province):number{const parts=armyParts(a),speed=UNIT_TYPES.reduce((n,t)=>n+(parts[t]??0)*UNITS[t].speed,0)/Math.max(1,a.troops),terrain=p.terrain==='mountain'?1.6:p.terrain==='forest'||p.terrain==='desert'?1.3:1,roads=1+(p.buildings?.Infrastructure??0)*.08;
- return Math.max(1,Math.ceil(3*terrain/(Math.max(.4,speed)*roads*armyFormation(a).speed)*(a.order?.redeploy?.65:1)*(1+Math.max(0,50-(a.supply??100))/100)));}
-export function armyETA(s:GameState,a:Army):number{const provinces=new Map(s.provinces.map(p=>[p.id,p]));return Math.max(0,(a.order?.route??[]).reduce((n,id)=>n+armyTravelDays(s,a,provinces.get(id)!),0)-(a.order?.travelProgress??0));}
+const provinceIndexes=new WeakMap<GameState['provinces'],Map<string,Province>>();
+function provinceIndex(s:GameState){let index=provinceIndexes.get(s.provinces);if(!index){index=new Map(s.provinces.map(p=>[p.id,p]));provinceIndexes.set(s.provinces,index);}return index;}
+export function armyTravelDays(s:GameState,a:Army,p:Province):number{
+ const parts=armyParts(a),speed=UNIT_TYPES.reduce((n,t)=>n+(parts[t]??0)*UNITS[t].speed,0)/Math.max(1,a.troops);
+ const origin=provinceIndex(s).get(a.provinceId),dx=origin?Math.abs(p.x+p.width/2-origin.x-origin.width/2):22,dy=origin?p.y+p.height/2-origin.y-origin.height/2:0;
+ const distance=Math.max(.6,Math.min(2.4,Math.hypot(Math.min(dx,Math.abs(1440-dx)),dy)/22));
+ const terrain=p.terrain==='mountain'?1.6:p.terrain==='forest'||p.terrain==='desert'?1.3:1,roads=1+(p.buildings?.Infrastructure??0)*.1;
+ return Math.max(1,Math.ceil(1.7*distance*terrain/(Math.max(.4,speed)*roads*armyFormation(a).speed)*(a.order?.redeploy?.65:1)*(1+Math.max(0,50-(a.supply??100))/100)));
+}
+export function armyETA(s:GameState,a:Army):number{const provinces=provinceIndex(s);let from=a.provinceId,total=0;for(const id of a.order?.route??[]){const p=provinces.get(id);if(!p)continue;total+=armyTravelDays(s,{...a,provinceId:from},p);from=id;}return Math.max(0,total-(a.order?.travelProgress??0));}
+export function siegeForecast(s:GameState,x:Siege){const p=provinceIndex(s).get(x.provinceId)!,armies=s.armies.filter(a=>x.armyIds.includes(a.id)&&a.provinceId===p.id&&a.troops>0),supply=siegeSupply(s,x.attackerId,p),troops=armies.reduce((n,a)=>n+a.troops,0);
+ const siegeTroops=armies.reduce((n,a)=>n+(armyParts(a).SiegeTrain??0)+(armyParts(a).Artillery??0)*.6+(armyParts(a).RocketArtillery??0)*.7+(armyParts(a).Engineers??0)*.4,0);
+ const generals=armies.reduce((n,a)=>Math.max(n,a.commanderId?(s.commanders?.[a.commanderId]?.siege??0)+(s.commanders?.[a.commanderId]?.specialization==='Siege'?15:0):0),0);
+ const rate=Math.max(.2,(troops/Math.max(1000,x.garrison)*.65+siegeTroops/3000)*(supply/100+.15)*(1+generals/100)/(1+x.fortress*.4));
+ return {supply,troops,siegeTroops,rate,days:Math.ceil((100-x.progress)/rate)};
+}
 export function occupy(s:GameState,a:Army,p:Province):void{p.controllerId=a.ownerId;a.provinceId=p.id;invalidateSupply(s);}
 export function beginSiege(s:GameState,a:Army,p:Province):void{
  const defender=p.controllerId??p.ownerId,existing=s.sieges?.find(x=>x.provinceId===p.id&&x.attackerId===a.ownerId);a.provinceId=p.id;
@@ -58,9 +71,8 @@ export function dailyMilitary(s:GameState):void{
  for(const siege of [...s.sieges??[]]){
   const p=provinces.get(siege.provinceId)!,armies=s.armies.filter(a=>siege.armyIds.includes(a.id)&&a.provinceId===p.id&&a.troops>0);
   if(!armies.length||!warBetween(s,siege.attackerId,siege.defenderId)||(p.controllerId??p.ownerId)===siege.attackerId){s.sieges=s.sieges?.filter(x=>x.id!==siege.id);continue;}
-  const supply=siegeSupply(s,siege.attackerId,p),troops=armies.reduce((n,a)=>n+a.troops,0),siegeTroops=armies.reduce((n,a)=>n+(armyParts(a).SiegeTrain??0)+(armyParts(a).Artillery??0)*.6+(armyParts(a).Engineers??0)*.4,0);
-  const generals=armies.reduce((n,a)=>Math.max(n,a.commanderId?(s.commanders?.[a.commanderId]?.siege??0)+(s.commanders?.[a.commanderId]?.specialization==='Siege'?15:0):0),0);
-  siege.progress=Math.min(100,siege.progress+Math.max(.2,(troops/Math.max(1000,siege.garrison)*.65+siegeTroops/3000)*(supply/100+.15)*(1+generals/100)/(1+siege.fortress*.4)));
+  const {supply,rate}=siegeForecast(s,siege);
+  siege.progress=Math.min(100,siege.progress+rate);
   for(const a of armies){a.supply=supply;siege.losses+=takeArmyLosses(a,Math.min(a.troops,Math.floor(a.troops*(.001+(100-supply)*.00002))));}
   if(siege.progress>=100){for(const a of armies)occupy(s,a,p);p.buildingDamage=Math.min(.85,(p.buildingDamage??0)+.15);notify(s,siege.attackerId,'Siege','Крепость капитулировала: '+p.name,p.id);notify(s,siege.defenderId,'Siege','Крепость потеряна: '+p.name,p.id);s.sieges=s.sieges?.filter(x=>x.id!==siege.id);}
  }

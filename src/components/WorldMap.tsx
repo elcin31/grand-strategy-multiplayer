@@ -1,3 +1,6 @@
+import {AnimatedArmyMarker,type MarkerPosition} from './AnimatedArmyMarker';
+import {armyDisplayPoint} from '../map/armyInterpolation';
+import {dayDelay} from '../../supabase/functions/_shared/calendarSystem';
 import {projectFogOfWar} from '../../supabase/functions/_shared/strategy3System';
 import {MiniMap} from './MiniMap';
 import {countryGlyph,hitCountryGlyph,type CountryGlyph} from '../map/countryTargets';
@@ -181,6 +184,9 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   const budgets=markerBudgets(snapshot.zoom,preset);
   const militaryView=useMemo(()=>state.fogViewerId||!selectedCountryId?state:projectFogOfWar(state,selectedCountryId),[state,selectedCountryId]);
   const counters=useMemo(()=>budgetArmyMarkers(clusterArmies(armyCounters(militaryView,visibleIds),provinceGeometry,snapshot.zoom,selectedArmyId),snapshot.zoom,budgets.armies,selectedArmyId,selectedCountryId),[militaryView.armies,visibleIds,provinceGeometry,snapshot.zoom,selectedArmyId,selectedCountryId,budgets.armies]);
+  const markerPositions=useRef(new Map<string,MarkerPosition>());
+  const registerMarker=useCallback((key:string,position:MarkerPosition|null)=>{if(position)markerPositions.current.set(key,position);else markerPositions.current.delete(key);},[]);
+  const markerTargets=useMemo(()=>new Map(counters.map(c=>[c.key,armyDisplayPoint(militaryView,c,provinceGeometry)])),[counters,militaryView.armies,militaryView.provinces,provinceGeometry]);
   const legend=useMemo(()=>mapLegend(state,mode),[state.provinces,mode]);
   const troops = useMemo(() => troopsByProvince(militaryView), [militaryView.armies]);
   const provinceColors = useStableColors(useMemo(() => buildProvinceColors(state, mode, troops, selectedCountryId??undefined), [state.countries, state.provinces, state.diplomacy,state.wars,selectedCountryId, mode, troops]));
@@ -202,7 +208,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
     const countryHit=!long?countryGlyphsRef.current.find(g=>hitCountryGlyph(g,world.x,world.y,snapshot.zoom,TILT)):undefined;
     if(countryHit&&onSelectCountry){onSelectCountry(countryHit.label.countryId);return;}
     const cityHit = visibleCities(mapCities, visibleBounds({ x: cx, y: cy, zoom: z }, viewport, 0), z, preset).find(c => Math.hypot((c.point.x - world.x) * z, (c.point.y - world.y) * z * TILT) < 12);
-    const marker=counters.find(c=>Math.abs((c.x-world.x)*z)<35&&Math.abs((c.y-world.y)*z*TILT)<20);
+    const marker=counters.find(c=>{const animated=markerPositions.current.get(c.key),point=markerTargets.get(c.key)??c;return Math.abs(((animated?.x.value??point.x)-world.x)*z)<35&&Math.abs(((animated?.y.value??point.y)-world.y)*z*TILT)<20;});
     const army=marker?state.armies.find(a=>a.id===(marker.ids.includes(selectedArmyId??'')?selectedArmyId:marker.ids.find(id=>state.armies.some(a=>a.id===id&&a.ownerId===selectedCountryId))??marker.ids[0])):undefined;
     const nearby=army?{a:army,g:provinceGeometry.get(army.provinceId)}:undefined;
     const hit = nearby?.g ?? (cityHit ? provinceGeometry.get(cityHit.provinceId) : null) ?? spatialIndex.hit(world);
@@ -212,7 +218,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
     if(!long&&cityHit&&onSelectCity){onSelectCity(cityHit.id,cityHit.provinceId);return;}
     if (province) (long ? onLongPressProvince ?? onSelectProvince : onSelectProvince)(province);
     else if(!long)onClearSelection?.();
-  }, [counters,selectedArmyId,selectedCountryId,viewport, provinces, state.armies, onSelectProvince, onLongPressProvince,onSelectArmy,onSelectCity,onSelectCountry,onClearSelection,snapshot.zoom, preset, scene, mapCities]);
+  }, [counters,markerTargets,selectedArmyId,selectedCountryId,viewport, provinces, state.armies, onSelectProvince, onLongPressProvince,onSelectArmy,onSelectCity,onSelectCountry,onClearSelection,snapshot.zoom, preset, scene, mapCities]);
 
   const selectionRef=useRef(selectAt);selectionRef.current=selectAt;
   const selectCurrent=useCallback((px:number,py:number,cx:number,cy:number,z:number,long:boolean)=>selectionRef.current(px,py,cx,cy,z,long),[]);
@@ -281,7 +287,8 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
           {state.armies.filter(a=>a.id===selectedArmyId&&a.order).map(a=>{const points=[a.provinceId,...a.order!.route].map(id=>provinceGeometry.get(id)?.anchor).filter(Boolean);return <Path key={a.id+"-order"} path={points.map((p,i)=>`${i?"L":"M"}${p!.x},${p!.y}`).join("")} style="stroke" strokeWidth={selectionScale} color="#fff0ac"/>;})}
           {(state.movements??[]).filter(m=>state.tick-m.tick<=2&&(visibleIds.has(m.from)||visibleIds.has(m.to))).map((m,i)=>{const from=provinceGeometry.get(m.from)?.anchor,to=provinceGeometry.get(m.to)?.anchor;if(!from||!to)return null;return <Path key={'movement-'+i} path={`M${from.x},${from.y}L${to.x},${to.y}`} style="stroke" strokeWidth={selectionScale} color={state.countries[m.ownerId]!.color} opacity={pulse}/>;})}
           {!selectedPath.isEmpty() && <Path path={selectedPath} style="stroke" color="#f0db9e" strokeWidth={selectionScale} opacity={pulse} />}
-          <MapMarkerLayer state={state} zoom={snapshot.zoom} preset={preset} labels={labels} countryGlyphs={countryGlyphs} cities={cities} cityLabels={cityLabels} counters={counters} countryId={selectedCountryId} armyId={selectedArmyId} cityId={selectedCityId} provinceId={selectedProvinceId} geometry={provinceGeometry} visible={visibleIds} font={font} counterFont={counterFont} nationFont={nationFont} labelBudget={budgets.labels}/>
+          <MapMarkerLayer state={state} zoom={snapshot.zoom} preset={preset} labels={labels} countryGlyphs={countryGlyphs} cities={cities} cityLabels={cityLabels} counters={[]} countryId={selectedCountryId} armyId={selectedArmyId} cityId={selectedCityId} provinceId={selectedProvinceId} geometry={provinceGeometry} visible={visibleIds} font={font} counterFont={counterFont} nationFont={nationFont} labelBudget={budgets.labels}/>
+          {counters.map(c=><AnimatedArmyMarker key={c.ids.join('|')} counter={c} target={markerTargets.get(c.key)!} duration={Math.min(1200,dayDelay(state.speed))} paused={state.speed===0||state.phase!=='running'} zoom={snapshot.zoom} selected={c.ids.includes(selectedArmyId??'')} own={c.ownerId===selectedCountryId} color={state.countries[c.ownerId]?.color??'#778B93'} font={counterFont} onPosition={registerMarker}/>)}
           {[...(state.activeBattles??[]).map(b=>({...b,tick:state.tick})),...(state.sieges??[]).map(b=>({...b,tick:state.tick})),...state.battleLog].filter(b => state.tick - b.tick <= 1&&visibleIds.has(b.provinceId)).slice(0, 8).map(b => {
             const f = provinceGeometry.get(b.provinceId); if (!f || !visibleIds.has(b.provinceId)) return null;
             return <Group key={b.id} transform={[{ translateX: f.anchor.x }, { translateY: f.anchor.y }]}><Group transform={inverseScale}><Circle cx={0} cy={0} r={17} style="stroke" strokeWidth={2} color="#c66b55" opacity={pulse} /></Group></Group>;

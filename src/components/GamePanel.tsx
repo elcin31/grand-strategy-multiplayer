@@ -85,6 +85,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
   const bankruptcyMonths = Math.max(0, (nation.bankruptcyUntilTick ?? 0) - state.tick);
   const economicActionsEnabled = state.phase === 'running' || state.phase === 'paused';
 
+  if(section==='Context'&&focusedArmyId&&selected)return <MilitaryPanel state={state} playerId={playerId} onCommand={onCommand} province={selected} army={state.armies.find(a=>a.id===focusedArmyId)??null}/>;
   if(section==='Government'&&page==='Советники')return <>{tabbar}<StrategyCouncil state={state} playerId={playerId} onCommand={onCommand}/></>;
   if(section==='Government'&&page==='Реформы')return <>{tabbar}<PoliticalDecisionsPanel state={state} playerId={playerId} onCommand={onCommand}/></>;
   if(section==='Government'&&page==='Внутренняя политика')return <>{tabbar}<StabilityPanel initialOpen state={state} playerId={playerId} onCommand={onCommand}/></>;
