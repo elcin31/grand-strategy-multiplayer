@@ -279,5 +279,49 @@
       "protectedCityBackups": 29
     },
     "review": "Completed actual backend job; exact UUID/time/eight distinct QA names/host roles/52receipts/null backup fields/29 original backups, reviewed before scoped deletion."
+  },
+  "buildConclusion": "success",
+  "buildJobId": 114760489108,
+  "releaseArtifact": {
+    "id": 11741660079,
+    "bytes": 62293780,
+    "sha256": "556af3b662ca09cc93d5c3ac1822b729a7da1568ce69f45c31c662ecc253613c",
+    "crcVerified": true,
+    "firstTransferRejected": {
+      "bytes": 51707904,
+      "sha256": "9265593b97e75e3bde52a966a3940edb04c374d68175879f84d56d5e67f20024"
+    },
+    "freshFullDownloadVerified": true
+  },
+  "apk": {
+    "bytes": 142483341,
+    "sha256": "0bb66262090e66bbdfa4151aea1869e78fdc83b76423847093b1fc4ecd023448",
+    "crcVerified": true,
+    "hermes": {
+      "bytes": 10699920,
+      "sha256": "d2b287ce8ebcffcef06238686de2e1366fc3af74c7bcdffe518a2d93abb1b270",
+      "magic": "c61fbc03c103191f"
+    },
+    "nativeRecorderProofVerified": true,
+    "packageMetadata": {
+      "package": "com.elcin31.grandstrategymultiplayer",
+      "versionCode": 10,
+      "versionName": "2.0.0",
+      "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+    },
+    "releaseConfigVerifiedByActualCi": true,
+    "packagedOriginalArtVerified": 42,
+    "nativeSkiaHermesAbisVerified": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ]
+  },
+  "nativeJobs": {
+    "camera": 114768021075,
+    "smoke": 114768021212,
+    "upgrade": 114768021521,
+    "online": 114768021930
   }
 }
