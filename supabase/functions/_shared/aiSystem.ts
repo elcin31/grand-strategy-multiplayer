@@ -1,3 +1,4 @@
+import {armyInBattle} from './military3System.ts';
 import {NATIONAL_PROJECTS,nationalProjectReason,startNationalProject,type NationalProjectId} from './construction3System.ts';
 import {appointAdviser,vassalPolicy} from './strategy3System.ts';
 import {PRODUCTION_RECIPES,recipeReason,type RecipeId} from './productionSystem.ts';
@@ -192,7 +193,7 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
     // Retain capital garrison; spread spare stacks toward valuable threatened borders.
     indexArmies();
     const armies=[...(byOwner.get(id)??[])].sort((a,b)=>b.troops-a.troops).slice(0,3);
-    for(const army of armies){if(army.order)continue;indexArmies();const origin=provinces.get(army.provinceId);if(!origin)continue;
+    for(const army of armies){if(army.order||armyInBattle(s,army.id)||s.sieges?.some(x=>x.armyIds.includes(army.id)))continue;indexArmies();const origin=provinces.get(army.provinceId);if(!origin)continue;
       army.reinforcementEnabled=context().incomeBalance>0&&c.treasury>context().treasuryReserve;
       if(!army.commanderId){const general=freeCommanders.get(id)?.shift();if(general)army.commanderId=general;}
       if((army.supply??100)<30||(army.organization??80)<25||(army.morale??80)<25){const exit=retreatDestination(s,army);if(exit&&s.tick>=(army.retreatUntilTick??0)){retreatArmy(s,id,army.id,exit.id);armySource=undefined;}continue;}

@@ -24,8 +24,10 @@ export function findArmyRoute(state:GameState,army:Army,targetId:string):string[
 }
 export function setArmyOrder(state:GameState,ownerId:string,armyId:string,targetId:string,redeploy=false):void {
  const army=state.armies.find(a=>a.id===armyId);if(!army||army.ownerId!==ownerId)throw Error('Можно отдавать приказы только своей армии');
+ if(armyInBattle(state,army.id))throw Error('Сначала завершите бой или отдайте приказ отступления');
  const route=findArmyRoute(state,army,targetId),target=state.provinces.find(p=>p.id===targetId)!;
  if(warBetween(state,ownerId,target.controllerId??target.ownerId)&&state.tick<(army.retreatUntilTick??0))throw Error('После отступления наступление временно недоступно');
+ for(const siege of state.sieges??[])if(siege.armyIds.includes(army.id)&&targetId!==siege.provinceId)siege.armyIds=siege.armyIds.filter(id=>id!==army.id);
  army.order=route.length?{type:warBetween(state,ownerId,target.controllerId??target.ownerId)||!state.dataset&&(target.controllerId??target.ownerId)!==ownerId?'ATTACK':'MOVE',targetProvinceId:targetId,route,issuedTick:state.tick,travelProgress:0,redeploy}:undefined;
 }
 export function advanceArmyOrders(state:GameState,move:(state:GameState,owner:string,army:string,target:string)=>void,daily=false):void {

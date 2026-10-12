@@ -31,3 +31,5 @@
 - Lean QA: typecheck and 37 targeted gameplay/save/authority/wire/receipt/security checks pass; actual 11fbeec v18 state migrates to v23 preserving deposits, treasury, date and roundtrip.
 - Release preparation: 2.1.0 (11), same package and certificate verification; versioned `game-room-v21` / `game-command-v21` use the existing Dominion database/auth/CAS. Original 2.0 endpoints/rooms stay intact; old offline saves migrate, old online campaigns stay in 2.0.
 - Android workflow reuses existing Gradle/prebuild/integrity stages. For the 2.1 branch, explicit lean QA and short launch/army/save smoke replace optional long simulation, camera comparison and soak.
+
+- Release-critical military correction: active-battle route replacement could leave an invalid saved path after victory. Block replacement until withdrawal; retreat removes battle/siege participation, and AI skips fighting stacks. A targeted regression covers route rejection, retreat and save roundtrip. Candidate cb85082 is superseded and must not be published.

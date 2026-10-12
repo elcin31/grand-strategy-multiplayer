@@ -61,6 +61,7 @@ export function retreatArmy(s:GameState,owner:string,id:string,targetId:string,f
   const a=s.armies.find(a=>a.id===id&&a.ownerId===owner),p=s.provinces.find(p=>p.id===targetId),origin=a&&s.provinces.find(p=>p.id===a.provinceId);
   if(!a||!p||!origin||!origin.neighbors.includes(targetId)||p.rebellion||warBetween(s,owner,p.controllerId??p.ownerId)||!canEnterTerritory(s,owner,p.controllerId??p.ownerId)||s.armies.some(e=>e.provinceId===targetId&&warBetween(s,owner,e.ownerId)))throw Error('Нет безопасного соседнего пути отступления');
   if(!forced&&s.tick<(a.retreatUntilTick??0))throw Error('Отступление уже выполнено');if(!Number.isSafeInteger(s.tick+2))throw Error('Retreat date overflow');
+  for(const b of s.activeBattles??[]){b.attackerArmyIds=b.attackerArmyIds.filter(x=>x!==id);b.defenderArmyIds=b.defenderArmyIds.filter(x=>x!==id);}for(const siege of s.sieges??[])siege.armyIds=siege.armyIds.filter(x=>x!==id);
   recordMovement(s,{armyId:id,ownerId:owner,from:origin.id,to:p.id,tick:s.tick});a.provinceId=p.id;delete a.order;a.retreatUntilTick=s.tick+2;
   a.morale=Math.max(0,(a.morale??80)-5);a.organization=Math.max(0,(a.organization??80)-10);refreshSupplyLoads(s);
 }
