@@ -1,0 +1,37 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "project": "dfjsnjxnyjspwugjguhq",
+  "projectNameVerified": "grand-strategy-multiplayer",
+  "status": "EXECUTED_AND_INDEPENDENTLY_VERIFIED",
+  "checkedSource": "0e57aa3e3cf0ef8d2ed3cb041ed9d8d346d2a8dd",
+  "roomIds": [
+    "ee67f680-249f-4c11-aff1-07214c8db1bf",
+    "c9d212ad-72d6-4c21-bcdd-5db1f77f4298",
+    "7410ebdc-e5ef-41fc-bb40-7180ca632fda",
+    "4177cdc8-3cc2-4089-a41d-ef6b9f7c256b"
+  ],
+  "before": {
+    "qaRooms": 4,
+    "qaPlayers": 20,
+    "qaReceipts": 118,
+    "protectedCityBackups": 29
+  },
+  "guards": [
+    "exact UUID and creation timestamp",
+    "known distinct QA display names and original host",
+    "exact member/receipt counts",
+    "all three backup fields NULL",
+    "single transaction with abort on any mismatch",
+    "5-second lock and 15-second statement timeouts",
+    "unchanged protected backup count"
+  ],
+  "sqlSha256": "bb9a29ff87d85fb834ef9c566286117d53c775de35402c810b1ab60bced7aa45",
+  "mutationTransport": "Supabase execute_sql succeeded in the new session",
+  "independentReadback": {
+    "qaRooms": 0,
+    "qaPlayers": 0,
+    "qaReceipts": 0,
+    "protectedCityBackups": 29
+  },
+  "note": "Only these reviewed completed QA fixtures were removed. No schema/backend deployment, other project, credentials or user campaign mutation."
+}

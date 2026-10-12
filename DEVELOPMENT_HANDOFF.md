@@ -1,3 +1,13 @@
+# Exact QA cleanup recovered; matched native diagnosis running (2026-10-12)
+
+Published diagnostic checkpoint **0e57aa3e3cf0ef8d2ed3cb041ed9d8d346d2a8dd** on existing expansion-camera-qa. Source tree matches the locally checked commit; normal expected-head update preserves expansion2987464 and QA6f5 history. Actual auxiliary workflow **38216945309**, job114703787632, now executing four terrain/closed-panel baseline/candidate captures on unchanged rejected595APK. Original382087 camera failure remains; no numeric acceptance reroll or game-source change. 70 local pinned-Perfetto camera tests PASS/0skips, original source build313JS/103Python preserved.
+
+Recovered cleanup transport in this new session: independently re-read dedicated project identity, exact four QA UUIDs/creation times/known members/host/receipt counts/no-backup fields and both CASCADE constraints. Executed the preserved guarded single transaction with bounded lock/statement timeouts. Fresh independent readback **0QA rooms / 0QA players / 0QA receipts / 29 protected city backups**. All four pending fixtures from original382000 and382087 are now cleaned; prior expired-transport failures remain historical. No AssetMind/schema/backend-deploy/user-save change. Exact guards/readback: QA_CLEANUP_2026-10-12.json. QA_CLEANUP_PENDING_2026-10-12.sql is the archived executed script and must not be replayed: its required row-count guard will fail.
+
+**Next exact action:** inspect completed382169 trace artifacts/actual scoped CPU stacks and original loss/coverage; fix a measured application cause, validate new source and then require all seven original gates on one new signed release binary. Stages0DONE/1PARTIAL/2–9DONE/10PARTIAL/11PARTIAL. Main remainsdbb354ab, expansion metadata2987464, runtime6f5. Accepted manifest absent; final APK not ready. Physical Xiaomi unmeasured.
+
+---
+
 # Recovery: exact 6f5 native camera failure retained (2026-10-12)
 
 Remote main: `dbb354ab038713c3e54b969b34a6fc88bf2de11f` (accepted 0.8.1). Most recent published expansion checkpoint: `298746491a8acea4949e08d335d2155678275205`; last implementation/build: `6f5c111f3eb4f9d22667036ccbcb8c96583fe3c2`. Expansion is 108 commits ahead, zero behind main; no open PR. Recovered the existing detached workspace, including its uncommitted native report/handoff and guarded, unexecuted QA cleanup SQL. These files are preserved, not overwritten from older main. Read latest 50 commits on both main and expansion, existing branches, current Actions and artifacts. Exact next operation from prior Work was to collect original run `38208776998` camera/smoke completion.
