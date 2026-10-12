@@ -15,7 +15,7 @@ from android_accessibility import assert_no_game_fatal
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 DEVICE_TRACE = '/data/misc/perfetto-traces/dominion-camera.pftrace'
 MARKER = '/sys/kernel/tracing/trace_marker'
-GESTURE_MARKERS={'pinch':'DOMINION_PINCH_TRACE','world-pan':'DOMINION_WORLD_PAN_TRACE','local-pan':'DOMINION_LOCAL_PAN_TRACE'}
+GESTURE_MARKERS={'pinch':'DOMINION_PINCH_TRACE','world-pan':'DOMINION_WORLD_PAN_TRACE','local-pan':'DOMINION_LOCAL_PAN_TRACE','military-pan':'DOMINION_MILITARY_PAN_TRACE'}
 # The first real 20s capture wrote 22.9MiB and overwrote its start marker in
 # the old 16MiB ring. This is a separate diagnostic launch, never the benchmark.
 CONFIG = '''buffers { size_kb: 65536 fill_policy: RING_BUFFER }

@@ -1,3 +1,11 @@
+# Fresh814 binary rejected; renderer diagnosis continues (2026-10-12)
+
+Exact4947/full382000 APK81484b477e8efb9ceb1809e2d3ae771c33683a96b2e54ce903d1c786b043acea/142482125bytes: strictTS/309JS/102Python0skips/42art/build,10000ticks/livebackend,actual higher-version save installation and native signed reconnect allPASS. Full rawcamera rejects two reverse compositorP99 limits; original longsmoke still runs. No final acceptance/main promotion/release/attachment. Preserve both failures; prior8ff success cannot substitute. Matched native world/military CPU diagnosis is next; no gameplay rewrite.
+
+Current HTTP QAroomee67f680/nativec9d212ad cleanup remainsPENDING after scoped SQL connector returnedInvalid/expiredrequestState. Read-only review confirmed HTTP fixture remains, with no backups; no successful delete/readback is fabricated. Earlier8ff pair is clean and29originalbackups retained. Publication workflow and all seven acceptance rules remain unchanged. Existingapk-delivery is an ancestor, so eventual verified publication can use normal fast-forward and exact artifact reuse without conflict or rebuilding. Physical Redmi unmeasured.
+
+---
+
 # Original binary remains unaccepted; native CI harness fixed (2026-10-12)
 
 Original381793 completed FAILURE with five actual gates SUCCESS. APKc8ad88db/142482125bytes remains unaccepted: all42art/Hermes/releaseconfig/installupgrade/nativeonline proofs are verified, paired raw camera has zero numeric violations, but two native jobs failed in CI harness and the1800s stress never started. Camera final shell flags were lost between emulator-runner commands; smoke consumed a pre-benchmark XML even though the subsequent original screenshot shows12ticks/OK. These failures remain in CI_HARNESS_RECOVERY_2026-10-12.json.

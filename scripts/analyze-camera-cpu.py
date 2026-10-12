@@ -13,7 +13,7 @@ from camera_trace_analysis import analyze_trace
 out = Path(sys.argv[1])
 capture = json.loads((out / 'trace-capture.json').read_text())
 filename = capture['traceFile']
-assert filename in ['pinch.pftrace', 'world-pan.pftrace', 'local-pan.pftrace']
+assert filename in ['pinch.pftrace', 'world-pan.pftrace', 'local-pan.pftrace', 'military-pan.pftrace']
 raw = out / filename
 assert raw.stat().st_size == capture['traceBytes'], 'Wrong raw trace length'
 assert hashlib.sha256(raw.read_bytes()).hexdigest() == capture['traceSha256'], 'Wrong raw trace SHA'

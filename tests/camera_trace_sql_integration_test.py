@@ -45,3 +45,21 @@ class TraceSqlIntegrationTest(unittest.TestCase):
         self.assertTrue(report['markerValid']);self.assertEqual(report['markerDurationMs'],12)
         self.assertEqual(report['gestureMarker'],'DOMINION_WORLD_PAN_TRACE')
         self.assertFalse(report['attributionComplete'])
+
+    def test_military_pan_uses_only_its_marker_and_game_pid(self):
+        raw=('# tracer: nop\n'
+             ' writer-101 ( 101) [000] .... 1.000000: tracing_mark_write: S|42|DOMINION_MILITARY_PAN_TRACE|101\n'
+             ' writer-102 ( 102) [000] .... 1.001000: tracing_mark_write: S|42|DOMINION_LOCAL_PAN_TRACE|101\n'
+             ' writer-103 ( 103) [000] .... 1.002000: tracing_mark_write: S|99|DOMINION_MILITARY_PAN_TRACE|101\n'
+             ' writer-104 ( 104) [000] .... 1.011000: tracing_mark_write: F|42|DOMINION_MILITARY_PAN_TRACE|101\n'
+             ' writer-105 ( 105) [000] .... 1.020000: tracing_mark_write: F|42|DOMINION_LOCAL_PAN_TRACE|101\n'
+             ' writer-106 ( 106) [000] .... 1.021000: tracing_mark_write: F|99|DOMINION_MILITARY_PAN_TRACE|101\n')
+        with tempfile.NamedTemporaryFile(mode='w',suffix='.systrace') as f:
+            f.write(raw);f.flush()
+            with TraceProcessor(trace=f.name) as trace:
+                report=analyze_trace(trace,42,'synthetic','DOMINION_MILITARY_PAN_TRACE')
+        # Text-trace decimal parsing may round one nanosecond; this is a
+        # synthetic PID/marker scope test, not a native frame acceptance gate.
+        self.assertTrue(report['markerValid']);self.assertAlmostEqual(report['markerDurationMs'],11,places=5)
+        self.assertEqual(len(report['markerCandidates']),1)
+        self.assertEqual(report['gestureMarker'],'DOMINION_MILITARY_PAN_TRACE')

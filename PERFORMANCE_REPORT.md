@@ -1,3 +1,11 @@
+# Fresh4947 camera has two real reverseP99 regressions (2026-10-12)
+
+Exact382000/814APK all36 raw scenarios/PSS/input/world/compositor capture checks preserved in WORLD_RASTER_NATIVE_QA_2026-10-12.json. Original camera job now correctly rejects reverseworldP99139.194239→176.488806ms against20%limit167.0330868, plus military89.170892→109.417984 against107.0050704. Forward passes;18PSS comparisons pass. Earlier8ff paired success does not override this rejection. No limit changed or numerical reroll accepted.
+
+Worldpan has zero preparation/culling/React commits during capture and JSmean0.18%; military has2commits, no raster/path builds, JSmean0.64%. Native UI/compositor cause remains unproven. Existing auxiliary exact-APK world/military CPU trace launches and PID/marker-scoped queries follow; configuration/host stats are not actual traces or physical Redmi claims. Source/gameplay/LOD/cache/pacing unchanged in this diagnostic unit. Full1800s smoke is still pending at checkpoint; rejection prevents release/main promotion.
+
+---
+
 # Original8ff camera numbers PASS; CI harness correction verified (2026-10-12)
 
 Exact381793 camera rawZIP11717968485 downloaded locally and verified against declared17766098bytes/SHA8d51556cb29230a5f67d54d96d25806eb90d4545c4b707f86f56e3d1b08f9fe1/CRC. All four9-scenario launches/continuous gestures/fixed fixture/complete compositor captures and18 PSS checks satisfy the unchanged10%pinch/20%other+memory limits: zero numeric violations. Both original comparisons printed PASS, but the final emulator-runner command lost separately assigned shell flags and failed. This actual evidence accepts no failed numerical measurement.

@@ -1,0 +1,1833 @@
+{
+  "status": "NATIVE_CAMERA_REJECTED_DIAGNOSTICS_PENDING",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "runtime": "4947ed0591732a9571f7031b7df57534492da6ee",
+  "runId": 38200048313,
+  "apk": {
+    "apkSha256": "81484b477e8efb9ceb1809e2d3ae771c33683a96b2e54ce903d1c786b043acea",
+    "apkBytes": 142482125,
+    "hermesBytes": 10698748,
+    "hermesSha256": "91cff7aa7526139de133acf85921dc99f470e105b80d254d06e67b080eb6e088"
+  },
+  "cameraArtifact": {
+    "id": 11725218914,
+    "bytes": 17780069,
+    "sha256": "a16900bf88833bda7c4a5707a4672424052c8b4815b610d7f84b1314af7d5399",
+    "zipCrcVerifiedLocally": true
+  },
+  "cameraRawValidation": {
+    "diagnosticOnly": true,
+    "allFourCapturesComplete": true,
+    "scenariosPerLaunch": 9,
+    "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+    "fixtureStateChecksum": "e8befae1",
+    "comparisonGateViolations": [
+      {
+        "scenario": "reverse:04-world-pan",
+        "gate": "compositor:p99Ms",
+        "before": 139.194239,
+        "after": 176.488806
+      },
+      {
+        "scenario": "reverse:07-military-overlay",
+        "gate": "compositor:p99Ms",
+        "before": 89.170892,
+        "after": 109.417984
+      }
+    ],
+    "comparisonGatesPassed": false,
+    "note": "Original20% PSS/other and10% pinch limits retained. Complete captures allow diagnosis; they do not establish final native or physical-device acceptance."
+  },
+  "rows": [
+    {
+      "launch": "camera-before",
+      "scenario": "01-idle",
+      "pssKiB": 345777,
+      "histogramP95Ms": null,
+      "surfacePresentation": {
+        "available": false,
+        "complete": true,
+        "frames": 0,
+        "p95Ms": null,
+        "p99Ms": null,
+        "maxMs": null
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 0,
+        "mapRenders": 0,
+        "geographyRenders": 0,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 0.0,
+          "maxCpuPercent": 0.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 0.73,
+          "maxCpuPercent": 2.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.09,
+          "maxCpuPercent": 1.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before",
+      "scenario": "02-medium-pan",
+      "pssKiB": 328423,
+      "histogramP95Ms": 150.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 163,
+        "p95Ms": 113.118891,
+        "p99Ms": 156.376554,
+        "maxMs": 463.707114
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 7,
+        "mapRenders": 7,
+        "geographyRenders": 6,
+        "pathBuilds": 34,
+        "pathBuildMs": 7.286930999965989,
+        "rasterBuilds": 4,
+        "rasterMs": 79.52494000000297,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 20.78,
+          "maxCpuPercent": 30.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 56.05,
+          "maxCpuPercent": 73.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 2.36,
+          "maxCpuPercent": 7.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before",
+      "scenario": "03-pinch",
+      "pssKiB": 386840,
+      "histogramP95Ms": 600.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 97,
+        "p95Ms": 468.991223,
+        "p99Ms": 940.135723,
+        "maxMs": 940.135723
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 17,
+        "mapRenders": 16,
+        "geographyRenders": 16,
+        "pathBuilds": 76,
+        "pathBuildMs": 43.97293800004991,
+        "rasterBuilds": 16,
+        "rasterMs": 120.80526800004009,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 9.36,
+          "maxCpuPercent": 20.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 80.36,
+          "maxCpuPercent": 95.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 6.55,
+          "maxCpuPercent": 15.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before",
+      "scenario": "04-world-pan",
+      "pssKiB": 392318,
+      "histogramP95Ms": 150.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 170,
+        "p95Ms": 113.483089,
+        "p99Ms": 190.960019,
+        "maxMs": 321.282674
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 5,
+        "mapRenders": 5,
+        "geographyRenders": 5,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 20.04,
+          "maxCpuPercent": 33.3
+        },
+        "main-ui": {
+          "meanCpuPercent": 57.05,
+          "maxCpuPercent": 70.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 1.35,
+          "maxCpuPercent": 3.9
+        }
+      }
+    },
+    {
+      "launch": "camera-before",
+      "scenario": "05-local-labels-armies",
+      "pssKiB": 427262,
+      "histogramP95Ms": 105.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 255,
+        "p95Ms": 69.551375,
+        "p99Ms": 111.017005,
+        "maxMs": 169.718842
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 7,
+        "mapRenders": 7,
+        "geographyRenders": 6,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 23.0,
+          "maxCpuPercent": 29.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 40.82,
+          "maxCpuPercent": 52.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 1.82,
+          "maxCpuPercent": 5.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before",
+      "scenario": "06-terrain-pan",
+      "pssKiB": 458720,
+      "histogramP95Ms": 105.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 253,
+        "p95Ms": 68.978554,
+        "p99Ms": 106.366952,
+        "maxMs": 251.55014
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 7,
+        "mapRenders": 7,
+        "geographyRenders": 6,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 24.36,
+          "maxCpuPercent": 31.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 41.18,
+          "maxCpuPercent": 49.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 1.91,
+          "maxCpuPercent": 5.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before",
+      "scenario": "07-military-overlay",
+      "pssKiB": 361728,
+      "histogramP95Ms": 109.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 252,
+        "p95Ms": 69.285906,
+        "p99Ms": 123.56278,
+        "maxMs": 217.932455
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 7,
+        "mapRenders": 7,
+        "geographyRenders": 6,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 22.4,
+          "maxCpuPercent": 32.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 40.83,
+          "maxCpuPercent": 56.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 1.64,
+          "maxCpuPercent": 4.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before",
+      "scenario": "08-panel-open",
+      "pssKiB": 338789,
+      "histogramP95Ms": 113.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 239,
+        "p95Ms": 70.311998,
+        "p99Ms": 89.576936,
+        "maxMs": 319.335046
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 7,
+        "mapRenders": 6,
+        "geographyRenders": 6,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 27.45,
+          "maxCpuPercent": 35.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 41.27,
+          "maxCpuPercent": 51.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 1.82,
+          "maxCpuPercent": 4.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before",
+      "scenario": "09-panel-closed",
+      "pssKiB": 371354,
+      "histogramP95Ms": 109.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 256,
+        "p95Ms": 72.583591,
+        "p99Ms": 112.214849,
+        "maxMs": 445.131629
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 7,
+        "mapRenders": 6,
+        "geographyRenders": 6,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 23.45,
+          "maxCpuPercent": 30.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 41.36,
+          "maxCpuPercent": 50.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 1.73,
+          "maxCpuPercent": 4.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after",
+      "scenario": "01-idle",
+      "pssKiB": 356628,
+      "histogramP95Ms": null,
+      "surfacePresentation": {
+        "available": false,
+        "complete": true,
+        "frames": 0,
+        "p95Ms": null,
+        "p99Ms": null,
+        "maxMs": null
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 0,
+        "gestureCommits": 0,
+        "cullCommits": 0,
+        "mapRenders": 0,
+        "geographyRenders": 0,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 0.0,
+          "maxCpuPercent": 0.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 0.82,
+          "maxCpuPercent": 2.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.09,
+          "maxCpuPercent": 1.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after",
+      "scenario": "02-medium-pan",
+      "pssKiB": 339929,
+      "histogramP95Ms": 150.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 156,
+        "p95Ms": 117.140652,
+        "p99Ms": 185.679098,
+        "maxMs": 366.547644
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 162,
+        "gestureCommits": 159,
+        "cullCommits": 2,
+        "mapRenders": 2,
+        "geographyRenders": 2,
+        "pathBuilds": 4,
+        "pathBuildMs": 1.1755200000479817,
+        "rasterBuilds": 4,
+        "rasterMs": 70.58699800004251,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 19.46,
+          "maxCpuPercent": 26.7
+        },
+        "main-ui": {
+          "meanCpuPercent": 58.54,
+          "maxCpuPercent": 74.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.99,
+          "maxCpuPercent": 6.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after",
+      "scenario": "03-pinch",
+      "pssKiB": 362785,
+      "histogramP95Ms": 200.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 112,
+        "p95Ms": 217.559213,
+        "p99Ms": 325.449322,
+        "maxMs": 645.657727
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 123,
+        "gestureCommits": 104,
+        "cullCommits": 23,
+        "mapRenders": 18,
+        "geographyRenders": 18,
+        "pathBuilds": 50,
+        "pathBuildMs": 13.418308999971487,
+        "rasterBuilds": 20,
+        "rasterMs": 664.7195220001158,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 9.91,
+          "maxCpuPercent": 19.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 67.27,
+          "maxCpuPercent": 96.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 9.0,
+          "maxCpuPercent": 25.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after",
+      "scenario": "04-world-pan",
+      "pssKiB": 359749,
+      "histogramP95Ms": 150.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 172,
+        "p95Ms": 90.025682,
+        "p99Ms": 117.485256,
+        "maxMs": 435.11139
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 176,
+        "gestureCommits": 176,
+        "cullCommits": 0,
+        "mapRenders": 0,
+        "geographyRenders": 0,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 20.85,
+          "maxCpuPercent": 28.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 57.15,
+          "maxCpuPercent": 70.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.18,
+          "maxCpuPercent": 1.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after",
+      "scenario": "05-local-labels-armies",
+      "pssKiB": 393541,
+      "histogramP95Ms": 109.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 232,
+        "p95Ms": 67.412968,
+        "p99Ms": 85.887743,
+        "maxMs": 321.79498
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 237,
+        "gestureCommits": 235,
+        "cullCommits": 2,
+        "mapRenders": 2,
+        "geographyRenders": 2,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 23.45,
+          "maxCpuPercent": 31.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 44.73,
+          "maxCpuPercent": 57.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.55,
+          "maxCpuPercent": 2.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after",
+      "scenario": "06-terrain-pan",
+      "pssKiB": 327517,
+      "histogramP95Ms": 113.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 231,
+        "p95Ms": 70.594686,
+        "p99Ms": 108.521737,
+        "maxMs": 383.432438
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 234,
+        "gestureCommits": 232,
+        "cullCommits": 2,
+        "mapRenders": 2,
+        "geographyRenders": 2,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 22.61,
+          "maxCpuPercent": 29.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 45.4,
+          "maxCpuPercent": 58.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.63,
+          "maxCpuPercent": 2.9
+        }
+      }
+    },
+    {
+      "launch": "camera-after",
+      "scenario": "07-military-overlay",
+      "pssKiB": 371508,
+      "histogramP95Ms": 113.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 231,
+        "p95Ms": 74.330812,
+        "p99Ms": 84.320153,
+        "maxMs": 394.630779
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 237,
+        "gestureCommits": 235,
+        "cullCommits": 2,
+        "mapRenders": 2,
+        "geographyRenders": 2,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 21.95,
+          "maxCpuPercent": 28.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 43.64,
+          "maxCpuPercent": 60.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.63,
+          "maxCpuPercent": 3.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after",
+      "scenario": "08-panel-open",
+      "pssKiB": 358732,
+      "histogramP95Ms": 125.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 214,
+        "p95Ms": 75.890265,
+        "p99Ms": 106.137332,
+        "maxMs": 335.586504
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 220,
+        "gestureCommits": 217,
+        "cullCommits": 2,
+        "mapRenders": 2,
+        "geographyRenders": 2,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 26.55,
+          "maxCpuPercent": 34.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 46.18,
+          "maxCpuPercent": 59.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.64,
+          "maxCpuPercent": 3.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after",
+      "scenario": "09-panel-closed",
+      "pssKiB": 347528,
+      "histogramP95Ms": 117.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 229,
+        "p95Ms": 64.710974,
+        "p99Ms": 100.217071,
+        "maxMs": 319.118099
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 237,
+        "gestureCommits": 234,
+        "cullCommits": 2,
+        "mapRenders": 2,
+        "geographyRenders": 2,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 22.62,
+          "maxCpuPercent": 29.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 44.97,
+          "maxCpuPercent": 54.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.64,
+          "maxCpuPercent": 3.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after-reverse",
+      "scenario": "01-idle",
+      "pssKiB": 352685,
+      "histogramP95Ms": null,
+      "surfacePresentation": {
+        "available": false,
+        "complete": true,
+        "frames": 0,
+        "p95Ms": null,
+        "p99Ms": null,
+        "maxMs": null
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 0,
+        "gestureCommits": 0,
+        "cullCommits": 0,
+        "mapRenders": 0,
+        "geographyRenders": 0,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 0.0,
+          "maxCpuPercent": 0.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 1.09,
+          "maxCpuPercent": 2.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.09,
+          "maxCpuPercent": 1.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after-reverse",
+      "scenario": "02-medium-pan",
+      "pssKiB": 341421,
+      "histogramP95Ms": 150.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 156,
+        "p95Ms": 109.99603,
+        "p99Ms": 165.55475,
+        "maxMs": 482.801771
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 163,
+        "gestureCommits": 157,
+        "cullCommits": 4,
+        "mapRenders": 4,
+        "geographyRenders": 4,
+        "pathBuilds": 4,
+        "pathBuildMs": 0.8335339998593554,
+        "rasterBuilds": 4,
+        "rasterMs": 48.40011399996001,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 17.27,
+          "maxCpuPercent": 25.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 59.45,
+          "maxCpuPercent": 74.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 1.55,
+          "maxCpuPercent": 8.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after-reverse",
+      "scenario": "03-pinch",
+      "pssKiB": 366341,
+      "histogramP95Ms": 250.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 115,
+        "p95Ms": 209.936498,
+        "p99Ms": 352.927074,
+        "maxMs": 621.994945
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 125,
+        "gestureCommits": 108,
+        "cullCommits": 16,
+        "mapRenders": 15,
+        "geographyRenders": 15,
+        "pathBuilds": 50,
+        "pathBuildMs": 16.313634000369348,
+        "rasterBuilds": 20,
+        "rasterMs": 718.4393540001474,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 9.82,
+          "maxCpuPercent": 17.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 66.64,
+          "maxCpuPercent": 90.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 8.36,
+          "maxCpuPercent": 20.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after-reverse",
+      "scenario": "04-world-pan",
+      "pssKiB": 368839,
+      "histogramP95Ms": 150.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 167,
+        "p95Ms": 94.232782,
+        "p99Ms": 176.488806,
+        "maxMs": 501.868707
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 171,
+        "gestureCommits": 171,
+        "cullCommits": 0,
+        "mapRenders": 0,
+        "geographyRenders": 0,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 18.57,
+          "maxCpuPercent": 27.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 56.26,
+          "maxCpuPercent": 68.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.18,
+          "maxCpuPercent": 1.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after-reverse",
+      "scenario": "05-local-labels-armies",
+      "pssKiB": 391771,
+      "histogramP95Ms": 113.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 231,
+        "p95Ms": 69.77537,
+        "p99Ms": 84.00845,
+        "maxMs": 356.44939
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 238,
+        "gestureCommits": 236,
+        "cullCommits": 2,
+        "mapRenders": 2,
+        "geographyRenders": 2,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 20.52,
+          "maxCpuPercent": 28.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 43.32,
+          "maxCpuPercent": 54.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.73,
+          "maxCpuPercent": 3.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after-reverse",
+      "scenario": "06-terrain-pan",
+      "pssKiB": 316130,
+      "histogramP95Ms": 109.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 235,
+        "p95Ms": 64.784132,
+        "p99Ms": 94.221312,
+        "maxMs": 272.411372
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 221,
+        "gestureCommits": 219,
+        "cullCommits": 2,
+        "mapRenders": 2,
+        "geographyRenders": 2,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 21.91,
+          "maxCpuPercent": 32.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 43.64,
+          "maxCpuPercent": 53.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.64,
+          "maxCpuPercent": 3.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after-reverse",
+      "scenario": "07-military-overlay",
+      "pssKiB": 357838,
+      "histogramP95Ms": 113.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 234,
+        "p95Ms": 70.876429,
+        "p99Ms": 109.417984,
+        "maxMs": 352.433379
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 238,
+        "gestureCommits": 236,
+        "cullCommits": 2,
+        "mapRenders": 2,
+        "geographyRenders": 2,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 22.36,
+          "maxCpuPercent": 28.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 43.45,
+          "maxCpuPercent": 54.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.64,
+          "maxCpuPercent": 3.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after-reverse",
+      "scenario": "08-panel-open",
+      "pssKiB": 421163,
+      "histogramP95Ms": 121.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 217,
+        "p95Ms": 76.459557,
+        "p99Ms": 98.738286,
+        "maxMs": 220.585735
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 223,
+        "gestureCommits": 220,
+        "cullCommits": 2,
+        "mapRenders": 2,
+        "geographyRenders": 2,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 25.91,
+          "maxCpuPercent": 35.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 44.0,
+          "maxCpuPercent": 56.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.55,
+          "maxCpuPercent": 3.0
+        }
+      }
+    },
+    {
+      "launch": "camera-after-reverse",
+      "scenario": "09-panel-closed",
+      "pssKiB": 322999,
+      "histogramP95Ms": 113.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 232,
+        "p95Ms": 62.618916,
+        "p99Ms": 83.238277,
+        "maxMs": 337.544895
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": 238,
+        "gestureCommits": 236,
+        "cullCommits": 2,
+        "mapRenders": 2,
+        "geographyRenders": 2,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 20.76,
+          "maxCpuPercent": 27.7
+        },
+        "main-ui": {
+          "meanCpuPercent": 43.35,
+          "maxCpuPercent": 56.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.64,
+          "maxCpuPercent": 3.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before-reverse",
+      "scenario": "01-idle",
+      "pssKiB": 337241,
+      "histogramP95Ms": null,
+      "surfacePresentation": {
+        "available": false,
+        "complete": true,
+        "frames": 0,
+        "p95Ms": null,
+        "p99Ms": null,
+        "maxMs": null
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 0,
+        "mapRenders": 0,
+        "geographyRenders": 0,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 0.0,
+          "maxCpuPercent": 0.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 0.82,
+          "maxCpuPercent": 2.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 0.09,
+          "maxCpuPercent": 1.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before-reverse",
+      "scenario": "02-medium-pan",
+      "pssKiB": 326987,
+      "histogramP95Ms": 150.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 161,
+        "p95Ms": 119.339772,
+        "p99Ms": 163.340351,
+        "maxMs": 580.389965
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 7,
+        "mapRenders": 6,
+        "geographyRenders": 6,
+        "pathBuilds": 34,
+        "pathBuildMs": 5.393316999310628,
+        "rasterBuilds": 4,
+        "rasterMs": 36.0755900000222,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 20.05,
+          "maxCpuPercent": 31.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 57.5,
+          "maxCpuPercent": 74.2
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 2.35,
+          "maxCpuPercent": 6.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before-reverse",
+      "scenario": "03-pinch",
+      "pssKiB": 358063,
+      "histogramP95Ms": 500.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 79,
+        "p95Ms": 515.232362,
+        "p99Ms": 663.707724,
+        "maxMs": 663.707724
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 19,
+        "mapRenders": 18,
+        "geographyRenders": 18,
+        "pathBuilds": 76,
+        "pathBuildMs": 45.33818200067617,
+        "rasterBuilds": 20,
+        "rasterMs": 277.3109959999565,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 7.27,
+          "maxCpuPercent": 19.2
+        },
+        "main-ui": {
+          "meanCpuPercent": 82.71,
+          "maxCpuPercent": 96.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 6.76,
+          "maxCpuPercent": 14.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before-reverse",
+      "scenario": "04-world-pan",
+      "pssKiB": 364026,
+      "histogramP95Ms": 150.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 170,
+        "p95Ms": 102.991172,
+        "p99Ms": 139.194239,
+        "maxMs": 366.144634
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 5,
+        "mapRenders": 5,
+        "geographyRenders": 5,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 20.07,
+          "maxCpuPercent": 28.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 56.85,
+          "maxCpuPercent": 75.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 1.26,
+          "maxCpuPercent": 4.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before-reverse",
+      "scenario": "05-local-labels-armies",
+      "pssKiB": 391843,
+      "histogramP95Ms": 109.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 253,
+        "p95Ms": 62.147993,
+        "p99Ms": 116.726514,
+        "maxMs": 417.50404
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 7,
+        "mapRenders": 7,
+        "geographyRenders": 7,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 23.88,
+          "maxCpuPercent": 35.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 39.23,
+          "maxCpuPercent": 48.5
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 1.81,
+          "maxCpuPercent": 4.9
+        }
+      }
+    },
+    {
+      "launch": "camera-before-reverse",
+      "scenario": "06-terrain-pan",
+      "pssKiB": 349572,
+      "histogramP95Ms": 101.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 249,
+        "p95Ms": 67.781255,
+        "p99Ms": 113.196262,
+        "maxMs": 465.621755
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 7,
+        "mapRenders": 6,
+        "geographyRenders": 6,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 23.0,
+          "maxCpuPercent": 29.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 42.09,
+          "maxCpuPercent": 50.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 1.91,
+          "maxCpuPercent": 5.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before-reverse",
+      "scenario": "07-military-overlay",
+      "pssKiB": 353596,
+      "histogramP95Ms": 109.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 248,
+        "p95Ms": 71.596203,
+        "p99Ms": 89.170892,
+        "maxMs": 118.680544
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 13,
+        "mapRenders": 12,
+        "geographyRenders": 12,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 22.25,
+          "maxCpuPercent": 28.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 42.68,
+          "maxCpuPercent": 51.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 3.08,
+          "maxCpuPercent": 6.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before-reverse",
+      "scenario": "08-panel-open",
+      "pssKiB": 415060,
+      "histogramP95Ms": 117.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 235,
+        "p95Ms": 72.973018,
+        "p99Ms": 131.288182,
+        "maxMs": 582.968462
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 7,
+        "mapRenders": 6,
+        "geographyRenders": 6,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 27.24,
+          "maxCpuPercent": 37.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 42.5,
+          "maxCpuPercent": 52.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 1.64,
+          "maxCpuPercent": 4.0
+        }
+      }
+    },
+    {
+      "launch": "camera-before-reverse",
+      "scenario": "09-panel-closed",
+      "pssKiB": 332862,
+      "histogramP95Ms": 101.0,
+      "surfacePresentation": {
+        "available": true,
+        "complete": true,
+        "frames": 249,
+        "p95Ms": 68.542112,
+        "p99Ms": 118.107574,
+        "maxMs": 548.286155
+      },
+      "cameraTelemetryDeltas": {
+        "gestureEvents": null,
+        "gestureCommits": null,
+        "cullCommits": 9,
+        "mapRenders": 8,
+        "geographyRenders": 7,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": null,
+        "rasterPrewarmMs": null
+      },
+      "cpuThreads": {
+        "RenderThread": {
+          "meanCpuPercent": 22.55,
+          "maxCpuPercent": 29.0
+        },
+        "main-ui": {
+          "meanCpuPercent": 41.73,
+          "maxCpuPercent": 52.0
+        },
+        "mqt_v_js": {
+          "meanCpuPercent": 2.18,
+          "maxCpuPercent": 4.0
+        }
+      }
+    }
+  ],
+  "backend": {
+    "roomId": "ee67f680-249f-4c11-aff1-07214c8db1bf",
+    "stateVersion": 18,
+    "tick": 21,
+    "featuresVerified": true,
+    "hostMigrationVerified": true,
+    "completedFocuses": [
+      {
+        "focusId": "eco-audit",
+        "tick": 9
+      }
+    ],
+    "scientificDiscoveries": [
+      "science-method"
+    ],
+    "spyResults": [
+      {
+        "kind": "PoliticalIntrigue",
+        "tick": 18,
+        "outcome": "Failure",
+        "detected": true
+      },
+      {
+        "kind": "Sabotage",
+        "tick": 16,
+        "outcome": "Success",
+        "detected": false
+      },
+      {
+        "kind": "IntelligenceGathering",
+        "tick": 6,
+        "outcome": "Success",
+        "detected": false
+      },
+      {
+        "kind": "Counterintelligence",
+        "tick": 5,
+        "outcome": "Success",
+        "detected": false
+      }
+    ],
+    "paidRelationChange": 27,
+    "humanTreaties": [
+      "NonAggression",
+      "TradeAgreement"
+    ],
+    "note": "Scoped existing production HTTP QA. No tokens, player IDs or whole snapshots in evidence.",
+    "finalTick": 47,
+    "finalSchema": 18
+  },
+  "upgrade": {
+    "baseline": {
+      "package": "com.elcin31.grandstrategymultiplayer",
+      "versionCode": 9,
+      "versionName": "0.8.1",
+      "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+    },
+    "candidate": {
+      "package": "com.elcin31.grandstrategymultiplayer",
+      "versionCode": 10,
+      "versionName": "2.0.0",
+      "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c"
+    },
+    "appUidRetained": true,
+    "privateCampaignFilesRetained": true,
+    "encryptedPreferenceBytesRetainedBeforeLaunch": true,
+    "actualSecureStorePreferencesAfterUpdate": {
+      "preset": "High",
+      "frameRate": 30,
+      "adaptive": false
+    },
+    "fixtureSha256": "3882257a66e558a529dd2cd8005e782243a7b07adf1a54576564465402288dc5",
+    "originalWorld": {
+      "countries": 195,
+      "provinces": 2924,
+      "cities": 5411
+    },
+    "oldSchema": 12,
+    "newSchema": 18,
+    "oldSaveSha256": "2c00d0c742a0b850e81dbb4c0300ab225613485e5bcb9b11f3563bb11a2f2341",
+    "migrationBackupSha256": {
+      "before-expansion-v13": "2c00d0c742a0b850e81dbb4c0300ab225613485e5bcb9b11f3563bb11a2f2341",
+      "before-espionage-v14": "2c00d0c742a0b850e81dbb4c0300ab225613485e5bcb9b11f3563bb11a2f2341",
+      "before-economy-v15": "2c00d0c742a0b850e81dbb4c0300ab225613485e5bcb9b11f3563bb11a2f2341",
+      "before-military-v16": "2c00d0c742a0b850e81dbb4c0300ab225613485e5bcb9b11f3563bb11a2f2341",
+      "before-technology-v17": "2c00d0c742a0b850e81dbb4c0300ab225613485e5bcb9b11f3563bb11a2f2341",
+      "before-focus-v18": "2c00d0c742a0b850e81dbb4c0300ab225613485e5bcb9b11f3563bb11a2f2341"
+    },
+    "repeatBackupBytesUnchanged": true,
+    "actualCandidateRestart": true,
+    "finalVersionUpgrade": true,
+    "note": "Real offline ephemeral-emulator package replacement, native save/load/backups and encrypted graphics preference round-trip. No production-session reconnect or hardware FPS claim."
+  },
+  "online": {
+    "roomId": "c9d212ad-72d6-4c21-bcdd-5db1f77f4298",
+    "qaName": "NATIVE ONLINE QA",
+    "stateVersion": 18,
+    "apkSha256": "81484b477e8efb9ceb1809e2d3ae771c33683a96b2e54ce903d1c786b043acea",
+    "nativeCreate": true,
+    "nativeCountrySelection": "germany",
+    "serverPaused": true,
+    "nativePaidFocus": "eco-audit",
+    "menuReconnect": true,
+    "processReconnect": true,
+    "realHostMigration": true,
+    "nativeOwnerReturn": true,
+    "rebootReconnect": true,
+    "sameNativeUidAndSessionKeys": true,
+    "onceOnlyFocusPaymentRetained": true,
+    "members": 2,
+    "cleanup": "PENDING",
+    "note": "Actual existing production HTTP and signed native controls; no tokens or snapshots in evidence."
+  },
+  "longSimulation": {
+    "ticks": 10000,
+    "countries": 195,
+    "provinces": 2924,
+    "cities": 5411,
+    "restores": 10,
+    "warsObserved": 12618,
+    "peaceCount": 12602,
+    "battles": 4235,
+    "movementTicks": 9946,
+    "maxWarAge": 11,
+    "maxArmies": 451,
+    "maxSnapshotBytes": 4487736,
+    "tickP95Ms": 101.77951899997424,
+    "samples": [
+      {
+        "tick": 1000,
+        "bytes": 4324604,
+        "heapUsed": 52268232,
+        "rss": 368451584,
+        "armies": 237,
+        "wars": 13,
+        "peaceCount": 1274,
+        "bankruptCountries": 9,
+        "treasuryMax": 10190269.335,
+        "population": 13799445475,
+        "populationRatio": 1.8080435510615582,
+        "settlementCapacity": 24472490124,
+        "completedFocuses": 2438,
+        "scientificDiscoveries": 562,
+        "elapsedSeconds": 78
+      },
+      {
+        "tick": 2000,
+        "bytes": 4416670,
+        "heapUsed": 54264840,
+        "rss": 453566464,
+        "armies": 344,
+        "wars": 13,
+        "peaceCount": 2639,
+        "bankruptCountries": 30,
+        "treasuryMax": 27614776.525,
+        "population": 19334995051,
+        "populationRatio": 2.533327384430112,
+        "settlementCapacity": 24683088691,
+        "completedFocuses": 2747,
+        "scientificDiscoveries": 728,
+        "elapsedSeconds": 168
+      },
+      {
+        "tick": 3000,
+        "bytes": 4453454,
+        "heapUsed": 54835160,
+        "rss": 454766592,
+        "armies": 394,
+        "wars": 18,
+        "peaceCount": 3922,
+        "bankruptCountries": 36,
+        "treasuryMax": 49708625.241,
+        "population": 22554812745,
+        "populationRatio": 2.955197279693465,
+        "settlementCapacity": 24777016414,
+        "completedFocuses": 2794,
+        "scientificDiscoveries": 781,
+        "elapsedSeconds": 260
+      },
+      {
+        "tick": 4000,
+        "bytes": 4474767,
+        "heapUsed": 55386816,
+        "rss": 464138240,
+        "armies": 428,
+        "wars": 16,
+        "peaceCount": 5169,
+        "bankruptCountries": 38,
+        "treasuryMax": 73882882.667,
+        "population": 23951578465,
+        "populationRatio": 3.1382055938293525,
+        "settlementCapacity": 24782261878,
+        "completedFocuses": 2819,
+        "scientificDiscoveries": 795,
+        "elapsedSeconds": 341
+      },
+      {
+        "tick": 5000,
+        "bytes": 4471174,
+        "heapUsed": 56072504,
+        "rss": 465887232,
+        "armies": 434,
+        "wars": 18,
+        "peaceCount": 6399,
+        "bankruptCountries": 40,
+        "treasuryMax": 98835927.435,
+        "population": 24481389830,
+        "populationRatio": 3.2076230224863815,
+        "settlementCapacity": 24783227976,
+        "completedFocuses": 2832,
+        "scientificDiscoveries": 797,
+        "elapsedSeconds": 422
+      },
+      {
+        "tick": 6000,
+        "bytes": 4483632,
+        "heapUsed": 56450480,
+        "rss": 468365312,
+        "armies": 435,
+        "wars": 14,
+        "peaceCount": 7628,
+        "bankruptCountries": 40,
+        "treasuryMax": 124038148.644,
+        "population": 24677188293,
+        "populationRatio": 3.2332771075709066,
+        "settlementCapacity": 24800974889,
+        "completedFocuses": 2835,
+        "scientificDiscoveries": 801,
+        "elapsedSeconds": 505
+      },
+      {
+        "tick": 7000,
+        "bytes": 4478898,
+        "heapUsed": 56434448,
+        "rss": 469209088,
+        "armies": 439,
+        "wars": 13,
+        "peaceCount": 8864,
+        "bankruptCountries": 42,
+        "treasuryMax": 149330681.859,
+        "population": 24754528939,
+        "populationRatio": 3.2434105043431587,
+        "settlementCapacity": 24801479404,
+        "completedFocuses": 2841,
+        "scientificDiscoveries": 803,
+        "elapsedSeconds": 591
+      },
+      {
+        "tick": 8000,
+        "bytes": 4484308,
+        "heapUsed": 56564624,
+        "rss": 470855680,
+        "armies": 445,
+        "wars": 15,
+        "peaceCount": 10107,
+        "bankruptCountries": 43,
+        "treasuryMax": 174649965.651,
+        "population": 24783566722,
+        "populationRatio": 3.24721511927391,
+        "settlementCapacity": 24801479404,
+        "completedFocuses": 2844,
+        "scientificDiscoveries": 804,
+        "elapsedSeconds": 673
+      },
+      {
+        "tick": 9000,
+        "bytes": 4487736,
+        "heapUsed": 56622000,
+        "rss": 472612864,
+        "armies": 447,
+        "wars": 9,
+        "peaceCount": 11354,
+        "bankruptCountries": 44,
+        "treasuryMax": 199984024.64,
+        "population": 24794470048,
+        "populationRatio": 3.248643704813462,
+        "settlementCapacity": 24801479404,
+        "completedFocuses": 2846,
+        "scientificDiscoveries": 806,
+        "elapsedSeconds": 755
+      },
+      {
+        "tick": 10000,
+        "bytes": 4484485,
+        "heapUsed": 57440120,
+        "rss": 474255360,
+        "armies": 446,
+        "wars": 16,
+        "peaceCount": 12602,
+        "bankruptCountries": 44,
+        "treasuryMax": 225307782.924,
+        "population": 24798640582,
+        "populationRatio": 3.249190140329066,
+        "settlementCapacity": 24801479404,
+        "completedFocuses": 2849,
+        "scientificDiscoveries": 806,
+        "elapsedSeconds": 836
+      }
+    ],
+    "note": "Full-world deterministic AI simulation; seeded initial legal war, no physical device or network claim"
+  },
+  "nativeSoak": "PENDING original in-progress job114654706600",
+  "qaCleanup": {
+    "roomIds": [
+      "ee67f680-249f-4c11-aff1-07214c8db1bf",
+      "c9d212ad-72d6-4c21-bcdd-5db1f77f4298"
+    ],
+    "status": "PENDING",
+    "reason": "Scoped execute_sql writes returned Invalid or expired requestState twice; independent read confirms HTTP room remains. No cleanup success claimed."
+  },
+  "nextAction": "Actual matched native CPU world/military traces; then fix measured renderer cause without rerolling failed numerical gates.",
+  "releaseAccepted": false,
+  "physicalRedmiTested": false,
+  "rawDetails": "Complete unchanged raw captures remain in source-bound camera artifact11725218914; these36 rows retain the measured acceptance values and CPU/preparation summaries."
+}
