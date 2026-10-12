@@ -152,6 +152,27 @@ jobs:
               assert z.read('assets/index.android.bundle')[:8].hex()=='c61fbc03c103191f'
           Path('release/Dominion-2.1-playtest.apk.sha256').write_text(m['apk']['sha256']+'  Dominion-2.1-playtest.apk\n')
           PY
+      - name: Package a smaller ZIP download with the identical signed APK
+        run: |
+          python - <<'PY'
+          import hashlib,json,zipfile
+          from pathlib import Path
+          m=json.loads(Path('DOMINION_21_RELEASE_MANIFEST.json').read_text())
+          root=Path('release');apk=root/'Dominion-2.1-playtest.apk'
+          archive=root/'Dominion-2.1-playtest.zip'
+          entries={apk.name:apk.read_bytes(),apk.name+'.sha256':(root/(apk.name+'.sha256')).read_bytes(),'README.txt':'Dominion 2.1 Playtest\n\nРаспакуйте архив в менеджере файлов телефона.\nОткройте Dominion-2.1-playtest.apk для установки.\n'.encode('utf-8')}
+          with zipfile.ZipFile(archive,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=6) as z:
+              for name,data in entries.items():
+                  info=zipfile.ZipInfo(name,date_time=(2026,10,12,0,0,0));info.external_attr=0o100644<<16
+                  z.writestr(info,data,compress_type=zipfile.ZIP_DEFLATED,compresslevel=6)
+          with zipfile.ZipFile(archive) as z:
+              assert z.testzip() is None
+              assert hashlib.sha256(z.read(apk.name)).hexdigest()==m['apk']['sha256']
+          identity={'name':archive.name,'bytes':archive.stat().st_size,'sha256':hashlib.sha256(archive.read_bytes()).hexdigest(),'embeddedApkSha256':m['apk']['sha256'],'url':'https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.0-playtest.1/'+archive.name}
+          (root/(archive.name+'.sha256')).write_text(identity['sha256']+'  '+archive.name+'\n')
+          (root/'zip-download.json').write_text(json.dumps(identity,indent=2)+'\n')
+          print(json.dumps(identity))
+          PY
       - name: Publish only the new Dominion 2.1 prerelease
         run: |
           if gh release view v2.1.0-playtest.1 >/dev/null 2>&1; then
@@ -160,6 +181,16 @@ jobs:
           else
             gh release create v2.1.0-playtest.1 release/Dominion-2.1-playtest.apk release/Dominion-2.1-playtest.apk.sha256 --target "$DOMINION21_RUNTIME_SHA" --prerelease --title 'Dominion 2.1 — Grand Strategy Overhaul (Playtest)' --notes-file RELEASE_NOTES_21.md
           fi
+      - name: Add the ZIP alternative without replacing the published APK
+        run: |
+          if gh release view v2.1.0-playtest.1 --json assets --jq '.assets[].name' | rg -Fxq 'Dominion-2.1-playtest.zip'; then
+            gh release download v2.1.0-playtest.1 --pattern Dominion-2.1-playtest.zip --dir existing-zip
+            cmp release/Dominion-2.1-playtest.zip existing-zip/Dominion-2.1-playtest.zip
+          else
+            gh release upload v2.1.0-playtest.1 release/Dominion-2.1-playtest.zip release/Dominion-2.1-playtest.zip.sha256
+          fi
+          curl --fail --location --retry 2 --max-time 180 'https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.0-playtest.1/Dominion-2.1-playtest.zip' -o public-playtest.zip
+          cmp release/Dominion-2.1-playtest.zip public-playtest.zip
       - name: Verify concrete public APK bytes and preserve Dominion 2.0
         run: |
           curl --fail --location --retry 2 --max-time 180 'https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.0-playtest.1/Dominion-2.1-playtest.apk' -o public-playtest.apk
@@ -178,6 +209,11 @@ jobs:
           assert not r['draft'] and r['prerelease'] and apk['state']=='uploaded'
           assert apk['size']==m['apk']['bytes']
           assert apk['digest']=='sha256:'+m['apk']['sha256']
+          archive=json.loads(Path('release/zip-download.json').read_text())
+          asset=next(a for a in r['assets'] if a['name']==archive['name'])
+          assert asset['state']=='uploaded' and asset['size']==archive['bytes'] and asset['digest']=='sha256:'+archive['sha256']
+          archive.update(assetId=asset['id'],publicByteMatch=True)
+          m['downloadArchive']=archive
           m.update(publicationStatus='PUBLISHED_VERIFIED',publicationRunId=int(os.environ['GITHUB_RUN_ID']),publicationCommit=os.environ['GITHUB_SHA'],releaseId=r['id'],apkAssetId=apk['id'],publicApkByteMatch=True,original20AssetsPreserved=True)
           Path('release/DOMINION_21_RELEASE_MANIFEST.json').write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\n')
           PY
@@ -189,5 +225,6 @@ jobs:
           path: |
             release/DOMINION_21_RELEASE_MANIFEST.json
             release/dominion21-integrity.txt
+            release/zip-download.json
             published21.json
           retention-days: 30

@@ -2,6 +2,8 @@
 
 Standalone Android playtest: `Dominion-2.1-playtest.apk`, version 2.1.0 (11). Same package and signing certificate as Dominion 2.0; embedded Hermes bundle, landscape, Android 7.0+. Metro and Expo Go are unnecessary.
 
+Alternative download: `Dominion-2.1-playtest.zip` contains the identical signed APK and its checksum. Extract it in the phone's file manager and open the APK. If an embedded browser leaves the APK download at 100%, open the ZIP link in the external browser.
+
 - Compact gold/navy HUD, context panels, notifications with optional pause, political mini-map and era-aware artwork adapted to the supplied visual concept.
 - Daily calendar, pause and five speeds; monthly economic accounting remains monthly. Multiplayer time belongs to the host, with player pause requests/votes.
 - 18 regiment types, formations, waypoint routes/ETA, split/merge/redeployment/escort, army groups, commander development, continuous battles, sieges, occupation, logistics and battle reports.
