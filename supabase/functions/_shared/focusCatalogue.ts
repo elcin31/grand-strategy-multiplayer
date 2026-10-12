@@ -1,15 +1,17 @@
+import {FOCUS_EXPANSION,NATIONAL_SPIRITS} from './focusExpansion.ts';
 import type {Country,BuildingType} from './gameTypes.ts';
 import type {TechnologyId} from './technologyTree.ts';
 export const FOCUS_BRANCHES={Economic:'Экономическое развитие',Military:'Военное развитие',Diplomatic:'Дипломатическое развитие',Political:'Политическое развитие'} as const;
 export type FocusBranch=keyof typeof FOCUS_BRANCHES;
 export interface FocusBonuses {tax:number;production:number;trade:number;administration:number;armyUpkeep:number;research:number;construction:number;supply:number;combat:number;manpower:number;diplomacy:number}
-export interface FocusRewards {treasury?:number;manpower?:number;stability?:number;unrest?:number;politicalPower?:number;reputation?:number;neighborRelations?:number;armyExperience?:number;bonuses?:Partial<FocusBonuses>}
-export interface FocusNode {name:string;branch:FocusBranch;category:'Generic'|'Regional'|'Unique';duration:number;cost:number;pp:number;prerequisites:readonly string[];eitherPrerequisites?:readonly string[];technologies?:readonly TechnologyId[];exclusiveGroup?:string;region?:string;country?:string;rewards:FocusRewards;art:BuildingType}
+export interface FocusRewards {resources?:import('./stockpileSystem.ts').ResourceLedger;addSpirits?:import('./focusExpansion.ts').NationalSpiritId[];removeSpirits?:import('./focusExpansion.ts').NationalSpiritId[];treasury?:number;manpower?:number;stability?:number;unrest?:number;politicalPower?:number;reputation?:number;neighborRelations?:number;armyExperience?:number;bonuses?:Partial<FocusBonuses>}
+export interface FocusNode {description?:string;choiceEvent?:boolean;name:string;branch:FocusBranch;category:'Generic'|'Regional'|'Unique';duration:number;cost:number;pp:number;prerequisites:readonly string[];eitherPrerequisites?:readonly string[];technologies?:readonly TechnologyId[];exclusiveGroup?:string;region?:string;country?:string;rewards:FocusRewards;art:BuildingType}
 function course(name:string,branch:FocusBranch,duration:number,prerequisites:readonly string[],rewards:FocusRewards,art:BuildingType,options:Partial<Omit<FocusNode,'name'|'branch'|'duration'|'prerequisites'|'rewards'|'art'>>={}):FocusNode{return {name,branch,duration,prerequisites,rewards,art,category:'Generic',cost:100+duration*20,pp:10+duration,...options};}
 /** All names, choices and graphs are original Dominion content. Permanent
  * capabilities are derived from unique completions, never copied into a second
  * mutable bonus ledger. No political ideology or reference-game focus tree. */
-const catalogue={
+const catalogue:Record<string,FocusNode>={
+ ...FOCUS_EXPANSION,
  'eco-audit':course('Хозяйственная ревизия','Economic',6,[],{treasury:120,bonuses:{tax:.02}},'Administration'),
  'eco-corridors':course('Хозяйственные коридоры','Economic',8,['eco-audit'],{bonuses:{construction:.05,supply:.05}},'Infrastructure'),
  'eco-production':course('Национальный производственный заказ','Economic',10,['eco-corridors'],{bonuses:{production:.05}},'Factory',{exclusiveGroup:'economic-path'}),
@@ -51,7 +53,7 @@ const catalogue={
  'uk-supply':course('Сеть прибрежного снабжения','Military',10,['uk-ports'],{bonuses:{supply:.05}},'Port',{category:'Unique',country:'uk'}),
  'uk-research':course('Содружество университетских лабораторий','Political',12,['uk-supply'],{bonuses:{research:.08}},'University',{category:'Unique',country:'uk',technologies:['science-method']}),
 };
-export type FocusId=keyof typeof catalogue;
+export type FocusId=string;
 export interface FocusCompletion {focusId:FocusId;tick:number}
 export interface FocusProject {focusId:FocusId;startedTick:number;lastTick:number;progress:number}
 export const FOCUS_NODES:Readonly<Record<FocusId,FocusNode>>=catalogue;
@@ -60,16 +62,17 @@ export function focusNode(id:string):FocusNode|undefined{return Object.hasOwn(FO
 export function focusBelongsTo(c:Country,n:FocusNode):boolean{return (!n.country||n.country===c.id)&&(!n.region||n.region===c.region);}
 export function hasFocus(c:Country,id:string):boolean{return !!c.completedFocuses?.some(f=>f.focusId===id);}
 const empty:Readonly<FocusBonuses>=Object.freeze({tax:0,production:0,trade:0,administration:0,armyUpkeep:0,research:0,construction:0,supply:0,combat:0,manpower:0,diplomacy:0});
-const bonusCache=new WeakMap<Country,{rows:Country['completedFocuses'];length:number;bonus:Readonly<FocusBonuses>}>();
+const bonusCache=new WeakMap<Country,{signature:string;bonus:Readonly<FocusBonuses>}>();
 export function focusBonuses(c:Country):Readonly<FocusBonuses>{
- const rows=c.completedFocuses;if(!rows?.length)return empty;const cached=bonusCache.get(c);if(cached?.rows===rows&&cached.length===rows.length)return cached.bonus;
- const bonus={...empty};for(const f of rows)for(const [key,value] of Object.entries(focusNode(f.focusId)!.rewards.bonuses??{}))bonus[key as keyof FocusBonuses]+=value;
- for(const key of Object.keys(bonus) as (keyof FocusBonuses)[])bonus[key]=Math.min(key==='diplomacy'?15:.35,Number(bonus[key].toFixed(3)));
- const result=Object.freeze(bonus);bonusCache.set(c,{rows,length:rows.length,bonus:result});return result;
+ const signature=(c.completedFocuses??[]).map(f=>f.focusId).join('|')+'#'+(c.nationalSpirits??[]).join('|');if(signature==='#')return empty;const cached=bonusCache.get(c);if(cached?.signature===signature)return cached.bonus;const bonus={...empty};
+ for(const id of c.nationalSpirits??[])for(const [key,value] of Object.entries(NATIONAL_SPIRITS[id].bonuses))bonus[key as keyof FocusBonuses]+=value;
+ for(const f of c.completedFocuses??[])for(const [key,value] of Object.entries(focusNode(f.focusId)!.rewards.bonuses??{}))bonus[key as keyof FocusBonuses]+=value;
+ for(const key of Object.keys(bonus) as (keyof FocusBonuses)[])bonus[key]=Math.max(key==='diplomacy'?-15:-.25,Math.min(key==='diplomacy'?15:.35,Number(bonus[key].toFixed(3))));const result=Object.freeze(bonus);bonusCache.set(c,{signature,bonus:result});return result;
 }
 export function focusRewardLines(id:FocusId):string[]{
- const r=catalogue[id].rewards,lines:string[]=[];
+ const r=catalogue[id]!.rewards,lines:string[]=[];
  if(r.treasury)lines.push(`Казна +${r.treasury} млн`);if(r.manpower)lines.push(`Резерв +${r.manpower}`);if(r.stability)lines.push(`Стабильность +${r.stability}`);if(r.unrest)lines.push(`Недовольство ${r.unrest}`);if(r.politicalPower)lines.push(`Политическая сила +${r.politicalPower}`);if(r.reputation)lines.push(`Репутация +${r.reputation}`);if(r.neighborRelations)lines.push(`Отношения с соседями +${r.neighborRelations} (кроме воюющих)`);if(r.armyExperience)lines.push(`Опыт существующих армий +${r.armyExperience}`);
+ if(r.resources)lines.push('Материальный резерв: '+Object.entries(r.resources).map(([t,n])=>t+' +'+n).join(', '));if(r.addSpirits)lines.push('Особенности: '+r.addSpirits.map(id=>NATIONAL_SPIRITS[id].name).join(', '));if(r.removeSpirits)lines.push('Устранить: '+r.removeSpirits.map(id=>NATIONAL_SPIRITS[id].name).join(', '));
  const labels:Record<keyof FocusBonuses,string>={tax:'Налоги',production:'Выпуск и ресурсы',trade:'Торговля',administration:'Расходы управления',armyUpkeep:'Содержание армии',research:'Исследования',construction:'Строительство',supply:'Ёмкость снабжения',combat:'Боевая сила',manpower:'Прирост резерва',diplomacy:'Оценка дипломатических предложений'};
  for(const [key,value] of Object.entries(r.bonuses??{})){const k=key as keyof FocusBonuses;lines.push(`${labels[k]} ${['administration','armyUpkeep'].includes(k)?'−':'+'}${k==='diplomacy'?value:Math.round(value*100)}${k==='diplomacy'?'':'%'}`);}return lines;
 }

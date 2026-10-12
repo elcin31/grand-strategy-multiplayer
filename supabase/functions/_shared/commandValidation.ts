@@ -1,3 +1,4 @@
+import {POLITICAL_DECISIONS} from './politicalDecisions.ts';
 import {PRODUCTION_RECIPES} from './productionSystem.ts';
 import {NATIONAL_PROJECTS} from './construction3System.ts';
 import {RESOURCES} from './resourceCatalogue.ts';
@@ -18,6 +19,8 @@ import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  START_POLITICAL_DECISION:['type','playerId','decisionId'],
+  RESOLVE_FOCUS_CHOICE:['type','playerId','eventId','choice'],
   SET_FACTORY_PRODUCTION:['type','playerId','provinceId','buildingType','recipeId'],
   QUEUE_PRODUCTION:['type','playerId','provinceId','buildingType','recipeId','quantity'],
   CANCEL_PRODUCTION:['type','playerId','provinceId','orderId'],
@@ -138,6 +141,8 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if(['SET_FACTORY_PRODUCTION','QUEUE_PRODUCTION'].includes(type)&&(typeof command.recipeId!=='string'||!Object.hasOwn(PRODUCTION_RECIPES,command.recipeId)))throw Error('Invalid production recipe');
   if(type==='QUEUE_PRODUCTION'&&(!Number.isInteger(command.quantity)||Number(command.quantity)<1||Number(command.quantity)>10000))throw Error('Invalid production quantity');
   if(type==='SET_REGION_SPECIALIZATION'&&!['Agriculture','Extraction','Industry','Research'].includes(command.specialization as string))throw Error('Invalid regional specialization');
+  if(type==='START_POLITICAL_DECISION'&&(typeof command.decisionId!=='string'||!Object.hasOwn(POLITICAL_DECISIONS,command.decisionId)))throw Error('Invalid political decision');
+  if(type==='RESOLVE_FOCUS_CHOICE'&&(typeof command.eventId!=='string'||!/^[A-Za-z0-9_-]{1,128}$/.test(command.eventId)||!['Investment','Consensus'].includes(command.choice as string)))throw Error('Invalid focus choice');
   if (type === 'SET_READY' && typeof command.ready !== 'boolean') throw new Error('Invalid ready value');
   if (type === 'SET_SPEED' && (typeof command.speed !== 'number' || !Number.isInteger(command.speed) || command.speed < 0 || command.speed > 5)) throw new Error('Invalid game speed');
   if ((type === 'RECRUIT' || type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');

@@ -1,3 +1,5 @@
+import {decisionReason,startDecision,resolveFocusChoice} from './politicalDecisions.ts';
+import {hasTechnology,unlockTechnology} from './technologyTree.ts';
 import {equipmentReason} from './productionSystem.ts';
 import {constructionQueueAvailability,queueConstruction} from './constructionQueueSystem.ts';
 import {aiConstructionPreference} from './ai3System.ts';
@@ -107,6 +109,8 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
     const capital=capitals.get(c.capitalCityId??'')??home[0]!.id;
     if(s.tick%6===index%6){
       const plan=reviewStrategy(s,c);
+      for(const choice of s.focusChoices?.filter(e=>e.countryId===id&&e.resolvedTick===undefined)??[])resolveFocusChoice(s,c,choice.id,'Consensus');
+      const decision=plan.goal==='Recovery'?'Reconstruction':plan.goal==='Science'&&c.research?'ScienceGrant':w?'ArmyModernization':'IndustryGrant';if(!decisionReason(s,c,decision)&&c.treasury>context().treasuryReserve+200)startDecision(s,c,decision);
       const affordable=(cost:number)=>c.treasury-cost>=context().treasuryReserve&&s.tick>=c.bankruptcyUntilTick!;
       const desiredPolicy:EconomicPolicy=context().incomeBalance<0?'Austerity':w?'Mobilization':plan.goal==='Science'||plan.goal==='Economy'&&plan.personality!=='Trade'?'Investment':plan.personality==='Trade'||plan.goal==='Integration'?'OpenMarkets':'Balanced';
       if(affordable(50)&&!policyAvailability(s,id,desiredPolicy))setEconomicPolicy(s,id,desiredPolicy);
@@ -148,9 +152,9 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
       }
       if(!c.nationalFocus){
         const branch=plan.goal==='Economy'?'Economic':plan.goal==='Integration'||plan.goal==='Influence'?'Diplomatic':plan.goal==='Science'||plan.goal==='Recovery'?'Political':'Military';
-        const candidates=FOCUS_IDS.filter(id=>focusBelongsTo(c,FOCUS_NODES[id])&&!focusAvailability(s,c.id,id));
-        candidates.sort((a,b)=>Number(FOCUS_NODES[b].branch===branch)-Number(FOCUS_NODES[a].branch===branch)||Number(FOCUS_NODES[b].category==='Unique')-Number(FOCUS_NODES[a].category==='Unique')||FOCUS_NODES[a].cost-FOCUS_NODES[b].cost);
-        const id=candidates.find(id=>affordable(FOCUS_NODES[id].cost));if(id)startFocus(s,c.id,id);
+        const candidates=FOCUS_IDS.filter(id=>focusBelongsTo(c,FOCUS_NODES[id]!)&&!focusAvailability(s,c.id,id));
+        candidates.sort((a,b)=>Number(FOCUS_NODES[b]!.branch===branch)-Number(FOCUS_NODES[a]!.branch===branch)||Number(FOCUS_NODES[b]!.category==='Unique')-Number(FOCUS_NODES[a]!.category==='Unique')||FOCUS_NODES[a]!.cost-FOCUS_NODES[b]!.cost);
+        const id=candidates.find(id=>affordable(FOCUS_NODES[id]!.cost));if(id)startFocus(s,c.id,id);
       }
       if(!s.constructions?.some(q=>q.ownerId===id)&&context().incomeBalance>15){
         const site=[...home].filter(p=>!p.rebellion).sort((a,b)=>b.income-a.income)[0];
@@ -162,7 +166,7 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
       const recruitSite=capitalTroops>=12000?home.filter(p=>!p.rebellion&&p.id!==capital).sort((a,b)=>b.income-a.income)[0]??cap:cap;
       const targetStrength=Math.max(8000,Math.min(context().neighbourThreat*(style==='Militarist'?1.5:1),Math.max(0,(c.economy?.monthlyIncome??0)*.25/1.25*1000)));
       const military=techLevel(c,'Military'),unit:UnitType=military>=2&&(style==='Militarist'||style==='Expansionist')?'Armor':military>=1&&style==='Defensive'?'Mechanized':'Infantry';
-      if(!recruitSite.rebellion&&c.army<targetStrength&&context().incomeBalance>15&&affordable(UNITS[unit].cost*4)&&c.manpower>=4000&&s.year>=UNITS[unit].era&&!equipmentReason(s,c,unit,4000))actions.recruit(s,id,recruitSite,4000,unit);
+      if(!recruitSite.rebellion&&c.army<targetStrength&&context().incomeBalance>15&&affordable(UNITS[unit].cost*4)&&c.manpower>=4000&&s.year>=UNITS[unit].era&&(!unlockTechnology('units',unit)||hasTechnology(c,unlockTechnology('units',unit)!))&&!equipmentReason(s,c,unit,4000))actions.recruit(s,id,recruitSite,4000,unit);
       const support=(byOwner.get(id)??[]).find(a=>a.troops>=16000&&(a.composition?.Infantry??0)>0&&!a.template?.Artillery&&home.some(p=>p.id===a.provinceId&&!p.rebellion));
       if(support&&military>=1&&s.year>=UNITS.Artillery.era&&context().incomeBalance>30&&affordable(UNITS.Artillery.cost*4)&&c.manpower>=4000&&!equipmentReason(s,c,'Artillery',4000))actions.recruit(s,id,provinces.get(support.provinceId)!,4000,'Artillery',support.id);
       if(!s.wars?.some(w=>[...w.attackers,...w.defenders].includes(id))){

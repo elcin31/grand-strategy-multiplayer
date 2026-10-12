@@ -1,3 +1,5 @@
+import {addStock} from './stockpileSystem.ts';
+import {applySpirits,resolveFocusChoice} from './politicalDecisions.ts';
 import {countryFor,type Country,type GameState} from './gameTypes.ts';
 import {money} from './economySystem.ts';
 import {hasTechnology} from './technologyTree.ts';
@@ -50,6 +52,8 @@ export function monthlyFocus(s:GameState):void{
   c.treasury=cash;c.manpower=reserve;c.stability=bound(c.stability+(r.stability??0));c.unrest=bound((c.unrest??0)+(r.unrest??0));c.politicalPower=bound((c.politicalPower??0)+(r.politicalPower??0),500);c.diplomaticReputation=bound((c.diplomaticReputation??50)+(r.reputation??0));
   if(r.armyExperience)for(const a of s.armies)if(a.ownerId===c.id)a.experience=bound((a.experience??0)+r.armyExperience);
   if(r.neighborRelations)for(const target of neighbours(c.id))if(s.countries[target]?.provinceIds?.length&&!warBetween(s,c.id,target))relationChange(s,c.id,target,'focus:'+c.id+':'+p.focusId,n.name,r.neighborRelations);
+  if(r.resources)for(const [resource,amount] of Object.entries(r.resources))addStock(c,resource as keyof typeof r.resources,amount!);applySpirits(c,r.addSpirits,r.removeSpirits);
+  if(n.choiceEvent){s.focusChoices??=[];const id='choice-'+s.nextEntityId!;s.nextEntityId!++;s.focusChoices.unshift({id,countryId:c.id,focusId:p.focusId,createdTick:s.tick});s.focusChoices=s.focusChoices.slice(0,256);if(!s.players.some(p=>p.countryId===c.id&&!p.aiControlled))resolveFocusChoice(s,c,id,'Consensus');}
   event(s,c.id,p.focusId,'Completed',`${n.name}: ${focusRewardLines(p.focusId).join('; ')}.`);
  }
 }

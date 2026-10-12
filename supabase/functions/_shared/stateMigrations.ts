@@ -1,3 +1,4 @@
+import {initializePolitics} from './politicalDecisions.ts';
 import {initializeProduction} from './productionSystem.ts';
 import {initializeNationalProjects} from './construction3System.ts';
 import {initializeStockpiles} from './stockpileSystem.ts';
@@ -22,7 +23,7 @@ import { initializeTechnology } from './technologySystem.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
-export const CURRENT_STATE_VERSION = 21;
+export const CURRENT_STATE_VERSION = 22;
 
 /** Ordered schema migrations; every normalizer is also run as validation for current saves. */
 export function migrateV1ToV2(s:GameState){initializeBuildings(s);}
@@ -52,6 +53,7 @@ export function normalizeGameState(state:GameState):void {
  initializeCalendar(state,version<19);
  initializeMilitary3(state,version<20);
  initializeStockpiles(state,version<21);
+ initializePolitics(state,version<22);
  initializeNationalProjects(state);initializeProduction(state);
  validateArmyOrders(state);
  state.stateVersion=CURRENT_STATE_VERSION;

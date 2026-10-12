@@ -1,3 +1,4 @@
+import {startDecision,resolveFocusChoice,monthlyDecisions} from './politicalDecisions.ts';
 import {hasTechnology,unlockTechnology,technologyBonuses} from './technologyTree.ts';
 import {monthlyProduction,recipeReason,equipmentReason,payEquipment} from './productionSystem.ts';
 import {repairProvince,startNationalProject,monthlyNationalProjects} from './construction3System.ts';
@@ -173,6 +174,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
   const next = clone(state);
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   switch (command.type) {
+    case 'START_POLITICAL_DECISION':case 'RESOLVE_FOCUS_CHOICE':{if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const c=countryFor(next,p.countryId);if(command.type==='START_POLITICAL_DECISION')startDecision(next,c,command.decisionId);else resolveFocusChoice(next,c,command.eventId,command.choice);recalcEconomy(next);return next;}
     case 'SET_FACTORY_PRODUCTION':case 'QUEUE_PRODUCTION':case 'CANCEL_PRODUCTION':case 'SET_REGION_SPECIALIZATION':{
       if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const player=getPlayer(next,command.playerId);if(!player.countryId)throw Error('Страна не выбрана');const c=countryFor(next,player.countryId),p=provinceById(next,command.provinceId);if(!p||p.ownerId!==c.id||(p.controllerId??p.ownerId)!==c.id)throw Error('Недоступная провинция');
       if(command.type==='SET_REGION_SPECIALIZATION'){if(c.treasury<50||(c.politicalPower??0)<5)throw Error('Нужны 50 млн и 5 политической власти');c.treasury=money(c.treasury-50);c.politicalPower!-=5;p.specialization=command.specialization;}
@@ -420,7 +422,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }
-      monthlyReligionEffects(next);extractResources(next);monthlyNationalProjects(next);processResourceTrade(next);monthlyProduction(next);domesticConsumption(next);updateResourceMarkets(next); monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
+      monthlyReligionEffects(next);extractResources(next);monthlyNationalProjects(next);monthlyDecisions(next);processResourceTrade(next);monthlyProduction(next);domesticConsumption(next);updateResourceMarkets(next); monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
     }
   }
 }

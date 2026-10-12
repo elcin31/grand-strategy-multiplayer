@@ -10,6 +10,9 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital' | 'Ranch' | 'Fishery' | 'FoodProcessor' | 'IronMine' | 'CoalMine' | 'OilWell' | 'GasField' | 'Quarry' | 'RareMine' | 'Steelworks' | 'Refinery' | 'ChemicalPlant' | 'TextileMill' | 'Machinery' | 'ElectronicsPlant' | 'ArmsFactory' | 'AmmoFactory' | 'VehicleFactory' | 'MilitaryDepot' | 'RailHub' | 'TransportTerminal' | 'Warehouse' | 'PowerGrid' | 'CargoPort' | 'ResearchCenter' | 'Laboratory' | 'Embassy' | 'IntelligenceCenter' | 'CoastalFort' | 'MilitaryBase';
 
 export interface Country {
+  nationalSpirits?:import('./focusExpansion.ts').NationalSpiritId[];
+  decisions?:import('./politicalDecisions.ts').DecisionProject[];
+  decisionCooldowns?:Partial<Record<import('./politicalDecisions.ts').DecisionId,number>>;
   industrialTechnologyBonus?:number;
   nationalProject?:import('./construction3System.ts').NationalProject;
   completedProjects?:import('./construction3System.ts').NationalProjectId[];
@@ -217,6 +220,7 @@ export interface Leader {
 }
 
 export interface GameState {
+  focusChoices?:import('./politicalDecisions.ts').FocusChoice[];
   tradeContracts?:import('./stockpileSystem.ts').ResourceContract[];
   resourcePrices?:import('./stockpileSystem.ts').ResourceLedger;
   resourceLeaders?:Partial<Record<import('./resourceCatalogue.ts').ResourceType,string[]>>;
@@ -266,6 +270,8 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'START_POLITICAL_DECISION';playerId:string;decisionId:import('./politicalDecisions.ts').DecisionId}
+  | {type:'RESOLVE_FOCUS_CHOICE';playerId:string;eventId:string;choice:'Investment'|'Consensus'}
   | {type:'SET_FACTORY_PRODUCTION';playerId:string;provinceId:string;buildingType:BuildingType;recipeId:import('./productionSystem.ts').RecipeId}
   | {type:'QUEUE_PRODUCTION';playerId:string;provinceId:string;buildingType:BuildingType;recipeId:import('./productionSystem.ts').RecipeId;quantity:number}
   | {type:'CANCEL_PRODUCTION';playerId:string;provinceId:string;orderId:string}
