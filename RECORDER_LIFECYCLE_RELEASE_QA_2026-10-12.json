@@ -2,7 +2,7 @@
   "repository": "elcin31/grand-strategy-multiplayer",
   "runtime": "a180f5851d47c717f9b8fa44e794070bcba625ef",
   "runId": 38234126548,
-  "status": "FULL_NATIVE_QA_IN_PROGRESS",
+  "status": "PLAYTEST_READY_WITH_USER_DEFERRED_CAMERA_ISSUE",
   "sourceCiRunId": 38233670169,
   "releaseAccepted": false,
   "physicalRedmiTested": false,
@@ -436,5 +436,53 @@
     "playersRemaining": 0,
     "receiptsRemaining": 0,
     "preservedCityBackups": 29
-  }
+  },
+  "cameraConclusion": "failure",
+  "cameraArtifact": {
+    "id": 11741612640,
+    "bytes": 8393023,
+    "sha256": "c7b50f089c316febcd46e5af29bee2721f640cafc355f15ec82e315f5a80fdf8",
+    "crcVerified": true
+  },
+  "cameraFailure": {
+    "capturedScenarios": 18,
+    "baselineScenarios": 9,
+    "candidateScenarios": 9,
+    "reverseCapturesMissing": true,
+    "finalCandidateFixtureRead": "adb shell cat camera-fixture-101.2.json exit255; stdout was not preserved by old caller, precise underlying error unknown",
+    "allNineForwardPssGatesPassed": true,
+    "forwardViolations": [
+      {
+        "scenario": "05-local-labels-armies",
+        "gate": "compositor:p99Ms",
+        "before": 81.826292,
+        "after": 115.942316
+      }
+    ],
+    "forwardTerrainPssKiB": {
+      "baseline": 348328,
+      "candidate": 325530
+    },
+    "nativeCauseNotProven": true,
+    "nextAction": "Intentionally deferred by the user to a separate update after Android playtest feedback. Deliver the current APK and stop; no further camera profiling or renderer changes."
+  },
+  "originalStatusBeforePlaytest": "REJECTED_ORIGINAL_CAMERA_INCOMPLETE_AND_FORWARD_LOCAL_COMPOSITOR_REGRESSION_SMOKE_RUNNING",
+  "playtestAccepted": true,
+  "playtestUserDecision": "2026-10-12: stop camera debugging; failed camera gate is deliberately non-blocking for the requested current playtest APK",
+  "smokeConclusion": "success",
+  "smokeArtifact": {
+    "id": 11743741304,
+    "bytes": 30419884,
+    "sha256": "a9838c5cac7f4ed9864d95cabc1b1fd5cc715bf4162ebc58cbba52d09158c9f9",
+    "crcVerified": true
+  },
+  "smoke": {
+    "jobId": 114768021212,
+    "essentialChecksPassed": true,
+    "noGameFatalLogs": true,
+    "existingSoakSeconds": 1821.10500116,
+    "noNewPerformancePass": true,
+    "visualInspection": "Default/restart map and army deselection render correctly. One synthetic resized-window image shows a coverage boundary; persistent real-device behavior is unconfirmed and retained with the deferred camera issue."
+  },
+  "historicalCameraNextAction": "Matched auxiliary local/world CPU traces on this exact rejected binary, without repeating original benchmark numbers. Preserve partial-capture and original compositor failure; new measured source correction and complete fresh seven-gate binary required."
 }

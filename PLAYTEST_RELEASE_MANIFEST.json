@@ -6,7 +6,7 @@
   "recoveredHead": "018b4972df48354114754c8602605722956d80b9",
   "runtimeCommit": "a180f5851d47c717f9b8fa44e794070bcba625ef",
   "finalCommit": "Resolved by release tag; exact SHA written to published manifest",
-  "publicationStatus": "PREPARED_AWAITING_EXISTING_NATIVE_SMOKE",
+  "publicationStatus": "READY_TO_PUBLISH_PLAYTEST_WITH_DEFERRED_CAMERA",
   "sourceCiRunId": 38233670169,
   "originalReleaseRunId": 38234126548,
   "apk": {
@@ -118,7 +118,24 @@
     },
     "smoke": {
       "id": 114768021212,
-      "status": "IN_PROGRESS"
+      "status": "SUCCESS",
+      "artifactId": 11743741304,
+      "artifactBytes": 30419884,
+      "artifactSha256": "a9838c5cac7f4ed9864d95cabc1b1fd5cc715bf4162ebc58cbba52d09158c9f9",
+      "artifactCRCVerified": true,
+      "coldLaunch": true,
+      "mainMenu": true,
+      "singlePlayerCampaign": true,
+      "mapLoaded": true,
+      "basicCameraMovement": true,
+      "provinceSelection": true,
+      "armySelectionAndDeselection": true,
+      "diplomacy": true,
+      "saveAndLoad": true,
+      "restartAndReboot": true,
+      "noCriticalRuntimeCrashes": true,
+      "alreadyRunningSoakSeconds": 1821.10500116,
+      "noNewPerformancePass": true
     }
   },
   "knownIssues": [
@@ -151,5 +168,57 @@
     "remainingQaReceipts": 0,
     "protectedOriginalBackups": 29
   },
-  "userDecision": "2026-10-12: stop camera debugging; preserve completed gameplay; deliver current standalone release APK for Android playtest"
+  "userDecision": "2026-10-12: stop camera debugging; preserve completed gameplay; deliver current standalone release APK for Android playtest",
+  "checkpointCommit": "48f2c152189c99968d157974a494df99c6ea2ac0",
+  "originalReleaseConclusion": "failure: camera-comparison only; all six essential jobs succeeded",
+  "originalJobResults": [
+    {
+      "id": 114760488988,
+      "name": "long-simulation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 114760489108,
+      "name": "build-apk",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 114760489563,
+      "name": "backend-live / live-world",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 114768021075,
+      "name": "camera-comparison",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 114768021212,
+      "name": "android-smoke",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 114768021521,
+      "name": "android-upgrade / release-upgrade-save",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 114768021930,
+      "name": "android-online / native-online",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 114789575305,
+      "name": "publish-release",
+      "status": "completed",
+      "conclusion": "skipped"
+    }
+  ]
 }

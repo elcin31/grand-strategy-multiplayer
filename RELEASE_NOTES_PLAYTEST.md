@@ -11,7 +11,7 @@ Diplomacy 2.0, espionage and diplomatic AI; Economy 2.0 and construction; Milita
 
 The exact runtime a180f5851d47c717f9b8fa44e794070bcba625ef passed strict typecheck, 324 JS tests, 110 Python tests, standalone Gradle assembleRelease and APK/native/artwork integrity checks. Original Actions build 38234126548 supplies this binary; metadata changes do not rebuild it.
 
-Existing 10000-tick simulation and production Dominion backend integration passed. Actual native multiplayer creation, once-only course payment, reconnect after menu/process/reboot and host takeover passed. Actual in-place upgrade from 0.8.1 retained UID, campaigns, encrypted preferences and six immutable migration backups (schema 12 -> 18). The completed native smoke result and final publication commit are attached in PLAYTEST_RELEASE_MANIFEST.json.
+Existing 10000-tick simulation and production Dominion backend integration passed. Actual native multiplayer creation, once-only course payment, reconnect after menu/process/reboot and host takeover passed. Actual in-place upgrade from 0.8.1 retained UID, campaigns, encrypted preferences and six immutable migration backups (schema 12 -> 18). Exact-binary native smoke passed offline cold launch, main menu, single-player start, map/basic camera input, province and army selection/deselection, diplomacy, save/load, process restart and device reboot without game fatal logs. The previously running 1821-second soak also passed; no new performance pass was started. All six essential original jobs succeeded; the original run's failure is exclusively the deliberately deferred camera comparison. The final publication commit and artifact IDs are attached in PLAYTEST_RELEASE_MANIFEST.json.
 
 ## Known issue
 
