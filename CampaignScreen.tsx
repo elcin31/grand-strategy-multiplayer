@@ -277,10 +277,11 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
         {gameStarted&&selectedArmyId&&!panelOpen&&<ArmyDock state={state} armyId={selectedArmyId} playerId={playerId??''} width={Math.max(230,Math.min(460,width-(panelOpen?panelWidth(width):190)-100))} onInspect={()=>{setSection('Context');setPanelOpen(true);}} onDeselect={deselectArmy} onCommand={sendCommand}/>}
         {gameStarted&&<QuickTutorial state={state} playerId={playerId??''} onCommand={sendCommand}/>}
         {gameStarted&&<ScrollView style={styles.navigation} contentContainerStyle={{gap:0,flexGrow:1}}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onLongPress={()=>Alert.alert(SECTION_LABELS[tab])} onPress={()=>{setSection(tab);setPanelOpen(v=>section===tab?!v:true);}}><StrategyIcon section={tab} size={20}/></Pressable>)}</ScrollView>}
-        {panelOpen&&!gameStarted && <ScrollView keyboardShouldPersistTaps="always" style={[styles.panel,{width:panelWidth(width),bottom:154}]} contentContainerStyle={styles.panelContent}>
+        {panelOpen&&!gameStarted && <View style={[styles.panel,{width:Math.max(250,width-Math.min(390,width*.42)-32),top:56,bottom:8}]}><ScrollView keyboardShouldPersistTaps="always" style={{flex:1}} contentContainerStyle={styles.panelContent}>
 
         {!gameStarted && (
           <CountryPanel
+            showChoose={false}
             country={selectedCountry}
             leader={selectedCountry?.rulerId ? state.leaders?.[selectedCountry.rulerId] ?? null : null}
             provinces={selectedProvinces}
@@ -291,7 +292,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
           />
         )}
 
-        </ScrollView>}
+        </ScrollView><Pressable accessibilityRole="button" accessibilityLabel="Играть за эту страну" accessibilityState={{disabled:!selectedCountryId||lobbyOperation!==null||myCountryId===selectedCountryId||state.players.some(p=>p.id!==playerId&&p.countryId===selectedCountryId),busy:lobbyOperation==='country'}} disabled={!selectedCountryId||lobbyOperation!==null||myCountryId===selectedCountryId||state.players.some(p=>p.id!==playerId&&p.countryId===selectedCountryId)} style={{minHeight:48,backgroundColor:colors.gold,alignItems:'center',justifyContent:'center',margin:6,borderRadius:4}} onPress={chooseCountry}><Text style={{fontWeight:'700',fontSize:12,color:colors.graphite}}>{lobbyOperation==='country'?'Подтверждение…':selectedCountryId&&myCountryId===selectedCountryId?'Страна выбрана':selectedCountryId&&state.players.some(p=>p.id!==playerId&&p.countryId===selectedCountryId)?'Страна занята':selectedCountry?'ИГРАТЬ ЗА ЭТУ СТРАНУ':'Выберите страну'}</Text></Pressable></View>}
         {gameStarted&&panelOpen&&<DraggableWindow key={section} title={selectedArmyId&&section==='Context'?'Армия':SECTION_LABELS[section]} onClose={()=>setPanelOpen(false)}>
           <GamePanel onOpenPeace={openPeace} diplomacyCountryId={diplomacyCountryId} onSelectArmy={selectArmy} onDeselectArmy={deselectArmy} focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedArmyId(section==='Construction'?null:state.armies.find(a=>a.provinceId===id&&a.ownerId===myCountryId)?.id??null);setSelectedProvinceId(id);if(section!=='Construction')setSection('Context');setFocusCountryId(myCountryId);}}
             state={presentation??state}
@@ -302,8 +303,8 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
         </DraggableWindow>}
         {gameStarted&&peaceWarId&&<DraggableWindow title="Мирные переговоры" minimized={peacePicking} onRestore={()=>setPeacePicking(false)} onClose={()=>{setPeaceWarId(null);setPeacePicking(false);}}><PeaceNegotiations state={presentation??state} playerId={playerId??''} warId={peaceWarId} draft={peaceDraft} onDraft={changePeaceDraft} onPickMap={()=>{setPeacePicking(true);setPanelOpen(false);}} onSubmit={async command=>{await transport.sendCommand(state.id,command);audioHub.play(command.type==='PROPOSE_PEACE'?'peace_offer':'peace_signed');}}/></DraggableWindow>}
         {peacePicking&&<View style={{position:'absolute',left:56,bottom:5,maxWidth:440,backgroundColor:colors.surface,padding:6,borderWidth:1,borderColor:colors.gold,flexDirection:'row',alignItems:'center',gap:8,zIndex:30}}><Text style={{color:colors.parchment,fontSize:11}}>Территории: {peaceDraft.provinceIds.length} · договор {selectionPrice} счёта</Text><Pressable accessibilityRole="button" style={{minHeight:44,padding:8,justifyContent:'center'}} onPress={()=>setPeacePicking(false)}><Text style={{color:colors.gold}}>Вернуться к договору →</Text></Pressable></View>}
-        {!gameStarted && <View style={styles.lobbyDock}>
-          {lobbyError!==''&&<View style={{backgroundColor:colors.surface,padding:8}}><Text accessibilityRole="alert" style={{color:colors.gold,fontSize:12}}>{lobbyError}</Text><Pressable accessibilityRole="button" style={styles.exitButton} onPress={()=>{setLobbyError('');if(transport instanceof HttpTransport)void safeAction(async()=>{await transport.synchronize(state.id);});}}><Text style={styles.exitText}>Синхронизировать эту комнату</Text></Pressable></View>}
+        {!gameStarted && <View style={[styles.lobbyDock,{width:Math.min(390,width*.42)}]}>
+          {lobbyError!==''&&<View style={{backgroundColor:colors.surface,padding:8}}><Text accessibilityRole="alert" style={{color:colors.gold,fontSize:12}}>{lobbyError}</Text><Pressable accessibilityRole="button" style={[styles.exitButton,{width:undefined,paddingHorizontal:10}]} onPress={()=>{setLobbyError('');if(transport instanceof HttpTransport)void safeAction(async()=>{await transport.synchronize(state.id);});}}><Text style={styles.exitText}>Синхронизировать эту комнату</Text></Pressable></View>}
           {lobbyOperation==='start'&&<Text style={{color:colors.gold,backgroundColor:colors.surface,padding:8}}>{launchSlow?'Проверяем подтверждение сервера. Комната сохранена; после ошибки запуск можно повторить.':'Сервер подтверждает запуск кампании…'}</Text>}
           <LobbyPanel
             busy={launchBusy||lobbyOperation!==null} pending={lobbyOperation}
@@ -325,7 +326,7 @@ const styles = StyleSheet.create({
   mapArea: { flex: 1, marginLeft:52 },
   navigation:{position:'absolute',left:2,top:50,bottom:4,width:48,backgroundColor:'#101B26F5',borderRadius:4},
   navButton:{height:44,width:48,alignItems:'center',justifyContent:'center',borderRadius:4},
-  lobbyDock: {position:'absolute',left:8,right:8,bottom:8},
+  lobbyDock: {position:'absolute',left:8,top:56,bottom:8},
   panel: { position: 'absolute', right: 8, top: 78, bottom: 12, width: '34%', maxWidth: 410, minWidth: 250, backgroundColor: '#17222DF5', borderWidth:1,borderColor:colors.border, borderRadius:tokens.radius.panel },
   panelContent: { padding: 8, gap: 10 },
   topbar: { height:48,zIndex:35,flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 4, gap: 2 },

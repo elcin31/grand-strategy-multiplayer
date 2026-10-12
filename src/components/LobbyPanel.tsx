@@ -1,15 +1,15 @@
 import {AudioPressable as Pressable} from './AudioPressable';
 import {colors,tokens} from '../ui/tokens';
 import { useState } from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import { GameState } from '../types/game';
 
 export function LobbyPanel({ state, playerId, onReady, onStart, busy=false,pending=null }: { state: GameState; playerId: string; busy?: boolean; pending?:'country'|'ready'|'start'|null; onReady: (ready: boolean) => void; onStart: () => void }) {
   const me = state.players.find((player) => player.id === playerId);
   const allReady = state.players.length > 0 && state.players.every((player) => player.ready && player.countryId);
   return (
-    <View style={styles.card}>
-      <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>{state.players.map(p=><View key={p.id} style={{minWidth:150,flexGrow:1}}><Text style={styles.playerName}>{p.isHost?'♛ ':''}{p.displayName}{p.id===playerId?' · Вы':''}</Text><Text style={[styles.playerCountry,p.ready&&styles.ready]}>{p.countryId?state.countries[p.countryId]?.name:'Выбирает страну'} · {p.ready?'Готов':'Не готов'}</Text></View>)}</View>
+    <View style={[styles.card,{flex:1,padding:10,gap:6}]}>
+      <ScrollView style={{flex:1}} contentContainerStyle={{gap:6}} keyboardShouldPersistTaps="always">{state.players.map(p=><View key={p.id} style={{minWidth:150,flexGrow:1}}><Text style={styles.playerName}>{p.isHost?'♛ ':''}{p.displayName}{p.id===playerId?' · Вы':''}</Text><Text style={[styles.playerCountry,p.ready&&styles.ready]}>{p.countryId?state.countries[p.countryId]?.name:'Выбирает страну'} · {p.ready?'Готов':'Не готов'}</Text></View>)}</ScrollView>
       <Text style={styles.playerCountry}>{allReady?"Все игроки готовы":!me?.countryId?"Выберите страну для начала игры":!me.ready?"Подтвердите готовность":"Ожидание других игроков"} · {state.players.length} игрок(ов)</Text>
       <View style={styles.actions}><Pressable accessibilityRole="button" accessibilityLabel={me?.ready?'Снять готовность':'Я готов'} accessibilityState={{disabled:busy||!me?.countryId,busy:pending==='ready'}} style={[styles.secondary, me?.ready && styles.secondaryActive,(!me?.countryId||busy)&&styles.disabled]} disabled={busy||!me?.countryId} onPress={() => onReady(!me?.ready)}><Text style={styles.secondaryText}>{pending==='ready'?'ПОДТВЕРЖДЕНИЕ…':me?.ready ? 'СНЯТЬ ГОТОВНОСТЬ' : 'Я ГОТОВ'}</Text></Pressable>{me?.isHost && <Pressable style={[styles.primary, (!allReady||busy) && styles.disabled]} accessibilityLabel="Начать игру" accessibilityRole="button" accessibilityState={{disabled:!allReady||busy,busy:pending==='start'}} disabled={!allReady||busy} onPress={onStart}><Text style={styles.primaryText}>{pending==='start'?"ЗАПУСК…":"НАЧАТЬ ИГРУ"}</Text></Pressable>}</View>
       {!me?.isHost&&<Text style={styles.playerCountry}>{allReady?'Хозяин комнаты может запустить кампанию.':'Запуск доступен хозяину после готовности всех игроков.'}</Text>}
