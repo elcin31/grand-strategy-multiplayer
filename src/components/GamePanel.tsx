@@ -33,6 +33,7 @@ import { RELIGIONS, RELIGION_IDS, RELIGION_CHANGE_COST, RELIGION_STABILITY_COST,
 import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, GOVERNMENT_TYPES, governmentModifiers } from '../../supabase/functions/_shared/governmentSystem';
 
 interface GamePanelProps {
+  onOpenPeace?:(id:string)=>void;
   diplomacyCountryId?:string|null;
   onSelectArmy?:(id:string,province:string)=>void;
   onDeselectArmy?:()=>void;
@@ -49,7 +50,7 @@ interface GamePanelProps {
 const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).toFixed(1)}M` : value >= 1_000 ? `${Math.round(value / 1_000)}K` : String(value);
 const currency = (value: number) => `${value < 0 ? '−' : ''}$${Math.abs(value) >= 1000 ? (Math.abs(value)/1000).toFixed(1)+'B' : Math.abs(value).toFixed(3).replace(/\.?0+$/, '')+'M'}`;
 
-export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
+export function GamePanel({ onOpenPeace,diplomacyCountryId,onSelectArmy,onDeselectArmy,focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
   const [page,setPage]=useState('Обзор');
   const tabs=section==='Government'?['Обзор','Законы','Реформы','Советники','Внутренняя политика']:section==='Economy'?['Обзор','Производство','Ресурсы и торговля']:section==='Diplomacy'?['Обзор','Войны и мир']:section==='Military'?['Обзор','Сражения и осады']:section==='Religion'?['Обзор','Вероисповедание']:[];
   const tabbar=tabs.length?<PanelTabs tabs={tabs} value={page} onChange={setPage}/>:null;
@@ -91,8 +92,8 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
   if(section==='Government'&&page==='Внутренняя политика')return <>{tabbar}<StabilityPanel initialOpen state={state} playerId={playerId} onCommand={onCommand}/></>;
   if(section==='Economy'&&page==='Производство')return <>{tabbar}<ProductionPanel state={state} playerId={playerId} onCommand={onCommand}/></>;
   if(section==='Economy'&&page==='Ресурсы и торговля')return <>{tabbar}<ResourceTradePanel state={state} playerId={playerId} onCommand={onCommand}/></>;
-  if(section==='Diplomacy'&&page==='Войны и мир')return <>{tabbar}<WarPanel initialOpen state={state} playerId={playerId} onCommand={onCommand}/></>;
-  if(section==='Military'&&page==='Сражения и осады')return <>{tabbar}<BattleSiegePanel state={state} countryId={countryId}/></>;
+  if(section==='Diplomacy'&&page==='Войны и мир')return <>{tabbar}<WarPanel onOpenPeace={onOpenPeace} initialOpen state={state} playerId={playerId} onCommand={onCommand}/></>;
+  if(section==='Military'&&page==='Сражения и осады')return <>{tabbar}<BattleSiegePanel playerId={playerId} onCommand={onCommand} state={state} countryId={countryId}/></>;
   if(section==='Notifications')return <NotificationFeed state={state} playerId={playerId} onCommand={onCommand} onFocus={onFocusProvince??(()=>{})}/>;
   if(section==='Intelligence')return <><DiplomacyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} initialTargetId={diplomacyCountryId??undefined}/><EspionagePanel state={state} playerId={playerId} onCommand={onCommand} from={countryId} to={diplomacyCountryId??undefined}/></>;
   if(section==='Statistics')return <WorldStatistics state={state}/>;

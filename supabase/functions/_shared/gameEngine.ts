@@ -5,7 +5,7 @@ import {monthlyProduction,recipeReason,equipmentReason,payEquipment} from './pro
 import {repairProvince,startNationalProject,monthlyNationalProjects} from './construction3System.ts';
 import {extractResources,domesticConsumption,processResourceTrade,updateResourceMarkets,offerResourceTrade} from './stockpileSystem.ts';
 import {periodicMilitaryAI} from './ai3System.ts';
-import {beginBattle,dailyMilitary,mergeArmies,splitArmy,armyInBattle,militaryEntity} from './military3System.ts';
+import {assaultSiege,beginBattle,dailyMilitary,mergeArmies,splitArmy,armyInBattle,militaryEntity} from './military3System.ts';
 import {advanceDate,requestPause} from './calendarSystem.ts';
 import {collectNotifications} from './notificationSystem.ts';
 import {setArmyOrder,setArmyRoute,advanceArmyOrders} from './armyOrders.ts';
@@ -327,6 +327,11 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId); if (!player.isHost) throw new Error('Скорость меняет хост');
       next.clockNeedsReset=true;next.pauseRequests=[];next.speed = command.speed; next.phase = command.speed === 0 ? 'paused' : 'running'; return next;
+    }
+    case 'ASSAULT_SIEGE': {
+      if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Сначала начните кампанию');
+      const player=getPlayer(next,command.playerId);if(!player.countryId)throw Error('Страна не выбрана');
+      assaultSiege(next,player.countryId,command.siegeId);recalcCountryStats(next);return next;
     }
     case 'ASSIGN_COMMANDER': {
       if (!next.dataset || !['running','paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');

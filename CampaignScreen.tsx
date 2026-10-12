@@ -1,3 +1,6 @@
+import {WarProgressIndicator} from './src/components/WarProgressIndicator';
+import {PeaceNegotiations,EMPTY_PEACE_DRAFT,eligiblePeaceProvinces,draftClauses,type PeaceDraft} from './src/components/WarPanel';
+import {makePeaceTerms,peaceCost} from './supabase/functions/_shared/warSystem';
 import {ArmyDock} from './src/components/ArmyDock';
 import {DraggableWindow} from './src/components/DraggableWindow';
 import {StrategyIcon} from './src/components/StrategyIcon';
@@ -43,6 +46,10 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   if(!launch.current)launch.current=new LaunchAction(busy=>{if(busy){launchTapAt.current=performance.now();traceStartup("tap");}setLaunchBusy(busy);},()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))),ms=>{traceStartup("loading painted / handler starts");recordMetrics({tapToActionMs:ms});});
   const [diplomacyCountryId,setDiplomacyCountryId]=useState<string|null>(null);
   const [section,setSection]=useState<Section>('Country');
+  const [peaceWarId,setPeaceWarId]=useState<string|null>(null),[peacePicking,setPeacePicking]=useState(false),[peaceDrafts,setPeaceDrafts]=useState<Record<string,PeaceDraft>>({});
+  const peaceDraft=peaceWarId?peaceDrafts[peaceWarId]??EMPTY_PEACE_DRAFT:EMPTY_PEACE_DRAFT;
+  const openPeace=useCallback((id:string)=>{setPeaceWarId(id);setPeacePicking(false);setPanelOpen(false);setSelectedArmyId(null);},[]);
+  const changePeaceDraft=useCallback((draft:PeaceDraft)=>{if(peaceWarId)setPeaceDrafts(v=>({...v,[peaceWarId]:draft}));},[peaceWarId]);
   const [mapMenuOpen,setMapMenuOpen]=useState(false);
   const [saveStatus,setSaveStatus]=useState('');
   const latestState=useRef<GameState|null>(null);
@@ -55,7 +62,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   const [launchSlow,setLaunchSlow]=useState(false);
   useEffect(()=>{if(lobbyOperation!=='start'){setLaunchSlow(false);return;}const timer=setTimeout(()=>setLaunchSlow(true),12000);return()=>clearTimeout(timer);},[lobbyOperation]);
 
-  const [transport, setTransport] = useState<MultiplayerTransport>(() => new HttpTransport(remoteUrl,undefined,'-v21'));
+  const [transport, setTransport] = useState<MultiplayerTransport>(() => new HttpTransport(remoteUrl,undefined,'-v211'));
   const [state, setState] = useState<GameState | null>(null);
   latestState.current=state;
   useEffect(()=>{if(state&&launchTapAt.current){traceStartup("campaign screen committed");recordMetrics({tapToScreenMs:performance.now()-launchTapAt.current});launchTapAt.current=0;}},[state?.id,state?.phase]);
@@ -149,12 +156,13 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   },[]);
   const selectProvince = useCallback((province: Province) => {
     if(!gameStarted){setPreviewCountryId(province.ownerId);return;}
+    if(peacePicking&&peaceWarId&&myCountryId){if(peaceDraft.provinceIds.includes(province.id)){changePeaceDraft({...peaceDraft,provinceIds:peaceDraft.provinceIds.filter(id=>id!==province.id)});}else if(peaceDraft.provinceIds.length<50&&eligiblePeaceProvinces(latestState.current!,peaceWarId,myCountryId,peaceDraft).includes(province.id)){changePeaceDraft({...peaceDraft,white:false,provinceIds:[...peaceDraft.provinceIds,province.id]});}return;}
     const current=latestState.current,army=current?.armies.find(a=>a.id===selectedArmyId&&a.ownerId===myCountryId);
     const intent=mapTapIntent(army?.id??null,myCountryId,{provinceId:province.id,provinceOwnerId:province.ownerId});
     if(intent.type==='order'&&playerId&&current){void safeAction(()=>transport.sendCommand(current.id,{type:'ORDER_ARMY',playerId,armyId:intent.armyId,provinceId:intent.provinceId}));return;}
     if(intent.type==='diplomacy'){selectCountry(intent.countryId);setSelectedProvinceId(province.id);return;}
     selectContext(province);
-  },[gameStarted,selectedArmyId,myCountryId,playerId,transport,selectCountry,selectContext]);
+  },[gameStarted,peacePicking,peaceWarId,peaceDraft,changePeaceDraft,selectedArmyId,myCountryId,playerId,transport,selectCountry,selectContext]);
   const selectArmy=useCallback((id:string,province:string)=>{
     const army=latestState.current?.armies.find(a=>a.id===id);if(!army)return;
     const intent=mapTapIntent(selectedArmyId,myCountryId,{army});
@@ -171,7 +179,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   useEffect(() => { if (gameStarted) setPanelOpen(false); }, [gameStarted]);
   const exitCampaign=()=>void safeAction(async()=>{if(!state)return;if(transport instanceof LocalTransport)await campaignStore.save(state);await transport.leave(state.id);unsubscribeRef.current?.();setState(null);setPlayerId(null);setSelectedProvinceId(null);setPreviewCountryId(null);onExit();});
   const confirmExit=()=>Alert.alert('Выйти из кампании?',transport instanceof LocalTransport?'Прогресс будет сохранён.':'К кампании можно вернуться через список сохранённых сессий.',[{text:'Остаться',style:'cancel'},{text:'Выйти',onPress:exitCampaign}]);
-  useEffect(()=>{const handler=BackHandler.addEventListener('hardwareBackPress',()=>{const action=backAction({keyboard:Keyboard.isVisible(),modal:mapMenuOpen,army:!!selectedArmyId,context:!!selectedProvinceId&&panelOpen,panel:panelOpen,campaign:!!state});if(action==='keyboard')Keyboard.dismiss();else if(action==='modal')setMapMenuOpen(false);else if(action==='army')deselectArmy();else if(action==='context'){setSelectedArmyId(null);setSelectedCityId(null);setSelectedProvinceId(null);setSection('Country');setPanelOpen(false);}else if(action==='panel')setPanelOpen(false);else if(action==='confirm')confirmExit();else return false;return true;});return()=>handler.remove();},[mapMenuOpen,panelOpen,state,selectedProvinceId,selectedArmyId,transport,deselectArmy]);
+  useEffect(()=>{const handler=BackHandler.addEventListener('hardwareBackPress',()=>{if(peacePicking){setPeacePicking(false);return true;}if(peaceWarId){setPeaceWarId(null);return true;}const action=backAction({keyboard:Keyboard.isVisible(),modal:mapMenuOpen,army:!!selectedArmyId,context:!!selectedProvinceId&&panelOpen,panel:panelOpen,campaign:!!state});if(action==='keyboard')Keyboard.dismiss();else if(action==='modal')setMapMenuOpen(false);else if(action==='army')deselectArmy();else if(action==='context'){setSelectedArmyId(null);setSelectedCityId(null);setSelectedProvinceId(null);setSection('Country');setPanelOpen(false);}else if(action==='panel')setPanelOpen(false);else if(action==='confirm')confirmExit();else return false;return true;});return()=>handler.remove();},[peacePicking,peaceWarId,mapMenuOpen,panelOpen,state,selectedProvinceId,selectedArmyId,transport,deselectArmy]);
 
   useEffect(() => {
     if (transport instanceof HttpTransport || !state || !playerId || state.phase !== 'running' || state.speed === 0) return;
@@ -204,13 +212,17 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   useEffect(()=>{const a=state?.armies.find(a=>a.id===selectedArmyId);if(a)setSelectedProvinceId(a.provinceId);else if(selectedArmyId)deselectArmy();},[state?.armies,selectedArmyId,deselectArmy]);
 
   const presentation=useMemo(()=>state&&myCountryId&&!state.fogViewerId?projectFogOfWar(state,myCountryId):state,[state,myCountryId]);
+  useEffect(()=>{if(peaceWarId&&!state?.wars?.some(w=>w.id===peaceWarId)){setPeaceWarId(null);setPeacePicking(false);}},[state?.wars,peaceWarId]);
+  const peaceEligible=useMemo(()=>peacePicking&&peaceWarId&&state&&myCountryId?eligiblePeaceProvinces(state,peaceWarId,myCountryId,peaceDraft):[],[peacePicking,peaceWarId,state?.provinces,state?.wars,myCountryId,peaceDraft.territoryKind,peaceDraft.targetId]);
+  const peaceSelection=useMemo(()=>peacePicking?{eligibleIds:peaceEligible,selectedIds:peaceDraft.provinceIds}:undefined,[peacePicking,peaceEligible,peaceDraft.provinceIds]);
+  let selectionPrice='—';try{const war=state?.wars?.find(w=>w.id===peaceWarId);if(war&&state&&myCountryId)selectionPrice=peaceCost(state,war,myCountryId,makePeaceTerms(draftClauses(peaceDraft))).toFixed(1);}catch{}
   const initialized=useRef(false);
   useEffect(()=>{if(initialized.current)return;initialized.current=true;
     void launch.current!.run(async()=>{
       try {
         if(intent.type==='offline'){const local=new LocalTransport();attach(await local.createRoom('Игрок 1'),local);}
         else if(intent.type==='load'){const local=new LocalTransport();attach(await local.restore(await campaignStore.load(intent.id)),local);}
-        else {const remote=new HttpTransport(remoteUrl,undefined,'-v21');const session=intent.type==='reconnect'?await remote.reconnect(intent.id):intent.type==='create'?await remote.createRoom(intent.name):await remote.joinRoom(intent.code,intent.name);attach(session,remote);}
+        else {const remote=new HttpTransport(remoteUrl,undefined,'-v211');const session=intent.type==='reconnect'?await remote.reconnect(intent.id):intent.type==='create'?await remote.createRoom(intent.name):await remote.joinRoom(intent.code,intent.name);attach(session,remote);}
       } catch(error){onError(error instanceof Error?error.message:String(error));}
     });
   },[]);
@@ -245,15 +257,17 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
           selectedCountryId={gameStarted?myCountryId:selectedCountryId}
           selectedProvinceId={selectedProvinceId}
           selectedArmyId={selectedArmyId} selectedCityId={selectedCityId}
-          onSelectArmy={!gameStarted?undefined:selectArmy}
-          onSelectCity={!gameStarted?undefined:selectCity}
+          provinceSelection={peaceSelection}
+          onSelectArmy={!gameStarted||peacePicking?undefined:selectArmy}
+          onSelectCity={!gameStarted||peacePicking?undefined:selectCity}
           onSelectProvince={selectProvince}
-          onLongPressProvince={selectContext}
-          onSelectCountry={selectCountry}
+          onLongPressProvince={peacePicking?selectProvince:selectContext}
+          onSelectCountry={peacePicking?undefined:selectCountry}
           onClearSelection={deselectArmy}
         /></View>
 
-        {gameStarted&&selectedArmyId&&<ArmyDock state={state} armyId={selectedArmyId} playerId={playerId??''} width={Math.max(230,Math.min(460,width-(panelOpen?panelWidth(width):190)-100))} onInspect={()=>{setSection('Context');setPanelOpen(true);}} onDeselect={deselectArmy} onCommand={sendCommand}/>}
+        {gameStarted&&myCountryId&&<WarProgressIndicator state={state} countryId={myCountryId} onOpen={openPeace}/>}
+        {gameStarted&&selectedArmyId&&!panelOpen&&<ArmyDock state={state} armyId={selectedArmyId} playerId={playerId??''} width={Math.max(230,Math.min(460,width-(panelOpen?panelWidth(width):190)-100))} onInspect={()=>{setSection('Context');setPanelOpen(true);}} onDeselect={deselectArmy} onCommand={sendCommand}/>}
         {gameStarted&&<QuickTutorial state={state} playerId={playerId??''} onCommand={sendCommand}/>}
         {gameStarted&&<ScrollView style={styles.navigation} contentContainerStyle={{gap:0,flexGrow:1}}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onLongPress={()=>Alert.alert(SECTION_LABELS[tab])} onPress={()=>{setSection(tab);setPanelOpen(v=>section===tab?!v:true);}}><StrategyIcon section={tab} size={20}/></Pressable>)}</ScrollView>}
         {panelOpen&&!gameStarted && <ScrollView keyboardShouldPersistTaps="always" style={[styles.panel,{width:panelWidth(width),bottom:154}]} contentContainerStyle={styles.panelContent}>
@@ -272,13 +286,15 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
 
         </ScrollView>}
         {gameStarted&&panelOpen&&<DraggableWindow key={section} title={selectedArmyId&&section==='Context'?'Армия':SECTION_LABELS[section]} onClose={()=>setPanelOpen(false)}>
-          <GamePanel diplomacyCountryId={diplomacyCountryId} onSelectArmy={selectArmy} onDeselectArmy={deselectArmy} focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedArmyId(section==='Construction'?null:state.armies.find(a=>a.provinceId===id&&a.ownerId===myCountryId)?.id??null);setSelectedProvinceId(id);if(section!=='Construction')setSection('Context');setFocusCountryId(myCountryId);}}
+          <GamePanel onOpenPeace={openPeace} diplomacyCountryId={diplomacyCountryId} onSelectArmy={selectArmy} onDeselectArmy={deselectArmy} focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedArmyId(section==='Construction'?null:state.armies.find(a=>a.provinceId===id&&a.ownerId===myCountryId)?.id??null);setSelectedProvinceId(id);if(section!=='Construction')setSection('Context');setFocusCountryId(myCountryId);}}
             state={presentation??state}
             playerId={playerId ?? ''}
             selectedProvinceId={selectedProvinceId}
             onCommand={sendCommand}
           />
         </DraggableWindow>}
+        {gameStarted&&peaceWarId&&<DraggableWindow title="Мирные переговоры" minimized={peacePicking} onRestore={()=>setPeacePicking(false)} onClose={()=>{setPeaceWarId(null);setPeacePicking(false);}}><PeaceNegotiations state={presentation??state} playerId={playerId??''} warId={peaceWarId} draft={peaceDraft} onDraft={changePeaceDraft} onPickMap={()=>{setPeacePicking(true);setPanelOpen(false);}} onSubmit={command=>transport.sendCommand(state.id,command)}/></DraggableWindow>}
+        {peacePicking&&<View style={{position:'absolute',left:56,bottom:5,maxWidth:440,backgroundColor:colors.surface,padding:6,borderWidth:1,borderColor:colors.gold,flexDirection:'row',alignItems:'center',gap:8,zIndex:30}}><Text style={{color:colors.parchment,fontSize:11}}>Территории: {peaceDraft.provinceIds.length} · договор {selectionPrice} счёта</Text><Pressable accessibilityRole="button" style={{minHeight:44,padding:8,justifyContent:'center'}} onPress={()=>setPeacePicking(false)}><Text style={{color:colors.gold}}>Вернуться к договору →</Text></Pressable></View>}
         {!gameStarted && <View style={styles.lobbyDock}>
           {lobbyError!==''&&<View style={{backgroundColor:colors.surface,padding:8}}><Text accessibilityRole="alert" style={{color:colors.gold,fontSize:12}}>{lobbyError}</Text><Pressable accessibilityRole="button" style={styles.exitButton} onPress={()=>{setLobbyError('');if(transport instanceof HttpTransport)void safeAction(async()=>{await transport.synchronize(state.id);});}}><Text style={styles.exitText}>Синхронизировать эту комнату</Text></Pressable></View>}
           {lobbyOperation==='start'&&<Text style={{color:colors.gold,backgroundColor:colors.surface,padding:8}}>{launchSlow?'Проверяем подтверждение сервера. Комната сохранена; после ошибки запуск можно повторить.':'Сервер подтверждает запуск кампании…'}</Text>}

@@ -10,7 +10,7 @@ import {recordWarBattle} from './warSystem.ts';
 import {notify} from './notificationSystem.ts';
 export type Formation='Balanced'|'Assault'|'Defensive'|'Mobile';
 export interface ActiveBattle {id:string;provinceId:string;attackerId:string;defenderId:string;attackerArmyIds:string[];defenderArmyIds:string[];startedDay:number;attackerInitial:number;defenderInitial:number;attackerLosses:number;defenderLosses:number;reasons:string[]}
-export interface Siege {id:string;provinceId:string;attackerId:string;defenderId:string;armyIds:string[];startedDay:number;progress:number;fortress:number;garrison:number;losses:number}
+export interface Siege {id:string;provinceId:string;attackerId:string;defenderId:string;armyIds:string[];startedDay:number;progress:number;fortress:number;garrison:number;losses:number;assaultDay?:number}
 export interface ArmyGroup {id:string;ownerId:string;name:string;armyIds:string[];objective:'Defend'|'Offensive'|'Reserve'|'Escort';targetProvinceId:string;supplyPriority:'Normal'|'High';frontProvinceIds?:string[];}
 export function militaryEntity(s:GameState,prefix:string):string{const seq=s.nextEntityId??1;if(!Number.isSafeInteger(seq)||seq>=Number.MAX_SAFE_INTEGER)throw Error('Military sequence exhausted');s.nextEntityId=seq+1;return `${prefix}-${seq}`;}
 export function armyInBattle(s:GameState,id:string):boolean{return !!s.activeBattles?.some(b=>b.attackerArmyIds.includes(id)||b.defenderArmyIds.includes(id));}
@@ -56,6 +56,19 @@ function finishBattle(s:GameState,b:ActiveBattle,attackers:Army[],defenders:Army
  for(const c of [b.attackerId,b.defenderId])notify(s,c,'War',`${report.message} · ${days} дн.`,p.id);
 }
 export function siegeSupply(s:GameState,owner:string,p:Province):number{let best=0;for(const id of p.neighbors)best=Math.max(best,supplyAt(s,owner,id).score*.85);return best;}
+export function assaultSiege(s:GameState,owner:string,id:string):void{
+ const x=s.sieges?.find(x=>x.id===id&&x.attackerId===owner);if(!x)throw Error('Вы не командуете этой осадой');
+ if(x.assaultDay===(s.simulationDay??0))throw Error('Следующий штурм доступен в следующий игровой день');
+ const forecast=siegeForecast(s,x),armies=s.armies.filter(a=>x.armyIds.includes(a.id)&&a.ownerId===owner&&a.provinceId===x.provinceId&&a.troops>0);
+ if(!armies.length||forecast.supply<40||forecast.troops<x.garrison*1.5)throw Error('Штурм требует снабжения ≥40% и превосходства над гарнизоном ≥1.5×');
+ x.assaultDay=s.simulationDay??0;const initial=forecast.troops,garrison=x.garrison;
+ const losses=distributeLosses(armies,Math.floor(initial*(.02+x.fortress*.005)*(1-(forecast.supply/100)*.25)));
+ x.losses+=losses;x.garrison=Math.max(0,x.garrison-Math.floor(Math.min(garrison,initial*.012)));x.progress=Math.min(100,x.progress+Math.min(35,forecast.troops/Math.max(1000,garrison)*6*forecast.supply/100));
+ const won=x.progress>=100,p=provinceIndex(s).get(x.provinceId)!;
+ const report:BattleEvent={id:militaryEntity(s,'assault'),tick:s.tick,provinceId:p.id,attackerId:owner,defenderId:x.defenderId,attackerInitial:initial,defenderInitial:garrison,attackerLosses:losses,defenderLosses:garrison-x.garrison,winnerId:won?owner:x.defenderId,captured:won,durationDays:1,reasons:[`Снабжение ${forecast.supply.toFixed(0)}%`,`Крепость ур. ${x.fortress}`,`Прогресс осады ${x.progress.toFixed(0)}%`],message:won?'Крепость взята штурмом: '+p.name:'Штурм укреплений: '+p.name};
+ s.battleLog.unshift(report);s.battleLog=s.battleLog.slice(0,30);recordWarBattle(s,report);
+ if(won){for(const a of armies)occupy(s,a,p);p.buildingDamage=Math.min(.85,(p.buildingDamage??0)+.2);s.sieges=s.sieges?.filter(q=>q.id!==id);notify(s,owner,'Siege','Крепость взята штурмом: '+p.name,p.id);}
+}
 export function dailyMilitary(s:GameState):void{
  const provinces=new Map(s.provinces.map(p=>[p.id,p]));
  for(const b of [...s.activeBattles??[]]){
@@ -96,7 +109,7 @@ export function initializeMilitary3(s:GameState,migrate:boolean):void{
  const armies=new Set(s.armies.map(a=>a.id)),provinces=new Set(s.provinces.map(p=>p.id));
  for(const rows of [s.activeBattles,s.sieges,s.armyGroups])if(!Array.isArray(rows)||rows.length>600||new Set(rows.map(r=>r.id)).size!==rows.length)throw Error('Invalid military projects');
  for(const b of s.activeBattles!){if(!provinces.has(b.provinceId)||!s.countries[b.attackerId]||!s.countries[b.defenderId]||![b.startedDay,b.attackerInitial,b.defenderInitial,b.attackerLosses,b.defenderLosses].every(n=>Number.isSafeInteger(n)&&n>=0)||b.startedDay>(s.simulationDay??0)||!Array.isArray(b.attackerArmyIds)||!Array.isArray(b.defenderArmyIds))throw Error('Invalid battle');}
- for(const x of s.sieges!){if(!provinces.has(x.provinceId)||!s.countries[x.attackerId]||!s.countries[x.defenderId]||![x.progress,x.fortress,x.garrison,x.losses].every(n=>Number.isFinite(n)&&n>=0)||x.progress>100||!Number.isSafeInteger(x.startedDay)||x.startedDay>(s.simulationDay??0)||!Array.isArray(x.armyIds))throw Error('Invalid siege');}
+ for(const x of s.sieges!){if(!provinces.has(x.provinceId)||!s.countries[x.attackerId]||!s.countries[x.defenderId]||![x.progress,x.fortress,x.garrison,x.losses].every(n=>Number.isFinite(n)&&n>=0)||x.progress>100||!Number.isSafeInteger(x.startedDay)||x.startedDay>(s.simulationDay??0)||!Array.isArray(x.armyIds)||x.assaultDay!==undefined&&(!Number.isSafeInteger(x.assaultDay)||x.assaultDay<0||x.assaultDay>(s.simulationDay??0)))throw Error('Invalid siege');}
  for(const g of s.armyGroups!){if(!s.countries[g.ownerId]||!provinces.has(g.targetProvinceId)||!['Defend','Offensive','Reserve','Escort'].includes(g.objective)||!['Normal','High'].includes(g.supplyPriority)||!Array.isArray(g.armyIds)||g.armyIds.length>20||g.armyIds.some(id=>armies.has(id)&&!s.armies.some(a=>a.id===id&&a.ownerId===g.ownerId)))throw Error('Invalid army group');}
  for(const a of s.armies){if(a.formation!==undefined&&!['Balanced','Assault','Defensive','Mobile'].includes(a.formation))throw Error('Invalid formation');if(a.order?.travelProgress!==undefined&&(!Number.isSafeInteger(a.order.travelProgress)||a.order.travelProgress<0||a.order.travelProgress>20))throw Error('Invalid route progress');}
 }

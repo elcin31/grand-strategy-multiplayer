@@ -1,3 +1,4 @@
+import {assertGameCommand} from './commandValidation.ts';
 import { applyCommand } from './gameEngine.ts';
 import type { GameCommand, GameState } from './gameTypes.ts';
 
@@ -10,6 +11,7 @@ export function applyServerCommand(state: GameState, command: GameCommand, actor
   // A new retry id may arrive after an accepted START response was lost.
   // Authenticate the host before returning the already launched state.
   if(command?.type==='START_GAME'&&state.phase!=='lobby'){
+    assertGameCommand(command,Object.keys(state.countries));
     if(!actor.isHost)throw Error('Только хост может начать игру');
     return state;
   }

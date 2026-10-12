@@ -76,6 +76,7 @@ const fields: Record<string, readonly string[]> = {
   DECLARE_WAR: ['type','playerId','targetId'],
   ADD_REGIMENT:['type','playerId','armyId','unitType','troops'],
   REINFORCE_ARMY:['type','playerId','armyId'],
+  ASSAULT_SIEGE:['type','playerId','siegeId'],
   SET_REINFORCEMENT:['type','playerId','armyId','enabled'],
   RETREAT_ARMY:['type','playerId','armyId','provinceId'],
   RECRUIT_UNIT: ['type','playerId','provinceId','troops','unitType'],
@@ -119,6 +120,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (type === 'OFFER_TREATY' && (typeof command.treaty !== 'string' || !Object.hasOwn(TREATIES,command.treaty))) throw new Error('Invalid treaty type');
   if (type === 'PROPOSE_PEACE') assertPeaceTerms(command.terms);
   if ((type==='VOTE_PAUSE'||type === 'RESPOND_TREATY' || type === 'RESPOND_PEACE' || type === 'RESPOND_DIPLOMACY') && typeof command.accept !== 'boolean') throw new Error('Invalid treaty response');
+  if(type==='ASSAULT_SIEGE'&&(typeof command.siegeId!=='string'||!/^[A-Za-z0-9_-]{1,128}$/.test(command.siegeId)))throw Error('Invalid siege identifier');
   if (type === 'SELECT_COUNTRY' && (typeof command.countryId !== 'string' || !countryIds.includes(command.countryId))) throw new Error('Unknown country');
   if (type === 'SET_TAX_RATE') assertTaxRate(command.taxRate);
   if(type==='SET_ECONOMIC_POLICY'&&(typeof command.policy!=='string'||!Object.hasOwn(ECONOMIC_POLICIES,command.policy)))throw Error('Invalid economic policy');

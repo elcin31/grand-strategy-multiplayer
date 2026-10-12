@@ -338,6 +338,7 @@ export type GameCommand =
   | { type: 'RECRUIT_UNIT'; playerId: string; provinceId: string; troops: number; unitType: UnitType }
   | {type:'ADD_REGIMENT';playerId:string;armyId:string;unitType:UnitType;troops:number}
   | {type:'REINFORCE_ARMY';playerId:string;armyId:string}
+  | {type:'ASSAULT_SIEGE';playerId:string;siegeId:string}
   | {type:'SET_REINFORCEMENT';playerId:string;armyId:string;enabled:boolean}
   | {type:'RETREAT_ARMY';playerId:string;armyId:string;provinceId:string}
   | { type: 'ASSIGN_COMMANDER'; playerId: string; armyId: string; commanderId: string }

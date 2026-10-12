@@ -24,7 +24,7 @@ import { initializeTechnology } from './technologySystem.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
-export const CURRENT_STATE_VERSION = 23;
+export const CURRENT_STATE_VERSION = 24;
 
 /** Ordered schema migrations; every normalizer is also run as validation for current saves. */
 export function migrateV1ToV2(s:GameState){initializeBuildings(s);}
@@ -58,5 +58,7 @@ export function normalizeGameState(state:GameState):void {
  initializeStrategy3(state,version<23);
  initializeNationalProjects(state);initializeProduction(state);
  validateArmyOrders(state);
+ // Schema 24 retains legacy peace offers, validates compound clauses, and initializes battle score.
+ initializeWars(state);
  state.stateVersion=CURRENT_STATE_VERSION;
 }

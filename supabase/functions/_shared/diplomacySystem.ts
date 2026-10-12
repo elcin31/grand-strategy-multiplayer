@@ -14,7 +14,7 @@ export interface DiplomacyLink {
   a:string; b:string; relation:number; treaties:TreatyType[]; rivals:string[]; guarantors:string[]; truceUntilTick:number;
   improveAfter?:number; proposal?:{from:string;type:TreatyType;expiresTick:number};
 }
-export interface War {goals?:Record<string,import('./strategy3System.ts').WarGoal>; warScore?:number; occupiedProvinceIds?:string[]; casualties?:Record<string,number>; peaceOffer?:PeaceOffer; id:string; attackers:string[]; defenders:string[]; startedTick:number }
+export interface War {goals?:Record<string,import('./strategy3System.ts').WarGoal>; battleScore?:number;warScore?:number; occupiedProvinceIds?:string[]; casualties?:Record<string,number>; peaceOffer?:PeaceOffer; id:string; attackers:string[]; defenders:string[]; startedTick:number }
 export function pairKey(a:string,b:string):string{return [a,b].sort().join('|');}
 export function diplomaticLink(state:GameState,a:string,b:string):DiplomacyLink {
   if(a===b)throw new Error('Нужна другая страна');countryFor(state,a);countryFor(state,b);

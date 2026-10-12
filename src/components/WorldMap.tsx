@@ -35,6 +35,7 @@ import { buildProvinceColors, cityLabelPlacements, troopsByProvince, visibleCiti
 import { AVAILABLE_MODES, GRAPHICS, GraphicsPreset, MapMode, MODE_LABELS } from '../map/settings';
 
 interface WorldMapProps {
+  provinceSelection?:{eligibleIds:string[];selectedIds:string[]};
   onSelectCountry?:(countryId:string)=>void;
   onClearSelection?:()=>void;
   onCameraActivity?:(active:boolean)=>void;
@@ -76,7 +77,7 @@ function measure(font:ReturnType<typeof matchFont>,name:string):number{
 const sceneCosts=new WeakMap<MapScene,number>();
 const defaults: Camera = { x: 800, y: 160, zoom: 3.5 };
 
-export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onSelectArmy,onSelectCity,onSelectCountry,onClearSelection,onCameraActivity,settingsOpen=false,onSettingsChange, state, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince, focusCountryId }: WorldMapProps) {
+export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,selectedCityId,onSelectArmy,onSelectCity,onSelectCountry,onClearSelection,onCameraActivity,settingsOpen=false,onSettingsChange, state, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince, focusCountryId }: WorldMapProps) {
   const scene = useMemo(() => {const start=performance.now();const scene=mapSceneFor(state);if(!sceneCosts.has(scene))sceneCosts.set(scene,Math.max(getMetrics().sceneMs,performance.now()-start));recordMetrics({sceneMs:sceneCosts.get(scene)!});return scene;}, [state.dataset]);
   const { features, spatialIndex, provinceGeometry, cities: mapCities } = scene;
   const [viewport, setViewport] = useState({ width: 1, height: 1 });
@@ -202,9 +203,12 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   const nationFont = useMemo(() => matchFont({ fontFamily: 'serif', fontSize: 13, fontWeight: 'bold' }), []);
   const armyLabelBlockers=useMemo(()=>counters.map(c=>({x:c.x,y:c.y,halfWidth:37/snapshot.zoom,halfHeight:14/(snapshot.zoom*TILT)})),[counters,snapshot.zoom]);
   const cityLabels = useMemo(() => cityLabelPlacements(cities, snapshot.zoom, TILT, name => measure(font,name), armyLabelBlockers, visibleBounds(snapshot, viewport, 0)), [cities, snapshot, viewport, font, armyLabelBlockers]);
+  const peaceEligible=useMemo(()=>new Set(provinceSelection?.eligibleIds??[]),[provinceSelection?.eligibleIds]);
+  const peaceSelected=useMemo(()=>new Set(provinceSelection?.selectedIds??[]),[provinceSelection?.selectedIds]);
   const countryGlyphsRef=useRef<CountryGlyph[]>([]);
   const selectAt = useCallback((px: number, py: number, cx: number, cy: number, z: number, long: boolean) => {
     const world = { x: (px - viewport.width / 2) / z + cx, y: (py - viewport.height / 2) / (z * TILT) + cy };
+    if(provinceSelection){const hit=spatialIndex.hit(world),p=hit?.provinceId?provinces.get(hit.provinceId):undefined;if(p&&(peaceEligible.has(p.id)||peaceSelected.has(p.id)))onSelectProvince(p);return;}
     const countryHit=!long?countryGlyphsRef.current.find(g=>hitCountryGlyph(g,world.x,world.y,snapshot.zoom,TILT)):undefined;
     if(countryHit&&onSelectCountry){onSelectCountry(countryHit.label.countryId);return;}
     const cityHit = visibleCities(mapCities, visibleBounds({ x: cx, y: cy, zoom: z }, viewport, 0), z, preset).find(c => Math.hypot((c.point.x - world.x) * z, (c.point.y - world.y) * z * TILT) < 12);
@@ -218,7 +222,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
     if(!long&&cityHit&&onSelectCity){onSelectCity(cityHit.id,cityHit.provinceId);return;}
     if (province) (long ? onLongPressProvince ?? onSelectProvince : onSelectProvince)(province);
     else if(!long)onClearSelection?.();
-  }, [counters,markerTargets,selectedArmyId,selectedCountryId,viewport, provinces, state.armies, onSelectProvince, onLongPressProvince,onSelectArmy,onSelectCity,onSelectCountry,onClearSelection,snapshot.zoom, preset, scene, mapCities]);
+  }, [provinceSelection,peaceEligible,peaceSelected,counters,markerTargets,selectedArmyId,selectedCountryId,viewport, provinces, state.armies, onSelectProvince, onLongPressProvince,onSelectArmy,onSelectCity,onSelectCountry,onClearSelection,snapshot.zoom, preset, scene, mapCities]);
 
   const selectionRef=useRef(selectAt);selectionRef.current=selectAt;
   const selectCurrent=useCallback((px:number,py:number,cx:number,cy:number,z:number,long:boolean)=>selectionRef.current(px,py,cx,cy,z,long),[]);
@@ -282,6 +286,7 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
         {GRAPHICS[preset].water && <Rect x={0} y={0} width={viewport.width} height={viewport.height}><LinearGradient start={vec(0, 0)} end={vec(viewport.width, viewport.height)} colors={['#18303C', '#294A57', '#193542']} /></Rect>}
         <Group matrix={matrix}>
           <MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={detailZoom} canPrewarm={canPrewarm}/>
+          {provinceSelection&&visible.filter(f=>peaceEligible.has(f.id)||peaceSelected.has(f.id)).map(f=><Group key={'peace-'+f.id}><Path path={paths.get(f.id)!} color={peaceSelected.has(f.id)?'#DABD6E':'#5BA68C'} opacity={peaceSelected.has(f.id)?.5:.2}/><Path path={paths.get(f.id)!} color={peaceSelected.has(f.id)?'#FFE1A0':'#87D1B2'} style="stroke" strokeWidth={selectionScale}/></Group>)}
           {occupiedBatches.map(([color,path])=><Group key={color}><Path path={path} color={color} opacity={.28}/><Path path={path} color={color} opacity={.55} style="stroke" strokeWidth={selectionScale}/></Group>)}
           {warBorders!==''&&<Path path={warBorders} style="stroke" color="#ed7f72" strokeWidth={selectionScale} opacity={pulse}/>}
           {state.armies.filter(a=>a.id===selectedArmyId&&a.order).map(a=>{const points=[a.provinceId,...a.order!.route].map(id=>provinceGeometry.get(id)?.anchor).filter(Boolean);return <Path key={a.id+"-order"} path={points.map((p,i)=>`${i?"L":"M"}${p!.x},${p!.y}`).join("")} style="stroke" strokeWidth={selectionScale} color="#fff0ac"/>;})}
