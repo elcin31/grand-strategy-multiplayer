@@ -32,11 +32,13 @@ export function initializeWars(state:GameState):void {
   }
   refreshWars(state);
 }
-function strategicWeight(state:GameState,p:GameState['provinces'][number]):number{return 1+Math.sqrt(Math.max(0,p.population)/1e6)*.3+(p.development??40)/100*.6+(state.cities?.some(c=>c.provinceId===p.id&&c.isCapital)?2.5:0)+(p.resourceDeposit?.25:0);}
+const capitalCaches=new WeakMap<object,Set<string>>();
+function capitalProvinces(state:GameState):Set<string>{if(!state.cities)return new Set();let cache=capitalCaches.get(state.cities);if(!cache){cache=new Set(state.cities.filter(c=>c.isCapital).map(c=>c.provinceId));capitalCaches.set(state.cities,cache);}return cache;}
+function strategicWeight(state:GameState,p:GameState['provinces'][number]):number{return 1+Math.sqrt(Math.max(0,p.population)/1e6)*.3+(p.development??40)/100*.6+(capitalProvinces(state).has(p.id)?2.5:0)+(p.resourceDeposit?.25:0);}
 export function warMetrics(state:GameState,w:War,id:string){
  const side=warSide(w,id),enemy=opponentSide(w,id),own=state.provinces.filter(p=>side.includes(p.ownerId)),foreign=state.provinces.filter(p=>enemy.includes(p.ownerId));
  const captured=foreign.filter(p=>side.includes(p.controllerId??p.ownerId)),lost=own.filter(p=>enemy.includes(p.controllerId??p.ownerId)),weight=(rows:typeof own)=>rows.reduce((n,p)=>n+strategicWeight(state,p),0);
- const capitals=(rows:typeof own)=>rows.filter(p=>state.cities?.some(c=>c.isCapital&&c.provinceId===p.id));
+ const capitals=(rows:typeof own)=>rows.filter(p=>capitalProvinces(state).has(p.id));
  const goalRatio=(actor:string[],controllers:string[])=>{const goals=actor.flatMap(c=>w.goals?.[c]?.provinceIds??[]);return goals.length?goals.filter(id=>controllers.includes(state.provinces.find(p=>p.id===id)?.controllerId??state.provinces.find(p=>p.id===id)?.ownerId??'')).length/goals.length:0;};
  const losses=(rows:string[])=>rows.reduce((n,c)=>n+(w.casualties?.[c]??0),0),ours=losses(side),theirs=losses(enemy),exhaustion=(rows:string[])=>rows.reduce((n,c)=>n+(state.countries[c]?.warExhaustion??0),0)/Math.max(1,rows.length);
  const factors={occupation:65*(weight(captured)/Math.max(1,weight(foreign))-weight(lost)/Math.max(1,weight(own))),capitals:10*(capitals(captured).length/Math.max(1,capitals(foreign).length)-capitals(lost).length/Math.max(1,capitals(own).length)),objectives:10*(goalRatio(side,side)-goalRatio(enemy,enemy)),battles:(w.battleScore??0)*(w.attackers.includes(id)?1:-1),losses:5*(theirs-ours)/Math.max(10000,ours+theirs),exhaustion:5*(exhaustion(enemy)-exhaustion(side))/100};

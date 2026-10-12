@@ -31,7 +31,8 @@ for (const mode of ['local', 'server'] as const) {
     state = apply({ type: 'SET_READY', playerId: 'local-player', ready: true });
     state = apply({ type: 'START_GAME', playerId: 'local-player' });
     assert.equal(state.phase, 'running');
-    assert.throws(() => apply({ type: 'START_GAME', playerId: 'local-player' }));
+    if(mode==='local')assert.throws(() => apply({ type: 'START_GAME', playerId: 'local-player' }));
+    else {state.clockNeedsReset=false;const started=structuredClone(state);assert.deepEqual(apply({type:'START_GAME',playerId:'local-player'}),started);assert.throws(()=>apply({type:'START_GAME',playerId:'local-player',treasury:1e9}));}
     assert.throws(() => apply({ type: 'SET_READY', playerId: 'local-player', ready: false }));
     state = apply({ type: 'SET_SPEED', playerId: 'local-player', speed: 0 });
     assert.equal(state.phase, 'paused');

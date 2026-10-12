@@ -9,7 +9,7 @@ export function clusterArmies(counters:readonly Counter[],geometry:ReadonlyMap<s
  for(const counter of counters){const point=geometry.get(counter.provinceId)?.anchor;if(!point)continue;
   const selected=counter.ids.includes(selectedId??'');
   const cell=zoom<1.5?72:zoom<3?52:0;
-  const key=selected||!cell?counter.provinceId+'|'+counter.ownerId:counter.ownerId+'|'+Math.floor(point.x*zoom/cell)+','+Math.floor(point.y*zoom*TILT/cell);
+  const key=selected||counter.moving||!cell?counter.provinceId+'|'+counter.ownerId+(selected||counter.moving?'|'+counter.ids.join(','):''):counter.ownerId+'|'+Math.floor(point.x*zoom/cell)+','+Math.floor(point.y*zoom*TILT/cell);
   const old=groups.get(key);
   if(old){const total=old.troops+counter.troops,weight=total>0?counter.troops/total:.5;old.x+=(point.x-old.x)*weight;old.y+=(point.y-old.y)*weight;old.troops=total;old.ids.push(...counter.ids);}
   else groups.set(key,{...counter,ids:[...counter.ids],key,x:point.x,y:point.y});

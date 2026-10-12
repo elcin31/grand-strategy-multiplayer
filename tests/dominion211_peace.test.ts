@@ -26,3 +26,15 @@ test('budget, duplicate provinces, incompatible clauses and legacy offers are va
  const zero=structuredClone(s);for(const p of zero.provinces)p.controllerId=p.ownerId;refreshWars(zero);assert.throws(()=>applyServerCommand(zero,{type:'PROPOSE_PEACE',playerId:'host',warId:w.id,terms:makePeaceTerms([{kind:'Guarantee',provinceIds:[],amount:0}])},'host'),/военный счёт/);
  s.wars![0]!.peaceOffer={from:'germany',terms:{kind:'WhitePeace',provinceIds:[],amount:0},expiresTick:6};s.stateVersion=23;const old=decodeCampaign(encodeCampaign(s,1)).state;assert.equal(old.wars![0]!.peaceOffer!.terms.kind,'WhitePeace');
 });
+test('return territory and liberation restore legal ownership and independent states',()=>{
+ for(const kind of ['ReturnTerritory','ReleaseNation'] as const){
+  let s=scenario();const w=s.wars![0]!,p=s.provinces.find(p=>p.ownerId==='france')!;
+  if(kind==='ReturnTerritory')p.originalOwnerId='germany';else{
+   for(const province of s.provinces)if(province.ownerId==='poland'){province.ownerId='france';province.countryId='france';province.controllerId='germany';for(const c of s.cities??[])if(c.provinceId===province.id)c.countryId='france';}
+   p.originalOwnerId='poland';s.countries.poland!.overlordId='france';
+  }
+  refreshWars(s);const terms=makePeaceTerms([{kind,provinceIds:[p.id],amount:0,...kind==='ReleaseNation'?{targetId:'poland'}:{}}]);
+  s=applyServerCommand(s,{type:'PROPOSE_PEACE',playerId:'host',warId:w.id,terms},'host');s=applyServerCommand(s,{type:'RESPOND_PEACE',playerId:'guest',warId:w.id,accept:true},'guest');
+  const target=kind==='ReturnTerritory'?'germany':'poland';assert.equal(s.provinces.find(q=>q.id===p.id)!.ownerId,target);assert.equal(s.provinces.find(q=>q.id===p.id)!.controllerId,target);assert.ok(s.cities!.filter(c=>c.provinceId===p.id).every(c=>c.countryId===target));if(kind==='ReleaseNation')assert.equal(s.countries.poland!.overlordId,undefined);decodeCampaign(encodeCampaign(s,1));
+ }
+});

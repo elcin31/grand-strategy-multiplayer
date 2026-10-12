@@ -21,10 +21,10 @@ concurrency:
   cancel-in-progress: false
 jobs:
   backend-live:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
     uses: ./.github/workflows/backend-world-qa.yml
   long-simulation:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -77,16 +77,18 @@ jobs:
           retention-days: 14
       - name: Gameplay and authority checks
         run: |
-          if [ "$GITHUB_REF" = 'refs/heads/dominion-2.1-overhaul' ]; then
+          if [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.1-warfare-interface-art' ]; then
+            npm run test:211
+          elif [ "$GITHUB_REF" = 'refs/heads/dominion-2.1-overhaul' ]; then
             npm run test:lean
           else
             npm test
           fi
       - name: Install world-import test dependency
-        if: github.ref != 'refs/heads/dominion-2.1-overhaul'
+        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
         run: python -m pip install -r scripts/world-requirements.txt
       - name: APK verifier and world importer regression tests
-        if: github.ref != 'refs/heads/dominion-2.1-overhaul'
+        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
         # Native screenshot checks use the same pinned decoder as Python tests.
         run: |
           python -m pip install -r scripts/camera-profile-requirements.txt -r scripts/camera-trace-requirements.txt
@@ -94,18 +96,20 @@ jobs:
       - name: Install artwork verification dependency
         run: python -m pip install -r scripts/camera-profile-requirements.txt
       - name: Validate original optimized illustrations
-        run: npm run verify:art
+        run: |
+          npm run verify:art
+          if [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.1-warfare-interface-art' ]; then npm run verify:art211; fi
       - name: Paired visual update benchmark
-        if: github.ref != 'refs/heads/dominion-2.1-overhaul'
+        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
         run: npm run benchmark:visual > paired-visual-ci.json
       - name: Paired camera selectors and coverage benchmark
-        if: github.ref != 'refs/heads/dominion-2.1-overhaul'
+        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
         run: npm run benchmark:camera > paired-camera-ci.json
       - name: Map geometry benchmark
-        if: github.ref != 'refs/heads/dominion-2.1-overhaul'
+        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
         run: npm run benchmark:map
       - name: Full-world data benchmark
-        if: github.ref != 'refs/heads/dominion-2.1-overhaul'
+        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
         run: npm run benchmark:world
       - name: Generate Android project
         run: npx expo prebuild --platform android --clean
@@ -126,7 +130,10 @@ jobs:
           sha256sum android/app/build/outputs/apk/release/app-release.apk >> release-integrity.txt
       - name: Package final release
         run: |
-          if [ "$GITHUB_REF" = 'refs/heads/dominion-2.1-overhaul' ]; then
+          if [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.1-warfare-interface-art' ]; then
+            python scripts/verify-art211.py android/app/build/outputs/apk/release/app-release.apk
+            cp android/app/build/outputs/apk/release/app-release.apk Dominion-2.1.1-playtest.apk
+          elif [ "$GITHUB_REF" = 'refs/heads/dominion-2.1-overhaul' ]; then
             cp android/app/build/outputs/apk/release/app-release.apk Dominion-2.1-playtest.apk
           else
             cp android/app/build/outputs/apk/release/app-release.apk Dominion-grand-strategy-v2-release.apk
@@ -137,6 +144,7 @@ jobs:
           path: |
             Dominion-grand-strategy-v2-release.apk
             Dominion-2.1-playtest.apk
+            Dominion-2.1.1-playtest.apk
             release-integrity.txt
             art-packaging.txt
             paired-visual-ci.json
@@ -147,7 +155,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
   android-lean-smoke:
-    if: github.ref == 'refs/heads/dominion-2.1-overhaul'
+    if: github.ref == 'refs/heads/dominion-2.1-overhaul' || github.ref == 'refs/heads/dominion-2.1.1-warfare-interface-art'
     needs: build-apk
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -168,7 +176,12 @@ jobs:
           arch: x86_64
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: python scripts/android-lean-smoke.py Dominion-2.1-playtest.apk
+          script: |
+            if [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.1-warfare-interface-art' ]; then
+              python scripts/android211-smoke.py Dominion-2.1.1-playtest.apk
+            else
+              python scripts/android-lean-smoke.py Dominion-2.1-playtest.apk
+            fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -177,7 +190,7 @@ jobs:
           retention-days: 14
 
   android-smoke:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
     needs: [build-apk, long-simulation]
     runs-on: ubuntu-latest
     timeout-minutes: 80
@@ -209,7 +222,7 @@ jobs:
           retention-days: 14
 
   camera-comparison:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
     needs: build-apk
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -290,14 +303,14 @@ jobs:
             camera-fixture/manifest.json
           retention-days: 14
   android-upgrade:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
     needs: [build-apk, long-simulation]
     uses: ./.github/workflows/android-upgrade-qa.yml
     with:
       apk_run_id: ${{ github.run_id }}
       require_version_upgrade: true
   android-online:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
     needs: [build-apk, long-simulation]
     uses: ./.github/workflows/android-online-qa.yml
     with:

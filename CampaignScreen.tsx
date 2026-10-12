@@ -53,6 +53,8 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   const peaceDraft=peaceWarId?peaceDrafts[peaceWarId]??EMPTY_PEACE_DRAFT:EMPTY_PEACE_DRAFT;
   const openPeace=useCallback((id:string)=>{setPeaceWarId(id);setPeacePicking(false);setPanelOpen(false);setSelectedArmyId(null);},[]);
   const changePeaceDraft=useCallback((draft:PeaceDraft)=>{if(peaceWarId)setPeaceDrafts(v=>({...v,[peaceWarId]:draft}));},[peaceWarId]);
+  const [navTip,setNavTip]=useState<string|null>(null);
+  useEffect(()=>{if(!navTip)return;const timer=setTimeout(()=>setNavTip(null),1800);return()=>clearTimeout(timer);},[navTip]);
   const [mapMenuOpen,setMapMenuOpen]=useState(false);
   const [saveStatus,setSaveStatus]=useState('');
   const latestState=useRef<GameState|null>(null);
@@ -249,7 +251,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
           {!gameStarted && <CountryPicker state={state} onPreview={id => { setPreviewCountryId(id); setFocusCountryId(id); setPanelOpen(true); }} />}
           <Pressable style={styles.exitButton} onPress={() => setPanelOpen(!panelOpen)}><Text style={styles.exitText}>{panelOpen ? '✕' : '☰'}</Text></Pressable>
           {transport instanceof LocalTransport&&<Pressable accessibilityLabel="Сохранить кампанию" style={styles.exitButton} onPress={()=>void safeAction(async()=>{await campaignStore.save(state);setSaveStatus('Сохранено');})}><Text style={styles.exitText}>▣</Text></Pressable>}
-          {gameStarted&&<Pressable accessibilityRole="button" accessibilityLabel="Настройки звука" style={styles.exitButton} onPress={()=>{setSection('Audio');setPanelOpen(true);}}><Text style={styles.exitText}>♫</Text></Pressable>}
+          {gameStarted&&<Pressable accessibilityRole="button" accessibilityLabel="Настройки звука" style={styles.exitButton} onPress={()=>{setPeaceWarId(null);setPeacePicking(false);setSection('Audio');setPanelOpen(true);}}><Text style={styles.exitText}>♫</Text></Pressable>}
           <Pressable style={styles.exitButton} onPress={confirmExit}><Text style={styles.exitText}>↪</Text></Pressable>
         </View>
 
@@ -276,7 +278,8 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
         {gameStarted&&myCountryId&&<WarProgressIndicator state={state} countryId={myCountryId} onOpen={openPeace}/>}
         {gameStarted&&selectedArmyId&&!panelOpen&&<ArmyDock state={state} armyId={selectedArmyId} playerId={playerId??''} width={Math.max(230,Math.min(460,width-(panelOpen?panelWidth(width):190)-100))} onInspect={()=>{setSection('Context');setPanelOpen(true);}} onDeselect={deselectArmy} onCommand={sendCommand}/>}
         {gameStarted&&<QuickTutorial state={state} playerId={playerId??''} onCommand={sendCommand}/>}
-        {gameStarted&&<ScrollView style={styles.navigation} contentContainerStyle={{gap:0,flexGrow:1}}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onLongPress={()=>Alert.alert(SECTION_LABELS[tab])} onPress={()=>{setSection(tab);setPanelOpen(v=>section===tab?!v:true);}}><StrategyIcon section={tab} size={20}/></Pressable>)}</ScrollView>}
+        {gameStarted&&<ScrollView style={styles.navigation} contentContainerStyle={{gap:0,flexGrow:1}}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onLongPress={()=>setNavTip(SECTION_LABELS[tab])} onPress={()=>{setPeaceWarId(null);setPeacePicking(false);setNavTip(null);setSection(tab);setPanelOpen(v=>section===tab?!v:true);}}><StrategyIcon section={tab} size={20}/></Pressable>)}</ScrollView>}
+        {navTip&&<View pointerEvents="none" style={{position:'absolute',top:54,left:56,zIndex:45,padding:8,backgroundColor:colors.surface,borderWidth:1,borderColor:colors.gold,borderRadius:4}}><Text style={{color:colors.parchment,fontSize:12}}>{navTip}</Text></View>}
         {panelOpen&&!gameStarted && <View style={[styles.panel,{width:Math.max(250,width-Math.min(390,width*.42)-32),top:56,bottom:8}]}><ScrollView keyboardShouldPersistTaps="always" style={{flex:1}} contentContainerStyle={styles.panelContent}>
 
         {!gameStarted && (
