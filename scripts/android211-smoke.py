@@ -8,15 +8,29 @@ from map_paint_check import assert_map_painted
 PACKAGE='com.elcin31.grandstrategymultiplayer';OUT=Path('android-lean-smoke');OUT.mkdir(exist_ok=True)
 def adb(*args,timeout=None):return subprocess.check_output(['adb',*map(str,args)],text=True,stderr=subprocess.STDOUT,timeout=timeout)
 def root(name):return dump_hierarchy(adb,PACKAGE,OUT,name,'/sdcard/dominion21.xml')
-def tap(node):
-    coords=list(map(int,re.findall(r'\d+',node.get('bounds',''))));assert len(coords)==4
+def visible_bounds(tree,target):
+    def walk(node,ancestors):
+        if node is target:
+            box=list(map(int,re.findall(r'\d+',node.get('bounds',''))))
+            if len(box)!=4:return None
+            for parent in ancestors:
+                clip=list(map(int,re.findall(r'\d+',parent.get('bounds',''))))
+                if len(clip)==4:box=[max(box[0],clip[0]),max(box[1],clip[1]),min(box[2],clip[2]),min(box[3],clip[3])]
+            return box if box[2]>box[0] and box[3]-box[1]>=12 else None
+        for child in node:
+            result=walk(child,ancestors+[node])
+            if result is not None:return result
+        return None
+    return walk(tree,[])
+def tap(node,box=None):
+    coords=box if box is not None else list(map(int,re.findall(r'\d+',node.get('bounds',''))));assert len(coords)==4
     x,y=(coords[0]+coords[2])//2,(coords[1]+coords[3])//2;adb('shell','input','swipe',x,y,x,y,100)
 def control(label,name,scroll=False):
     for attempt in range(7 if scroll else 3):
         tree=root(name+'-'+str(attempt));node=find_enabled_control(tree,label)
         if node is not None:
-            coords=list(map(int,re.findall(r'\d+',node.get('bounds',''))))
-            if len(coords)==4 and coords[2]>coords[0] and coords[3]-coords[1]>=12:tap(node);return
+            box=visible_bounds(tree,node)
+            if box is not None:tap(node,box);return
         if scroll:
             containers=[]
             for n in tree.iter('node'):
@@ -35,8 +49,8 @@ def navigation(label,name,direction='up'):
     for attempt in range(5):
         tree=root(name+'-'+str(attempt));node=find_enabled_control(tree,label)
         if node is not None:
-            box=list(map(int,re.findall(r'\d+',node.get('bounds',''))))
-            if len(box)==4 and box[2]>box[0] and box[3]-box[1]>=12:tap(node);return
+            box=visible_bounds(tree,node)
+            if box is not None:tap(node,box);return
         rails=[]
         for n in tree.iter('node'):
             box=list(map(int,re.findall(r'\d+',n.get('bounds',''))))
@@ -56,7 +70,7 @@ try:
     navigation('Раздел Правительство','government','down');tree=root('window-before');title=next(n for n in tree.iter('node') if '⠿ Правительство' in n.get('text',''));before=title.get('bounds');box=list(map(int,re.findall(r'\d+',before)));x,y=(box[0]+box[2])//2,(box[1]+box[3])//2
     adb('shell','input','swipe',x,y,x+25,y+40,450);time.sleep(.5);tree=root('window-after');title=next(n for n in tree.iter('node') if '⠿ Правительство' in n.get('text',''));assert title.get('bounds')!=before,'Window did not move'
     control('Советники','advisers');tree=root('scroll');containers=[list(map(int,re.findall(r'\d+',n.get('bounds','')))) for n in tree.iter('node') if n.get('scrollable')=='true'];box=max((b for b in containers if len(b)==4 and b[3]-b[1]>80),key=lambda b:b[0]);x=(box[0]+box[2])//2;adb('shell','input','swipe',x,box[3]-20,x,box[1]+30,350);control('Закрыть окно','close-window')
-    navigation('Раздел Армия','army');control('Выбрать армию 1','army-first',True);control('Открыть окно армии','inspect');control('Приказы','orders');control('Разделить 50%','split',True);time.sleep(.5)
+    navigation('Раздел Армия','army');control('Выбрать армию 1','army-first',True);control('Открыть окно армии','inspect');control('Приказы','orders',True);control('Разделить 50%','split',True);time.sleep(.5)
     control('Бранденбург','waypoint',True);control('Марш','march',True);time.sleep(.5);tree=root('ordered');assert any('Прибытие:' in n.get('text','') for n in tree.iter('node')),'Route confirmation missing'
     control('Закрыть окно','close-army');control('Снять выделение армии','deselect');control('Продолжить','resume');time.sleep(6);control('Пауза','pause-after-march')
     navigation('Раздел Армия','army-moved');tree=root('moved');assert any('Бранденбург' in n.get('text','') for n in tree.iter('node')),'Army did not complete the short route';control('Закрыть окно','close-moved')
