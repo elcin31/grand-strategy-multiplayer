@@ -1,3 +1,5 @@
+import {QuickTutorial} from './src/components/QuickTutorial';
+import {projectFogOfWar} from './supabase/functions/_shared/strategy3System';
 import {dayDelay} from './supabase/functions/_shared/calendarSystem';
 import {mapTapIntent} from './src/ui/mapInteraction';
 import {CameraWorkGate} from './src/performance/framePacing';
@@ -184,6 +186,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
 
   useEffect(()=>{const a=state?.armies.find(a=>a.id===selectedArmyId);if(a)setSelectedProvinceId(a.provinceId);else if(selectedArmyId)deselectArmy();},[state?.armies,selectedArmyId,deselectArmy]);
 
+  const presentation=useMemo(()=>state&&myCountryId&&!state.fogViewerId?projectFogOfWar(state,myCountryId):state,[state,myCountryId]);
   const initialized=useRef(false);
   useEffect(()=>{if(initialized.current)return;initialized.current=true;
     void launch.current!.run(async()=>{
@@ -233,6 +236,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
           onClearSelection={deselectArmy}
         /></View>
 
+        {gameStarted&&<QuickTutorial state={state} playerId={playerId??''} onCommand={sendCommand}/>}
         {gameStarted&&<ScrollView style={styles.navigation} contentContainerStyle={{gap:4,flexGrow:1}} showsHorizontalScrollIndicator={false}>{SECTIONS.map(tab=><Pressable key={tab} accessibilityLabel={`Раздел ${SECTION_LABELS[tab]}`} accessibilityRole="button" accessibilityState={{selected:panelOpen&&section===tab}} style={[styles.navButton,panelOpen&&section===tab&&{backgroundColor:colors.burgundy}]} onPress={()=>{LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);setSection(tab);setPanelOpen(true);}}><Text style={{color:colors.gold,fontSize:19}}>{SECTION_ICONS[tab]}</Text><Text style={styles.exitText}>{SECTION_LABELS[tab]}</Text></Pressable>)}</ScrollView>}
         {panelOpen && <ScrollView key={section} keyboardShouldPersistTaps="handled" style={[styles.panel,{width:panelWidth(width),bottom:gameStarted?8:154}]} contentContainerStyle={styles.panelContent}>
 
@@ -248,7 +252,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
 
         {gameStarted && (
           <GamePanel diplomacyCountryId={diplomacyCountryId} onSelectArmy={selectArmy} onDeselectArmy={deselectArmy} focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedArmyId(state.armies.find(a=>a.provinceId===id&&a.ownerId===myCountryId)?.id??null);setSelectedProvinceId(id);setSection('Context');setFocusCountryId(myCountryId);}}
-            state={state}
+            state={presentation??state}
             playerId={playerId ?? ''}
             selectedProvinceId={selectedProvinceId}
             onCommand={sendCommand}
@@ -258,7 +262,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
         {!gameStarted && <View style={styles.lobbyDock}>
           <LobbyPanel
             busy={launchBusy}
-            state={state}
+            state={presentation??state}
             playerId={playerId ?? ''}
             onReady={(ready) => playerId && safeAction(() => transport.sendCommand(state.id, { type: 'SET_READY', playerId, ready }))}
             onStart={() => playerId && safeAction(async () => {await launch.current!.run(()=>transport.sendCommand(state.id, { type: 'START_GAME', playerId }));})}

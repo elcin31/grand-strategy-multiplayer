@@ -1,3 +1,4 @@
+import {projectFogOfWar} from '../../supabase/functions/_shared/strategy3System';
 import {MiniMap} from './MiniMap';
 import {countryGlyph,hitCountryGlyph,type CountryGlyph} from '../map/countryTargets';
 import {cameraMatrix} from '../map/cameraMatrix';
@@ -178,9 +179,10 @@ export const WorldMap=memo(function WorldMap({ selectedArmyId,selectedCityId,onS
   const warBorders=useMemo(()=>state.wars?.length?warBorderPath(state,visibleIds,scene.edges):'',[controllers,warSides,visibleIds,scene]);
   const occupations=useMemo(()=>occupationFeatures(state,visible),[owners,controllers,visible]);
   const budgets=markerBudgets(snapshot.zoom,preset);
-  const counters=useMemo(()=>budgetArmyMarkers(clusterArmies(armyCounters(state,visibleIds),provinceGeometry,snapshot.zoom,selectedArmyId),snapshot.zoom,budgets.armies,selectedArmyId,selectedCountryId),[state.armies,visibleIds,provinceGeometry,snapshot.zoom,selectedArmyId,selectedCountryId,budgets.armies]);
+  const militaryView=useMemo(()=>state.fogViewerId||!selectedCountryId?state:projectFogOfWar(state,selectedCountryId),[state,selectedCountryId]);
+  const counters=useMemo(()=>budgetArmyMarkers(clusterArmies(armyCounters(militaryView,visibleIds),provinceGeometry,snapshot.zoom,selectedArmyId),snapshot.zoom,budgets.armies,selectedArmyId,selectedCountryId),[militaryView.armies,visibleIds,provinceGeometry,snapshot.zoom,selectedArmyId,selectedCountryId,budgets.armies]);
   const legend=useMemo(()=>mapLegend(state,mode),[state.provinces,mode]);
-  const troops = useMemo(() => troopsByProvince(state), [state.armies]);
+  const troops = useMemo(() => troopsByProvince(militaryView), [militaryView.armies]);
   const provinceColors = useStableColors(useMemo(() => buildProvinceColors(state, mode, troops, selectedCountryId??undefined), [state.countries, state.provinces, state.diplomacy,state.wars,selectedCountryId, mode, troops]));
   const provinces = useMemo(() => new Map(state.provinces.map(p => [p.id, p])), [state.provinces]);
   const countryColors=useStableColors(useMemo(()=>new Map(Object.values(state.countries).map(c=>[c.id,c.color])),[state.countries]));

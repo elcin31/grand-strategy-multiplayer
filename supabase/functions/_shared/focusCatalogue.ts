@@ -64,7 +64,7 @@ export function hasFocus(c:Country,id:string):boolean{return !!c.completedFocuse
 const empty:Readonly<FocusBonuses>=Object.freeze({tax:0,production:0,trade:0,administration:0,armyUpkeep:0,research:0,construction:0,supply:0,combat:0,manpower:0,diplomacy:0});
 const bonusCache=new WeakMap<Country,{signature:string;bonus:Readonly<FocusBonuses>}>();
 export function focusBonuses(c:Country):Readonly<FocusBonuses>{
- const signature=(c.completedFocuses??[]).map(f=>f.focusId).join('|')+'#'+(c.nationalSpirits??[]).join('|');if(signature==='#')return empty;const cached=bonusCache.get(c);if(cached?.signature===signature)return cached.bonus;const bonus={...empty};
+ const signature=(c.completedFocuses??[]).map(f=>f.focusId).join('|')+'#'+(c.nationalSpirits??[]).join('|')+'#'+Object.keys(c.advisers??{}).join('|');if(signature==='##')return empty;const cached=bonusCache.get(c);if(cached?.signature===signature)return cached.bonus;const bonus={...empty};if(c.advisers?.Economy)bonus.tax+=.02;if(c.advisers?.Military)bonus.combat+=.02;if(c.advisers?.Diplomacy){bonus.diplomacy+=2;bonus.trade+=.02;}if(c.advisers?.Science)bonus.research+=.04;
  for(const id of c.nationalSpirits??[])for(const [key,value] of Object.entries(NATIONAL_SPIRITS[id].bonuses))bonus[key as keyof FocusBonuses]+=value;
  for(const f of c.completedFocuses??[])for(const [key,value] of Object.entries(focusNode(f.focusId)!.rewards.bonuses??{}))bonus[key as keyof FocusBonuses]+=value;
  for(const key of Object.keys(bonus) as (keyof FocusBonuses)[])bonus[key]=Math.max(key==='diplomacy'?-15:-.25,Math.min(key==='diplomacy'?15:.35,Number(bonus[key].toFixed(3))));const result=Object.freeze(bonus);bonusCache.set(c,{signature,bonus:result});return result;

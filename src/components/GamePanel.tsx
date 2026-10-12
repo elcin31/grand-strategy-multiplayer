@@ -1,3 +1,5 @@
+import {StrategyCouncil} from './StrategyCouncil';
+import {WorldStatistics} from './WorldStatistics';
 import {ProductionPanel} from './ProductionPanel';
 import {ConstructionPanel} from './ConstructionPanel';
 import {ResourceTradePanel} from './ResourceTradePanel';
@@ -80,7 +82,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
 
   if(section==='Notifications')return <NotificationFeed state={state} playerId={playerId} onCommand={onCommand} onFocus={onFocusProvince??(()=>{})}/>;
   if(section==='Intelligence')return <><DiplomacyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} initialTargetId={diplomacyCountryId??undefined}/><EspionagePanel state={state} playerId={playerId} onCommand={onCommand} from={countryId} to={diplomacyCountryId??undefined}/></>;
-  if(section==='Statistics')return <View style={styles.card}><Text style={styles.title}>Мировая статистика</Text>{Object.values(state.countries).sort((a,b)=>b.income-a.income).slice(0,25).map((c,i)=><Text key={c.id} style={styles.hint}>{i+1}. {c.name} · доход {currency(c.income)} · население {compact(c.population)} · армия {compact(c.army)}</Text>)}</View>;
+  if(section==='Statistics')return <WorldStatistics state={state}/>;
   if(section==='Construction')return <ConstructionPanel state={state} playerId={playerId} onCommand={onCommand} provinceId={selectedProvinceId} onFocus={onFocusProvince??(()=>{})}/>;
   return (
     <View style={styles.wrap}>
@@ -194,6 +196,7 @@ export function GamePanel({ diplomacyCountryId,onSelectArmy,onDeselectArmy,focus
         <Text style={styles.hint}>Все религии используют одинаковые правила. Низкое единство повышает unrest; смена не обращает население автоматически.</Text>
       </View>}
 
+      {section==='Country'&&<StrategyCouncil state={state} playerId={playerId} onCommand={onCommand}/>}
       {section==='Country'&&<StabilityPanel state={state} playerId={playerId} onCommand={onCommand} />}
       {section==='Diplomacy'&&<WarPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
       {section==='Diplomacy'&&<DiplomacyPanel initialOpen initialTargetId={diplomacyCountryId??undefined} state={state} playerId={playerId} onCommand={onCommand} />}

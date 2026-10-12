@@ -10,6 +10,14 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital' | 'Ranch' | 'Fishery' | 'FoodProcessor' | 'IronMine' | 'CoalMine' | 'OilWell' | 'GasField' | 'Quarry' | 'RareMine' | 'Steelworks' | 'Refinery' | 'ChemicalPlant' | 'TextileMill' | 'Machinery' | 'ElectronicsPlant' | 'ArmsFactory' | 'AmmoFactory' | 'VehicleFactory' | 'MilitaryDepot' | 'RailHub' | 'TransportTerminal' | 'Warehouse' | 'PowerGrid' | 'CargoPort' | 'ResearchCenter' | 'Laboratory' | 'Embassy' | 'IntelligenceCenter' | 'CoastalFort' | 'MilitaryBase';
 
 export interface Country {
+  intelligenceLevel?:'Detailed'|'Estimate'|'Unknown';
+  advisers?:Partial<Record<import('./strategy3System.ts').AdviserRole,import('./strategy3System.ts').Adviser>>;
+  adviserCooldown?:number;
+  vassalAutonomy?:number;
+  vassalIntegration?:import('./strategy3System.ts').VassalIntegration;
+  tutorialStep?:number;
+  militaryCeiling?:{untilTick:number;troops:number};
+  reparations?:{to:string;amount:number;untilTick:number;lastTick:number};
   nationalSpirits?:import('./focusExpansion.ts').NationalSpiritId[];
   decisions?:import('./politicalDecisions.ts').DecisionProject[];
   decisionCooldowns?:Partial<Record<import('./politicalDecisions.ts').DecisionId,number>>;
@@ -139,6 +147,7 @@ export interface Construction {
 }
 
 export interface Army {
+  intelligenceLevel?:'Detailed'|'Estimate';
   formation?:import('./military3System.ts').Formation;
   escortArmyId?:string;
   composition?:import('./armyComposition.ts').Composition;
@@ -220,6 +229,10 @@ export interface Leader {
 }
 
 export interface GameState {
+  resourceLeaderOutput?:Partial<Record<import('./resourceCatalogue.ts').ResourceType,{countryId:string;units:number}[]>>;
+  fogViewerId?:string;
+  chronicle?:import('./strategy3System.ts').ChronicleEntry[];
+  chronicleSequence?:number;
   focusChoices?:import('./politicalDecisions.ts').FocusChoice[];
   tradeContracts?:import('./stockpileSystem.ts').ResourceContract[];
   resourcePrices?:import('./stockpileSystem.ts').ResourceLedger;
@@ -270,6 +283,11 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'DECLARE_WAR_GOAL';playerId:string;targetId:string;goal:import('./strategy3System.ts').WarGoalType;provinceIds:string[]}
+  | {type:'APPOINT_ADVISER';playerId:string;role:import('./strategy3System.ts').AdviserRole}
+  | {type:'VASSAL_POLICY';playerId:string;targetId:string;policy:'Raise'|'Lower'|'Integrate'}
+  | {type:'RESPOND_INTEGRATION';playerId:string;accept:boolean}
+  | {type:'SET_TUTORIAL_STEP';playerId:string;step:number}
   | {type:'START_POLITICAL_DECISION';playerId:string;decisionId:import('./politicalDecisions.ts').DecisionId}
   | {type:'RESOLVE_FOCUS_CHOICE';playerId:string;eventId:string;choice:'Investment'|'Consensus'}
   | {type:'SET_FACTORY_PRODUCTION';playerId:string;provinceId:string;buildingType:BuildingType;recipeId:import('./productionSystem.ts').RecipeId}

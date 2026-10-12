@@ -10,7 +10,7 @@ export function notify(s:GameState,countryId:string,category:NotificationCategor
 }
 export function collectNotifications(before:GameState,after:GameState):void{
  for(const [id,c] of Object.entries(after.countries)){
-  const old=before.countries[id];if(old?.research&&!c.research)notify(after,id,'Research','Исследование завершено: '+(old.research.nodeId??old.research.branch));
+  const old=before.countries[id];if(old?.research&&((old.research.nodeId&&c.scientificDiscoveries?.includes(old.research.nodeId)&&!old.scientificDiscoveries?.includes(old.research.nodeId))||old.research.branch!=='Science'&&(c.technologies?.[old.research.branch]??0)>(old.technologies?.[old.research.branch]??0)))notify(after,id,'Research','Исследование завершено: '+(old.research.nodeId??old.research.branch));
  }
  const active=new Set(after.constructions?.map(c=>c.id));for(const c of before.constructions??[])if(!active.has(c.id)&&(after.provinces.find(p=>p.id===c.provinceId)?.buildings?.[c.buildingType]??0)>=c.targetLevel)notify(after,c.ownerId,'Construction','Построено: '+c.buildingType,c.provinceId);
  const focuses=new Set(before.focusEvents?.map(e=>e.id));for(const e of after.focusEvents??[])if(!focuses.has(e.id)&&e.kind==='Completed')notify(after,e.countryId,'Focus',e.message);

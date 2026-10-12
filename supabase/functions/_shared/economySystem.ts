@@ -64,7 +64,8 @@ export function recalcEconomy(state: GameState): void {
   for (const c of Object.values(state.countries)) {
     const rawTax = taxBase.get(c.id) ?? 0, rawTrade = tradeBase.get(c.id) ?? 0;
     const policy=economicPolicy(c),course=focusBonuses(c);
-    const taxIncome = money(governmentIncome(rawTax, c.governmentType) * c.taxRate! / DEFAULT_TAX_RATE * (1 + techLevel(c, 'Economy') * .04)*policy.tax*(1+course.tax+technologyBonuses(c).tax));
+    const warPressure=1-(c.warExhaustion??0)*.002;
+    const taxIncome = money(warPressure*governmentIncome(rawTax, c.governmentType) * c.taxRate! / DEFAULT_TAX_RATE * (1 + techLevel(c, 'Economy') * .04)*policy.tax*(1+course.tax+technologyBonuses(c).tax));
     const people = population.get(c.id) ?? 0;
     const meanDevelopment = people > 0 ? (development.get(c.id) ?? 0) / people : 0;
     const tradeIncome = money(rawTrade * (.1 + (diplomatic.tradeBonus.get(c.id) ?? 0)) * meanDevelopment / 100 * (.5 + c.stability / 200)*policy.trade*(1+course.trade+technologyBonuses(c).trade));
@@ -75,7 +76,7 @@ export function recalcEconomy(state: GameState): void {
     c.militaryUpkeepBase=money(militaryCosts.get(c.id)??0);
     const armyMaintenance = money(c.militaryUpkeepBase*militaryFundingCost(c));
     const interest = money(c.debt! * MONTHLY_INTEREST);
-    const diplomaticMaintenance = diplomatic.costs.get(c.id) ?? 0;
+    const diplomaticMaintenance = (diplomatic.costs.get(c.id) ?? 0)+Object.keys(c.advisers??{}).length*2;
     const researchMaintenance=researchMonthlyCost(c,state.tick);
     const importExpense=c.stockpile?.importExpense??0;
     const monthlyBalance = money(monthlyIncome - importExpense - armyMaintenance - buildingMaintenance - interest - administrationMaintenance - diplomaticMaintenance-researchMaintenance);

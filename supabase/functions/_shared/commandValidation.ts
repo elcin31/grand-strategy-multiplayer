@@ -1,3 +1,4 @@
+import {WAR_GOALS} from './strategy3System.ts';
 import {POLITICAL_DECISIONS} from './politicalDecisions.ts';
 import {PRODUCTION_RECIPES} from './productionSystem.ts';
 import {NATIONAL_PROJECTS} from './construction3System.ts';
@@ -19,6 +20,11 @@ import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  DECLARE_WAR_GOAL:['type','playerId','targetId','goal','provinceIds'],
+  APPOINT_ADVISER:['type','playerId','role'],
+  VASSAL_POLICY:['type','playerId','targetId','policy'],
+  RESPOND_INTEGRATION:['type','playerId','accept'],
+  SET_TUTORIAL_STEP:['type','playerId','step'],
   START_POLITICAL_DECISION:['type','playerId','decisionId'],
   RESOLVE_FOCUS_CHOICE:['type','playerId','eventId','choice'],
   SET_FACTORY_PRODUCTION:['type','playerId','provinceId','buildingType','recipeId'],
@@ -136,13 +142,18 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if(type==='SET_INDUSTRY_POLICY'&&(typeof command.autoTrade!=='boolean'||typeof command.autoRepair!=='boolean'||!['Balanced','Civilian','Military'].includes(command.priority as string)))throw Error('Invalid industry policy');
   if(type==='OFFER_RESOURCE_TRADE'&&(typeof command.resource!=='string'||!Object.hasOwn(RESOURCES,command.resource)||!Number.isInteger(command.quantity)||Number(command.quantity)<1||Number(command.quantity)>10000||!['Import','Export'].includes(command.mode as string)))throw Error('Invalid resource trade');
   if(type==='RESPOND_RESOURCE_TRADE'&&typeof command.accept!=='boolean')throw Error('Invalid trade consent');
-  if(type==='BULK_BUILD'&&(!Array.isArray(command.provinceIds)||command.provinceIds.length<1||command.provinceIds.length>12||new Set(command.provinceIds).size!==command.provinceIds.length||command.provinceIds.some(id=>typeof id!=='string'||!/^[A-Za-z0-9_+?-]{1,128}$/.test(id))))throw Error('Invalid bulk construction');
+  if((type==='BULK_BUILD'||type==='DECLARE_WAR_GOAL')&&(!Array.isArray(command.provinceIds)||command.provinceIds.length<(type==='BULK_BUILD'?1:0)||command.provinceIds.length>12||new Set(command.provinceIds).size!==command.provinceIds.length||command.provinceIds.some(id=>typeof id!=='string'||!/^[A-Za-z0-9_+?-]{1,128}$/.test(id))))throw Error('Invalid bulk construction');
   if(type==='START_NATIONAL_PROJECT'&&(typeof command.projectId!=='string'||!Object.hasOwn(NATIONAL_PROJECTS,command.projectId)))throw Error('Invalid national project');
   if(['SET_FACTORY_PRODUCTION','QUEUE_PRODUCTION'].includes(type)&&(typeof command.recipeId!=='string'||!Object.hasOwn(PRODUCTION_RECIPES,command.recipeId)))throw Error('Invalid production recipe');
   if(type==='QUEUE_PRODUCTION'&&(!Number.isInteger(command.quantity)||Number(command.quantity)<1||Number(command.quantity)>10000))throw Error('Invalid production quantity');
   if(type==='SET_REGION_SPECIALIZATION'&&!['Agriculture','Extraction','Industry','Research'].includes(command.specialization as string))throw Error('Invalid regional specialization');
   if(type==='START_POLITICAL_DECISION'&&(typeof command.decisionId!=='string'||!Object.hasOwn(POLITICAL_DECISIONS,command.decisionId)))throw Error('Invalid political decision');
   if(type==='RESOLVE_FOCUS_CHOICE'&&(typeof command.eventId!=='string'||!/^[A-Za-z0-9_-]{1,128}$/.test(command.eventId)||!['Investment','Consensus'].includes(command.choice as string)))throw Error('Invalid focus choice');
+  if(type==='DECLARE_WAR_GOAL'&&(typeof command.goal!=='string'||!Object.hasOwn(WAR_GOALS,command.goal)))throw Error('Invalid war goal');
+  if(type==='APPOINT_ADVISER'&&!['Economy','Military','Diplomacy','Science'].includes(command.role as string))throw Error('Invalid adviser');
+  if(type==='VASSAL_POLICY'&&!['Raise','Lower','Integrate'].includes(command.policy as string))throw Error('Invalid vassal policy');
+  if(type==='RESPOND_INTEGRATION'&&typeof command.accept!=='boolean')throw Error('Invalid integration response');
+  if(type==='SET_TUTORIAL_STEP'&&(!Number.isInteger(command.step)||Number(command.step)<0||Number(command.step)>8))throw Error('Invalid tutorial step');
   if (type === 'SET_READY' && typeof command.ready !== 'boolean') throw new Error('Invalid ready value');
   if (type === 'SET_SPEED' && (typeof command.speed !== 'number' || !Number.isInteger(command.speed) || command.speed < 0 || command.speed > 5)) throw new Error('Invalid game speed');
   if ((type === 'RECRUIT' || type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');

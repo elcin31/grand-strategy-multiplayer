@@ -1,7 +1,8 @@
+import {takeArmyLosses} from './armyComposition.ts';
 import { countryFor, type BattleEvent, type GameState } from './gameTypes.ts';
 import { diplomaticLink, warBetween, type War } from './diplomacySystem.ts';
 import { money } from './economySystem.ts';
-export type PeaceKind = 'WhitePeace'|'Territory'|'ReturnTerritory'|'Money'|'Vassalization';
+export type PeaceKind = 'WhitePeace'|'Territory'|'ReturnTerritory'|'Money'|'Vassalization'|'Guarantee'|'Disarmament'|'Reparations';
 export interface PeaceTerms { kind:PeaceKind; provinceIds:string[]; amount:number }
 export interface PeaceOffer { from:string; terms:PeaceTerms; expiresTick:number }
 export interface WarSummary { id:string; endedTick:number; kind:PeaceKind; attackers:string[]; defenders:string[]; casualties:Record<string,number> }
@@ -50,20 +51,22 @@ export function recordWarBattle(state:GameState,event:BattleEvent):void {
 }
 export function assertPeaceTerms(input:unknown):asserts input is PeaceTerms {
   if(!input||typeof input!=='object'||Array.isArray(input))throw new Error('Invalid peace terms');const t=input as Record<string,unknown>;
-  if(Object.keys(t).length!==3||!['WhitePeace','Territory','ReturnTerritory','Money','Vassalization'].includes(t.kind as string)||!Array.isArray(t.provinceIds)||t.provinceIds.length>50||new Set(t.provinceIds).size!==t.provinceIds.length||t.provinceIds.some(p=>typeof p!=='string'||!/^[A-Za-z0-9_+?-]{1,128}$/.test(p))||typeof t.amount!=='number'||!Number.isFinite(t.amount)||t.amount<0||t.amount>1000000||money(t.amount)!==t.amount)throw new Error('Invalid peace terms');
+  if(Object.keys(t).length!==3||!['WhitePeace','Territory','ReturnTerritory','Money','Vassalization','Guarantee','Disarmament','Reparations'].includes(t.kind as string)||!Array.isArray(t.provinceIds)||t.provinceIds.length>50||new Set(t.provinceIds).size!==t.provinceIds.length||t.provinceIds.some(p=>typeof p!=='string'||!/^[A-Za-z0-9_+?-]{1,128}$/.test(p))||typeof t.amount!=='number'||!Number.isFinite(t.amount)||t.amount<0||t.amount>1000000||money(t.amount)!==t.amount)throw new Error('Invalid peace terms');
   if((t.kind==='Territory'||t.kind==='ReturnTerritory') ? t.provinceIds.length===0||t.amount!==0 : t.provinceIds.length!==0)throw new Error('Invalid territory demands');
-  if(t.kind==='Money' ? t.amount<=0 : t.amount!==0)throw new Error('Invalid peace payment');
+  if((t.kind==='Money'||t.kind==='Reparations') ? t.amount<=0 : t.amount!==0)throw new Error('Invalid peace payment');
 }
 function peaceContext(state:GameState,actor:string,warId:string){const w=state.wars?.find(w=>w.id===warId);if(!w||!isWarLeader(w,actor))throw new Error('Мир предлагает лидер воюющей стороны');return w;}
 export function peaceCost(state:GameState,w:War,from:string,terms:PeaceTerms):number {
   assertPeaceTerms(terms);const enemies=opponentSide(w,from),side=warSide(w,from);const enemy=countryFor(state,enemies[0]!);
+  const goal=w.goals?.[from];if(goal?.type==='LimitedWar'&&terms.provinceIds.length>3)throw Error('Ограниченная война допускает до трёх провинций');if(goal?.type==='Liberation'&&terms.kind==='Territory')throw Error('Освободительная война допускает возврат территории');
   if(terms.kind==='WhitePeace')return 0;
+  if(terms.kind==='Guarantee')return 25;if(terms.kind==='Disarmament')return 40;if(terms.kind==='Reparations'){if(terms.amount>(enemy.economy?.monthlyIncome??0)*.15)throw Error('Репарации ограничены 15% месячного дохода');return Math.min(70,20+terms.amount/Math.max(1,enemy.economy?.monthlyIncome??1)*100);}
   if(terms.kind==='Vassalization'){
     if(countryFor(state,from).overlordId||enemy.overlordId||Object.values(state.countries).some(c=>c.overlordId===enemy.id))throw new Error('Вассализация недоступна');return 80;
   }
-  if(terms.kind==='Money'){if(terms.amount>enemy.treasury)throw new Error('У противника недостаточно средств');return Math.min(80,5+terms.amount/Math.max(1,(enemy.economy?.monthlyIncome??1)*12)*50);}
+  if(terms.kind==='Money'){if(enemy.intelligenceLevel!=='Unknown'&&terms.amount>enemy.treasury)throw new Error('У противника недостаточно средств');return Math.min(80,5+terms.amount/Math.max(1,(enemy.economy?.monthlyIncome??1)*12)*50);}
   const total=state.provinces.filter(p=>enemies.includes(p.ownerId)).length;
-  for(const id of terms.provinceIds){const p=state.provinces.find(p=>p.id===id);if(!p||!enemies.includes(p.ownerId)||!side.includes(p.controllerId??p.ownerId))throw new Error('Можно требовать только оккупированную вражескую территорию');if(terms.kind==='ReturnTerritory'&&!side.includes(p.originalOwnerId!))throw new Error('Территория не принадлежала вашей стороне');}
+  for(const id of terms.provinceIds){const p=state.provinces.find(p=>p.id===id);if(!p||!enemies.includes(p.ownerId)||!side.includes(p.controllerId??p.ownerId))throw new Error('Можно требовать только оккупированную вражескую территорию');if(terms.kind==='ReturnTerritory'&&!side.includes(p.originalOwnerId!)&&!(w.goals?.[from]?.type==='Liberation'&&w.goals[from]!.provinceIds.includes(id)))throw new Error('Территория не принадлежала вашей стороне');}
   return Math.min(80,terms.provinceIds.length/Math.max(1,total)*80);
 }
 export function proposePeace(state:GameState,actor:string,warId:string,terms:PeaceTerms):void {
@@ -85,9 +88,12 @@ export function respondPeace(state:GameState,actor:string,warId:string,accept:bo
 function settlePeace(state:GameState,w:War,from:string,terms:PeaceTerms):void {
   const enemies=opponentSide(w,from),enemy=countryFor(state,enemies[0]!),winner=countryFor(state,from);
   if(terms.kind==='Money'){enemy.treasury=money(enemy.treasury-terms.amount);winner.treasury=money(winner.treasury+terms.amount);}
-  if(terms.kind==='Vassalization')enemy.overlordId=from;
+  if(terms.kind==='Vassalization'){enemy.overlordId=from;enemy.vassalAutonomy=65;}
+  if(terms.kind==='Guarantee'){const link=diplomaticLink(state,from,enemy.id);if(!link.guarantors.includes(enemy.id))link.guarantors.push(enemy.id);link.guaranteeUntil??={};link.guaranteeUntil[enemy.id]=state.tick+24;}
+  if(terms.kind==='Reparations')enemy.reparations={to:from,amount:terms.amount,untilTick:state.tick+24,lastTick:state.tick};
+  if(terms.kind==='Disarmament'){const cap=Math.floor(enemy.army*.7);for(const a of state.armies.filter(a=>a.ownerId===enemy.id)){const released=takeArmyLosses(a,Math.floor(a.troops*.3));enemy.manpower+=released;}enemy.militaryCeiling={untilTick:state.tick+24,troops:cap};}
   for(const id of terms.provinceIds){
-    const p=state.provinces.find(p=>p.id===id)!;p.ownerId=terms.kind==='ReturnTerritory'?p.originalOwnerId!:from;p.countryId=p.ownerId;
+    const p=state.provinces.find(p=>p.id===id)!;p.ownerId=terms.kind==='ReturnTerritory'?p.originalOwnerId!:from;p.countryId=p.ownerId;p.controllerId=p.ownerId;
     for(const city of state.cities??[])if(city.provinceId===id)city.countryId=p.ownerId;
     state.constructions=state.constructions?.filter(c=>c.provinceId!==id);
   }
@@ -100,13 +106,14 @@ function settlePeace(state:GameState,w:War,from:string,terms:PeaceTerms):void {
   state.armies=state.armies.filter(a=>a.troops>0);
   for(const a of w.attackers)for(const d of w.defenders){const link=diplomaticLink(state,a,d);link.truceUntilTick=state.tick+24;delete link.proposal;}
   state.warHistory!.unshift({id:w.id,endedTick:state.tick,kind:terms.kind,attackers:[...w.attackers],defenders:[...w.defenders],casualties:{...w.casualties}});state.warHistory=state.warHistory!.slice(0,20);
-  state.wars=state.wars!.filter(q=>q.id!==w.id);
+  state.wars=state.wars!.filter(q=>q.id!==w.id);state.activeBattles=state.activeBattles?.filter(b=>!participants.has(b.attackerId)&&!participants.has(b.defenderId));state.sieges=state.sieges?.filter(b=>!participants.has(b.attackerId)&&!participants.has(b.defenderId));
 }
 export function monthlyWar(state:GameState):void {
   if(!state.dataset)return;refreshWars(state);
   const active=new Set(state.wars!.flatMap(w=>[...w.attackers,...w.defenders]));
   for(const c of Object.values(state.countries))c.warExhaustion=Math.max(0,Math.min(100,c.warExhaustion!+(active.has(c.id)?.35:-.75)));
   for(const w of state.wars!){if(w.peaceOffer&&w.peaceOffer.expiresTick<=state.tick)delete w.peaceOffer;}
+  for(const c of Object.values(state.countries)){const r=c.reparations;if(r&&r.untilTick>state.tick&&r.lastTick!==state.tick){const paid=money(Math.min(c.treasury,r.amount));c.treasury=money(c.treasury-paid);countryFor(state,r.to).treasury=money(countryFor(state,r.to).treasury+paid);r.lastTick=state.tick;}if(r&&r.untilTick<=state.tick)delete c.reparations;}
   // Tribute is bounded by available cash, paid once per authoritative monthly tick.
   for(const c of Object.values(state.countries))if(c.overlordId){const lord=countryFor(state,c.overlordId),tribute=money(Math.min(c.treasury,Math.max(0,c.economy?.monthlyBalance??0)*.1));c.treasury=money(c.treasury-tribute);lord.treasury=money(lord.treasury+tribute);}
 }

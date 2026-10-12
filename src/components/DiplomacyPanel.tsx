@@ -1,3 +1,4 @@
+import {WarGoalsPanel} from './WarGoalsPanel';
 import {colors} from '../ui/tokens';
 import {useEffect,useState} from 'react';
 import {Pressable,ScrollView,Text,TextInput,View} from 'react-native';
@@ -34,7 +35,7 @@ export function DiplomacyPanel({state,playerId,onCommand,initialOpen,initialTarg
         <Text style={styles.text}>Договоры: {link?.treaties.map(t=>TREATIES[t]).join(', ')||'нет'} · перемирие {Math.max(0,(link?.truceUntilTick??0)-state.tick)} мес.</Text>
         <Text style={styles.text}>Гарантии: {link?.guarantors.map(c=>`${state.countries[c]!.name} (${Math.max(0,(link.guaranteeUntil?.[c]??state.tick)-state.tick)} мес.)`).join(', ')||'нет'} · соперники: {link?.rivals.map(c=>state.countries[c]!.name).join(', ')||'нет'}</Text>
         {link?.reasons?.filter(r=>r.value!==0).map(r=><Text style={styles.text} key={r.key}>{r.label}: {r.value>0?'+':''}{r.value}</Text>)}
-        <DiplomacyActions key={targetId} state={state} playerId={playerId} onCommand={onCommand} from={id} to={targetId}/>
+        <WarGoalsPanel key={targetId+'-goals'} state={state} playerId={playerId} onCommand={onCommand} targetId={targetId}/><DiplomacyActions key={targetId} state={state} playerId={playerId} onCommand={onCommand} from={id} to={targetId}/>
       </>:<Text style={styles.text}>Выберите действующее государство для дипломатии.</Text>}
       <Text style={styles.title}>Дипломатическая история</Text>
       {(state.diplomaticHistory??[]).filter(e=>e.countries.includes(id)&&(!target||e.countries.includes(targetId))).slice(0,12).map(e=><Text style={styles.text} key={e.id}>Ход {e.tick}: {e.message}</Text>)}
