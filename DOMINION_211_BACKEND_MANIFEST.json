@@ -1,22 +1,22 @@
 {
   "projectId": "dfjsnjxnyjspwugjguhq",
-  "sourceHead": "1b4e3ba7d9fe3f9b17b46374e2f341fbeccb37bc",
-  "workingTreeClean": false,
-  "note": "Existing Dominion project, session authentication, CAS and command receipts. Source at 1b4e3ba; pending audio dependency changes did not affect server sources. v21 and original 2.0 endpoints preserved.",
+  "sourceHead": "e94f597e1b72b3770b13283d9c2e932a5861a83a",
+  "workingTreeClean": true,
+  "note": "Deployed final committed Dominion 2.1.1 sources to the existing Dominion project. Custom player-session authentication, CAS and command receipts retained. v21 and original 2.0 endpoints preserved.",
   "functions": [
     {
       "name": "game-room",
       "entrypoint": "index.js",
       "verifyJwt": false,
-      "bytes": 3013273,
-      "sha256": "b037a643d2b2e429b6e012087a47fe241d8aaaf19b07c8163a79605e3d56f536"
+      "bytes": 3013609,
+      "sha256": "f2162105aa7c785ce6e8078b40631c839142c655cf36ea15971195788e9ce327"
     },
     {
       "name": "game-command",
       "entrypoint": "index.js",
       "verifyJwt": false,
-      "bytes": 2995924,
-      "sha256": "9ecfb717021788424072bf2e1bdd98d901ecbba003e7177f3a8955b143b6c484"
+      "bytes": 2996260,
+      "sha256": "9f4373766f1af3adaa866c938de8c681856b38160d4d3996ee25f3c00a7f3773"
     }
   ],
   "protocol": 24,
@@ -26,7 +26,7 @@
   ],
   "sourceCommitted": true,
   "deploymentVersions": {
-    "game-room-v211": 1,
-    "game-command-v211": 1
+    "game-room-v211": 2,
+    "game-command-v211": 2
   }
 }

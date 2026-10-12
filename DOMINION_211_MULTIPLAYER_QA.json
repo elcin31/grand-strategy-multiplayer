@@ -9,5 +9,17 @@
   "ordersBoth": true,
   "sharedCalendar": true,
   "reconnect": true,
-  "nativeMapRender": false
+  "nativeMapRender": false,
+  "scenarioSource": "1b4e3ba7d9fe3f9b17b46374e2f341fbeccb37bc",
+  "protocol": 24,
+  "endpoints": [
+    "game-room-v211",
+    "game-command-v211"
+  ],
+  "scenarioDeploymentVersions": {
+    "game-room-v211": 1,
+    "game-command-v211": 1
+  },
+  "syntheticRoomCleaned": true,
+  "clients": "Two independent HttpTransport clients and separate session stores; authoritative snapshots and prepared map geometry, without native two-device rendering."
 }
