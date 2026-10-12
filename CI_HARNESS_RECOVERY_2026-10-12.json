@@ -462,7 +462,13 @@
     "unchangedSourceJs309AndStrictTsVerifiedByOriginalBuild": true,
     "diffWhitespacePassed": true
   },
-  "correctedFullSevenGateRun": "PENDING publish harness commit",
+  "correctedFullSevenGateRun": {
+    "runtime": "4947ed0591732a9571f7031b7df57534492da6ee",
+    "tree": "276d26db93bddb226019c437a5c9ffa11bf038bb",
+    "runId": 38200048313,
+    "status": "in_progress",
+    "conclusion": null
+  },
   "releaseAccepted": false,
   "physicalRedmiTested": false
 }

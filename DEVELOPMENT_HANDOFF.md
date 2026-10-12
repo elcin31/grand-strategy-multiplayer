@@ -1,3 +1,13 @@
+# Published correction; fresh full seven-gate QA running (2026-10-12)
+
+**Latest published implementation/source HEAD4947ed0591732a9571f7031b7df57534492da6ee**, tree276d26db93bddb226019c437a5c9ffa11bf038bb, normal fast-forward on existing expansion-v2 preserving QAb0cd history. Game sources remain byte-identical to8ff2172; local checkout is clean at4947. Fresh full **38200048313** is running on this exact checkpoint: build114651219627,10000ticks114651219816,backend114651219934 in progress. The same original seven checks, signature/version upgrade, rawABBAcamera, native reconnect and1800s stress are required. Release validation rules/thresholds unchanged; original381793 failure is retained.
+
+Committed12 files: primary/checkpoint workflow, fresh UI helper, native smoke completion wait, camera-order aggregate, two regression test files, CI_HARNESS_RECOVERY_2026-10-12.json, WORLD_RASTER_NATIVE_QA_2026-10-11.json and three handoff/performance/release reports.102Python0skips/compile/YAML/whitespace/exact-original ABBA replay PASS; all published blobs/readback matched local files. Main dbb354ab and dedicated backend unchanged; accepted manifest absent. Both earlier exact QA rooms cleaned with independent0/0/0 and29 backups preserved. Original8ff paired camera has zero numeric violations; the fresh complete binary must supply its own accepted artifacts. Physical Redmi unmeasured.
+
+**Next exact action:** inspect382000 build and original native gates; download/verify its exact APK and newly completed raw artifacts, review/clean only its newly created completed QA UUIDs, and require all seven SUCCESS plus real1800s evidence. Then update acceptance/handoff, normalmain promotion, publish exact verified APK, verify public bytes and attach it. Metadata checkpoints use[skip ci] to preserve this running full proof. Do not rebuild gameplay, redo art or ignore a failed numeric gate.
+
+---
+
 # CI harness recovered; exact8ff gameplay preserved (2026-10-12)
 
 Current checked parent checkpoint **b0cd5ca3f3a4992a18c400d5347e1a96f29d1c03** on expansion-camera-qa, a normal descendant of expansion-v2 metadata6b957f49. Exact game implementation remains **8ff217222f8d8f1adae63735185496994bb68119**: zero diff in App/CampaignScreen/app/package/babel/metro/src/backend/plugins/assets. Main remains dbb354ab; dedicated backend remains room22/command24/schema18. No system or illustration was reimplemented. Last completed feature stage9; remaining work is original performance/integration/release verification (stages1/10/11), specifically corrected native QA and publication/delivery.
