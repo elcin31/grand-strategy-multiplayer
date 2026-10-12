@@ -137,5 +137,11 @@
     "Existing 2.0 online rooms remain in 2.0; offline saves migrate."
   ],
   "apkUrl": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.0-playtest.1/Dominion-2.1-playtest.apk",
-  "publicationStatus": "VERIFIED_READY_TO_PUBLISH"
+  "publicationStatus": "PUBLISHED_VERIFIED",
+  "publicationRunId": 38279775927,
+  "publicationCommit": "163fc9d168275e49717093add3bfbc7dee37fc8e",
+  "releaseId": 410820472,
+  "apkAssetId": 634369195,
+  "publicApkByteMatch": true,
+  "original20AssetsPreserved": true
 }
