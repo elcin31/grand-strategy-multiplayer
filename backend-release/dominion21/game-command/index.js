@@ -447,6 +447,30 @@ function unlockTechnology(kind, item) {
   return TECHNOLOGY_IDS.find((id) => technologyNode(id)?.unlocks?.[kind]?.includes(item));
 }
 
+// supabase/functions/_shared/unitCatalogue.ts
+var unit = (name, cost, attack, defense, unlock, upkeep, era, speed = 1, role = "Front", fuel = 0) => ({ name, cost, attack, defense, unlock, upkeep, era, speed, role, fuel, organization: role === "Support" ? 90 : 75, morale: 80, supply: upkeep });
+var UNITS = {
+  Infantry: unit("\u041F\u0435\u0445\u043E\u0442\u0430", 20, 1, 1, 0, 1, 1e3),
+  Mechanized: unit("\u041C\u0435\u0445\u0430\u043D\u0438\u0437\u0438\u0440\u043E\u0432\u0430\u043D\u043D\u0430\u044F \u043F\u0435\u0445\u043E\u0442\u0430", 35, 1.25, 1.15, 1, 1.3, 1940, 1.6, "Front", 0.3),
+  Armor: unit("\u0411\u0440\u043E\u043D\u0435\u0442\u0435\u0445\u043D\u0438\u043A\u0430", 55, 1.7, 1.25, 2, 1.8, 1920, 1.4, "Flank", 0.6),
+  Artillery: unit("\u0410\u0440\u0442\u0438\u043B\u043B\u0435\u0440\u0438\u044F", 40, 1.4, 0.9, 1, 1.4, 1500, 0.8, "Rear"),
+  AirDefense: unit("\u041F\u0412\u041E", 35, 0.8, 1.4, 1, 1.3, 1940, 1, "Support"),
+  SpecialForces: unit("\u0421\u043F\u0435\u0446\u043D\u0430\u0437", 65, 1.35, 1.25, 3, 1.5, 1940, 1.2, "Flank"),
+  Militia: unit("\u041E\u043F\u043E\u043B\u0447\u0435\u043D\u0438\u0435", 12, 0.65, 0.85, 0, 0.7, 1e3, 0.9),
+  Spearmen: unit("\u041A\u043E\u043F\u0435\u0439\u043D\u044B\u0435 \u043F\u043E\u043B\u043A\u0438", 16, 0.8, 1.2, 0, 0.8, 1e3, 0.9),
+  Cavalry: unit("\u041A\u0430\u0432\u0430\u043B\u0435\u0440\u0438\u044F", 30, 1.1, 0.8, 0, 1.3, 1e3, 1.6, "Flank"),
+  Musketeers: unit("\u041C\u0443\u0448\u043A\u0435\u0442\u043D\u044B\u0435 \u043F\u043E\u043B\u043A\u0438", 24, 1.15, 0.9, 1, 1.1, 1550, 0.95),
+  SiegeTrain: unit("\u041E\u0441\u0430\u0434\u043D\u044B\u0439 \u043F\u0430\u0440\u043A", 45, 0.75, 0.7, 1, 1.5, 1200, 0.6, "Rear"),
+  Engineers: unit("\u0418\u043D\u0436\u0435\u043D\u0435\u0440\u043D\u044B\u0435 \u0447\u0430\u0441\u0442\u0438", 30, 0.65, 1.1, 1, 1.1, 1600, 1, "Support"),
+  Logistics: unit("\u0427\u0430\u0441\u0442\u0438 \u0441\u043D\u0430\u0431\u0436\u0435\u043D\u0438\u044F", 25, 0.4, 0.8, 1, 1, 1600, 1.1, "Support"),
+  Motorized: unit("\u041C\u043E\u0442\u043E\u0440\u0438\u0437\u043E\u0432\u0430\u043D\u043D\u0430\u044F \u043F\u0435\u0445\u043E\u0442\u0430", 32, 1.1, 1, 1, 1.2, 1930, 1.8, "Front", 0.25),
+  Mountain: unit("\u0413\u043E\u0440\u043D\u043E\u0441\u0442\u0440\u0435\u043B\u043A\u043E\u0432\u044B\u0435 \u0447\u0430\u0441\u0442\u0438", 35, 1.05, 1.3, 2, 1.2, 1800, 1.1),
+  Marine: unit("\u041C\u043E\u0440\u0441\u043A\u0430\u044F \u043F\u0435\u0445\u043E\u0442\u0430", 45, 1.25, 1.1, 2, 1.3, 1700, 1.1),
+  RocketArtillery: unit("\u0420\u0435\u0430\u043A\u0442\u0438\u0432\u043D\u0430\u044F \u0430\u0440\u0442\u0438\u043B\u043B\u0435\u0440\u0438\u044F", 60, 1.8, 0.8, 4, 1.8, 1945, 1.1, "Rear", 0.2),
+  Drones: unit("\u0411\u0435\u0441\u043F\u0438\u043B\u043E\u0442\u043D\u044B\u0435 \u043F\u043E\u0434\u0440\u0430\u0437\u0434\u0435\u043B\u0435\u043D\u0438\u044F", 75, 1.6, 0.85, 5, 1.6, 2e3, 1.5, "Support", 0.1)
+};
+var UNIT_TYPES = Object.keys(UNITS);
+
 // supabase/functions/_shared/resourceCatalogue.ts
 var resource = (name, price, group, color) => ({ name, price, group, color });
 var RESOURCES = {
@@ -1432,30 +1456,6 @@ function initializeEconomy2(s, migrate) {
   }
 }
 
-// supabase/functions/_shared/unitCatalogue.ts
-var unit = (name, cost, attack, defense, unlock, upkeep, era, speed = 1, role = "Front", fuel = 0) => ({ name, cost, attack, defense, unlock, upkeep, era, speed, role, fuel, organization: role === "Support" ? 90 : 75, morale: 80, supply: upkeep });
-var UNITS = {
-  Infantry: unit("\u041F\u0435\u0445\u043E\u0442\u0430", 20, 1, 1, 0, 1, 1e3),
-  Mechanized: unit("\u041C\u0435\u0445\u0430\u043D\u0438\u0437\u0438\u0440\u043E\u0432\u0430\u043D\u043D\u0430\u044F \u043F\u0435\u0445\u043E\u0442\u0430", 35, 1.25, 1.15, 1, 1.3, 1940, 1.6, "Front", 0.3),
-  Armor: unit("\u0411\u0440\u043E\u043D\u0435\u0442\u0435\u0445\u043D\u0438\u043A\u0430", 55, 1.7, 1.25, 2, 1.8, 1920, 1.4, "Flank", 0.6),
-  Artillery: unit("\u0410\u0440\u0442\u0438\u043B\u043B\u0435\u0440\u0438\u044F", 40, 1.4, 0.9, 1, 1.4, 1500, 0.8, "Rear"),
-  AirDefense: unit("\u041F\u0412\u041E", 35, 0.8, 1.4, 1, 1.3, 1940, 1, "Support"),
-  SpecialForces: unit("\u0421\u043F\u0435\u0446\u043D\u0430\u0437", 65, 1.35, 1.25, 3, 1.5, 1940, 1.2, "Flank"),
-  Militia: unit("\u041E\u043F\u043E\u043B\u0447\u0435\u043D\u0438\u0435", 12, 0.65, 0.85, 0, 0.7, 1e3, 0.9),
-  Spearmen: unit("\u041A\u043E\u043F\u0435\u0439\u043D\u044B\u0435 \u043F\u043E\u043B\u043A\u0438", 16, 0.8, 1.2, 0, 0.8, 1e3, 0.9),
-  Cavalry: unit("\u041A\u0430\u0432\u0430\u043B\u0435\u0440\u0438\u044F", 30, 1.1, 0.8, 0, 1.3, 1e3, 1.6, "Flank"),
-  Musketeers: unit("\u041C\u0443\u0448\u043A\u0435\u0442\u043D\u044B\u0435 \u043F\u043E\u043B\u043A\u0438", 24, 1.15, 0.9, 1, 1.1, 1550, 0.95),
-  SiegeTrain: unit("\u041E\u0441\u0430\u0434\u043D\u044B\u0439 \u043F\u0430\u0440\u043A", 45, 0.75, 0.7, 1, 1.5, 1200, 0.6, "Rear"),
-  Engineers: unit("\u0418\u043D\u0436\u0435\u043D\u0435\u0440\u043D\u044B\u0435 \u0447\u0430\u0441\u0442\u0438", 30, 0.65, 1.1, 1, 1.1, 1600, 1, "Support"),
-  Logistics: unit("\u0427\u0430\u0441\u0442\u0438 \u0441\u043D\u0430\u0431\u0436\u0435\u043D\u0438\u044F", 25, 0.4, 0.8, 1, 1, 1600, 1.1, "Support"),
-  Motorized: unit("\u041C\u043E\u0442\u043E\u0440\u0438\u0437\u043E\u0432\u0430\u043D\u043D\u0430\u044F \u043F\u0435\u0445\u043E\u0442\u0430", 32, 1.1, 1, 1, 1.2, 1930, 1.8, "Front", 0.25),
-  Mountain: unit("\u0413\u043E\u0440\u043D\u043E\u0441\u0442\u0440\u0435\u043B\u043A\u043E\u0432\u044B\u0435 \u0447\u0430\u0441\u0442\u0438", 35, 1.05, 1.3, 2, 1.2, 1800, 1.1),
-  Marine: unit("\u041C\u043E\u0440\u0441\u043A\u0430\u044F \u043F\u0435\u0445\u043E\u0442\u0430", 45, 1.25, 1.1, 2, 1.3, 1700, 1.1),
-  RocketArtillery: unit("\u0420\u0435\u0430\u043A\u0442\u0438\u0432\u043D\u0430\u044F \u0430\u0440\u0442\u0438\u043B\u043B\u0435\u0440\u0438\u044F", 60, 1.8, 0.8, 4, 1.8, 1945, 1.1, "Rear", 0.2),
-  Drones: unit("\u0411\u0435\u0441\u043F\u0438\u043B\u043E\u0442\u043D\u044B\u0435 \u043F\u043E\u0434\u0440\u0430\u0437\u0434\u0435\u043B\u0435\u043D\u0438\u044F", 75, 1.6, 0.85, 5, 1.6, 2e3, 1.5, "Support", 0.1)
-};
-var UNIT_TYPES = Object.keys(UNITS);
-
 // supabase/functions/_shared/armyComposition.ts
 function compositionTotal(parts) {
   return Object.values(parts).reduce((n, v) => n + v, 0);
@@ -1510,6 +1510,8 @@ function addArmyRegiment(a, type, troops, expandTemplate = true) {
   const old = a.troops;
   a.composition[type] = (a.composition[type] ?? 0) + troops;
   if (expandTemplate) a.template[type] = (a.template[type] ?? 0) + troops;
+  a.organization = ((a.organization ?? 80) * old + UNITS[type].organization * 0.8 * troops) / (old + troops);
+  a.morale = ((a.morale ?? 80) * old + UNITS[type].morale * troops) / (old + troops);
   a.troops += troops;
   a.experience = (a.experience ?? 0) * old / a.troops;
 }
@@ -2080,7 +2082,7 @@ function domesticConsumption(s) {
     const army = c.army / 1e3, war = s.wars?.some((w) => [...w.attackers, ...w.defenders].includes(c.id));
     consumeStock(c, "ammunition", army * (war ? 0.6 : 0.08), true);
     consumeStock(c, "weapons", army * (war ? 0.1 : 0.02), true);
-    const fuel = s.armies.filter((a) => a.ownerId === c.id).reduce((n, a) => n + (a.composition?.Armor ?? 0) * 6e-4 + (a.composition?.Mechanized ?? 0) * 3e-4 + (a.composition?.Motorized ?? 0) * 25e-5, 0);
+    const fuel = s.armies.filter((a) => a.ownerId === c.id).reduce((n, a) => n + UNIT_TYPES.reduce((sum, t) => sum + (a.composition?.[t] ?? 0) * UNITS[t].fuel / 1e3, 0), 0);
     if (fuel) consumeStock(c, "fuel", fuel, true);
     const crisis = Object.values(v.deficits).some((n) => n > 0.5);
     c.lastResourceCrisis = crisis;
@@ -3076,7 +3078,7 @@ function monthlyProduction(s) {
   }
 }
 function equipmentMaterials(s, type, troops) {
-  return { weapons: money(troops / 1e3 * (type === "Armor" || type === "Mechanized" ? 1 : 0.3)), ammunition: s.year >= 1500 ? money(troops / 1e3 * 0.15) : 0, ...["Armor", "Mechanized", "Motorized"].includes(type) ? { fuel: money(troops / 1e3 * 0.2) } : {} };
+  return { weapons: money(troops / 1e3 * (type === "Armor" || type === "Mechanized" ? 1 : 0.3)), ammunition: s.year >= 1500 ? money(troops / 1e3 * 0.15) : 0, ...UNITS[type].fuel > 0 ? { fuel: money(troops / 1e3 * UNITS[type].fuel * 0.4) } : {}, ...type === "Drones" ? { electronics: money(troops / 1e3 * 0.15), batteries: money(troops / 1e3 * 0.1) } : {} };
 }
 function equipmentReason(s, c, type, troops) {
   return materialReason(c, equipmentMaterials(s, type, troops));
@@ -3213,10 +3215,11 @@ function supplyAt(s, owner, provinceId) {
   const node2 = capital && (p.controllerId ?? p.ownerId) === owner && !p.rebellion ? { score: 100, sourceId: p.id, sea: false } : networkFor(s, owner, i).get(p.id);
   const capacity = Math.floor((8e3 + (p.development ?? 40) * 200 + (p.buildings?.Infrastructure ?? 0) * 1e4 + (p.buildings?.Warehouse ?? 0) * 12e3 + (p.buildings?.MilitaryDepot ?? 0) * 15e3 + (p.buildings?.RailHub ?? 0) * 15e3 + (p.buildings?.CargoPort ?? 0) * 1e4 + (p.buildings?.Barracks ?? 0) * 6e3 + (p.buildings?.Port ?? 0) * 12e3 + (capital ? 15e4 : 0)) * (1 + techLevel(c, "Industry") * 0.04) * (1 + focusBonuses(c).supply + technologyBonuses(c).supply));
   const load = i.loads.get(owner + ":" + p.id) ?? 0, overload = load > capacity ? capacity / load : 1;
-  const fuelPenalty = c.stockpile?.deficits.fuel ? 10 : 0;
+  const here = (i.armies.get(provinceId) ?? []).filter((a) => a.ownerId === owner), motorized = here.some((a) => Object.entries(a.composition ?? {}).some(([t, n]) => n > 0 && ["Armor", "Mechanized", "Motorized", "RocketArtillery", "Drones"].includes(t)));
+  const fuelPenalty = c.stockpile?.deficits.fuel && motorized ? 10 : 0, commandLogistics = Math.max(0, ...here.map((a) => a.commanderId ? (s.commanders?.[a.commanderId]?.logistics ?? 0) / 10 + (s.commanders?.[a.commanderId]?.specialization === "Logistics" ? 2 : 0) : 0));
   const support = s.armies.filter((a) => a.ownerId === owner && a.provinceId === provinceId).reduce((n, a) => n + (a.composition?.Logistics ?? 0) + (a.composition?.Engineers ?? 0) * 0.5, 0);
   const priority = s.armyGroups?.some((g) => g.ownerId === owner && g.supplyPriority === "High" && g.armyIds.some((id) => s.armies.some((a) => a.id === id && a.provinceId === provinceId))) ? 5 : 0;
-  const score = Math.max(0, Math.min(100, Math.round(((node2?.score ?? 0) + Math.min(10, support / 1e3) + priority) * overload * militaryReadiness(c) * (s.tick < (c.bankruptcyUntilTick ?? 0) ? 0.65 : 1) - espionageModifiers(s, owner).supplyPenalty - fuelPenalty)));
+  const score = Math.max(0, Math.min(100, Math.round(((node2?.score ?? 0) + Math.min(6, commandLogistics) + Math.min(10, support / 1e3) + priority) * overload * militaryReadiness(c) * (s.tick < (c.bankruptcyUntilTick ?? 0) ? 0.65 : 1) - espionageModifiers(s, owner).supplyPenalty - fuelPenalty)));
   return { score, capacity, load, sourceId: node2?.sourceId, sea: node2?.sea ?? false, reason: !node2 ? "\u041D\u0435\u0442 \u043F\u0443\u0442\u0438 \u043E\u0442 \u043A\u043E\u043D\u0442\u0440\u043E\u043B\u0438\u0440\u0443\u0435\u043C\u043E\u0439 \u0441\u0442\u043E\u043B\u0438\u0446\u044B \u0438\u043B\u0438 \u0440\u0435\u0437\u0435\u0440\u0432\u043D\u043E\u0433\u043E \u0443\u0437\u043B\u0430" : overload < 1 ? "\u041F\u0440\u0435\u0432\u044B\u0448\u0435\u043D\u0430 \u043F\u0440\u043E\u043F\u0443\u0441\u043A\u043D\u0430\u044F \u0441\u043F\u043E\u0441\u043E\u0431\u043D\u043E\u0441\u0442\u044C" : score < 50 ? "\u041D\u0435\u0434\u043E\u0441\u0442\u0430\u0442\u043E\u0447\u043D\u043E\u0435 \u0441\u043D\u0430\u0431\u0436\u0435\u043D\u0438\u0435" : null };
 }
 
@@ -3299,13 +3302,14 @@ function combatMultiplier(state, army, province, defending) {
   const strength = UNIT_TYPES.reduce((n, type) => {
     let factor = terrainDefense;
     if (!defending && type === "Armor" && ["mountain", "urban", "forest"].includes(terrain)) factor *= 0.65;
-    if (type === "SpecialForces" && terrain === "mountain") factor *= 1.25;
+    if ((type === "SpecialForces" || type === "Mountain") && terrain === "mountain") factor *= 1.25;
     return n + (parts[type] ?? 0) * (defending ? UNITS[type].defense : UNITS[type].attack) * factor;
   }, 0) / Math.max(1, army.troops);
   const combined = (parts.Artillery ?? 0) > 0 && (parts.Infantry ?? 0) + (parts.Mechanized ?? 0) > 0 ? 1.08 : 1;
   const logistics = 0.5 + supplyAt(state, army.ownerId, army.provinceId).score / 200;
   const intel = !defending && espionageModifiers(state, army.ownerId).intelTargets.has(province.controllerId ?? province.ownerId) ? 1.08 : 1;
-  return resourceCombatFactor(state.countries[army.ownerId]) * command * strength * combined * logistics * (1 + (army.experience ?? 0) / 500) * (0.4 + (army.morale ?? 80) / 200 + (army.organization ?? 80) / 200) * (1 + skill / 500) * (1 + techLevel(state.countries[army.ownerId], "Military") * 0.06) * intel * militaryReadiness(state.countries[army.ownerId]) * (1 + focusBonuses(state.countries[army.ownerId]).combat + technologyBonuses(state.countries[army.ownerId]).combat);
+  const specialization = general?.specialization === (defending ? "Defense" : "Offense") ? 1.05 : 1;
+  return specialization * resourceCombatFactor(state.countries[army.ownerId]) * command * strength * combined * logistics * (1 + (army.experience ?? 0) / 500) * (0.4 + (army.morale ?? 80) / 200 + (army.organization ?? 80) / 200) * (1 + skill / 500) * (1 + techLevel(state.countries[army.ownerId], "Military") * 0.06) * intel * militaryReadiness(state.countries[army.ownerId]) * (1 + focusBonuses(state.countries[army.ownerId]).combat + technologyBonuses(state.countries[army.ownerId]).combat);
 }
 function recoverMilitary(state) {
   if (!state.dataset) return;
@@ -3800,7 +3804,7 @@ function dailyMilitary(s) {
     }
     const attackers = s.armies.filter((a) => b2.attackerArmyIds.includes(a.id) && a.troops > 0), defenders = s.armies.filter((a) => b2.defenderArmyIds.includes(a.id) && a.troops > 0 && a.provinceId === b2.provinceId), p = provinces.get(b2.provinceId);
     const power = (rows, defending) => rows.reduce((n, a) => n + a.troops * combatMultiplier(s, a, p, defending) * (defending ? armyFormation(a).defense : armyFormation(a).attack) * (a.order?.redeploy ? 0.55 : 1), 0);
-    const atk = power(attackers, false), def = power(defenders, true) * (1 + (p.buildings?.Fort ?? 0) * 0.04);
+    const atk = power(attackers, false), def = power(defenders, true) * (1 + provinceBuildingModifiers(p).defensePercent / 100);
     b2.attackerLosses += distributeLosses(attackers, Math.max(0, Math.round(def * 0.025)));
     b2.defenderLosses += distributeLosses(defenders, Math.max(0, Math.round(atk * 0.025)));
     for (const a of [...attackers, ...defenders]) {
@@ -3821,7 +3825,7 @@ function dailyMilitary(s) {
       continue;
     }
     const supply = siegeSupply(s, siege.attackerId, p), troops = armies.reduce((n, a) => n + a.troops, 0), siegeTroops = armies.reduce((n, a) => n + (armyParts(a).SiegeTrain ?? 0) + (armyParts(a).Artillery ?? 0) * 0.6 + (armyParts(a).Engineers ?? 0) * 0.4, 0);
-    const generals = armies.reduce((n, a) => Math.max(n, a.commanderId ? s.commanders?.[a.commanderId]?.siege ?? 0 : 0), 0);
+    const generals = armies.reduce((n, a) => Math.max(n, a.commanderId ? (s.commanders?.[a.commanderId]?.siege ?? 0) + (s.commanders?.[a.commanderId]?.specialization === "Siege" ? 15 : 0) : 0), 0);
     siege.progress = Math.min(100, siege.progress + Math.max(0.2, (troops / Math.max(1e3, siege.garrison) * 0.65 + siegeTroops / 3e3) * (supply / 100 + 0.15) * (1 + generals / 100) / (1 + siege.fortress * 0.4)));
     for (const a of armies) {
       a.supply = supply;
@@ -5445,7 +5449,7 @@ function recruit(state, ownerId, province, troops, unitType = "Infantry", armyId
     if (state.dataset) addArmyRegiment(existing, unitType, troops);
     else existing.troops += troops;
   } else {
-    const army = { id: entityId(state, "army"), ownerId, provinceId: province.id, troops, ...state.dataset ? { unitType, morale: 80, organization: 60 } : {} };
+    const army = { id: entityId(state, "army"), ownerId, provinceId: province.id, troops, ...state.dataset ? { unitType, morale: UNITS[unitType].morale, organization: UNITS[unitType].organization * 0.8 } : {} };
     if (state.dataset) initializeArmyComposition(army);
     state.armies.push(army);
   }
