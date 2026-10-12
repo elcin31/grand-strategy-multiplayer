@@ -52,12 +52,7 @@ jobs:
           arch: x86_64
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: |
-            if [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.1-warfare-interface-art' ]; then
-              python scripts/android211-smoke.py Dominion-2.1.1-playtest.apk
-            else
-              DOMINION_STRESS_SECONDS=1200 python scripts/android-smoke.py Dominion-optimized-release.apk
-            fi
+          script: if [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.1-warfare-interface-art' ]; then python scripts/android211-smoke.py Dominion-2.1.1-playtest.apk; else DOMINION_STRESS_SECONDS=1200 python scripts/android-smoke.py Dominion-optimized-release.apk; fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
