@@ -19,7 +19,7 @@ Deno.serve(async req=>{
   if(rate&&Date.now()-Date.parse(rate.rate_started)<10000&&rate.rate_count>=40)return json({error:'Too many commands'},429);
   const {data:room,error}=await db.from('game_rooms').select('state,state_compressed,version').eq('id',gameId).single();if(error)throw error;
   if(room.version!==expectedVersion)return json({error:'Состояние обновилось. Повторите действие после синхронизации',version:room.version},409);
-  if(command.type==='ADVANCE_TICK')return json({error:'Игровое время рассчитывается сервером'},400);
+  if((command.type==='ADVANCE_TICK'||command.type==='ADVANCE_DAY'))return json({error:'Игровое время рассчитывается сервером'},400);
   const state=await unpackRoomState(room),actor=state.players.find(p=>p.id===playerId);if(!actor)return json({error:'Игрок не найден'},401);
   // Reconnect returns exclusive control before applying the authenticated intent.
   actor.aiControlled=false;actor.connected=true;actor.lastSeen=Date.now();

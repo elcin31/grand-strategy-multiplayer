@@ -6,6 +6,7 @@ export function applyServerCommand(state: GameState, command: GameCommand, actor
   const actor = state.players.find((player) => player.id === actorId);
   if (!actor) throw new Error('Игрок не найден');
   if (command && typeof command === 'object' && 'playerId' in command && command.playerId !== actorId) throw new Error('Подмена игрока отклонена');
+  if(command?.type==='ADVANCE_DAY')throw Error('Игровое время рассчитывается сервером');
   if (command?.type === 'ADVANCE_TICK' && !actor.isHost) throw new Error('Только хост двигает игровой clock');
   return applyCommand(state, command);
 }

@@ -46,7 +46,7 @@ export class LocalTransport implements MultiplayerTransport {
     if (!state) throw new Error('Комната не существует');
     const started=performance.now();
     const next = applyCommand(state, command, true);
-    if(command.type==='ADVANCE_TICK')recordMetrics({simulationMs:performance.now()-started});
+    if(command.type==='ADVANCE_TICK'||command.type==='ADVANCE_DAY')recordMetrics({simulationMs:performance.now()-started});
     rooms.set(gameId, next);
     emit(next);
   }

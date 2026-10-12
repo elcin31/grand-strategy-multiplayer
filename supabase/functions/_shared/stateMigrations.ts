@@ -1,3 +1,4 @@
+import {initializeCalendar} from './calendarSystem.ts';
 import {initializeTechnologyTree} from './technologyTree.ts';
 import {initializeFocuses} from './focusSystem.ts';
 import {migrateCityCatalogue} from './cityMigration.ts';
@@ -17,7 +18,7 @@ import { initializeTechnology } from './technologySystem.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
-export const CURRENT_STATE_VERSION = 18;
+export const CURRENT_STATE_VERSION = 19;
 
 /** Ordered schema migrations; every normalizer is also run as validation for current saves. */
 export function migrateV1ToV2(s:GameState){initializeBuildings(s);}
@@ -44,6 +45,7 @@ export function normalizeGameState(state:GameState):void {
  validateArmyComposition(state,version<16);
  initializeTechnologyTree(state,version<17);
  initializeFocuses(state,version<18);
+ initializeCalendar(state,version<19);
  validateArmyOrders(state);
  state.stateVersion=CURRENT_STATE_VERSION;
 }

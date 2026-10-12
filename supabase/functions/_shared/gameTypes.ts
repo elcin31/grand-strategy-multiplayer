@@ -5,7 +5,7 @@ import type { Commander, TerrainType, UnitType } from './militarySystem.ts';
 import type { Research, TechnologyBranch } from './technologySystem.ts';
 import type { ResourceDeposit } from './resourceSystem.ts';
 export type CountryId = string;
-export type GameSpeed = 0 | 1 | 2 | 3 | 4;
+export type GameSpeed = 0 | 1 | 2 | 3 | 4 | 5;
 export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' | 'Semi-Presidential Republic' | 'Constitutional Monarchy' | 'Absolute Monarchy' | 'Military Junta' | 'Theocracy' | 'One-Party State' | 'Federation' | 'Tribal Government';
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital';
 
@@ -195,6 +195,9 @@ export interface Leader {
 }
 
 export interface GameState {
+  day?:number;
+  simulationDay?:number;
+  pauseRequests?:string[];
   notifications?: import('./notificationSystem.ts').CampaignNotification[];
   notificationSequence?: number;
   focusEvents?:import('./focusSystem.ts').FocusEvent[];
@@ -235,6 +238,9 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'ADVANCE_DAY'}
+  | {type:'REQUEST_PAUSE';playerId:string}
+  | {type:'VOTE_PAUSE';playerId:string;accept:boolean}
   | {type:'ACK_NOTIFICATIONS';playerId:string}
   | {type:'SET_AUTOPAUSE';playerId:string;categories:import('./notificationSystem.ts').NotificationCategory[]}
   | {type:'SET_ECONOMIC_POLICY';playerId:string;policy:import('./economy2System.ts').EconomicPolicy}

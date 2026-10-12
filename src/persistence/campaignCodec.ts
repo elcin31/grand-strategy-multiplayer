@@ -12,7 +12,7 @@ export interface SavedCampaign {format:1;metadata:CampaignMetadata;checksum:stri
 export function validateCampaign(input:unknown):GameState {
  if(!input||typeof input!=='object'||Array.isArray(input))throw Error('Повреждённое сохранение');
  const s=structuredClone(input) as GameState;
- if(!/^[\w-]{1,100}$/.test(s.id)||!s.countries||Array.isArray(s.countries)||!Array.isArray(s.provinces)||!Array.isArray(s.armies)||!Array.isArray(s.players)||!s.players.length||s.players.length>8||!['lobby','running','paused','finished'].includes(s.phase)||!Number.isSafeInteger(s.tick)||s.tick<0||!Number.isSafeInteger(s.year)||!Number.isInteger(s.month)||s.month<1||s.month>12||![0,1,2,3,4].includes(s.speed))throw Error('Некорректная структура кампании');
+ if(!/^[\w-]{1,100}$/.test(s.id)||!s.countries||Array.isArray(s.countries)||!Array.isArray(s.provinces)||!Array.isArray(s.armies)||!Array.isArray(s.players)||!s.players.length||s.players.length>8||!['lobby','running','paused','finished'].includes(s.phase)||!Number.isSafeInteger(s.tick)||s.tick<0||!Number.isSafeInteger(s.year)||!Number.isInteger(s.month)||s.month<1||s.month>12||![0,1,2,3,4,5].includes(s.speed))throw Error('Некорректная структура кампании');
  if(s.provinces.length>10000||Object.keys(s.countries).length>300||s.armies.length>100000)throw Error('Сохранение превышает допустимый размер');
  const countries=new Set(Object.keys(s.countries)),ids=new Set(s.provinces.map(p=>p.id));
  if(ids.size!==s.provinces.length||!countries.size)throw Error('Некорректные провинции');

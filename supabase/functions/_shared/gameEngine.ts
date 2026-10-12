@@ -1,3 +1,4 @@
+import {advanceDate,requestPause} from './calendarSystem.ts';
 import {collectNotifications} from './notificationSystem.ts';
 import {setArmyOrder,advanceArmyOrders} from './armyOrders.ts';
 import {cloneGameState} from './cloneGameState.ts';
@@ -158,11 +159,12 @@ function runAi(state: GameState) {
 }
 function checkWinner(state: GameState) { if (new Set(state.provinces.map((province) => province.ownerId)).size === 1) state.phase = 'finished'; }
 
-function applyCoreCommand(state: GameState, command: GameCommand, validatedLocalState = false): GameState {
+function applyCoreCommand(state: GameState, command: GameCommand, validatedLocalState = false,monthlyFromDay=false): GameState {
   assertGameCommand(command, Object.keys(state.countries));
   const next = clone(state);
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   switch (command.type) {
+    case 'REQUEST_PAUSE':case 'VOTE_PAUSE':{if(!['running','paused'].includes(next.phase))throw Error('Нужна кампания');getPlayer(next,command.playerId);requestPause(next,command.playerId,command.type==='REQUEST_PAUSE'||command.accept);return next;}
     case 'ACK_NOTIFICATIONS':case 'SET_AUTOPAUSE':{
       if(!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const c=countryFor(next,p.countryId);if(command.type==='ACK_NOTIFICATIONS')c.notificationReadThrough=next.notificationSequence??0;else c.autoPause=[...command.categories];return next;
     }
@@ -271,7 +273,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
     case 'SET_SPEED': {
       if (next.phase !== 'running' && next.phase !== 'paused') throw new Error('Сначала начните кампанию');
       const player = getPlayer(next, command.playerId); if (!player.isHost) throw new Error('Скорость меняет хост');
-      next.speed = command.speed; next.phase = command.speed === 0 ? 'paused' : 'running'; return next;
+      next.pauseRequests=[];next.speed = command.speed; next.phase = command.speed === 0 ? 'paused' : 'running'; return next;
     }
     case 'ASSIGN_COMMANDER': {
       if (!next.dataset || !['running','paused'].includes(next.phase)) throw new Error('Сначала начните кампанию');
@@ -343,11 +345,15 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       nation.diplomaticReputation = Math.min(100, Math.max(0, nation.diplomaticReputation! + governmentModifiers(command.governmentType).diplomacy - previous.diplomacy));
       recalcCountryStats(next); return next;
     }
+    case 'ADVANCE_DAY': {
+      if(next.phase!=='running'||next.speed===0)return next;const monthly=advanceDate(next);advanceArmyOrders(next,resolveMovement);
+      return monthly?applyCoreCommand(next,{type:'ADVANCE_TICK'},true,true):next;
+    }
     case 'ADVANCE_TICK': {
       if (next.phase !== 'running' || next.speed === 0) return next;
       if(!Number.isSafeInteger(next.tick+1)||!Number.isSafeInteger(next.year+(next.month===12?1:0)))throw new Error('Campaign clock overflow');
       next.tick += 1; next.month += 1; if (next.month > 12) { next.month = 1; next.year += 1; }
-      advanceArmyOrders(next,resolveMovement);
+      if(!monthlyFromDay)advanceArmyOrders(next,resolveMovement);
       monthlyDiplomacy(next);
       monthlyDiplomacy2(next);
       monthlyEspionage(next);

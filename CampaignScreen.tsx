@@ -1,3 +1,4 @@
+import {dayDelay} from './supabase/functions/_shared/calendarSystem';
 import {mapTapIntent} from './src/ui/mapInteraction';
 import {CameraWorkGate} from './src/performance/framePacing';
 import {colors,tokens} from './src/ui/tokens';
@@ -161,13 +162,13 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
     let disposed = false;
     let inFlight = false;
     let timer: ReturnType<typeof setTimeout> | undefined;
-    const delay = Math.max(650, 2600 / state.speed);
+    const delay = dayDelay(state.speed);
     let tickDue=performance.now()+delay;
     const advance = async () => {
       if (disposed || inFlight) return;
       if(cameraWork.current.defer(performance.now(),350,tickDue)){timer=setTimeout(()=>void advance(),80);return;}
       inFlight = true;
-      try { await transport.sendCommand(state.id, { type: 'ADVANCE_TICK' }); }
+      try { await transport.sendCommand(state.id, { type: 'ADVANCE_DAY' }); }
       catch { /* A transient authoritative conflict must not create a request pile-up. */ }
       finally {
         inFlight = false;

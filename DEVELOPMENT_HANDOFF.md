@@ -1,15 +1,11 @@
 # Dominion 2.1 checkpoint
 
 - Branch: `dominion-2.1-overhaul`
-- Base: `11fbeec534af1f03464e91ab8d831b2a91d2d871` (Dominion 2.0 playtest tag).
-- Completed: recovery; campaign HUD, left navigation, notification feed/autopause commands, political mini-map with camera position and navigation.
-- Current stage: calendar and game speed.
-- Unfinished: stages II–XV from the Dominion 2.1 request.
-- Known issues: inherited camera microstutter; deferred by user. No new gameplay blockers identified.
-- Next: compact campaign HUD, left navigation, notifications and functional mini-map; then day calendar above monthly tick semantics.
-- Preserve: `dominion-2-playtest`, `v2.0.0-playtest.1` and published 2.0 APK. Only this repository and the existing Dominion Supabase project are in scope.
-- QA policy: targeted typechecks/tests; one final standalone Android release build; no long simulation, soak or camera matrix.
-
-Earlier Dominion 2.0 handoff and evidence remain in the base commit history.
-
-- HEAD before HUD checkpoint: `d304b29792c7beca0eead338ee7f1723626da937`. Typecheck passed.
+- HEAD before this commit: `0263bef6f22dc89876f6c1245a99edebce593e38`
+- Completed: recovery from 11fbeec / v2.0.0-playtest.1; HUD and mini-map; calendar with daily clock, monthly accounting, 1–5 speeds, shared host controls and pause voting; schema 18→19 save migration/backup.
+- Current: Military 3.0.
+- Unfinished: military, AI, resources/construction/production, technology/focus expansion, additional systems, art, integration and APK.
+- Known: inherited camera microstutter (deferred). Visual reference received; use gold/graphite/navy, compact panels and era-correct historical art.
+- Next: timed movement, multi-day combat and siege, army operations and formations, logistics and reports.
+- Checks: typecheck; three focused calendar/save/server-authority tests pass. No long simulations or camera benchmarks.
+- Preserve Dominion 2.0 branch, release and APK; only this repo and existing Dominion backend.

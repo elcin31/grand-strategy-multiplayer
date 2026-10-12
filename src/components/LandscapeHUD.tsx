@@ -10,9 +10,9 @@ export function LandscapeHUD({state,playerId,onCommand,onNotifications}:{state:G
   <View style={[styles.country,{borderLeftColor:c.color}]}><Text style={styles.flag}>{c.flag??'⚑'}</Text><Text numberOfLines={1} style={styles.name}>{c.shortName}</Text></View>
   <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.row}>{metrics.map(([label,value])=><View key={label} style={styles.metric}><Text style={styles.label}>{label}</Text><Text style={styles.value}>{value}</Text></View>)}</ScrollView>
   <Pressable accessibilityLabel={`Уведомления: ${unread}`} accessibilityRole="button" style={styles.control} onPress={onNotifications}><Text style={styles.value}>♧ {unread}</Text></Pressable>
-  <View style={styles.clock}><Text style={styles.value}>{`${('day' in state?Number(state.day):1).toString().padStart(2,'0')}.${String(state.month).padStart(2,'0')}.${state.year}`}</Text><View style={styles.row}>
-   <Pressable accessibilityRole="button" accessibilityLabel={state.speed?'Пауза':'Продолжить'} disabled={!me?.isHost} style={styles.control} onPress={()=>onCommand({type:'SET_SPEED',playerId,speed:state.speed?0:1})}><Text style={styles.value}>{state.speed?'Ⅱ':'▶'}</Text></Pressable>
-   <Pressable accessibilityRole="button" accessibilityLabel="Скорость кампании" disabled={!me?.isHost} style={styles.control} onPress={()=>onCommand({type:'SET_SPEED',playerId,speed:(state.speed>=4?1:state.speed+1) as 1|2|3|4})}><Text style={styles.value}>{state.speed||1}× ▸</Text></Pressable>
+  <View style={styles.clock}><Text style={styles.value}>{`${(state.day??1).toString().padStart(2,'0')}.${String(state.month).padStart(2,'0')}.${state.year}`}</Text><View style={styles.row}>
+   <Pressable accessibilityRole="button" accessibilityLabel={state.speed?'Пауза':'Продолжить'} style={styles.control} onPress={()=>onCommand(me?.isHost?{type:'SET_SPEED',playerId,speed:state.speed?0:1}:{type:'REQUEST_PAUSE',playerId})}><Text style={styles.value}>{state.speed?'Ⅱ':'▶'}</Text></Pressable>
+   <Pressable accessibilityRole="button" accessibilityLabel="Скорость кампании" disabled={!me?.isHost} style={styles.control} onPress={()=>onCommand({type:'SET_SPEED',playerId,speed:(state.speed>=5?1:state.speed+1) as 1|2|3|4|5})}><Text style={styles.value}>{state.speed||1}× ▸</Text></Pressable>
   </View></View>
  </View>;
 }

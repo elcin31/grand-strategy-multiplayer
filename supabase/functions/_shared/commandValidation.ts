@@ -15,6 +15,9 @@ import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  ADVANCE_DAY:['type'],
+  REQUEST_PAUSE:['type','playerId'],
+  VOTE_PAUSE:['type','playerId','accept'],
   ACK_NOTIFICATIONS:['type','playerId'],
   SET_AUTOPAUSE:['type','playerId','categories'],
   SET_ECONOMIC_POLICY: ['type','playerId','policy'],
@@ -85,7 +88,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (type === 'OFFER_DIPLOMACY') assertDiplomaticTerms(command.terms,countryIds);
   if (type === 'OFFER_TREATY' && (typeof command.treaty !== 'string' || !Object.hasOwn(TREATIES,command.treaty))) throw new Error('Invalid treaty type');
   if (type === 'PROPOSE_PEACE') assertPeaceTerms(command.terms);
-  if ((type === 'RESPOND_TREATY' || type === 'RESPOND_PEACE' || type === 'RESPOND_DIPLOMACY') && typeof command.accept !== 'boolean') throw new Error('Invalid treaty response');
+  if ((type==='VOTE_PAUSE'||type === 'RESPOND_TREATY' || type === 'RESPOND_PEACE' || type === 'RESPOND_DIPLOMACY') && typeof command.accept !== 'boolean') throw new Error('Invalid treaty response');
   if (type === 'SELECT_COUNTRY' && (typeof command.countryId !== 'string' || !countryIds.includes(command.countryId))) throw new Error('Unknown country');
   if (type === 'SET_TAX_RATE') assertTaxRate(command.taxRate);
   if(type==='SET_ECONOMIC_POLICY'&&(typeof command.policy!=='string'||!Object.hasOwn(ECONOMIC_POLICIES,command.policy)))throw Error('Invalid economic policy');
@@ -101,6 +104,6 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if(type==='SET_REINFORCEMENT'&&typeof command.enabled!=='boolean')throw Error('Invalid reinforcement toggle');
   if(type==='SET_AUTOPAUSE'&&(!Array.isArray(command.categories)||command.categories.length>8||new Set(command.categories).size!==command.categories.length||command.categories.some(x=>typeof x!=='string'||!Object.hasOwn(NOTIFICATION_CATEGORIES,x))))throw Error('Invalid autopause categories');
   if (type === 'SET_READY' && typeof command.ready !== 'boolean') throw new Error('Invalid ready value');
-  if (type === 'SET_SPEED' && (typeof command.speed !== 'number' || !Number.isInteger(command.speed) || command.speed < 0 || command.speed > 4)) throw new Error('Invalid game speed');
+  if (type === 'SET_SPEED' && (typeof command.speed !== 'number' || !Number.isInteger(command.speed) || command.speed < 0 || command.speed > 5)) throw new Error('Invalid game speed');
   if ((type === 'RECRUIT' || type === 'RECRUIT_UNIT'||type==='ADD_REGIMENT') && (typeof command.troops !== 'number' || !Number.isSafeInteger(command.troops) || command.troops < 1000 || command.troops > 100000)) throw new Error('Invalid recruitment amount');
 }
