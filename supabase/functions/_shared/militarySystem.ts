@@ -60,11 +60,12 @@ export function combatMultiplier(state: GameState,army: Army,province: Province,
   const skill=army.commanderId ? state.commanders?.[army.commanderId]?.skill ?? 0 : 0;
   const terrain=province.terrain ?? 'plains',parts=armyParts(army);
   const terrainDefense=defending?({plains:1,forest:1.15,mountain:1.35,desert:1.05,urban:1.3}[terrain]):1;
-  const strength=UNIT_TYPES.reduce((n,type)=>{let factor=terrainDefense;if(!defending&&type==='Armor'&&['mountain','urban','forest'].includes(terrain))factor*=.65;if(type==='SpecialForces'&&terrain==='mountain')factor*=1.25;return n+(parts[type]??0)*(defending?UNITS[type].defense:UNITS[type].attack)*factor;},0)/Math.max(1,army.troops);
+  const strength=UNIT_TYPES.reduce((n,type)=>{let factor=terrainDefense;if(!defending&&type==='Armor'&&['mountain','urban','forest'].includes(terrain))factor*=.65;if((type==='SpecialForces'||type==='Mountain')&&terrain==='mountain')factor*=1.25;return n+(parts[type]??0)*(defending?UNITS[type].defense:UNITS[type].attack)*factor;},0)/Math.max(1,army.troops);
   const combined=(parts.Artillery??0)>0&&((parts.Infantry??0)+(parts.Mechanized??0))>0?1.08:1;
   const logistics=.5+supplyAt(state,army.ownerId,army.provinceId).score/200;
   const intel=!defending&&espionageModifiers(state,army.ownerId).intelTargets.has(province.controllerId??province.ownerId)?1.08:1;
-  return resourceCombatFactor(state.countries[army.ownerId]!)*command*strength*combined*logistics*(1+(army.experience??0)/500)*(.4+(army.morale??80)/200+(army.organization??80)/200)*(1+skill/500)*(1+techLevel(state.countries[army.ownerId]!,'Military')*.06)*intel*militaryReadiness(state.countries[army.ownerId]!)*(1+focusBonuses(state.countries[army.ownerId]!).combat+technologyBonuses(state.countries[army.ownerId]!).combat);
+  const specialization=general?.specialization===(defending?'Defense':'Offense')?1.05:1;
+  return specialization*resourceCombatFactor(state.countries[army.ownerId]!)*command*strength*combined*logistics*(1+(army.experience??0)/500)*(.4+(army.morale??80)/200+(army.organization??80)/200)*(1+skill/500)*(1+techLevel(state.countries[army.ownerId]!,'Military')*.06)*intel*militaryReadiness(state.countries[army.ownerId]!)*(1+focusBonuses(state.countries[army.ownerId]!).combat+technologyBonuses(state.countries[army.ownerId]!).combat);
 }
 export function recoverMilitary(state: GameState): void {
   if(!state.dataset)return;

@@ -1,3 +1,4 @@
+import {UNIT_TYPES,UNITS} from './unitCatalogue.ts';
 import {technologyBonuses} from './technologyTree.ts';
 import type {Country,GameState,Province} from './gameTypes.ts';
 import {RESOURCES,RESOURCE_TYPES,FOOD_RESOURCES,type ResourceType} from './resourceCatalogue.ts';
@@ -38,7 +39,7 @@ export function domesticConsumption(s:GameState):void{
  for(const c of Object.values(s.countries)){const v=c.stockpile!,old=c.lastResourceCrisis??false;let food=c.population/2500000;
   for(const t of FOOD_RESOURCES){const used=Math.min(food,stock(c,t));if(used>0)consumeStock(c,t,used,true);food-=used;if(food<=.001)break;}if(food>.001){v.deficits.food=money(food);c.stability=Math.max(0,c.stability-Math.min(1,food/100));}
   const army=c.army/1000,war=s.wars?.some(w=>[...w.attackers,...w.defenders].includes(c.id));consumeStock(c,'ammunition',army*(war?.6:.08),true);consumeStock(c,'weapons',army*(war?.1:.02),true);
-  const fuel=s.armies.filter(a=>a.ownerId===c.id).reduce((n,a)=>n+(a.composition?.Armor??0)*.0006+(a.composition?.Mechanized??0)*.0003+(a.composition?.Motorized??0)*.00025,0);if(fuel)consumeStock(c,'fuel',fuel,true);
+  const fuel=s.armies.filter(a=>a.ownerId===c.id).reduce((n,a)=>n+UNIT_TYPES.reduce((sum,t)=>sum+(a.composition?.[t]??0)*UNITS[t].fuel/1000,0),0);if(fuel)consumeStock(c,'fuel',fuel,true);
   const crisis=Object.values(v.deficits).some(n=>n!>.5);c.lastResourceCrisis=crisis;if(crisis&&!old)notify(s,c.id,'Shortage','Ресурсный кризис: '+Object.keys(v.deficits).map(t=>RESOURCES[t as ResourceType].name).join(', '));if(!crisis&&old)notify(s,c.id,'Shortage','Снабжение и производство восстановлены');
  }
 }

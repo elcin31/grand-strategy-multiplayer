@@ -35,3 +35,5 @@
 - Release-critical military correction: active-battle route replacement could leave an invalid saved path after victory. Block replacement until withdrawal; retreat removes battle/siege participation, and AI skips fighting stacks. A targeted regression covers route rejection, retreat and save roundtrip. Candidate cb85082 is superseded and must not be published.
 
 - Native candidate: standalone build/signature/art integrity passed in run 38265480011; smoke stopped at country selection because the new harness used a short ADB tap and swiped outside the context panel. Use the existing 100-ms press convention and actual scroll-view bounds; no game/renderer changes for that harness issue. Final candidate includes a8bd2ac route/save fix.
+
+- Final rule integration: continuous battles now read all building defense modifiers (including coastal forts and military bases); commander specialties/logistics and regiment organization/fuel drive actual calculations; intelligence views also hide unrelated diplomatic preparations. Targeted military/save/authority checks cover this final integration.

@@ -1,3 +1,4 @@
+import {provinceBuildingModifiers} from './buildingSystem.ts';
 import type {Army,GameState,Province,BattleEvent} from './gameTypes.ts';
 import {armyParts,takeArmyLosses,initializeArmyComposition} from './armyComposition.ts';
 import {UNIT_TYPES,UNITS} from './unitCatalogue.ts';
@@ -48,7 +49,7 @@ export function dailyMilitary(s:GameState):void{
   if(!warBetween(s,b.attackerId,b.defenderId)){s.activeBattles=s.activeBattles?.filter(x=>x.id!==b.id);continue;}
   const attackers=s.armies.filter(a=>b.attackerArmyIds.includes(a.id)&&a.troops>0),defenders=s.armies.filter(a=>b.defenderArmyIds.includes(a.id)&&a.troops>0&&a.provinceId===b.provinceId),p=provinces.get(b.provinceId)!;
   const power=(rows:Army[],defending:boolean)=>rows.reduce((n,a)=>n+a.troops*combatMultiplier(s,a,p,defending)*(defending?armyFormation(a).defense:armyFormation(a).attack)*(a.order?.redeploy?.55:1),0);
-  const atk=power(attackers,false),def=power(defenders,true)*(1+(p.buildings?.Fort??0)*.04);
+  const atk=power(attackers,false),def=power(defenders,true)*(1+provinceBuildingModifiers(p).defensePercent/100);
   b.attackerLosses+=distributeLosses(attackers,Math.max(0,Math.round(def*.025)));b.defenderLosses+=distributeLosses(defenders,Math.max(0,Math.round(atk*.025)));
   for(const a of [...attackers,...defenders]){a.organization=Math.max(0,(a.organization??80)-2.5-(100-(a.supply??100))*.025);a.morale=Math.max(0,(a.morale??80)-1.5);}
   const broken=(rows:Army[])=>!rows.some(a=>a.troops>0&&(a.organization??80)>20&&(a.morale??80)>20);
@@ -58,7 +59,7 @@ export function dailyMilitary(s:GameState):void{
   const p=provinces.get(siege.provinceId)!,armies=s.armies.filter(a=>siege.armyIds.includes(a.id)&&a.provinceId===p.id&&a.troops>0);
   if(!armies.length||!warBetween(s,siege.attackerId,siege.defenderId)||(p.controllerId??p.ownerId)===siege.attackerId){s.sieges=s.sieges?.filter(x=>x.id!==siege.id);continue;}
   const supply=siegeSupply(s,siege.attackerId,p),troops=armies.reduce((n,a)=>n+a.troops,0),siegeTroops=armies.reduce((n,a)=>n+(armyParts(a).SiegeTrain??0)+(armyParts(a).Artillery??0)*.6+(armyParts(a).Engineers??0)*.4,0);
-  const generals=armies.reduce((n,a)=>Math.max(n,a.commanderId?s.commanders?.[a.commanderId]?.siege??0:0),0);
+  const generals=armies.reduce((n,a)=>Math.max(n,a.commanderId?(s.commanders?.[a.commanderId]?.siege??0)+(s.commanders?.[a.commanderId]?.specialization==='Siege'?15:0):0),0);
   siege.progress=Math.min(100,siege.progress+Math.max(.2,(troops/Math.max(1000,siege.garrison)*.65+siegeTroops/3000)*(supply/100+.15)*(1+generals/100)/(1+siege.fortress*.4)));
   for(const a of armies){a.supply=supply;siege.losses+=takeArmyLosses(a,Math.min(a.troops,Math.floor(a.troops*(.001+(100-supply)*.00002))));}
   if(siege.progress>=100){for(const a of armies)occupy(s,a,p);p.buildingDamage=Math.min(.85,(p.buildingDamage??0)+.15);notify(s,siege.attackerId,'Siege','Крепость капитулировала: '+p.name,p.id);notify(s,siege.defenderId,'Siege','Крепость потеряна: '+p.name,p.id);s.sieges=s.sieges?.filter(x=>x.id!==siege.id);}

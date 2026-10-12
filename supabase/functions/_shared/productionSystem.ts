@@ -7,7 +7,7 @@ import {economicPolicy} from './economy2System.ts';
 import {espionageModifiers} from './espionageSystem.ts';
 import {focusBonuses} from './focusCatalogue.ts';
 import {money} from './economySystem.ts';
-import type {UnitType} from './unitCatalogue.ts';
+import {UNITS,type UnitType} from './unitCatalogue.ts';
 export interface ProductionRecipe {name:string;output:ResourceType;inputs:ResourceLedger;buildings:BuildingType[];baseOutput:number;energy:number;year:number;level:number;military:boolean;technology?:string}
 const r=(name:string,output:ResourceType,inputs:ResourceLedger,buildings:BuildingType[],baseOutput:number,energy=0,year=1800,level=1,military=false):ProductionRecipe=>({name,output,inputs,buildings,baseOutput,energy,year,level,military});
 export const PRODUCTION_RECIPES={
@@ -51,7 +51,7 @@ export function monthlyProduction(s:GameState):void{
   if(p.buildings?.RareMine&&p.secondaryDeposit)addStock(c,p.secondaryDeposit.type,p.buildings.RareMine*5*factor,true);
  }
 }
-export function equipmentMaterials(s:GameState,type:UnitType,troops:number):ResourceLedger{return {weapons:money(troops/1000*(type==='Armor'||type==='Mechanized'?1:.3)),ammunition:s.year>=1500?money(troops/1000*.15):0,...['Armor','Mechanized','Motorized'].includes(type)?{fuel:money(troops/1000*.2)}:{}};}
+export function equipmentMaterials(s:GameState,type:UnitType,troops:number):ResourceLedger{return {weapons:money(troops/1000*(type==='Armor'||type==='Mechanized'?1:.3)),ammunition:s.year>=1500?money(troops/1000*.15):0,...UNITS[type].fuel>0?{fuel:money(troops/1000*UNITS[type].fuel*.4)}:{},...type==='Drones'?{electronics:money(troops/1000*.15),batteries:money(troops/1000*.1)}:{}};}
 export function equipmentReason(s:GameState,c:Country,type:UnitType,troops:number):string|null{return materialReason(c,equipmentMaterials(s,type,troops));}
 export function payEquipment(s:GameState,c:Country,type:UnitType,troops:number):void{payMaterials(c,equipmentMaterials(s,type,troops));}
 export function initializeProduction(s:GameState):void{for(const p of s.provinces){if(p.factoryAssignments&&Object.entries(p.factoryAssignments).some(([b,r])=>!Object.hasOwn(PRODUCTION_RECIPES,r)||!PRODUCTION_RECIPES[r as RecipeId].buildings.includes(b as BuildingType)))throw Error('Invalid factory assignment');if(p.productionQueue&&(!Array.isArray(p.productionQueue)||p.productionQueue.length>8||p.productionQueue.some(q=>!Object.hasOwn(PRODUCTION_RECIPES,q.recipeId)||!PRODUCTION_RECIPES[q.recipeId].buildings.includes(q.buildingType)||!Number.isFinite(q.quantity)||q.quantity<=0||q.quantity>10000||!Number.isFinite(q.produced)||q.produced<0||q.produced>=q.quantity)))throw Error('Invalid production orders');}}

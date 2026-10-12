@@ -143,7 +143,7 @@ function recruit(state: GameState, ownerId: CountryId, province: Province, troop
   if(nation.stockpile){const missing=equipmentReason(state,nation,unitType,troops);if(missing)throw Error(missing);payEquipment(state,nation,unitType,troops);}
   nation.manpower -= troops;
   if(existing){if(state.dataset)addArmyRegiment(existing,unitType,troops);else existing.troops+=troops;}
-  else {const army={ id: entityId(state, 'army'), ownerId, provinceId: province.id, troops, ...(state.dataset ? { unitType, morale: 80, organization: 60 } : {}) };if(state.dataset)initializeArmyComposition(army);state.armies.push(army);}
+  else {const army={ id: entityId(state, 'army'), ownerId, provinceId: province.id, troops, ...(state.dataset ? { unitType, morale: UNITS[unitType].morale, organization: UNITS[unitType].organization*.8 } : {}) };if(state.dataset)initializeArmyComposition(army);state.armies.push(army);}
   nation.army += troops;
   if (state.dataset) {nation.militaryUpkeepBase=money((nation.militaryUpkeepBase??(nation.army-troops)/1000*1.25)+troops/1000*1.25*UNITS[unitType].upkeep);refreshArmyBudget(nation);invalidateSupply(state);}
 }

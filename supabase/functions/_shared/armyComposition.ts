@@ -22,6 +22,7 @@ export function addArmyRegiment(a:Army,type:UnitType,troops:number,expandTemplat
   if(!Number.isSafeInteger(a.troops+troops)||!Number.isSafeInteger(troops)||troops<1)throw Error('Army strength overflow');
   initializeArmyComposition(a);const old=a.troops;a.composition![type]=(a.composition![type]??0)+troops;
   if(expandTemplate)a.template![type]=(a.template![type]??0)+troops;
+  a.organization=((a.organization??80)*old+UNITS[type].organization*.8*troops)/(old+troops);a.morale=((a.morale??80)*old+UNITS[type].morale*troops)/(old+troops);
   a.troops+=troops;a.experience=(a.experience??0)*old/a.troops;
 }
 export function validateArmyComposition(s:GameState,migrate:boolean):void {
