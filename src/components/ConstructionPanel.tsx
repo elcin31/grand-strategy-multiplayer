@@ -1,6 +1,7 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {CampaignArt} from './CampaignArt';
 import {useState} from 'react';
-import {Text,View,Pressable,ScrollView} from 'react-native';
+import {Text, View, ScrollView} from 'react-native';
 import type {StrategyProps} from './StrategyPanel';
 import type {BuildingType} from '../types/game';
 import {BUILDING_TYPES,BUILDINGS,constructionProgress} from '../../supabase/functions/_shared/buildingSystem';

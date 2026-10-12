@@ -1,4 +1,6 @@
-import {useRef,useState} from 'react';
+import {AppState} from 'react-native';
+import {audioHub,initializeAudio} from './src/audio/hub';
+import {useEffect,useRef,useState} from 'react';
 import type {ComponentType} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
@@ -8,6 +10,7 @@ import {LaunchAction} from './src/ui/launchAction';
 import type {MenuIntent} from './src/ui/menuIntent';
 type CampaignProps={intent:MenuIntent;onExit:()=>void;onError:(message:string)=>void};
 export default function App(){
+ useEffect(()=>{let active=true;void initializeAudio().then(()=>{if(active)audioHub.foreground(AppState.currentState==='active');else audioHub.dispose();}).catch(()=>{});const listener=AppState.addEventListener('change',status=>audioHub.foreground(status==='active'));return()=>{active=false;listener.remove();audioHub.dispose();};},[]);
  const [Component,setComponent]=useState<ComponentType<CampaignProps>|null>(null);
  const [intent,setIntent]=useState<MenuIntent|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState('');
  const latch=useRef<LaunchAction|null>(null);

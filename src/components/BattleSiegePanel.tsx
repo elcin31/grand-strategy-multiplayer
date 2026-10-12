@@ -1,6 +1,7 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {siegeForecast} from '../../supabase/functions/_shared/military3System';
 import {CampaignArt} from './CampaignArt';
-import {Pressable,Text,View} from 'react-native';
+import {Text, View} from 'react-native';
 import type {GameState,GameCommand} from '../types/game';
 import {styles} from './strategyStyles';
 export function BattleSiegePanel({state,countryId,provinceId,playerId,onCommand}:{state:GameState;countryId:string;provinceId?:string;playerId?:string;onCommand?:(c:GameCommand)=>void}){

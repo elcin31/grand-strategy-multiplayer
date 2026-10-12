@@ -1,6 +1,7 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {colors,tokens} from '../ui/tokens';
 import { useMemo, useState } from 'react';
-import { FlatList, Keyboard, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {FlatList, Keyboard, Modal, StyleSheet, Text, TextInput, View} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getWorldCountry } from '../world/catalog';
 import type { GameState, Country } from '../types/game';
@@ -23,7 +24,7 @@ export function CountryPicker({ state, onPreview }: { state: GameState; onPrevie
     <Pressable style={styles.button} onPress={() => setOpen(true)}><Text style={styles.text}>СТРАНЫ · {Object.keys(state.countries).length}</Text></Pressable>
     <Modal visible={open} transparent animationType="fade" onRequestClose={() => setOpen(false)}>
       <SafeAreaView style={styles.overlay}><View style={styles.dialog}>
-        <View style={styles.header}><Text style={styles.title}>ВЫБОР ГОСУДАРСТВА</Text><Pressable onPress={() => setOpen(false)}><Text style={styles.text}>ЗАКРЫТЬ</Text></Pressable></View>
+        <View style={styles.header}><Text style={styles.title}>ВЫБОР ГОСУДАРСТВА</Text><Pressable accessibilityRole="button" accessibilityLabel="Закрыть выбор страны" style={{minHeight:44,minWidth:88,justifyContent:'center',alignItems:'center'}} onPress={() => setOpen(false)}><Text style={styles.text}>ЗАКРЫТЬ</Text></Pressable></View>
         <TextInput accessibilityLabel="Поиск государства" placeholder="Название или ISO-код" placeholderTextColor="#87968f" autoCorrect={false} disableFullscreenUI returnKeyType="done" onSubmitEditing={Keyboard.dismiss} value={query} onChangeText={setQuery} style={styles.input} />
         <FlatList data={rows} keyExtractor={c => c.id} renderItem={renderRow} keyboardShouldPersistTaps="handled" initialNumToRender={8} maxToRenderPerBatch={12} windowSize={5} ListEmptyComponent={<Text style={styles.text}>Государства не найдены</Text>} />
       </View></SafeAreaView>
@@ -37,6 +38,6 @@ const styles = StyleSheet.create({
   dialog: { height: '90%', width: '70%', maxWidth: 660, backgroundColor: colors.surface, padding: 16, borderRadius:tokens.radius.panel, borderColor: colors.border, borderWidth: 1, gap: 12 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }, title: { color: colors.parchment, fontWeight: '800', fontSize: 13 },
   input: { borderWidth: 1, borderColor: colors.border, backgroundColor: colors.inset, color: colors.parchment, padding: 10, borderRadius: 4 },
-  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: 13, borderBottomWidth: 1, borderBottomColor: colors.border, gap: 12 },
+  row: { minHeight:48,flexDirection: 'row', alignItems: 'center', paddingVertical: 13, borderBottomWidth: 1, borderBottomColor: colors.border, gap: 12 },
   swatch: { width: 16, height: 16, borderRadius: 3 }, name: { flex: 1, color: colors.parchment, fontSize: 13 }, code: { color: colors.muted, fontSize: 10 },
 });

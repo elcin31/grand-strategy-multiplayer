@@ -1,9 +1,10 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {CampaignArt,CommanderPortrait} from './CampaignArt';
 import {ArmyOperations} from './ArmyOperations';
 import {BattleSiegePanel} from './BattleSiegePanel';
 import {PanelTabs} from './PanelTabs';
 import {useMemo,useState} from 'react';
-import {Pressable,Text,View} from 'react-native';
+import {Text, View} from 'react-native';
 import type {Army,Province} from '../types/game';
 import {UNITS,UNIT_TYPES,combatMultiplier} from '../../supabase/functions/_shared/militarySystem';
 import {techLevel} from '../../supabase/functions/_shared/technologySystem';

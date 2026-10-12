@@ -1,4 +1,5 @@
-import {Text,View,Pressable} from 'react-native';
+import {AudioPressable as Pressable} from './AudioPressable';
+import {Text, View} from 'react-native';
 import type {StrategyProps} from './StrategyPanel';
 import type {AdviserRole} from '../../supabase/functions/_shared/strategy3System';
 import {styles} from './strategyStyles';

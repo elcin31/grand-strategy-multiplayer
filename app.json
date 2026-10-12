@@ -16,7 +16,16 @@
     "plugins": [
       "expo-secure-store",
       "./plugins/withMapTextureOpacity.cjs",
-      "./plugins/withSkiaRecorderLifecycle.cjs"
+      "./plugins/withSkiaRecorderLifecycle.cjs",
+      [
+        "expo-audio",
+        {
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "enableBackgroundRecording": false,
+          "enableBackgroundPlayback": false
+        }
+      ]
     ]
   }
 }

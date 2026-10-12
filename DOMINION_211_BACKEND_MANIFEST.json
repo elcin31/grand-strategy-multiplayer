@@ -1,0 +1,32 @@
+{
+  "projectId": "dfjsnjxnyjspwugjguhq",
+  "sourceHead": "1b4e3ba7d9fe3f9b17b46374e2f341fbeccb37bc",
+  "workingTreeClean": false,
+  "note": "Existing Dominion project, session authentication, CAS and command receipts. Source at 1b4e3ba; pending audio dependency changes did not affect server sources. v21 and original 2.0 endpoints preserved.",
+  "functions": [
+    {
+      "name": "game-room",
+      "entrypoint": "index.js",
+      "verifyJwt": false,
+      "bytes": 3013273,
+      "sha256": "b037a643d2b2e429b6e012087a47fe241d8aaaf19b07c8163a79605e3d56f536"
+    },
+    {
+      "name": "game-command",
+      "entrypoint": "index.js",
+      "verifyJwt": false,
+      "bytes": 2995924,
+      "sha256": "9ecfb717021788424072bf2e1bdd98d901ecbba003e7177f3a8955b143b6c484"
+    }
+  ],
+  "protocol": 24,
+  "endpointNames": [
+    "game-room-v211",
+    "game-command-v211"
+  ],
+  "sourceCommitted": true,
+  "deploymentVersions": {
+    "game-room-v211": 1,
+    "game-command-v211": 1
+  }
+}

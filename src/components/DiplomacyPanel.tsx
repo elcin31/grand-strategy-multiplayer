@@ -1,7 +1,8 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {WarGoalsPanel} from './WarGoalsPanel';
 import {colors} from '../ui/tokens';
 import {useEffect,useState} from 'react';
-import {Pressable,ScrollView,Text,TextInput,View} from 'react-native';
+import {ScrollView, Text, TextInput, View} from 'react-native';
 import {HistoricalArt} from './HistoricalArt';
 import {TREATIES,pairKey,warBetween} from '../../supabase/functions/_shared/diplomacySystem';
 import {diplomaticTermsLabel,diplomacyResponseAvailability} from '../../supabase/functions/_shared/diplomacy2System';

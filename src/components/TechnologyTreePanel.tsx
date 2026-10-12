@@ -1,6 +1,7 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {CampaignArt} from './CampaignArt';
 import {useMemo,useState} from 'react';
-import {Pressable,ScrollView,Text,View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import Svg,{Path} from 'react-native-svg';
 import {colors} from '../ui/tokens';
 import {BUILDING_ART} from '../ui/artCatalogue';

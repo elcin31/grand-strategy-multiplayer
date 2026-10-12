@@ -1,3 +1,4 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {AnimatedArmyMarker,type MarkerPosition} from './AnimatedArmyMarker';
 import {armyDisplayPoint} from '../map/armyInterpolation';
 import {dayDelay} from '../../supabase/functions/_shared/calendarSystem';
@@ -22,7 +23,7 @@ import {preparedCountryLabels} from '../map/labelIndex';
 import {mapLegend} from '../map/modes';
 import {armyCounters,occupationFeatures,warBorderPath} from '../map/overlays';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AppState, Pressable, ScrollView, StyleSheet, Text, View, PixelRatio, Platform } from 'react-native';
+import {AppState, ScrollView, StyleSheet, Text, View, PixelRatio, Platform} from 'react-native';
 import {createShareable,UIRuntimeId} from 'react-native-worklets';
 import { Canvas, Circle, Fill, Group, LinearGradient, Path, Rect, Skia, matchFont, vec } from '@shopify/react-native-skia';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';

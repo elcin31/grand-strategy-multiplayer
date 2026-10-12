@@ -1,4 +1,5 @@
-import {Pressable,Text,View} from 'react-native';
+import {AudioPressable as Pressable} from './AudioPressable';
+import {Text, View} from 'react-native';
 import type {GameCommand,GameState} from '../types/game';
 import {NOTIFICATION_CATEGORIES,type NotificationCategory} from '../../supabase/functions/_shared/notificationSystem';
 import {styles} from './strategyStyles';

@@ -1,5 +1,6 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {useState} from 'react';
-import {Pressable,Text,View} from 'react-native';
+import {Text, View} from 'react-native';
 import type {GameState} from '../types/game';
 import {opponentSide,warMetrics} from '../../supabase/functions/_shared/warSystem';
 import {colors} from '../ui/tokens';

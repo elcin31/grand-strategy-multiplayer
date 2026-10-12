@@ -1,5 +1,6 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {memo,useMemo,useState} from 'react';
-import {Pressable,Text,View} from 'react-native';
+import {Text, View} from 'react-native';
 import Svg,{Path,Rect} from 'react-native-svg';
 import type {GameState} from '../types/game';
 import type {MapScene} from '../map/worldScene';

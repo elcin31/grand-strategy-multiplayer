@@ -1,3 +1,6 @@
+import {useCampaignAudio} from './src/audio/campaignAudio';
+import {audioHub} from './src/audio/hub';
+import {AudioPressable as Pressable} from './src/components/AudioPressable';
 import {WarProgressIndicator} from './src/components/WarProgressIndicator';
 import {PeaceNegotiations,EMPTY_PEACE_DRAFT,eligiblePeaceProvinces,draftClauses,type PeaceDraft} from './src/components/WarPanel';
 import {makePeaceTerms,peaceCost} from './supabase/functions/_shared/warSystem';
@@ -17,7 +20,7 @@ import {LandscapeHUD} from './src/components/LandscapeHUD';
 import {SECTIONS,SECTION_LABELS,panelWidth,backAction,type Section} from './src/ui/landscape';
 import { campaignStore } from './src/persistence/nativeCampaignStore';
 import { useCallback, useMemo, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, AppState, BackHandler, Keyboard, useWindowDimensions, Pressable, StatusBar, StyleSheet, Text, View, ScrollView } from 'react-native';
+import {ActivityIndicator, Alert, AppState, BackHandler, Keyboard, useWindowDimensions, StatusBar, StyleSheet, Text, View, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CountryPicker } from './src/components/CountryPicker';
 import { CountryPanel } from './src/components/CountryPanel';
@@ -126,7 +129,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   const lobbyAction = async (kind:'country'|'ready'|'start',command:GameCommand) => {
     if(!state||lobbyLatch.current)return;
     lobbyLatch.current=true;setLobbyOperation(kind);setLobbyError('');
-    try{await transport.sendCommand(state.id,command);}
+    try{await transport.sendCommand(state.id,command);audioHub.play('confirm');}
     catch(error){
       if(kind==='start'&&transport instanceof HttpTransport){try{const fresh=await transport.synchronize(state.id);if(fresh.phase!=='lobby')return;}catch{}}
       setLobbyError(error instanceof Error?error.message:'Не удалось подтвердить действие');
@@ -139,10 +142,11 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
 
   const sendCommand = (command: GameCommand) => {
     if (!state) return;
-    void safeAction(() => transport.sendCommand(state.id, command));
+    void safeAction(async()=>{await transport.sendCommand(state.id,command);audioHub.play(command.type==='PROPOSE_PEACE'?'peace_offer':command.type==='OFFER_TREATY'||command.type==='OFFER_DIPLOMACY'?'alliance':command.type==='ORDER_ARMY'||command.type==='ROUTE_ARMY'?'march':'confirm');});
   };
 
   const myCountryId = state?.players.find((player) => player.id === playerId)?.countryId ?? null;
+  useCampaignAudio(state,myCountryId);
   const gameStarted = Boolean(state && (state.phase === 'running' || state.phase === 'paused' || state.phase === 'finished'));
 
   const deselectArmy=useCallback(()=>{setSelectedArmyId(null);setSelectedCityId(null);setSelectedProvinceId(null);setPanelOpen(false);},[]);
@@ -155,15 +159,17 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
     setSelectedArmyId(null);setSelectedCityId(null);setSelectedProvinceId(province.id);setSection('Context');setPanelOpen(true);
   },[]);
   const selectProvince = useCallback((province: Province) => {
+    audioHub.play('province');
     if(!gameStarted){setPreviewCountryId(province.ownerId);return;}
     if(peacePicking&&peaceWarId&&myCountryId){if(peaceDraft.provinceIds.includes(province.id)){changePeaceDraft({...peaceDraft,provinceIds:peaceDraft.provinceIds.filter(id=>id!==province.id)});}else if(peaceDraft.provinceIds.length<50&&eligiblePeaceProvinces(latestState.current!,peaceWarId,myCountryId,peaceDraft).includes(province.id)){changePeaceDraft({...peaceDraft,white:false,provinceIds:[...peaceDraft.provinceIds,province.id]});}return;}
     const current=latestState.current,army=current?.armies.find(a=>a.id===selectedArmyId&&a.ownerId===myCountryId);
     const intent=mapTapIntent(army?.id??null,myCountryId,{provinceId:province.id,provinceOwnerId:province.ownerId});
-    if(intent.type==='order'&&playerId&&current){void safeAction(()=>transport.sendCommand(current.id,{type:'ORDER_ARMY',playerId,armyId:intent.armyId,provinceId:intent.provinceId}));return;}
+    if(intent.type==='order'&&playerId&&current){void safeAction(async()=>{await transport.sendCommand(current.id,{type:'ORDER_ARMY',playerId,armyId:intent.armyId,provinceId:intent.provinceId});audioHub.play('march');});return;}
     if(intent.type==='diplomacy'){selectCountry(intent.countryId);setSelectedProvinceId(province.id);return;}
     selectContext(province);
   },[gameStarted,peacePicking,peaceWarId,peaceDraft,changePeaceDraft,selectedArmyId,myCountryId,playerId,transport,selectCountry,selectContext]);
   const selectArmy=useCallback((id:string,province:string)=>{
+    audioHub.play('army');
     const army=latestState.current?.armies.find(a=>a.id===id);if(!army)return;
     const intent=mapTapIntent(selectedArmyId,myCountryId,{army});
     if(intent.type==='deselect'){deselectArmy();return;}
@@ -243,6 +249,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
           {!gameStarted && <CountryPicker state={state} onPreview={id => { setPreviewCountryId(id); setFocusCountryId(id); setPanelOpen(true); }} />}
           <Pressable style={styles.exitButton} onPress={() => setPanelOpen(!panelOpen)}><Text style={styles.exitText}>{panelOpen ? '✕' : '☰'}</Text></Pressable>
           {transport instanceof LocalTransport&&<Pressable accessibilityLabel="Сохранить кампанию" style={styles.exitButton} onPress={()=>void safeAction(async()=>{await campaignStore.save(state);setSaveStatus('Сохранено');})}><Text style={styles.exitText}>▣</Text></Pressable>}
+          {gameStarted&&<Pressable accessibilityRole="button" accessibilityLabel="Настройки звука" style={styles.exitButton} onPress={()=>{setSection('Audio');setPanelOpen(true);}}><Text style={styles.exitText}>♫</Text></Pressable>}
           <Pressable style={styles.exitButton} onPress={confirmExit}><Text style={styles.exitText}>↪</Text></Pressable>
         </View>
 
@@ -293,7 +300,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
             onCommand={sendCommand}
           />
         </DraggableWindow>}
-        {gameStarted&&peaceWarId&&<DraggableWindow title="Мирные переговоры" minimized={peacePicking} onRestore={()=>setPeacePicking(false)} onClose={()=>{setPeaceWarId(null);setPeacePicking(false);}}><PeaceNegotiations state={presentation??state} playerId={playerId??''} warId={peaceWarId} draft={peaceDraft} onDraft={changePeaceDraft} onPickMap={()=>{setPeacePicking(true);setPanelOpen(false);}} onSubmit={command=>transport.sendCommand(state.id,command)}/></DraggableWindow>}
+        {gameStarted&&peaceWarId&&<DraggableWindow title="Мирные переговоры" minimized={peacePicking} onRestore={()=>setPeacePicking(false)} onClose={()=>{setPeaceWarId(null);setPeacePicking(false);}}><PeaceNegotiations state={presentation??state} playerId={playerId??''} warId={peaceWarId} draft={peaceDraft} onDraft={changePeaceDraft} onPickMap={()=>{setPeacePicking(true);setPanelOpen(false);}} onSubmit={async command=>{await transport.sendCommand(state.id,command);audioHub.play(command.type==='PROPOSE_PEACE'?'peace_offer':'peace_signed');}}/></DraggableWindow>}
         {peacePicking&&<View style={{position:'absolute',left:56,bottom:5,maxWidth:440,backgroundColor:colors.surface,padding:6,borderWidth:1,borderColor:colors.gold,flexDirection:'row',alignItems:'center',gap:8,zIndex:30}}><Text style={{color:colors.parchment,fontSize:11}}>Территории: {peaceDraft.provinceIds.length} · договор {selectionPrice} счёта</Text><Pressable accessibilityRole="button" style={{minHeight:44,padding:8,justifyContent:'center'}} onPress={()=>setPeacePicking(false)}><Text style={{color:colors.gold}}>Вернуться к договору →</Text></Pressable></View>}
         {!gameStarted && <View style={styles.lobbyDock}>
           {lobbyError!==''&&<View style={{backgroundColor:colors.surface,padding:8}}><Text accessibilityRole="alert" style={{color:colors.gold,fontSize:12}}>{lobbyError}</Text><Pressable accessibilityRole="button" style={styles.exitButton} onPress={()=>{setLobbyError('');if(transport instanceof HttpTransport)void safeAction(async()=>{await transport.synchronize(state.id);});}}><Text style={styles.exitText}>Синхронизировать эту комнату</Text></Pressable></View>}

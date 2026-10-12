@@ -1,0 +1,221 @@
+[
+  {
+    "id": "atlas",
+    "titleRu": "Атлас держав",
+    "kind": "Music",
+    "filename": "atlas.ogg",
+    "seconds": 96.0,
+    "origin": "Original procedural composition created for Dominion; additive synthesis, no third-party samples or melodies",
+    "rights": "Project use permitted",
+    "sha256": "1e877218fcad845d8d60ac15ee059a9b4249c2bcdeace6a3e0f8655ba9d9b564"
+  },
+  {
+    "id": "council",
+    "titleRu": "Военный совет",
+    "kind": "Music",
+    "filename": "council.ogg",
+    "seconds": 106.67,
+    "origin": "Original procedural composition created for Dominion; additive synthesis, no third-party samples or melodies",
+    "rights": "Project use permitted",
+    "sha256": "a3d229216b887fc6f6a41e49f6bcf3b10ef7f0e5cd8f25db63059f8b5e0e9b4b"
+  },
+  {
+    "id": "peace",
+    "titleRu": "Письма мира",
+    "kind": "Music",
+    "filename": "peace.ogg",
+    "seconds": 87.27,
+    "origin": "Original procedural composition created for Dominion; additive synthesis, no third-party samples or melodies",
+    "rights": "Project use permitted",
+    "sha256": "97687ef25407ed2de5b1d52b8bb8b7ca28c2817d8f8302b78ae7f0757607e3fa"
+  },
+  {
+    "id": "ui_click",
+    "kind": "Effect",
+    "filename": "ui_click.wav",
+    "seconds": 0.1,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "f810baad6403b0ebd7adf5578a376606bec8b11d91e1a761bb8f10b2562c4eca"
+  },
+  {
+    "id": "window_open",
+    "kind": "Effect",
+    "filename": "window_open.wav",
+    "seconds": 0.27,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "bd7507b402e552e632d8c2f7724b84febc44cc593ec387a60f04af07de20665d"
+  },
+  {
+    "id": "window_close",
+    "kind": "Effect",
+    "filename": "window_close.wav",
+    "seconds": 0.18,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "1ff8408067c7499954b990b6a437fed9752939fa9f0092f7b7cb234e499b0a7a"
+  },
+  {
+    "id": "province",
+    "kind": "Effect",
+    "filename": "province.wav",
+    "seconds": 0.17,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "2f39630b7294b8cf83e27560dda89895b0af4aeb360bbb52f2e2b915d8cf7725"
+  },
+  {
+    "id": "confirm",
+    "kind": "Effect",
+    "filename": "confirm.wav",
+    "seconds": 0.3,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "071da3f6649e4a6d54b95e267b7acb02abb86e63bd7e46a545e242181d9a7996"
+  },
+  {
+    "id": "army",
+    "kind": "Effect",
+    "filename": "army.wav",
+    "seconds": 0.2,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "ad5c11d8b1aeaf6288fb7e0e32d9616e83f9143fafb132aa88208419729db9a3"
+  },
+  {
+    "id": "march",
+    "kind": "Effect",
+    "filename": "march.wav",
+    "seconds": 0.28,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "b9f25ccc5843b53126aa9170de8939f44715f96da447c0f660baf91225d63387"
+  },
+  {
+    "id": "battle",
+    "kind": "Effect",
+    "filename": "battle.wav",
+    "seconds": 0.65,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "8747df3591fa8adbf135f7c2c5f206efba68c67b0b8cee6eb09b838a8b3bb62c"
+  },
+  {
+    "id": "victory",
+    "kind": "Effect",
+    "filename": "victory.wav",
+    "seconds": 0.7,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "0939ee6c0a300cfab8019bcef1c3b6f35ddef3cd2106f3c2ccf0124d0b7c0219"
+  },
+  {
+    "id": "defeat",
+    "kind": "Effect",
+    "filename": "defeat.wav",
+    "seconds": 0.7,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "6b59c2b99b1bf810aa0818b754db98c4ba02076dbc16bf1b21a00cb2fc20c387"
+  },
+  {
+    "id": "siege_start",
+    "kind": "Effect",
+    "filename": "siege_start.wav",
+    "seconds": 0.5,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "0daae46fa1e704afb363157e184490b79b4e2dec59fdbf402ba619ab0d9479bd"
+  },
+  {
+    "id": "siege_complete",
+    "kind": "Effect",
+    "filename": "siege_complete.wav",
+    "seconds": 0.6,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "09e8f45bddcc9e2d4a565b5cbae3b5f9f783cd15af6673b3f6025f67ec161723"
+  },
+  {
+    "id": "war",
+    "kind": "Effect",
+    "filename": "war.wav",
+    "seconds": 0.7,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "4340c1f1e916bd9fc7909bfe4003b2772686189d08e4d88b27b07da2416f37dd"
+  },
+  {
+    "id": "alliance",
+    "kind": "Effect",
+    "filename": "alliance.wav",
+    "seconds": 0.5,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "6548abd343e10ae67b6257865a1e273b417736822b6fab17675a3072c00f4199"
+  },
+  {
+    "id": "peace_offer",
+    "kind": "Effect",
+    "filename": "peace_offer.wav",
+    "seconds": 0.42,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "bf0bbc4d404fbd0f928d6a3e9c6f5fbac5b61176ef299488146450378909aed8"
+  },
+  {
+    "id": "peace_signed",
+    "kind": "Effect",
+    "filename": "peace_signed.wav",
+    "seconds": 0.65,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "34c653c51bef6c2acd85c4fc14c013a5660b17b5933177b110321b8b0d99327b"
+  },
+  {
+    "id": "diplomatic",
+    "kind": "Effect",
+    "filename": "diplomatic.wav",
+    "seconds": 0.32,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "8f3057294837e29c5dd469f88361e3b65143fb70fb27bd10254b0f02d9e30062"
+  },
+  {
+    "id": "construction",
+    "kind": "Effect",
+    "filename": "construction.wav",
+    "seconds": 0.45,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "e126a979fa8155b36faa1e897c13198eb323bae640608d1f4a60ba69faad860d"
+  },
+  {
+    "id": "technology",
+    "kind": "Effect",
+    "filename": "technology.wav",
+    "seconds": 0.5,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "d55fdf8a343592df8ef3b4f7b2d3c6c0a67ccb4d787d34e9bcd85c78cdd6d155"
+  },
+  {
+    "id": "focus",
+    "kind": "Effect",
+    "filename": "focus.wav",
+    "seconds": 0.5,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "644dbaa18f5b3c4ac0720ec16444b9bc1067e7beb78fecaaad67dd79368f30ed"
+  },
+  {
+    "id": "notice",
+    "kind": "Effect",
+    "filename": "notice.wav",
+    "seconds": 0.28,
+    "origin": "Original synthesized Dominion cue, no third-party samples",
+    "rights": "Project use permitted",
+    "sha256": "9f9c182ef6a412a5d778fd37e4de0891e2f5be002220b72ab53912886af7a3b8"
+  }
+]

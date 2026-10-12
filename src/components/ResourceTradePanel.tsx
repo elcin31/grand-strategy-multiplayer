@@ -1,5 +1,6 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {useState} from 'react';
-import {Text,View,Pressable,ScrollView} from 'react-native';
+import {Text, View, ScrollView} from 'react-native';
 import type {StrategyProps} from './StrategyPanel';
 import {RESOURCES,RESOURCE_TYPES,type ResourceType} from '../../supabase/functions/_shared/resourceCatalogue';
 import {resourcePrice,stock} from '../../supabase/functions/_shared/stockpileSystem';

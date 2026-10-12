@@ -1,6 +1,7 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {useState} from 'react';
 import {ExpansionArt} from './ExpansionArt';
-import {Pressable,Text,View} from 'react-native';
+import {Text, View} from 'react-native';
 import {ESPIONAGE_MISSIONS,espionageQuote,espionageCapacity,espionageModifiers,type EspionageKind} from '../../supabase/functions/_shared/espionageSystem';
 import {DiplomacyButton} from './DiplomacyActions';
 import {styles,type StrategyProps} from './StrategyPanel';

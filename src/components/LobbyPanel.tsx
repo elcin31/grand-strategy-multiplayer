@@ -1,6 +1,7 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {colors,tokens} from '../ui/tokens';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import { GameState } from '../types/game';
 
 export function LobbyPanel({ state, playerId, onReady, onStart, busy=false,pending=null }: { state: GameState; playerId: string; busy?: boolean; pending?:'country'|'ready'|'start'|null; onReady: (ready: boolean) => void; onStart: () => void }) {

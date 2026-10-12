@@ -1,7 +1,8 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {LoadingScreen} from './HistoricalArt';
 import {traceStartup} from '../performance/startupTrace';
 import {memo,useEffect,useState,type ComponentProps} from 'react';
-import {Pressable,Text,View} from 'react-native';
+import {Text, View} from 'react-native';
 import type {WorldMap as MapComponent} from './WorldMap';
 import {colors} from '../ui/tokens';
 type Map=typeof MapComponent;

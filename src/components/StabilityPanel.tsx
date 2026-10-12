@@ -1,5 +1,6 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {useState} from 'react';
-import {Pressable,ScrollView,Text,View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import {styles,type StrategyProps} from './StrategyPanel';
 export function StabilityPanel({state,playerId,onCommand,initialOpen}:StrategyProps){const [open,setOpen]=useState(initialOpen??false),id=state.players.find(p=>p.id===playerId)?.countryId;if(!state.dataset||!id)return null;const c=state.countries[id]!,unrest=state.provinces.filter(p=>p.ownerId===id||p.controllerId===id).sort((a,b)=>Number(!!b.rebellion)-Number(!!a.rebellion)||(b.unrest??0)-(a.unrest??0));return <View style={styles.wrap}>
   <Pressable accessibilityRole="button" style={styles.button} onPress={()=>setOpen(!open)}><Text style={styles.title}>Стабильность · восстаний {unrest.filter(p=>p.rebellion).length} {open?'▴':'▾'}</Text></Pressable>

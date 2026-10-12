@@ -1,5 +1,6 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {useState} from 'react';
-import {Pressable,Text,View,ScrollView} from 'react-native';
+import {Text, View, ScrollView} from 'react-native';
 import type {Army,GameState,GameCommand} from '../types/game';
 import {armyETA,armyFormation,type Formation} from '../../supabase/functions/_shared/military3System';
 import {dateAfterDays} from '../../supabase/functions/_shared/calendarSystem';

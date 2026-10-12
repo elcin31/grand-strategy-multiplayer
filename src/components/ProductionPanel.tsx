@@ -1,5 +1,6 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {useState} from 'react';
-import {View,Text,Pressable,ScrollView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import type {StrategyProps} from './StrategyPanel';
 import type {BuildingType} from '../types/game';
 import {PRODUCTION_RECIPES,recipeReason,type RecipeId} from '../../supabase/functions/_shared/productionSystem';

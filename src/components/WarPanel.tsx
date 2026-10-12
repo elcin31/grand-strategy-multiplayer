@@ -1,5 +1,6 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {useRef,useState} from 'react';
-import {Pressable,Text,TextInput,View} from 'react-native';
+import {Text, TextInput, View} from 'react-native';
 import {ExpansionArt} from './ExpansionArt';
 import {PanelTabs} from './PanelTabs';
 import {isWarLeader,makePeaceTerms,opponentSide,peaceClauses,peaceCost,peaceEvaluation,peaceIncome,provincePeaceCost,scoreFor,warMetrics,warSide,type PeaceClause,type PeaceKind} from '../../supabase/functions/_shared/warSystem';

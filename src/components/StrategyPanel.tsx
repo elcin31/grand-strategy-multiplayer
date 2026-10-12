@@ -1,5 +1,6 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {useState} from 'react';
-import {Pressable,Text,View} from 'react-native';
+import {Text, View} from 'react-native';
 import type {GameCommand,GameState} from '../types/game';
 import {styles} from './strategyStyles';
 import {TechnologyTreePanel} from './TechnologyTreePanel';

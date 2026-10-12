@@ -1,5 +1,6 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {useState} from 'react';
-import {View,Text,Pressable,ScrollView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import type {GameState,Country} from '../types/game';
 import {styles} from './strategyStyles';
 const rankings={Economy:'Экономика',Industry:'Промышленность',Population:'Население',Military:'Армия',Science:'Наука',Diplomacy:'Дипломатия'};

@@ -1,6 +1,7 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {useMemo,useState} from 'react';
 import {ExpansionArt} from './ExpansionArt';
-import {Pressable,ScrollView,Text,TextInput,View} from 'react-native';
+import {ScrollView, Text, TextInput, View} from 'react-native';
 import {colors} from '../ui/tokens';
 import {TREATIES,pairKey,warBetween,type TreatyType} from '../../supabase/functions/_shared/diplomacySystem';
 import {assertDiplomaticAmount,diplomacyQuote,diplomacyAcceptance,diplomaticTermsLabel,missionAvailability} from '../../supabase/functions/_shared/diplomacy2System';

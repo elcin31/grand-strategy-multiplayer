@@ -1,4 +1,5 @@
-import {Text,View,Pressable} from 'react-native';
+import {AudioPressable as Pressable} from './AudioPressable';
+import {Text, View} from 'react-native';
 import type {StrategyProps} from './StrategyPanel';
 import {POLITICAL_DECISIONS,decisionReason,type DecisionId} from '../../supabase/functions/_shared/politicalDecisions';
 import {NATIONAL_SPIRITS} from '../../supabase/functions/_shared/focusExpansion';

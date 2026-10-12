@@ -1,3 +1,5 @@
+import {AudioSettings} from './AudioSettings';
+import {AudioPressable as Pressable} from './AudioPressable';
 import {PanelTabs} from './PanelTabs';
 import {PoliticalDecisionsPanel} from './PoliticalDecisionsPanel';
 import {StrategyCouncil} from './StrategyCouncil';
@@ -27,7 +29,7 @@ import { BUILDINGS, BUILDING_TYPES, buildingQuote,constructionProgress } from '.
 import { RESOURCES, provinceProduction, resourceReport } from '../../supabase/functions/_shared/resourceSystem';
 import { useState } from 'react';
 import { MIN_TAX_RATE, MAX_TAX_RATE, money } from '../../supabase/functions/_shared/economySystem';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import { countryFor, GameCommand, GameState } from '../types/game';
 import { RELIGIONS, RELIGION_IDS, RELIGION_CHANGE_COST, RELIGION_STABILITY_COST, RELIGION_COOLDOWN_TICKS } from '../../supabase/functions/_shared/religionSystem';
 import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, GOVERNMENT_TYPES, governmentModifiers } from '../../supabase/functions/_shared/governmentSystem';
@@ -86,6 +88,7 @@ export function GamePanel({ onOpenPeace,diplomacyCountryId,onSelectArmy,onDesele
   const bankruptcyMonths = Math.max(0, (nation.bankruptcyUntilTick ?? 0) - state.tick);
   const economicActionsEnabled = state.phase === 'running' || state.phase === 'paused';
 
+  if(section==='Audio')return <AudioSettings/>;
   if(section==='Context'&&focusedArmyId&&selected)return <MilitaryPanel state={state} playerId={playerId} onCommand={onCommand} province={selected} army={state.armies.find(a=>a.id===focusedArmyId)??null}/>;
   if(section==='Government'&&page==='Советники')return <>{tabbar}<StrategyCouncil state={state} playerId={playerId} onCommand={onCommand}/></>;
   if(section==='Government'&&page==='Реформы')return <>{tabbar}<PoliticalDecisionsPanel state={state} playerId={playerId} onCommand={onCommand}/></>;

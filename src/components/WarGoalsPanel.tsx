@@ -1,5 +1,6 @@
+import {AudioPressable as Pressable} from './AudioPressable';
 import {useState} from 'react';
-import {View,Text,Pressable,ScrollView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {WAR_GOALS,type WarGoalType} from '../../supabase/functions/_shared/strategy3System';
 import type {StrategyProps} from './StrategyPanel';
 import {styles} from './strategyStyles';
