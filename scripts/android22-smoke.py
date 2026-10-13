@@ -89,14 +89,14 @@ try:
     adb('install','-r',sys.argv[1]);adb('logcat','-c');adb('shell','settings','put','system','accelerometer_rotation','0');adb('shell','settings','put','system','user_rotation','1');launch();capture('01-menu')
     control('Одиночная игра','single');time.sleep(12);control('СТРАНЫ · 195','countries');tree=root('search');node=find_enabled_control(tree,'Поиск государства');assert node is not None;tap(node);adb('shell','input','text','Germany');time.sleep(1);adb('shell','input','keyevent','4');time.sleep(1);control('Государство: Германия','germany');time.sleep(1);control('Играть за эту страну','choose');control('Я ГОТОВ','ready');control('Начать игру','start');time.sleep(3)
     control('Пауза','pause');tree=root('hud');assert find_enabled_control(tree,'Выбрать скорость кампании') is not None;capture('02-campaign');assert_map_painted(OUT/'02-campaign.png')
-    control('Режимы и настройки карты','balanced-settings');control('Balanced','balanced');control('Закрыть ×','balanced-close')
+    control('Режимы и настройки карты','balanced-settings');control('Balanced','balanced',True);control('Закрыть ×','balanced-close',True)
     # Brief screenshots of all five approved map views and economic filters.
     for mode,name in [('Рельеф','terrain'),('Армии','military'),('Провинции','province'),('Экономика','economic'),('Политическая','political')]:
         control('Режимы и настройки карты','settings-'+name);control('Режим '+mode,'mode-'+name);time.sleep(1.5);capture('map22-'+name);assert_map_painted(OUT/('map22-'+name+'.png'))
         if mode=='Экономика':
             for filter in ['Промышленность','Торговля','Инфраструктура','Развитие','Производство','Ресурсы']:
                 horizontal_control('Фильтр '+filter,'filter-'+filter);time.sleep(.3)
-    control('Приблизить','zoom-in');time.sleep(.5);capture('map22-close');control('Отдалить','zoom-out');time.sleep(.5)
+    control('Приблизить','zoom-in');time.sleep(.5);capture('map22-close');(OUT/'map22-memory.txt').write_text(adb('shell','dumpsys','meminfo',PACKAGE));control('Отдалить','zoom-out');time.sleep(.5)
     dimensions=Image.open(OUT/'02-campaign.png').size
     adb('shell','input','swipe',int(dimensions[0]*.58),int(dimensions[1]*.58),int(dimensions[0]*.52),int(dimensions[1]*.56),350);time.sleep(.5)
     control('К выбранному','refocus');time.sleep(.5)
