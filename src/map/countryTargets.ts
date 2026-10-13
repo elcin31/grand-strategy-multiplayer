@@ -16,7 +16,7 @@ export function countryFlagBatch(glyphs:readonly CountryGlyph[],zoom:number,tilt
 export function countryGlyph(label:CountryLabel,country:Country,zoom:number,measure:(name:string)=>number):CountryGlyph|null {
   if(label.blocked||zoom>=8)return null;
   const name=country.name;
-  const width=measure(name),scale=Math.min(1.65,label.width*zoom/(width+12));
+  const width=measure(name),scale=Math.min(1.35,label.width*zoom/(width+12));
   return scale<.55?null:{label,name,width,scale};
 }
 export function hitCountryGlyph(glyph:CountryGlyph,x:number,y:number,preparedZoom:number,tilt:number):boolean {
