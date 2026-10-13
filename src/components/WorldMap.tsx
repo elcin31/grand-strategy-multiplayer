@@ -9,6 +9,11 @@ import {cameraMatrix} from '../map/cameraMatrix';
 import {CameraWorkGate,nextFrameDeadline,frameBucket,frameQuantile,createFrameAccumulator,recordFrameInterval,finishFrameSample} from '../performance/framePacing';
 import {createCameraInput,queueCameraInput,takeCameraInput} from '../performance/cameraInput';
 import {MapRasterLayer} from './MapRasterLayer';
+import {MapGeographyLayer} from './MapGeographyLayer';
+import {MapBorderLayer} from './MapBorderLayer';
+import {MapEconomyLayer} from './MapEconomyLayer';
+import {MapOperationsLayer} from './MapOperationsLayer';
+import {ECONOMIC_FILTERS,type EconomicFilter} from '../map/strategic22';
 import {MapMarkerLayer} from './MapMarkerLayer';
 import {cameraCoverage,cameraNeedsCoverage,viewportLayoutUpdate,interactionDetailZoom} from '../map/cameraCoverage';
 import {budgetArmyMarkers,markerBudgets} from '../map/markerBudget';
@@ -25,7 +30,7 @@ import {armyCounters,occupationFeatures,warBorderPath} from '../map/overlays';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {AppState, ScrollView, StyleSheet, Text, View, PixelRatio, Platform} from 'react-native';
 import {createShareable,UIRuntimeId} from 'react-native-worklets';
-import { Canvas, Circle, Fill, Group, LinearGradient, Path, Rect, Skia, matchFont, vec } from '@shopify/react-native-skia';
+import { Canvas, Fill, Group, LinearGradient, Path, Rect, Skia, matchFont, vec } from '@shopify/react-native-skia';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { cancelAnimation, runOnJS, runOnUI, useAnimatedReaction, useFrameCallback, useDerivedValue, useSharedValue, withDecay, withTiming } from 'react-native-reanimated';
 import { type CountryId, type GameState, type Province } from '../types/game';
@@ -98,6 +103,7 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
   useEffect(()=>{if(!preferencesReady||calibrated.current||viewport.width<=1)return;calibrated.current=true;choosePreset(initialQuality(getMetrics().sceneMs,viewport.width*viewport.height*PixelRatio.get()**2));},[viewport,preferencesReady]);
   useEffect(()=>()=>{benchmarkToken.current++;},[]);
   const [mode, setMode] = useState<MapMode>('Political');
+  const [economicFilter,setEconomicFilter]=useState<EconomicFilter>('Resources');
   const geometryLod=selectGeometryLod(detailZoom,preset);
   const {paths}=useMemo(()=>nativeScene(scene,geometryLod),[scene,geometryLod]);
   const setSettingsOpen=(value:boolean)=>onSettingsChange?.(value);
@@ -169,7 +175,6 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
     }
   });
   const matrix = useDerivedValue(() => cameraMatrix(renderX.value,renderY.value,renderZoom.value,viewport.width,viewport.height));
-  const inverseScale = useDerivedValue(() => [{ scaleX: 1 / renderZoom.value }, { scaleY: 1 / (renderZoom.value * TILT) }]);
   const borderScale = useDerivedValue(() => GRAPHICS[preset].borderWidth / renderZoom.value);
   const selectionScale = useDerivedValue(() => borderScale.value * 2.7);
   const bounds = useMemo(() => cameraCoverage(snapshot, viewport), [snapshot, viewport]);
@@ -186,13 +191,13 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
   const occupations=useMemo(()=>occupationFeatures(state,visible),[owners,controllers,visible]);
   const budgets=markerBudgets(snapshot.zoom,preset);
   const militaryView=useMemo(()=>state.fogViewerId||!selectedCountryId?state:projectFogOfWar(state,selectedCountryId),[state,selectedCountryId]);
-  const counters=useMemo(()=>budgetArmyMarkers(clusterArmies(armyCounters(militaryView,visibleIds,selectedArmyId),provinceGeometry,snapshot.zoom,selectedArmyId),snapshot.zoom,budgets.armies,selectedArmyId,selectedCountryId),[militaryView.armies,visibleIds,provinceGeometry,snapshot.zoom,selectedArmyId,selectedCountryId,budgets.armies]);
+  const counters=useMemo(()=>budgetArmyMarkers(clusterArmies(armyCounters(militaryView,visibleIds,selectedArmyId).filter(c=>c.ids.includes(selectedArmyId??'')||mode==='Military'||((mode==='Political'||mode==='Diplomatic'||mode==='Relations')&&(c.ownerId===selectedCountryId||militaryView.wars?.some(w=>w.attackers.includes(c.ownerId)||w.defenders.includes(c.ownerId))))),provinceGeometry,snapshot.zoom,selectedArmyId),snapshot.zoom,budgets.armies,selectedArmyId,selectedCountryId),[militaryView.armies,militaryView.wars,visibleIds,provinceGeometry,snapshot.zoom,selectedArmyId,selectedCountryId,budgets.armies,mode]);
   const markerPositions=useRef(new Map<string,MarkerPosition>());
   const registerMarker=useCallback((key:string,position:MarkerPosition|null)=>{if(position)markerPositions.current.set(key,position);else markerPositions.current.delete(key);},[]);
   const markerTargets=useMemo(()=>new Map(counters.map(c=>[c.key,armyDisplayPoint(militaryView,c,provinceGeometry)])),[counters,militaryView.armies,militaryView.provinces,provinceGeometry]);
   const legend=useMemo(()=>mapLegend(state,mode),[state.provinces,mode]);
   const troops = useMemo(() => troopsByProvince(militaryView), [militaryView.armies]);
-  const provinceColors = useStableColors(useMemo(() => buildProvinceColors(state, mode, troops, selectedCountryId??undefined), [state.countries, state.provinces, state.diplomacy,state.wars,selectedCountryId, mode, troops]));
+  const provinceColors = useStableColors(useMemo(() => buildProvinceColors(state, mode==='Economy'?(economicFilter==='Development'?'Development':'Political'):mode, troops, selectedCountryId??undefined), [state.countries, state.provinces, state.diplomacy,state.wars,selectedCountryId, mode, troops,economicFilter]));
   const provinces = useMemo(() => new Map(state.provinces.map(p => [p.id, p])), [state.provinces]);
   const countryColors=useStableColors(useMemo(()=>new Map(Object.values(state.countries).map(c=>[c.id,c.color])),[state.countries]));
   const occupiedBatches=useMemo(()=>{const grouped=new Map<string,NativePath>();for(const f of occupations){const color=countryColors.get(controllers.get(f.provinceId!)!)??'#778B93';let path=grouped.get(color);if(!path){path=Skia.Path.Make();grouped.set(color,path);}path.addPath(paths.get(f.id)!);}return [...grouped];},[occupations,countryColors,controllers,paths]);
@@ -202,7 +207,7 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
   const cities=useMemo(()=>visibleCityCatalogue.map(c=>({...c,population:cityState.get(c.id)?.population??c.population})),[visibleCityCatalogue,cityState]);
   const font = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 11, fontWeight: '600' }), []);
   const counterFont = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 10, fontWeight: 'bold' }), []);
-  const nationFont = useMemo(() => matchFont({ fontFamily: 'serif', fontSize: 13, fontWeight: 'bold' }), []);
+  const nationFont = useMemo(() => matchFont({ fontFamily: 'serif', fontSize: 14, fontWeight: '600' }), []);
   const armyLabelBlockers=useMemo(()=>counters.map(c=>({x:c.x,y:c.y,halfWidth:37/snapshot.zoom,halfHeight:14/(snapshot.zoom*TILT)})),[counters,snapshot.zoom]);
   const cityLabels = useMemo(() => cityLabelPlacements(cities, snapshot.zoom, TILT, name => measure(font,name), armyLabelBlockers, visibleBounds(snapshot, viewport, 0)), [cities, snapshot, viewport, font, armyLabelBlockers]);
   const peaceEligible=useMemo(()=>new Set(provinceSelection?.eligibleIds??[]),[provinceSelection?.eligibleIds]);
@@ -259,10 +264,10 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
   const preparedLabels = useMemo(() => preparedCountryLabels(features,owners),[features,owners]);
   const labels = useMemo(() => {
     const blockers=[...cityLabels.values()].map(label=>label.box).concat(armyLabelBlockers);
-    return preparedLabels.filter(label=>label.anchor.x>=bounds.left&&label.anchor.x<=bounds.right&&label.anchor.y>=bounds.top&&label.anchor.y<=bounds.bottom).sort((a,b)=>Number(b.countryId===selectedCountryId)-Number(a.countryId===selectedCountryId)||b.width-a.width).slice(0,Math.min(budgets.labels,preset==='Performance'?6:10)).map(label=>{
+    return preparedLabels.filter(label=>label.anchor.x>=bounds.left&&label.anchor.x<=bounds.right&&label.anchor.y>=bounds.top&&label.anchor.y<=bounds.bottom).sort((a,b)=>Number(b.countryId===selectedCountryId)-Number(a.countryId===selectedCountryId)||b.width-a.width).slice(0,Math.min(budgets.labels,preset==='Performance'?8:18)).map(label=>{
       const name=state.countries[label.countryId]?.name??'';
       const halfWidth=Math.min(label.width,measure(nationFont,name)/labelZoom)/2;
-      return {...label,blocked:blockers.some(b=>Math.abs(b.x-label.anchor.x)<halfWidth+(b.halfWidth??0)&&Math.abs(b.y-label.anchor.y)<11/(labelZoom*TILT)+(b.halfHeight??0))};
+      const blocked=blockers.some(b=>Math.abs(b.x-label.anchor.x)<halfWidth+(b.halfWidth??0)&&Math.abs(b.y-label.anchor.y)<10/(labelZoom*TILT)+(b.halfHeight??0));if(!blocked)blockers.push({x:label.anchor.x,y:label.anchor.y,halfWidth,halfHeight:10/(labelZoom*TILT)});return {...label,blocked};
     });
   },[preparedLabels,bounds,cityLabels,armyLabelBlockers,nationFont,labelZoom,state.countries,preset,selectedCountryId,budgets.labels]);
   const countryGlyphs=useMemo(()=>labels.map(l=>state.countries[l.countryId]?countryGlyph(l,state.countries[l.countryId]!,snapshot.zoom,n=>measure(nationFont,n)):null).filter((g):g is CountryGlyph=>g!==null).slice(0,Math.max(0,budgets.labels-(selectedProvinceId?1:0))),[labels,state.countries,snapshot.zoom,nationFont,budgets.labels,selectedProvinceId]);
@@ -286,26 +291,32 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
           SurfaceView experiment is recorded in the paired camera evidence. */}
       <Canvas accessible accessibilityLabel="Карта Dominion" style={StyleSheet.absoluteFill}>
         <Fill color="#203B48" />
-        {GRAPHICS[preset].water && <Rect x={0} y={0} width={viewport.width} height={viewport.height}><LinearGradient start={vec(0, 0)} end={vec(viewport.width, viewport.height)} colors={['#18303C', '#294A57', '#193542']} /></Rect>}
+        {<Rect x={0} y={0} width={viewport.width} height={viewport.height}><LinearGradient start={vec(0, 0)} end={vec(viewport.width, viewport.height)} colors={['#0b2332', '#153c50', '#0a2638']} /></Rect>}
         <Group matrix={matrix}>
-          <MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={detailZoom} canPrewarm={canPrewarm}/>
+          <MapGeographyLayer scene={scene} bounds={bounds} zoom={detailZoom} preset={preset} mode={mode}/>
+          {mode!=='Terrain'&&mode!=='Province'&&<Group blendMode="multiply"><MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={detailZoom} canPrewarm={canPrewarm}/></Group>}
+          <MapBorderLayer scene={scene} owners={owners} bounds={bounds} zoom={detailZoom} preset={preset}/>
+
           {provinceSelection&&visible.filter(f=>peaceEligible.has(f.id)||peaceSelected.has(f.id)).map(f=><Group key={'peace-'+f.id}><Path path={paths.get(f.id)!} color={peaceSelected.has(f.id)?'#DABD6E':'#5BA68C'} opacity={peaceSelected.has(f.id)?.5:.2}/><Path path={paths.get(f.id)!} color={peaceSelected.has(f.id)?'#FFE1A0':'#87D1B2'} style="stroke" strokeWidth={selectionScale}/></Group>)}
           {occupiedBatches.map(([color,path])=><Group key={color}><Path path={path} color={color} opacity={.28}/><Path path={path} color={color} opacity={.55} style="stroke" strokeWidth={selectionScale}/></Group>)}
           {warBorders!==''&&<Path path={warBorders} style="stroke" color="#ed7f72" strokeWidth={selectionScale} opacity={pulse}/>}
-          {state.armies.filter(a=>a.id===selectedArmyId&&a.order).map(a=>{const points=[a.provinceId,...a.order!.route].map(id=>provinceGeometry.get(id)?.anchor).filter(Boolean);return <Path key={a.id+"-order"} path={points.map((p,i)=>`${i?"L":"M"}${p!.x},${p!.y}`).join("")} style="stroke" strokeWidth={selectionScale} color="#fff0ac"/>;})}
-          {(state.movements??[]).filter(m=>state.tick-m.tick<=2&&(visibleIds.has(m.from)||visibleIds.has(m.to))).map((m,i)=>{const from=provinceGeometry.get(m.from)?.anchor,to=provinceGeometry.get(m.to)?.anchor;if(!from||!to)return null;return <Path key={'movement-'+i} path={`M${from.x},${from.y}L${to.x},${to.y}`} style="stroke" strokeWidth={selectionScale} color={state.countries[m.ownerId]!.color} opacity={pulse}/>;})}
+          <MapOperationsLayer state={militaryView} scene={scene} visible={visibleIds} zoom={snapshot.zoom} preset={preset} military={mode==='Military'} armyId={selectedArmyId} countryId={selectedCountryId} occupations={occupations} font={counterFont}/>
+          <MapEconomyLayer state={state} scene={scene} visible={visibleIds} bounds={bounds} zoom={snapshot.zoom} preset={preset} mode={mode} filter={economicFilter} selected={selectedProvinceId} font={counterFont}/>
+          {!selectedPath.isEmpty()&&<Path path={selectedPath} color="#ffe3a4" opacity={.07}/> }
           {!selectedPath.isEmpty() && <Path path={selectedPath} style="stroke" color="#f0db9e" strokeWidth={selectionScale} opacity={pulse} />}
           <MapMarkerLayer state={state} zoom={snapshot.zoom} preset={preset} labels={labels} countryGlyphs={countryGlyphs} cities={cities} cityLabels={cityLabels} counters={[]} countryId={selectedCountryId} armyId={selectedArmyId} cityId={selectedCityId} provinceId={selectedProvinceId} geometry={provinceGeometry} visible={visibleIds} font={font} counterFont={counterFont} nationFont={nationFont} labelBudget={budgets.labels}/>
-          {[...counters].sort((a,b)=>Number(a.ids.includes(selectedArmyId??''))-Number(b.ids.includes(selectedArmyId??''))).map(c=><AnimatedArmyMarker key={c.ids.join('|')} counter={c} target={markerTargets.get(c.key)!} duration={Math.min(1200,dayDelay(state.speed))} paused={state.speed===0||state.phase!=='running'} zoom={snapshot.zoom} selected={c.ids.includes(selectedArmyId??'')} own={c.ownerId===selectedCountryId} color={state.countries[c.ownerId]?.color??'#778B93'} font={counterFont} onPosition={registerMarker}/>)}
-          {[...(state.activeBattles??[]).map(b=>({...b,tick:state.tick})),...(state.sieges??[]).map(b=>({...b,tick:state.tick})),...state.battleLog].filter(b => state.tick - b.tick <= 1&&visibleIds.has(b.provinceId)).slice(0, 8).map(b => {
-            const f = provinceGeometry.get(b.provinceId); if (!f || !visibleIds.has(b.provinceId)) return null;
-            return <Group key={b.id} transform={[{ translateX: f.anchor.x }, { translateY: f.anchor.y }]}><Group transform={inverseScale}><Circle cx={0} cy={0} r={17} style="stroke" strokeWidth={2} color="#c66b55" opacity={pulse} /></Group></Group>;
-          })}
+          {[...counters].sort((a,b)=>Number(a.ids.includes(selectedArmyId??''))-Number(b.ids.includes(selectedArmyId??''))).map(c=><AnimatedArmyMarker key={c.ids.join('|')} counter={c} target={markerTargets.get(c.key)!} duration={Math.min(1200,dayDelay(state.speed))} paused={state.speed===0||state.phase!=='running'} zoom={snapshot.zoom} selected={c.ids.includes(selectedArmyId??'')} own={c.ownerId===selectedCountryId} color={state.countries[c.ownerId]?.color??'#778B93'} font={counterFont} onPosition={registerMarker} status={militaryView.activeBattles?.some(b=>[...b.attackerArmyIds,...b.defenderArmyIds].some(id=>c.ids.includes(id)))?'Battle':militaryView.sieges?.some(b=>b.armyIds.some(id=>c.ids.includes(id)))?'Siege':c.moving?'March':'Hold'} supply={c.ids.reduce((n,id)=>n+(militaryView.armies.find(a=>a.id===id)?.supply??100),0)/Math.max(1,c.ids.length)}/>)}
+
         </Group>
       </Canvas>
     </GestureDetector>
     <MiniMap state={state} scene={scene} camera={snapshot} viewport={viewport} onMove={animateCamera} onWorld={()=>animateCamera({x:720,y:310,zoom:Math.max(.5,viewport.width/1450)})} onFocus={()=>{const selected=selectedProvinceId?provinceGeometry.get(selectedProvinceId)?.anchor:undefined;const capital=mapCities.find(c=>c.id===state.countries[selectedCountryId??'']?.capitalCityId)?.point;const target=selected??capital;if(target)animateCamera({...target,zoom:6});}}/>
-    <View style={styles.toolbar}><Pressable accessibilityRole="button" accessibilityLabel="Режимы и настройки карты" style={styles.button} onPress={()=>setSettingsOpen(!settingsOpen)}><Text style={styles.zoomText}>▱</Text></Pressable></View>
+    <View style={styles.toolbar}><Pressable accessibilityRole="button" accessibilityLabel="Режимы и настройки карты" style={styles.modeButton} onPress={()=>setSettingsOpen(!settingsOpen)}><Text numberOfLines={1} style={styles.modeText}>▱ {MODE_LABELS[mode]} ▾</Text></Pressable></View>
+    {(mode==='Economy'||mode==='Resources')&&<View style={styles.filters}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>{(Object.keys(ECONOMIC_FILTERS) as EconomicFilter[]).map(filter=><Pressable key={filter} accessibilityRole="button" accessibilityLabel={`Фильтр ${ECONOMIC_FILTERS[filter]}`} accessibilityState={{selected:economicFilter===filter&&mode==='Economy'}} style={[styles.filter,(economicFilter===filter&&mode==='Economy')&&styles.active]} onPress={()=>{setEconomicFilter(filter);setMode('Economy');}}><Text style={styles.text}>{ECONOMIC_FILTERS[filter]}</Text></Pressable>)}</ScrollView>
+      {economicFilter==='Trade'&&mode==='Economy'&&<Text style={styles.note}>Принятые контракты · связи столиц условны, путь перевозки не задан</Text>}
+      {economicFilter==='Infrastructure'&&mode==='Economy'&&<Text style={styles.note}>Существующие объекты · линии городских связей условны</Text>}
+    </View>}
     <View style={styles.zoomControls}>
       {[1.5, 1 / 1.5].map((factor, i) => <Pressable key={i} accessibilityLabel={i ? 'Отдалить' : 'Приблизить'} style={styles.button} onPress={() => animateCamera(zoomAt({ x: x.value, y: y.value, zoom: zoom.value }, factor, { x: viewport.width / 2, y: viewport.height / 2 }, viewport))}><Text style={styles.zoomText}>{i ? '−' : '+'}</Text></Pressable>)}
     </View>
@@ -324,11 +335,15 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
 const styles = StyleSheet.create({
   frame: { flex: 1, backgroundColor: '#101f2b', overflow: 'hidden' },
   toolbar: { position:'absolute',top:4,right:4 },
-  button: { backgroundColor: '#17242aee', borderWidth: 1, borderColor: '#485953', width:44,height:44,alignItems:'center',justifyContent:'center', borderRadius: 5 },
+  modeButton:{height:44,minWidth:150,maxWidth:230,paddingHorizontal:12,justifyContent:'center',backgroundColor:'#081c29f5',borderWidth:1,borderColor:'#a78b55',borderRadius:3},
+  modeText:{color:'#e6d3a9',fontFamily:'serif',fontSize:13},
+  filters:{position:'absolute',top:4,left:4,right:246,backgroundColor:'#0b1d2bec',borderWidth:1,borderColor:'#786744',borderRadius:3},
+  filter:{minHeight:44,paddingHorizontal:11,justifyContent:'center'},
+  button: { backgroundColor: '#17242aee', borderWidth: 1, borderColor: '#8b764e', width:44,height:44,alignItems:'center',justifyContent:'center', borderRadius: 5 },
   text: { color: '#dddcca', fontSize: 11, fontWeight: '600' },
   zoomText: { color: '#dddcca', fontSize: 20, textAlign: 'center' },
   zoomControls: {position:'absolute',right:4,top:52,gap:2},
-  settings: { zIndex: 10, position: 'absolute', right:52, top:4, width:420, maxWidth: '65%', maxHeight:'75%', backgroundColor: '#17242af5', borderRadius: 6, borderWidth: 1, borderColor: '#485953' },
+  settings: { zIndex: 10, position: 'absolute', right:52, top:4, width:420, maxWidth: '65%', maxHeight:'75%', backgroundColor: '#0b1b29f5', borderRadius: 6, borderWidth: 1, borderColor: '#8b764e' },
   heading: { color: '#98a79e', fontSize: 10, letterSpacing: 1 }, options: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   option: { padding: 10,minHeight:44,justifyContent:'center', backgroundColor: '#2a383d', borderRadius: 4 }, active: { backgroundColor: '#625b40' },
   legend: { position: 'absolute', left: 12, bottom: 54, width:'55%',maxWidth:600,backgroundColor:'#17242acc',padding:4,borderRadius:6 }, note: { color: '#c1c7b6', fontSize: 9, backgroundColor: '#17242acc', padding: 5, alignSelf: 'flex-start' },

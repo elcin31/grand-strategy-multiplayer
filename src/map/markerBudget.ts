@@ -4,7 +4,7 @@ import {TILT} from './camera';
 export interface DisplayArmy extends ArmyCluster {ownerIds:string[];stack:boolean}
 export function markerBudgets(zoom:number,preset:GraphicsPreset){
   const factor=preset==='Performance'?.65:preset==='High'?1.3:preset==='Ultra'?1.6:1;
-  return {armies:Math.max(8,Math.round((zoom<2?24:zoom<6?36:48)*factor)),labels:Math.round((zoom<2?8:zoom<6?14:22)*factor)};
+  return {armies:Math.max(8,Math.round((zoom<2?24:zoom<6?36:48)*factor)),labels:Math.round((zoom<2?16:zoom<6?30:44)*factor)};
 }
 /** Render-only stacks preserve every ID and troop, including mixed-owner cells.
  * A neutral stacked glyph explicitly distinguishes them from one country's army.

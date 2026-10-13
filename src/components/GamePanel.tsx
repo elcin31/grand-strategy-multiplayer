@@ -1,3 +1,4 @@
+import {ProvinceAtlasPanel} from './ProvinceAtlasPanel';
 import {GeopoliticsPanel} from './GeopoliticsPanel';
 import {MilitaryDevelopmentPanel} from './MilitaryDevelopmentPanel';
 import {ArmyList} from './ArmyList';
@@ -96,6 +97,7 @@ export function GamePanel({ onCreateArmy,onOpenPeace,diplomacyCountryId,onSelect
 
   if(section==='Audio')return <AudioSettings/>;
   if(section==='Context'&&focusedArmyId&&selected)return <MilitaryPanel onCreateArmy={onCreateArmy} state={state} playerId={playerId} onCommand={onCommand} province={selected} army={state.armies.find(a=>a.id===focusedArmyId)??null}/>;
+  if(section==='Context'&&selected)return <ProvinceAtlasPanel key={selected.id} state={state} province={selected} playerId={playerId} army={primaryArmy} onCommand={onCommand} onSelectArmy={onSelectArmy} onFocus={onFocusProvince} onCreateArmy={onCreateArmy}/>;
   if(section==='Government'&&page==='Советники')return <>{tabbar}<StrategyCouncil state={state} playerId={playerId} onCommand={onCommand}/></>;
   if(section==='Government'&&page==='Реформы')return <>{tabbar}<PoliticalDecisionsPanel state={state} playerId={playerId} onCommand={onCommand}/></>;
   if(section==='Government'&&page==='Внутренняя политика')return <>{tabbar}<StabilityPanel initialOpen state={state} playerId={playerId} onCommand={onCommand}/></>;

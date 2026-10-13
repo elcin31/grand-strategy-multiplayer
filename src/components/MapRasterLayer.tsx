@@ -1,14 +1,12 @@
 import {memo,useEffect,useMemo,useRef,useState} from 'react';
 import {Group,Picture,Skia,PaintStyle,FilterMode,MipmapMode,ClipOp,BlendMode,type SkCanvas,type SkImage,type SkPath,type SkPicture} from '@shopify/react-native-skia';
-import {borderChunks,bordersInBounds,type BorderChunk} from '../map/borderChunks';
 import {rasterLevel,WORLD_RASTER_SOURCE_LEVEL} from '../map/cameraCoverage';
 import {visibleRasterTiles,rasterTiles,RasterCache,retainRasterImage,type RasterTile} from '../map/rasterTiles';
 import {scheduleIdleSlices} from '../performance/idleSlices';
 import {geometryForLod,type GeometryLod} from '../map/geometryLod';
-import {featurePath,overlaps,type Bounds,type MapFeature} from '../map/geometry';
-import {GRAPHICS,type GraphicsPreset,type MapMode} from '../map/settings';
+import {featurePath,type Bounds,type MapFeature} from '../map/geometry';
+import {type GraphicsPreset,type MapMode} from '../map/settings';
 import type {MapScene} from '../map/worldScene';
-import {lakes,rivers,terrainPatches} from '../map/terrain';
 import {recordMetrics,getMetrics} from '../performance/telemetry';
 import {withNativeRecordingObjects} from '../map/nativeRecording';
 import {RecordingPathCache} from '../map/recordingPathCache';
@@ -17,23 +15,6 @@ import {worldRasterCopy} from '../map/worldRasterCopy';
 
 const generations=new WeakMap<object,number>();let generation=0;
 function identity(value:object){let id=generations.get(value);if(id===undefined){id=++generation;generations.set(value,id);}return id;}
-const borderPaths=new WeakMap<BorderChunk,{inner:SkPath;outer:SkPath}>();
-function nativeBorder(chunk:BorderChunk){
-  let result=borderPaths.get(chunk);if(result)return result;
-  result={inner:Skia.Path.Make(),outer:Skia.Path.Make()};
-  for(const kind of ['inner','outer'] as const)for(const edge of chunk[kind])result[kind].moveTo(edge.a.x,edge.a.y).lineTo(edge.b.x,edge.b.y);
-  borderPaths.set(chunk,result);return result;
-}
-const terrainPaths=new Map<string,SkPath>();
-function terrainPath(kind:string){
-  let path=terrainPaths.get(kind);if(path)return path;path=Skia.Path.Make();
-  if(kind==='rivers'){for(const river of rivers)river.forEach((p,i)=>i?path!.lineTo(p.x,p.y):path!.moveTo(p.x,p.y));}
-  else for(const patch of terrainPatches.filter(p=>p.type===kind)){
-    if(kind==='desert')patch.points.forEach((p,i)=>i?path!.lineTo(p.x,p.y):path!.moveTo(p.x,p.y));
-    else for(const p of patch.points){const w=kind==='mountain'?1.8:1;path.moveTo(p.x-w,p.y+1.1).lineTo(p.x,p.y-1.8).lineTo(p.x+w,p.y+1.1).close();}
-  }
-  terrainPaths.set(kind,path);return path;
-}
 interface Resources {paths:RecordingPathCache<SkPath>;pictures:RasterCache<SkPicture>;images:RasterCache<SkImage>}
 interface Drawing {scene:MapScene;features:readonly MapFeature[];context:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;resources:Resources}
 function appendNativePath(f:MapFeature,d:Drawing,group:SkPath){
@@ -52,17 +33,7 @@ function drawTile(tile:RasterTile,d:Drawing,canvas:SkCanvas){
     const grouped=new Map<string,SkPath>();
     for(const f of tile.features){const color=f.provinceId?d.colors.get(f.provinceId)??'#37423f':'#354440';let group=grouped.get(color);if(!group){group=own(Skia.Path.Make());group.setFillType(1);grouped.set(color,group);}appendNativePath(f,d,group);}
     for(const [color,path]of grouped)canvas.drawPath(path,paint(color));
-    if(GRAPHICS[d.preset].terrain&&(d.mode==='Political'||d.mode==='Terrain')){
-      canvas.drawPath(terrainPath('mountain'),paint('#d1cfbc',.32));canvas.drawPath(terrainPath('mountain'),paint('#273b36',.8,.3));
-      canvas.drawPath(terrainPath('forest'),paint('#183f32',.5));canvas.drawPath(terrainPath('desert'),paint('#c4b185',.3,6));canvas.drawPath(terrainPath('rivers'),paint('#6594a5',.7,.4));
-      for(const lake of lakes)if(overlaps(tile.bounds,{left:lake.point.x-lake.radius,right:lake.point.x+lake.radius,top:lake.point.y-lake.radius,bottom:lake.point.y+lake.radius}))canvas.drawCircle(lake.point.x,lake.point.y,lake.radius,paint('#203c4c'));
-    }
-    const lineZoom=tile.level.key==='world'?1:tile.level.key==='region'?4:tile.level.key==='local'?8:15;
-    const width=GRAPHICS[d.preset].borderWidth/lineZoom;
-    for(const chunk of bordersInBounds(borderChunks(d.scene.edges,d.owners),tile.bounds)){
-      const paths=nativeBorder(chunk);if(d.detail)canvas.drawPath(paths.inner,paint('#273638',.65,width));
-      canvas.drawPath(paths.outer,paint('#101922',1,width*2));
-    }
+
   });
 }
 function tileKey(tile:RasterTile,d:Drawing){return [identity(d.colors),identity(d.owners),identity(d.features),d.lod,d.preset,d.mode,Number(d.detail),tile.key].join('|');}

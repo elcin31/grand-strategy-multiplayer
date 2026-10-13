@@ -45,7 +45,7 @@ export function troopsByProvince(state: GameState): Map<string, number> {
   return result;
 }
 /** Linear preprocessing, then O(1) lookup. Never scan the full world per visible polygon. */
-export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map<string, number>, reference=state.selectedCountryId??state.players[0]?.countryId??Object.keys(state.countries)[0]!): Map<string, string> {
+export function buildProvinceColors(state: GameState, mode: MapMode, _troops: Map<string, number>, reference=state.selectedCountryId??state.players[0]?.countryId??Object.keys(state.countries)[0]!): Map<string, string> {
   if(mode==='Diplomatic')return new Map(state.provinces.map(p=>[p.id,DIPLOMATIC_COLORS[diplomaticCategory(state,reference,p.ownerId)]]));
   if(mode==='Relations')return new Map(state.provinces.map(p=>[p.id,relationColor(p.ownerId===reference?100:state.diplomacy?.[pairKey(reference,p.ownerId)]?.relation??0)]));
   if(mode==='Terrain')return new Map(state.provinces.map(p=>[p.id,TERRAIN_COLORS[p.terrain??'plains']]));
@@ -56,8 +56,8 @@ export function buildProvinceColors(state: GameState, mode: MapMode, troops: Map
     const colors = new Map(Object.values(state.countries).map(c => [c.id, palette[GOVERNMENT_TYPES.indexOf(c.governmentType ?? 'Parliamentary Republic')] ?? palette[0]!]));
     return new Map(state.provinces.map(p => [p.id, colors.get(p.ownerId) ?? palette[0]!]));
   }
-  if (mode === 'Political') return new Map(state.provinces.map(p => [p.id, politicalColor(countryFor(state, p.ownerId).color)]));
-  const values = new Map(state.provinces.map(p => [p.id, mode === 'Development' ? p.development??40 : mode === 'Economy' ? p.income*(1+(p.development??40)/100) : mode === 'Population' ? p.population : mode === 'Military' ? troops.get(p.id) ?? 0 : (countryFor(state,p.ownerId).stability+100-(p.unrest??0))/2]));
+  if (mode === 'Political'||mode==='Military'||mode==='Province') return new Map(state.provinces.map(p => [p.id, politicalColor(countryFor(state, p.ownerId).color)]));
+  const values = new Map(state.provinces.map(p => [p.id, mode === 'Development' ? p.development??40 : mode === 'Economy' ? p.income*(1+(p.development??40)/100) : mode === 'Population' ? p.population : (countryFor(state,p.ownerId).stability+100-(p.unrest??0))/2]));
   const all = [...values.values()], max = Math.max(1, ...all), min = Math.min(...all);
   const low = [66, 77, 91], high = [197, 161, 89];
   return new Map([...values.entries()].map(([id, value]) => {
@@ -70,7 +70,7 @@ const cityTiers=new WeakMap<readonly CityPoint[],{capitals:CityPoint[];major:Cit
 /** Query a tier-specific immutable index: at global zoom only 195 capitals enter culling. */
 export function visibleCities<T extends CityPoint>(cities:readonly T[],bounds:Bounds,zoom:number,preset:GraphicsPreset):T[]{
  let tiers=cityTiers.get(cities);if(!tiers){tiers={capitals:cities.filter(c=>c.capital),major:cities.filter(c=>c.capital||c.population>=250000)};cityTiers.set(cities,tiers);}
- const source=(zoom<5?tiers.capitals:zoom<9?tiers.major:cities) as readonly T[];
+ const source=(zoom<2.8?tiers.capitals:zoom<7?tiers.major:cities) as readonly T[];
  return pointsInBounds(source,bounds).sort((a,b)=>Number(b.capital)-Number(a.capital)||b.population-a.population).slice(0,GRAPHICS[preset].cityBudget);
 }
 
@@ -83,7 +83,7 @@ export function cityLabelPlacements<T extends { id: string; name: string; capita
   blockers: readonly LabelBlocker[] = [], bounds?: Bounds,
 ): Map<string, CityLabelPlacement> {
   const result = new Map<string, CityLabelPlacement>();
-  if (!Number.isFinite(zoom) || zoom < 4 || !Number.isFinite(tilt) || tilt <= 0) return result;
+  if (!Number.isFinite(zoom) || zoom < 2.8 || !Number.isFinite(tilt) || tilt <= 0) return result;
   const overlaps = (a: LabelBlocker, b: LabelBlocker) => Math.abs(a.x - b.x) < (a.halfWidth ?? 1.5) + (b.halfWidth ?? 1.5) && Math.abs(a.y - b.y) < (a.halfHeight ?? 1.5) + (b.halfHeight ?? 1.5);
   const markers = cities.map(c => ({ id: c.id, ...c.point, halfWidth: (c.capital ? 7 : 4) / zoom, halfHeight: (c.capital ? 7 : 4) / (zoom * tilt) }));
   const occupied = [...blockers];

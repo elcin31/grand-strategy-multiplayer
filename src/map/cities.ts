@@ -1,5 +1,5 @@
 import { project, Point } from './geometry';
-export interface MapCity { id: string; name: string; provinceId: string; capital: boolean; population: number; point: Point }
+export interface MapCity { id: string; name: string; provinceId: string; capital: boolean; regionalCapital?:boolean; population: number; point: Point }
 const city = (id: string, name: string, provinceId: string, lon: number, lat: number, capital: boolean, population: number): MapCity => ({ id, name, provinceId, capital, population, point: project(lon, lat) });
 // Original positional catalogue for the existing scenario. Population is scenario data, not a live census.
 export const mapCities: MapCity[] = [

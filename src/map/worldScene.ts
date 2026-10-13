@@ -32,7 +32,7 @@ function* buildScene(state: Pick<GameState, 'dataset'>): Generator<void,MapScene
   world = { features, spatialIndex: new SpatialIndex(features), provinceGeometry: new Map(provinces.map(f => [f.id, f])), edges: buildEdges(provinces), cities: cityDefinitions.map(c => {
     const point = cityPoints.get(c.id);
     if (!point) throw new Error('Missing city coordinates');
-    return { id: c.id, name: c.name, provinceId: c.provinceId, capital: c.isCapital, population: c.population, point };
+    return { id: c.id, name: c.name, provinceId: c.provinceId, capital: c.isCapital, regionalCapital:c.isRegionalCapital, population: c.population, point };
   }) };
   return world;
 }
