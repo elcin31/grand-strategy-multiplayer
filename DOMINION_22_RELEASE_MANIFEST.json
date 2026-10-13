@@ -18,12 +18,12 @@
     "focusedTests": 19,
     "assetHashesProjectionLicence": true,
     "nativeLandscapeTextureRecorderSource": true,
-    "androidSmoke": "pending final runtime build; previous candidate run 38370836032 passed",
+    "androidSmoke": "PASSED: exact APK, actual Android emulator",
     "physicalRedmiMeasured": false,
     "longBenchmarks": false,
     "packagedAtlasHashes": true
   },
-  "publicationStatus": "AWAITING_FINAL_NATIVE_SMOKE",
+  "publicationStatus": "PUBLISHED_VERIFIED",
   "apkArtifactId": 11804782696,
   "apk": {
     "name": "Dominion-2.2-playtest.apk",
@@ -52,5 +52,38 @@
       "game-room-v211"
     ],
     "schemaVersion": 25
-  }
+  },
+  "nativeSmoke": {
+    "releaseColdLaunch": true,
+    "campaignStarted": true,
+    "newHUD": true,
+    "armySplit": true,
+    "armyOrder": true,
+    "armyMovement": true,
+    "deselectPreservesOrder": true,
+    "centralWindowOpenDragScrollClose": true,
+    "mute": true,
+    "saveRestart": true,
+    "mapPainted": true,
+    "noFatalLogs": true,
+    "mapModes": [
+      "Political",
+      "Terrain",
+      "Military",
+      "Province",
+      "Economy"
+    ],
+    "economicFilters": true,
+    "briefPanZoom": true,
+    "provinceSelectionAndSixTabs": true,
+    "balanced": true,
+    "soak": false
+  },
+  "nativeRunId": 38381764786,
+  "publicationRunId": 38385074668,
+  "publicApkByteMatch": true,
+  "previousReleasesPreserved": true,
+  "releaseId": 411558624,
+  "apkAssetId": 636709450,
+  "apkUrl": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.2-playtest.1/Dominion-2.2-playtest.apk"
 }
