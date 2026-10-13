@@ -1,6 +1,6 @@
-import {memo,useEffect,useMemo,useRef,useState} from 'react';
+import {memo,useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import {Group,Picture,Skia,PaintStyle,FilterMode,MipmapMode,ClipOp,BlendMode,type SkCanvas,type SkImage,type SkPath,type SkPicture} from '@shopify/react-native-skia';
-import {rasterLevel,WORLD_RASTER_SOURCE_LEVEL} from '../map/cameraCoverage';
+import {rasterLevel,stableRasterLevel,budgetRasterLevel,WORLD_RASTER_SOURCE_LEVEL,type RasterLevel} from '../map/cameraCoverage';
 import {visibleRasterTiles,rasterTiles,RasterCache,retainRasterImage,type RasterTile} from '../map/rasterTiles';
 import {scheduleIdleSlices} from '../performance/idleSlices';
 import {geometryForLod,type GeometryLod} from '../map/geometryLod';
@@ -12,13 +12,15 @@ import {withNativeRecordingObjects} from '../map/nativeRecording';
 import {RecordingPathCache} from '../map/recordingPathCache';
 import {rasterImageDraw} from '../map/rasterImageDraw';
 import {worldRasterCopy} from '../map/worldRasterCopy';
+import {mapWorkQueue} from '../performance/mapWorkQueue';
+import {mapBudget} from '../map/mobileBudgets';
 
 const generations=new WeakMap<object,number>();let generation=0;
 function identity(value:object){let id=generations.get(value);if(id===undefined){id=++generation;generations.set(value,id);}return id;}
 interface Resources {paths:RecordingPathCache<SkPath>;pictures:RasterCache<SkPicture>;images:RasterCache<SkImage>}
-interface Drawing {scene:MapScene;features:readonly MapFeature[];context:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;resources:Resources}
+interface Drawing {scene:MapScene;features:readonly MapFeature[];context:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;resources:Resources;canPrepare:()=>boolean}
 function appendNativePath(f:MapFeature,d:Drawing,group:SkPath){
-  d.resources.paths.withPath(d.lod+':'+f.id,()=>{
+  d.resources.paths.withPath((f.provinceId&&!f.id.startsWith('render-country-')?'exact':d.lod)+':'+f.id,()=>{
     // Individual radial LOD simplification does not preserve shared provincial
     // edges. It leaves bright triangular gaps over relief. Exact provincial
     // coverage is recorded once into small cached tiles; world silhouettes can
@@ -41,7 +43,7 @@ function drawTile(tile:RasterTile,d:Drawing,canvas:SkCanvas){
 
   });
 }
-function tileKey(tile:RasterTile,d:Drawing){return [identity(d.colors),identity(d.owners),identity(d.features),d.lod,d.preset,d.mode,Number(d.detail),tile.key].join('|');}
+function tileKey(tile:RasterTile,d:Drawing){return [identity(d.colors),identity(d.features),d.features.some(f=>f.id.startsWith('render-country-'))?d.lod:'exact',tile.level.scale,tile.key].join('|');}
 function tilePicture(tile:RasterTile,d:Drawing,key:string){
   const cached=d.resources.pictures.get(key);if(cached)return cached;
   return withNativeRecordingObjects(own=>{
@@ -92,30 +94,28 @@ function tileImage(tile:RasterTile,drawing:Drawing,key:string,picture:SkPicture,
     return image;
   }finally{surface.dispose();}
 }
-type Work={run:()=>void;cancelled:boolean};const queue:Work[]=[];let timer:ReturnType<typeof setTimeout>|undefined;
-function drain(){timer=undefined;const work=queue.shift();if(work&&!work.cancelled)work.run();if(queue.length)timer=setTimeout(drain,8);}
-/** At most one bounded surface per slice; touch transforms remain on UI thread. */
-export function scheduleRaster(run:()=>void){const work={run,cancelled:false};queue.push(work);if(!timer)timer=setTimeout(drain,8);return()=>{work.cancelled=true;const index=queue.indexOf(work);if(index>=0)queue.splice(index,1);};}
-const RasterTileNode=memo(function RasterTileNode({tile,drawing}:{tile:RasterTile;drawing:Drawing}){
+/** Shared with atlas decoding: one cancellable operation after the camera rests. */
+export const scheduleRaster=(run:()=>void,canRun:()=>boolean,priority=0)=>mapWorkQueue.schedule(run,canRun,priority);
+const RasterTileNode=memo(function RasterTileNode({tile,drawing,show=true,prepare=true,onReady}:{tile:RasterTile;drawing:Drawing;show?:boolean;prepare?:boolean;onReady?:()=>void}){
   const key=tileKey(tile,drawing);
-  const [ready,setReady]=useState<{key:string;image:SkImage}|null>(()=>{const image=drawing.resources.images.get(key);return image?{key,image}:null;});
-  const cached=ready?.key===key?ready.image:drawing.resources.images.get(key);
-  // A ready image does not need a new vector recording, even if its old
-  // picture was evicted. Keep geometry preparation out of warm camera visits.
-  const hasImage=!!cached;
-  const picture=useMemo(()=>hasImage?null:tilePicture(tile,drawing,key),[tile,drawing,key,hasImage]);
+  const [ready,setReady]=useState<{key:string;image?:SkImage;picture?:SkPicture}|null>(()=>{const image=drawing.resources.images.get(key);return image?{key,image}:null;});
+  const exact=drawing.resources.images.get(key)??(ready?.key===key?ready.image:undefined);
+  // Keep the last prepared tint until its replacement is ready. Recording SVG
+  // paths belongs to the deferred queue, never React render or an active gesture.
+  const cached=exact??ready?.image;
+  const picture=ready?.picture??drawing.resources.pictures.peek(key);
   useEffect(()=>{
-    if(cached){setReady(previous=>previous?.key===key&&previous.image===cached?previous:{key,image:cached});return;}
+    if(exact||!prepare)return;
     return scheduleRaster(()=>{
-      // A JS-thread GPU snapshot belongs to that thread's GrDirectContext.
-      // Retain a raster image instead; the Canvas uploads it once in its own
-      // render context. Small bounded surfaces also avoid GPU locks on pinch.
-      const image=drawing.resources.images.get(key)??tileImage(tile,drawing,key,picture!);if(image)setReady({key,image});
-    });
-  },[key,tile,drawing,picture,cached]);
+      const image=drawing.resources.images.get(key);
+      if(image){setReady({key,image});onReady?.();return;}
+      const recorded=tilePicture(tile,drawing,key),raster=tileImage(tile,drawing,key,recorded);
+      setReady(raster?{key,image:raster}:{key,picture:recorded});onReady?.();
+    },drawing.canPrepare);
+  },[key,tile,drawing,exact,prepare,onReady]);
   // The UI camera only replays this immutable native picture. Keep Image fit,
   // paint and clip command preparation off its animated parent recorder.
-  const display=useMemo(()=>withNativeRecordingObjects(own=>{
+  const display=useMemo(()=>!show||!cached&&!picture?null:withNativeRecordingObjects(own=>{
     const b=tile.bounds,gutter=2/tile.level.scale,recorder=own(Skia.PictureRecorder());
     const canvas=recorder.beginRecording(Skia.XYWHRect(b.left-gutter,b.top-gutter,b.right-b.left+gutter*2,b.bottom-b.top+gutter*2));
     canvas.clipRect(Skia.XYWHRect(b.left,b.top,b.right-b.left,b.bottom-b.top),ClipOp.Intersect,false);
@@ -128,20 +128,22 @@ const RasterTileNode=memo(function RasterTileNode({tile,drawing}:{tile:RasterTil
       canvas.drawImageRectOptions(cached,Skia.XYWHRect(s.x,s.y,s.width,s.height),Skia.XYWHRect(d.x,d.y,d.width,d.height),FilterMode.Linear,MipmapMode.None,paint);
     }else canvas.drawPicture(picture!);
     return recorder.finishRecordingAsPicture();
-  }),[tile,cached,picture]);
-  return <Picture picture={display}/>;
+  }),[tile,cached,picture,show]);
+  return display?<Picture picture={display}/>:null;
 });
-export const MapRasterLayer=memo(function MapRasterLayer({scene,features,owners,colors,lod,preset,mode,detail,bounds,zoom,canPrewarm}:{scene:MapScene;features:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;bounds:Bounds;zoom:number;canPrewarm:()=>boolean}){
-  const resources=useMemo<Resources>(()=>({paths:new RecordingPathCache<SkPath>(),pictures:new RasterCache<SkPicture>(1000,96),images:new RasterCache<SkImage>()}),[scene]);
+export const MapRasterLayer=memo(function MapRasterLayer({scene,features,owners,colors,lod,preset,mode,detail,bounds,zoom,canPrewarm,canPrepare}:{scene:MapScene;features:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;bounds:Bounds;zoom:number;canPrewarm:()=>boolean;canPrepare:()=>boolean}){
+  const resources=useMemo<Resources>(()=>({paths:new RecordingPathCache<SkPath>(),pictures:new RasterCache<SkPicture>(1000,96),images:new RasterCache<SkImage>(mapBudget(preset).politicalBytes)}),[scene]);
+  useEffect(()=>{resources.images.resize(mapBudget(preset).politicalBytes);},[resources,preset]);
   useEffect(()=>()=>{resources.paths.clear();resources.pictures.clear();resources.images.clear();},[resources]);
   const context=useMemo(()=>features===scene.features?features:[...scene.features.filter(f=>!f.provinceId),...features],[scene,features]);
-  const drawing=useMemo<Drawing>(()=>({scene,features,context,owners,colors,lod,preset,mode,detail,resources}),[scene,features,context,owners,colors,lod,preset,mode,detail,resources]);
-  const level=rasterLevel(zoom);
+  const drawing=useMemo<Drawing>(()=>({scene,features,context,owners,colors,lod,preset,mode,detail,resources,canPrepare}),[scene,features,context,owners,colors,lod,preset,mode,detail,resources,canPrepare]);
+  const previousLevel=useRef<RasterLevel>(rasterLevel(zoom)),nominalLevel=stableRasterLevel(zoom,previousLevel.current);previousLevel.current=nominalLevel;
+  const level=budgetRasterLevel(nominalLevel,preset);
   useEffect(()=>{
     if(mode!=='Political'||detail||lod!=='low')return;
     let world:RasterTile[]|undefined,index=0;
-    return scheduleIdleSlices(()=>queue.length===0&&canPrewarm(),()=>{
-      world??=rasterTiles(context,rasterLevel(.5));
+    return scheduleIdleSlices(()=>mapWorkQueue.size===0&&canPrewarm(),()=>{
+      world??=rasterTiles(context,budgetRasterLevel(rasterLevel(.5),preset));
       while(index<world.length){
         const tile=world[index++]!,key=tileKey(tile,drawing);
         if(resources.images.peek(key))continue;
@@ -155,6 +157,14 @@ export const MapRasterLayer=memo(function MapRasterLayer({scene,features,owners,
   },[drawing,context,canPrewarm,mode,detail,lod,resources]);
   const tiles=visibleRasterTiles(context,bounds,level),previous=useRef(tiles);
   if(previous.current.length!==tiles.length||tiles.some((t,i)=>t!==previous.current[i]))previous.current=tiles;
+  const [,refresh]=useState(0),notifyReady=useCallback(()=>refresh(n=>n+1),[]);
+  const signature=[identity(drawing.colors),identity(drawing.features),drawing.lod,level.key,level.scale].join('|');
+  const published=useRef<{signature:string;tiles:RasterTile[];drawing:Drawing}|null>(null);
+  const complete=tiles.every(tile=>!!resources.images.peek(tileKey(tile,drawing))||!!resources.pictures.peek(tileKey(tile,drawing)));
+  if(!published.current||published.current.signature===signature||complete)published.current={signature,tiles:previous.current,drawing};
+  const active=published.current,pending=active.signature!==signature;
   useEffect(()=>{recordMetrics({geographyRenders:getMetrics().geographyRenders+1,rasterTiles:previous.current.length});});
-  return <Group>{previous.current.map(tile=><RasterTileNode key={tile.key} tile={tile} drawing={drawing}/>)}</Group>;
+  // Retain the prepared political surface through a LOD/color transition.
+  // Hidden candidate nodes prepare after the gesture, then swap as one group.
+  return <Group>{active.tiles.map(tile=><RasterTileNode key={tile.key} tile={tile} drawing={active.drawing} prepare={!pending}/>)}{pending&&previous.current.map(tile=><RasterTileNode key={'prepare-'+tile.key} tile={tile} drawing={drawing} show={false} onReady={notifyReady}/>)}</Group>;
 });

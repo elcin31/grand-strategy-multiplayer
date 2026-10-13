@@ -26,10 +26,10 @@ public class CameraGesture {
     catch(ClassNotFoundException e){cls=Class.forName("android.hardware.input.InputManager");}
     manager=cls.getMethod("getInstance").invoke(null);
     inject=cls.getMethod("injectInputEvent",InputEvent.class,int.class);
-    if(args.length<2 || (!args[0].equals("pan") && !args[0].equals("pinch")))throw new IllegalArgumentException("Invalid gesture");
+    if(args.length<2 || (!args[0].equals("pan") && !args[0].equals("pinch") && !args[0].equals("zoom")))throw new IllegalArgumentException("Invalid gesture");
     int cycles=Integer.parseInt(args[1]),gapMs=args.length>2?Integer.parseInt(args[2]):150;
     if(cycles<1 || cycles>50 || gapMs<0 || gapMs>1000)throw new IllegalArgumentException("Invalid input cadence");
-    boolean pinch=args[0].equals("pinch");
+    boolean pinch=!args[0].equals("pan"),outward=args[0].equals("zoom");
     StringBuilder timing=new StringBuilder("{\"kind\":\"").append(args[0]).append("\",\"gapMs\":").append(gapMs).append(",\"cycles\":[");
     for(int cycle=0;cycle<cycles;cycle++) {
       long downNs=System.nanoTime();
@@ -37,7 +37,7 @@ public class CameraGesture {
       if(pinch)event(MotionEvent.ACTION_POINTER_DOWN+(1<<8),2,45);
       for(int frame=0;frame<=120;frame++) {
         float phase=frame/120f;
-        float r=pinch?45+80*(float)Math.sin(Math.PI*phase):360+280*(float)Math.sin(Math.PI*phase);
+        float r=pinch?45+80*(outward?phase:(float)Math.sin(Math.PI*phase)):360+280*(float)Math.sin(Math.PI*phase);
         event(MotionEvent.ACTION_MOVE,pinch?2:1,r);
         long due=down+frame*16; if(due>SystemClock.uptimeMillis())SystemClock.sleep(due-SystemClock.uptimeMillis());
       }

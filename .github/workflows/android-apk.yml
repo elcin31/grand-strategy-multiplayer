@@ -21,10 +21,10 @@ concurrency:
   cancel-in-progress: false
 jobs:
   backend-live:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
     uses: ./.github/workflows/backend-world-qa.yml
   long-simulation:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -68,8 +68,10 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
       - name: Compile existing Dominion backend functions for coordinated rollout
+        if: github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
         run: node scripts/bundle-backend.mjs backend-bundles
       - uses: actions/upload-artifact@v4
+        if: github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
         with:
           name: dominion-backend-bundles
           path: backend-bundles/
@@ -77,7 +79,9 @@ jobs:
           retention-days: 14
       - name: Gameplay and authority checks
         run: |
-          if [ "$GITHUB_REF" = 'refs/heads/dominion-2.2-world-map-overhaul' ]; then
+          if [ "$GITHUB_REF" = 'refs/heads/dominion-2.2.1-performance-hotfix' ]; then
+            npm run test:221
+          elif [ "$GITHUB_REF" = 'refs/heads/dominion-2.2-world-map-overhaul' ]; then
             npm run test:22
           elif [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.2-living-world' ]; then
             npm run test:212
@@ -89,10 +93,10 @@ jobs:
             npm test
           fi
       - name: Install world-import test dependency
-        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
         run: python -m pip install -r scripts/world-requirements.txt
       - name: APK verifier and world importer regression tests
-        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
         # Native screenshot checks use the same pinned decoder as Python tests.
         run: |
           python -m pip install -r scripts/camera-profile-requirements.txt -r scripts/camera-trace-requirements.txt
@@ -105,21 +109,23 @@ jobs:
           if [ "$GITHUB_REF" = 'refs/heads/dominion-2.2-world-map-overhaul' ]; then python scripts/verify-map22.py; fi
           if [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.1-warfare-interface-art' ]; then npm run verify:art211; fi
       - name: Paired visual update benchmark
-        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
         run: npm run benchmark:visual > paired-visual-ci.json
       - name: Paired camera selectors and coverage benchmark
-        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
         run: npm run benchmark:camera > paired-camera-ci.json
       - name: Map geometry benchmark
-        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
         run: npm run benchmark:map
       - name: Full-world data benchmark
-        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+        if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
         run: npm run benchmark:world
       - name: Generate Android project
         run: npx expo prebuild --platform android --clean
       - name: Verify native landscape configuration
-        run: python scripts/verify-native-config.py
+        run: |
+          python scripts/verify-native-config.py
+          if [ "$GITHUB_REF" = 'refs/heads/dominion-2.2.1-performance-hotfix' ]; then python scripts/verify-hotfix-assets.py --native; fi
       - name: Build standalone release APK
         run: |
           chmod +x android/gradlew
@@ -135,7 +141,11 @@ jobs:
           sha256sum android/app/build/outputs/apk/release/app-release.apk >> release-integrity.txt
       - name: Package final release
         run: |
-          if [ "$GITHUB_REF" = 'refs/heads/dominion-2.2-world-map-overhaul' ]; then
+          if [ "$GITHUB_REF" = 'refs/heads/dominion-2.2.1-performance-hotfix' ]; then
+            python scripts/verify-map22.py android/app/build/outputs/apk/release/app-release.apk
+            python scripts/verify-hotfix-assets.py android/app/build/outputs/apk/release/app-release.apk
+            cp android/app/build/outputs/apk/release/app-release.apk Dominion-2.2.1-performance-hotfix.apk
+          elif [ "$GITHUB_REF" = 'refs/heads/dominion-2.2-world-map-overhaul' ]; then
             python scripts/verify-map22.py android/app/build/outputs/apk/release/app-release.apk
             cp android/app/build/outputs/apk/release/app-release.apk Dominion-2.2-playtest.apk
           elif [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.2-living-world' ]; then
@@ -158,6 +168,8 @@ jobs:
             Dominion-2.1.1-playtest.apk
             Dominion-2.1.2-playtest.apk
             Dominion-2.2-playtest.apk
+            Dominion-2.2.1-performance-hotfix.apk
+            android/launcher-icon-proof.json
             release-integrity.txt
             art-packaging.txt
             paired-visual-ci.json
@@ -168,7 +180,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
   android-lean-smoke:
-    if: github.ref == 'refs/heads/dominion-2.1-overhaul' || github.ref == 'refs/heads/dominion-2.1.1-warfare-interface-art' || github.ref == 'refs/heads/dominion-2.1.2-living-world' || github.ref == 'refs/heads/dominion-2.2-world-map-overhaul'
+    if: github.ref == 'refs/heads/dominion-2.1-overhaul' || github.ref == 'refs/heads/dominion-2.1.1-warfare-interface-art' || github.ref == 'refs/heads/dominion-2.1.2-living-world' || github.ref == 'refs/heads/dominion-2.2-world-map-overhaul' || github.ref == 'refs/heads/dominion-2.2.1-performance-hotfix'
     needs: build-apk
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -178,6 +190,17 @@ jobs:
         with:
           name: dominion-camera-illustrated-release
       - run: python -m pip install -r scripts/camera-profile-requirements.txt
+      - name: Prepare short hotfix comparison
+        if: github.ref == 'refs/heads/dominion-2.2.1-performance-hotfix'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download v2.2-playtest.1 --repo elcin31/grand-strategy-multiplayer --pattern Dominion-2.2-playtest.apk --dir baseline-apk
+          echo '0fe6ae3b6125517a59518c0cb0bfca0b5b8983ebbbd253b9ffcf3c822dc6bd17  baseline-apk/Dominion-2.2-playtest.apk' | sha256sum --check
+          mkdir -p camera-classes camera-dex
+          javac -cp "$ANDROID_HOME/platforms/android-35/android.jar" -d camera-classes scripts/CameraGesture.java
+          "$ANDROID_HOME/build-tools/35.0.0/d8" --lib "$ANDROID_HOME/platforms/android-35/android.jar" --output camera-dex camera-classes/CameraGesture.class
+          cd camera-dex && zip ../dominion-camera.jar classes.dex
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -189,16 +212,18 @@ jobs:
           arch: x86_64
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: if [ "$GITHUB_REF" = 'refs/heads/dominion-2.2-world-map-overhaul' ]; then python scripts/android22-smoke.py Dominion-2.2-playtest.apk; elif [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.2-living-world' ]; then python scripts/android211-smoke.py Dominion-2.1.2-playtest.apk; elif [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.1-warfare-interface-art' ]; then python scripts/android211-smoke.py Dominion-2.1.1-playtest.apk; else python scripts/android-lean-smoke.py Dominion-2.1-playtest.apk; fi
+          script: if [ "$GITHUB_REF" = 'refs/heads/dominion-2.2.1-performance-hotfix' ]; then adb push dominion-camera.jar /data/local/tmp/dominion-camera.jar && python scripts/android221-smoke.py baseline-apk/Dominion-2.2-playtest.apk Dominion-2.2.1-performance-hotfix.apk; elif [ "$GITHUB_REF" = 'refs/heads/dominion-2.2-world-map-overhaul' ]; then python scripts/android22-smoke.py Dominion-2.2-playtest.apk; elif [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.2-living-world' ]; then python scripts/android211-smoke.py Dominion-2.1.2-playtest.apk; elif [ "$GITHUB_REF" = 'refs/heads/dominion-2.1.1-warfare-interface-art' ]; then python scripts/android211-smoke.py Dominion-2.1.1-playtest.apk; else python scripts/android-lean-smoke.py Dominion-2.1-playtest.apk; fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: dominion-21-short-native-smoke
-          path: android-lean-smoke/
+          path: |
+            android-lean-smoke/
+            android-hotfix/
           retention-days: 14
 
   android-smoke:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
     needs: [build-apk, long-simulation]
     runs-on: ubuntu-latest
     timeout-minutes: 80
@@ -230,7 +255,7 @@ jobs:
           retention-days: 14
 
   camera-comparison:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
     needs: build-apk
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -311,14 +336,14 @@ jobs:
             camera-fixture/manifest.json
           retention-days: 14
   android-upgrade:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
     needs: [build-apk, long-simulation]
     uses: ./.github/workflows/android-upgrade-qa.yml
     with:
       apk_run_id: ${{ github.run_id }}
       require_version_upgrade: true
   android-online:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
     needs: [build-apk, long-simulation]
     uses: ./.github/workflows/android-online-qa.yml
     with:

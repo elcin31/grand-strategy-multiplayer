@@ -7,6 +7,12 @@ export function atlasLevel(zoom:number,preset:GraphicsPreset):AtlasLevel {
   if(preset==='Performance'||zoom<1.65)return 'world';
   return zoom>=(preset==='Balanced'?8:5.5)?'province':'region';
 }
+export function stableAtlasLevel(zoom:number,preset:GraphicsPreset,previous:AtlasLevel):AtlasLevel {
+  if(preset==='Performance')return 'world';
+  const region=previous==='world'?1.85:1.45,province=preset==='Balanced'?8:5.5;
+  if(zoom<region)return 'world';
+  return zoom>=(previous==='province'?province*.88:province*1.12)?'province':'region';
+}
 export function atlasSurface(mode:MapMode):'terrain'|'relief'{return mode==='Terrain'||mode==='Province'?'terrain':'relief';}
 export const SEA_LABELS=[
   ['АТЛАНТИЧЕСКИЙ ОКЕАН',-35,23],['ТИХИЙ ОКЕАН',-140,1],['ТИХИЙ ОКЕАН',158,0],

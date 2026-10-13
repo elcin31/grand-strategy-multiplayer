@@ -13,4 +13,7 @@ export function geometryForLod(feature:MapFeature,lod:GeometryLod):MapFeature{
  const tolerance=lod==='low'?.65:.18;
  const result={...feature,polygons:feature.polygons.map(p=>p.map(r=>ringLod(r,tolerance)))};entry[lod]=result;return result;
 }
-export function selectGeometryLod(zoom:number,preset:string):GeometryLod{return zoom>=7?'high':zoom>=3&&(preset==='High'||preset==='Ultra')?'medium':'low';}
+export function selectGeometryLod(zoom:number,preset:string,previous?:GeometryLod):GeometryLod{
+ const high=previous==='high'?6.3:7.7,medium=previous==='medium'?2.7:3.3;
+ return zoom>=high?'high':zoom>=medium&&(preset==='High'||preset==='Ultra')?'medium':'low';
+}

@@ -22,7 +22,8 @@ export function visibleRasterTiles(features:readonly MapFeature[],bounds:Bounds,
 export class RasterCache<T>{
   private entries=new Map<string,{value:T;bytes:number;cold?:boolean}>();
   bytes=0;coldBytes=0;
-  constructor(readonly maxBytes=32*1024*1024,readonly maxEntries=96,readonly maxColdBytes=Math.min(maxBytes,8*1024*1024)){}
+  constructor(public maxBytes=32*1024*1024,public maxEntries=96,readonly maxColdBytes=Math.min(maxBytes,8*1024*1024)){}
+  resize(maxBytes:number,maxEntries=this.maxEntries):void{this.maxBytes=maxBytes;this.maxEntries=maxEntries;while(this.bytes>maxBytes||this.entries.size>maxEntries)this.delete(this.entries.keys().next().value!);}
   get(key:string):T|undefined{const item=this.entries.get(key);if(!item)return undefined;if(item.cold){this.coldBytes-=item.bytes;item.cold=false;}this.entries.delete(key);this.entries.set(key,item);return item.value;}
   peek(key:string):T|undefined{return this.entries.get(key)?.value;}
   canFit(bytes:number):boolean{return Number.isSafeInteger(bytes)&&bytes>=0&&this.entries.size<this.maxEntries&&this.bytes+bytes<=this.maxBytes;}

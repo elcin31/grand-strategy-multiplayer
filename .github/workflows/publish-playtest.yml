@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   publish:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -575,4 +575,92 @@ jobs:
           path: |
             archive22/archive-proof.json
             archive22/Dominion-2.2-playtest.zip.sha256
+          retention-days: 30
+
+  publish221:
+    if: github.ref == 'refs/heads/dominion-2.2.1-performance-hotfix'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: elcin31/grand-strategy-multiplayer
+      NATIVE_RUN: ${{ inputs.native_run_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Bind the exact successful APK and short native A/B
+        run: |
+          [[ "$NATIVE_RUN" =~ ^[0-9]+$ ]]
+          gh api "repos/$GH_REPO/actions/runs/$NATIVE_RUN" > run.json
+          gh api "repos/$GH_REPO/actions/runs/$NATIVE_RUN/jobs?per_page=30" > jobs.json
+          runtime_sha=$(python -c "import json;print(json.load(open('run.json'))['head_sha'])")
+          git diff --exit-code "$runtime_sha" HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets scripts tests
+          gh api "repos/$GH_REPO/releases?per_page=100" > preserved-releases.json
+          python - <<'PY'
+          import json
+          r=json.load(open('run.json'));jobs=json.load(open('jobs.json'))['jobs']
+          assert r['status']=='completed' and r['conclusion']=='success'
+          required={'build-apk','android-lean-smoke'}
+          selected=[j for j in jobs if j['name'] in required]
+          assert {j['name'] for j in selected}==required and all(j['conclusion']=='success' for j in selected)
+          assert json.load(open('app.json'))['expo']['version']=='2.2.1'
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion-camera-illustrated-release
+          run-id: ${{ inputs.native_run_id }}
+          github-token: ${{ github.token }}
+          path: release
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion-21-short-native-smoke
+          run-id: ${{ inputs.native_run_id }}
+          github-token: ${{ github.token }}
+          path: native-evidence
+      - run: python -m pip install -r scripts/camera-profile-requirements.txt
+      - name: Verify immutable release pixels, signature, bundle and native results
+        run: |
+          cp release/launcher-icon-proof.json launcher-icon-proof.json
+          python scripts/verify-release.py release/Dominion-2.2.1-performance-hotfix.apk > release/dominion221-integrity.txt
+          python scripts/verify-map22.py release/Dominion-2.2.1-performance-hotfix.apk
+          python scripts/verify-hotfix-assets.py release/Dominion-2.2.1-performance-hotfix.apk
+          python - <<'PY'
+          import hashlib,json,os,zipfile
+          from pathlib import Path
+          p=Path('release');apk=p/'Dominion-2.2.1-performance-hotfix.apk'
+          result=next(Path('native-evidence').rglob('result.json'));proof=json.loads(result.read_text())
+          required=['coldLaunch','inPlaceUpgrade22','savedPausedCampaignPreserved','balancedAndPerformance','shortRealPanZoom','politicalTerrainMilitary','provinceSelection','armySelection','confirmedRoute','shortMarch','saveRestart','launcherScreenshot','noFatalLogs']
+          assert all(proof[k] is True for k in required) and proof['physicalRedmiTest'] is False
+          comparison=next(Path('native-evidence').rglob('comparison.json'));metrics=json.loads(comparison.read_text());assert len(metrics['results'])==6
+          with zipfile.ZipFile(apk) as z:
+              assert z.testzip() is None and z.read('assets/index.android.bundle')[:8].hex()=='c61fbc03c103191f'
+          digest=hashlib.sha256(apk.read_bytes()).hexdigest();(p/'SHA256SUMS.txt').write_text(digest+'  '+apk.name+'\n')
+          manifest={'version':'2.2.1','versionCode':15,'package':'com.elcin31.grandstrategymultiplayer','runtimeCommit':json.load(open('run.json'))['head_sha'],'buildAndNativeRun':int(os.environ['NATIVE_RUN']),'certificateSha256':'fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c','bytes':apk.stat().st_size,'sha256':digest,'iconOriginalSha256':json.load(open('assets/icon/source.json'))['originalSha256'],'native':proof,'comparison':metrics,'preservedBackendAndGameplay':True,'balancedRetainedImageBudgetMiB':40}
+          (p/'DOMINION_221_RELEASE_MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          (p/'dominion221-native-result.json').write_text(result.read_text());(p/'dominion221-frame-comparison.json').write_text(comparison.read_text())
+          for source,name in [('candidate-launcher-icon.png','Dominion-2.2.1-launcher-icon.png'),('candidate-Balanced-pan.png','Dominion-2.2.1-political.png'),('candidate-Balanced-terrain.png','Dominion-2.2.1-terrain.png'),('candidate-army-route.png','Dominion-2.2.1-army-route.png')]:
+              match=next(Path('native-evidence').rglob(source));(p/name).write_bytes(match.read_bytes())
+          PY
+      - name: Publish a new release and byte-verify its direct download
+        run: |
+          runtime_sha=$(python -c "import json;print(json.load(open('run.json'))['head_sha'])")
+          gh release create v2.2.1-performance-hotfix --target "$runtime_sha" --title 'Dominion 2.2.1 — Performance Hotfix' --notes-file RELEASE_NOTES_221.md release/Dominion-2.2.1-performance-hotfix.apk release/SHA256SUMS.txt release/DOMINION_221_RELEASE_MANIFEST.json release/dominion221-integrity.txt release/dominion221-native-result.json release/dominion221-frame-comparison.json release/Dominion-2.2.1-*.png
+          curl --fail --location --retry 2 --max-time 180 https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.2.1-performance-hotfix/Dominion-2.2.1-performance-hotfix.apk -o verified-public.apk
+          cmp release/Dominion-2.2.1-performance-hotfix.apk verified-public.apk
+          gh api "repos/$GH_REPO/releases?per_page=100" > after-releases.json
+          python - <<'PY'
+          import json
+          before=json.load(open('preserved-releases.json'));after=json.load(open('after-releases.json'));by_id={r['id']:r for r in after}
+          for r in before:
+              assert r['id'] in by_id
+              assert {(a['id'],a['name'],a['size']) for a in r['assets']}=={(a['id'],a['name'],a['size']) for a in by_id[r['id']]['assets']}
+          print('PASS: direct public APK is byte-identical; every previous release and asset preserved')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dominion221-publication
+          path: release/
           retention-days: 30

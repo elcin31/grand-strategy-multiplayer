@@ -32,5 +32,20 @@ export const RASTER_LEVELS=[
 /** Source-only grid preserves the accepted CPU coast rasterization; it is not
  * a selectable camera band. Bounded chunks copy these pixels before UI replay. */
 export const WORLD_RASTER_SOURCE_LEVEL={key:'world',cell:160,scale:2} as const;
-export type RasterLevel=typeof RASTER_LEVELS[number]|typeof WORLD_RASTER_SOURCE_LEVEL;
+export interface RasterLevel {readonly key:'world'|'region'|'local'|'detail';readonly cell:number;readonly scale:number}
 export function rasterLevel(zoom:number):RasterLevel{return RASTER_LEVELS[zoom<2?0:zoom<6?1:zoom<12?2:3]!;}
+export function stableRasterLevel(zoom:number,previous:RasterLevel):RasterLevel {
+  const index=RASTER_LEVELS.findIndex(l=>l===previous),thresholds=[2,6,12];
+  if(index>=0&&zoom>=(index===0?0:thresholds[index-1]!*.88)&&zoom<(index===3?Infinity:thresholds[index]! *1.12))return previous;
+  return rasterLevel(zoom);
+}
+const MOBILE_RASTER_LEVELS={
+  Performance:RASTER_LEVELS.map(l=>({...l,scale:l.key==='world'?1:l.scale/2})),
+  Balanced:RASTER_LEVELS.map(l=>({...l,scale:l.key==='world'?1.5:l.scale/2})),
+};
+/** Flat political tint needs fewer pixels than detailed geographic textures.
+ * Keep full shared-edge hit geometry and all High/Ultra atlas resolutions. */
+export function budgetRasterLevel(level:RasterLevel,preset:string):RasterLevel {
+  const levels=preset==='Balanced'?MOBILE_RASTER_LEVELS.Balanced:preset==='Performance'?MOBILE_RASTER_LEVELS.Performance:undefined;
+  return levels?.find(l=>l.key===level.key)??level;
+}

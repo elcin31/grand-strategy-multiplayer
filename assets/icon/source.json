@@ -1,0 +1,16 @@
+{
+  "original": "dominion-master.jpg",
+  "originalSha256": "b72494de12e9fcf7e8647483ad2d7cb36097c9aa58eb5349725f95529e2c1a19",
+  "artwork": "Exact user upload; no redraw",
+  "adaptiveCanvas": [
+    1024,
+    1024
+  ],
+  "adaptiveArtworkBox": [
+    182,
+    188,
+    842,
+    836
+  ],
+  "background": "#0B2030"
+}

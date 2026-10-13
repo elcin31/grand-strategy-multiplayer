@@ -14,7 +14,7 @@ import {MapBorderLayer} from './MapBorderLayer';
 import {MapEconomyLayer} from './MapEconomyLayer';
 import {MapOperationsLayer} from './MapOperationsLayer';
 import {ECONOMIC_FILTERS,type EconomicFilter} from '../map/strategic22';
-import {MapMarkerLayer} from './MapMarkerLayer';
+import {MapMarkerLayer,MapConstructionLayer} from './MapMarkerLayer';
 import {cameraCoverage,cameraNeedsCoverage,viewportLayoutUpdate,interactionDetailZoom} from '../map/cameraCoverage';
 import {budgetArmyMarkers,markerBudgets} from '../map/markerBudget';
 import {countryRenderFeatures,renderFeaturesFor} from '../map/countryRender';
@@ -104,7 +104,8 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
   useEffect(()=>()=>{benchmarkToken.current++;},[]);
   const [mode, setMode] = useState<MapMode>('Political');
   const [economicFilter,setEconomicFilter]=useState<EconomicFilter>('Resources');
-  const geometryLod=selectGeometryLod(detailZoom,preset);
+  const previousLod=useRef<GeometryLod>('low');
+  const geometryLod=selectGeometryLod(detailZoom,preset,previousLod.current);previousLod.current=geometryLod;
   const {paths}=useMemo(()=>nativeScene(scene,geometryLod),[scene,geometryLod]);
   const setSettingsOpen=(value:boolean)=>onSettingsChange?.(value);
   const x = useSharedValue(defaults.x), y = useSharedValue(defaults.y), zoom = useSharedValue(defaults.zoom);
@@ -134,6 +135,7 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
   const activityRef=useRef(onCameraActivity);activityRef.current=onCameraActivity;
   const rasterWork=useRef(new CameraWorkGate());
   const cameraActivity=useCallback((active:boolean)=>{rasterWork.current.activity(active);activityRef.current?.(active);},[]);
+  const canPrepare=useCallback(()=>AppState.currentState==='active'&&!rasterWork.current.defer(performance.now(),250),[]);
   const canPrewarm=useCallback(()=>AppState.currentState==='active'&&!rasterWork.current.defer(performance.now(),750),[]);
   const animateEffects=(preset==='High'||preset==='Ultra')&&state.battleLog.some(b=>state.tick-b.tick<=1);
   useEffect(()=>{if(!animateEffects)pulse.value=.9;},[animateEffects,pulse]);
@@ -201,10 +203,9 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
   const provinces = useMemo(() => new Map(state.provinces.map(p => [p.id, p])), [state.provinces]);
   const countryColors=useStableColors(useMemo(()=>new Map(Object.values(state.countries).map(c=>[c.id,c.color])),[state.countries]));
   const occupiedBatches=useMemo(()=>{const grouped=new Map<string,NativePath>();for(const f of occupations){const color=countryColors.get(controllers.get(f.provinceId!)!)??'#778B93';let path=grouped.get(color);if(!path){path=Skia.Path.Make();grouped.set(color,path);}path.addPath(paths.get(f.id)!);}return [...grouped];},[occupations,countryColors,controllers,paths]);
-  const cityState = useMemo(()=>new Map((state.cities??[]).map(c=>[c.id,c])),[state.cities]);
   // Query immutable coordinates first. Do not recreate/reindex 7,214 points each tick.
   const visibleCityCatalogue = useMemo(()=>visibleCities(mapCities,bounds,snapshot.zoom,preset),[mapCities,bounds,snapshot.zoom,preset]);
-  const cities=useMemo(()=>visibleCityCatalogue.map(c=>({...c,population:cityState.get(c.id)?.population??c.population})),[visibleCityCatalogue,cityState]);
+  const cities=visibleCityCatalogue;
   const font = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 11, fontWeight: '600' }), []);
   const counterFont = useMemo(() => matchFont({ fontFamily: 'sans-serif', fontSize: 10, fontWeight: 'bold' }), []);
   const nationFont = useMemo(() => matchFont({ fontFamily: 'serif', fontSize: 12, fontWeight: '600' }), []);
@@ -298,8 +299,8 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
         <Fill color="#203B48" />
         {<Rect x={0} y={0} width={viewport.width} height={viewport.height}><LinearGradient start={vec(0, 0)} end={vec(viewport.width, viewport.height)} colors={['#0b2332', '#153c50', '#0a2638']} /></Rect>}
         <Group matrix={matrix}>
-          <MapGeographyLayer scene={scene} bounds={bounds} zoom={detailZoom} preset={preset} mode={mode}/>
-          {mode!=='Terrain'&&mode!=='Province'&&<MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={detailZoom} canPrewarm={canPrewarm}/>} 
+          <MapGeographyLayer scene={scene} bounds={bounds} zoom={detailZoom} preset={preset} mode={mode} canPrepare={canPrepare}/>
+          {mode!=='Terrain'&&mode!=='Province'&&<MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={detailZoom} canPrewarm={canPrewarm} canPrepare={canPrepare}/>}
           <MapBorderLayer scene={scene} owners={owners} bounds={bounds} zoom={detailZoom} preset={preset}/>
 
           {provinceSelection&&visible.filter(f=>peaceEligible.has(f.id)||peaceSelected.has(f.id)).map(f=><Group key={'peace-'+f.id}><Path path={paths.get(f.id)!} color={peaceSelected.has(f.id)?'#DABD6E':'#5BA68C'} opacity={peaceSelected.has(f.id)?.5:.2}/><Path path={paths.get(f.id)!} color={peaceSelected.has(f.id)?'#FFE1A0':'#87D1B2'} style="stroke" strokeWidth={selectionScale}/></Group>)}
@@ -309,7 +310,8 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
           <MapEconomyLayer state={state} scene={scene} visible={visibleIds} bounds={bounds} zoom={snapshot.zoom} preset={preset} mode={mode} filter={economicFilter} selected={selectedProvinceId} font={counterFont}/>
           {!selectedPath.isEmpty()&&<Path path={selectedPath} color="#ffe3a4" opacity={.07}/> }
           {!selectedPath.isEmpty() && <Path path={selectedProvinceId?selectedPath:selectedCountryOutline} style="stroke" color="#f0db9e" strokeWidth={selectionScale} opacity={pulse} />}
-          <MapMarkerLayer state={state} zoom={snapshot.zoom} preset={preset} labels={labels} countryGlyphs={countryGlyphs} cities={cities} cityLabels={cityLabels} counters={[]} countryId={selectedCountryId} armyId={selectedArmyId} cityId={selectedCityId} provinceId={selectedProvinceId} geometry={provinceGeometry} visible={visibleIds} font={font} counterFont={counterFont} nationFont={nationFont} labelBudget={budgets.labels}/>
+          <MapConstructionLayer state={state} visible={visibleIds} geometry={provinceGeometry} zoom={snapshot.zoom}/>
+          <MapMarkerLayer provinceName={selectedProvinceId?provinces.get(selectedProvinceId)?.name:undefined} zoom={snapshot.zoom} preset={preset} countryGlyphs={countryGlyphs} cities={cities} cityLabels={cityLabels} cityId={selectedCityId} provinceId={selectedProvinceId} geometry={provinceGeometry} visible={visibleIds} font={font} nationFont={nationFont} labelBudget={budgets.labels}/>
           {[...counters].sort((a,b)=>Number(a.ids.includes(selectedArmyId??''))-Number(b.ids.includes(selectedArmyId??''))).map(c=><AnimatedArmyMarker key={c.ids.join('|')} counter={c} target={markerTargets.get(c.key)!} duration={Math.min(1200,dayDelay(state.speed))} paused={state.speed===0||state.phase!=='running'} zoom={snapshot.zoom} selected={c.ids.includes(selectedArmyId??'')} own={c.ownerId===selectedCountryId} color={state.countries[c.ownerId]?.color??'#778B93'} font={counterFont} onPosition={registerMarker} estimated={c.ids.some(id=>militaryView.armies.find(a=>a.id===id)?.intelligenceLevel==='Estimate')} status={militaryView.activeBattles?.some(b=>[...b.attackerArmyIds,...b.defenderArmyIds].some(id=>c.ids.includes(id)))?'Battle':militaryView.sieges?.some(b=>b.armyIds.some(id=>c.ids.includes(id)))?'Siege':c.moving?'March':'Hold'} supply={c.ids.reduce((n,id)=>n+(militaryView.armies.find(a=>a.id===id)?.supply??100),0)/Math.max(1,c.ids.length)}/>)}
 
         </Group>
@@ -328,6 +330,7 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
     {settingsOpen && <ScrollView style={styles.settings} contentContainerStyle={{padding:14,gap:10}}>
       <Text style={styles.heading}>РЕЖИМ КАРТЫ</Text><View style={styles.options}>{AVAILABLE_MODES.filter(m => m !== 'Resources' || state.provinces.some(p => p.resourceDeposit)).map(m => <Pressable accessibilityLabel={`Режим ${MODE_LABELS[m]}`} accessibilityState={{selected:mode===m}} key={m} style={[styles.option, mode === m && styles.active]} onPress={() => { setMode(m); setSettingsOpen(false); }}><Text style={styles.text}>{MODE_LABELS[m]}</Text></Pressable>)}</View>
       <Text style={styles.heading}>КАЧЕСТВО ГРАФИКИ</Text><View style={styles.options}>{(Object.keys(GRAPHICS) as GraphicsPreset[]).map(p => <Pressable key={p} style={[styles.option, preset === p && styles.active]} onPress={() => choosePreset(p)}><Text style={styles.text}>{p}</Text></Pressable>)}</View>
+      {adaptive&&preset!==ceiling&&<Text style={styles.note}>Адаптивное качество: {preset} · выбранный максимум {ceiling}</Text>}
       <PerformanceControls frameRate={frameRate} onFrameRate={setFrameRate} overlay={overlay} onOverlay={setOverlay} adaptive={adaptive} onAdaptive={setAdaptive} running={benchmarkRunning} onBenchmark={()=>void startBenchmark()}/>
       <View style={styles.options}><Pressable accessibilityRole="button" style={styles.option} onPress={()=>{animateCamera(defaults);setSettingsOpen(false);}}><Text style={styles.text}>Европа</Text></Pressable><Pressable accessibilityRole="button" style={styles.option} onPress={()=>setSettingsOpen(false)}><Text style={styles.text}>Закрыть ×</Text></Pressable></View>
     <View style={{gap:6}}><Text style={styles.note}>{MODE_LABELS[mode]}{(mode==='Diplomatic'||mode==='Relations')?` · ${state.countries[selectedCountryId??'']?.name??'Выберите страну'}`:''}</Text><ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap:9}}>{legend.map(item=><View key={item.label} style={{flexDirection:'row',alignItems:'center',gap:4}}><View style={{width:10,height:10,backgroundColor:item.color}}/><Text style={styles.note}>{item.label}</Text></View>)}</ScrollView></View>

@@ -2,16 +2,18 @@
   "expo": {
     "name": "Dominion",
     "slug": "grand-strategy-multiplayer",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "orientation": "landscape",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "android": {
       "package": "com.elcin31.grandstrategymultiplayer",
       "adaptiveIcon": {
-        "backgroundColor": "#0B1020"
+        "foregroundImage": "./assets/icon/dominion-adaptive-foreground.png",
+        "backgroundColor": "#0B2030"
       },
-      "versionCode": 14
+      "versionCode": 15,
+      "icon": "./assets/icon/dominion.png"
     },
     "plugins": [
       "expo-secure-store",
@@ -26,6 +28,7 @@
           "enableBackgroundPlayback": false
         }
       ]
-    ]
+    ],
+    "icon": "./assets/icon/dominion.png"
   }
 }

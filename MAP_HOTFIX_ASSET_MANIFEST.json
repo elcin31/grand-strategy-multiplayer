@@ -1,0 +1,1663 @@
+{
+  "version": "2.2.1",
+  "generator": "scripts/prepare-map221.py",
+  "source": "unchanged Dominion 2.2 textures and authoritative geometry",
+  "assets": [
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/world-0-0.webp",
+      "sha256": "a12434f66ffe23b98452c9e287b8d0b7e836fdb4a4fdb50e8522f28b9923f492",
+      "size": [
+        1440,
+        720
+      ],
+      "bytes": 191512
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/world-0-0.webp",
+      "sha256": "bd8455c4ae8908b0a53131e26dab8071a14b0432a6eaf26d92f8bbfcff53453b",
+      "size": [
+        1440,
+        720
+      ],
+      "bytes": 173336
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-0-0.webp",
+      "sha256": "a80bb1587297405661cb4cb0cceddb05df8c94dc21c96d8c155eff25cd86ab4f",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 63202
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-0-0.webp",
+      "sha256": "8cd76cb737af6f9e5265f7c6ab3f2e5e58a744c647e8be49419d341c37339727",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 58858
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-240-0.webp",
+      "sha256": "1a6f0ff528bfc14e17cf9e08b05196fb36a59fcdeac0d4401b4c152b706359ce",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 159166
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-240-0.webp",
+      "sha256": "73fbbb6abf26e550a3c8f6853b8599fcad1a45ab92d33586d3d939ddf7922ecb",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 145214
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-480-0.webp",
+      "sha256": "7f9a131c698e8df0d913df6d343235f51d2bccfe1d6a97d0f9aeec1a5055d59a",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 51612
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-480-0.webp",
+      "sha256": "0e2f321945d1ef61d1f749706af74986cb5d02af24b6431a32404eabdf7f3bbb",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 47272
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-720-0.webp",
+      "sha256": "87dfcb2df07032c56d13cd5308d05f46e05e1b7abae31c2d48577fe627623a79",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 147938
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-720-0.webp",
+      "sha256": "445f627fba88995cc53be90c0cc83a316f6a77a64769d24d544adb143a07d935",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 131932
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-960-0.webp",
+      "sha256": "d740e41d81f422462b3704127e38ea428ef18407604b4ba656d84c7662f05022",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 146420
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-960-0.webp",
+      "sha256": "180051745a898a51da037d0772649212916ef0bcffa837bbf4288004bcb0db29",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 122812
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-1200-0.webp",
+      "sha256": "e6515c08ddc5370eed0694ac15c9b64c22dd8a2a950e5040fd92ab27abf2ba56",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 91792
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-1200-0.webp",
+      "sha256": "cd03431b023cdca2492280559fd152cebc8c2d37817e8fb4c5b305a2f180b45e",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 81408
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-0-240.webp",
+      "sha256": "c236d6a40b0dcd1259e0a4e3842d5a2196a7da5f5be8d775c1cf01bfd8eedff9",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 6336
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-0-240.webp",
+      "sha256": "7ca145d3382a5facf7f2a9fd04275909ec84d388c5973b56dc7b57c432565124",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 6324
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-240-240.webp",
+      "sha256": "2450474a1dd917401b2386208c2ffcfe360cf0b57e9defc9af2488407419e2fe",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 75230
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-240-240.webp",
+      "sha256": "7b15adf6e1303f6885cbac9c46054f0a95661e09effb4239ad723962e88e7e50",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 68382
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-480-240.webp",
+      "sha256": "f751e802af251a5f0d38b43621766d4ed5841a1aadf18e283ed12d0508a7bef4",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 50130
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-480-240.webp",
+      "sha256": "1fac91dadeb0d7113cd1064efa90f941da9c674f6785ea7c1e3eaa886a07d646",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 41088
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-720-240.webp",
+      "sha256": "fd70c2a7efa69bf0c6adc930fc1bec47a72d014fe6624036618a960b8319e1c3",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 108072
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-720-240.webp",
+      "sha256": "0732580a8a2875a4baf85028f7612bd0cd5dfdcb27edfea796dd7ff74673fc6d",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 84298
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-960-240.webp",
+      "sha256": "77227034e8e0d7c3b3062f854c1e95def8bbf77b9569b156f82b704abb8b1814",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 85716
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-960-240.webp",
+      "sha256": "930e48819bfa6fd94fec7e4bd756e5811247dd5565752c1c4c78a6080793ff51",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 77380
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-1200-240.webp",
+      "sha256": "80c99f216b949f4340251ee72a89fd9eac084f9cdbd35b68773672befc9fea1f",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 73284
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-1200-240.webp",
+      "sha256": "d7318fd37f42c4da66305cdc18aef49be60bbc02f0a3368be4b0cf2e847f9e13",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 67684
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-0-480.webp",
+      "sha256": "fff9ea5131c01aa3b41b839d8d950f7f3f292534b84e4dc527dc5d338c84366f",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 17860
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-0-480.webp",
+      "sha256": "4b7c4a693cc2764d256d869d686deccd233d14efebb91dc9db144ac6ff5376e2",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 15958
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-240-480.webp",
+      "sha256": "ea8e3f25f83067f39c66c3a929bf19dbcedaec3113c1f0d0892588db33dbd669",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 48686
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-240-480.webp",
+      "sha256": "7878b5606023779f95a3c9248e07b1546e6fe61f0de170f3275c269909392698",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 43564
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-480-480.webp",
+      "sha256": "1a4bd76497ec15c8c0662122123509cbcc9cede310646ff0733ebdf467348ef1",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 21674
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-480-480.webp",
+      "sha256": "2a794b41a558961ef5acea81ded27b0b2fc975d513bb53e6ee4e954453dd6752",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 19970
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-720-480.webp",
+      "sha256": "90ddd9ed287a1ac21997318880516622590bbe16b887e387a40f50b541ef6db6",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 14576
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-720-480.webp",
+      "sha256": "c402e2748313de282bfab294db3caefec7654deed717d7bd369e3a122b3a860f",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 14560
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-960-480.webp",
+      "sha256": "63f74bfbefa19aed71f0b66d71f1c3a68d620f454f365690a1d3d8fa334f3b5e",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 13284
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-960-480.webp",
+      "sha256": "16cedcd60145234df85560cea309dec0cf88e099f03daac99ce3b2d013d77f73",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 13464
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/region-1200-480.webp",
+      "sha256": "65bf7d766d33748934cdf8345ee1498339a97b2fe5a7d8cebf19c045ec87f5a8",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 35868
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/region-1200-480.webp",
+      "sha256": "6e105e964e8b2325fbdd0a40065ad7646d5e5f1d78baf22f6fed93bb7823ec3d",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 33342
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-0-0.webp",
+      "sha256": "c6aebf889f06ab16420d784d8f2c1652ac444a3d719ee88f934f9200545c77d5",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 56272
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-0-0.webp",
+      "sha256": "9770c158c2ecaa79f35b7b6f5020483b5f071332ad91c96ef2bac631ef2ff26f",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 49904
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-120-0.webp",
+      "sha256": "3a518ffed19dfb7daca5b8a874703fa55aa2f612808da16eb74218d994f03950",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 88202
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-120-0.webp",
+      "sha256": "a9de125edb1c4d2c170928723211377fba32b5e32bb33761253bf4453570e328",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 73798
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-240-0.webp",
+      "sha256": "d311f64277537c86854e9c99b6d0c194417c027b38dbe103bbe8767b0b5ffe70",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 113352
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-240-0.webp",
+      "sha256": "c81afbda6e3468a9dfea0b8d6c23cb207d6f9a7253d00c7e01b7be9a0fff1f72",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 107944
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-360-0.webp",
+      "sha256": "0eaf39f7e4f9047dd65d0e000a27b94cb010dacb805ec1ef3c823f5107e9cd5c",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 125056
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-360-0.webp",
+      "sha256": "0541b25f1c026813991fc0d319bc27d749c2faf268235be82a19e497cd3dfd3c",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 118070
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-480-0.webp",
+      "sha256": "19cd5aeedd573d0c62710449f53740ea64e37ce8d9890f818ad650c3c269b8fb",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 41572
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-480-0.webp",
+      "sha256": "0fa9f1022166d8c7139df1ae197c0e4b98cf21d9a184066a812b587032077b4e",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 34462
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-600-0.webp",
+      "sha256": "c9875251f8af29ff8ecfff003be1c3b5fe7c83f9d86cce8e4f852a9d95b68894",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 42958
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-600-0.webp",
+      "sha256": "073c782e653b235582560c2293e1213a07508c12b636cad118d6406761ca7a6c",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 37938
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-720-0.webp",
+      "sha256": "da411964fa1fcfecb7e18250d490b2e1b3d8e1e9b532368f1fc3266b139d3a59",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 74894
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-720-0.webp",
+      "sha256": "444cb15a5b9acf12fdd9ce662f297202abdb4905e0819010040b1e7b8bfad576",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 71608
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-840-0.webp",
+      "sha256": "22a4dea9d41f9e1af8ace553d26bdd6559b3a21d0a26d6b0d0954ea17e831cd7",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 79652
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-840-0.webp",
+      "sha256": "32b1f081537cc73dfb8d14883e76f30c892c4b7e3c1df50442e5c1b55390629c",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 71798
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-960-0.webp",
+      "sha256": "e71baa8a473bf8030e643ff9344324956714eccd0e066ee4c9dd0c6b82f3750f",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 81978
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-960-0.webp",
+      "sha256": "4ec13e15b9c7cd48272053a5cf67a40d4286aef8133999c708c7b3ef6bed3eaa",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 69958
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1080-0.webp",
+      "sha256": "a4a0f85aaa539e6469dc6e896139d7897b26686f5d0f9ff2d494ecdec5a4cde2",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 113944
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1080-0.webp",
+      "sha256": "0ec79c37b77c77430557fab4498eec72bd9d6339e34ddeede536e154c8564e82",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 93272
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1200-0.webp",
+      "sha256": "805bdc65a1f64ac649dae9d6111f2b15fa6abaa083d89f81cf95984c68507161",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 95048
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1200-0.webp",
+      "sha256": "39b4e5314504764034eb5e22b9a03a9f3e90a7855497b4889f185f5d9e1544ec",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 77198
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1320-0.webp",
+      "sha256": "feee035ad756434996479772120f5dc721271250bd91033df20fb6827c353319",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 74312
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1320-0.webp",
+      "sha256": "26fec8b8ad958f763794c7c302ccdd2e7bfa8b3169896bd9c9a1a5e0b333af3b",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 61900
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-0-120.webp",
+      "sha256": "63081815943f94f76dc8474e8a70674ebab45f66a62fe45f36519cb687c161e8",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 23490
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-0-120.webp",
+      "sha256": "82d804d4d40a0c7fdb855e42a17455c650bf7ddbc4601f2be670c08158527667",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 23632
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-120-120.webp",
+      "sha256": "dfe1a0e3b49a9d71af933d4ecf8bb7884799dc678ce6a374922704251ce613c7",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 69690
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-120-120.webp",
+      "sha256": "407c1fcefa65d3a9c6318ee4be024a50e522e85ac8c5e4943bd824252726b96c",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 61872
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-240-120.webp",
+      "sha256": "26e442f73f4a91e35189d13c51bab6bb50156f4028172ca5982f8ec7b7ef6655",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 193610
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-240-120.webp",
+      "sha256": "56d240b811b1a0e6e56ea12dc7f401f0f426dd8f706a4abcb75e7e03094a7235",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 163086
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-360-120.webp",
+      "sha256": "a23c03e1be3fcad50a490b3a08b5303031a10da30d43b390fa93d2ffcd9f58f7",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 155978
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-360-120.webp",
+      "sha256": "e0d9924de0d105ced95d88caeeb73bd8266d91ec9f9e0e60a5ae82184a7bb052",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 139442
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-480-120.webp",
+      "sha256": "81fdc49fc5f461e43aae957906be8f6df457c57e5659756f485aefe79e34c521",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 15628
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-480-120.webp",
+      "sha256": "7a8a0834f0dfbd8e2b1c20abea448ff1bf7203da4ba799c12f0d17db91ea15a9",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 15486
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-600-120.webp",
+      "sha256": "31b0a6cb919599599de842b1ecf9dc8ddbc9692e90ed956c0f0c0d5c123b11a9",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 63330
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-600-120.webp",
+      "sha256": "d1b4bb9477af835e6cec1a4d9c88df2e028c429ad8a45b510b2260b867776889",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 56682
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-720-120.webp",
+      "sha256": "1f60cd8afbf9c386164b16d5c1b2c555e9b4555bae00878e31dfb45f2b572155",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 202644
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-720-120.webp",
+      "sha256": "fa9ec89e57598f3e6b90d2789cf433443c59f6e8375c09751dd8535cf4c17077",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 178034
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-840-120.webp",
+      "sha256": "24085ad61c909ae64439524757bd7196a8fb32fa9200e7757d080786864eb22c",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 195290
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-840-120.webp",
+      "sha256": "dce24eb7765eb84f45418e8a3a57b2ae3076b8937c0433cd2871712f069f51da",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 157670
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-960-120.webp",
+      "sha256": "537ad6c5ed6513a60092f998eab0d64ae463495d99a606b7e790f8586a4d7dc5",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 190480
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-960-120.webp",
+      "sha256": "c393147cee284eba420e79fead3c3e9eaa8b06c11e7ca381d3fde9a0cafe0605",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 159678
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1080-120.webp",
+      "sha256": "08dd2847c9613fe58668805931b1c7c0fa43c2f6121511f03687687d01a0613e",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 223102
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1080-120.webp",
+      "sha256": "ce3991a0f7483c8bf73328e9aaa137ac3f9071593533a93b6c02ee21bafb6974",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 191328
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1200-120.webp",
+      "sha256": "54be441e4e40dcc8f9941dcf72c1c4424ce7ac1dba256af98f146a71d3dc07ca",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 154946
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1200-120.webp",
+      "sha256": "bfbab5453381cbd6678946e319e27522deeeda372870ee1b75af57e2caf64ba8",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 135708
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1320-120.webp",
+      "sha256": "a7cd3c33e18586253ccc362877351500b2e6a58ba6e93371153834a2f63cc854",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 25414
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1320-120.webp",
+      "sha256": "7cb1c6792e79db64e49d10d7e4c683df044d81cb94a93812503b4a553b0093c8",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 23806
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-0-240.webp",
+      "sha256": "5fcfb481b2d011ee9c6933fa0457498abd2a31a9396552d77ecc80441c39daa7",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 5516
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-0-240.webp",
+      "sha256": "e579600ffb6df7e5bc313056859876d371a4b4da1d7fc022776cfdd54baa93dc",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 5566
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-120-240.webp",
+      "sha256": "9e896f16ed1256d8bb43523c0f9406e104f33dfe965b7ef7f98813fe4260f3f8",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 1088
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-120-240.webp",
+      "sha256": "9e896f16ed1256d8bb43523c0f9406e104f33dfe965b7ef7f98813fe4260f3f8",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 1088
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-240-240.webp",
+      "sha256": "ba97ce4fd49fcc71cd28411fe9f85cf1034dea87ddbe3c1ef1456cbe203ed69e",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 59496
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-240-240.webp",
+      "sha256": "e89af06373287fd5fd446ff696097f3b99be370bc3670e5d3afb4ed448e3e781",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 54154
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-360-240.webp",
+      "sha256": "38475bc6a2a990cec316109422947aba6217abef202546be068be4c155e0feca",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 106760
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-360-240.webp",
+      "sha256": "4b903b6ec756ef4d5aab0b5269422d5dc24cbd3df77aaade1e3cb69fff65983b",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 96818
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-480-240.webp",
+      "sha256": "36d305442fbd2af69c1ba062676ac3581c7a2f4bda83e7c8024d677f34fc64d5",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 14434
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-480-240.webp",
+      "sha256": "2666e44a75a5bce573ed89ec06919fc374fa5f810de4937041cc5b2f68b00466",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 12880
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-600-240.webp",
+      "sha256": "3c72f627e5a81cfeffeecfdb9c26dbd4d5e379d3bc1ce58d7ae09188c1e98d28",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 56648
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-600-240.webp",
+      "sha256": "285de106ccdbe153c26417fd945b9828c6ecad77d6d1ebbd76cd73d0ebbab737",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 45810
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-720-240.webp",
+      "sha256": "8878f1512d43181d024c61535393b94c6a866db8c9fd3d89517058bffbc020b0",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 112264
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-720-240.webp",
+      "sha256": "b029c743e605676053caa0311be777decc3d56f36f8b00c5dc4ca427e7a37400",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 74414
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-840-240.webp",
+      "sha256": "8896efc8b2fbf6a4e3e9a34e289dc408ccae6605197043f4b46538054f9a9b2c",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 134326
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-840-240.webp",
+      "sha256": "bcbbe53b11dd5df7b1219b485bf331e655f83321fd2d76f5edad42bfd3fbad1e",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 108318
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-960-240.webp",
+      "sha256": "5de5c3739cc596703a267172b1283398f7dc84a25ee8b2b9cc12661e554009d9",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 78182
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-960-240.webp",
+      "sha256": "eda6e61dd1c3b19da1d515806863d63df7a413d9614c5a5f42418b071261ff52",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 68008
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1080-240.webp",
+      "sha256": "9cea4952ad68a1da137faea182e7b801b291553e86df904dfa54739ac67e04de",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 170342
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1080-240.webp",
+      "sha256": "7cbd75fab23cfec42b13c0809e09619a848ac9612f0c2fa631ab58fca5554598",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 151926
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1200-240.webp",
+      "sha256": "130defb0f27ac6ed2cfc07c5a3c6daf63a8a8f3a32de08e56fd3e5a57ab1b52d",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 44714
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1200-240.webp",
+      "sha256": "0de3737758643fa40e19d6b84b2bdd7e376b9afdbf5bf2425d9d3632b56fcc4e",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 43904
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1320-240.webp",
+      "sha256": "cf3cc4741a93917c9d3909679a5e20c3d9b05e31a326ae26ce67e83c4ea7c027",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 7988
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1320-240.webp",
+      "sha256": "c2aa964b3bf53e883df17018fb0c8c874be4169a375e0d51b4c4b6541c0c39b4",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 8074
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-0-360.webp",
+      "sha256": "9af5737e3625d221f4d0d1adeb31d07f873b5c01a2784218b810b01521e9eb1a",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 7670
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-0-360.webp",
+      "sha256": "5952938ac0ce7bd4cc1962b5fe2f673a78f0fd4c84e37c90158106c743acd911",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 7780
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-120-360.webp",
+      "sha256": "9e896f16ed1256d8bb43523c0f9406e104f33dfe965b7ef7f98813fe4260f3f8",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 1088
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-120-360.webp",
+      "sha256": "9e896f16ed1256d8bb43523c0f9406e104f33dfe965b7ef7f98813fe4260f3f8",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 1088
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-240-360.webp",
+      "sha256": "4dd5ee332e6b94fc9fb3e334ae51a17493112e9501e8f7da5430226625e4e9ae",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 3132
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-240-360.webp",
+      "sha256": "f130b4f45d3c95cbfdd6ed5a2aa132e8d019bd236a1273789ce4871351b5df7f",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 3174
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-360-360.webp",
+      "sha256": "a66e7c684106520db4dc1fd65b678cd185a15636292c665b2f570478c5753642",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 99598
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-360-360.webp",
+      "sha256": "1966bfb2f2f2661066db2a5e3e147fdfbed6f772438bcbd1d9125fe18cc47c86",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 85924
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-480-360.webp",
+      "sha256": "6b688c44de4c7477e3492a10172c6b7be9d8b111fa538f9f2a900c575e006dbf",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 131422
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-480-360.webp",
+      "sha256": "1c143445c2cf906b8304a731868a9853231007596a2f2c9687e048ebf9e9f7e0",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 107034
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-600-360.webp",
+      "sha256": "c8c60c6fe77064ed34c0852d1edb618399656f587876e2fbbb42c100010ac32d",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 1612
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-600-360.webp",
+      "sha256": "1e50e24c235bea8b0c11471970e23daf4086d9a8c82fc7a5403173cac4d33f81",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 1614
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-720-360.webp",
+      "sha256": "f1e821d8bb2902046f54f1106e0ecf0fd8043981da8d67a50c800c0bd272d9b6",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 94054
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-720-360.webp",
+      "sha256": "fc07d6fcf4ee3baabe6d5b4240c2817cc242fb64de807e22430146ac58556a7a",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 75026
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-840-360.webp",
+      "sha256": "c8d6c7cc03257a5435739dbd3ddf74650fed97ab965c870caca6791a352fabd3",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 77598
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-840-360.webp",
+      "sha256": "794250fee5898b048511859369caaf8c74348759183aa4070d48523d27b7784f",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 66440
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-960-360.webp",
+      "sha256": "41dbb544276524f30dffb2b47f60d1502b51c05b773bd347970e06dd7f82c200",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 2080
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-960-360.webp",
+      "sha256": "1c8508961f132efaf92991e81aa0a957b7318efd958ddc940845fd2156accfb5",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 2086
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1080-360.webp",
+      "sha256": "2d1d9f1f40c2e6dfb2b50103db722e510ee8e67ebd93219ddd64bd00b2c503e1",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 46996
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1080-360.webp",
+      "sha256": "77ad6a58b434a0d73845c37e4bcec48cad9c47942e63e4df6953c82b4293d0fb",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 42184
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1200-360.webp",
+      "sha256": "94ba068f44b827322f44465c37a795f839b8febe28efae00951a41f0b2d92d9f",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 131656
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1200-360.webp",
+      "sha256": "a4f4e4b3d3f7b6c5417e6cc5fe894485532a5c50090be6adca65ccd246f46711",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 109814
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1320-360.webp",
+      "sha256": "780bb9913308d3bffdf8c8051f17e336d387524f96953ed38cbdda3b7dd5b94f",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 37112
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1320-360.webp",
+      "sha256": "2941650348c5fe03c5a029a50d522b6fcf6827f75eeede8dfc22a29be8295e5c",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 36624
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-0-480.webp",
+      "sha256": "ee90225b980232fd2f1b37733f32de1c651bb18a8e048201ed3bbd6e85cc2a00",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 1954
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-0-480.webp",
+      "sha256": "30e714f9660e4faf897aff5a69b8c37809d147c787aae91b3a2f0493d1a2a71c",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 1994
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-120-480.webp",
+      "sha256": "9e896f16ed1256d8bb43523c0f9406e104f33dfe965b7ef7f98813fe4260f3f8",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 1088
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-120-480.webp",
+      "sha256": "9e896f16ed1256d8bb43523c0f9406e104f33dfe965b7ef7f98813fe4260f3f8",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 1088
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-240-480.webp",
+      "sha256": "9e896f16ed1256d8bb43523c0f9406e104f33dfe965b7ef7f98813fe4260f3f8",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 1088
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-240-480.webp",
+      "sha256": "9e896f16ed1256d8bb43523c0f9406e104f33dfe965b7ef7f98813fe4260f3f8",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 1088
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-360-480.webp",
+      "sha256": "88017de4a31308dcbefe8c1d1bc766dc970cda70b478614f495ca1c6db1a8a07",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 71962
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-360-480.webp",
+      "sha256": "9a0c4a0ab8feae3ecc506386b2eb8371499fbc8eedec0c871b1c8f7672bdc3f5",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 63856
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-480-480.webp",
+      "sha256": "547626f69715319afdb584f341e09b4d008707a67cd6a3836d14df40113fc7f4",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 13304
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-480-480.webp",
+      "sha256": "94df320d8ac01a3ddf3e81b1b82a99ce1d4db357c9b425653356f6711fad3a40",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 11874
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-600-480.webp",
+      "sha256": "9e896f16ed1256d8bb43523c0f9406e104f33dfe965b7ef7f98813fe4260f3f8",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 1088
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-600-480.webp",
+      "sha256": "9e896f16ed1256d8bb43523c0f9406e104f33dfe965b7ef7f98813fe4260f3f8",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 1088
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-720-480.webp",
+      "sha256": "93404e69b9a9f1f1beba967339f3de68e24bd36905779ab4ed7ed019d6bf94a8",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 14984
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-720-480.webp",
+      "sha256": "4334d0b4c3d693064e8d2f446dc76dc59f492ed4773c0baa35fa36abd5841537",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 12900
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-840-480.webp",
+      "sha256": "adfce84ed836aa4cc03257687fa4b3b9fc539a553c37463878c758c1c61cf428",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 2330
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-840-480.webp",
+      "sha256": "63db2bc18d57d99b8d9e5ac05e95b57a0348dc25091a18fa2c540f47d7603e8c",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 2278
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-960-480.webp",
+      "sha256": "4bbbc8b8827d6bfcf34381d40cd1c03cf9e7dd64090eeb6d0f1bf5899a6271a9",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 2522
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-960-480.webp",
+      "sha256": "15ba9e7722119cd89dab301a0664955aab37b35a30a962befcaaa9e2b3c11a8b",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 2430
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1080-480.webp",
+      "sha256": "88b3295d49e5e403c286f1d00555e2ba1cc00ecd11d147bf20aea7ff80d77569",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 7050
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1080-480.webp",
+      "sha256": "f7bb19dd94b37acd453f61b894b725b0cb664f50dd615f10a73a6bde2ca8daf9",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 6022
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1200-480.webp",
+      "sha256": "d3646c6ea54bc95efe494efb71bf93e2b7ce4716c879e9fab688ab9482627d03",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 36796
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1200-480.webp",
+      "sha256": "81645c7ee7255392a074bed072103e47197ae09c28c9a1479da296b7a938571e",
+      "size": [
+        724,
+        724
+      ],
+      "bytes": 31108
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1320-480.webp",
+      "sha256": "9f8c2b23746de0f3e5691ad6d31dcd5bc2980cedf0a845400aeabd09e6c54d4b",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 26258
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1320-480.webp",
+      "sha256": "8a254850a21eaf535f5e81d14e4cc0d5939739055d9e2ecd5338762d4071410e",
+      "size": [
+        722,
+        724
+      ],
+      "bytes": 24438
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-0-600.webp",
+      "sha256": "2c7b742f538e279a21c085706ee05e15b039d6b828d9f700050eddd3fb3b81d6",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 19762
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-0-600.webp",
+      "sha256": "3a8cd9f10928843352b2d94e88bd14e16d757ec61651dc9b5677c1e04a472d0d",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 19980
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-120-600.webp",
+      "sha256": "03ee0c95bae9921989ac2d2bd8822ac73409fa6c49090aa7cdc8e1ae3227bd56",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 38744
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-120-600.webp",
+      "sha256": "9f42439dd1537d4790b18932776cf9a4419c3da8b6fce53ebe7f1e88ae055d48",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 32418
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-240-600.webp",
+      "sha256": "f41749a96b22064d8aad3ca0a540d4e2530423677845b325039a9a5316823ff7",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 37278
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-240-600.webp",
+      "sha256": "4b0f9a9766582214cc685f99ac925d26b23e0000b7882187bd9baf0841f33377",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 36226
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-360-600.webp",
+      "sha256": "f331268200d32a014b1323d1aeb2897eaa91a8ab71fac8c4b203e21e6385ba00",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 59928
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-360-600.webp",
+      "sha256": "59bd82d893c651571303e7a948c8db605ab3ee77013b3db6c5c63cf081375a01",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 51634
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-480-600.webp",
+      "sha256": "513f4e4b8737ea3e0f37a58b2b1a9b7f57774d1c7f498e7d175dd206477d6c1d",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 24544
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-480-600.webp",
+      "sha256": "4bb430d9a902de9e1e349ceab761a7ab3ad726dd7ad14923296fc89278182c48",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 22638
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-600-600.webp",
+      "sha256": "b89b1d6d6461238d72505a5c7d365d8610c7d53a8aee8a3f08b9343ede54e160",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 29960
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-600-600.webp",
+      "sha256": "d88631c7ddc45ed0138fc3a36f30a4e14b43df4defb58bd70dd95d1e105a445c",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 30922
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-720-600.webp",
+      "sha256": "e934822985d4426c30c7ad7975c2a4e0d58674641f36b6681aadd4e5455d4177",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 18346
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-720-600.webp",
+      "sha256": "4f89e3c083a01b5c0207a91fe4d9c86b4eb644634d5b0de07a50171c18a85e69",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 22906
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-840-600.webp",
+      "sha256": "5349dc207896100c57f88a7bc28802d31dd7c0328c19eb0dd7c14f50eb412903",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 21250
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-840-600.webp",
+      "sha256": "e1157cc529d9beb258dfb8d4896dfd958dd9c0b6fd428b67c16ca233f1333787",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 25524
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-960-600.webp",
+      "sha256": "8c0c7d10b03f770bab7af970c8eec23b5c98011dd4df04305f27b073f346d65c",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 26768
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-960-600.webp",
+      "sha256": "998a6c7717a3b2bcf5d70390ab3e71686a811fe27fb60ce35ccf8402fa2ced5a",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 30528
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1080-600.webp",
+      "sha256": "21d322dc1f7f18f20806ce918ddc1ced0000dd530c715a192554b64bec18895a",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 16308
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1080-600.webp",
+      "sha256": "90150c45222ed89de07d02ed973f4ad4efdecbf52adf1a0f5aba1960fb930239",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 19370
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1200-600.webp",
+      "sha256": "bcaa637cc908e05e42077223ccad45b086f3b36bd58bd62d971035bb7130d501",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 19286
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1200-600.webp",
+      "sha256": "5d1b65325b0eb9f93c636e29c44ef3951b643d9be8c8d80df6e5ccbb7e0ddd42",
+      "size": [
+        724,
+        722
+      ],
+      "bytes": 25264
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/terrain/province-1320-600.webp",
+      "sha256": "da94ed91ad9539e7fadc02d6fb52c013ec5f7b83287a4ef502b20b34fee120ab",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 41158
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/relief/province-1320-600.webp",
+      "sha256": "2e9b9bd7a103c1c7707f5485caabeac8ea5628b113baf23742c0cf8560855af6",
+      "size": [
+        722,
+        722
+      ],
+      "bytes": 38612
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/ocean-balanced.webp",
+      "sha256": "6532bfb101d704c48a17cc1006f8b980ed6d348ec2df2b3cd23662f771ecd982",
+      "size": [
+        1440,
+        720
+      ],
+      "bytes": 22424
+    },
+    {
+      "file": "assets/map/dominion-2.2.1/ocean-performance.webp",
+      "sha256": "95682499eebe2dd8a0a9411cb027706e43b7f46731ccf55ee993b63602120e95",
+      "size": [
+        720,
+        360
+      ],
+      "bytes": 8590
+    }
+  ]
+}
