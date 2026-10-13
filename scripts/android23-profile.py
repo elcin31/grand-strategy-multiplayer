@@ -23,8 +23,9 @@ def reset(world=False,local=False):
     if local:
         for n in range(3):h.control('Приблизить','local-'+str(n))
     time.sleep(2)
-def gesture(kind,cycles=6):
-    output=h.adb('shell','CLASSPATH=/data/local/tmp/dominion-camera23.jar app_process /system/bin CameraGesture23 '+kind+' '+str(cycles))
+def gesture(kind,cycles=6,focal=None):
+    coordinates='' if focal is None else ' '+str(focal[0])+' '+str(focal[1])
+    output=h.adb('shell','CLASSPATH=/data/local/tmp/dominion-camera23.jar app_process /system/bin CameraGesture23 '+kind+' '+str(cycles)+coordinates)
     match=re.search(r'DOMINION_GESTURE_TIMING (\{.*\})',output);assert match,'Missing real input timestamps'
     return json.loads(match[1])
 def install_fixture(name):
@@ -45,7 +46,7 @@ def configure():
     tree=h.root('overlay');node=find_enabled_control(tree,'Performance overlay: Выкл')
     if node is not None:h.tap(node)
     h.control('Закрыть ×','settings-close',True)
-def sample(name,kind,cycles=6):
+def sample(name,kind,cycles=6,focal=None):
     h.adb('shell','dumpsys','gfxinfo',PACKAGE,'reset');h.adb('logcat','-c');h.adb('shell','dumpsys','SurfaceFlinger','--latency-clear')
     pid=h.adb('shell','pidof',PACKAGE).strip();assert pid
     layers=h.adb('shell','dumpsys','SurfaceFlinger','--list');(OUT/(name+'-layers.txt')).write_text(layers)
@@ -53,7 +54,7 @@ def sample(name,kind,cycles=6):
     sampler=SurfaceSampler(h.adb,layer,OUT/(name+'-surface.json'));sampler.start()
     with (OUT/(name+'-threads.txt')).open('w') as threads:
         process=subprocess.Popen(['adb','shell','top','-H','-b','-d','1','-n',str(cycles*2+3),'-p',pid],stdout=threads,stderr=subprocess.STDOUT)
-        start=time.monotonic();timing=gesture(kind,cycles);time.sleep(.1);presentation=sampler.finish();elapsed=time.monotonic()-start
+        start=time.monotonic();timing=gesture(kind,cycles,focal);time.sleep(.1);presentation=sampler.finish();elapsed=time.monotonic()-start
         try:process.wait(timeout=5)
         except subprocess.TimeoutExpired:process.terminate();process.wait(timeout=5)
     raw=h.adb('shell','dumpsys','gfxinfo',PACKAGE,'framestats');(OUT/(name+'-frames.txt')).write_text(raw)
@@ -77,11 +78,16 @@ try:
     h.adb('shell','wm','size','720x1280');h.adb('shell','wm','density','160');h.adb('shell','settings','put','system','accelerometer_rotation','0');h.adb('shell','settings','put','system','user_rotation','1')
     h.adb('shell','svc','wifi','disable');h.adb('shell','svc','data','disable')
     install_fixture('peace');configure()
-    sample('A-horizontal-pan','pan');reset(world=True);sample('B-rapid-zoom-in','in',2)
+    sample('A-horizontal-pan','pan')
+    from camera_system_trace import capture_camera_trace
+    for kind,scenario in [('pan','panel-closed-pan'),('combined','pinch')]:
+        reset();out=OUT/('diagnostic-'+kind);out.mkdir(exist_ok=True)
+        print('CAMERA23_TRACE '+json.dumps(capture_camera_trace(h.adb,out,lambda:gesture(kind,6),scenario=scenario)),flush=True)
+    reset(world=True);sample('B-rapid-zoom-in','in',2,(700,265))
     reset(local=True);sample('C-rapid-zoom-out','out',2)
     reset();sample('D-pinch-pan','combined');reset();sample('E-lod-transitions','lod')
     mode('Рельеф');reset();sample('F-terrain','combined')
-    install_fixture('war');sample('G-war-armies','combined')
+    install_fixture('war');mode('Армии');sample('G-war-armies','combined')
     h.control('Продолжить','simulation-resume');sample('H-active-simulation','pan');h.control('Пауза','simulation-pause')
     h.control('Сохранить кампанию','simulation-save');time.sleep(2)
     directory='/data/user/0/'+PACKAGE+'/files/dominion-campaigns'
@@ -99,10 +105,6 @@ try:
         pss=re.search(r'TOTAL PSS:\s*(\d+)',memory);trend.append({'block':n,'pssKiB':int(pss[1]) if pss else None})
         (OUT/'memory-trend.json').write_text(json.dumps(trend,indent=2)+'\n')
     mode('Политическая');reset()
-    from camera_system_trace import capture_camera_trace
-    for kind,scenario in [('pan','panel-closed-pan'),('combined','pinch')]:
-        reset();out=OUT/('diagnostic-'+kind);out.mkdir(exist_ok=True)
-        print('CAMERA23_TRACE '+json.dumps(capture_camera_trace(h.adb,out,lambda:gesture(kind,6),scenario=scenario)),flush=True)
     h.adb('shell','svc','wifi','enable');h.adb('shell','svc','data','enable')
     (OUT/'result.json').write_text(json.dumps({'AtoI':True,'noFatalLogs':True,'standalone':True,'physicalRedmiTest':False},indent=2)+'\n')
 finally:

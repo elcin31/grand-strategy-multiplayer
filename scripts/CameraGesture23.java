@@ -25,17 +25,19 @@ public class CameraGesture23 {
     String kind=args[0];int cycles=Integer.parseInt(args[1]);
     if(!kind.matches("pan|in|out|combined|lod")||cycles<1||cycles>50)throw new IllegalArgumentException("Invalid QA gesture");
     boolean pinch=!kind.equals("pan");
+    float focalX=args.length>2?Float.parseFloat(args[2]):560,focalY=args.length>3?Float.parseFloat(args[3]):320;
+    if(focalX<200||focalX>1000||focalY<150||focalY>500)throw new IllegalArgumentException("Invalid QA focal point");
     StringBuilder timing=new StringBuilder("{\"kind\":\"").append(kind).append("\",\"cycles\":[");
     for(int cycle=0;cycle<cycles;cycle++){
       down=SystemClock.uptimeMillis();long downNs=System.nanoTime();
-      float radius=kind.equals("out")?150:25,cx=pinch?560:400,cy=320;
+      float radius=kind.equals("out")?150:25,cx=pinch?focalX:400,cy=focalY;
       event(MotionEvent.ACTION_DOWN,1,radius,pinch?cx-radius:cx,cy);
       if(pinch)event(MotionEvent.ACTION_POINTER_DOWN+(1<<8),2,radius,cx,cy);
       for(int frame=0;frame<=120;frame++){
         float t=frame/120f,triangle=t<.5f?2*t:2*(1-t);
         radius=kind.equals("in")?25+125*t:kind.equals("out")?150-125*t:25+100*triangle;
-        cx=pinch?(kind.equals("combined")?560+100*triangle:560):400+400*triangle;
-        cy=kind.equals("combined")?320+35*triangle:320;
+        cx=pinch?(kind.equals("combined")?focalX+100*triangle:focalX):400+400*triangle;
+        cy=kind.equals("combined")?focalY+35*triangle:focalY;
         long due=down+frame*16;if(due>SystemClock.uptimeMillis())SystemClock.sleep(due-SystemClock.uptimeMillis());
         event(MotionEvent.ACTION_MOVE,pinch?2:1,radius,cx,cy);
       }
