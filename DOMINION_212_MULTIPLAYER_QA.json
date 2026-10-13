@@ -1,0 +1,21 @@
+{
+  "roomId": "d2c860ec-566c-46c0-b5c6-3c54a9e8816a",
+  "createJoinStart": true,
+  "twoIndependentHttpClients": true,
+  "sharedDifficulty": "Hard",
+  "fourIndependentPaidFormations": true,
+  "separateArmyIds": true,
+  "exactRecruitmentPayments": true,
+  "forgedStrengthAndActorRejected": true,
+  "foreignArmyOrderRejected": true,
+  "independentMovementBothCountries": true,
+  "playerCountriesNotAIControlled": true,
+  "sharedCalendar": true,
+  "reconnectPreservesArmyNames": true,
+  "physicalPhones": false,
+  "cleanup": {
+    "rooms": 0,
+    "players": 0,
+    "receipts": 0
+  }
+}

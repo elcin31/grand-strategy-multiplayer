@@ -1,0 +1,96 @@
+{
+  "name": "DOMINION 2.1.2 — LIVING WORLD PLAYTEST",
+  "branch": "dominion-2.1.2-living-world",
+  "runtimeCommit": "4d10489c152349b63e5c5b7e21757ebc5a9e5d60",
+  "apk": {
+    "name": "Dominion-2.1.2-playtest.apk",
+    "bytes": 153574512,
+    "sha256": "7f1ea498525143585c69b3fe991199044917275297cb87c2cd41d6f7b17c6961",
+    "version": "2.1.2",
+    "versionCode": 13,
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "standalone": true,
+    "embeddedJavaScript": true,
+    "landscape": true
+  },
+  "downloadArchive": {
+    "name": "Dominion-2.1.2-playtest.zip",
+    "bytes": 72511288,
+    "sha256": "4c7c0ddfc6e950ff4b99429068b32c3aa98d00df7633d055c2278aac40995506"
+  },
+  "buildRunId": 38350841398,
+  "buildJobConclusion": "success",
+  "initialRunConclusion": "failure: native harness used an offscreen control; unchanged APK reused",
+  "apkArtifactId": 11790939061,
+  "backend": {
+    "projectId": "dfjsnjxnyjspwugjguhq",
+    "sourceHead": "4d10489c152349b63e5c5b7e21757ebc5a9e5d60",
+    "workingTreeClean": true,
+    "note": "Existing Dominion handlers updated command before room after compatible signed APK was built. Custom token authentication, CAS, receipts, room tables and earlier v21/2.0 handlers retained; real two-client paid formation/movement/reconnect QA passed. Previous v211 reconstruction exactly matches published source hashes; direct MCP source retrieval unavailable.",
+    "functions": [
+      {
+        "name": "game-room",
+        "entrypoint": "index.js",
+        "verifyJwt": false,
+        "bytes": 3093944,
+        "sha256": "97b13599160a328c1202868f05f30ffb24ae8e458d31d7d05dbe32632daeaf00"
+      },
+      {
+        "name": "game-command",
+        "entrypoint": "index.js",
+        "verifyJwt": false,
+        "bytes": 3076032,
+        "sha256": "b27d04e7efb01ce8c8a8fee0a5196fddd7db38d510bbd9aedeab5bcdc2e66d64"
+      }
+    ],
+    "protocol": 25,
+    "endpointNames": [
+      "game-command-v211",
+      "game-room-v211"
+    ],
+    "deploymentStatus": "ACTIVE",
+    "deploymentVersions": {
+      "game-command-v211": 3,
+      "game-room-v211": 3
+    },
+    "ciBuildRunId": 38350841398,
+    "ciArtifactId": 11790773199,
+    "ciArtifactSha256": "0e10b001c4890919dd877698bfb52b0fe3b1cbe1a64c07ca279325bea6478414"
+  },
+  "checks": {
+    "typecheck": true,
+    "focusedScenarios": 73,
+    "realDefaultStartingArmyInvades": true,
+    "guardedAIBattleAndContinuation": true,
+    "two310KIndependentQueuesCostAndSave": true,
+    "worldWarAllianceRejectionPeaceAndCrisis": true,
+    "mobilizationConservesManpower": true,
+    "timedPaidCommanderTraining": true
+  },
+  "multiplayer": {
+    "roomId": "d2c860ec-566c-46c0-b5c6-3c54a9e8816a",
+    "createJoinStart": true,
+    "twoIndependentHttpClients": true,
+    "sharedDifficulty": "Hard",
+    "fourIndependentPaidFormations": true,
+    "separateArmyIds": true,
+    "exactRecruitmentPayments": true,
+    "forgedStrengthAndActorRejected": true,
+    "foreignArmyOrderRejected": true,
+    "independentMovementBothCountries": true,
+    "playerCountriesNotAIControlled": true,
+    "sharedCalendar": true,
+    "reconnectPreservesArmyNames": true,
+    "physicalPhones": false,
+    "cleanup": {
+      "rooms": 0,
+      "players": 0,
+      "receipts": 0
+    }
+  },
+  "nativeSmoke": {},
+  "physicalDeviceTested": false,
+  "longSoakOrCameraBenchmark": false,
+  "publicationStatus": "PREPARED"
+}
