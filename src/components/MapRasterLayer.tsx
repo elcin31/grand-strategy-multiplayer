@@ -1,6 +1,6 @@
 import {memo,useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import {Group,Picture,Skia,PaintStyle,FilterMode,MipmapMode,ClipOp,BlendMode,type SkCanvas,type SkImage,type SkPath,type SkPicture} from '@shopify/react-native-skia';
-import {rasterLevel,stableRasterLevel,budgetRasterLevel,RASTER_LEVELS,WORLD_RASTER_SOURCE_LEVEL,type RasterLevel} from '../map/cameraCoverage';
+import {rasterLevel,stableRasterLevel,budgetRasterLevel,worldRasterSourceLevel,RASTER_LEVELS,WORLD_RASTER_SOURCE_LEVEL,type RasterLevel} from '../map/cameraCoverage';
 import {visibleRasterTiles,rasterTiles,rasterCoverageForBudget,RasterCache,retainRasterImage,type RasterTile} from '../map/rasterTiles';
 import {scheduleIdleSlices} from '../performance/idleSlices';
 import {geometryForLod,type GeometryLod} from '../map/geometryLod';
@@ -65,7 +65,7 @@ function tileImage(tile:RasterTile,drawing:Drawing,key:string,picture:SkPicture,
       // Source snapshots are exclusively owned, never cached or displayed.
       const completed=withNativeRecordingObjects(own=>{
         const paint=own(Skia.Paint());paint.setBlendMode(BlendMode.Src);
-        const sources=visibleRasterTiles(drawing.context,{left:b.left-1,top:b.top-1,right:b.right+1,bottom:b.bottom+1},WORLD_RASTER_SOURCE_LEVEL);
+        const sources=visibleRasterTiles(drawing.context,{left:b.left-1,top:b.top-1,right:b.right+1,bottom:b.bottom+1},worldRasterSourceLevel(tile.level));
         for(const sourceTile of sources){
           const a=sourceTile.bounds,k=sourceTile.level.scale,sw=Math.ceil((a.right-a.left)*k)+4,sh=Math.ceil((a.bottom-a.top)*k)+4;
           const sourceSurface=Skia.Surface.Make(sw,sh);if(!sourceSurface)return false;

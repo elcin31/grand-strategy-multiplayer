@@ -33,6 +33,10 @@ export const RASTER_LEVELS=[
  * a selectable camera band. Bounded chunks copy these pixels before UI replay. */
 export const WORLD_RASTER_SOURCE_LEVEL={key:'world',cell:160,scale:2} as const;
 export interface RasterLevel {readonly key:'world'|'region'|'local'|'detail';readonly cell:number;readonly scale:number}
+const WORLD_SOURCES=new Map<number,RasterLevel>([[2,WORLD_RASTER_SOURCE_LEVEL],[1,{...WORLD_RASTER_SOURCE_LEVEL,scale:1}],[1.5,{...WORLD_RASTER_SOURCE_LEVEL,scale:1.5}]]);
+/** Source and destination must use the same pixel grid, including reduced
+ * mobile world tints. Reuse the original small-cell coast clipping contract. */
+export function worldRasterSourceLevel(level:RasterLevel):RasterLevel{return WORLD_SOURCES.get(level.scale)??WORLD_RASTER_SOURCE_LEVEL;}
 export function rasterLevel(zoom:number):RasterLevel{return RASTER_LEVELS[zoom<2?0:zoom<6?1:zoom<12?2:3]!;}
 export function stableRasterLevel(zoom:number,previous:RasterLevel):RasterLevel {
   const index=RASTER_LEVELS.findIndex(l=>l===previous),thresholds=[2,6,12];

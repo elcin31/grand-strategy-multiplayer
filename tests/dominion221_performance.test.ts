@@ -2,7 +2,8 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {MapWorkQueue} from '../src/performance/mapWorkQueue';
 import {stableAtlasLevel} from '../src/map/atlas22';
-import {stableRasterLevel,budgetRasterLevel,cameraCoverage,RASTER_LEVELS} from '../src/map/cameraCoverage';
+import {stableRasterLevel,budgetRasterLevel,worldRasterSourceLevel,cameraCoverage,RASTER_LEVELS} from '../src/map/cameraCoverage';
+import {worldRasterCopy} from '../src/map/worldRasterCopy';
 import {selectGeometryLod} from '../src/map/geometryLod';
 import {RasterCache,rasterCoverageForBudget} from '../src/map/rasterTiles';
 import type {MapFeature} from '../src/map/geometry';
@@ -47,5 +48,14 @@ test('wide-screen LOD transitions fit their cache even at the lower hysteresis b
     const {level,tiles}=rasterCoverageForBudget([coverage],cameraCoverage({x:720,y:360,zoom},{width:1280,height:720}),levels,RASTER_LEVELS[i]!,budget);
     const bytes=tiles.reduce((n,t)=>n+(Math.ceil((t.bounds.right-t.bounds.left)*level.scale)+4)*(Math.ceil((t.bounds.bottom-t.bounds.top)*level.scale)+4)*4,0);
     assert.ok(bytes<=budget,preset+' '+level.key);assert.ok(tiles.length<=96);
+  }
+});
+test('world prewarm and visible world copies share the mobile pixel grid in every preset',()=>{
+  for(const preset of ['Performance','Balanced','High','Ultra'] as const){
+    const level=budgetRasterLevel(RASTER_LEVELS[0],preset),sourceLevel=worldRasterSourceLevel(level);
+    assert.equal(sourceLevel.scale,level.scale);assert.equal(worldRasterSourceLevel(level),sourceLevel);
+    const source={bounds:{left:160,top:160,right:320,bottom:320},level:sourceLevel},target={bounds:{left:0,top:0,right:288,bottom:288},level};
+    const plan=worldRasterCopy(source,target);assert.ok(plan.destination.width>0);
+    for(const value of Object.values(plan.clip))assert.ok(Math.abs(value-Math.round(value))<1e-8,'Copy pixels must stay on the same integer grid');
   }
 });
