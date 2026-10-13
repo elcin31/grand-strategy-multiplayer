@@ -1,4 +1,4 @@
-import {armyTravelDays,armyInBattle} from './military3System.ts';
+import {armyTravelDays,armyInBattle,redeploymentStepAllowed} from './military3System.ts';
 import type {Army,GameState,Province} from './gameTypes.ts';
 import {warBetween} from './diplomacySystem.ts';
 import {canEnterTerritory} from './diplomacy2System.ts';
@@ -33,9 +33,11 @@ export function findArmyRoute(state:GameState,army:Army,targetId:string):string[
 }
 export function setArmyOrder(state:GameState,ownerId:string,armyId:string,targetId:string,redeploy=false):void {
  const army=state.armies.find(a=>a.id===armyId);if(!army||army.ownerId!==ownerId)throw Error('Можно отдавать приказы только своей армии');
+ if(army.formationId)throw Error('Армия ещё формируется');
  if(armyInBattle(state,army.id))throw Error('Сначала завершите бой или отдайте приказ отступления');
  const route=findArmyRoute(state,army,targetId),target=state.provinces.find(p=>p.id===targetId)!;
  if(warBetween(state,ownerId,target.controllerId??target.ownerId)&&state.tick<(army.retreatUntilTick??0))throw Error('После отступления наступление временно недоступно');
+ if(redeploy){let from=army.provinceId;for(const id of route){const next=state.provinces.find(p=>p.id===id)!;if(!redeploymentStepAllowed(state,{...army,provinceId:from},next))throw Error('Переброска требует доступной мирной территории, инфраструктуры и снабжения ≥50%');from=id;}}
  for(const siege of state.sieges??[])if(siege.armyIds.includes(army.id)&&targetId!==siege.provinceId)siege.armyIds=siege.armyIds.filter(id=>id!==army.id);
  army.order=route.length?{type:warBetween(state,ownerId,target.controllerId??target.ownerId)||!state.dataset&&(target.controllerId??target.ownerId)!==ownerId?'ATTACK':'MOVE',targetProvinceId:targetId,route,issuedTick:state.tick,travelProgress:0,redeploy}:undefined;
 }
@@ -60,4 +62,4 @@ export function validateArmyOrders(state:GameState):void {
  }
 }
 
-export function setArmyRoute(state:GameState,owner:string,id:string,waypoints:string[],redeploy:boolean):void{const a=state.armies.find(a=>a.id===id&&a.ownerId===owner);if(!a)throw Error('Армия не найдена');const route:string[]=[];let from=a.provinceId;for(const target of waypoints){const leg=findArmyRoute(state,{...a,provinceId:from},target);route.push(...leg);from=target;}if(route.length>state.provinces.length)throw Error('Маршрут слишком длинный');setArmyOrder(state,owner,id,waypoints.at(-1)!,redeploy);if(a.order)a.order.route=route;}
+export function setArmyRoute(state:GameState,owner:string,id:string,waypoints:string[],redeploy:boolean):void{const a=state.armies.find(a=>a.id===id&&a.ownerId===owner);if(!a)throw Error('Армия не найдена');const route:string[]=[];let from=a.provinceId;for(const target of waypoints){const leg=findArmyRoute(state,{...a,provinceId:from},target);route.push(...leg);from=target;}if(route.length>state.provinces.length)throw Error('Маршрут слишком длинный');if(redeploy){let from=a.provinceId;for(const id of route){if(!redeploymentStepAllowed(state,{...a,provinceId:from},state.provinces.find(p=>p.id===id)!))throw Error('Нет условий для ускоренной переброски');from=id;}}setArmyOrder(state,owner,id,waypoints.at(-1)!,redeploy);if(a.order)a.order.route=route;}

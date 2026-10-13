@@ -85,14 +85,14 @@ function chooseOperation(s:GameState,i:MilitaryIndex,a:Army,budget:{nodes:number
 function orderOperation(s:GameState,i:MilitaryIndex,a:Army,_target:Province,route:string[],plan:MilitaryPlan):void{
  if(!route.length){plan.status='Holding';return;}
  const last=i.provinces.get(route.at(-1)!)!,attacking=warBetween(s,a.ownerId,last.controllerId??last.ownerId);
- const redeploy=!attacking&&route.every(id=>(i.provinces.get(id)?.buildings?.Infrastructure??0)>=1)&&(a.supply??100)>=50;
+ const redeploy=!attacking&&(i.provinces.get(a.provinceId)?.buildings?.Infrastructure??0)>=1&&route.every(id=>(i.provinces.get(id)?.buildings?.Infrastructure??0)>=1)&&(a.supply??100)>=50;
  // Use the already computed legal route. setArmyOrder keeps ownership, battle,
  // retreat and siege checks; only the route search is avoided here.
  try{setArmyOrder(s,a.ownerId,a.id,route[0]!,redeploy);if(a.order){a.order.route=[...route];a.order.targetProvinceId=last.id;a.order.type=attacking?'ATTACK':'MOVE';}plan.status=attacking?'Advancing':'Staging';plan.stagingProvinceId=attacking?a.provinceId:last.id;plan.reason=attacking?'Допустимая атака с учётом обороны и снабжения':'Переброска к фронту по доступной территории';}
  catch(error){plan.status='Blocked';plan.reason=error instanceof Error?error.message:'Маршрут изменился';plan.reviewDay=(s.simulationDay??0)+2;}
 }
 function executeArmy(s:GameState,i:MilitaryIndex,a:Army,budget:{nodes:number},playerPlan=false):void{
- const day=s.simulationDay??0,origin=i.provinces.get(a.provinceId);if(!origin)return;
+ const day=s.simulationDay??0,origin=i.provinces.get(a.provinceId);if(!origin||a.formationId)return;
  let plan=a.militaryPlan;
  // A human takeover preserves the march but ends autonomous national control.
  if(!aiControls(s,a.ownerId)&&plan?.source==='AI'){delete a.militaryPlan;return;}

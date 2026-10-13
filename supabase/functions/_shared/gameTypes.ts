@@ -26,6 +26,8 @@ export interface Country {
   completedProjects?:import('./construction3System.ts').NationalProjectId[];
   stockpile?:import('./stockpileSystem.ts').Stockpile;
   lastResourceCrisis?:boolean;
+  armyTemplates?:import('./armyFormationSystem.ts').ArmyTemplate[];
+  militaryDoctrine?:'Offensive'|'Defensive'|'Mobile'|'Logistics'|'Siege';
   aiArmyCursor?:number;
   aiStrategy?:import('./ai3System.ts').AIStrategy;
   autoPause?: import('./notificationSystem.ts').NotificationCategory[];
@@ -149,6 +151,7 @@ export interface Construction {
 
 export interface Army {
   name?:string;
+  formationId?:string;
   militaryPlan?:import('./ai3System.ts').MilitaryPlan;
   intelligenceLevel?:'Detailed'|'Estimate';
   formation?:import('./military3System.ts').Formation;
@@ -232,6 +235,7 @@ export interface Leader {
 }
 
 export interface GameState {
+  armyFormations?:import('./armyFormationSystem.ts').ArmyFormation[];
   aiDifficulty?:'Easy'|'Normal'|'Hard'|'VeryHard';
   aiMilitaryCursor?:number;
   clockNeedsReset?:boolean;
@@ -289,6 +293,11 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'CREATE_NEW_ARMY';playerId:string;name:string;provinceId:string;composition:import('./armyComposition.ts').Composition;commanderId:string|null}
+  | {type:'CANCEL_ARMY_FORMATION';playerId:string;formationId:string}
+  | {type:'SAVE_ARMY_TEMPLATE';playerId:string;templateId:string;name:string;weights:import('./armyComposition.ts').Composition}
+  | {type:'RENAME_ARMY';playerId:string;armyId:string;name:string}
+  | {type:'TRANSFER_REGIMENT';playerId:string;fromArmyId:string;toArmyId:string;unitType:UnitType;troops:number}
   | {type:'DECLARE_WAR_GOAL';playerId:string;targetId:string;goal:import('./strategy3System.ts').WarGoalType;provinceIds:string[]}
   | {type:'APPOINT_ADVISER';playerId:string;role:import('./strategy3System.ts').AdviserRole}
   | {type:'VASSAL_POLICY';playerId:string;targetId:string;policy:'Raise'|'Lower'|'Integrate'}

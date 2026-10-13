@@ -6,7 +6,7 @@ import {ArmyOperations} from './ArmyOperations';
 import {BattleSiegePanel} from './BattleSiegePanel';
 import {PanelTabs} from './PanelTabs';
 import {useMemo,useState} from 'react';
-import {Text, View} from 'react-native';
+import {Text, TextInput, View} from 'react-native';
 import type {Army,Province} from '../types/game';
 import {UNITS,UNIT_TYPES,combatMultiplier} from '../../supabase/functions/_shared/militarySystem';
 import {techLevel} from '../../supabase/functions/_shared/technologySystem';
@@ -17,7 +17,8 @@ import {reinforcementQuote,retreatDestination} from '../../supabase/functions/_s
 import {styles,type StrategyProps} from './StrategyPanel';
 const tabs=['Состав','Приказы','Построение','Снабжение','Генерал','Подкрепление'];
 const roles={Front:'Передняя линия',Rear:'Вторая линия',Flank:'Фланги',Support:'Поддержка'};
-export function MilitaryPanel({state,playerId,onCommand,province,army}:StrategyProps&{province:Province;army:Army|null}){
+export function MilitaryPanel({state,playerId,onCommand,province,army,onCreateArmy}:StrategyProps&{province:Province;army:Army|null;onCreateArmy?:()=>void}){
+ const [rename,setRename]=useState('');
  const [tab,setTab]=useState('Состав'),countryId=state.players.find(p=>p.id===playerId)?.countryId;
  const logistics=useMemo(()=>army&&army.ownerId===countryId?{supply:supplyAt(state,army.ownerId,army.provinceId),reinforcement:reinforcementQuote(state,army),retreat:retreatDestination(state,army)}:null,[state,army,countryId]);
  if(!state.dataset||!countryId)return null;
@@ -26,7 +27,9 @@ export function MilitaryPanel({state,playerId,onCommand,province,army}:StrategyP
  const next=state.provinces.find(p=>p.id===army?.order?.route[0]),formation=army?armyFormation(army):null;
  const button=(label:string,action:()=>void,disabled=false)=><Pressable accessibilityRole="button" disabled={disabled} accessibilityState={{disabled}} style={[styles.button,disabled&&styles.disabled]} onPress={action}><Text style={styles.title}>{label}</Text></Pressable>;
  return <View style={styles.wrap}>
-  {army&&<View style={[styles.card,{padding:8}]}><Text style={styles.title}>{army.troops.toLocaleString('ru-RU')} солдат · {commander?.name??'Без генерала'}</Text><Text style={styles.text}>Мораль {(army.morale??80).toFixed(0)}% · организация {(army.organization??80).toFixed(0)}% · опыт {(army.experience??0).toFixed(0)} · снабжение {(army.supply??100).toFixed(0)}%</Text><Text style={styles.text}>{army.order?`${army.order.redeploy?'Переброска':'Марш'} → ${state.provinces.find(p=>p.id===army.order!.targetProvinceId)?.name} · ETA ${armyETA(state,army)} дн. · этап ${army.order.travelProgress??0}/${next?armyTravelDays(state,army,next):'—'}`:'Удерживает позицию'} · {army.reinforcementEnabled?'Автопополнение включено':'Ручное пополнение'}</Text></View>}
+  {button('Создать новую армию',()=>onCreateArmy?.())}
+  {army&&<View style={{flexDirection:'row',gap:5}}><TextInput accessibilityLabel="Новое название армии" placeholder={army.name??'Название армии'} placeholderTextColor="#9d9c90" value={rename} maxLength={48} onChangeText={setRename} style={{flex:1,color:"#eee6cc",backgroundColor:"#162330",minHeight:44,padding:8}}/>{button('Переименовать',()=>{onCommand({type:'RENAME_ARMY',playerId,armyId:army.id,name:rename});setRename('');},!rename.trim())}</View>}
+  {army&&<View style={[styles.card,{padding:8}]}><Text style={styles.title}>{army.name??'Армия'} · {army.troops.toLocaleString('ru-RU')} солдат · {commander?.name??'Без генерала'}</Text><Text style={styles.text}>Мораль {(army.morale??80).toFixed(0)}% · организация {(army.organization??80).toFixed(0)}% · опыт {(army.experience??0).toFixed(0)} · снабжение {(army.supply??100).toFixed(0)}%</Text><Text style={styles.text}>{army.order?`${army.order.redeploy?'Переброска':'Марш'} → ${state.provinces.find(p=>p.id===army.order!.targetProvinceId)?.name} · ETA ${armyETA(state,army)} дн. · этап ${army.order.travelProgress??0}/${next?armyTravelDays(state,army,next):'—'}`:'Удерживает позицию'} · {army.reinforcementEnabled?'Автопополнение включено':'Ручное пополнение'}</Text></View>}
   <PanelTabs tabs={tabs} value={tab} onChange={setTab}/>
   {tab==='Состав'&&<><CampaignArt year={state.year} kind="Military" height={88}/>{army&&<Text style={styles.text}>Атака ×{combatMultiplier(state,army,province,false).toFixed(2)} · защита ×{combatMultiplier(state,army,province,true).toFixed(2)} · местность {province.terrain}</Text>}{UNIT_TYPES.filter(t=>(parts[t]??0)>0).map(t=><View key={t} style={[styles.card,{padding:8,flexDirection:'row',justifyContent:'space-between'}]}><HistoricalIllustration id={unitScene[t]} width={68} height={42}/><View style={{flex:1}}><Text style={styles.title}>{UNITS[t].name}</Text><Text style={styles.text}>{roles[UNITS[t].role]} · дальность {UNITS[t].range} · атака {UNITS[t].attack} / защита {UNITS[t].defense}</Text></View><Text style={styles.title}>{parts[t]!.toLocaleString()} · {Math.ceil(parts[t]!/1000)} полк.</Text></View>)}</>}
   {army&&(tab==='Приказы'||tab==='Построение')&&<ArmyOperations state={state} army={army} playerId={playerId} onCommand={onCommand} view={tab}/>}

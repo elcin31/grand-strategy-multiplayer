@@ -1,3 +1,4 @@
+import {initializeArmyFormations} from './armyFormationSystem.ts';
 import {initializeStrategy3} from './strategy3System.ts';
 import {initializePolitics} from './politicalDecisions.ts';
 import {initializeProduction} from './productionSystem.ts';
@@ -57,6 +58,7 @@ export function normalizeGameState(state:GameState):void {
  initializePolitics(state,version<22);
  initializeStrategy3(state,version<23);
  initializeNationalProjects(state);initializeProduction(state);
+ initializeArmyFormations(state);
  validateArmyOrders(state);
  // Schema 24 retains legacy peace offers, validates compound clauses, and initializes battle score.
  initializeWars(state);

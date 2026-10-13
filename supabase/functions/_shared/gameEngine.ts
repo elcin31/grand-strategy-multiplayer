@@ -1,3 +1,4 @@
+import {createArmyFormation,cancelArmyFormation,processArmyFormations,transferRegiment} from './armyFormationSystem.ts';
 import {declareGoalWar,appointAdviser,vassalPolicy,monthlyInternalPolitics,collectChronicle,yearlyStateChanges} from './strategy3System.ts';
 import {startDecision,resolveFocusChoice,monthlyDecisions} from './politicalDecisions.ts';
 import {hasTechnology,unlockTechnology,technologyBonuses} from './technologyTree.ts';
@@ -135,6 +136,7 @@ function recruit(state: GameState, ownerId: CountryId, province: Province, troop
   if (state.dataset && techLevel(nation, 'Military') < UNITS[unitType].unlock) throw new Error('Нужен более высокий уровень военной технологии');
   if(state.dataset&&state.year<UNITS[unitType].era)throw Error('Тип войск недоступен в этой эпохе');
   const existing=armyId?state.armies.find(a=>a.id===armyId&&a.ownerId===ownerId&&a.provinceId===province.id):state.armies.find((candidate) => candidate.ownerId === ownerId && candidate.provinceId === province.id && (candidate.unitType ?? 'Infantry') === unitType);
+  if(existing?.formationId)throw Error('Армия ещё формируется');
   if(armyId&&!existing)throw Error('Армия не найдена в своей контролируемой провинции');
   const cost = Math.ceil(troops / 1_000) * (state.dataset ? UNITS[unitType].cost : 20);
   if (nation.treasury < cost) throw new Error('Недостаточно средств');
@@ -176,6 +178,15 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
   const next = clone(state);
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   switch (command.type) {
+    case 'CREATE_NEW_ARMY':case 'CANCEL_ARMY_FORMATION':case 'SAVE_ARMY_TEMPLATE':case 'RENAME_ARMY':case 'TRANSFER_REGIMENT':{
+      if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');const player=getPlayer(next,command.playerId);if(!player.countryId)throw Error('Страна не выбрана');const c=countryFor(next,player.countryId);
+      if(command.type==='CREATE_NEW_ARMY')createArmyFormation(next,c.id,command.name,command.provinceId,command.composition,command.commanderId);
+      else if(command.type==='CANCEL_ARMY_FORMATION')cancelArmyFormation(next,c.id,command.formationId);
+      else if(command.type==='SAVE_ARMY_TEMPLATE'){c.armyTemplates??=[];if(c.armyTemplates.length>=12&&!c.armyTemplates.some(t=>t.id===command.templateId))throw Error('Не более 12 собственных шаблонов');c.armyTemplates=c.armyTemplates.filter(t=>t.id!==command.templateId);c.armyTemplates.push({id:command.templateId,name:command.name.trim(),weights:{...command.weights}});}
+      else if(command.type==='TRANSFER_REGIMENT')transferRegiment(next,c.id,command.fromArmyId,command.toArmyId,command.unitType,command.troops);
+      else {const a=next.armies.find(a=>a.id===command.armyId&&a.ownerId===c.id);if(!a)throw Error('Армия недоступна');a.name=command.name.trim();const q=next.armyFormations?.find(q=>q.armyId===a.id);if(q)q.name=a.name;}
+      recalcCountryStats(next);return next;
+    }
     case 'DECLARE_WAR_GOAL':case 'APPOINT_ADVISER':case 'VASSAL_POLICY':case 'RESPOND_INTEGRATION':case 'SET_TUTORIAL_STEP':{
       if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const c=countryFor(next,p.countryId);
       if(command.type==='DECLARE_WAR_GOAL')declareGoalWar(next,c.id,command.targetId,command.goal,command.provinceIds);
@@ -405,7 +416,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       recalcCountryStats(next); return next;
     }
     case 'ADVANCE_DAY': {
-      if(next.phase!=='running'||next.speed===0)return next;const monthly=advanceDate(next);advanceArmyOrders(next,resolveMovement,true);dailyMilitary(next);periodicMilitaryAI(next);
+      if(next.phase!=='running'||next.speed===0)return next;const monthly=advanceDate(next);processArmyFormations(next);advanceArmyOrders(next,resolveMovement,true);dailyMilitary(next);periodicMilitaryAI(next);
       return monthly?applyCoreCommand(next,{type:'ADVANCE_TICK'},true,true):next;
     }
     case 'ADVANCE_TICK': {

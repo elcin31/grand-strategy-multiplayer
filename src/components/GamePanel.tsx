@@ -1,3 +1,4 @@
+import {ArmyList} from './ArmyList';
 import {HistoricalIllustration} from './HistoricalIllustration';
 import {governmentScene211,religionScene211} from '../art/curation';
 import {AudioSettings} from './AudioSettings';
@@ -37,6 +38,7 @@ import { RELIGIONS, RELIGION_IDS, RELIGION_CHANGE_COST, RELIGION_STABILITY_COST,
 import { GOVERNMENT_CHANGE_COST, GOVERNMENT_COOLDOWN_TICKS, GOVERNMENT_STABILITY_COST, GOVERNMENT_TYPES, governmentModifiers } from '../../supabase/functions/_shared/governmentSystem';
 
 interface GamePanelProps {
+  onCreateArmy?:()=>void;
   onOpenPeace?:(id:string)=>void;
   diplomacyCountryId?:string|null;
   onSelectArmy?:(id:string,province:string)=>void;
@@ -54,7 +56,7 @@ interface GamePanelProps {
 const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).toFixed(1)}M` : value >= 1_000 ? `${Math.round(value / 1_000)}K` : String(value);
 const currency = (value: number) => `${value < 0 ? '−' : ''}$${Math.abs(value) >= 1000 ? (Math.abs(value)/1000).toFixed(1)+'B' : Math.abs(value).toFixed(3).replace(/\.?0+$/, '')+'M'}`;
 
-export function GamePanel({ onOpenPeace,diplomacyCountryId,onSelectArmy,onDeselectArmy,focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
+export function GamePanel({ onCreateArmy,onOpenPeace,diplomacyCountryId,onSelectArmy,onDeselectArmy,focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
   const [page,setPage]=useState('Обзор');
   const tabs=section==='Government'?['Обзор','Законы','Реформы','Советники','Внутренняя политика']:section==='Economy'?['Обзор','Производство','Ресурсы и торговля']:section==='Diplomacy'?['Обзор','Войны и мир']:section==='Military'?['Обзор','Сражения и осады']:section==='Religion'?['Обзор','Вероисповедание']:[];
   const tabbar=tabs.length?<PanelTabs tabs={tabs} value={page} onChange={setPage}/>:null;
@@ -91,7 +93,7 @@ export function GamePanel({ onOpenPeace,diplomacyCountryId,onSelectArmy,onDesele
   const economicActionsEnabled = state.phase === 'running' || state.phase === 'paused';
 
   if(section==='Audio')return <AudioSettings/>;
-  if(section==='Context'&&focusedArmyId&&selected)return <MilitaryPanel state={state} playerId={playerId} onCommand={onCommand} province={selected} army={state.armies.find(a=>a.id===focusedArmyId)??null}/>;
+  if(section==='Context'&&focusedArmyId&&selected)return <MilitaryPanel onCreateArmy={onCreateArmy} state={state} playerId={playerId} onCommand={onCommand} province={selected} army={state.armies.find(a=>a.id===focusedArmyId)??null}/>;
   if(section==='Government'&&page==='Советники')return <>{tabbar}<StrategyCouncil state={state} playerId={playerId} onCommand={onCommand}/></>;
   if(section==='Government'&&page==='Реформы')return <>{tabbar}<PoliticalDecisionsPanel state={state} playerId={playerId} onCommand={onCommand}/></>;
   if(section==='Government'&&page==='Внутренняя политика')return <>{tabbar}<StabilityPanel initialOpen state={state} playerId={playerId} onCommand={onCommand}/></>;
@@ -220,7 +222,7 @@ export function GamePanel({ onOpenPeace,diplomacyCountryId,onSelectArmy,onDesele
       {section==='Technology'&&<StrategyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} />}
       {section==='Focus'&&<NationalFocusPanel state={state} playerId={playerId} onCommand={onCommand}/>}
 
-      {section==='Military'&&<View style={styles.card}><Text style={styles.eyebrow}>АРМИИ · {compact(nation.army)}</Text>{state.armies.filter(a=>a.ownerId===countryId).map((a,i)=><Pressable key={a.id} accessibilityRole="button" accessibilityLabel={'Выбрать армию '+(i+1)} style={styles.secondaryButton} onPress={()=>onSelectArmy?.(a.id,a.provinceId)}><Text style={styles.secondaryText}>{state.provinces.find(p=>p.id===a.provinceId)?.name} · {compact(a.troops)}</Text><Text style={styles.hint}>Мораль {a.morale?.toFixed(0)} · организация {a.organization?.toFixed(0)}</Text></Pressable>)}</View>}
+      {section==='Military'&&<ArmyList state={state} owner={countryId} playerId={playerId} onCommand={onCommand} onSelect={onSelectArmy} onCreate={onCreateArmy}/>}
       {section==='Context'&&<View style={styles.card}>
         <Text style={styles.eyebrow}>КОМАНДОВАНИЕ</Text>
         {!selected ? (
@@ -276,7 +278,7 @@ export function GamePanel({ onOpenPeace,diplomacyCountryId,onSelectArmy,onDesele
               </View>}
             </>}
 
-            {state.dataset && <MilitaryPanel state={state} playerId={playerId} onCommand={onCommand} province={selected} army={state.armies.find(a=>a.id===focusedArmyId&&a.provinceId===selected.id)??primaryArmy} />}
+            {state.dataset && <MilitaryPanel onCreateArmy={onCreateArmy} state={state} playerId={playerId} onCommand={onCommand} province={selected} army={state.armies.find(a=>a.id===focusedArmyId&&a.provinceId===selected.id)??primaryArmy} />}
             {isOwnProvince && !selected.rebellion && (
               <View style={styles.recruitRow}>
                 <Pressable style={styles.primaryButton} onPress={() => onCommand({ type: 'RECRUIT', playerId, provinceId: selected.id, troops: 10_000 })}>

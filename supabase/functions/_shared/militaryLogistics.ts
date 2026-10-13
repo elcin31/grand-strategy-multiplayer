@@ -12,6 +12,7 @@ export interface ReinforcementQuote {troops:number;cost:number;parts:Partial<Rec
 export function reinforcementQuote(s:GameState,a:Army):ReinforcementQuote {
   const c=s.countries[a.ownerId]!;
   const empty=(reason:string):ReinforcementQuote=>({troops:0,cost:0,parts:{},reason});
+  if(a.formationId)return empty('Армия ещё формируется');
   if(!s.dataset||!['running','paused'].includes(s.phase))return empty('Нужна начатая кампания');
   const template=a.template??armyParts(a),target=compositionTotal(template),missing=target-a.troops;
   if(missing<=0)return empty('Штат укомплектован');

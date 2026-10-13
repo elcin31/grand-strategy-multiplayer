@@ -51,6 +51,7 @@ export function initializeMilitary(state: GameState): void {
 export function assignCommander(state: GameState,countryId: string,armyId: string,commanderId: string): void {
   const army=state.armies.find(a=>a.id===armyId), commander=state.commanders?.[commanderId];
   if(!army || army.ownerId!==countryId || !commander || commander.countryId!==countryId)throw new Error('Армия или командир недоступны');
+  if(army.formationId||state.armyFormations?.some(q=>q.commanderId===commanderId))throw Error('Командир или армия ещё в формировании');
   if(state.armies.some(a=>a.id!==armyId && a.commanderId===commanderId))throw new Error('Командир уже назначен');
   army.commanderId=commanderId;
 }

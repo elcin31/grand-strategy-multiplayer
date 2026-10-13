@@ -1,3 +1,4 @@
+import {canEnterTerritory} from './diplomacy2System.ts';
 import {provinceBuildingModifiers} from './buildingSystem.ts';
 import type {Army,GameState,Province,BattleEvent} from './gameTypes.ts';
 import {armyParts,takeArmyLosses,initializeArmyComposition} from './armyComposition.ts';
@@ -18,13 +19,21 @@ export function armyFormation(a:Army){const parts=armyParts(a),rows={Front:0,Rea
  return {...rows,attack:(a.formation==='Assault'?1.12:a.formation==='Defensive'?.9:1)*(covered?1:0.7)*(rows.Rear&&covered?1.08:1),defense:a.formation==='Defensive'?1.16:a.formation==='Assault'?.9:1,speed:a.formation==='Mobile'?1.2:a.formation==='Defensive'?.85:1};}
 const provinceIndexes=new WeakMap<GameState['provinces'],Map<string,Province>>();
 function provinceIndex(s:GameState){let index=provinceIndexes.get(s.provinces);if(!index){index=new Map(s.provinces.map(p=>[p.id,p]));provinceIndexes.set(s.provinces,index);}return index;}
-export function armyTravelDays(s:GameState,a:Army,p:Province):number{
+export function armyTravelInfo(s:GameState,a:Army,p:Province):{days:number;reasons:string[]}{
  const parts=armyParts(a),speed=UNIT_TYPES.reduce((n,t)=>n+(parts[t]??0)*UNITS[t].speed,0)/Math.max(1,a.troops);
  const origin=provinceIndex(s).get(a.provinceId),dx=origin?Math.abs(p.x+p.width/2-origin.x-origin.width/2):22,dy=origin?p.y+p.height/2-origin.y-origin.height/2:0;
- const distance=Math.max(.6,Math.min(2.4,Math.hypot(Math.min(dx,Math.abs(1440-dx)),dy)/22));
- const terrain=p.terrain==='mountain'?1.6:p.terrain==='forest'||p.terrain==='desert'?1.3:1,roads=1+(p.buildings?.Infrastructure??0)*.1;
- return Math.max(1,Math.ceil(1.7*distance*terrain/(Math.max(.4,speed)*roads*armyFormation(a).speed)*(a.order?.redeploy?.65:1)*(1+Math.max(0,50-(a.supply??100))/100)));
+ const distance=Math.max(.65,Math.min(3.2,Math.hypot(Math.min(dx,Math.abs(1440-dx)),dy)/28));
+ const terrain=p.terrain==='mountain'?1.5:p.terrain==='forest'?1.2:p.terrain==='desert'?1.25:1,roads=1+(p.buildings?.Infrastructure??0)*.14+(p.buildings?.RailHub??0)*.1;
+ const supply=1+Math.max(0,55-(a.supply??100))/80,doctrine=s.countries[a.ownerId]?.militaryDoctrine==='Mobile'?1.15:1;
+ const redeploy=!!a.order?.redeploy&&redeploymentStepAllowed(s,a,p),reasons:string[]=[];
+ if(terrain>1)reasons.push(p.terrain==='mountain'?'Горный перевал':p.terrain==='forest'?'Лесная местность':'Пустыня');if(speed<1)reasons.push('Медленные части в составе');if(supply>1)reasons.push('Недостаточное снабжение');if(a.formation==='Defensive')reasons.push('Оборонительное построение');if(distance>1.8)reasons.push('Большое расстояние');
+ if(a.order?.redeploy&&!redeploy)reasons.push('Переброска ограничена инфраструктурой или фронтом');
+ return {days:Math.max(1,Math.ceil(.95*distance*terrain*supply/(Math.max(.4,speed)*roads*armyFormation(a).speed*doctrine)*(redeploy?.55:1))),reasons};
 }
+export function redeploymentStepAllowed(s:GameState,a:Army,p:Province):boolean{
+ const origin=provinceIndex(s).get(a.provinceId);return !!origin&&!warBetween(s,a.ownerId,p.controllerId??p.ownerId)&&canEnterTerritory(s,a.ownerId,p.controllerId??p.ownerId)&&(origin.buildings?.Infrastructure??0)>=1&&(p.buildings?.Infrastructure??0)>=1&&(a.supply??100)>=50&&!s.armies.some(e=>e.provinceId===p.id&&warBetween(s,a.ownerId,e.ownerId));
+}
+export function armyTravelDays(s:GameState,a:Army,p:Province):number{return armyTravelInfo(s,a,p).days;}
 export function armyETA(s:GameState,a:Army):number{const provinces=provinceIndex(s);let from=a.provinceId,total=0;for(const id of a.order?.route??[]){const p=provinces.get(id);if(!p)continue;total+=armyTravelDays(s,{...a,provinceId:from},p);from=id;}return Math.max(0,total-(a.order?.travelProgress??0));}
 export function siegeForecast(s:GameState,x:Siege){const p=provinceIndex(s).get(x.provinceId)!,armies=s.armies.filter(a=>x.armyIds.includes(a.id)&&a.provinceId===p.id&&a.troops>0),supply=siegeSupply(s,x.attackerId,p),troops=armies.reduce((n,a)=>n+a.troops,0);
  const siegeTroops=armies.reduce((n,a)=>n+(armyParts(a).SiegeTrain??0)+(armyParts(a).Artillery??0)*.6+(armyParts(a).RocketArtillery??0)*.7+(armyParts(a).Engineers??0)*.4,0);
@@ -95,14 +104,14 @@ export function dailyMilitary(s:GameState):void{
 }
 export function mergeArmies(s:GameState,owner:string,ids:string[]):void{
  const armies=ids.map(id=>s.armies.find(a=>a.id===id&&a.ownerId===owner));if(armies.some(a=>!a)||armies.length<2)throw Error('Выберите хотя бы две свои армии');const target=armies[0]!;
- if(armies.some(a=>a!.provinceId!==target.provinceId||armyInBattle(s,a!.id)||a!.order))throw Error('Объединяются неподвижные армии в одной провинции');const total=armies.reduce((n,a)=>n+a!.troops,0);target.experience=armies.reduce((n,a)=>n+a!.troops*(a!.experience??0),0)/total;
+ if(armies.some(a=>a!.provinceId!==target.provinceId||armyInBattle(s,a!.id)||a!.order||a!.formationId||s.sieges?.some(x=>x.armyIds.includes(a!.id))))throw Error('Объединяются неподвижные армии в одной провинции');const total=armies.reduce((n,a)=>n+a!.troops,0);target.experience=armies.reduce((n,a)=>n+a!.troops*(a!.experience??0),0)/total;
  const parts:NonNullable<Army['composition']>={},template:NonNullable<Army['template']>={};for(const a of armies)for(const t of UNIT_TYPES){parts[t]=(parts[t]??0)+(armyParts(a!)[t]??0);template[t]=(template[t]??0)+(a!.template?.[t]??armyParts(a!)[t]??0);}
  for(const t of UNIT_TYPES){if(!parts[t])delete parts[t];if(!template[t])delete template[t];}target.composition=parts;target.template=template;target.troops=total;target.morale=Math.min(...armies.map(a=>a!.morale??80));target.organization=Math.min(...armies.map(a=>a!.organization??80));s.armies=s.armies.filter(a=>a.id===target.id||!ids.includes(a.id));for(const group of s.armyGroups??[])group.armyIds=group.armyIds.filter(id=>!ids.includes(id)||id===target.id);invalidateSupply(s);
 }
 export function splitArmy(s:GameState,owner:string,id:string,percent:number):void{
- const a=s.armies.find(a=>a.id===id&&a.ownerId===owner);if(!a||a.troops<2000||a.order||armyInBattle(s,id))throw Error('Разделение недоступно движущейся или сражающейся армии');const composition:NonNullable<Army['composition']>={},template:NonNullable<Army['template']>={};let troops=0;
+ const a=s.armies.find(a=>a.id===id&&a.ownerId===owner);if(!a||a.troops<2000||a.order||a.formationId||s.sieges?.some(x=>x.armyIds.includes(id))||armyInBattle(s,id))throw Error('Разделение недоступно движущейся или сражающейся армии');const composition:NonNullable<Army['composition']>={},template:NonNullable<Army['template']>={};let troops=0;
  for(const t of UNIT_TYPES){const n=Math.floor((armyParts(a)[t]??0)*percent/100),target=Math.floor((a.template?.[t]??0)*percent/100);if(n){composition[t]=n;troops+=n;a.composition![t]!-=n;if(!a.composition![t])delete a.composition![t];}if(target){template[t]=target;a.template![t]!-=target;if(!a.template![t])delete a.template![t];}}
- if(!troops)throw Error('Слишком мало солдат');a.troops-=troops;const next:Army={...a,id:militaryEntity(s,'army'),troops,composition,template};delete next.commanderId;delete next.escortArmyId;initializeArmyComposition(next);s.armies.push(next);invalidateSupply(s);
+ if(!troops)throw Error('Слишком мало солдат');a.troops-=troops;const next:Army={...a,name:(a.name??'Армия').slice(0,42)+' — II',id:militaryEntity(s,'army'),troops,composition,template};delete next.commanderId;delete next.escortArmyId;delete next.militaryPlan;initializeArmyComposition(next);s.armies.push(next);invalidateSupply(s);
 }
 export function initializeMilitary3(s:GameState,migrate:boolean):void{
  if(migrate){s.activeBattles??=[];s.sieges??=[];s.armyGroups??=[];}

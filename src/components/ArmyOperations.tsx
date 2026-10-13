@@ -2,15 +2,17 @@ import {AudioPressable as Pressable} from './AudioPressable';
 import {useState} from 'react';
 import {Text, View, ScrollView} from 'react-native';
 import type {Army,GameState,GameCommand} from '../types/game';
-import {armyETA,armyFormation,type Formation} from '../../supabase/functions/_shared/military3System';
+import {armyETA,armyFormation,armyTravelInfo,type Formation} from '../../supabase/functions/_shared/military3System';
 import {dateAfterDays} from '../../supabase/functions/_shared/calendarSystem';
 import {styles} from './strategyStyles';
 const labels:Record<Formation,string>={Balanced:'Сбалансированная',Assault:'Штурмовая',Defensive:'Оборонительная',Mobile:'Манёвренная'};
 export function ArmyOperations({state,army,playerId,onCommand,view='Приказы'}:{state:GameState;army:Army;playerId:string;onCommand:(c:GameCommand)=>void;view?:'Приказы'|'Построение'}){
  const [waypoints,setWaypoints]=useState<string[]>([]),rows=armyFormation(army),others=state.armies.filter(a=>a.id!==army.id&&a.ownerId===army.ownerId&&a.provinceId===army.provinceId&&!a.order);
+ const next=state.provinces.find(p=>p.id===army.order?.route[0]),travel=next?armyTravelInfo(state,army,next):null;
  const from=waypoints.at(-1)??army.provinceId,province=state.provinces.find(p=>p.id===from);
  return <View style={styles.card}>
  <Text style={styles.title}>{view.toUpperCase()}</Text>{army.order&&<Text style={styles.text}>Прибытие: {dateAfterDays(state,armyETA(state,army))} · {armyETA(state,army)} дн. · {army.order.redeploy?'переброска':'марш'}</Text>}
+ {travel&&<Text style={styles.text}>Следующий переход: {travel.days} дн. · {travel.reasons.join(', ')||'Обычный темп марша'} · снабжение {(army.supply??100).toFixed(0)}%</Text>}
  {view==='Построение'&&<><Text style={styles.text}>Передняя линия {rows.Front.toLocaleString()} · задняя {rows.Rear.toLocaleString()} · фланги {rows.Flank.toLocaleString()} · поддержка {rows.Support.toLocaleString()}</Text>
  <ScrollView horizontal contentContainerStyle={styles.row}>{(Object.keys(labels) as Formation[]).map(formation=><Pressable key={formation} accessibilityRole="button" accessibilityState={{selected:(army.formation??'Balanced')===formation}} style={styles.button} onPress={()=>onCommand({type:'SET_FORMATION',playerId,armyId:army.id,formation})}><Text style={styles.text}>{labels[formation]}</Text></Pressable>)}</ScrollView>
  </>}
