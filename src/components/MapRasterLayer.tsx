@@ -28,7 +28,7 @@ function drawTile(tile:RasterTile,d:Drawing,canvas:SkCanvas){
     const paints=new Map<string,ReturnType<typeof Skia.Paint>>();
     const paint=(color:string,opacity=1,stroke=0)=>{
       const key=color+'|'+opacity+'|'+stroke;let p=paints.get(key);if(p)return p;
-      p=own(Skia.Paint());p.setAntiAlias(true);p.setColor(Skia.Color(color));p.setAlphaf(opacity);if(stroke){p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(stroke);}paints.set(key,p);return p;
+      p=own(Skia.Paint());p.setAntiAlias(true);p.setColor(Skia.Color(color));p.setAlphaf(opacity);p.setBlendMode(BlendMode.Multiply);if(stroke){p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(stroke);}paints.set(key,p);return p;
     };
     const grouped=new Map<string,SkPath>();
     for(const f of tile.features){const color=f.provinceId?d.colors.get(f.provinceId)??'#adab88':'#c6c0a4';let group=grouped.get(color);if(!group){group=own(Skia.Path.Make());group.setFillType(1);grouped.set(color,group);}appendNativePath(f,d,group);}
@@ -90,7 +90,7 @@ function tileImage(tile:RasterTile,drawing:Drawing,key:string,picture:SkPicture,
 type Work={run:()=>void;cancelled:boolean};const queue:Work[]=[];let timer:ReturnType<typeof setTimeout>|undefined;
 function drain(){timer=undefined;const work=queue.shift();if(work&&!work.cancelled)work.run();if(queue.length)timer=setTimeout(drain,8);}
 /** At most one bounded surface per slice; touch transforms remain on UI thread. */
-function scheduleRaster(run:()=>void){const work={run,cancelled:false};queue.push(work);if(!timer)timer=setTimeout(drain,8);return()=>{work.cancelled=true;const index=queue.indexOf(work);if(index>=0)queue.splice(index,1);};}
+export function scheduleRaster(run:()=>void){const work={run,cancelled:false};queue.push(work);if(!timer)timer=setTimeout(drain,8);return()=>{work.cancelled=true;const index=queue.indexOf(work);if(index>=0)queue.splice(index,1);};}
 const RasterTileNode=memo(function RasterTileNode({tile,drawing}:{tile:RasterTile;drawing:Drawing}){
   const key=tileKey(tile,drawing);
   const [ready,setReady]=useState<{key:string;image:SkImage}|null>(()=>{const image=drawing.resources.images.get(key);return image?{key,image}:null;});
@@ -117,7 +117,10 @@ const RasterTileNode=memo(function RasterTileNode({tile,drawing}:{tile:RasterTil
     if(cached){
       const rectangles=rasterImageDraw(tile,cached.width(),cached.height());
       const {source:s,destination:d}=rectangles;
-      canvas.drawImageRectOptions(cached,Skia.XYWHRect(s.x,s.y,s.width,s.height),Skia.XYWHRect(d.x,d.y,d.width,d.height),FilterMode.Linear,MipmapMode.None,own(Skia.Paint()));
+      // Picture nodes replay their recorded paint; a parent Group paint does
+      // not recolour a Picture. Bake multiply into this tiny image command.
+      const paint=own(Skia.Paint());paint.setBlendMode(BlendMode.Multiply);
+      canvas.drawImageRectOptions(cached,Skia.XYWHRect(s.x,s.y,s.width,s.height),Skia.XYWHRect(d.x,d.y,d.width,d.height),FilterMode.Linear,MipmapMode.None,paint);
     }else canvas.drawPicture(picture!);
     return recorder.finishRecordingAsPicture();
   }),[tile,cached,picture]);

@@ -21,6 +21,13 @@ export const MapOperationsLayer=memo(function MapOperationsLayer({state,scene,vi
       c.drawPath(hatch,p);c.restore();
     }
     p.setAlphaf(1);
+    if(military)for(const group of (state.armyGroups??[]).filter(g=>g.objective==='Defend').slice(0,12)){
+      p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(1.4/zoom);p.setColor(Skia.Color('#7cbdcc'));p.setPathEffect(Skia.PathEffect.MakeDash([4/zoom,3/zoom],0));
+      for(const id of (group.frontProvinceIds??[group.targetProvinceId]).filter(id=>visible.has(id)).slice(0,24)){
+        const f=scene.provinceGeometry.get(id);if(f)c.drawPath(own(Skia.Path.MakeFromSVGString(featurePath(f))??Skia.Path.Make()),p);
+      }
+      p.setPathEffect(null);
+    }
     const orders=mapOrders(state,scene,visible,armyId,countryId,GRAPHICS[preset].routeBudget).filter(o=>military||o.selected);
     for(const order of orders){
       const path=own(Skia.Path.Make());order.points.forEach((q,i)=>i?path.lineTo(q.x,q.y):path.moveTo(q.x,q.y));

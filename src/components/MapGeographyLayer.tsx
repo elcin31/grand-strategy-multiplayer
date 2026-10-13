@@ -10,6 +10,7 @@ import {RasterCache} from '../map/rasterTiles';
 import {withNativeRecordingObjects} from '../map/nativeRecording';
 import type {MapScene} from '../map/worldScene';
 import type {GraphicsPreset,MapMode} from '../map/settings';
+import {scheduleRaster} from './MapRasterLayer';
 interface Vector {id:string;rank:number;type:string;coordinates:number[][]|number[][][]|number[][][][];bounds:Bounds}
 const geography=require('../map/geography22.json') as {rivers:Vector[];lakes:Vector[]};
 const masks=new WeakMap<MapScene,Map<string,SkPath>>();
@@ -52,16 +53,20 @@ function loadAtlas(source:number,resources:AtlasResources){
   }).catch(()=>null).finally(()=>resources.pending.delete(source));
   resources.pending.set(source,promise);return promise;
 }
-function useAtlas(source:number,resources:AtlasResources){
-  const [ready,setReady]=useState<{source:number;image:SkImage}|null>(()=>{const image=resources.images.get(String(source));return image?{source,image}:null;});
-  useEffect(()=>{let alive=true;void loadAtlas(source,resources).then(image=>{if(alive&&image)setReady({source,image});});return()=>{alive=false;};},[source,resources]);
+function useAtlas(source:number|null,resources:AtlasResources){
+  const [ready,setReady]=useState<{source:number;image:SkImage}|null>(()=>{if(source===null)return null;const image=resources.images.get(String(source));return image?{source,image}:null;});
+  useEffect(()=>{if(source===null){setReady(null);return;}let alive=true;void loadAtlas(source,resources).then(image=>{if(alive&&image)setReady({source,image});});return()=>{alive=false;};},[source,resources]);
   return ready?.source===source?ready.image:resources.images.get(String(source))??null;
 }
 const GeographyTile=memo(function GeographyTile({scene,tile,surface,resources,preset}:{scene:MapScene;tile:AtlasTile;surface:'terrain'|'relief';resources:AtlasResources;preset:GraphicsPreset}){
-  const image=useAtlas(tile[surface],resources);
+  const key='geography|'+tile.key+'|'+surface+'|'+preset;
+  const [ready,setReady]=useState<{key:string;image:SkImage}|null>(()=>{const image=resources.images.get(key);return image?{key,image}:null;});
+  const composed=ready?.key===key?ready.image:resources.images.get(key);
+  const image=useAtlas(composed?null:tile[surface],resources);
   const picture=useMemo(()=>withNativeRecordingObjects(own=>{
     const b=tile.bounds,i=tile.imageBounds,recorder=own(Skia.PictureRecorder()),c=recorder.beginRecording(Skia.XYWHRect(b.left,b.top,b.right-b.left,b.bottom-b.top));
     c.clipRect(Skia.XYWHRect(b.left,b.top,b.right-b.left,b.bottom-b.top),ClipOp.Intersect,false);
+    if(composed){c.drawImageRectOptions(composed,Skia.XYWHRect(0,0,composed.width(),composed.height()),Skia.XYWHRect(b.left,b.top,b.right-b.left,b.bottom-b.top),FilterMode.Linear,MipmapMode.None,own(Skia.Paint()));return recorder.finishRecordingAsPicture();}
     const mask=landMask(scene,tile),paint=own(Skia.Paint());paint.setAntiAlias(true);
     // A narrow coastal shelf follows authoritative geometry at every scale.
     paint.setColor(Skia.Color('#31596a'));paint.setStyle(PaintStyle.Stroke);paint.setStrokeWidth(tile.level==='world'?1.2:.65);c.drawPath(mask,paint);
@@ -76,7 +81,15 @@ const GeographyTile=memo(function GeographyTile({scene,tile,surface,resources,pr
       for(const river of geography.rivers)if(river.rank<=rank&&overlaps(river.bounds,b))c.drawPath(vectorPath(river),paint);
     }
     c.restore();return recorder.finishRecordingAsPicture();
-  }),[scene,tile,image,surface,preset]);
+  }),[scene,tile,image,surface,preset,composed]);
+  useEffect(()=>{
+    if(composed||!image)return;
+    return scheduleRaster(()=>{
+      const b=tile.bounds,scale=tile.level==='world'?1:tile.level==='region'?3:6,w=Math.ceil((b.right-b.left)*scale),h=Math.ceil((b.bottom-b.top)*scale);
+      const raster=Skia.Surface.Make(w,h);if(!raster)return;
+      try{const c=raster.getCanvas();c.clear(Skia.Color('transparent'));c.translate(-b.left*scale,-b.top*scale);c.scale(scale,scale);c.drawPicture(picture);raster.flush();const atlas=raster.makeImageSnapshot();resources.images.delete(String(tile[surface]));resources.images.set(key,atlas,w*h*4);setReady({key,image:atlas});}finally{raster.dispose();}
+    });
+  },[composed,image,picture,tile,surface,key,resources]);
   return <Picture picture={picture}/>;
 });
 const Ocean=memo(function Ocean({resources}:{resources:AtlasResources}){

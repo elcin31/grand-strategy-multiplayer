@@ -44,6 +44,23 @@ def control(label,name,scroll=False,tap_control=True):
             adb('shell','input','swipe',x,int(box[1]+h*.82),x,int(box[1]+h*.22),350)
         time.sleep(1)
     raise AssertionError('Missing enabled control: '+label)
+def horizontal_control(label,name):
+    for attempt in range(6):
+        tree=root(name+'-'+str(attempt));node=find_enabled_control(tree,label)
+        if node is not None:
+            box=visible_bounds(tree,node)
+            if box is not None and box[2]-box[0]>=25:
+                tap(node,box);return
+        bars=[]
+        for n in tree.iter('node'):
+            b=list(map(int,re.findall(r'\d+',n.get('bounds',''))))
+            if n.get('scrollable')=='true' and len(b)==4 and b[2]-b[0]>3*(b[3]-b[1]):bars.append(b)
+        assert bars,'Missing horizontal filter/tab strip'
+        b=max(bars,key=lambda q:q[2]-q[0]);y=(b[1]+b[3])//2
+        direction=-1 if attempt<3 else 1
+        left=int(b[0]+(b[2]-b[0])*.2);right=int(b[0]+(b[2]-b[0])*.8)
+        adb('shell','input','swipe',right if direction<0 else left,y,left if direction<0 else right,y,300);time.sleep(.3)
+    raise AssertionError('Missing horizontal control: '+label)
 def capture(name):
     with (OUT/(name+'.png')).open('wb') as f:subprocess.run(['adb','exec-out','screencap','-p'],stdout=f,check=True)
 def navigation(label,name,direction='up'):
@@ -72,16 +89,25 @@ try:
     adb('install','-r',sys.argv[1]);adb('logcat','-c');adb('shell','settings','put','system','accelerometer_rotation','0');adb('shell','settings','put','system','user_rotation','1');launch();capture('01-menu')
     control('Одиночная игра','single');time.sleep(12);control('СТРАНЫ · 195','countries');tree=root('search');node=find_enabled_control(tree,'Поиск государства');assert node is not None;tap(node);adb('shell','input','text','Germany');time.sleep(1);adb('shell','input','keyevent','4');time.sleep(1);control('Государство: Германия','germany');time.sleep(1);control('Играть за эту страну','choose');control('Я ГОТОВ','ready');control('Начать игру','start');time.sleep(3)
     control('Пауза','pause');tree=root('hud');assert find_enabled_control(tree,'Выбрать скорость кампании') is not None;capture('02-campaign');assert_map_painted(OUT/'02-campaign.png')
+    control('Режимы и настройки карты','balanced-settings');control('Balanced','balanced');control('Закрыть ×','balanced-close')
     # Brief screenshots of all five approved map views and economic filters.
     for mode,name in [('Рельеф','terrain'),('Армии','military'),('Провинции','province'),('Экономика','economic'),('Политическая','political')]:
         control('Режимы и настройки карты','settings-'+name);control('Режим '+mode,'mode-'+name);time.sleep(1.5);capture('map22-'+name);assert_map_painted(OUT/('map22-'+name+'.png'))
         if mode=='Экономика':
             for filter in ['Промышленность','Торговля','Инфраструктура','Развитие','Производство','Ресурсы']:
-                control('Фильтр '+filter,'filter-'+filter);time.sleep(.3)
+                horizontal_control('Фильтр '+filter,'filter-'+filter);time.sleep(.3)
     control('Приблизить','zoom-in');time.sleep(.5);capture('map22-close');control('Отдалить','zoom-out');time.sleep(.5)
     dimensions=Image.open(OUT/'02-campaign.png').size
     adb('shell','input','swipe',int(dimensions[0]*.58),int(dimensions[1]*.58),int(dimensions[0]*.52),int(dimensions[1]*.56),350);time.sleep(.5)
     control('К выбранному','refocus');time.sleep(.5)
+    tree=root('province-hit');node=find_enabled_control(tree,'Карта Dominion');assert node is not None
+    b=visible_bounds(tree,node);assert b is not None;x,y=(b[0]+b[2])//2,(b[1]+b[3])//2
+    adb('shell','input','swipe',x,y,x,y,750);time.sleep(.7)
+    tree=root('province-window');assert any('⠿ Провинция' in n.get('text','') for n in tree.iter('node')),'Province window did not open'
+    capture('map22-province-window')
+    for tab in ['Города','Инфраструктура','Ресурсы','Строительство','Военное положение','Обзор']:
+        horizontal_control(tab,'province-tab-'+tab);time.sleep(.3)
+    control('Закрыть окно','close-province')
     navigation('Раздел Правительство','government','down');tree=root('window-before');title=next(n for n in tree.iter('node') if '⠿ Правительство' in n.get('text',''));before=title.get('bounds');box=list(map(int,re.findall(r'\d+',before)));x,y=(box[0]+box[2])//2,(box[1]+box[3])//2
     adb('shell','input','swipe',x,y,x+25,y+40,450);time.sleep(.5);tree=root('window-after');title=next(n for n in tree.iter('node') if '⠿ Правительство' in n.get('text',''));assert title.get('bounds')!=before,'Window did not move'
     control('Советники','advisers');tree=root('scroll');containers=[list(map(int,re.findall(r'\d+',n.get('bounds','')))) for n in tree.iter('node') if n.get('scrollable')=='true'];box=max((b for b in containers if len(b)==4 and b[3]-b[1]>80),key=lambda b:b[0]);x=(box[0]+box[2])//2;adb('shell','input','swipe',x,box[3]-20,x,box[1]+30,350);control('Закрыть окно','close-window')
@@ -93,7 +119,7 @@ try:
     control('Сохранить кампанию','save');time.sleep(2)
     launch();control('Продолжить','continue');time.sleep(12);control('Настройки звука','restored-audio');tree=root('restored-muted');assert any(n.get('checked')=='true' and 'Отключить звук' in n.get('content-desc','') for n in tree.iter('node')),'Audio preference not restored';control('Закрыть окно','close-restored-audio');tree=root('restored');assert find_enabled_control(tree,'Выбрать скорость кампании') is not None;capture('03-restored');assert_map_painted(OUT/'03-restored.png')
     logs=adb('logcat','-d');(OUT/'logcat.txt').write_text(logs);assert_no_game_fatal(logs,adb('shell','pidof',PACKAGE).strip());assert not re.search(r'TypeError:|ReferenceError:|JavascriptException|Cannot read property|undefined is not',logs),'Runtime JS error'
-    (OUT/'result.json').write_text(json.dumps({'releaseColdLaunch':True,'campaignStarted':True,'newHUD':True,'armySplit':True,'armyOrder':True,'armyMovement':True,'deselectPreservesOrder':True,'centralWindowOpenDragScrollClose':True,'mute':True,'saveRestart':True,'mapPainted':True,'noFatalLogs':True,'mapModes':['Political','Terrain','Military','Province','Economy'],'economicFilters':True,'briefPanZoom':True,'soak':False},indent=2));print('PASS: standalone launch/HUD/map, draggable window, army split/order/move/deselect, mute and save/restart')
+    (OUT/'result.json').write_text(json.dumps({'releaseColdLaunch':True,'campaignStarted':True,'newHUD':True,'armySplit':True,'armyOrder':True,'armyMovement':True,'deselectPreservesOrder':True,'centralWindowOpenDragScrollClose':True,'mute':True,'saveRestart':True,'mapPainted':True,'noFatalLogs':True,'mapModes':['Political','Terrain','Military','Province','Economy'],'economicFilters':True,'briefPanZoom':True,'provinceSelectionAndSixTabs':True,'balanced':True,'soak':False},indent=2));print('PASS: standalone launch/HUD/map, draggable window, army split/order/move/deselect, mute and save/restart')
 finally:
     if not (OUT/'result.json').exists():
         try:capture('failure')

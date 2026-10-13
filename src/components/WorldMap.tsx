@@ -294,7 +294,7 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
         {<Rect x={0} y={0} width={viewport.width} height={viewport.height}><LinearGradient start={vec(0, 0)} end={vec(viewport.width, viewport.height)} colors={['#0b2332', '#153c50', '#0a2638']} /></Rect>}
         <Group matrix={matrix}>
           <MapGeographyLayer scene={scene} bounds={bounds} zoom={detailZoom} preset={preset} mode={mode}/>
-          {mode!=='Terrain'&&mode!=='Province'&&<Group blendMode="multiply"><MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={detailZoom} canPrewarm={canPrewarm}/></Group>}
+          {mode!=='Terrain'&&mode!=='Province'&&<MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={detailZoom} canPrewarm={canPrewarm}/>} 
           <MapBorderLayer scene={scene} owners={owners} bounds={bounds} zoom={detailZoom} preset={preset}/>
 
           {provinceSelection&&visible.filter(f=>peaceEligible.has(f.id)||peaceSelected.has(f.id)).map(f=><Group key={'peace-'+f.id}><Path path={paths.get(f.id)!} color={peaceSelected.has(f.id)?'#DABD6E':'#5BA68C'} opacity={peaceSelected.has(f.id)?.5:.2}/><Path path={paths.get(f.id)!} color={peaceSelected.has(f.id)?'#FFE1A0':'#87D1B2'} style="stroke" strokeWidth={selectionScale}/></Group>)}
