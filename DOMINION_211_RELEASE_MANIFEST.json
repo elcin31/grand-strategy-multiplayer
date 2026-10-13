@@ -1,0 +1,166 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "release": "DOMINION 2.1.1 PLAYTEST — WARFARE, INTERFACE, MULTIPLAYER & ART UPDATE",
+  "releaseTag": "v2.1.1-playtest.1",
+  "checkpointBranch": "dominion-2.1.1-warfare-interface-art",
+  "runtimeCommit": "f35f19100b8f6d715592006cb4b5114d9425c216",
+  "publicationCommit": "f9cf32bcc87c5fc0abc3ae52c498677342a8e888",
+  "publicationRunId": 38340766537,
+  "apk": {
+    "name": "Dominion-2.1.1-playtest.apk",
+    "bytes": 153480968,
+    "sha256": "8e80f2f634408f9599b7f8ecff2a9f95bd79cc6ad3a5afc93b66eaa69ebff786",
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "versionName": "2.1.1",
+    "versionCode": 12,
+    "configuration": "RELEASE",
+    "debuggable": false,
+    "standalone": true,
+    "landscape": true,
+    "microphonePermission": false,
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "embeddedHermesBytes": 11078268,
+    "embeddedHermesSha256": "65f0d43141c9c0756fd8e701431fb5bd10889e30b7360018955e114c3892449c",
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "correctDominionBackendVerified": true,
+    "versionedEndpointsEmbedded": true,
+    "zipCRCVerified": true
+  },
+  "downloadArchive": {
+    "name": "Dominion-2.1.1-playtest.zip",
+    "bytes": 70835414,
+    "sha256": "66ec3bb15b9bbc6be5c01d09c7b6fe9a8570b7d590ca3b1815407d9d2f53cc18",
+    "embeddedApkSha256": "8e80f2f634408f9599b7f8ecff2a9f95bd79cc6ad3a5afc93b66eaa69ebff786",
+    "assetId": 635735392,
+    "url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.1-playtest.1/Dominion-2.1.1-playtest.zip",
+    "publicByteMatch": true
+  },
+  "build": {
+    "runId": 38303305033,
+    "url": "https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/38303305033",
+    "conclusion": "cancelled",
+    "buildJobConclusion": "success",
+    "note": "Build and binary checks passed. The older queued smoke was cancelled; the corrected short smoke reused the identical APK."
+  },
+  "verification": {
+    "strictTypecheck": true,
+    "focusedTests": {
+      "tests": 59,
+      "passed": 59,
+      "failed": 0
+    },
+    "nativeRun": {
+      "runId": 38307593723,
+      "url": "https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/38307593723",
+      "sourceCommit": "f9cf32bcc87c5fc0abc3ae52c498677342a8e888",
+      "conclusion": "success",
+      "runtimeSourceEqualityChecked": true
+    },
+    "nativeSmoke": {
+      "releaseColdLaunch": true,
+      "campaignStarted": true,
+      "newHUD": true,
+      "armySplit": true,
+      "armyOrder": true,
+      "armyMovement": true,
+      "deselectPreservesOrder": true,
+      "centralWindowOpenDragScrollClose": true,
+      "mute": true,
+      "saveRestart": true,
+      "mapPainted": true,
+      "noFatalLogs": true,
+      "soak": false
+    },
+    "liveTwoClientMultiplayer": {
+      "roomId": "38820a81-0ea8-4455-98a8-ef5b28d0e3de",
+      "createJoin": true,
+      "countries": true,
+      "ready": true,
+      "start": true,
+      "twoAuthoritativeSnapshots": true,
+      "mapGeometryPreparedBoth": true,
+      "ordersBoth": true,
+      "sharedCalendar": true,
+      "reconnect": true,
+      "nativeMapRender": false,
+      "scenarioSource": "1b4e3ba7d9fe3f9b17b46374e2f341fbeccb37bc",
+      "protocol": 24,
+      "endpoints": [
+        "game-room-v211",
+        "game-command-v211"
+      ],
+      "scenarioDeploymentVersions": {
+        "game-room-v211": 1,
+        "game-command-v211": 1
+      },
+      "syntheticRoomCleaned": true,
+      "clients": "Two independent HttpTransport clients and separate session stores; authoritative snapshots and prepared map geometry, without native two-device rendering."
+    },
+    "artAndAudioPackaged": true,
+    "worldDataUnchangedFrom21": true
+  },
+  "server": {
+    "projectId": "dfjsnjxnyjspwugjguhq",
+    "sourceHead": "e94f597e1b72b3770b13283d9c2e932a5861a83a",
+    "workingTreeClean": true,
+    "note": "Deployed final committed Dominion 2.1.1 sources to the existing Dominion project. Custom player-session authentication, CAS and command receipts retained. v21 and original 2.0 endpoints preserved.",
+    "functions": [
+      {
+        "name": "game-room",
+        "entrypoint": "index.js",
+        "verifyJwt": false,
+        "bytes": 3013609,
+        "sha256": "f2162105aa7c785ce6e8078b40631c839142c655cf36ea15971195788e9ce327"
+      },
+      {
+        "name": "game-command",
+        "entrypoint": "index.js",
+        "verifyJwt": false,
+        "bytes": 2996260,
+        "sha256": "9f4373766f1af3adaa866c938de8c681856b38160d4d3996ee25f3c00a7f3773"
+      }
+    ],
+    "protocol": 24,
+    "endpointNames": [
+      "game-room-v211",
+      "game-command-v211"
+    ],
+    "sourceCommitted": true,
+    "deploymentVersions": {
+      "game-room-v211": 2,
+      "game-command-v211": 2
+    }
+  },
+  "art": {
+    "newPaintings": 100,
+    "newPaintingsBytes": 4417542,
+    "oldIllustrationsPreserved": true,
+    "manifest": "assets/art/dominion-2.1.1/art-manifest.json"
+  },
+  "audio": {
+    "originalEffects": 21,
+    "originalProceduralScores": 3,
+    "localAssets": 24,
+    "bytes": 2702410
+  },
+  "preservedReleases": [
+    "v2.0.0-playtest.1",
+    "v2.1.0-playtest.1"
+  ],
+  "knownLimitations": [
+    "Live multiplayer check used two independent HTTP clients and prepared map geometry, not two physical Android devices.",
+    "Short native smoke used one Android emulator; physical-device audio output and smoothness remain for user playtest.",
+    "Initial warfare and peace playtest balance."
+  ],
+  "publicationStatus": "PUBLISHED_VERIFIED",
+  "releaseId": 410983282,
+  "apkAssetId": 635735389,
+  "apkUrl": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.1-playtest.1/Dominion-2.1.1-playtest.apk",
+  "publicApkByteMatch": true,
+  "prior20And21AssetsPreserved": true
+}
