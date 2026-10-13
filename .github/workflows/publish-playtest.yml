@@ -622,7 +622,7 @@ jobs:
       - run: python -m pip install -r scripts/camera-profile-requirements.txt
       - name: Verify immutable release pixels, signature, bundle and native results
         run: |
-          cp release/launcher-icon-proof.json launcher-icon-proof.json
+          python -c "from pathlib import Path;Path('launcher-icon-proof.json').write_bytes(next(Path('release').rglob('launcher-icon-proof.json')).read_bytes())"
           python scripts/verify-release.py release/Dominion-2.2.1-performance-hotfix.apk > release/dominion221-integrity.txt
           python scripts/verify-map22.py release/Dominion-2.2.1-performance-hotfix.apk
           python scripts/verify-hotfix-assets.py release/Dominion-2.2.1-performance-hotfix.apk
