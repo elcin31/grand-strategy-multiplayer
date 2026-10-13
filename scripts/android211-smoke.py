@@ -25,12 +25,14 @@ def visible_bounds(tree,target):
 def tap(node,box=None):
     coords=box if box is not None else list(map(int,re.findall(r'\d+',node.get('bounds',''))));assert len(coords)==4
     x,y=(coords[0]+coords[2])//2,(coords[1]+coords[3])//2;adb('shell','input','swipe',x,y,x,y,100)
-def control(label,name,scroll=False):
+def control(label,name,scroll=False,tap_control=True):
     for attempt in range(7 if scroll else 3):
         tree=root(name+'-'+str(attempt));node=find_enabled_control(tree,label)
         if node is not None:
             box=visible_bounds(tree,node)
-            if box is not None:tap(node,box);return
+            if box is not None:
+                if tap_control:tap(node,box)
+                return node
         if scroll:
             containers=[]
             for n in tree.iter('node'):
@@ -50,7 +52,9 @@ def navigation(label,name,direction='up'):
         tree=root(name+'-'+str(attempt));node=find_enabled_control(tree,label)
         if node is not None:
             box=visible_bounds(tree,node)
-            if box is not None:tap(node,box);return
+            if box is not None:
+                if tap_control:tap(node,box)
+                return node
         rails=[]
         for n in tree.iter('node'):
             box=list(map(int,re.findall(r'\d+',n.get('bounds',''))))
@@ -73,7 +77,7 @@ try:
     navigation('Раздел Армия','army');control('Выбрать армию 1','army-first',True);control('Открыть окно армии','inspect');control('Приказы','orders',True);control('Разделить 50%','split',True);time.sleep(.5)
     control('Саксония','waypoint',True);control('Марш','march',True);time.sleep(.5);tree=root('ordered');assert any('Прибытие:' in n.get('text','') for n in tree.iter('node')),'Route confirmation missing'
     control('Закрыть окно','close-army');control('Снять выделение армии','deselect');control('Продолжить','resume');time.sleep(6);control('Пауза','pause-after-march')
-    navigation('Раздел Армия','army-moved');tree=root('moved');assert any('Саксония' in n.get('text','') for n in tree.iter('node')),'Army did not complete the short route';control('Закрыть окно','close-moved')
+    navigation('Раздел Армия','army-moved');control('Выбрать армию 1','reveal-moved-army',True,tap_control=False);tree=root('moved');assert any('Саксония' in n.get('text','') for n in tree.iter('node')),'Army did not complete the short route';control('Закрыть окно','close-moved')
     control('Настройки звука','audio');control('Отключить звук','mute');tree=root('muted');assert any(n.get('checked')=='true' and 'Отключить звук' in n.get('content-desc','') for n in tree.iter('node')),'Mute not confirmed';control('Закрыть окно','close-audio')
     control('Сохранить кампанию','save');time.sleep(2)
     launch();control('Продолжить','continue');time.sleep(12);control('Настройки звука','restored-audio');tree=root('restored-muted');assert any(n.get('checked')=='true' and 'Отключить звук' in n.get('content-desc','') for n in tree.iter('node')),'Audio preference not restored';control('Закрыть окно','close-restored-audio');tree=root('restored');assert find_enabled_control(tree,'Выбрать скорость кампании') is not None;capture('03-restored');assert_map_painted(OUT/'03-restored.png')
