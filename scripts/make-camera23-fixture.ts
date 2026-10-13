@@ -37,8 +37,9 @@ const german=state.armies.find(a=>a.ownerId==='germany')!,polish=state.armies.fi
 splitArmy(state,'germany',german.id,50);
 const reserve=state.armies.find(a=>a.ownerId==='germany'&&a.id!==german.id)!;
 const borders=state.provinces.filter(p=>p.ownerId==='poland'&&p.neighbors.some(id=>state.provinces.find(q=>q.id===id)?.ownerId==='germany'));
-assert.ok(borders.length>=2);
-const defended=borders[0]!,fort=borders[1]!;
+assert.ok(borders.length>=1);
+const defended=borders[0]!,fort=state.provinces.find(p=>p.ownerId==='poland'&&defended.neighbors.includes(p.id))!;
+assert.ok(fort);
 defended.controllerId='poland';polish.provinceId=defended.id;delete polish.order;
 german.provinceId=defended.neighbors.find(id=>state.provinces.find(p=>p.id===id)?.ownerId==='germany')!;
 beginBattle(state,german,defended);
