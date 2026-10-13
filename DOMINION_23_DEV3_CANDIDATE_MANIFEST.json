@@ -1,0 +1,171 @@
+{
+  "status": "compiled and smoke/LOD supplements passed; primary matrix pending",
+  "runtimeSha": "eb549df19185af8918d466627d7fec4849a1eb1d",
+  "versionName": "2.3.0-dev.3",
+  "versionCode": 18,
+  "packageName": "com.elcin31.grandstrategymultiplayer",
+  "apkBytes": 174192322,
+  "apkSha256": "1488d3992c7ea1627ce0217dd701f2136311f0b560b11faab43191688b299c67",
+  "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "baselineApkSha256": "a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb",
+  "build": {
+    "run": 38446818950,
+    "artifact": 11839317378,
+    "artifactZipSha256": "68084d458d2712e930efdfaaeeb511a47408ed62fb1d59744294e24a8cfe534d",
+    "allFourAbiVerified": true,
+    "embeddedHermesBytes": 11317040,
+    "retainedAtlasAndIconVerified": true
+  },
+  "upgradeAndMonthly": {
+    "run": 38448942429,
+    "artifact": 11840054452,
+    "smokeResult": {
+      "coldLaunch": true,
+      "inPlaceUpgrade22": true,
+      "savedPausedCampaignPreserved": true,
+      "balancedAndPerformance": true,
+      "shortRealPanZoom": true,
+      "politicalTerrainMilitary": true,
+      "provinceSelection": true,
+      "armySelection": true,
+      "confirmedRoute": true,
+      "shortMarch": true,
+      "saveRestart": true,
+      "launcherScreenshot": true,
+      "noFatalLogs": true,
+      "soak": false,
+      "physicalRedmiTest": false
+    },
+    "monthly": {
+      "baseline": {
+        "state": {
+          "monthlyEconomyAndAI": true,
+          "startDay": 25,
+          "endDay": 55,
+          "endTick": 1,
+          "endMonth": 2,
+          "noFatalLogs": true,
+          "physicalRedmiTest": false
+        },
+        "presentation": {
+          "available": true,
+          "frames": 168,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 131.698702,
+          "p95Ms": 250.677046,
+          "p99Ms": 899.100206,
+          "maxMs": 918.287237,
+          "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+          "refreshPeriodNs": 16666666,
+          "firstPresentNs": 802178967534,
+          "lastPresentNs": 826322845908,
+          "complete": true,
+          "polls": 83,
+          "maxPollGapSeconds": 0.38725399600002675,
+          "captureSeconds": 24.387675347000027,
+          "snapshotRingWasFull": true,
+          "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#338"
+        },
+        "pssKiB": 480071
+      },
+      "candidate": {
+        "state": {
+          "monthlyEconomyAndAI": true,
+          "startDay": 25,
+          "endDay": 43,
+          "endTick": 1,
+          "endMonth": 2,
+          "noFatalLogs": true,
+          "physicalRedmiTest": false
+        },
+        "presentation": {
+          "available": true,
+          "frames": 286,
+          "invalidRows": 0,
+          "unpresentedRows": 0,
+          "nonIncreasingRows": 0,
+          "recentRingMayBeTruncated": false,
+          "p50Ms": 78.624684,
+          "p95Ms": 136.445448,
+          "p99Ms": 290.906876,
+          "maxMs": 495.992328,
+          "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+          "refreshPeriodNs": 16666666,
+          "firstPresentNs": 942085651830,
+          "lastPresentNs": 965608857417,
+          "complete": true,
+          "polls": 74,
+          "maxPollGapSeconds": 0.41701877900004547,
+          "captureSeconds": 24.31250778599997,
+          "snapshotRingWasFull": true,
+          "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#384"
+        },
+        "pssKiB": 489919
+      }
+    },
+    "note": "Same day25 fixture and real input; actual timer endDays55/43 are retained, not called identical workloads or states. PSS comparison here is supplemental, not the extended-session gate."
+  },
+  "lodSupplement": {
+    "run": 38448947578,
+    "artifact": 11839772797,
+    "frames": {
+      "baseline": {
+        "traceSha256": "cd89d3dfdcb086ccc81c49aa784ea19641efe966d451d13f3092dcead5d77e8d",
+        "scopedCompleteFrames": 203,
+        "p50Ms": 74.203067,
+        "p95Ms": 140.896853,
+        "p99Ms": 176.528354,
+        "latePresentedFrames": 197,
+        "traceLossOrErrors": [
+          {
+            "name": "ftrace_setup_errors",
+            "index": null,
+            "value": 36,
+            "severity": "info"
+          },
+          {
+            "name": "perf_cpu_lost_records",
+            "index": 1,
+            "value": 1,
+            "severity": "data_loss"
+          }
+        ],
+        "physicalRedmiTest": false,
+        "note": "Complete actual Android App FrameTimeline durations inside only the real staged input marker. Fixed .8s preparation pauses produce no synthetic stutters. These are not physical FPS, isolated hardware GPU times or the primary continuous-gesture benchmark."
+      },
+      "candidate": {
+        "traceSha256": "b5b8555e8ac0bac768fcba7a01bcdb365645feec6a5076db8be5f04c209e2452",
+        "scopedCompleteFrames": 247,
+        "p50Ms": 37.733774,
+        "p95Ms": 132.945591,
+        "p99Ms": 157.30319,
+        "latePresentedFrames": 242,
+        "traceLossOrErrors": [
+          {
+            "name": "ftrace_setup_errors",
+            "index": null,
+            "value": 36,
+            "severity": "info"
+          }
+        ],
+        "physicalRedmiTest": false,
+        "note": "Complete actual Android App FrameTimeline durations inside only the real staged input marker. Fixed .8s preparation pauses produce no synthetic stutters. These are not physical FPS, isolated hardware GPU times or the primary continuous-gesture benchmark."
+      }
+    },
+    "note": "Actual complete FrameTimeline record durations in the real staged marker. One lost CPU sample in baseline and ftrace setup warnings retained; no complete CPU attribution or handset FPS."
+  },
+  "primaryMatrix": {
+    "run": 38446818950,
+    "status": "pending",
+    "metricGate": "pending"
+  },
+  "physicalRedmiTest": false,
+  "backendChanged": false,
+  "newGameplayImplemented": false,
+  "fullReleasePublished": false,
+  "longSimulationPassed": false,
+  "legacySaveFailure": "DOMINION_23_LEGACY_SAVE_FAILURE.json"
+}

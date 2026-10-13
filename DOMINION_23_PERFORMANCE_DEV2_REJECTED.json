@@ -1,0 +1,940 @@
+{
+  "sameEmulatorRequired": true,
+  "baselineApkSha256": "a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb",
+  "candidateApkSha256": "5100f24f3b6050ef82b028bdcb636c9d4ce6baa9b3923caa463f55b66fafff57",
+  "fixtureChecksums": {
+    "peace": "78e939d5",
+    "war": "84d59ae2"
+  },
+  "physicalRedmiTest": false,
+  "metricGate": "fail",
+  "regressionsOver10Percent": [
+    {
+      "scenario": "A-horizontal-pan",
+      "metric": "p99Ms",
+      "ratio": 1.2387741068211966
+    },
+    {
+      "scenario": "B-rapid-zoom-in",
+      "metric": "p95Ms",
+      "ratio": 1.135716461363912
+    },
+    {
+      "scenario": "E-lod-transitions",
+      "metric": "p95Ms",
+      "ratio": 1.258052945177238
+    },
+    {
+      "scenario": "E-lod-transitions",
+      "metric": "p99Ms",
+      "ratio": 1.8021118302563774
+    },
+    {
+      "scenario": "I-extended-0",
+      "metric": "p99Ms",
+      "ratio": 1.3533366626314476
+    }
+  ],
+  "engineering20PercentP95GoalObserved": false,
+  "peakPssKiB": [
+    474908,
+    445947
+  ],
+  "memoryRegressionOver32MiB": false,
+  "memoryTrends": [
+    [
+      {
+        "block": 0,
+        "pssKiB": 429555
+      },
+      {
+        "block": 1,
+        "pssKiB": 474908
+      },
+      {
+        "block": 2,
+        "pssKiB": 474225
+      },
+      {
+        "block": 3,
+        "pssKiB": 468528
+      },
+      {
+        "block": 4,
+        "pssKiB": 431994
+      },
+      {
+        "block": 5,
+        "pssKiB": 433663
+      },
+      {
+        "block": 6,
+        "pssKiB": 459788
+      },
+      {
+        "block": 7,
+        "pssKiB": 427756
+      },
+      {
+        "block": 8,
+        "pssKiB": 430961
+      },
+      {
+        "block": 9,
+        "pssKiB": 439303
+      },
+      {
+        "block": 10,
+        "pssKiB": 420286
+      },
+      {
+        "block": 11,
+        "pssKiB": 426048
+      }
+    ],
+    [
+      {
+        "block": 0,
+        "pssKiB": 417391
+      },
+      {
+        "block": 1,
+        "pssKiB": 416520
+      },
+      {
+        "block": 2,
+        "pssKiB": 437311
+      },
+      {
+        "block": 3,
+        "pssKiB": 426205
+      },
+      {
+        "block": 4,
+        "pssKiB": 419529
+      },
+      {
+        "block": 5,
+        "pssKiB": 417797
+      },
+      {
+        "block": 6,
+        "pssKiB": 442942
+      },
+      {
+        "block": 7,
+        "pssKiB": 435580
+      },
+      {
+        "block": 8,
+        "pssKiB": 438515
+      },
+      {
+        "block": 9,
+        "pssKiB": 445947
+      },
+      {
+        "block": 10,
+        "pssKiB": 424597
+      },
+      {
+        "block": 11,
+        "pssKiB": 430460
+      }
+    ]
+  ],
+  "results": [
+    {
+      "scenario": "A-horizontal-pan",
+      "before": {
+        "p50Ms": 102.490002,
+        "p95Ms": 232.020787,
+        "p99Ms": 310.142716,
+        "frames": 110
+      },
+      "after": {
+        "p50Ms": 87.386562,
+        "p95Ms": 212.270596,
+        "p99Ms": 384.196766,
+        "frames": 128
+      },
+      "beforePssKiB": 370141,
+      "afterPssKiB": 447284,
+      "hwuiBefore": {
+        "vsyncDelayMs": {
+          "samples": 112,
+          "p50": 83.33333,
+          "p95": 233.333324,
+          "p99": 316.666654
+        },
+        "uiWorkMs": {
+          "samples": 112,
+          "p50": 90.600207,
+          "p95": 112.570736,
+          "p99": 118.719217
+        },
+        "syncWaitMs": {
+          "samples": 112,
+          "p50": 1.928224,
+          "p95": 7.249049,
+          "p99": 9.044569
+        },
+        "renderCompletionMs": {
+          "samples": 112,
+          "p50": 14.409846,
+          "p95": 29.129193,
+          "p99": 35.096811
+        }
+      },
+      "hwuiAfter": {
+        "vsyncDelayMs": {
+          "samples": 120,
+          "p50": 49.999998,
+          "p95": 166.66666,
+          "p99": 316.666654
+        },
+        "uiWorkMs": {
+          "samples": 120,
+          "p50": 70.737504,
+          "p95": 111.188426,
+          "p99": 121.349251
+        },
+        "syncWaitMs": {
+          "samples": 120,
+          "p50": 3.376668,
+          "p95": 13.364357,
+          "p99": 15.095998
+        },
+        "renderCompletionMs": {
+          "samples": 120,
+          "p50": 25.036767,
+          "p95": 106.829707,
+          "p99": 117.487364
+        }
+      },
+      "hwuiRecentRingTruncated": [
+        false,
+        true
+      ],
+      "ratios": {
+        "p50Ms": 0.8526349916550884,
+        "p95Ms": 0.9148774932825308,
+        "p99Ms": 1.2387741068211966
+      }
+    },
+    {
+      "scenario": "B-rapid-zoom-in",
+      "before": {
+        "p50Ms": 123.69134,
+        "p95Ms": 317.563607,
+        "p99Ms": 451.276274,
+        "frames": 26
+      },
+      "after": {
+        "p50Ms": 118.670546,
+        "p95Ms": 360.662216,
+        "p99Ms": 376.104502,
+        "frames": 35
+      },
+      "beforePssKiB": 420205,
+      "afterPssKiB": 439156,
+      "hwuiBefore": {
+        "vsyncDelayMs": {
+          "samples": 41,
+          "p50": 49.999998,
+          "p95": 333.33332,
+          "p99": 466.666648
+        },
+        "uiWorkMs": {
+          "samples": 41,
+          "p50": 52.311416,
+          "p95": 118.182455,
+          "p99": 144.719385
+        },
+        "syncWaitMs": {
+          "samples": 41,
+          "p50": 1.47176,
+          "p95": 5.974653,
+          "p99": 10.073579
+        },
+        "renderCompletionMs": {
+          "samples": 41,
+          "p50": 17.613885,
+          "p95": 31.002093,
+          "p99": 32.942263
+        }
+      },
+      "hwuiAfter": {
+        "vsyncDelayMs": {
+          "samples": 58,
+          "p50": 33.333332,
+          "p95": 249.99999,
+          "p99": 283.333322
+        },
+        "uiWorkMs": {
+          "samples": 58,
+          "p50": 3.055689,
+          "p95": 117.242353,
+          "p99": 134.632055
+        },
+        "syncWaitMs": {
+          "samples": 58,
+          "p50": 1.485615,
+          "p95": 15.028186,
+          "p99": 19.164372
+        },
+        "renderCompletionMs": {
+          "samples": 58,
+          "p50": 17.428129,
+          "p95": 34.026145,
+          "p99": 43.160952
+        }
+      },
+      "hwuiRecentRingTruncated": [
+        false,
+        false
+      ],
+      "ratios": {
+        "p50Ms": 0.9594086861699453,
+        "p95Ms": 1.135716461363912,
+        "p99Ms": 0.8334240545515584
+      }
+    },
+    {
+      "scenario": "C-rapid-zoom-out",
+      "before": {
+        "p50Ms": 109.300049,
+        "p95Ms": 337.024379,
+        "p99Ms": 345.467549,
+        "frames": 31
+      },
+      "after": {
+        "p50Ms": 139.031238,
+        "p95Ms": 289.359505,
+        "p99Ms": 319.84598,
+        "frames": 29
+      },
+      "beforePssKiB": 429651,
+      "afterPssKiB": 441808,
+      "hwuiBefore": {
+        "vsyncDelayMs": {
+          "samples": 38,
+          "p50": 66.666664,
+          "p95": 366.666652,
+          "p99": 416.66665
+        },
+        "uiWorkMs": {
+          "samples": 38,
+          "p50": 83.55796,
+          "p95": 167.601368,
+          "p99": 230.225048
+        },
+        "syncWaitMs": {
+          "samples": 38,
+          "p50": 1.302954,
+          "p95": 2.910238,
+          "p99": 4.310974
+        },
+        "renderCompletionMs": {
+          "samples": 38,
+          "p50": 16.165138,
+          "p95": 30.812268,
+          "p99": 32.859682
+        }
+      },
+      "hwuiAfter": {
+        "vsyncDelayMs": {
+          "samples": 43,
+          "p50": 66.666664,
+          "p95": 283.333322,
+          "p99": 349.999986
+        },
+        "uiWorkMs": {
+          "samples": 43,
+          "p50": 72.707228,
+          "p95": 147.621982,
+          "p99": 224.647299
+        },
+        "syncWaitMs": {
+          "samples": 43,
+          "p50": 2.162861,
+          "p95": 10.457506,
+          "p99": 19.358884
+        },
+        "renderCompletionMs": {
+          "samples": 43,
+          "p50": 16.228057,
+          "p95": 29.807675,
+          "p99": 36.193832
+        }
+      },
+      "hwuiRecentRingTruncated": [
+        false,
+        false
+      ],
+      "ratios": {
+        "p50Ms": 1.2720144160228144,
+        "p95Ms": 0.8585714358663651,
+        "p99Ms": 0.9258350919669157
+      }
+    },
+    {
+      "scenario": "D-pinch-pan",
+      "before": {
+        "p50Ms": 124.519342,
+        "p95Ms": 319.291772,
+        "p99Ms": 441.15573,
+        "frames": 74
+      },
+      "after": {
+        "p50Ms": 130.100165,
+        "p95Ms": 329.820462,
+        "p99Ms": 469.45074,
+        "frames": 82
+      },
+      "beforePssKiB": 431908,
+      "afterPssKiB": 449991,
+      "hwuiBefore": {
+        "vsyncDelayMs": {
+          "samples": 75,
+          "p50": 83.33333,
+          "p95": 366.666652,
+          "p99": 416.66665
+        },
+        "uiWorkMs": {
+          "samples": 75,
+          "p50": 97.969777,
+          "p95": 135.526677,
+          "p99": 163.586366
+        },
+        "syncWaitMs": {
+          "samples": 75,
+          "p50": 0.899261,
+          "p95": 5.193933,
+          "p99": 11.975395
+        },
+        "renderCompletionMs": {
+          "samples": 75,
+          "p50": 11.298097,
+          "p95": 24.169152,
+          "p99": 28.933152
+        }
+      },
+      "hwuiAfter": {
+        "vsyncDelayMs": {
+          "samples": 96,
+          "p50": 66.666664,
+          "p95": 349.999986,
+          "p99": 416.66665
+        },
+        "uiWorkMs": {
+          "samples": 96,
+          "p50": 79.11481,
+          "p95": 146.416089,
+          "p99": 177.776516
+        },
+        "syncWaitMs": {
+          "samples": 96,
+          "p50": 1.275848,
+          "p95": 7.193494,
+          "p99": 15.807721
+        },
+        "renderCompletionMs": {
+          "samples": 96,
+          "p50": 15.814325,
+          "p95": 30.812523,
+          "p99": 32.891366
+        }
+      },
+      "hwuiRecentRingTruncated": [
+        false,
+        false
+      ],
+      "ratios": {
+        "p50Ms": 1.0448189245972728,
+        "p95Ms": 1.03297513723592,
+        "p99Ms": 1.0641383712731103
+      }
+    },
+    {
+      "scenario": "E-lod-transitions",
+      "before": {
+        "p50Ms": 130.999073,
+        "p95Ms": 303.660859,
+        "p99Ms": 334.409642,
+        "frames": 74
+      },
+      "after": {
+        "p50Ms": 122.511551,
+        "p95Ms": 382.021438,
+        "p99Ms": 602.643572,
+        "frames": 80
+      },
+      "beforePssKiB": 444003,
+      "afterPssKiB": 428888,
+      "hwuiBefore": {
+        "vsyncDelayMs": {
+          "samples": 76,
+          "p50": 83.33333,
+          "p95": 316.666654,
+          "p99": 383.333318
+        },
+        "uiWorkMs": {
+          "samples": 76,
+          "p50": 95.33959,
+          "p95": 135.712502,
+          "p99": 193.96869
+        },
+        "syncWaitMs": {
+          "samples": 76,
+          "p50": 0.958614,
+          "p95": 3.705979,
+          "p99": 12.002273
+        },
+        "renderCompletionMs": {
+          "samples": 76,
+          "p50": 14.508244,
+          "p95": 26.497672,
+          "p99": 33.717309
+        }
+      },
+      "hwuiAfter": {
+        "vsyncDelayMs": {
+          "samples": 95,
+          "p50": 66.666664,
+          "p95": 349.999986,
+          "p99": 516.666646
+        },
+        "uiWorkMs": {
+          "samples": 95,
+          "p50": 75.388567,
+          "p95": 130.201056,
+          "p99": 183.404278
+        },
+        "syncWaitMs": {
+          "samples": 95,
+          "p50": 0.879799,
+          "p95": 5.180788,
+          "p99": 16.884054
+        },
+        "renderCompletionMs": {
+          "samples": 95,
+          "p50": 16.249327,
+          "p95": 32.922301,
+          "p99": 35.273376
+        }
+      },
+      "hwuiRecentRingTruncated": [
+        false,
+        true
+      ],
+      "ratios": {
+        "p50Ms": 0.9352092972444163,
+        "p95Ms": 1.258052945177238,
+        "p99Ms": 1.8021118302563774
+      }
+    },
+    {
+      "scenario": "F-terrain",
+      "before": {
+        "p50Ms": 118.288344,
+        "p95Ms": 293.751236,
+        "p99Ms": 378.351518,
+        "frames": 80
+      },
+      "after": {
+        "p50Ms": 118.955444,
+        "p95Ms": 298.675054,
+        "p99Ms": 348.990092,
+        "frames": 90
+      },
+      "beforePssKiB": 427935,
+      "afterPssKiB": 415632,
+      "hwuiBefore": {
+        "vsyncDelayMs": {
+          "samples": 81,
+          "p50": 83.33333,
+          "p95": 299.999988,
+          "p99": 366.666652
+        },
+        "uiWorkMs": {
+          "samples": 81,
+          "p50": 93.451513,
+          "p95": 118.87842,
+          "p99": 155.73023
+        },
+        "syncWaitMs": {
+          "samples": 81,
+          "p50": 1.077623,
+          "p95": 3.432528,
+          "p99": 20.329094
+        },
+        "renderCompletionMs": {
+          "samples": 81,
+          "p50": 12.727351,
+          "p95": 24.523349,
+          "p99": 30.967823
+        }
+      },
+      "hwuiAfter": {
+        "vsyncDelayMs": {
+          "samples": 107,
+          "p50": 66.666664,
+          "p95": 299.999988,
+          "p99": 399.999984
+        },
+        "uiWorkMs": {
+          "samples": 107,
+          "p50": 79.915094,
+          "p95": 120.203132,
+          "p99": 167.504422
+        },
+        "syncWaitMs": {
+          "samples": 107,
+          "p50": 1.347147,
+          "p95": 6.057452,
+          "p99": 11.305529
+        },
+        "renderCompletionMs": {
+          "samples": 107,
+          "p50": 15.359353,
+          "p95": 32.911711,
+          "p99": 34.357411
+        }
+      },
+      "hwuiRecentRingTruncated": [
+        false,
+        true
+      ],
+      "ratios": {
+        "p50Ms": 1.0056396089203854,
+        "p95Ms": 1.0167618630888076,
+        "p99Ms": 0.9223964366385865
+      }
+    },
+    {
+      "scenario": "G-war-armies",
+      "before": {
+        "p50Ms": 132.433006,
+        "p95Ms": 431.513678,
+        "p99Ms": 663.382306,
+        "frames": 67
+      },
+      "after": {
+        "p50Ms": 134.040705,
+        "p95Ms": 399.593641,
+        "p99Ms": 566.403387,
+        "frames": 68
+      },
+      "beforePssKiB": 442126,
+      "afterPssKiB": 446717,
+      "hwuiBefore": {
+        "vsyncDelayMs": {
+          "samples": 82,
+          "p50": 83.33333,
+          "p95": 349.999986,
+          "p99": 883.333298
+        },
+        "uiWorkMs": {
+          "samples": 82,
+          "p50": 99.704238,
+          "p95": 173.992677,
+          "p99": 541.715784
+        },
+        "syncWaitMs": {
+          "samples": 82,
+          "p50": 1.029813,
+          "p95": 3.437692,
+          "p99": 14.039899
+        },
+        "renderCompletionMs": {
+          "samples": 82,
+          "p50": 15.378591,
+          "p95": 30.05626,
+          "p99": 32.666065
+        }
+      },
+      "hwuiAfter": {
+        "vsyncDelayMs": {
+          "samples": 81,
+          "p50": 83.33333,
+          "p95": 433.333316,
+          "p99": 649.999974
+        },
+        "uiWorkMs": {
+          "samples": 81,
+          "p50": 88.135506,
+          "p95": 178.883796,
+          "p99": 555.805376
+        },
+        "syncWaitMs": {
+          "samples": 81,
+          "p50": 1.717929,
+          "p95": 11.218257,
+          "p99": 23.331363
+        },
+        "renderCompletionMs": {
+          "samples": 81,
+          "p50": 16.404276,
+          "p95": 29.244954,
+          "p99": 74.411339
+        }
+      },
+      "hwuiRecentRingTruncated": [
+        false,
+        false
+      ],
+      "ratios": {
+        "p50Ms": 1.0121397153818286,
+        "p95Ms": 0.9260277515467308,
+        "p99Ms": 0.853811417454357
+      }
+    },
+    {
+      "scenario": "H-active-simulation",
+      "before": {
+        "p50Ms": 134.327234,
+        "p95Ms": 364.9594,
+        "p99Ms": 558.909419,
+        "frames": 80
+      },
+      "after": {
+        "p50Ms": 119.112943,
+        "p95Ms": 327.956445,
+        "p99Ms": 446.458038,
+        "frames": 90
+      },
+      "beforePssKiB": 471227,
+      "afterPssKiB": 474212,
+      "hwuiBefore": {
+        "vsyncDelayMs": {
+          "samples": 83,
+          "p50": 99.999996,
+          "p95": 149.999994,
+          "p99": 499.99998
+        },
+        "uiWorkMs": {
+          "samples": 83,
+          "p50": 118.861012,
+          "p95": 144.68419,
+          "p99": 158.138324
+        },
+        "syncWaitMs": {
+          "samples": 83,
+          "p50": 1.882786,
+          "p95": 3.77452,
+          "p99": 20.509886
+        },
+        "renderCompletionMs": {
+          "samples": 83,
+          "p50": 13.798959,
+          "p95": 28.262689,
+          "p99": 35.801895
+        }
+      },
+      "hwuiAfter": {
+        "vsyncDelayMs": {
+          "samples": 93,
+          "p50": 99.999996,
+          "p95": 183.333326,
+          "p99": 366.666652
+        },
+        "uiWorkMs": {
+          "samples": 93,
+          "p50": 102.432792,
+          "p95": 138.58514,
+          "p99": 216.645591
+        },
+        "syncWaitMs": {
+          "samples": 93,
+          "p50": 1.91583,
+          "p95": 3.929501,
+          "p99": 13.267466
+        },
+        "renderCompletionMs": {
+          "samples": 93,
+          "p50": 15.775396,
+          "p95": 29.292954,
+          "p99": 35.591456
+        }
+      },
+      "hwuiRecentRingTruncated": [
+        false,
+        false
+      ],
+      "ratios": {
+        "p50Ms": 0.8867371079791608,
+        "p95Ms": 0.8986107632794222,
+        "p99Ms": 0.7988021364871649
+      }
+    },
+    {
+      "scenario": "I-extended-0",
+      "before": {
+        "p50Ms": 149.087015,
+        "p95Ms": 308.700518,
+        "p99Ms": 441.904955,
+        "frames": 68
+      },
+      "after": {
+        "p50Ms": 122.07732,
+        "p95Ms": 318.053421,
+        "p99Ms": 598.046177,
+        "frames": 73
+      },
+      "beforePssKiB": 434233,
+      "afterPssKiB": 425919,
+      "hwuiBefore": {
+        "vsyncDelayMs": {
+          "samples": 74,
+          "p50": 83.33333,
+          "p95": 366.666652,
+          "p99": 533.333312
+        },
+        "uiWorkMs": {
+          "samples": 74,
+          "p50": 97.682527,
+          "p95": 153.600188,
+          "p99": 288.835081
+        },
+        "syncWaitMs": {
+          "samples": 74,
+          "p50": 1.616391,
+          "p95": 5.250829,
+          "p99": 12.145109
+        },
+        "renderCompletionMs": {
+          "samples": 74,
+          "p50": 13.449047,
+          "p95": 27.494607,
+          "p99": 33.316125
+        }
+      },
+      "hwuiAfter": {
+        "vsyncDelayMs": {
+          "samples": 87,
+          "p50": 83.33333,
+          "p95": 349.999986,
+          "p99": 516.666646
+        },
+        "uiWorkMs": {
+          "samples": 87,
+          "p50": 93.813419,
+          "p95": 130.143209,
+          "p99": 177.48708
+        },
+        "syncWaitMs": {
+          "samples": 87,
+          "p50": 1.339036,
+          "p95": 7.276504,
+          "p99": 9.349406
+        },
+        "renderCompletionMs": {
+          "samples": 87,
+          "p50": 13.597492,
+          "p95": 31.630911,
+          "p99": 32.909271
+        }
+      },
+      "hwuiRecentRingTruncated": [
+        false,
+        false
+      ],
+      "ratios": {
+        "p50Ms": 0.8188326796938016,
+        "p95Ms": 1.0302976589109578,
+        "p99Ms": 1.3533366626314476
+      }
+    },
+    {
+      "scenario": "I-extended-11",
+      "before": {
+        "p50Ms": 119.519462,
+        "p95Ms": 342.081645,
+        "p99Ms": 491.075895,
+        "frames": 84
+      },
+      "after": {
+        "p50Ms": 133.975086,
+        "p95Ms": 375.113909,
+        "p99Ms": 515.905554,
+        "frames": 79
+      },
+      "beforePssKiB": 430350,
+      "afterPssKiB": 432328,
+      "hwuiBefore": {
+        "vsyncDelayMs": {
+          "samples": 85,
+          "p50": 83.33333,
+          "p95": 333.33332,
+          "p99": 533.333312
+        },
+        "uiWorkMs": {
+          "samples": 85,
+          "p50": 96.712585,
+          "p95": 140.121951,
+          "p99": 186.703985
+        },
+        "syncWaitMs": {
+          "samples": 85,
+          "p50": 0.749581,
+          "p95": 5.974405,
+          "p99": 20.173617
+        },
+        "renderCompletionMs": {
+          "samples": 85,
+          "p50": 14.838141,
+          "p95": 30.915515,
+          "p99": 42.608048
+        }
+      },
+      "hwuiAfter": {
+        "vsyncDelayMs": {
+          "samples": 93,
+          "p50": 83.33333,
+          "p95": 349.999986,
+          "p99": 566.666644
+        },
+        "uiWorkMs": {
+          "samples": 93,
+          "p50": 90.680878,
+          "p95": 136.447025,
+          "p99": 176.344761
+        },
+        "syncWaitMs": {
+          "samples": 93,
+          "p50": 1.264148,
+          "p95": 5.826095,
+          "p99": 20.076495
+        },
+        "renderCompletionMs": {
+          "samples": 93,
+          "p50": 14.66692,
+          "p95": 30.190517,
+          "p99": 32.828611
+        }
+      },
+      "hwuiRecentRingTruncated": [
+        true,
+        false
+      ],
+      "ratios": {
+        "p50Ms": 1.120947867051142,
+        "p95Ms": 1.0965625150685885,
+        "p99Ms": 1.0505617548179595
+      }
+    }
+  ],
+  "limitations": [
+    "One paired software-emulator run; repeat adverse/noisy cases before acceptance.",
+    "HWUI quantiles cover its recent CSV ring; actual presentation polling covers the complete motion.",
+    "PSS trend is a short bounded soak, not proof of indefinite memory stability.",
+    "Separate interaction/upgrade/save smoke and visual review are required before the phase gate.",
+    "No fixed physical-device FPS or isolated hardware GPU utilization claimed."
+  ],
+  "runId": 38446228488,
+  "artifactId": 11839314673,
+  "runtimeSha": "161258ea6f4e5d303b24ad677134b22db92c746a",
+  "candidateAccepted": false,
+  "fixtureStartDay": 25
+}

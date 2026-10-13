@@ -1,5 +1,5 @@
 {
-  "status": "dev2 not accepted; complete A-I repeat pending",
+  "status": "rejected by completed A-I matrix; dev3 compiled for separate validation",
   "baselineRuntimeSha": "278fbbd1140300a95673d5ff62445b98b592826a",
   "baselineApkSha256": "a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb",
   "candidateRuntimeSha": "161258ea6f4e5d303b24ad677134b22db92c746a",
@@ -615,7 +615,10 @@
     "harnessSha": "61392fd642fc3c50f56c1b9e27bc81fe865dd350",
     "timeoutMinutes": 45,
     "upgradeAndMonthlyConclusion": "success",
-    "upgradeAndMonthlyArtifact": 11839697165
+    "upgradeAndMonthlyArtifact": 11839697165,
+    "fullMatrixConclusion": "failure: metric gate",
+    "fullMatrixArtifact": 11839314673,
+    "fullMatrixReport": "DOMINION_23_PERFORMANCE_DEV2_REJECTED.json"
   },
   "physicalRedmiTest": false,
   "backendUnchanged": true,
