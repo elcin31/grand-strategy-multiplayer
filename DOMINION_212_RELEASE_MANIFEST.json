@@ -92,5 +92,8 @@
   "nativeSmoke": {},
   "physicalDeviceTested": false,
   "longSoakOrCameraBenchmark": false,
-  "publicationStatus": "PREPARED"
+  "publicationStatus": "VERIFIED_READY",
+  "nativeRunId": 38355210143,
+  "nativeSourceCommit": "18ca58f535d413c9737d9a84d8db3612608b6721",
+  "nativeSmokeStatus": "PASSED: same immutable APK; actual emulator run"
 }
