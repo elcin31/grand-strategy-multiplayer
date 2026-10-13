@@ -57,9 +57,9 @@ export function cancelArmyFormation(s:GameState,owner:string,id:string):void{
 }
 export function processArmyFormations(s:GameState):void{
  const day=s.simulationDay??0;let changed=false;
- for(const q of s.armyFormations??[]){if(q.lastDay>=day)continue;q.lastDay=day;const p=s.provinces.find(p=>p.id===q.provinceId);if(!p||p.ownerId!==q.ownerId||(p.controllerId??p.ownerId)!==q.ownerId||p.rebellion){q.status='Blocked';continue;}q.status='Training';const c=s.countries[q.ownerId]!;
+ for(const q of s.armyFormations??[]){if(q.lastDay>=day)continue;q.lastDay=day;const moved=s.armies.find(a=>a.id===q.armyId);if(moved&&moved.provinceId!==q.provinceId){cancelArmyFormation(s,q.ownerId,q.id);continue;}const p=s.provinces.find(p=>p.id===q.provinceId);if(!p||p.ownerId!==q.ownerId||(p.controllerId??p.ownerId)!==q.ownerId||p.rebellion){q.status='Blocked';continue;}q.status='Training';const c=s.countries[q.ownerId]!;
   const peers=s.armyFormations!.filter(x=>x.ownerId===q.ownerId&&x.provinceId===q.provinceId).length;let limit=Math.max(1000,Math.floor(formationCapacity(s,q.ownerId,q.provinceId)/Math.max(1,peers))),a=s.armies.find(a=>a.id===q.armyId);
-  for(const t of UNIT_TYPES){const count=Math.min(limit,MAX_RECRUIT_BATCH,(q.composition[t]??0)-(q.formed[t]??0));if(count<=0)continue;
+  for(const t of UNIT_TYPES){const ceiling=c.militaryCeiling&&s.tick<c.militaryCeiling.untilTick?Math.max(0,c.militaryCeiling.troops-c.army):MAX_RECRUIT_BATCH,count=Math.min(limit,MAX_RECRUIT_BATCH,ceiling,(q.composition[t]??0)-(q.formed[t]??0));if(!ceiling)q.status='Blocked';if(count<=0)continue;
    if(!a){a={id:q.armyId,name:q.name,ownerId:q.ownerId,provinceId:q.provinceId,troops:count,unitType:t,morale:UNITS[t].morale,organization:UNITS[t].organization*.8,formationId:q.id,template:{...q.composition}};initializeArmyComposition(a);s.armies.push(a);}else addArmyRegiment(a,t,count,false);
    q.formed[t]=(q.formed[t]??0)+count;limit-=count;c.army+=count;c.militaryUpkeepBase=money((c.militaryUpkeepBase??0)+count/1000*1.25*UNITS[t].upkeep);refreshArmyBudget(c);changed=true;
   }

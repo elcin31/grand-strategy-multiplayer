@@ -26,3 +26,10 @@ test('server rejects forged strength/resources and partial cancellation refunds 
  assert.throws(()=>applyServerCommand(s,{type:'ORDER_ARMY',playerId:'host',armyId:q.armyId,provinceId:p.neighbors[0]!},'host'),/формируется/);
  s=applyServerCommand(s,{type:'CANCEL_ARMY_FORMATION',playerId:'host',formationId:q.id},'host');assert.equal(s.countries.germany!.manpower,start-formed);assert.equal(s.armies.find(a=>a.id===q.armyId)!.troops,formed);assert.equal(s.armyFormations!.length,0);decodeCampaign(encodeCampaign(s,1));
 });
+
+test('a subsequent military ceiling blocks queued recruits and displaced training refunds unused reserve',()=>{
+ let {s,p}=fixture();s=applyServerCommand(s,{type:'CREATE_NEW_ARMY',playerId:'host',name:'Limited',provinceId:p.id,composition:{Infantry:10000},commanderId:null},'host');const queued=s.armyFormations![0]!,afterPayment=s.countries.germany!.manpower;s.countries.germany!.militaryCeiling={untilTick:12,troops:s.countries.germany!.army};s.simulationDay=1;processArmyFormations(s);assert.equal(s.armyFormations![0]!.status,'Blocked');assert.equal(s.armies.some(a=>a.id===queued.armyId),false);
+ delete s.countries.germany!.militaryCeiling;s.simulationDay=2;processArmyFormations(s);const a=s.armies.find(a=>a.id===queued.armyId)!;assert.equal(a.troops,10000);assert.equal(s.countries.germany!.manpower,afterPayment);
+ // A still-training formation that must evacuate does not receive teleported recruits.
+ s=applyServerCommand(s,{type:'CREATE_NEW_ARMY',playerId:'host',name:'Evacuated',provinceId:p.id,composition:{Infantry:310000},commanderId:null},'host');s.simulationDay=3;processArmyFormations(s);const q=s.armyFormations![0]!,field=s.armies.find(a=>a.id===q.armyId)!,trained=field.troops,reserve=s.countries.germany!.manpower;field.provinceId=p.neighbors.find(id=>s.provinces.find(p=>p.id===id)?.ownerId==='germany')!;s.simulationDay=4;processArmyFormations(s);assert.equal(s.armyFormations!.length,0);assert.equal(field.troops,trained);assert.equal(s.countries.germany!.manpower,reserve+310000-trained);decodeCampaign(encodeCampaign(s,1));
+});
