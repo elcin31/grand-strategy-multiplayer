@@ -59,6 +59,34 @@ def pull_saves(destination):
         assert h.adb('shell','pidof',PACKAGE).strip()==pid,'App restarted during diagnostic transport failure'
         assert h.adb('shell','cat','/proc/sys/kernel/random/boot_id').strip()==boot,'Emulator rebooted; comparison invalid'
         h.adb('pull',directory,destination)
+def confirm_time_control(running,name):
+    # ADB delivery is not command acknowledgement. Wait for the resulting HUD
+    # outside timed captures, and keep missed/late taps visible in diagnostics.
+    target='Пауза' if running else 'Продолжить'
+    source='Продолжить' if running else 'Пауза'
+    for attempt in range(3):
+        tree=h.root(name+'-before-'+str(attempt))
+        if find_enabled_control(tree,target) is not None:return
+        h.control(source,name+'-tap-'+str(attempt))
+        for check in range(4):
+            tree=h.root(name+'-ack-'+str(attempt)+'-'+str(check))
+            if find_enabled_control(tree,target) is not None:return
+            time.sleep(.5)
+    raise AssertionError('Time command was not acknowledged: '+source)
+def confirmed_saved_state(name):
+    confirm_time_control(False,name+'-pause')
+    h.control('Сохранить кампанию',name+'-save')
+    # Large campaign writes are asynchronous. Read durable generations only;
+    # never count an old autosave or a partially written .pending file.
+    end=time.monotonic()+35
+    while time.monotonic()<end:
+        pull_saves(OUT/'native-saves')
+        states=[json.loads(p.read_text()).get('state') for p in (OUT/'native-saves').rglob('camera23-war.*.json')]
+        states=[s for s in states if s]
+        latest=max(states,key=lambda s:s['simulationDay'])
+        if latest['tick']>0 and latest['month']>=2 and latest['phase']=='paused':return latest
+        time.sleep(1)
+    raise AssertionError('Completed paused monthly save was not observed')
 def sample(name,kind,cycles=6,focal=None):
     h.adb('shell','dumpsys','gfxinfo',PACKAGE,'reset');h.adb('logcat','-c');h.adb('shell','dumpsys','SurfaceFlinger','--latency-clear')
     pid=h.adb('shell','pidof',PACKAGE).strip();assert pid
@@ -106,12 +134,9 @@ try:
         (OUT/'result.json').write_text(json.dumps({'stagedWorldRegionProvince':True,'traceSha256':capture['traceSha256'],'noFatalLogs':True,'physicalRedmiTest':False},indent=2)+'\n')
         sys.exit(0)
     if os.environ.get('CAMERA23_MONTHLY_ONLY')=='1':
-        install_fixture('war');configure();mode('Армии');h.control('Продолжить','monthly-resume')
-        sample('H-monthly-economy-ai','pan',12);h.control('Пауза','monthly-pause')
-        h.control('Сохранить кампанию','monthly-save');time.sleep(2)
-        pull_saves(OUT/'native-saves')
-        saves=list((OUT/'native-saves').rglob('camera23-war.*.json'));states=[json.loads(p.read_text()).get('state') for p in saves];states=[s for s in states if s]
-        latest=max(states,key=lambda s:s['simulationDay']);assert latest['tick']>0 and latest['month']>=2,'Monthly accounting was not exercised'
+        install_fixture('war');configure();mode('Армии');confirm_time_control(True,'monthly-resume')
+        sample('H-monthly-economy-ai','pan',12)
+        latest=confirmed_saved_state('monthly')
         (OUT/'result.json').write_text(json.dumps({'monthlyEconomyAndAI':True,'startDay':manifest['war']['simulationDay'],'endDay':latest['simulationDay'],'endTick':latest['tick'],'endMonth':latest['month'],'noFatalLogs':True,'physicalRedmiTest':False},indent=2)+'\n')
         sys.exit(0)
     install_fixture('peace');configure()
