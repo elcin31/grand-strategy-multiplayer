@@ -14,6 +14,10 @@ on:
         description: Reverify an already compiled hotfix APK with byte-identical runtime sources
         required: false
         type: string
+      reuse_profile_run_id:
+        description: Preserve the completed short paired profile for identical runtime sources
+        required: false
+        type: string
 permissions:
   contents: read
   actions: read
@@ -240,6 +244,23 @@ jobs:
         with:
           name: dominion-camera-illustrated-release
       - run: python -m pip install -r scripts/camera-profile-requirements.txt
+      - name: Bind the already completed paired profile to this exact runtime
+        if: inputs.reuse_profile_run_id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROFILE_SOURCE_RUN: ${{ inputs.reuse_profile_run_id }}
+        run: |
+          [[ "$PROFILE_SOURCE_RUN" =~ ^[0-9]+$ ]]
+          source_sha=$(gh api "repos/elcin31/grand-strategy-multiplayer/actions/runs/$PROFILE_SOURCE_RUN" --jq .head_sha)
+          git fetch origin "$source_sha"
+          git diff --exit-code "$source_sha" HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json metro.config.js babel.config.js src supabase/functions plugins assets
+      - uses: actions/download-artifact@v4
+        if: inputs.reuse_profile_run_id != ''
+        with:
+          name: dominion-21-short-native-smoke
+          run-id: ${{ inputs.reuse_profile_run_id }}
+          github-token: ${{ github.token }}
+          path: retained-profile-source
       - name: Prepare short hotfix comparison
         if: github.ref == 'refs/heads/dominion-2.2.1-performance-hotfix'
         env:
@@ -257,6 +278,9 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - uses: reactivecircus/android-emulator-runner@v2
+        env:
+          DOMINION221_PROFILE_REUSE: ${{ inputs.reuse_profile_run_id != '' && 'retained-profile-source' || '' }}
+          DOMINION221_PROFILE_RUN: ${{ inputs.reuse_profile_run_id }}
         with:
           api-level: 35
           arch: x86_64

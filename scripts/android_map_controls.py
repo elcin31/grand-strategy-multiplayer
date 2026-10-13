@@ -31,7 +31,7 @@ def control(label,name,scroll=False,tap_control=True):
         tree=root(name+'-'+str(attempt));node=find_enabled_control(tree,label)
         if node is not None:
             box=visible_bounds(tree,node)
-            if box is not None and (tap_control or box[3]-box[1]>=200):
+            if box is not None:
                 if tap_control:tap(node,box)
                 return node
         if scroll:

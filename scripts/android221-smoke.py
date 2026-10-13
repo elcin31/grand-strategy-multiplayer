@@ -1,7 +1,7 @@
 """One short 2.2 -> 2.2.1 native A/B, followed by required gameplay/icon smoke.
 Same emulator, paused saved scene, real pointers. No soak or camera matrix.
 """
-import json,re,subprocess,sys,time
+import json,os,re,shutil,subprocess,sys,time
 from pathlib import Path
 import android_map_controls as h
 from camera_frame_stats import frame_stats,thread_stats
@@ -12,6 +12,12 @@ from map_paint_check import assert_map_painted
 
 OUT=Path('android-hotfix');OUT.mkdir(exist_ok=True);h.OUT=OUT
 PACKAGE=h.PACKAGE;results=[]
+reuse=os.environ.get('DOMINION221_PROFILE_REUSE')
+if reuse:
+    previous=next(Path(reuse).rglob('profiles.json'));results=json.loads(previous.read_text())
+    assert len(results)==12 and [r['apk'] for r in results]==['baseline']*6+['candidate']*6
+    assert all(r['native']['frames']>0 and r['presentation']['available'] for r in results)
+    shutil.copytree(previous.parent,OUT,dirs_exist_ok=True)
 def mode(label):h.control('Режимы и настройки карты','settings-'+label);h.control('Режим '+label,'mode-'+label)
 def settings():h.control('Режимы и настройки карты','settings')
 def reset():settings();h.control('Европа','europe',True);time.sleep(.6)
@@ -53,12 +59,13 @@ try:
     h.adb('shell','input','text','Germany');time.sleep(1);h.adb('shell','input','keyevent','4');time.sleep(1)
     h.control('Государство: Германия','germany');h.control('Играть за эту страну','choose');h.control('Я ГОТОВ','ready');h.control('Начать игру','start');time.sleep(3);h.control('Пауза','pause')
     settings();h.control('Адаптивное качество: Вкл','adaptive-off',True);h.control('Performance overlay: Выкл','overlay-on',True);h.control('Закрыть ×','settings-close',True)
-    profile('baseline');h.control('Сохранить кампанию','baseline-save');time.sleep(2)
+    if not reuse:profile('baseline')
+    h.control('Сохранить кампанию','baseline-save');time.sleep(2)
     # Real installation upgrade retains signing identity, settings and schema25 save.
     h.adb('shell','am','force-stop',PACKAGE);h.adb('install','-r',sys.argv[2]);h.launch();h.capture('candidate-cold-menu')
     h.control('Продолжить','upgrade-continue');time.sleep(12);h.capture('candidate-restored');assert_map_painted(OUT/'candidate-restored.png')
     tree=h.root('same-paused-game');assert find_enabled_control(tree,'Продолжить') is not None,'Paused game not preserved'
-    profile('candidate')
+    if not reuse:profile('candidate')
     mode('Армии');time.sleep(1);h.capture('candidate-military');assert_map_painted(OUT/'candidate-military.png');mode('Политическая')
     h.control('К выбранному','refocus');time.sleep(.7);node=find_enabled_control(h.root('province-hit'),'Карта Dominion');assert node is not None
     # Read the target and clipping ancestors from the same tree.
@@ -81,7 +88,7 @@ try:
     for before,after in zip(results[:6],results[6:]):
         assert (before['preset'],before['operation'])==(after['preset'],after['operation'])
         summary.append({'preset':before['preset'],'operation':before['operation'],'p95Before':before['native']['p95Ms'],'p95After':after['native']['p95Ms'],'p99Before':before['native']['p99Ms'],'p99After':after['native']['p99Ms'],'maxBefore':before['native']['rawMaxMs'],'maxAfter':after['native']['rawMaxMs'],'over50Before':before['native']['rawOver50Ms'],'over50After':after['native']['rawOver50Ms'],'pssBeforeKiB':before['pssKiB'],'pssAfterKiB':after['pssKiB']})
-    (OUT/'comparison.json').write_text(json.dumps({'sameEmulator':True,'samePausedSave':True,'physicalRedmiTest':False,'renderer':'existing Skia TextureView','note':'SwiftShader emulator frame work and actual presentation are reported separately. No physical handset FPS claim.','results':summary},indent=2)+'\n')
+    (OUT/'comparison.json').write_text(json.dumps({'sameEmulator':True,'samePausedSave':True,'physicalRedmiTest':False,'renderer':'existing Skia TextureView','pairedProfileSourceRun':os.environ.get('DOMINION221_PROFILE_RUN') or None,'note':'SwiftShader emulator frame work and actual presentation are reported separately. Preserved A/B was measured together on one emulator with the identical compiled runtime; remaining gameplay checks may run on a fresh emulator. No physical handset FPS claim.','results':summary},indent=2)+'\n')
     (OUT/'result.json').write_text(json.dumps({'coldLaunch':True,'inPlaceUpgrade22':True,'savedPausedCampaignPreserved':True,'balancedAndPerformance':True,'shortRealPanZoom':True,'politicalTerrainMilitary':True,'provinceSelection':True,'armySelection':True,'confirmedRoute':True,'shortMarch':True,'saveRestart':True,'launcherScreenshot':True,'noFatalLogs':True,'soak':False,'physicalRedmiTest':False},indent=2)+'\n')
     print('PASS: short paired pan/zoom, map modes, province/army/order/march, save upgrade/restart and launcher capture',flush=True)
 finally:
