@@ -11,10 +11,12 @@ FIELDS = ('uiFps', 'frameMs', 'frameP50Ms', 'frameP95Ms', 'frameP99Ms',
           'rasterBuilds', 'rasterMs', 'rasterBytes', 'rasterTiles',
           'rasterPrewarmBuilds', 'rasterPrewarmMs', 'visibleProvinces',
           'visibleArmies', 'visibleLabels', 'simulationMs', 'networkMs',
-          'borderBuilds', 'borderPrepareMs', 'borderBytes', 'borderCommits')
+          'borderBuilds', 'borderPrepareMs', 'borderBytes', 'borderCommits',
+          'borderVectorBuilds', 'borderVectorMs')
 COUNTERS = ('gestureEvents', 'gestureCommits', 'cullCommits', 'mapRenders', 'geographyRenders', 'pathBuilds',
             'pathBuildMs', 'rasterBuilds', 'rasterMs', 'rasterPrewarmBuilds',
-            'rasterPrewarmMs', 'borderBuilds', 'borderPrepareMs', 'borderCommits')
+            'rasterPrewarmMs', 'borderBuilds', 'borderPrepareMs', 'borderCommits',
+            'borderVectorBuilds', 'borderVectorMs')
 
 
 def camera_telemetry(raw):

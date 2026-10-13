@@ -8,8 +8,3 @@ export const MOBILE_MAP_BUDGETS={
   Ultra:{atlasBytes:64*MiB,politicalBytes:40*MiB,atlasEntries:36,detailTiles:8},
 } as const;
 export const mapBudget=(preset:GraphicsPreset)=>MOBILE_MAP_BUDGETS[preset];
-
-/** Bounded visible border snapshots, separate from the existing terrain/tint
- * budgets. High/Ultra retain vector strokes. Allocation never evicts a live
- * snapshot: a full budget falls back to the original exact vector picture. */
-export const borderRasterBudget=(preset:GraphicsPreset)=>preset==='Balanced'?12*MiB:preset==='Performance'?6*MiB:0;

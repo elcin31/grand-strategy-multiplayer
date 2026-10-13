@@ -1,16 +1,12 @@
-import {memo,useCallback,useEffect,useMemo,useRef,useState} from 'react';
-import {PixelRatio} from 'react-native';
-import {Group,Picture,Skia,PaintStyle,FilterMode,MipmapMode,type SkImage,type SkPicture} from '@shopify/react-native-skia';
+import {memo,useMemo,useRef} from 'react';
+import {Group,Picture,Skia,PaintStyle,type SkPicture} from '@shopify/react-native-skia';
 import {borderChunks,bordersInBounds,type BorderChunk} from '../map/borderChunks';
 import {smoothDetail} from '../map/atlas22';
 import type {Bounds} from '../map/geometry';
 import type {MapScene} from '../map/worldScene';
 import {withNativeRecordingObjects} from '../map/nativeRecording';
 import {GRAPHICS,type GraphicsPreset} from '../map/settings';
-import {RasterCache} from '../map/rasterTiles';
-import {borderRasterBudget} from '../map/mobileBudgets';
-import {borderPriority,borderRasterPlan,stableBorderZoom} from '../map/borderRaster';
-import {mapWorkQueue} from '../performance/mapWorkQueue';
+import {stableBorderZoom} from '../map/borderStyle';
 import {recordMetrics,getMetrics} from '../performance/telemetry';
 const prepared=new WeakMap<BorderChunk,{outer:ReturnType<typeof Skia.Path.Make>;inner?:ReturnType<typeof Skia.Path.Make>}>();
 function borderPaths(chunk:BorderChunk,detail:boolean){
@@ -18,15 +14,13 @@ function borderPaths(chunk:BorderChunk,detail:boolean){
   if(detail&&!paths.inner){paths.inner=Skia.Path.Make();for(const e of chunk.inner)paths.inner.moveTo(e.a.x,e.a.y).lineTo(e.b.x,e.b.y);}
   return paths;
 }
-interface BorderResources {images:RasterCache<SkImage>;canPrepare:()=>boolean;pending:Set<string>;ready:Set<string>;alive:boolean}
-const chunkIds=new WeakMap<BorderChunk,number>();let nextChunkId=0;
-function chunkKey(chunk:BorderChunk,zoom:number,preset:GraphicsPreset){let id=chunkIds.get(chunk);if(id===undefined){id=++nextChunkId;chunkIds.set(chunk,id);}return id+'|'+zoom+'|'+preset;}
 const pictures=new WeakMap<BorderChunk,Map<string,SkPicture>>();
 /** Small, reusable native pictures allow whole offscreen chunks to be culled.
  * Pan never concatenates or records every prepared border again. */
 function borderPicture(chunk:BorderChunk,zoom:number,preset:GraphicsPreset):SkPicture{
   let variants=pictures.get(chunk);if(!variants){variants=new Map();pictures.set(chunk,variants);}
   const key=zoom+'|'+preset,cached=variants.get(key);if(cached)return cached;
+  const start=performance.now();
   const picture=withNativeRecordingObjects(own=>{
     const b=chunk.bounds,gutter=2/zoom,recorder=own(Skia.PictureRecorder()),c=recorder.beginRecording(Skia.XYWHRect(b.left-gutter,b.top-gutter,b.right-b.left+2*gutter,b.bottom-b.top+2*gutter));
     const paint=own(Skia.Paint());paint.setAntiAlias(true);paint.setStyle(PaintStyle.Stroke);
@@ -38,73 +32,19 @@ function borderPicture(chunk:BorderChunk,zoom:number,preset:GraphicsPreset):SkPi
     return recorder.finishRecordingAsPicture();
   });
   // Cache references only; native display nodes can still own older pictures.
-  if(variants.size>=3)variants.delete(variants.keys().next().value!);variants.set(key,picture);return picture;
+  if(variants.size>=3)variants.delete(variants.keys().next().value!);variants.set(key,picture);
+  const m=getMetrics();recordMetrics({borderVectorBuilds:m.borderVectorBuilds+1,borderVectorMs:m.borderVectorMs+performance.now()-start});
+  return picture;
 }
-const BorderTile=memo(function BorderTile({chunk,zoom,preset,resources,priority,revision:_,notifyReady}:{chunk:BorderChunk;zoom:number;preset:GraphicsPreset;resources:BorderResources;priority:number;revision:number;notifyReady:(resources:BorderResources)=>void}){
-  const key=chunkKey(chunk,zoom,preset),vector=useMemo(()=>borderPicture(chunk,zoom,preset),[chunk,zoom,preset]);
-  const plan=useMemo(()=>borderRasterPlan(chunk.bounds,zoom,PixelRatio.get(),resources.images.maxBytes),[chunk,zoom,resources]);
-  // Coverage/priority changes cancel queued work, without releasing a ready
-  // image for the same mounted chunk. Only content/lifetime changes retire it.
-  useEffect(()=>()=>{resources.images.delete(key);resources.ready.delete(key);resources.pending.delete(key);},[key,resources]);
-  useEffect(()=>{
-    if(!plan||resources.images.peek(key))return;
-    const cancel=mapWorkQueue.schedule(()=>{
-      // All retained entries belong to mounted chunks. Do not evict them or
-      // keep an uncached image in React state outside the byte accounting.
-      if(!resources.alive||!resources.images.canFit(plan.bytes))return;
-      const start=performance.now();
-      const surface=Skia.Surface.Make(plan.width,plan.height);if(!surface)return;
-      try{
-        const c=surface.getCanvas();c.clear(Skia.Color('transparent'));c.scale(plan.scale,plan.scale);c.translate(-plan.left,-plan.top);c.drawPicture(vector);surface.flush();
-        const image=surface.makeImageSnapshot();resources.images.set(key,image,plan.bytes);resources.pending.add(key);
-        const m=getMetrics();recordMetrics({borderBuilds:m.borderBuilds+1,borderPrepareMs:m.borderPrepareMs+performance.now()-start,borderBytes:resources.images.bytes});
-        notifyReady(resources);
-      }finally{surface.dispose();}
-    },resources.canPrepare,priority);
-    return cancel;
-  },[key,vector,plan,resources,priority,notifyReady]);
-  const image=resources.ready.has(key)?resources.images.peek(key):undefined;
-  const display=useMemo(()=>!image||!plan?vector:withNativeRecordingObjects(own=>{
-    const r=own(Skia.PictureRecorder()),c=r.beginRecording(Skia.XYWHRect(plan.left,plan.top,plan.width/plan.scale,plan.height/plan.scale));
-    c.drawImageRectOptions(image,Skia.XYWHRect(0,0,plan.width,plan.height),Skia.XYWHRect(plan.left,plan.top,plan.width/plan.scale,plan.height/plan.scale),FilterMode.Linear,MipmapMode.None,own(Skia.Paint()));
-    return r.finishRecordingAsPicture();
-  }),[image,plan,vector]);
-  return <Picture picture={display}/>;
+const BorderTile=memo(function BorderTile({chunk,zoom,preset}:{chunk:BorderChunk;zoom:number;preset:GraphicsPreset}){
+  const picture=useMemo(()=>borderPicture(chunk,zoom,preset),[chunk,zoom,preset]);
+  return <Picture picture={picture}/>;
 });
-export const MapBorderLayer=memo(function MapBorderLayer({scene,owners,bounds,zoom,preset,canPrepare}:{scene:MapScene;owners:ReadonlyMap<string,string>;bounds:Bounds;zoom:number;preset:GraphicsPreset;canPrepare:()=>boolean}){
-  const [preparedZoom,refineZoom]=useState(zoom),rasterEnabled=borderRasterBudget(preset)>0;
-  const styleZoom=rasterEnabled?preparedZoom:zoom;
-  useEffect(()=>{
-    if(!rasterEnabled||stableBorderZoom(zoom,preparedZoom)===preparedZoom)return;
-    // Reuse the prepared strokes during pinch, including zoom-out coverage
-    // updates. Changing their style otherwise synchronously records every
-    // mounted chunk and retires its snapshot while touch input is active.
-    // The existing queue cancels stale requests and refines the final style
-    // only after the same quiet-camera gate as geography and political tiles.
-    return mapWorkQueue.schedule(()=>refineZoom(previous=>stableBorderZoom(zoom,previous)),canPrepare,-1);
-  },[zoom,preparedZoom,rasterEnabled,canPrepare]);
-  const [revision,refresh]=useState(0),timer=useRef<{id:ReturnType<typeof setTimeout>;resources:BorderResources}|null>(null);
-  const notifyReady=useCallback((resources:BorderResources)=>{
-    if(!resources.alive)return;
-    if(timer.current?.resources===resources)return;
-    if(timer.current)clearTimeout(timer.current.id);
-    const publish=()=>{
-      if(!resources.alive){timer.current=null;return;}
-      if(!resources.canPrepare()){timer.current={resources,id:setTimeout(publish,80)};return;}
-      for(const key of resources.pending)if(resources.images.peek(key))resources.ready.add(key);
-      resources.pending.clear();timer.current=null;
-      const m=getMetrics();recordMetrics({borderCommits:m.borderCommits+1,borderBytes:resources.images.bytes});
-      refresh(n=>n+1);
-    };
-    // A single Canvas commit warms several new images while quiet instead of
-    // issuing an upload/scene replacement for each individual prepared chunk.
-    timer.current={resources,id:setTimeout(publish,64)};
-  },[]);
-  const resources=useMemo<BorderResources>(()=>({images:new RasterCache<SkImage>(borderRasterBudget(preset),160),canPrepare,pending:new Set(),ready:new Set(),alive:true}),[scene,preset,canPrepare]);
-  useEffect(()=>{
-    resources.alive=true;
-    return()=>{resources.alive=false;resources.images.clear();resources.pending.clear();resources.ready.clear();if(timer.current?.resources===resources){clearTimeout(timer.current.id);timer.current=null;}};
-  },[resources]);
+export const MapBorderLayer=memo(function MapBorderLayer({scene,owners,bounds,zoom,preset}:{scene:MapScene;owners:ReadonlyMap<string,string>;bounds:Bounds;zoom:number;preset:GraphicsPreset}){
+  const previousZoom=useRef(zoom),styleZoom=preset==='Balanced'||preset==='Performance'?stableBorderZoom(zoom,previousZoom.current):zoom;previousZoom.current=styleZoom;
   const chunks=useMemo(()=>bordersInBounds(borderChunks(scene.edges,owners),bounds),[scene,owners,bounds]);
-  return <Group>{chunks.map(chunk=><BorderTile key={chunk.key} chunk={chunk} zoom={styleZoom} preset={preset} resources={resources} priority={borderPriority(chunk.bounds,bounds)} revision={revision} notifyReady={notifyReady}/>)}</Group>;
+  // Exact paths keep the accepted appearance. The measured transparent
+  // snapshot experiment added a full-area image pass and failed pinch/LOD
+  // gates. Reuse native vector pictures without extra RGBA/GPU image caches.
+  return <Group>{chunks.map(chunk=><BorderTile key={chunk.key} chunk={chunk} zoom={styleZoom} preset={preset}/>)}</Group>;
 });
