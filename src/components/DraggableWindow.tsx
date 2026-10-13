@@ -11,7 +11,7 @@ export function DraggableWindow({title,children,onClose,minimized=false,onRestor
  useEffect(()=>{if(visible)audioHub.play('window_open');},[visible]);
  const screen=useWindowDimensions(),insets=useSafeAreaInsets(),width=screen.width-insets.left-insets.right,height=screen.height-insets.top-insets.bottom;const [expanded,setExpanded]=useState(false),[compact,setCompact]=useState(false);
  const area={left:56,top:52,right:width-8,bottom:height-8};
- const w=Math.max(200,Math.min(expanded?width-72:640,width-72)),h=compact||minimized?44:Math.max(140,(height-68)*(expanded?1:.76));
+ const w=Math.max(200,Math.min(expanded?width-72:Math.min(560,width*.62),width-72)),h=compact||minimized?44:Math.max(140,(height-68)*(expanded?1:.76));
  const x=useSharedValue(area.left+(area.right-area.left-w)/2),y=useSharedValue(area.top+(area.bottom-area.top-h)/2),startX=useSharedValue(0),startY=useSharedValue(0);
  useEffect(()=>{x.value=Math.max(area.left,Math.min(area.right-w,x.value));y.value=Math.max(area.top,Math.min(area.bottom-h,y.value));},[width,height,w,h]);
  const pan=useMemo(()=>Gesture.Pan().minDistance(5).onBegin(()=>{startX.value=x.value;startY.value=y.value;}).onUpdate(e=>{x.value=Math.max(area.left,Math.min(area.right-w,startX.value+e.translationX));y.value=Math.max(area.top,Math.min(area.bottom-h,startY.value+e.translationY));}),[area.left,area.right,area.top,area.bottom,w,h,x,y,startX,startY]);

@@ -19,7 +19,12 @@ interface Resources {paths:RecordingPathCache<SkPath>;pictures:RasterCache<SkPic
 interface Drawing {scene:MapScene;features:readonly MapFeature[];context:readonly MapFeature[];owners:ReadonlyMap<string,string>;colors:ReadonlyMap<string,string>;lod:GeometryLod;preset:GraphicsPreset;mode:MapMode;detail:boolean;resources:Resources}
 function appendNativePath(f:MapFeature,d:Drawing,group:SkPath){
   d.resources.paths.withPath(d.lod+':'+f.id,()=>{
-    const t=performance.now(),p=Skia.Path.MakeFromSVGString(featurePath(geometryForLod(f,d.lod)))??Skia.Path.Make();p.setFillType(1);
+    // Individual radial LOD simplification does not preserve shared provincial
+    // edges. It leaves bright triangular gaps over relief. Exact provincial
+    // coverage is recorded once into small cached tiles; world silhouettes can
+    // retain their coarse LOD without altering interactive hit geometry.
+    const geometry=f.provinceId&&!f.id.startsWith('render-country-')?f:geometryForLod(f,d.lod);
+    const t=performance.now(),p=Skia.Path.MakeFromSVGString(featurePath(geometry))??Skia.Path.Make();p.setFillType(1);
     recordMetrics({pathBuilds:getMetrics().pathBuilds+1,pathBuildMs:getMetrics().pathBuildMs+performance.now()-t});return p;
   },path=>{group.addPath(path);});
 }
