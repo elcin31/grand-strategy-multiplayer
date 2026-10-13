@@ -67,3 +67,20 @@ class SurfaceStatsTest(unittest.TestCase):
         self.assertFalse(surface_sequence_stats([{'atSeconds':3,'raw':raw}],3)['complete'])
         bad=raw+'\n3 999999999 2'
         self.assertFalse(surface_sequence_stats([{'atSeconds':.1,'raw':bad}],.2)['complete'])
+
+    def test_real_device_input_window_excludes_idle_boundaries_and_preserves_camera_stalls(self):
+        rows=[100_000_000,500_000_000,510_000_000,550_000_000,950_000_000,960_000_000,2_000_000_000]
+        polls=[{'atSeconds':.1,'raw':'16666667\n'+'\n'.join(f'1 {n} 1' for n in rows)}]
+        result=surface_sequence_stats(polls,.2,(500_000_000,1_000_000_000))
+        self.assertTrue(result['complete']);self.assertTrue(result['available'])
+        self.assertEqual(result['frames'],5);self.assertEqual(result['maxMs'],400)
+        self.assertEqual(result['excludedBeforeInputFrames'],1)
+        self.assertEqual(result['excludedAfterGraceFrames'],1)
+        self.assertEqual(result['unboundedCaptureFrames'],7)
+        self.assertEqual(result['firstWindowPresentationDelayMs'],0)
+
+    def test_invalid_or_empty_device_windows_cannot_report_a_valid_camera_sample(self):
+        polls=[{'atSeconds':.1,'raw':'16666667\n1 1000000000 1\n2 1016666667 2'}]
+        for window in [(0,20),(True,20),(30,20),(1.5,20)]:
+            with self.assertRaises(AssertionError):surface_sequence_stats(polls,.2,window)
+        self.assertFalse(surface_sequence_stats(polls,.2,(10,20))['available'])

@@ -91,7 +91,7 @@ def surface_frame_stats(raw):
     return report
 
 
-def surface_sequence_stats(polls, duration):
+def surface_sequence_stats(polls, duration, device_window=None):
     """Combine overlapping compositor rings, retaining every observed stall.
 
     A polling gap large enough to overflow the ring invalidates full capture.
@@ -118,13 +118,27 @@ def surface_sequence_stats(polls, duration):
     times.append(duration)
     max_gap = max((b-a for a,b in zip(times,times[1:])),default=duration)
     complete = bool(polls) and len(refresh)==1 and not invalid and max_gap < min(refresh,default=0)*120/1e9
+    scope = {}
+    if device_window is not None:
+        begin,end = device_window
+        assert all(isinstance(n,int) and not isinstance(n,bool) and n>0 for n in (begin,end)) and end>begin, 'Invalid device presentation window'
+        ordered = sorted(presents)
+        scope = {'deviceWindowStartNs':begin,'deviceWindowEndNs':end,
+                 'unboundedCaptureFrames':len(ordered),
+                 'excludedBeforeInputFrames':sum(n<begin for n in ordered),
+                 'excludedAfterGraceFrames':sum(n>end for n in ordered)}
+        presents = {n for n in presents if begin<=n<=end}
+        scope['firstWindowPresentationDelayMs'] = (min(presents)-begin)/1e6 if presents else None
+        scope['firstPresentationNote'] = 'First window presentation after input; not proof that map pixels responded.'
     combined = str(next(iter(refresh),0))+'\n'+'\n'.join(f'0 {n} 0' for n in sorted(presents))
     report = surface_frame_stats(combined)
     report.update(complete=complete, polls=len(polls), maxPollGapSeconds=max_gap,
                   captureSeconds=duration, snapshotRingWasFull=snapshot_full,
                   recentRingMayBeTruncated=not complete,
+                  **scope,
                   note='Actual presentation intervals throughout polled capture; '
-                       'overlapping rings deduplicated. Not physical handset FPS.')
+                       'overlapping rings deduplicated. Not physical handset FPS.' +
+                       (' Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.' if device_window else ''))
     if not complete:
         report['error'] = 'Compositor polling incomplete, invalid or ring may have overflowed'
     return report
