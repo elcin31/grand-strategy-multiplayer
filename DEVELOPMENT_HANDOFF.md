@@ -1,16 +1,8 @@
-# Dominion 2.1.2 — final playtest checkpoint
+# Dominion 2.2 — map foundation checkpoint
 
-- Branch `dominion-2.1.2-living-world`, recovered from 2.1.1 `b7bea68`. Runtime/APK/backend: `4d10489c152349b63e5c5b7e21757ebc5a9e5d60`; later commits change only tests/publication records. Previous release assets preserved.
-- Implemented: daily bounded front AI, conserved supply-sized corps and persistent reserve/operation roles; long legal routes, defence/support/coordination/sieges; independent paid formation queues, templates/names/generals/split/merge/transfers/list camera focus; faster marches/redeployment/ETA and linear animation.
-- World: justified wars/peace, alliances/access/imports, interests/threat/real defensive coalitions/crises/recovery; economy/research/focus/advisers; opt-in commander plans/manual override, finite mobilization, paid timed generals, real doctrines, common host difficulty, chronicle filters. Existing art/audio/camera optimization retained.
-- Budgets: 24 countries / 96 army decisions / 12000 BFS nodes per game day, rotating stacks; strategy/economy/diplomacy on scheduled monthly work. No render AI or long camera benchmark.
-- Critical real-map fix: the starting 120K German stack previously stopped at 20% supply; supply-sized conserved corps now capture multiple Polish provinces in eight days. No free soldiers/manpower/money. Guarded battle, continuing advance, reserve defence and human takeover also checked.
-- Validation: typecheck + 73 focused scenarios passed in build; two 310K queues/costs/save/load; war/alliance/rejection/peace/crisis; mobilization/commander training and later peace ceilings/evacuation safeguards.
-- Live existing Dominion project `dfjsnjxnyjspwugjguhq`: v211 command and room both ACTIVE version3, schema25. Authentication/CAS/receipts/database unchanged; original/v21 handlers retained. Previous v211 source reconstruction hashes match the published manifest. All multiplayer participants need 2.1.2; existing 2.1.1 local saves/rooms migrate normally.
-- Real two independent HTTP clients passed four paid armies, different movement, spoof/foreign-order rejection, common difficulty/calendar and reconnect names. Both synthetic rooms cleaned; zero room/player/receipt rows. No two-physical-phone claim.
-- Standalone APK: 2.1.2/code13, existing package/certificate, embedded Hermes/Skia, landscape; 153574512 bytes, SHA256 `7f1ea498525143585c69b3fe991199044917275297cb87c2cd41d6f7b17c6961`. Existing build run `38350841398` build job passed. ZIP artifact `11790939061` digest `4c7c0ddfc6e950ff4b99429068b32c3aa98d00df7633d055c2278aac40995506`.
-- Native short smoke PASSED run `38355210143` using this identical APK: launch/map/window drag/scroll/close, split/order/move/deselect, mute/save/restart and no fatal logs. Intermediate failures were offscreen legacy harness checks, repaired without rebuilding runtime.
-- Published/verified: `v2.1.2-playtest.1`, publication run `38355930383` succeeded; public APK byte-for-byte matches the tested file and 2.0/2.1/2.1.1 asset IDs/names/sizes remain unchanged.
-- APK: https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.2-playtest.1/Dominion-2.1.2-playtest.apk
-- Next exact step: user installs 2.1.2 on Android (both devices for multiplayer) and tests AI/front operations, independent army formation, travel feel and world diplomacy. Physical-device balance/smoothness remain user playtest. No implementation or publication step remains.
-- Records: `DOMINION_212_BACKEND_MANIFEST.json`, `DOMINION_212_MULTIPLAYER_QA.json`, `DOMINION_212_RELEASE_MANIFEST.json`.
+- Branch: `dominion-2.2-world-map-overhaul`; recovered HEAD `604f9d3ffc5876e5a594d4821ae49828abdc485a` from confirmed 2.1.2. Runtime baseline `4d10489`, release `v2.1.2-playtest.1` verified. Use `git rev-parse HEAD` for the current checkpoint SHA.
+- Five attached concepts inspected; art direction in `MAP_ART_DIRECTION.md`.
+- Existing Skia tile renderer, native TextureView/recorder fixes, UI-thread camera, world geometry and save schema retained. No gameplay/backend migration planned.
+- Foundation: offline atlas structure and implementation plan. Dependencies installed.
+- Next: precompute worldwide Natural Earth relief/landcover tiles and river/lake vectors in Dominion's equirectangular coordinates, then integrate static geography and dynamic political rendering.
+- APK 2.2 is not built yet. Previous releases remain unchanged.
