@@ -87,7 +87,7 @@ jobs:
           api-level: 35
           arch: x86_64
           profile: pixel_2
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-window -gpu swiftshader_indirect -memory 3072 -noaudio -no-boot-anim -camera-back none
           script: |
             adb push dominion-camera23.jar /data/local/tmp/dominion-camera23.jar
             CAMERA23_OUT=profile-baseline python scripts/android23-profile.py baseline-apk/Dominion-2.2.1-performance-hotfix.apk camera23-fixture
@@ -101,6 +101,9 @@ jobs:
               python scripts/analyze-camera-cpu.py "$trace"
             fi
           done
+      - name: Require the completed matrix metric gate
+        if: success() && inputs.build_candidate == true
+        run: python scripts/compare-camera23.py profile-baseline profile-candidate --check
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -109,4 +112,5 @@ jobs:
             profile-baseline/
             profile-candidate/
             camera23-fixture/manifest.json
+            camera23-comparison.json
           retention-days: 30

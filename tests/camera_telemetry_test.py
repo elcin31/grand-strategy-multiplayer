@@ -57,3 +57,12 @@ class CameraTelemetryTest(unittest.TestCase):
         for values in ([12, 2], [12, 2, 20]):
             result = camera_telemetry('\n'.join(log(uiFps=60, rasterBuilds=i) for i in values))
             self.assertIsNone(result['counterDeltasBetweenSamples']['rasterBuilds'])
+
+    def test_border_preparation_and_publication_remain_auxiliary_counters(self):
+        result = camera_telemetry('\n'.join([
+            log(uiFps=40, cameraUpdates=10, borderBuilds=35, borderPrepareMs=90, borderCommits=15, borderBytes=12000000),
+            log(uiFps=42, cameraUpdates=12, borderBuilds=35, borderPrepareMs=90, borderCommits=15, borderBytes=12000000)]))
+        self.assertEqual(result['counterDeltasBetweenSamples']['borderBuilds'], 0)
+        self.assertEqual(result['counterDeltasBetweenSamples']['borderCommits'], 0)
+        self.assertEqual(result['samples'][0]['borderBytes'], 12000000)
+        self.assertNotIn('p95Ms', result)

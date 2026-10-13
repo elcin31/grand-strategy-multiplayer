@@ -72,7 +72,17 @@ const BorderTile=memo(function BorderTile({chunk,zoom,preset,resources,priority,
   return <Picture picture={display}/>;
 });
 export const MapBorderLayer=memo(function MapBorderLayer({scene,owners,bounds,zoom,preset,canPrepare}:{scene:MapScene;owners:ReadonlyMap<string,string>;bounds:Bounds;zoom:number;preset:GraphicsPreset;canPrepare:()=>boolean}){
-  const previousZoom=useRef(zoom),styleZoom=borderRasterBudget(preset)?stableBorderZoom(zoom,previousZoom.current):zoom;previousZoom.current=styleZoom;
+  const [preparedZoom,refineZoom]=useState(zoom),rasterEnabled=borderRasterBudget(preset)>0;
+  const styleZoom=rasterEnabled?preparedZoom:zoom;
+  useEffect(()=>{
+    if(!rasterEnabled||stableBorderZoom(zoom,preparedZoom)===preparedZoom)return;
+    // Reuse the prepared strokes during pinch, including zoom-out coverage
+    // updates. Changing their style otherwise synchronously records every
+    // mounted chunk and retires its snapshot while touch input is active.
+    // The existing queue cancels stale requests and refines the final style
+    // only after the same quiet-camera gate as geography and political tiles.
+    return mapWorkQueue.schedule(()=>refineZoom(previous=>stableBorderZoom(zoom,previous)),canPrepare,-1);
+  },[zoom,preparedZoom,rasterEnabled,canPrepare]);
   const [revision,refresh]=useState(0),timer=useRef<{id:ReturnType<typeof setTimeout>;resources:BorderResources}|null>(null);
   const notifyReady=useCallback((resources:BorderResources)=>{
     if(!resources.alive)return;
