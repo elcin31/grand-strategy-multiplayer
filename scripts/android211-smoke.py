@@ -37,7 +37,7 @@ def control(label,name,scroll=False):
                 box=list(map(int,re.findall(r'\d+',n.get('bounds',''))))
                 if n.get('scrollable')=='true' and len(box)==4 and box[3]-box[1]>120:containers.append(box)
             assert containers,'Missing scrollable context panel'
-            box=max(containers,key=lambda b:b[0]);x=(box[0]+box[2])//2;h=box[3]-box[1]
+            box=max(containers,key=lambda b:(b[2]-b[0])*(b[3]-b[1]));x=(box[0]+box[2])//2;h=box[3]-box[1]
             adb('shell','input','swipe',x,int(box[1]+h*.82),x,int(box[1]+h*.22),350)
         time.sleep(1)
     raise AssertionError('Missing enabled control: '+label)
