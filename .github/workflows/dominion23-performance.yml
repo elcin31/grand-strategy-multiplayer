@@ -25,7 +25,7 @@ jobs:
         with: {distribution: temurin, java-version: '17'}
       - uses: gradle/actions/setup-gradle@v4
       - run: npm ci --include=dev --no-audit --no-fund
-      - run: npm run typecheck && npm run test:221
+      - run: npm run typecheck && npm run test:23-performance
       - run: python -m pip install -r scripts/camera-profile-requirements.txt
       - run: npx expo prebuild --platform android --clean
       - run: python scripts/verify-native-config.py && python scripts/verify-hotfix-assets.py --native

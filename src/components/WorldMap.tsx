@@ -301,7 +301,7 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
         <Group matrix={matrix}>
           <MapGeographyLayer scene={scene} bounds={bounds} zoom={detailZoom} preset={preset} mode={mode} canPrepare={canPrepare}/>
           {mode!=='Terrain'&&mode!=='Province'&&<MapRasterLayer scene={scene} features={renderFeatures} owners={owners} colors={provinceColors} lod={geometryLod} preset={preset} mode={mode} detail={provinceDetail} bounds={bounds} zoom={detailZoom} canPrewarm={canPrewarm} canPrepare={canPrepare}/>}
-          <MapBorderLayer scene={scene} owners={owners} bounds={bounds} zoom={detailZoom} preset={preset}/>
+          <MapBorderLayer scene={scene} owners={owners} bounds={bounds} zoom={detailZoom} preset={preset} canPrepare={canPrepare}/>
 
           {provinceSelection&&visible.filter(f=>peaceEligible.has(f.id)||peaceSelected.has(f.id)).map(f=><Group key={'peace-'+f.id}><Path path={paths.get(f.id)!} color={peaceSelected.has(f.id)?'#DABD6E':'#5BA68C'} opacity={peaceSelected.has(f.id)?.5:.2}/><Path path={paths.get(f.id)!} color={peaceSelected.has(f.id)?'#FFE1A0':'#87D1B2'} style="stroke" strokeWidth={selectionScale}/></Group>)}
           {occupiedBatches.map(([color,path])=><Group key={color}><Path path={path} color={color} opacity={.28}/><Path path={path} color={color} opacity={.55} style="stroke" strokeWidth={selectionScale}/></Group>)}
