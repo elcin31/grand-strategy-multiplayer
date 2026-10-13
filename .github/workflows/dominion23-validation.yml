@@ -13,6 +13,10 @@ on:
         description: Supplement the continuous gestures with actual staged world/region/province switching
         type: boolean
         default: false
+      full_matrix_only:
+        description: Repeat complete A-I using the immutable compiled APK without rebuilding
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
@@ -63,18 +67,21 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - uses: reactivecircus/android-emulator-runner@v2
-        env: {LOD_ONLY: '${{ inputs.lod_only }}'}
+        env: {LOD_ONLY: '${{ inputs.lod_only }}', FULL_MATRIX_ONLY: '${{ inputs.full_matrix_only }}'}
         with:
           api-level: 35
           arch: x86_64
           profile: pixel_2
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          emulator-options: -no-window -gpu swiftshader_indirect -memory 3072 -noaudio -no-boot-anim -camera-back none
           script: bash scripts/android23-validation.sh
       - name: Analyze complete actual LOD frames, excluding synthetic idle-interval claims
         if: always() && inputs.lod_only == true
         run: |
           python scripts/analyze-camera23-lod.py lod-baseline/diagnostic-lod
           python scripts/analyze-camera23-lod.py lod-candidate/diagnostic-lod
+      - name: Require the completed matrix metric gate
+        if: success() && inputs.full_matrix_only == true
+        run: python scripts/compare-camera23.py profile-baseline profile-candidate --check
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -85,6 +92,9 @@ jobs:
             monthly-candidate/
             lod-baseline/
             lod-candidate/
+            profile-baseline/
+            profile-candidate/
+            camera23-comparison.json
             candidate-integrity.txt
             camera23-monthly-fixture/manifest.json
           retention-days: 30

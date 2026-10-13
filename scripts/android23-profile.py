@@ -46,6 +46,19 @@ def configure():
     tree=h.root('overlay');node=find_enabled_control(tree,'Performance overlay: Выкл')
     if node is not None:h.tap(node)
     h.control('Закрыть ×','settings-close',True)
+def pull_saves(destination):
+    # Read-only diagnostics outside every timed capture. A transient ADB
+    # transport failure may be retried only if the same app and boot survive.
+    pid=h.adb('shell','pidof',PACKAGE).strip();boot=h.adb('shell','cat','/proc/sys/kernel/random/boot_id').strip()
+    directory='/data/user/0/'+PACKAGE+'/files/dominion-campaigns'
+    try:h.adb('pull',directory,destination)
+    except subprocess.CalledProcessError as error:
+        if 'device offline' not in (error.output or ''):raise
+        (OUT/'diagnostic-adb-recovery.txt').write_text(str(error.output)+'\n')
+        h.adb('wait-for-device',timeout=30)
+        assert h.adb('shell','pidof',PACKAGE).strip()==pid,'App restarted during diagnostic transport failure'
+        assert h.adb('shell','cat','/proc/sys/kernel/random/boot_id').strip()==boot,'Emulator rebooted; comparison invalid'
+        h.adb('pull',directory,destination)
 def sample(name,kind,cycles=6,focal=None):
     h.adb('shell','dumpsys','gfxinfo',PACKAGE,'reset');h.adb('logcat','-c');h.adb('shell','dumpsys','SurfaceFlinger','--latency-clear')
     pid=h.adb('shell','pidof',PACKAGE).strip();assert pid
@@ -83,7 +96,7 @@ try:
         trace.CONFIG=trace.CONFIG.replace('duration_ms: 20000','duration_ms: 45000').replace('size_kb: 65536','size_kb: 131072')
         movements=[]
         def staged_lod():
-            for _ in range(3):
+            for _ in range(2):
                 for kind in ['in','in','out','out']:
                     movements.append(gesture(kind,1,(700,265)));time.sleep(.8)
         out=OUT/'diagnostic-lod';out.mkdir(exist_ok=True)
@@ -96,7 +109,7 @@ try:
         install_fixture('war');configure();mode('Армии');h.control('Продолжить','monthly-resume')
         sample('H-monthly-economy-ai','pan',12);h.control('Пауза','monthly-pause')
         h.control('Сохранить кампанию','monthly-save');time.sleep(2)
-        directory='/data/user/0/'+PACKAGE+'/files/dominion-campaigns';h.adb('pull',directory,OUT/'native-saves')
+        pull_saves(OUT/'native-saves')
         saves=list((OUT/'native-saves').rglob('camera23-war.*.json'));states=[json.loads(p.read_text()).get('state') for p in saves];states=[s for s in states if s]
         latest=max(states,key=lambda s:s['simulationDay']);assert latest['tick']>0 and latest['month']>=2,'Monthly accounting was not exercised'
         (OUT/'result.json').write_text(json.dumps({'monthlyEconomyAndAI':True,'startDay':manifest['war']['simulationDay'],'endDay':latest['simulationDay'],'endTick':latest['tick'],'endMonth':latest['month'],'noFatalLogs':True,'physicalRedmiTest':False},indent=2)+'\n')
@@ -114,8 +127,7 @@ try:
     install_fixture('war');mode('Армии');sample('G-war-armies','combined')
     h.control('Продолжить','simulation-resume');sample('H-active-simulation','pan');h.control('Пауза','simulation-pause')
     h.control('Сохранить кампанию','simulation-save');time.sleep(2)
-    directory='/data/user/0/'+PACKAGE+'/files/dominion-campaigns'
-    h.adb('pull',directory,OUT/'native-saves')
+    pull_saves(OUT/'native-saves')
     install_fixture('peace')
     # 12 matched 12s blocks, repeated map modes. Retain first/last native
     # frames and all intermediate PSS; the SurfaceFlinger ring cannot cover
