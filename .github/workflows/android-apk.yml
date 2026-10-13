@@ -63,6 +63,8 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix' }}
       - name: Install dependencies
         run: npm ci --include=dev --no-audit --no-fund
       - name: Typecheck
@@ -142,9 +144,9 @@ jobs:
       - name: Package final release
         run: |
           if [ "$GITHUB_REF" = 'refs/heads/dominion-2.2.1-performance-hotfix' ]; then
+            cp android/app/build/outputs/apk/release/app-release.apk Dominion-2.2.1-performance-hotfix.apk
             python scripts/verify-map22.py android/app/build/outputs/apk/release/app-release.apk
             python scripts/verify-hotfix-assets.py android/app/build/outputs/apk/release/app-release.apk
-            cp android/app/build/outputs/apk/release/app-release.apk Dominion-2.2.1-performance-hotfix.apk
           elif [ "$GITHUB_REF" = 'refs/heads/dominion-2.2-world-map-overhaul' ]; then
             python scripts/verify-map22.py android/app/build/outputs/apk/release/app-release.apk
             cp android/app/build/outputs/apk/release/app-release.apk Dominion-2.2-playtest.apk
@@ -160,6 +162,7 @@ jobs:
             cp android/app/build/outputs/apk/release/app-release.apk Dominion-grand-strategy-v2-release.apk
           fi
       - uses: actions/upload-artifact@v4
+        if: success() || (failure() && github.ref == 'refs/heads/dominion-2.2.1-performance-hotfix')
         with:
           name: dominion-camera-illustrated-release
           path: |
@@ -169,6 +172,7 @@ jobs:
             Dominion-2.1.2-playtest.apk
             Dominion-2.2-playtest.apk
             Dominion-2.2.1-performance-hotfix.apk
+            android/app/build/outputs/apk/release/app-release.apk
             android/launcher-icon-proof.json
             release-integrity.txt
             art-packaging.txt

@@ -37,6 +37,10 @@ elif len(sys.argv)>1:
   packed={hashlib.sha256(z.read(n)).hexdigest() for n in z.namelist() if n.endswith(('.webp','.png'))}
   assert hashes<=packed,'Prepared offline atlas missing from APK'
   assert {r['sha256'] for r in proof['launcherResources']}<=packed,'New launcher pixels missing from APK'
-  xml=z.read('res/mipmap-anydpi-v26/ic_launcher.xml');assert b'foreground' in xml or 'foreground'.encode('utf-16le') in xml
+  # AAPT normalizes qualifiers (e.g. v26 -> v26-v4). Verify the compiled
+  # resource rather than assuming its source-tree directory survives packing.
+  adaptive=[n for n in z.namelist() if n.startswith('res/mipmap-anydpi') and n.endswith('/ic_launcher.xml')]
+  assert adaptive,'Packaged adaptive launcher XML missing'
+  xml=z.read(adaptive[0]);assert b'foreground' in xml or 'foreground'.encode('utf-16le') in xml
  print('PASS: precomposed atlas and every generated launcher image actually included in APK')
 else:print('PASS: precomposed atlas and exact original icon source verified')
