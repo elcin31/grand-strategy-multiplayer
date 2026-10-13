@@ -1,3 +1,9 @@
+# Dominion 2.3 — ongoing native camera gate
+
+- Continue on `dominion-2.3-performance`; exact runtime/candidate/CI identity and measured limitations are in [DOMINION_23_CHECKPOINT.md](DOMINION_23_CHECKPOINT.md). Stage A is unfinished; no new gameplay or backend rollout has started and no 2.3 release has been published.
+- Candidate gates and incomplete captures are retained in `DOMINION_23_PERFORMANCE_DEV1_REJECTED.json` and `DOMINION_23_PERFORMANCE_DEV2_EVIDENCE.json`. Existing long-simulation save/restore failure is retained in `DOMINION_23_LEGACY_SAVE_FAILURE.json`.
+- Keep the published 2.2.1 APK below as the immutable baseline. Do not mistake a successful build or a supplemental LOD trace for passing all performance, multiplayer, simulation and complete-release checks.
+
 # Dominion 2.2.1 — published performance hotfix
 
 - Branch: `dominion-2.2.1-performance-hotfix`. Compiled client `278fbbd1140300a95673d5ff62445b98b592826a`; successful immutable-APK verification/native run `38407524181` at `444df39893e4a395cf71b13bb972cc146ae982e8`. Later commits are CI/documentation only; runtime sources are identical. Recovered from exact published 2.2 runtime (`b8520ef933f0652044d31f3709ab810cf8888b26`), with subsequent documentation-only checkpoint `f38c0e2` retained.

@@ -1,0 +1,18 @@
+{
+  "status": "failed at first atomic save/restore equality check",
+  "simulationSteps": 1000,
+  "stepKind": "monthly ADVANCE_TICK",
+  "seed": 91,
+  "worldCountries": 195,
+  "initialWar": [
+    "germany",
+    "france"
+  ],
+  "hostCountry": "usa",
+  "rendererRuntimeSha": "eb549df19185af8918d466627d7fec4849a1eb1d",
+  "engineAndPersistenceUnchangedFromOptimizedHotfix": true,
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    activeBattles: [],\n    aiDifficulty: 'Normal',\n    aiMilitaryCursor: 0,\n    armies: [\n...\n        startedTick: 995,\n+       warScore: 0.17249999999999996\n-       warScore: 0.1725\n      },\n      {\n        attackers: [\n          'poland'\n        ],\n...\n        startedTick: 1000,\n+       warScore: 0.135\n-       warScore: 0\n      },\n      {\n        attackers: [\n          'spain'\n        ],\n",
+  "reproduce": "node --expose-gc --import tsx scripts/long-simulation.ts in detached output directory; no production rooms, database or user saves",
+  "full10000StepValidation": "not passed",
+  "furtherInvestigation": "validateCampaign/normalizeGameState refreshes cached War Score; preserve the campaign before adding new gameplay"
+}
