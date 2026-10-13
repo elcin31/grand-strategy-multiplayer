@@ -1,5 +1,5 @@
 {
-  "status": "compiled and smoke/LOD supplements passed; primary matrix pending",
+  "status": "rejected by complete native matrix, including corrected real-input scope",
   "runtimeSha": "eb549df19185af8918d466627d7fec4849a1eb1d",
   "versionName": "2.3.0-dev.3",
   "versionCode": 18,
@@ -159,8 +159,10 @@
   },
   "primaryMatrix": {
     "run": 38446818950,
-    "status": "pending",
-    "metricGate": "pending"
+    "artifact": 11841861722,
+    "status": "completed",
+    "metricGate": "fail",
+    "deviceScopedReport": "DOMINION_23_PERFORMANCE_DEV3_SCOPED_REJECTED.json"
   },
   "physicalRedmiTest": false,
   "backendChanged": false,
