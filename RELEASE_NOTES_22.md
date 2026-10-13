@@ -1,21 +1,28 @@
 # DOMINION 2.2 — NEXT GENERATION WORLD MAP PLAYTEST
 
-Worldwide offline 2.5D atlas: NOAA ETOPO elevation/hillshade and bathymetry,
-Natural Earth landcover, rivers and lakes; textured political colours,
-country/province boundaries, capital stars and three levels of map detail.
+Мировая интерактивная 2.5D-карта: настоящий рельеф и глубины NOAA ETOPO,
+природная поверхность, реки и озёра Natural Earth. Текстурные цвета государств,
+раздельные государственные и провинциальные границы, столицы и три уровня детализации.
 
-Confirmed army routes/arrows/ETA, real flags and status, war fronts, defensive
-groups, occupation hatching, active battles and siege progress. Province windows
-have six tabs and existing actions. Economic filters show real deposits,
-buildings, production, infrastructure and accepted trade contracts. Trade and
-local infrastructure connections are explicitly schematic, not surveyed routes.
+Пять основных режимов: политический, рельефный, военный, провинциальный и экономический.
+Реальные армии, флаги, приказы, маршруты и ETA; фронты, оккупация, сражения и осады
+по игровому состоянию. Перемещаемое окно провинции с шестью вкладками и прежними
+действиями. Шесть экономических фильтров показывают существующие ресурсы, здания,
+производство, инфраструктуру и принятые торговые контракты. Торговые и локальные
+инфраструктурные связи обозначены как условные схемы.
 
-Performance/Balanced/High/Ultra retained. Geography is prepared offline and
-reused as bounded static raster tiles; the existing Skia renderer/camera remains.
-No new simulation, province IDs, save schema or multiplayer backend rollout.
-Dominion 2.1.2 schema25 campaigns and multiplayer protocol remain compatible.
+Performance / Balanced / High / Ultra сохранены. Все географические ассеты входят
+в APK; статические слои подготовлены заранее, кеши и количество объектов ограничены.
+Сохранены Skia, камера, ID провинций, игровые механики, сохранения schema25
+и multiplayer-протокол Dominion 2.1.2. Обновление backend не требуется.
 
-Standalone landscape Android, embedded JavaScript, existing application ID and
-certificate. Physical Redmi Note 12 smoothness remains user playtest; no 60 FPS claim.
-Open-source geographical attribution and reproducible asset pipeline are included
-in the repository. Previous releases are preserved.
+Standalone Android release в landscape: JavaScript встроен, Metro и Expo Go
+не нужны. Прежние package name и сертификат подписи. Короткая проверка на Android:
+пять режимов, фильтры, вкладки провинции, pan/zoom, разделение и движение армий,
+сохранение и повторная загрузка. Производительность на физическом Redmi Note 12
+ещё не измерена; фиксированный FPS не обещается.
+
+Снимки в приложениях релиза сняты с работающего Android-приложения.
+Источники, лицензии и воспроизводимый генератор ассетов находятся в репозитории:
+`MAP_ART_DIRECTION.md`, `MAP_ASSET_MANIFEST.json`, `scripts/prepare-map22.py`.
+Предыдущие релизы сохранены.
