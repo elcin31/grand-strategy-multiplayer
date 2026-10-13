@@ -12,6 +12,7 @@ import type {GameCommand} from '../src/types/game';
 
 // Detached QA saves only. No production rooms, renderer data or runtime backdoor.
 const directory=process.argv[2]??'camera23-fixture';mkdirSync(directory,{recursive:true});
+const warDays=process.argv.includes('--monthly')?25:12;
 let state=createWorldState('camera23-peace','CAM23A','camera-host','Camera QA',101);
 for(const command of [
   {type:'SELECT_COUNTRY',playerId:'camera-host',countryId:'germany'},
@@ -30,7 +31,7 @@ function save(name:string){
 save('peace');
 state=structuredClone(state);state.id='camera23-war';state.phase='running';state.speed=1;
 declareWar(state,'germany','poland');
-for(let i=0;i<12;i++)state=applyCommand(state,{type:'ADVANCE_DAY'},true);
+for(let i=0;i<warDays;i++)state=applyCommand(state,{type:'ADVANCE_DAY'},true);
 // Scenario deployment of existing soldiers; create battle/siege records with
 // the engine's own operations. No fake units or altered map geometry.
 const german=state.armies.find(a=>a.ownerId==='germany')!,polish=state.armies.find(a=>a.ownerId==='poland')!;

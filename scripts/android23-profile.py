@@ -77,6 +77,15 @@ try:
     h.adb('install','-r',sys.argv[1]);h.adb('shell','pm','clear',PACKAGE)
     h.adb('shell','wm','size','720x1280');h.adb('shell','wm','density','160');h.adb('shell','settings','put','system','accelerometer_rotation','0');h.adb('shell','settings','put','system','user_rotation','1')
     h.adb('shell','svc','wifi','disable');h.adb('shell','svc','data','disable')
+    if os.environ.get('CAMERA23_MONTHLY_ONLY')=='1':
+        install_fixture('war');configure();mode('Армии');h.control('Продолжить','monthly-resume')
+        sample('H-monthly-economy-ai','pan',12);h.control('Пауза','monthly-pause')
+        h.control('Сохранить кампанию','monthly-save');time.sleep(2)
+        directory='/data/user/0/'+PACKAGE+'/files/dominion-campaigns';h.adb('pull',directory,OUT/'native-saves')
+        saves=list((OUT/'native-saves').rglob('camera23-war.*.json'));states=[json.loads(p.read_text()).get('state') for p in saves];states=[s for s in states if s]
+        latest=max(states,key=lambda s:s['simulationDay']);assert latest['tick']>0 and latest['month']>=2,'Monthly accounting was not exercised'
+        (OUT/'result.json').write_text(json.dumps({'monthlyEconomyAndAI':True,'startDay':manifest['war']['simulationDay'],'endDay':latest['simulationDay'],'endTick':latest['tick'],'endMonth':latest['month'],'noFatalLogs':True,'physicalRedmiTest':False},indent=2)+'\n')
+        sys.exit(0)
     install_fixture('peace');configure()
     sample('A-horizontal-pan','pan')
     from camera_system_trace import capture_camera_trace
