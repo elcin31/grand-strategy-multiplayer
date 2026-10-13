@@ -89,11 +89,30 @@
       "receipts": 0
     }
   },
-  "nativeSmoke": {},
+  "nativeSmoke": {
+    "releaseColdLaunch": true,
+    "campaignStarted": true,
+    "newHUD": true,
+    "armySplit": true,
+    "armyOrder": true,
+    "armyMovement": true,
+    "deselectPreservesOrder": true,
+    "centralWindowOpenDragScrollClose": true,
+    "mute": true,
+    "saveRestart": true,
+    "mapPainted": true,
+    "noFatalLogs": true,
+    "soak": false
+  },
   "physicalDeviceTested": false,
   "longSoakOrCameraBenchmark": false,
-  "publicationStatus": "VERIFIED_READY",
+  "publicationStatus": "PUBLISHED_VERIFIED",
   "nativeRunId": 38355210143,
   "nativeSourceCommit": "18ca58f535d413c9737d9a84d8db3612608b6721",
-  "nativeSmokeStatus": "PASSED: same immutable APK; actual emulator run"
+  "nativeSmokeStatus": "PASSED: same immutable APK; actual emulator run",
+  "publicApkByteMatch": true,
+  "previousReleasesPreserved": true,
+  "releaseId": 411331204,
+  "apkAssetId": 636103766,
+  "apkUrl": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.2-playtest.1/Dominion-2.1.2-playtest.apk"
 }
