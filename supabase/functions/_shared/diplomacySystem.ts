@@ -106,7 +106,7 @@ export function declareWar(state:GameState,actor:string,target:string):War {
   if([...attackers,...defenders].some(id=>busy.has(id)))throw new Error('Вассал уже участвует в войне');
   if(new Set([...attackers,...defenders]).size!==attackers.length+defenders.length)throw new Error('Конфликт сторон войны');
   for(const a of attackers)for(const d of defenders){const pair=diplomaticLink(state,a,d);if(state.tick<pair.truceUntilTick||pair.treaties.length)throw new Error('Договор участника коалиции запрещает войну');}
-  const war={id:`war-${state.id}-${state.nextEntityId!++}`,attackers,defenders,startedTick:state.tick,warScore:0,occupiedProvinceIds:[],casualties:{}};
+  const war={id:`war-${state.id}-${state.nextEntityId!++}`,attackers,defenders,startedTick:state.tick,battleScore:0,warScore:0,occupiedProvinceIds:[],casualties:{}};
   state.wars!.push(war);c.politicalPower!-=25;c.aggressiveExpansion=Math.min(100,c.aggressiveExpansion!+5);
   for(const a of attackers)for(const d of defenders){const pair=diplomaticLink(state,a,d);pair.relation=-100;pair.baselineRelation=-100;pair.reasons=[];pair.trust=0;pair.treaties=[];pair.terms=[];delete pair.proposal;}
   logDiplomacy(state,[actor,target],'WarDeclared',`${c.name} объявляет войну ${enemy.name}`);
