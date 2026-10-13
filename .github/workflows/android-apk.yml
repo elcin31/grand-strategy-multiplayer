@@ -9,6 +9,11 @@ on:
       - .github/workflows/expansion-native-checkpoint.yml
       - .github/expansion-apk-source
   workflow_dispatch:
+    inputs:
+      reuse_apk_run_id:
+        description: Reverify an already compiled hotfix APK with byte-identical runtime sources
+        required: false
+        type: string
 permissions:
   contents: read
   actions: read
@@ -67,6 +72,43 @@ jobs:
           cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix' }}
       - name: Install dependencies
         run: npm ci --include=dev --no-audit --no-fund
+      - name: Require identical runtime before reusing a compiled hotfix
+        if: inputs.reuse_apk_run_id != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APK_SOURCE_RUN: ${{ inputs.reuse_apk_run_id }}
+        run: |
+          test "$GITHUB_REF" = 'refs/heads/dominion-2.2.1-performance-hotfix'
+          [[ "$APK_SOURCE_RUN" =~ ^[0-9]+$ ]]
+          gh api "repos/elcin31/grand-strategy-multiplayer/actions/runs/$APK_SOURCE_RUN" > compiled-run.json
+          gh api "repos/elcin31/grand-strategy-multiplayer/actions/runs/$APK_SOURCE_RUN/jobs?per_page=30" > compiled-jobs.json
+          artifact_sha=$(python -c "import json;print(json.load(open('compiled-run.json'))['head_sha'])")
+          git diff --exit-code "$artifact_sha" HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json metro.config.js babel.config.js src supabase/functions plugins assets
+          python - <<'PY'
+          import json
+          job=next(j for j in json.load(open('compiled-jobs.json'))['jobs'] if j['name']=='build-apk')
+          required={'Build standalone release APK','Verify bundled JavaScript and native libraries','Verify release manifest, signature and production backend'}
+          steps=[s for s in job['steps'] if s['name'] in required]
+          assert {s['name'] for s in steps}==required and all(s['conclusion']=='success' for s in steps)
+          PY
+      - uses: actions/download-artifact@v4
+        if: inputs.reuse_apk_run_id != ''
+        with:
+          name: dominion-camera-illustrated-release
+          run-id: ${{ inputs.reuse_apk_run_id }}
+          github-token: ${{ github.token }}
+          path: compiled-apk
+      - name: Restore the unchanged compiled binary and launcher proof
+        if: inputs.reuse_apk_run_id != ''
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,shutil
+          from pathlib import Path
+          p=Path('compiled-apk');apk=next(p.rglob('Dominion-2.2.1-performance-hotfix.apk'));dest=Path('android/app/build/outputs/apk/release/app-release.apk');dest.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(apk,dest)
+          for name in ['launcher-icon-proof.json','map-texture-opacity.json','skia-recorder-lifecycle.json']:
+              proof=next(p.rglob(name));target=Path('android')/name;target.write_bytes(proof.read_bytes())
+          Path('compiled-apk-source.json').write_text(json.dumps({'runId':int(os.environ.get('APK_SOURCE_RUN','${{ inputs.reuse_apk_run_id }}')),'sourceCommit':json.load(open('compiled-run.json'))['head_sha'],'sha256':hashlib.sha256(apk.read_bytes()).hexdigest(),'runtimeSourcesIdentical':True,'newNativeCompilation':False},indent=2)+'\n')
+          PY
       - name: Typecheck
         run: npm run typecheck
       - name: Compile existing Dominion backend functions for coordinated rollout
@@ -123,12 +165,15 @@ jobs:
         if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world' && github.ref != 'refs/heads/dominion-2.2-world-map-overhaul' && github.ref != 'refs/heads/dominion-2.2.1-performance-hotfix'
         run: npm run benchmark:world
       - name: Generate Android project
+        if: inputs.reuse_apk_run_id == ''
         run: npx expo prebuild --platform android --clean
       - name: Verify native landscape configuration
+        if: inputs.reuse_apk_run_id == ''
         run: |
           python scripts/verify-native-config.py
           if [ "$GITHUB_REF" = 'refs/heads/dominion-2.2.1-performance-hotfix' ]; then python scripts/verify-hotfix-assets.py --native; fi
       - name: Build standalone release APK
+        if: inputs.reuse_apk_run_id == ''
         run: |
           chmod +x android/gradlew
           cd android
@@ -174,6 +219,7 @@ jobs:
             Dominion-2.2.1-performance-hotfix.apk
             android/app/build/outputs/apk/release/app-release.apk
             android/launcher-icon-proof.json
+            compiled-apk-source.json
             release-integrity.txt
             art-packaging.txt
             paired-visual-ci.json
