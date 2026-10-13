@@ -1,0 +1,112 @@
+name: Dominion 2.3 native performance gate
+on:
+  push:
+    branches: [dominion-2.3-performance]
+    paths: [.github/workflows/dominion23-performance.yml]
+  workflow_dispatch:
+    inputs:
+      build_candidate:
+        description: Build current runtime and compare with the exact published 2.2.1 APK
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+jobs:
+  build-candidate:
+    if: inputs.build_candidate == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: npm}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - uses: gradle/actions/setup-gradle@v4
+      - run: npm ci --include=dev --no-audit --no-fund
+      - run: npm run typecheck && npm run test:221
+      - run: python -m pip install -r scripts/camera-profile-requirements.txt
+      - run: npx expo prebuild --platform android --clean
+      - run: python scripts/verify-native-config.py && python scripts/verify-hotfix-assets.py --native
+      - run: cd android && chmod +x gradlew && NODE_ENV=production ./gradlew assembleRelease --no-daemon
+      - name: Verify the built standalone binary, all retained graphics and signature
+        run: |
+          cp android/app/build/outputs/apk/release/app-release.apk Dominion-2.3-performance-candidate.apk
+          python scripts/verify-apk.py Dominion-2.3-performance-candidate.apk
+          python scripts/verify-release.py Dominion-2.3-performance-candidate.apk > integrity.txt
+          python scripts/verify-map22.py Dominion-2.3-performance-candidate.apk
+          python scripts/verify-hotfix-assets.py Dominion-2.3-performance-candidate.apk
+          sha256sum Dominion-2.3-performance-candidate.apk >> integrity.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dominion23-performance-candidate
+          path: |
+            Dominion-2.3-performance-candidate.apk
+            integrity.txt
+            android/launcher-icon-proof.json
+            android/map-texture-opacity.json
+            android/skia-recorder-lifecycle.json
+          retention-days: 30
+  profile:
+    needs: build-candidate
+    if: always() && (needs.build-candidate.result == 'success' || needs.build-candidate.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: npm}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - run: npm ci --include=dev --no-audit --no-fund
+      - run: node --import tsx scripts/make-camera23-fixture.ts camera23-fixture
+      - run: python -m pip install -r scripts/camera-profile-requirements.txt -r scripts/camera-trace-requirements.txt
+      - name: Download and verify the immutable last tested optimized baseline
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          gh release download v2.2.1-performance-hotfix -R elcin31/grand-strategy-multiplayer -D baseline-apk -p Dominion-2.2.1-performance-hotfix.apk
+          echo 'a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb  baseline-apk/Dominion-2.2.1-performance-hotfix.apk' | sha256sum --check
+      - uses: actions/download-artifact@v4
+        if: inputs.build_candidate == true
+        with: {name: dominion23-performance-candidate, path: candidate-apk}
+      - name: Compile reproducible real-pointer input
+        run: |
+          mkdir -p camera23-classes camera23-dex
+          javac -cp "$ANDROID_HOME/platforms/android-35/android.jar" -d camera23-classes scripts/CameraGesture23.java
+          "$ANDROID_HOME/build-tools/35.0.0/d8" --lib "$ANDROID_HOME/platforms/android-35/android.jar" --output camera23-dex camera23-classes/CameraGesture23.class
+          cd camera23-dex && zip ../dominion-camera23.jar classes.dex
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        env: {COMPARE_CANDIDATE: '${{ inputs.build_candidate }}'}
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_2
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            adb push dominion-camera23.jar /data/local/tmp/dominion-camera23.jar
+            CAMERA23_OUT=profile-baseline python scripts/android23-profile.py baseline-apk/Dominion-2.2.1-performance-hotfix.apk camera23-fixture
+            if [ "$COMPARE_CANDIDATE" = 'true' ]; then CAMERA23_OUT=profile-candidate python scripts/android23-profile.py candidate-apk/Dominion-2.3-performance-candidate.apk camera23-fixture; fi
+      - name: Analyze observed scheduler and CPU samples; retain incomplete attribution
+        if: always()
+        run: |
+          for trace in profile-*/diagnostic-*; do
+            if [ -f "$trace/trace-capture.json" ]; then
+              python scripts/analyze-camera-trace.py "$trace"
+              python scripts/analyze-camera-cpu.py "$trace"
+            fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dominion23-native-performance
+          path: |
+            profile-baseline/
+            profile-candidate/
+            camera23-fixture/manifest.json
+          retention-days: 30
