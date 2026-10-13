@@ -17,6 +17,17 @@ export function rasterTiles(features:readonly MapFeature[],level:RasterLevel):Ra
   levels.set(level,result);return result;
 }
 export function visibleRasterTiles(features:readonly MapFeature[],bounds:Bounds,level:RasterLevel):RasterTile[]{return rasterTiles(features,level).filter(t=>overlaps(t.bounds,bounds));}
+/** A complete LOD transition must fit its cache. Wide viewports near a zoom
+ * threshold otherwise evict the first tile before the last tile is prepared. */
+export function rasterCoverageForBudget(features:readonly MapFeature[],bounds:Bounds,levels:readonly RasterLevel[],requested:RasterLevel,maxBytes:number,maxEntries=96):{level:RasterLevel;tiles:RasterTile[]} {
+  let index=Math.max(0,levels.findIndex(l=>l.key===requested.key));
+  while(true){
+    const level=levels[index]!,tiles=visibleRasterTiles(features,bounds,level);
+    const bytes=tiles.reduce((n,t)=>n+(Math.ceil((t.bounds.right-t.bounds.left)*level.scale)+4)*(Math.ceil((t.bounds.bottom-t.bounds.top)*level.scale)+4)*4,0);
+    if(index===0||bytes<=maxBytes&&tiles.length<=maxEntries)return {level,tiles};
+    index--;
+  }
+}
 /** LRU bounds retained RGBA bytes. Eviction releases references; images still
  * displayed by Skia remain alive until their display node is replaced. */
 export class RasterCache<T>{

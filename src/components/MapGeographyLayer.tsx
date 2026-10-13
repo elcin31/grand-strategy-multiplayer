@@ -24,7 +24,13 @@ function useAtlas(source:number,resources:AtlasResources,priority:number){
       encoded=data;
       const decode=()=>{
         if(!alive)return;
-        try{const image=Skia.Image.MakeImageFromEncoded(data);if(image){resources.images.set(String(source),image,image.width()*image.height()*4);setReady({source,image});}}
+        try{
+          // MakeImageFromEncoded creates a lazy SkImage. Force CPU decoding
+          // here, while quiet, so first Canvas replay cannot decode WebP on
+          // the render thread in the middle of the next gesture.
+          const lazy=Skia.Image.MakeImageFromEncoded(data);
+          if(lazy)try{const image=lazy.makeNonTextureImage();if(image){resources.images.set(String(source),image,image.width()*image.height()*4);setReady({source,image});}}finally{lazy.dispose();}
+        }
         finally{data.dispose();encoded=undefined;}
       };
       // A gesture may have started while the native file read was in flight.

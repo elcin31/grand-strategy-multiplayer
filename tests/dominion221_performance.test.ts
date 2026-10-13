@@ -2,9 +2,10 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {MapWorkQueue} from '../src/performance/mapWorkQueue';
 import {stableAtlasLevel} from '../src/map/atlas22';
-import {stableRasterLevel,RASTER_LEVELS} from '../src/map/cameraCoverage';
+import {stableRasterLevel,budgetRasterLevel,cameraCoverage,RASTER_LEVELS} from '../src/map/cameraCoverage';
 import {selectGeometryLod} from '../src/map/geometryLod';
-import {RasterCache} from '../src/map/rasterTiles';
+import {RasterCache,rasterCoverageForBudget} from '../src/map/rasterTiles';
+import type {MapFeature} from '../src/map/geometry';
 import {mapBudget} from '../src/map/mobileBudgets';
 
 test('touch input defers all tile jobs; cancelled coverage never builds; visible work goes first',async()=>{
@@ -38,4 +39,13 @@ test('lower quality trims both retained caches without disposing objects still o
   const cache=new RasterCache<{dispose:()=>never}>(100,5),live={dispose:():never=>{throw new Error('live image disposed');}};
   cache.set('old',live,60);cache.set('visible',live,30);cache.get('visible');cache.resize(40,2);
   assert.equal(cache.peek('visible'),live);assert.equal(cache.peek('old'),undefined);assert.equal(cache.bytes,30);
+});
+test('wide-screen LOD transitions fit their cache even at the lower hysteresis boundary',()=>{
+  const coverage:MapFeature={id:'footprint',name:'',countryId:null,provinceId:null,bounds:{left:0,right:1440,top:0,bottom:720},anchor:{x:720,y:360},polygons:[]};
+  for(const preset of ['Performance','Balanced','High','Ultra'] as const)for(const [i,zoom]of [.5,1.76,5.28,10.56].entries()){
+    const levels=RASTER_LEVELS.map(l=>budgetRasterLevel(l,preset)),budget=mapBudget(preset).politicalBytes;
+    const {level,tiles}=rasterCoverageForBudget([coverage],cameraCoverage({x:720,y:360,zoom},{width:1280,height:720}),levels,RASTER_LEVELS[i]!,budget);
+    const bytes=tiles.reduce((n,t)=>n+(Math.ceil((t.bounds.right-t.bounds.left)*level.scale)+4)*(Math.ceil((t.bounds.bottom-t.bounds.top)*level.scale)+4)*4,0);
+    assert.ok(bytes<=budget,preset+' '+level.key);assert.ok(tiles.length<=96);
+  }
 });

@@ -1,7 +1,7 @@
 import {memo,useCallback,useEffect,useMemo,useRef,useState} from 'react';
 import {Group,Picture,Skia,PaintStyle,FilterMode,MipmapMode,ClipOp,BlendMode,type SkCanvas,type SkImage,type SkPath,type SkPicture} from '@shopify/react-native-skia';
-import {rasterLevel,stableRasterLevel,budgetRasterLevel,WORLD_RASTER_SOURCE_LEVEL,type RasterLevel} from '../map/cameraCoverage';
-import {visibleRasterTiles,rasterTiles,RasterCache,retainRasterImage,type RasterTile} from '../map/rasterTiles';
+import {rasterLevel,stableRasterLevel,budgetRasterLevel,RASTER_LEVELS,WORLD_RASTER_SOURCE_LEVEL,type RasterLevel} from '../map/cameraCoverage';
+import {visibleRasterTiles,rasterTiles,rasterCoverageForBudget,RasterCache,retainRasterImage,type RasterTile} from '../map/rasterTiles';
 import {scheduleIdleSlices} from '../performance/idleSlices';
 import {geometryForLod,type GeometryLod} from '../map/geometryLod';
 import {featurePath,type Bounds,type MapFeature} from '../map/geometry';
@@ -138,7 +138,7 @@ export const MapRasterLayer=memo(function MapRasterLayer({scene,features,owners,
   const context=useMemo(()=>features===scene.features?features:[...scene.features.filter(f=>!f.provinceId),...features],[scene,features]);
   const drawing=useMemo<Drawing>(()=>({scene,features,context,owners,colors,lod,preset,mode,detail,resources,canPrepare}),[scene,features,context,owners,colors,lod,preset,mode,detail,resources,canPrepare]);
   const previousLevel=useRef<RasterLevel>(rasterLevel(zoom)),nominalLevel=stableRasterLevel(zoom,previousLevel.current);previousLevel.current=nominalLevel;
-  const level=budgetRasterLevel(nominalLevel,preset);
+  const {level,tiles}=rasterCoverageForBudget(context,bounds,RASTER_LEVELS.map(l=>budgetRasterLevel(l,preset)),nominalLevel,mapBudget(preset).politicalBytes);
   useEffect(()=>{
     if(mode!=='Political'||detail||lod!=='low')return;
     let world:RasterTile[]|undefined,index=0;
@@ -155,7 +155,7 @@ export const MapRasterLayer=memo(function MapRasterLayer({scene,features,owners,
       return false;
     });
   },[drawing,context,canPrewarm,mode,detail,lod,resources]);
-  const tiles=visibleRasterTiles(context,bounds,level),previous=useRef(tiles);
+  const previous=useRef(tiles);
   if(previous.current.length!==tiles.length||tiles.some((t,i)=>t!==previous.current[i]))previous.current=tiles;
   const [,refresh]=useState(0),notifyReady=useCallback(()=>refresh(n=>n+1),[]);
   const signature=[identity(drawing.colors),identity(drawing.features),drawing.lod,level.key,level.scale].join('|');
