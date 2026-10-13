@@ -77,6 +77,21 @@ try:
     h.adb('install','-r',sys.argv[1]);h.adb('shell','pm','clear',PACKAGE)
     h.adb('shell','wm','size','720x1280');h.adb('shell','wm','density','160');h.adb('shell','settings','put','system','accelerometer_rotation','0');h.adb('shell','settings','put','system','user_rotation','1')
     h.adb('shell','svc','wifi','disable');h.adb('shell','svc','data','disable')
+    if os.environ.get('CAMERA23_LOD_ONLY')=='1':
+        install_fixture('peace');configure();reset(world=True)
+        import camera_system_trace as trace
+        trace.CONFIG=trace.CONFIG.replace('duration_ms: 20000','duration_ms: 45000')
+        movements=[]
+        def staged_lod():
+            for _ in range(3):
+                for kind in ['in','in','out','out']:
+                    movements.append(gesture(kind,1,(700,265)));time.sleep(.8)
+        out=OUT/'diagnostic-lod';out.mkdir(exist_ok=True)
+        capture=trace.capture_camera_trace(h.adb,out,staged_lod,scenario='pinch')
+        (OUT/'lod-input.json').write_text(json.dumps({'gestures':movements,'fixedQuietSeconds':.8,'note':'Explicit world/region/province preparation between gestures. Intentional idle gaps are not counted as presentation stutters; compare complete actual FrameTimeline durations instead.'},indent=2)+'\n')
+        h.capture('lod-final');assert_map_painted(OUT/'lod-final.png')
+        (OUT/'result.json').write_text(json.dumps({'stagedWorldRegionProvince':True,'traceSha256':capture['traceSha256'],'noFatalLogs':True,'physicalRedmiTest':False},indent=2)+'\n')
+        sys.exit(0)
     if os.environ.get('CAMERA23_MONTHLY_ONLY')=='1':
         install_fixture('war');configure();mode('Армии');h.control('Продолжить','monthly-resume')
         sample('H-monthly-economy-ai','pan',12);h.control('Пауза','monthly-pause')
