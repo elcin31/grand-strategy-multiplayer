@@ -80,7 +80,7 @@ try:
     if os.environ.get('CAMERA23_LOD_ONLY')=='1':
         install_fixture('peace');configure();reset(world=True)
         import camera_system_trace as trace
-        trace.CONFIG=trace.CONFIG.replace('duration_ms: 20000','duration_ms: 45000')
+        trace.CONFIG=trace.CONFIG.replace('duration_ms: 20000','duration_ms: 45000').replace('size_kb: 65536','size_kb: 131072')
         movements=[]
         def staged_lod():
             for _ in range(3):
