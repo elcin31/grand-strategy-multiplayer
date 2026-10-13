@@ -1,9 +1,10 @@
 import type {Country,GameState,Army,Province} from './gameTypes.ts';
 import {aiControls,attackRatio} from './aiSystem.ts';
 import {setArmyOrder} from './armyOrders.ts';
-import {assaultSiege,siegeForecast} from './military3System.ts';
+import {assaultSiege,siegeForecast,splitArmy} from './military3System.ts';
 import {retreatArmy,retreatDestination} from './militaryLogistics.ts';
 import {warBetween} from './diplomacySystem.ts';
+import {weightedTroops} from './armyComposition.ts';
 import {supplyAt} from './supplySystem.ts';
 import {canEnterTerritory} from './diplomacy2System.ts';
 export const STRATEGIC_PERSONALITIES=['Trade','Military','Defensive','Balancer','Reformer','Regional'] as const;
@@ -35,11 +36,11 @@ export const AI_LEVELS={
  Easy:{armies:3,candidates:8,risk:1.3,reserve:.3},Normal:{armies:6,candidates:16,risk:1.12,reserve:.2},
  Hard:{armies:8,candidates:24,risk:1.04,reserve:.15},VeryHard:{armies:10,candidates:32,risk:1.0,reserve:.12},
 };
-interface MilitaryIndex {provinces:Map<string,Province>;byOwner:Map<string,Army[]>;byProvince:Map<string,Army[]>;capitals:Map<string,string>;busy:Set<string>;permissions:Map<string,boolean>}
+interface MilitaryIndex {provinces:Map<string,Province>;byOwner:Map<string,Army[]>;byProvince:Map<string,Army[]>;capitals:Map<string,string>;busy:Set<string>;incoming:Map<string,number>;permissions:Map<string,boolean>}
 function militaryIndex(s:GameState):MilitaryIndex{
- const i:MilitaryIndex={provinces:new Map(s.provinces.map(p=>[p.id,p])),byOwner:new Map(),byProvince:new Map(),capitals:new Map((s.cities??[]).filter(c=>c.isCapital).map(c=>[c.countryId,c.provinceId])),busy:new Set((s.activeBattles??[]).flatMap(b=>[...b.attackerArmyIds,...b.defenderArmyIds])),permissions:new Map()};
+ const i:MilitaryIndex={provinces:new Map(s.provinces.map(p=>[p.id,p])),byOwner:new Map(),byProvince:new Map(),capitals:new Map((s.cities??[]).filter(c=>c.isCapital).map(c=>[c.countryId,c.provinceId])),incoming:new Map(),busy:new Set((s.activeBattles??[]).flatMap(b=>[...b.attackerArmyIds,...b.defenderArmyIds])),permissions:new Map()};
  for(const x of s.sieges??[])for(const id of x.armyIds)i.busy.add(id);
- for(const a of s.armies){const own=i.byOwner.get(a.ownerId)??[];own.push(a);i.byOwner.set(a.ownerId,own);const at=i.byProvince.get(a.provinceId)??[];at.push(a);i.byProvince.set(a.provinceId,at);}return i;
+ for(const a of s.armies){if(a.order?.route[0]){const key=a.ownerId+':'+a.order.route[0];i.incoming.set(key,(i.incoming.get(key)??0)+weightedTroops(a));}const own=i.byOwner.get(a.ownerId)??[];own.push(a);i.byOwner.set(a.ownerId,own);const at=i.byProvince.get(a.provinceId)??[];at.push(a);i.byProvince.set(a.provinceId,at);}return i;
 }
 function friendly(s:GameState,i:MilitaryIndex,owner:string,p:Province):boolean{
  const controller=p.controllerId??p.ownerId,key=owner+'>'+controller;let allowed=i.permissions.get(key);
@@ -85,13 +86,25 @@ function chooseOperation(s:GameState,i:MilitaryIndex,a:Army,budget:{nodes:number
  }
  return candidates.filter((c):c is NonNullable<typeof c>=>!!c).sort((a,b)=>b.score-a.score||a.target.id.localeCompare(b.target.id))[0];
 }
+function detachSupplyCorps(s:GameState,a:Army,capacity:number):void{
+ // A large national field army can detach real existing regiments. Two splits
+ // per decision are enough for initial 120K stacks; no free manpower/equipment.
+ if(!aiControls(s,a.ownerId)||a.formationId||a.order||s.sieges?.some(x=>x.armyIds.includes(a.id)))return;
+ for(let n=0;n<2&&a.troops>24000&&weightedTroops(a)>Math.max(18000,capacity*1.3)&&s.armies.filter(x=>x.ownerId===a.ownerId).length<16;n++)try{splitArmy(s,a.ownerId,a.id,50);}catch{break;}
+}
 function orderOperation(s:GameState,i:MilitaryIndex,a:Army,_target:Province,route:string[],plan:MilitaryPlan):void{
  if(!route.length){plan.status='Holding';return;}
+ const first=i.provinces.get(route[0]!)!,key=a.ownerId+':'+first.id;
+ if(friendly(s,i,a.ownerId,first)){
+  const q=supplyAt(s,a.ownerId,first.id);detachSupplyCorps(s,a,q.capacity);
+  const existing=supplyAt(s,a.ownerId,first.id),load=existing.load+(i.incoming.get(key)??0)+weightedTroops(a),base=Math.min(100,existing.score*Math.max(1,existing.load/Math.max(1,existing.capacity))),projected=base*Math.min(1,existing.capacity/Math.max(1,load));
+  if(projected<35){plan.status='Staging';plan.reason='Корпус ждёт свободную пропускную способность маршрута';plan.reviewDay=(s.simulationDay??0)+1;return;}
+ }
  const last=i.provinces.get(route.at(-1)!)!,attacking=warBetween(s,a.ownerId,last.controllerId??last.ownerId);
  const redeploy=!attacking&&(i.provinces.get(a.provinceId)?.buildings?.Infrastructure??0)>=1&&route.every(id=>(i.provinces.get(id)?.buildings?.Infrastructure??0)>=1)&&(a.supply??100)>=50;
  // Use the already computed legal route. setArmyOrder keeps ownership, battle,
  // retreat and siege checks; only the route search is avoided here.
- try{setArmyOrder(s,a.ownerId,a.id,route[0]!,redeploy);if(a.order){a.order.route=[...route];a.order.targetProvinceId=last.id;a.order.type=attacking?'ATTACK':'MOVE';}plan.status=attacking?'Advancing':'Staging';plan.stagingProvinceId=attacking?a.provinceId:last.id;plan.reason=attacking?'Допустимая атака с учётом обороны и снабжения':'Переброска к фронту по доступной территории';}
+ try{setArmyOrder(s,a.ownerId,a.id,route[0]!,redeploy);if(a.order){a.order.route=[...route];a.order.targetProvinceId=last.id;a.order.type=attacking?'ATTACK':'MOVE';i.incoming.set(key,(i.incoming.get(key)??0)+weightedTroops(a));}plan.status=attacking?'Advancing':'Staging';plan.stagingProvinceId=attacking?a.provinceId:last.id;plan.reason=attacking?'Допустимая атака с учётом обороны и снабжения':'Переброска к фронту по доступной территории';}
  catch(error){plan.status='Blocked';plan.reason=error instanceof Error?error.message:'Маршрут изменился';plan.reviewDay=(s.simulationDay??0)+2;}
 }
 function executeArmy(s:GameState,i:MilitaryIndex,a:Army,budget:{nodes:number},playerPlan=false):void{
@@ -104,7 +117,8 @@ function executeArmy(s:GameState,i:MilitaryIndex,a:Army,budget:{nodes:number},pl
   const capital=i.capitals.get(a.ownerId),emergency=plan?.source==='AI'&&plan.objective==='Capture'&&capital&&s.activeBattles?.some(b=>b.provinceId===capital&&warBetween(s,a.ownerId,b.attackerId));
   if(!emergency)return;delete a.order;plan!.objective='Capital';plan!.targetProvinceId=capital!;plan!.reason='Столица атакована: срочная переброска';
  }
- const low=(a.supply??100)<30||(a.organization??80)<30||(a.morale??80)<30;
+ if((a.supply??100)<35&&friendly(s,i,a.ownerId,origin)&&!i.busy.has(a.id))detachSupplyCorps(s,a,supplyAt(s,a.ownerId,origin.id).capacity);
+ const low=(a.supply??100)<15&&!friendly(s,i,a.ownerId,origin)||(a.organization??80)<30||(a.morale??80)<30;
  if(low){
   if(plan){plan.status='Recovering';plan.reason='Восстановление организации и снабжения';plan.reinforcementRequested=true;}
   // Never bounce a recovering army between two friendly provinces each week.
@@ -120,7 +134,8 @@ function executeArmy(s:GameState,i:MilitaryIndex,a:Army,budget:{nodes:number},pl
  const war=s.wars?.find(w=>[...w.attackers,...w.defenders].includes(a.ownerId)),secondary=war&&war.attackers[0]!==a.ownerId&&war.defenders[0]!==a.ownerId,ownArmies=i.byOwner.get(a.ownerId)??[];
  if(secondary&&ownArmies.length>1){const deployed=ownArmies.filter(other=>other.id!==a.id&&(i.provinces.get(other.provinceId)?.ownerId!==a.ownerId||other.order&&i.provinces.get(other.order.targetProvinceId)?.ownerId!==a.ownerId)).length;const threatened=(s.activeBattles??[]).some(b=>i.provinces.get(b.provinceId)?.ownerId===a.ownerId);if(!threatened&&deployed>=Math.max(1,Math.floor(ownArmies.length*.6))){if(plan){plan.status='Holding';plan.reason='Национальный резерв прикрывает собственную территорию';}return;}}
  const reserveCount=ownArmies.length>=3?Math.max(1,Math.floor(ownArmies.length*AI_LEVELS[s.aiDifficulty??'Normal'].reserve)):0;
- const reserve=reserveCount>0&&[...ownArmies].sort((x,y)=>x.troops-y.troops||x.id.localeCompare(y.id)).slice(0,reserveCount).some(x=>x.id===a.id);
+ if(!a.aiRole){const needed=Math.max(0,reserveCount-ownArmies.filter(a=>a.aiRole==='Reserve').length),candidates=ownArmies.filter(a=>!a.aiRole&&!a.order&&a.militaryPlan?.objective!=='Capture').sort((x,y)=>x.troops-y.troops||x.id.localeCompare(y.id)).slice(0,needed);a.aiRole=candidates.some(x=>x.id===a.id)?'Reserve':'Field';}
+ const reserve=a.aiRole==='Reserve'&&!(plan?.objective==='Capture'&&day-plan.startedDay<14);
  const needsReserve=ownArmies.some(other=>other.id!==a.id&&(other.militaryPlan?.reinforcementRequested||other.militaryPlan?.status==='Recovering'))||s.activeBattles?.some(b=>warBetween(s,a.ownerId,b.attackerId)&&i.provinces.get(b.provinceId)?.ownerId===a.ownerId);
  if(reserve&&!needsReserve&&!playerPlan){const capital=i.capitals.get(a.ownerId)??a.provinceId;plan={objective:'Reserve',targetProvinceId:capital,source:'AI',autoCommand:true,priority:30,status:'Holding',startedDay:plan?.startedDay??day,reviewDay:day+7,reason:'Резерв прикрывает столицу и заменяет ослабленные корпуса'};a.militaryPlan=plan;const hold=chooseOperation(s,i,a,budget,{...plan,source:'Player'});if(hold)orderOperation(s,i,a,hold.target,hold.route,plan);return;}
  const choice=chooseOperation(s,i,a,budget,plan);
@@ -131,6 +146,7 @@ function executeArmy(s:GameState,i:MilitaryIndex,a:Army,budget:{nodes:number},pl
   const changed=!plan||plan.targetProvinceId!==choice.target.id;
   plan={objective:choice.objective,targetProvinceId:choice.target.id,source:'AI',autoCommand:true,priority:Math.round(choice.score),status:'Planning',startedDay:changed?day:plan!.startedDay,reviewDay:day+7,reason:'Оперативная цель'};a.militaryPlan=plan;
  }
+ if(!choice.route.length&&choice.objective==='Defend')plan.reinforcementRequested=origin.neighbors.some(id=>(i.byProvince.get(id)??[]).some(enemy=>warBetween(s,a.ownerId,enemy.ownerId)&&enemy.troops>a.troops));
  let route=choice.route;
  if(choice.objective==='Capture'&&choice.staging===a.provinceId){
   if((a.organization??80)<40||(a.morale??80)<40)return;

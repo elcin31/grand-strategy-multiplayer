@@ -111,7 +111,7 @@ export function mergeArmies(s:GameState,owner:string,ids:string[]):void{
 export function splitArmy(s:GameState,owner:string,id:string,percent:number):void{
  const a=s.armies.find(a=>a.id===id&&a.ownerId===owner);if(!a||a.troops<2000||a.order||a.formationId||s.sieges?.some(x=>x.armyIds.includes(id))||armyInBattle(s,id))throw Error('Разделение недоступно движущейся или сражающейся армии');const composition:NonNullable<Army['composition']>={},template:NonNullable<Army['template']>={};let troops=0;
  for(const t of UNIT_TYPES){const n=Math.floor((armyParts(a)[t]??0)*percent/100),target=Math.floor((a.template?.[t]??0)*percent/100);if(n){composition[t]=n;troops+=n;a.composition![t]!-=n;if(!a.composition![t])delete a.composition![t];}if(target){template[t]=target;a.template![t]!-=target;if(!a.template![t])delete a.template![t];}}
- if(!troops)throw Error('Слишком мало солдат');a.troops-=troops;const next:Army={...a,name:(a.name??'Армия').slice(0,42)+' — II',id:militaryEntity(s,'army'),troops,composition,template};delete next.commanderId;delete next.escortArmyId;delete next.militaryPlan;initializeArmyComposition(next);s.armies.push(next);invalidateSupply(s);
+ if(!troops)throw Error('Слишком мало солдат');a.troops-=troops;const next:Army={...a,name:(a.name??'Армия').slice(0,42)+' — II',id:militaryEntity(s,'army'),troops,composition,template};delete next.commanderId;delete next.escortArmyId;delete next.militaryPlan;delete next.aiRole;initializeArmyComposition(next);s.armies.push(next);invalidateSupply(s);
 }
 export function initializeMilitary3(s:GameState,migrate:boolean):void{
  if(migrate){s.activeBattles??=[];s.sieges??=[];s.armyGroups??=[];}
@@ -124,5 +124,6 @@ export function initializeMilitary3(s:GameState,migrate:boolean):void{
   a.name??=`${index+1}-я армия`;
   if(typeof a.name!=='string'||a.name.trim().length<1||a.name.length>48||/[\u0000-\u001f]/.test(a.name))throw Error('Invalid army name');
   const plan=a.militaryPlan;if(plan&&(!['Capture','Defend','Border','Capital','Support','Reserve'].includes(plan.objective)||!['AI','Player'].includes(plan.source)||typeof plan.autoCommand!=='boolean'||!provinces.has(plan.targetProvinceId)||plan.stagingProvinceId!==undefined&&!provinces.has(plan.stagingProvinceId)||!['Planning','Staging','Advancing','Holding','Recovering','Blocked','Complete'].includes(plan.status)||![plan.startedDay,plan.reviewDay,plan.priority].every(n=>Number.isSafeInteger(n)&&n>=0)||plan.startedDay>(s.simulationDay??0)||typeof plan.reason!=='string'||plan.reason.length>240))throw Error('Invalid military plan');
+  if(a.aiRole!==undefined&&!['Field','Reserve'].includes(a.aiRole))throw Error('Invalid army role');
   if(a.formation!==undefined&&!['Balanced','Assault','Defensive','Mobile'].includes(a.formation))throw Error('Invalid formation');if(a.order?.travelProgress!==undefined&&(!Number.isSafeInteger(a.order.travelProgress)||a.order.travelProgress<0||a.order.travelProgress>20))throw Error('Invalid route progress');}
 }

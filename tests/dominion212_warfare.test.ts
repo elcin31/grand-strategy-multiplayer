@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
 import {applyCommand} from '../supabase/functions/_shared/gameEngine';
 import {periodicMilitaryAI} from '../supabase/functions/_shared/ai3System';
+import {declareWar} from '../supabase/functions/_shared/diplomacySystem';
 import {beginBattle} from '../supabase/functions/_shared/military3System';
 import {scenarioArmy} from './helpers/militaryFixture';
 import {encodeCampaign,decodeCampaign} from '../src/persistence/campaignCodec';
@@ -39,4 +40,10 @@ test('reserves receive a route to an attacked province and human takeover ends n
 });
 test('a weak army does not cross a defended front without committed support',()=>{
  const {s,home,enemy,army}=fixture();army.provinceId=home[2]!.id;s.armies.push(scenarioArmy({id:'strong',ownerId:'germany',provinceId:enemy[0]!.id,troops:200000,morale:100,organization:100}));periodicMilitaryAI(s);assert.notEqual(army.order?.type,'ATTACK');
+});
+
+test('the unmodified world starting army detaches supplied corps and invades without creating soldiers',()=>{
+ let s=createWorldState('real-front212','RF212A','host','QA');s.players[0]!.countryId='poland';s.phase='running';declareWar(s,'poland','germany');const original=s.armies.find(a=>a.ownerId==='germany')!,troops=original.troops,manpower=s.countries.germany!.manpower,cash=s.countries.germany!.treasury;
+ for(let n=0;n<8;n++)s=applyCommand(s,{type:'ADVANCE_DAY'},true);
+ const armies=s.armies.filter(a=>a.ownerId==='germany');assert.ok(armies.length>=2);assert.ok(armies.reduce((n,a)=>n+a.troops,0)<=troops);assert.equal(s.countries.germany!.manpower,manpower);assert.equal(s.countries.germany!.treasury,cash);assert.ok(s.provinces.filter(p=>p.ownerId==='poland'&&p.controllerId==='germany').length>=2);assert.ok(armies.some(a=>a.order?.type==='ATTACK'));assert.ok(armies.some(a=>a.aiRole==='Reserve'));decodeCampaign(encodeCampaign(s,1));
 });

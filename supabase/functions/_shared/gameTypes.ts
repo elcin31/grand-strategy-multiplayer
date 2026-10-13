@@ -162,6 +162,7 @@ export interface Construction {
 export interface Army {
   name?:string;
   formationId?:string;
+  aiRole?:'Field'|'Reserve';
   militaryPlan?:import('./ai3System.ts').MilitaryPlan;
   intelligenceLevel?:'Detailed'|'Estimate';
   formation?:import('./military3System.ts').Formation;
