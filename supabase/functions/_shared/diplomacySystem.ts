@@ -90,6 +90,7 @@ export function declareWar(state:GameState,actor:string,target:string):War {
     if(link.a!==target&&link.b!==target)continue;const ally=link.a===target?link.b:link.a;
     if(ally!==actor&&!busy.has(ally)&&countryFor(state,ally).provinceIds?.length&&(link.treaties.includes('Alliance')||link.treaties.includes('DefensivePact')||link.treaties.includes('PoliticalUnion')||link.guarantors.includes(ally)))defenders.push(ally);
   }
+  for(const coalition of state.coalitions??[])if(coalition.targetId===actor&&coalition.members.includes(target)&&coalition.untilTick>state.tick)for(const ally of coalition.members)if(ally!==actor&&!busy.has(ally)&&!defenders.includes(ally)&&countryFor(state,ally).provinceIds?.length)defenders.push(ally);
   for(const v of Object.values(state.countries))if(v.overlordId===target&&!defenders.includes(v.id))defenders.push(v.id);
   for(const d of defenders){const pair=diplomaticLink(state,actor,d);if(state.tick<pair.truceUntilTick||pair.treaties.length)throw new Error('Защитник связан с вами договором или перемирием');}
   if(!Number.isSafeInteger(state.nextEntityId)||state.nextEntityId!<1||state.nextEntityId!>=Number.MAX_SAFE_INTEGER)throw new Error('Entity sequence exhausted');

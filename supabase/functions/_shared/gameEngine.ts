@@ -1,3 +1,5 @@
+import {setMobilization,setDoctrine,trainCommander,dailyCommanderTraining,manpowerGrowth,monthlyMobilization} from './militaryDevelopment.ts';
+import {monthlyGeopolitics,collectGeopolitics,resolveCrisis,joinCoalition} from './geopoliticsSystem.ts';
 import {createArmyFormation,cancelArmyFormation,processArmyFormations,transferRegiment} from './armyFormationSystem.ts';
 import {declareGoalWar,appointAdviser,vassalPolicy,monthlyInternalPolitics,collectChronicle,yearlyStateChanges} from './strategy3System.ts';
 import {startDecision,resolveFocusChoice,monthlyDecisions} from './politicalDecisions.ts';
@@ -88,7 +90,7 @@ function resolveMovement(state: GameState, ownerId: CountryId, armyId: string, d
   if (!origin || !destination) throw new Error('Провинция не найдена');
   if (!origin.neighbors.includes(destination.id)) throw new Error('Провинции не соседствуют');
   const controller = state.dataset ? destination.controllerId ?? destination.ownerId : destination.ownerId;
-  if (controller === ownerId || state.dataset && !warBetween(state,ownerId,controller) && canEnterTerritory(state,ownerId,controller,army.id,destination.id)) { recordMovement(state,{armyId,ownerId,from:origin.id,to:destination.id,tick:state.tick}); army.provinceId = destination.id; refreshSupplyLoads(state); return; }
+  if (controller === ownerId || state.dataset && !warBetween(state,ownerId,controller) && canEnterTerritory(state,ownerId,controller,army.id,destination.id)) { recordMovement(state,{armyId,ownerId,from:origin.id,to:destination.id,tick:state.tick}); army.provinceId = destination.id;for(const b of state.activeBattles??[])if(b.provinceId===destination.id&&warBetween(state,ownerId,b.attackerId)&&!b.defenderArmyIds.includes(army.id)){b.defenderArmyIds.push(army.id);b.defenderInitial+=army.troops;}refreshSupplyLoads(state); return; }
   if (state.dataset && !warBetween(state, ownerId, controller)) throw new Error('Сначала объявите войну');
   if(state.dataset&&state.tick<(army.retreatUntilTick??0))throw Error('После отступления наступление временно недоступно');
   recordMovement(state,{armyId,ownerId,from:origin.id,to:destination.id,tick:state.tick});
@@ -177,7 +179,20 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
   assertGameCommand(command, Object.keys(state.countries));
   const next = clone(state);
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
+  if(['ORDER_ARMY','MOVE_ARMY','ROUTE_ARMY','CANCEL_ARMY_ORDER','RETREAT_ARMY'].includes(command.type)&&'armyId' in command){const p=getPlayer(next,command.playerId),a=next.armies.find(a=>a.id===command.armyId&&a.ownerId===p.countryId);if(a){if(a.militaryPlan){a.militaryPlan.autoCommand=false;a.militaryPlan.status='Holding';a.militaryPlan.reason='Ручной приказ игрока';}delete a.escortArmyId;for(const g of next.armyGroups??[])g.armyIds=g.armyIds.filter(id=>id!==a.id);}}
   switch (command.type) {
+    case 'SET_AI_DIFFICULTY':{const p=getPlayer(next,command.playerId);if(!p.isHost||!['lobby','paused'].includes(next.phase))throw Error('Сложность меняет хост в лобби или на паузе');next.aiDifficulty=command.difficulty;return next;}
+    case 'SET_MOBILIZATION':case 'SET_MILITARY_DOCTRINE':case 'TRAIN_COMMANDER':{
+      if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const c=countryFor(next,p.countryId);
+      if(command.type==='SET_MOBILIZATION')setMobilization(next,c,command.level);else if(command.type==='SET_MILITARY_DOCTRINE')setDoctrine(next,c,command.doctrine);else trainCommander(next,c.id,command.specialization);recalcCountryStats(next);return next;
+    }
+    case 'SET_MILITARY_PLAN':case 'SET_AUTO_COMMAND':{
+      if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const p=getPlayer(next,command.playerId),a=next.armies.find(a=>a.id===command.armyId&&a.ownerId===p.countryId);if(!a||!p.countryId)throw Error('Можно командовать только своей армией');
+      if(command.type==='SET_AUTO_COMMAND'){if(!a.militaryPlan)throw Error('Сначала назначьте военный план');a.militaryPlan.autoCommand=command.enabled;a.militaryPlan.reason=command.enabled?'Генерал выполняет план':'Самостоятельное командование отключено';}
+      else {if(!provinceById(next,command.provinceId))throw Error('Цель не найдена');a.militaryPlan={objective:command.objective,targetProvinceId:command.provinceId,autoCommand:command.autoCommand,source:'Player',priority:100,status:'Planning',startedDay:next.simulationDay??0,reviewDay:next.simulationDay??0,reason:'План назначен игроком'};delete a.escortArmyId;for(const g of next.armyGroups??[])g.armyIds=g.armyIds.filter(id=>id!==a.id);}
+      return next;
+    }
+    case 'RESOLVE_DIPLOMATIC_CRISIS':case 'JOIN_COALITION':{if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');if(command.type==='JOIN_COALITION')joinCoalition(next,p.countryId,command.coalitionId);else resolveCrisis(next,p.countryId,command.crisisId,command.resolution);recalcCountryStats(next);return next;}
     case 'CREATE_NEW_ARMY':case 'CANCEL_ARMY_FORMATION':case 'SAVE_ARMY_TEMPLATE':case 'RENAME_ARMY':case 'TRANSFER_REGIMENT':{
       if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');const player=getPlayer(next,command.playerId);if(!player.countryId)throw Error('Страна не выбрана');const c=countryFor(next,player.countryId);
       if(command.type==='CREATE_NEW_ARMY')createArmyFormation(next,c.id,command.name,command.provinceId,command.composition,command.commanderId);
@@ -416,7 +431,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       recalcCountryStats(next); return next;
     }
     case 'ADVANCE_DAY': {
-      if(next.phase!=='running'||next.speed===0)return next;const monthly=advanceDate(next);processArmyFormations(next);advanceArmyOrders(next,resolveMovement,true);dailyMilitary(next);periodicMilitaryAI(next);
+      if(next.phase!=='running'||next.speed===0)return next;const monthly=advanceDate(next);processArmyFormations(next);dailyCommanderTraining(next);advanceArmyOrders(next,resolveMovement,true);dailyMilitary(next);periodicMilitaryAI(next);
       return monthly?applyCoreCommand(next,{type:'ADVANCE_TICK'},true,true):next;
     }
     case 'ADVANCE_TICK': {
@@ -425,7 +440,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       next.tick += 1; next.month += 1; if (next.month > 12) { next.month = 1; next.year += 1;yearlyStateChanges(next); }
       if(!monthlyFromDay)advanceArmyOrders(next,resolveMovement);
       monthlyDiplomacy(next);
-      monthlyDiplomacy2(next);
+      monthlyDiplomacy2(next);monthlyGeopolitics(next);
       monthlyEspionage(next);
       // Newly completed sabotage affects all six dated monthly work periods,
       // including this month's construction, budget and supply.
@@ -441,7 +456,8 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
         if (!next.dataset) nation.treasury += nation.income;
         const government = next.dataset ? governmentModifiers(nation.governmentType) : undefined;
         const buildings = buildingTotals.get(id);
-        nation.manpower += Math.max(500, Math.round(nation.population * .00004 * (1 + ((government?.manpowerPercent ?? 0) + (buildings?.manpowerPercent ?? 0)) / 100)*(next.dataset?economicPolicy(nation).manpower*(1+focusBonuses(nation).manpower):1)));
+        const naturalRecruitment= Math.max(500, Math.round(nation.population * .00004 * (1 + ((government?.manpowerPercent ?? 0) + (buildings?.manpowerPercent ?? 0)) / 100)*(next.dataset?economicPolicy(nation).manpower*(1+focusBonuses(nation).manpower):1)));
+        nation.manpower+=next.dataset?manpowerGrowth(next,nation,naturalRecruitment):naturalRecruitment;
         if (government) {
           nation.politicalPower = Math.min(500, nation.politicalPower! + POLITICAL_POWER_MONTHLY);
           nation.technology = Math.min(100, nation.technology + .025 * (1 + (government.researchPercent + (buildings?.researchPercent ?? 0)) / 100));
@@ -449,9 +465,9 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }
-      monthlyReligionEffects(next);if(next.dataset){extractResources(next);monthlyNationalProjects(next);monthlyDecisions(next);processResourceTrade(next);monthlyProduction(next);domesticConsumption(next);updateResourceMarkets(next);} monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next);monthlyInternalPolitics(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
+      monthlyReligionEffects(next);if(next.dataset){extractResources(next);monthlyNationalProjects(next);monthlyDecisions(next);processResourceTrade(next);monthlyProduction(next);domesticConsumption(next);updateResourceMarkets(next);} monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next);monthlyInternalPolitics(next);monthlyMobilization(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
     }
   }
 }
 
-export function applyCommand(state:GameState,command:GameCommand,validatedLocalState=false):GameState {const next=applyCoreCommand(state,command,validatedLocalState);collectNotifications(state,next);collectChronicle(state,next);return next;}
+export function applyCommand(state:GameState,command:GameCommand,validatedLocalState=false):GameState {const next=applyCoreCommand(state,command,validatedLocalState);collectGeopolitics(state,next);collectNotifications(state,next);collectChronicle(state,next);return next;}

@@ -1,3 +1,4 @@
+import {CURRENT_STATE_VERSION} from '../supabase/functions/_shared/stateMigrations';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
@@ -9,7 +10,7 @@ test('compound human treaty is atomic, authorized, migrates, and pays once',()=>
  let s=scenario();const war=s.wars![0]!,province=s.provinces.find(p=>p.ownerId==='france')!,before=s.countries.germany!.treasury;
  const terms=makePeaceTerms([{kind:'Territory',provinceIds:[province.id],amount:0},{kind:'Money',provinceIds:[],amount:10},{kind:'Reparations',provinceIds:[],amount:1},{kind:'Guarantee',provinceIds:[],amount:0}]);
  s=applyServerCommand(s,{type:'PROPOSE_PEACE',playerId:'host',warId:war.id,terms},'host');assert.equal(s.provinces.find(p=>p.id===province.id)!.ownerId,'france');assert.equal(s.countries.germany!.treasury,before);
- s.stateVersion=23;const restored=decodeCampaign(encodeCampaign(s,1)).state;assert.equal(restored.stateVersion,24);assert.deepEqual(restored.wars![0]!.peaceOffer!.terms,terms);
+ s.stateVersion=23;const restored=decodeCampaign(encodeCampaign(s,1)).state;assert.equal(restored.stateVersion,CURRENT_STATE_VERSION);assert.deepEqual(restored.wars![0]!.peaceOffer!.terms,terms);
  assert.throws(()=>applyServerCommand(s,{type:'RESPOND_PEACE',playerId:'guest',warId:war.id,accept:true},'host'),/Подмена/);
  const declined=applyServerCommand(s,{type:'RESPOND_PEACE',playerId:'guest',warId:war.id,accept:false},'guest');assert.equal(declined.provinces.find(p=>p.id===province.id)!.ownerId,'france');assert.equal(declined.wars![0]!.peaceOffer,undefined);
  s=applyServerCommand(s,{type:'RESPOND_PEACE',playerId:'guest',warId:war.id,accept:true},'guest');assert.equal(s.provinces.find(p=>p.id===province.id)!.ownerId,'germany');assert.equal(s.countries.germany!.treasury,before+10);assert.equal(s.wars!.length,0);assert.equal(s.warHistory![0]!.clauses!.length,4);

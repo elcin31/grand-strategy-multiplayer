@@ -50,6 +50,7 @@ interface WorldMapProps {
   selectedCountryId: CountryId | null;
   selectedProvinceId: string | null;
   onSelectProvince: (province: Province) => void;
+  focusProvince?:{id:string;sequence:number}|null;
   focusCountryId?: string | null;
   onLongPressProvince?: (province: Province) => void;
 }
@@ -78,7 +79,7 @@ function measure(font:ReturnType<typeof matchFont>,name:string):number{
 const sceneCosts=new WeakMap<MapScene,number>();
 const defaults: Camera = { x: 800, y: 160, zoom: 3.5 };
 
-export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,selectedCityId,onSelectArmy,onSelectCity,onSelectCountry,onClearSelection,onCameraActivity,settingsOpen=false,onSettingsChange, state, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince, focusCountryId }: WorldMapProps) {
+export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,selectedCityId,onSelectArmy,onSelectCity,onSelectCountry,onClearSelection,onCameraActivity,settingsOpen=false,onSettingsChange, state, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince, focusCountryId,focusProvince }: WorldMapProps) {
   const scene = useMemo(() => {const start=performance.now();const scene=mapSceneFor(state);if(!sceneCosts.has(scene))sceneCosts.set(scene,Math.max(getMetrics().sceneMs,performance.now()-start));recordMetrics({sceneMs:sceneCosts.get(scene)!});return scene;}, [state.dataset]);
   const { features, spatialIndex, provinceGeometry, cities: mapCities } = scene;
   const [viewport, setViewport] = useState({ width: 1, height: 1 });
@@ -266,6 +267,7 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
   },[preparedLabels,bounds,cityLabels,armyLabelBlockers,nationFont,labelZoom,state.countries,preset,selectedCountryId,budgets.labels]);
   const countryGlyphs=useMemo(()=>labels.map(l=>state.countries[l.countryId]?countryGlyph(l,state.countries[l.countryId]!,snapshot.zoom,n=>measure(nationFont,n)):null).filter((g):g is CountryGlyph=>g!==null).slice(0,Math.max(0,budgets.labels-(selectedProvinceId?1:0))),[labels,state.countries,snapshot.zoom,nationFont,budgets.labels,selectedProvinceId]);
   countryGlyphsRef.current=countryGlyphs;
+  useEffect(()=>{if(!focusProvince||viewport.width<=1)return;const point=scene.provinceGeometry.get(focusProvince.id)?.anchor;if(!point)return;const target={x:point.x,y:point.y,zoom:Math.max(5,snapshot.zoom)};x.value=withTiming(target.x,{duration:260});y.value=withTiming(target.y,{duration:260});zoom.value=withTiming(target.zoom,{duration:260},done=>{if(done)runOnJS(publishSnapshot)(target,true);});},[focusProvince,scene,viewport.width,x,y,zoom]);
   useEffect(() => {
     if (!focusCountryId || viewport.width <= 1) return;
     const capitalId = state.countries[focusCountryId]?.capitalCityId;

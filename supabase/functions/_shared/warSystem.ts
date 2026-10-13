@@ -49,9 +49,9 @@ export function refreshWars(state:GameState):void{if(!state.dataset)return;for(c
 export function recordWarBattle(state:GameState,event:BattleEvent):void {
   if(!state.dataset)return;const w=warBetween(state,event.attackerId,event.defenderId);if(!w)return;
   w.casualties??={};
-  for(const [id,loss] of [[event.attackerId,event.attackerLosses],[event.defenderId,event.defenderLosses]] as const){
+  for(const [id,loss] of event.countryLosses?Object.entries(event.countryLosses):[[event.attackerId,event.attackerLosses],[event.defenderId,event.defenderLosses]] as [string,number][]){
     const n=(w.casualties[id]??0)+loss;if(!Number.isSafeInteger(n)||n<0)throw new Error('War casualty overflow');w.casualties[id]=n;
-    const c=countryFor(state,id);c.warExhaustion=Math.min(100,(c.warExhaustion??0)+Math.min(5,loss/10000));
+    const c=countryFor(state,id);c.militaryLosses=(c.militaryLosses??0)+loss;c.warExhaustion=Math.min(100,(c.warExhaustion??0)+Math.min(5,loss/10000));
   }
   w.battleScore=Math.max(-10,Math.min(10,(w.battleScore??0)+(w.attackers.includes(event.winnerId)?2:-2)));
   refreshWars(state);

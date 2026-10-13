@@ -71,7 +71,8 @@ export function combatMultiplier(state: GameState,army: Army,province: Province,
   const logistics=.5+supplyAt(state,army.ownerId,army.provinceId).score/200;
   const intel=!defending&&espionageModifiers(state,army.ownerId).intelTargets.has(province.controllerId??province.ownerId)?1.08:1;
   const specialization=general?.specialization===(defending?'Defense':'Offense')?1.05:1;
-  return engineer*specialization*resourceCombatFactor(state.countries[army.ownerId]!)*command*strength*combined*logistics*(1+(army.experience??0)/500)*(.4+(army.morale??80)/200+(army.organization??80)/200)*(1+skill/500)*(1+techLevel(state.countries[army.ownerId]!,'Military')*.06)*intel*militaryReadiness(state.countries[army.ownerId]!)*(1+focusBonuses(state.countries[army.ownerId]!).combat+technologyBonuses(state.countries[army.ownerId]!).combat);
+  const doctrine=state.countries[army.ownerId]!.militaryDoctrine,factor=doctrine==='Offensive'?(defending?.98:1.1):doctrine==='Defensive'?(defending?1.12:.95):doctrine==='Mobile'&&terrain==='plains'?1.06:doctrine==='Siege'&&!defending&&(province.buildings?.Fort??0)>0?1.1:1;
+  return factor*engineer*specialization*resourceCombatFactor(state.countries[army.ownerId]!)*command*strength*combined*logistics*(1+(army.experience??0)/500)*(.4+(army.morale??80)/200+(army.organization??80)/200)*(1+skill/500)*(1+techLevel(state.countries[army.ownerId]!,'Military')*.06)*intel*militaryReadiness(state.countries[army.ownerId]!)*(1+focusBonuses(state.countries[army.ownerId]!).combat+technologyBonuses(state.countries[army.ownerId]!).combat);
 }
 export function recoverMilitary(state: GameState): void {
   if(!state.dataset)return;

@@ -26,6 +26,16 @@ export interface Country {
   completedProjects?:import('./construction3System.ts').NationalProjectId[];
   stockpile?:import('./stockpileSystem.ts').Stockpile;
   lastResourceCrisis?:boolean;
+  internationalThreat?:number;
+  lastWarEndedTick?:number;
+  lastAggressionTick?:number;
+  crisisCooldownUntilTick?:number;
+  regionalInterests?:import('./geopoliticsSystem.ts').RegionalInterests;
+  reserveManpower?:number;
+  militaryLosses?:number;
+  mobilizationCooldownUntilTick?:number;
+  doctrineCooldownUntilTick?:number;
+  mobilization?:'Peacetime'|'Partial'|'General';
   armyTemplates?:import('./armyFormationSystem.ts').ArmyTemplate[];
   militaryDoctrine?:'Offensive'|'Defensive'|'Mobile'|'Logistics'|'Siege';
   aiArmyCursor?:number;
@@ -188,6 +198,7 @@ export interface Player {
 }
 
 export interface BattleEvent {
+  countryLosses?:Record<string,number>;
   durationDays?:number;
   attackerInitial?:number;
   defenderInitial?:number;
@@ -235,6 +246,9 @@ export interface Leader {
 }
 
 export interface GameState {
+  commanderTraining?:import('./militaryDevelopment.ts').CommanderTraining[];
+  coalitions?:import('./geopoliticsSystem.ts').Coalition[];
+  diplomaticCrises?:import('./geopoliticsSystem.ts').DiplomaticCrisis[];
   armyFormations?:import('./armyFormationSystem.ts').ArmyFormation[];
   aiDifficulty?:'Easy'|'Normal'|'Hard'|'VeryHard';
   aiMilitaryCursor?:number;
@@ -293,6 +307,14 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'SET_AI_DIFFICULTY';playerId:string;difficulty:NonNullable<GameState['aiDifficulty']>}
+  | {type:'SET_MOBILIZATION';playerId:string;level:NonNullable<Country['mobilization']>}
+  | {type:'SET_MILITARY_DOCTRINE';playerId:string;doctrine:import('./militaryDevelopment.ts').MilitaryDoctrine}
+  | {type:'TRAIN_COMMANDER';playerId:string;specialization:import('./militaryDevelopment.ts').CommanderTraining['specialization']}
+  | {type:'SET_MILITARY_PLAN';playerId:string;armyId:string;provinceId:string;objective:import('./ai3System.ts').MilitaryObjective;autoCommand:boolean}
+  | {type:'SET_AUTO_COMMAND';playerId:string;armyId:string;enabled:boolean}
+  | {type:'RESOLVE_DIPLOMATIC_CRISIS';playerId:string;crisisId:string;resolution:import('./geopoliticsSystem.ts').CrisisResolution}
+  | {type:'JOIN_COALITION';playerId:string;coalitionId:string}
   | {type:'CREATE_NEW_ARMY';playerId:string;name:string;provinceId:string;composition:import('./armyComposition.ts').Composition;commanderId:string|null}
   | {type:'CANCEL_ARMY_FORMATION';playerId:string;formationId:string}
   | {type:'SAVE_ARMY_TEMPLATE';playerId:string;templateId:string;name:string;weights:import('./armyComposition.ts').Composition}

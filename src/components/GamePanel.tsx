@@ -1,3 +1,5 @@
+import {GeopoliticsPanel} from './GeopoliticsPanel';
+import {MilitaryDevelopmentPanel} from './MilitaryDevelopmentPanel';
 import {ArmyList} from './ArmyList';
 import {HistoricalIllustration} from './HistoricalIllustration';
 import {governmentScene211,religionScene211} from '../art/curation';
@@ -58,7 +60,7 @@ const currency = (value: number) => `${value < 0 ? '−' : ''}$${Math.abs(value)
 
 export function GamePanel({ onCreateArmy,onOpenPeace,diplomacyCountryId,onSelectArmy,onDeselectArmy,focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
   const [page,setPage]=useState('Обзор');
-  const tabs=section==='Government'?['Обзор','Законы','Реформы','Советники','Внутренняя политика']:section==='Economy'?['Обзор','Производство','Ресурсы и торговля']:section==='Diplomacy'?['Обзор','Войны и мир']:section==='Military'?['Обзор','Сражения и осады']:section==='Religion'?['Обзор','Вероисповедание']:[];
+  const tabs=section==='Government'?['Обзор','Законы','Реформы','Советники','Внутренняя политика']:section==='Economy'?['Обзор','Производство','Ресурсы и торговля']:section==='Diplomacy'?['Обзор','Войны и мир','Геополитика']:section==='Military'?['Обзор','Сражения и осады','Развитие']:section==='Religion'?['Обзор','Вероисповедание']:[];
   const tabbar=tabs.length?<PanelTabs tabs={tabs} value={page} onChange={setPage}/>:null;
   const [buildOpen,setBuildOpen]=useState(section==='Construction');
   const [religionOpen, setReligionOpen] = useState(section==='Religion');
@@ -100,6 +102,8 @@ export function GamePanel({ onCreateArmy,onOpenPeace,diplomacyCountryId,onSelect
   if(section==='Economy'&&page==='Производство')return <>{tabbar}<ProductionPanel state={state} playerId={playerId} onCommand={onCommand}/></>;
   if(section==='Economy'&&page==='Ресурсы и торговля')return <>{tabbar}<ResourceTradePanel state={state} playerId={playerId} onCommand={onCommand}/></>;
   if(section==='Diplomacy'&&page==='Войны и мир')return <>{tabbar}<WarPanel onOpenPeace={onOpenPeace} initialOpen state={state} playerId={playerId} onCommand={onCommand}/></>;
+  if(section==='Military'&&page==='Развитие')return <>{tabbar}<MilitaryDevelopmentPanel state={state} playerId={playerId} onCommand={onCommand}/></>;
+  if(section==='Diplomacy'&&page==='Геополитика')return <>{tabbar}<GeopoliticsPanel state={state} playerId={playerId} onCommand={onCommand}/></>;
   if(section==='Military'&&page==='Сражения и осады')return <>{tabbar}<BattleSiegePanel playerId={playerId} onCommand={onCommand} state={state} countryId={countryId}/></>;
   if(section==='Notifications')return <NotificationFeed state={state} playerId={playerId} onCommand={onCommand} onFocus={onFocusProvince??(()=>{})}/>;
   if(section==='Intelligence')return <><DiplomacyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} initialTargetId={diplomacyCountryId??undefined}/><EspionagePanel state={state} playerId={playerId} onCommand={onCommand} from={countryId} to={diplomacyCountryId??undefined}/></>;

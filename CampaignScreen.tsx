@@ -99,6 +99,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   const [selectedCityId,setSelectedCityId]=useState<string|null>(null);
   const [selectedProvinceId, setSelectedProvinceId] = useState<string | null>(null);
   const [playerId, setPlayerId] = useState<string | null>(null);
+  const [focusProvince,setFocusProvince]=useState<{id:string;sequence:number}|null>(null);
   const [focusCountryId, setFocusCountryId] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState(true);
   const unsubscribeRef = useRef<null | (() => void)>(null);
@@ -264,6 +265,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
           onCameraActivity={cameraActivity}
           settingsOpen={mapMenuOpen}
           onSettingsChange={setMapMenuOpen}
+          focusProvince={focusProvince}
           focusCountryId={focusCountryId}
           selectedCountryId={gameStarted?myCountryId:selectedCountryId}
           selectedProvinceId={selectedProvinceId}
@@ -299,7 +301,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
 
         </ScrollView><Pressable accessibilityRole="button" accessibilityLabel="Играть за эту страну" accessibilityState={{disabled:!selectedCountryId||lobbyOperation!==null||myCountryId===selectedCountryId||state.players.some(p=>p.id!==playerId&&p.countryId===selectedCountryId),busy:lobbyOperation==='country'}} disabled={!selectedCountryId||lobbyOperation!==null||myCountryId===selectedCountryId||state.players.some(p=>p.id!==playerId&&p.countryId===selectedCountryId)} style={{minHeight:48,backgroundColor:colors.gold,alignItems:'center',justifyContent:'center',margin:6,borderRadius:4}} onPress={chooseCountry}><Text style={{fontWeight:'700',fontSize:12,color:colors.graphite}}>{lobbyOperation==='country'?'Подтверждение…':selectedCountryId&&myCountryId===selectedCountryId?'Страна выбрана':selectedCountryId&&state.players.some(p=>p.id!==playerId&&p.countryId===selectedCountryId)?'Страна занята':selectedCountry?'ИГРАТЬ ЗА ЭТУ СТРАНУ':'Выберите страну'}</Text></Pressable></View>}
         {gameStarted&&panelOpen&&<DraggableWindow key={section} title={selectedArmyId&&section==='Context'?'Армия':SECTION_LABELS[section]} onClose={()=>setPanelOpen(false)}>
-          <GamePanel onCreateArmy={()=>{setArmyFormationOpen(true);setPanelOpen(false);}} onOpenPeace={openPeace} diplomacyCountryId={diplomacyCountryId} onSelectArmy={selectArmy} onDeselectArmy={deselectArmy} focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedArmyId(section==='Construction'?null:state.armies.find(a=>a.provinceId===id&&a.ownerId===myCountryId)?.id??null);setSelectedProvinceId(id);if(section!=='Construction')setSection('Context');setFocusCountryId(myCountryId);}}
+          <GamePanel onCreateArmy={()=>{setArmyFormationOpen(true);setPanelOpen(false);}} onOpenPeace={openPeace} diplomacyCountryId={diplomacyCountryId} onSelectArmy={(id,province)=>{selectArmy(id,province);setFocusProvince(previous=>({id:province,sequence:(previous?.sequence??0)+1}));}} onDeselectArmy={deselectArmy} focusedArmyId={selectedArmyId} focusedCityId={selectedCityId} key={section} section={section} onFocusProvince={id=>{setSelectedArmyId(section==='Construction'?null:state.armies.find(a=>a.provinceId===id&&a.ownerId===myCountryId)?.id??null);setSelectedProvinceId(id);if(section!=='Construction')setSection('Context');setFocusCountryId(myCountryId);}}
             state={presentation??state}
             playerId={playerId ?? ''}
             selectedProvinceId={selectedProvinceId}
@@ -316,6 +318,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
             busy={launchBusy||lobbyOperation!==null} pending={lobbyOperation}
             state={presentation??state}
             playerId={playerId ?? ''}
+            onDifficulty={difficulty=>{if(playerId)sendCommand({type:'SET_AI_DIFFICULTY',playerId,difficulty});}}
             onReady={(ready) => {if(playerId)void lobbyAction('ready',{type:'SET_READY',playerId,ready});}}
             onStart={() => {if(playerId)void lobbyAction('start',{type:'START_GAME',playerId});}}
           />

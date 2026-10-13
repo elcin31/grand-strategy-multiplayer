@@ -1,3 +1,5 @@
+import {MilitaryPlansPanel} from './MilitaryPlansPanel';
+import {MilitaryDevelopmentPanel} from './MilitaryDevelopmentPanel';
 import {HistoricalIllustration} from './HistoricalIllustration';
 import {unitScene} from '../art/curation';
 import {AudioPressable as Pressable} from './AudioPressable';
@@ -15,7 +17,7 @@ import {armyETA,armyFormation,armyTravelDays} from '../../supabase/functions/_sh
 import {supplyAt} from '../../supabase/functions/_shared/supplySystem';
 import {reinforcementQuote,retreatDestination} from '../../supabase/functions/_shared/militaryLogistics';
 import {styles,type StrategyProps} from './StrategyPanel';
-const tabs=['Состав','Приказы','Построение','Снабжение','Генерал','Подкрепление'];
+const tabs=['Состав','Приказы','Построение','Снабжение','Генерал','Подкрепление','Планы'];
 const roles={Front:'Передняя линия',Rear:'Вторая линия',Flank:'Фланги',Support:'Поддержка'};
 export function MilitaryPanel({state,playerId,onCommand,province,army,onCreateArmy}:StrategyProps&{province:Province;army:Army|null;onCreateArmy?:()=>void}){
  const [rename,setRename]=useState('');
@@ -32,6 +34,8 @@ export function MilitaryPanel({state,playerId,onCommand,province,army,onCreateAr
   {army&&<View style={[styles.card,{padding:8}]}><Text style={styles.title}>{army.name??'Армия'} · {army.troops.toLocaleString('ru-RU')} солдат · {commander?.name??'Без генерала'}</Text><Text style={styles.text}>Мораль {(army.morale??80).toFixed(0)}% · организация {(army.organization??80).toFixed(0)}% · опыт {(army.experience??0).toFixed(0)} · снабжение {(army.supply??100).toFixed(0)}%</Text><Text style={styles.text}>{army.order?`${army.order.redeploy?'Переброска':'Марш'} → ${state.provinces.find(p=>p.id===army.order!.targetProvinceId)?.name} · ETA ${armyETA(state,army)} дн. · этап ${army.order.travelProgress??0}/${next?armyTravelDays(state,army,next):'—'}`:'Удерживает позицию'} · {army.reinforcementEnabled?'Автопополнение включено':'Ручное пополнение'}</Text></View>}
   <PanelTabs tabs={tabs} value={tab} onChange={setTab}/>
   {tab==='Состав'&&<><CampaignArt year={state.year} kind="Military" height={88}/>{army&&<Text style={styles.text}>Атака ×{combatMultiplier(state,army,province,false).toFixed(2)} · защита ×{combatMultiplier(state,army,province,true).toFixed(2)} · местность {province.terrain}</Text>}{UNIT_TYPES.filter(t=>(parts[t]??0)>0).map(t=><View key={t} style={[styles.card,{padding:8,flexDirection:'row',justifyContent:'space-between'}]}><HistoricalIllustration id={unitScene[t]} width={68} height={42}/><View style={{flex:1}}><Text style={styles.title}>{UNITS[t].name}</Text><Text style={styles.text}>{roles[UNITS[t].role]} · дальность {UNITS[t].range} · атака {UNITS[t].attack} / защита {UNITS[t].defense}</Text></View><Text style={styles.title}>{parts[t]!.toLocaleString()} · {Math.ceil(parts[t]!/1000)} полк.</Text></View>)}</>}
+  {army&&tab==='Планы'&&<MilitaryPlansPanel state={state} army={army} playerId={playerId} onCommand={onCommand}/>}
+  {tab==='Генерал'&&<MilitaryDevelopmentPanel state={state} playerId={playerId} onCommand={onCommand}/>}
   {army&&(tab==='Приказы'||tab==='Построение')&&<ArmyOperations state={state} army={army} playerId={playerId} onCommand={onCommand} view={tab}/>}
   {army&&tab==='Приказы'&&<><View style={{flexDirection:'row',flexWrap:'wrap',gap:6}}>{button('Удерживать / остановить',()=>onCommand({type:'CANCEL_ARMY_ORDER',playerId,armyId:army.id}))}{button('Оборона',()=>onCommand({type:'SET_FORMATION',playerId,armyId:army.id,formation:'Defensive'}))}{button('Наступление',()=>onCommand({type:'SET_FORMATION',playerId,armyId:army.id,formation:'Assault'}))}{button(logistics?.retreat?`Отступить: ${logistics.retreat.name}`:'Нет пути отступления',()=>logistics?.retreat&&onCommand({type:'RETREAT_ARMY',playerId,armyId:army.id,provinceId:logistics.retreat.id}),!logistics?.retreat||state.tick<(army.retreatUntilTick??0))}</View><Text style={styles.text}>Выделение снимается повторным нажатием на армию. Маршрут продолжает выполняться.</Text><BattleSiegePanel playerId={playerId} onCommand={onCommand} state={state} countryId={countryId} provinceId={province.id}/></>}
   {formation&&tab==='Построение'&&<Text style={styles.text}>Бонус построения: атака ×{formation.attack.toFixed(2)}, защита ×{formation.defense.toFixed(2)}, скорость ×{formation.speed.toFixed(2)}. Артиллерии нужна передняя линия; кавалерия сильнее на равнине; инженеры помогают укреплениям и осаде.</Text>}

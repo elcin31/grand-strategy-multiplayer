@@ -10,7 +10,7 @@ import {warBetween} from './diplomacySystem.ts';
 import {recordWarBattle} from './warSystem.ts';
 import {notify} from './notificationSystem.ts';
 export type Formation='Balanced'|'Assault'|'Defensive'|'Mobile';
-export interface ActiveBattle {id:string;provinceId:string;attackerId:string;defenderId:string;attackerArmyIds:string[];defenderArmyIds:string[];startedDay:number;attackerInitial:number;defenderInitial:number;attackerLosses:number;defenderLosses:number;reasons:string[]}
+export interface ActiveBattle {countryLosses?:Record<string,number>;id:string;provinceId:string;attackerId:string;defenderId:string;attackerArmyIds:string[];defenderArmyIds:string[];startedDay:number;attackerInitial:number;defenderInitial:number;attackerLosses:number;defenderLosses:number;reasons:string[]}
 export interface Siege {id:string;provinceId:string;attackerId:string;defenderId:string;armyIds:string[];startedDay:number;progress:number;fortress:number;garrison:number;losses:number;assaultDay?:number}
 export interface ArmyGroup {id:string;ownerId:string;name:string;armyIds:string[];objective:'Defend'|'Offensive'|'Reserve'|'Escort';targetProvinceId:string;supplyPriority:'Normal'|'High';frontProvinceIds?:string[];}
 export function militaryEntity(s:GameState,prefix:string):string{const seq=s.nextEntityId??1;if(!Number.isSafeInteger(seq)||seq>=Number.MAX_SAFE_INTEGER)throw Error('Military sequence exhausted');s.nextEntityId=seq+1;return `${prefix}-${seq}`;}
@@ -38,29 +38,29 @@ export function armyETA(s:GameState,a:Army):number{const provinces=provinceIndex
 export function siegeForecast(s:GameState,x:Siege){const p=provinceIndex(s).get(x.provinceId)!,armies=s.armies.filter(a=>x.armyIds.includes(a.id)&&a.provinceId===p.id&&a.troops>0),supply=siegeSupply(s,x.attackerId,p),troops=armies.reduce((n,a)=>n+a.troops,0);
  const siegeTroops=armies.reduce((n,a)=>n+(armyParts(a).SiegeTrain??0)+(armyParts(a).Artillery??0)*.6+(armyParts(a).RocketArtillery??0)*.7+(armyParts(a).Engineers??0)*.4,0);
  const generals=armies.reduce((n,a)=>Math.max(n,a.commanderId?(s.commanders?.[a.commanderId]?.siege??0)+(s.commanders?.[a.commanderId]?.specialization==='Siege'?15:0):0),0);
- const rate=Math.max(.2,(troops/Math.max(1000,x.garrison)*.65+siegeTroops/3000)*(supply/100+.15)*(1+generals/100)/(1+x.fortress*.4));
+ const rate=(s.countries[x.attackerId]?.militaryDoctrine==='Siege'?1.2:1)*Math.max(.2,(troops/Math.max(1000,x.garrison)*.65+siegeTroops/3000)*(supply/100+.15)*(1+generals/100)/(1+x.fortress*.4));
  return {supply,troops,siegeTroops,rate,days:Math.ceil((100-x.progress)/rate)};
 }
-export function occupy(s:GameState,a:Army,p:Province):void{p.controllerId=a.ownerId;a.provinceId=p.id;invalidateSupply(s);}
+export function occupy(s:GameState,a:Army,p:Province,controller=a.ownerId):void{p.controllerId=controller;a.provinceId=p.id;invalidateSupply(s);}
 export function beginSiege(s:GameState,a:Army,p:Province):void{
- const defender=p.controllerId??p.ownerId,existing=s.sieges?.find(x=>x.provinceId===p.id&&x.attackerId===a.ownerId);a.provinceId=p.id;
+ const defender=p.controllerId??p.ownerId,existing=s.sieges?.find(x=>x.provinceId===p.id&&warBetween(s,a.ownerId,x.defenderId)&&!warBetween(s,a.ownerId,x.attackerId));a.provinceId=p.id;
  if(existing){if(!existing.armyIds.includes(a.id))existing.armyIds.push(a.id);return;}
  const fortress=p.buildings?.Fort??0;if(!fortress){occupy(s,a,p);return;}
  s.sieges??=[];s.sieges.push({id:militaryEntity(s,'siege'),provinceId:p.id,attackerId:a.ownerId,defenderId:defender,armyIds:[a.id],startedDay:s.simulationDay??0,progress:0,fortress,garrison:1500+fortress*1500,losses:0});notify(s,a.ownerId,'Siege','Началась осада: '+p.name,p.id);notify(s,defender,'Siege','Осада вашей крепости: '+p.name,p.id);
 }
 export function beginBattle(s:GameState,a:Army,p:Province):void{
- const existing=s.activeBattles?.find(b=>b.provinceId===p.id&&b.attackerId===a.ownerId);if(existing){if(!existing.attackerArmyIds.includes(a.id)){existing.attackerArmyIds.push(a.id);existing.attackerInitial+=a.troops;}return;}
+ const existing=s.activeBattles?.find(b=>b.provinceId===p.id&&warBetween(s,a.ownerId,b.defenderId)&&!warBetween(s,a.ownerId,b.attackerId));if(existing){if(!existing.attackerArmyIds.includes(a.id)){existing.attackerArmyIds.push(a.id);existing.attackerInitial+=a.troops;}return;}
  const defender=p.controllerId??p.ownerId,defenders=s.armies.filter(d=>d.provinceId===p.id&&warBetween(s,a.ownerId,d.ownerId));
  if(!defenders.length){beginSiege(s,a,p);return;}
  s.activeBattles??=[];s.activeBattles.push({id:militaryEntity(s,'battle'),provinceId:p.id,attackerId:a.ownerId,defenderId:defender,attackerArmyIds:[a.id],defenderArmyIds:defenders.map(d=>d.id),startedDay:s.simulationDay??0,attackerInitial:a.troops,defenderInitial:defenders.reduce((n,d)=>n+d.troops,0),attackerLosses:0,defenderLosses:0,reasons:[`Местность: ${p.terrain??'plains'}`,`Укрепления: ${p.buildings?.Fort??0}`]});
 }
-function distributeLosses(rows:Army[],loss:number):number{let remaining=loss,total=rows.reduce((n,a)=>n+a.troops,0),sum=0;for(const a of rows){const hit=takeArmyLosses(a,Math.min(a.troops,Math.round(remaining*a.troops/Math.max(1,total))));total-=a.troops+hit;remaining-=hit;sum+=hit;}return sum;}
+function distributeLosses(rows:Army[],loss:number,countryLosses?:Record<string,number>):number{let remaining=loss,total=rows.reduce((n,a)=>n+a.troops,0),sum=0;for(const a of rows){const hit=takeArmyLosses(a,Math.min(a.troops,Math.round(remaining*a.troops/Math.max(1,total))));if(countryLosses)countryLosses[a.ownerId]=(countryLosses[a.ownerId]??0)+hit;total-=a.troops+hit;remaining-=hit;sum+=hit;}return sum;}
 function finishBattle(s:GameState,b:ActiveBattle,attackers:Army[],defenders:Army[],attackerWins:boolean):void{
  const p=s.provinces.find(p=>p.id===b.provinceId)!;const winners=attackerWins?attackers:defenders,losers=attackerWins?defenders:attackers;
- for(const a of losers){delete a.order;const target=retreatDestination(s,a,p.id);if(target)retreatArmy(s,a.ownerId,a.id,target.id,true);else if(attackerWins){b.defenderLosses+=takeArmyLosses(a,a.troops);}}
- if(attackerWins)for(const a of winners.filter(a=>a.troops>0)){beginSiege(s,a,p);if(a.order?.route[0]===p.id){a.order.route.shift();if(!a.order.route.length)delete a.order;}}
+ for(const a of losers){delete a.order;const target=retreatDestination(s,a,p.id);if(target)retreatArmy(s,a.ownerId,a.id,target.id,true);else if(attackerWins){const lost=takeArmyLosses(a,a.troops);b.defenderLosses+=lost;b.countryLosses??={};b.countryLosses[a.ownerId]=(b.countryLosses[a.ownerId]??0)+lost;}}
+ if(attackerWins)for(const a of winners.filter(a=>a.troops>0)){if((p.buildings?.Fort??0)>0)beginSiege(s,a,p);else occupy(s,a,p,b.attackerId);if(a.order?.route[0]===p.id){a.order.route.shift();if(!a.order.route.length)delete a.order;}}
  const winner=attackerWins?b.attackerId:b.defenderId,days=Math.max(1,(s.simulationDay??0)-b.startedDay+1);
- const report:BattleEvent={id:b.id,tick:s.tick,provinceId:p.id,attackerId:b.attackerId,defenderId:b.defenderId,attackerLosses:b.attackerLosses,defenderLosses:b.defenderLosses,winnerId:winner,captured:attackerWins&&!s.sieges?.some(x=>x.provinceId===p.id),message:`${s.countries[winner]!.shortName}: победа у ${p.name}`,durationDays:days,attackerInitial:b.attackerInitial,defenderInitial:b.defenderInitial,reasons:[...b.reasons,`Атакующие: снабжение ${Math.round(attackers.reduce((n,a)=>n+(a.supply??100),0)/Math.max(1,attackers.length))}%`,`Исход: ${attackerWins?'оборона потеряла организацию':'наступление остановлено потерями и организацией'}`],experience:3};
+ const report:BattleEvent={id:b.id,tick:s.tick,countryLosses:b.countryLosses,provinceId:p.id,attackerId:b.attackerId,defenderId:b.defenderId,attackerLosses:b.attackerLosses,defenderLosses:b.defenderLosses,winnerId:winner,captured:attackerWins&&!s.sieges?.some(x=>x.provinceId===p.id),message:`${s.countries[winner]!.shortName}: победа у ${p.name}`,durationDays:days,attackerInitial:b.attackerInitial,defenderInitial:b.defenderInitial,reasons:[...b.reasons,`Атакующие: снабжение ${Math.round(attackers.reduce((n,a)=>n+(a.supply??100),0)/Math.max(1,attackers.length))}%`,`Исход: ${attackerWins?'оборона потеряла организацию':'наступление остановлено потерями и организацией'}`],experience:3};
  s.battleLog.unshift(report);s.battleLog=s.battleLog.slice(0,30);recordWarBattle(s,report);awardBattleExperience(s,[...winners,...losers],winner);
  for(const c of [b.attackerId,b.defenderId])notify(s,c,'War',`${report.message} · ${days} дн.`,p.id);
 }
@@ -76,7 +76,7 @@ export function assaultSiege(s:GameState,owner:string,id:string):void{
  const won=x.progress>=100,p=provinceIndex(s).get(x.provinceId)!;
  const report:BattleEvent={id:militaryEntity(s,'assault'),tick:s.tick,provinceId:p.id,attackerId:owner,defenderId:x.defenderId,attackerInitial:initial,defenderInitial:garrison,attackerLosses:losses,defenderLosses:garrison-x.garrison,winnerId:won?owner:x.defenderId,captured:won,durationDays:1,reasons:[`Снабжение ${forecast.supply.toFixed(0)}%`,`Крепость ур. ${x.fortress}`,`Прогресс осады ${x.progress.toFixed(0)}%`],message:won?'Крепость взята штурмом: '+p.name:'Штурм укреплений: '+p.name};
  s.battleLog.unshift(report);s.battleLog=s.battleLog.slice(0,30);recordWarBattle(s,report);
- if(won){for(const a of armies)occupy(s,a,p);p.buildingDamage=Math.min(.85,(p.buildingDamage??0)+.2);s.sieges=s.sieges?.filter(q=>q.id!==id);notify(s,owner,'Siege','Крепость взята штурмом: '+p.name,p.id);}
+ if(won){for(const a of armies)occupy(s,a,p,x.attackerId);p.buildingDamage=Math.min(.85,(p.buildingDamage??0)+.2);s.sieges=s.sieges?.filter(q=>q.id!==id);notify(s,owner,'Siege','Крепость взята штурмом: '+p.name,p.id);}
 }
 export function dailyMilitary(s:GameState):void{
  const provinces=new Map(s.provinces.map(p=>[p.id,p]));
@@ -85,7 +85,7 @@ export function dailyMilitary(s:GameState):void{
   const attackers=s.armies.filter(a=>b.attackerArmyIds.includes(a.id)&&a.troops>0),defenders=s.armies.filter(a=>b.defenderArmyIds.includes(a.id)&&a.troops>0&&a.provinceId===b.provinceId),p=provinces.get(b.provinceId)!;
   const power=(rows:Army[],defending:boolean)=>rows.reduce((n,a)=>n+a.troops*combatMultiplier(s,a,p,defending)*(defending?armyFormation(a).defense:armyFormation(a).attack)*(a.order?.redeploy?.55:1),0);
   const atk=power(attackers,false),def=power(defenders,true)*(1+provinceBuildingModifiers(p).defensePercent/100);
-  b.attackerLosses+=distributeLosses(attackers,Math.max(0,Math.round(def*.025)));b.defenderLosses+=distributeLosses(defenders,Math.max(0,Math.round(atk*.025)));
+  b.countryLosses??={};b.attackerLosses+=distributeLosses(attackers,Math.max(0,Math.round(def*.025)),b.countryLosses);b.defenderLosses+=distributeLosses(defenders,Math.max(0,Math.round(atk*.025)),b.countryLosses);
   for(const a of [...attackers,...defenders]){a.organization=Math.max(0,(a.organization??80)-2.5-(100-(a.supply??100))*.025);a.morale=Math.max(0,(a.morale??80)-1.5);}
   const broken=(rows:Army[])=>!rows.some(a=>a.troops>0&&(a.organization??80)>20&&(a.morale??80)>20);
   if(broken(attackers)||broken(defenders)||(s.simulationDay??0)-b.startedDay>=45){const wins=!broken(attackers)&&(broken(defenders)||atk>def*1.25);finishBattle(s,b,attackers,defenders,wins);s.activeBattles=s.activeBattles?.filter(x=>x.id!==b.id);}
@@ -95,11 +95,11 @@ export function dailyMilitary(s:GameState):void{
   if(!armies.length||!warBetween(s,siege.attackerId,siege.defenderId)||(p.controllerId??p.ownerId)===siege.attackerId){s.sieges=s.sieges?.filter(x=>x.id!==siege.id);continue;}
   const {supply,rate}=siegeForecast(s,siege);
   siege.progress=Math.min(100,siege.progress+rate);
-  for(const a of armies){a.supply=supply;siege.losses+=takeArmyLosses(a,Math.min(a.troops,Math.floor(a.troops*(.001+(100-supply)*.00002))));}
-  if(siege.progress>=100){for(const a of armies)occupy(s,a,p);p.buildingDamage=Math.min(.85,(p.buildingDamage??0)+.15);notify(s,siege.attackerId,'Siege','Крепость капитулировала: '+p.name,p.id);notify(s,siege.defenderId,'Siege','Крепость потеряна: '+p.name,p.id);s.sieges=s.sieges?.filter(x=>x.id!==siege.id);}
+  for(const a of armies){a.supply=supply;const lost=takeArmyLosses(a,Math.min(a.troops,Math.floor(a.troops*(.001+(100-supply)*.00002))));siege.losses+=lost;s.countries[a.ownerId]!.militaryLosses=(s.countries[a.ownerId]!.militaryLosses??0)+lost;}
+  if(siege.progress>=100){for(const a of armies)occupy(s,a,p,siege.attackerId);p.buildingDamage=Math.min(.85,(p.buildingDamage??0)+.15);notify(s,siege.attackerId,'Siege','Крепость капитулировала: '+p.name,p.id);notify(s,siege.defenderId,'Siege','Крепость потеряна: '+p.name,p.id);s.sieges=s.sieges?.filter(x=>x.id!==siege.id);}
  }
  const fighting=new Set((s.activeBattles??[]).flatMap(b=>[...b.attackerArmyIds,...b.defenderArmyIds]));
- for(const a of s.armies){const p=provinces.get(a.provinceId)!;if(!fighting.has(a.id)&&!s.sieges?.some(x=>x.armyIds.includes(a.id))){const supply=supplyAt(s,a.ownerId,p.id).score;a.supply=supply;const friendly=(p.controllerId??p.ownerId)===a.ownerId;a.organization=Math.min(100,(a.organization??80)+(friendly?.5:.15)*supply/100);a.morale=Math.min(100,(a.morale??80)+.2*supply/100);if(supply<40)takeArmyLosses(a,Math.min(a.troops,Math.floor(a.troops*(40-supply)/120000)));}}
+ for(const a of s.armies){const p=provinces.get(a.provinceId)!;if(!fighting.has(a.id)&&!s.sieges?.some(x=>x.armyIds.includes(a.id))){const supply=supplyAt(s,a.ownerId,p.id).score;a.supply=supply;const friendly=(p.controllerId??p.ownerId)===a.ownerId;a.organization=Math.min(100,(a.organization??80)+(friendly?.5:.15)*supply/100);a.morale=Math.min(100,(a.morale??80)+.2*supply/100);if(supply<40){const lost=takeArmyLosses(a,Math.min(a.troops,Math.floor(a.troops*(40-supply)/120000)));s.countries[a.ownerId]!.militaryLosses=(s.countries[a.ownerId]!.militaryLosses??0)+lost;}}}
  s.armies=s.armies.filter(a=>a.troops>0);for(const c of Object.values(s.countries))c.army=0;for(const a of s.armies)s.countries[a.ownerId]!.army+=a.troops;refreshSupplyLoads(s);
 }
 export function mergeArmies(s:GameState,owner:string,ids:string[]):void{

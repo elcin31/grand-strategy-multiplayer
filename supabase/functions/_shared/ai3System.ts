@@ -7,7 +7,8 @@ import {warBetween} from './diplomacySystem.ts';
 import {supplyAt} from './supplySystem.ts';
 import {canEnterTerritory} from './diplomacy2System.ts';
 export const STRATEGIC_PERSONALITIES=['Trade','Military','Defensive','Balancer','Reformer','Regional'] as const;
-export interface AIStrategy {personality:typeof STRATEGIC_PERSONALITIES[number];goal:'Economy'|'Science'|'Integration'|'Modernization'|'Defense'|'Influence'|'Recovery';sinceTick:number;reviewTick:number;reason:string;targetCountryId?:string}
+export interface AIWarOperation {warId:string;targetCountryId:string;assignedArmyIds:string[];stagingProvinceIds:string[];priority:number;status:'Preparing'|'Executing'|'Holding'|'Complete';reviewDay:number}
+export interface AIStrategy {operation?:AIWarOperation;personality:typeof STRATEGIC_PERSONALITIES[number];goal:'Economy'|'Science'|'Integration'|'Modernization'|'Defense'|'Influence'|'Recovery'|'Expansion'|'Leadership';sinceTick:number;reviewTick:number;reason:string;targetCountryId?:string}
 export function ensureStrategy(s:GameState,c:Country):AIStrategy{
  if(!c.aiStrategy){let h=0;for(const ch of c.id)h=(Math.imul(h,31)+ch.charCodeAt(0))>>>0;const personality=STRATEGIC_PERSONALITIES[h%STRATEGIC_PERSONALITIES.length]!;c.aiStrategy={personality,goal:personality==='Reformer'?'Science':personality==='Trade'?'Economy':personality==='Military'?'Modernization':personality==='Balancer'?'Integration':personality==='Regional'?'Influence':'Defense',sinceTick:s.tick,reviewTick:s.tick+6,reason:'Долгосрочная стратегия государства'};}return c.aiStrategy;
 }
@@ -17,9 +18,11 @@ export function reviewStrategy(s:GameState,c:Country):AIStrategy{
  if(s.tick<plan.reviewTick&&!urgent)return plan;
  const old=plan.goal;
  if((c.warExhaustion??0)>50||c.stability<45){plan.goal='Recovery';plan.reason='Потери и внутреннее недовольство требуют восстановления';}
+ else if(s.tick-(c.lastWarEndedTick??-100)<6){plan.goal='Recovery';plan.reason='Восстановление после войны и подготовка резервов';}
  else if(war){plan.goal=plan.personality==='Military'?'Modernization':'Defense';plan.reason='Защита столицы, снабжения и ключевых провинций';}
  else if((c.economy?.monthlyBalance??0)<0||c.treasury<(c.economy?.monthlyIncome??0)*3){plan.goal='Economy';plan.reason='Восстановить бюджет и стратегический резерв';}
- else {plan.goal=plan.personality==='Trade'?'Economy':plan.personality==='Reformer'?'Science':plan.personality==='Balancer'?'Integration':plan.personality==='Military'?'Modernization':plan.personality==='Regional'?'Influence':'Defense';plan.reason='План развития на шесть месяцев';}
+ else {plan.goal=plan.personality==='Trade'?'Economy':plan.personality==='Reformer'?'Science':plan.personality==='Balancer'?'Leadership':plan.personality==='Military'?'Modernization':plan.personality==='Regional'?'Expansion':'Defense';plan.reason='План развития на шесть месяцев';}
+ if(!war&&plan.operation)plan.operation.status='Complete';
  if(old!==plan.goal)plan.sinceTick=s.tick;plan.reviewTick=s.tick+6;return plan;
 }
 export type MilitaryObjective='Capture'|'Defend'|'Border'|'Capital'|'Support'|'Reserve';
@@ -97,19 +100,29 @@ function executeArmy(s:GameState,i:MilitaryIndex,a:Army,budget:{nodes:number},pl
  // A human takeover preserves the march but ends autonomous national control.
  if(!aiControls(s,a.ownerId)&&plan?.source==='AI'){delete a.militaryPlan;return;}
  if(playerPlan&&!plan?.autoCommand)return;
- if(a.order&&!i.busy.has(a.id))return;
+ if(a.order&&!i.busy.has(a.id)){
+  const capital=i.capitals.get(a.ownerId),emergency=plan?.source==='AI'&&plan.objective==='Capture'&&capital&&s.activeBattles?.some(b=>b.provinceId===capital&&warBetween(s,a.ownerId,b.attackerId));
+  if(!emergency)return;delete a.order;plan!.objective='Capital';plan!.targetProvinceId=capital!;plan!.reason='Столица атакована: срочная переброска';
+ }
  const low=(a.supply??100)<30||(a.organization??80)<30||(a.morale??80)<30;
  if(low){
   if(plan){plan.status='Recovering';plan.reason='Восстановление организации и снабжения';plan.reinforcementRequested=true;}
   // Never bounce a recovering army between two friendly provinces each week.
-  if(!friendly(s,i,a.ownerId,origin)||s.activeBattles?.some(b=>b.provinceId===origin.id&&b.attackerId!==a.ownerId)){
+  if(i.busy.has(a.id)||!friendly(s,i,a.ownerId,origin)||s.activeBattles?.some(b=>b.provinceId===origin.id&&b.attackerId!==a.ownerId)){
    const exit=retreatDestination(s,a);if(exit&&s.tick>=(a.retreatUntilTick??0)){try{retreatArmy(s,a.ownerId,a.id,exit.id);}catch{}}return;
   }
   if((a.supply??100)<30&&!plan?.reviewDay){const exit=origin.neighbors.map(id=>i.provinces.get(id)).filter((p):p is Province=>!!p&&friendly(s,i,a.ownerId,p)).sort((x,y)=>supplyAt(s,a.ownerId,y.id).score-supplyAt(s,a.ownerId,x.id).score)[0];if(exit&&supplyAt(s,a.ownerId,exit.id).score>40){setArmyOrder(s,a.ownerId,a.id,exit.id);}}return;
  }
  if(i.busy.has(a.id)||s.tick<(a.retreatUntilTick??0))return;
  if(plan?.source==='AI'&&!warBetween(s,a.ownerId,i.provinces.get(plan.targetProvinceId)?.ownerId??a.ownerId)&&plan.objective==='Capture'){plan.status='Complete';}
+ if(plan?.source==='Player'&&plan.objective==='Capture'&&(i.provinces.get(plan.targetProvinceId)?.controllerId??i.provinces.get(plan.targetProvinceId)?.ownerId)===a.ownerId){plan.status='Complete';plan.reason='Цель военного плана достигнута';plan.autoCommand=false;return;}
  if(plan?.status==='Blocked'&&day<plan.reviewDay)return;
+ const war=s.wars?.find(w=>[...w.attackers,...w.defenders].includes(a.ownerId)),secondary=war&&war.attackers[0]!==a.ownerId&&war.defenders[0]!==a.ownerId,ownArmies=i.byOwner.get(a.ownerId)??[];
+ if(secondary&&ownArmies.length>1){const deployed=ownArmies.filter(other=>other.id!==a.id&&(i.provinces.get(other.provinceId)?.ownerId!==a.ownerId||other.order&&i.provinces.get(other.order.targetProvinceId)?.ownerId!==a.ownerId)).length;const threatened=(s.activeBattles??[]).some(b=>i.provinces.get(b.provinceId)?.ownerId===a.ownerId);if(!threatened&&deployed>=Math.max(1,Math.floor(ownArmies.length*.6))){if(plan){plan.status='Holding';plan.reason='Национальный резерв прикрывает собственную территорию';}return;}}
+ const reserveCount=ownArmies.length>=3?Math.max(1,Math.floor(ownArmies.length*AI_LEVELS[s.aiDifficulty??'Normal'].reserve)):0;
+ const reserve=reserveCount>0&&[...ownArmies].sort((x,y)=>x.troops-y.troops||x.id.localeCompare(y.id)).slice(0,reserveCount).some(x=>x.id===a.id);
+ const needsReserve=ownArmies.some(other=>other.id!==a.id&&(other.militaryPlan?.reinforcementRequested||other.militaryPlan?.status==='Recovering'))||s.activeBattles?.some(b=>warBetween(s,a.ownerId,b.attackerId)&&i.provinces.get(b.provinceId)?.ownerId===a.ownerId);
+ if(reserve&&!needsReserve&&!playerPlan){const capital=i.capitals.get(a.ownerId)??a.provinceId;plan={objective:'Reserve',targetProvinceId:capital,source:'AI',autoCommand:true,priority:30,status:'Holding',startedDay:plan?.startedDay??day,reviewDay:day+7,reason:'Резерв прикрывает столицу и заменяет ослабленные корпуса'};a.militaryPlan=plan;const hold=chooseOperation(s,i,a,budget,{...plan,source:'Player'});if(hold)orderOperation(s,i,a,hold.target,hold.route,plan);return;}
  const choice=chooseOperation(s,i,a,budget,plan);
  if(!choice){if(plan){plan.status='Blocked';plan.reason='Нет безопасной цели или доступного пути; запрошено усиление';plan.reinforcementRequested=true;plan.reviewDay=day+2;}return;}
  // Keep the player objective; AI may review a completed/invalid goal or react
@@ -145,6 +158,8 @@ export function periodicMilitaryAI(s:GameState):void{
   countriesDone++;const id=ids[(cursor+n)%ids.length]!,c=s.countries[id]!;reviewStrategy(s,c);const armies=i.byOwner.get(id)!,start=c.aiArmyCursor??0,limit=Math.min(level.armies,armies.length,96-armiesDone);
   for(let x=0;x<limit;x++){const a=armies[(start+x)%armies.length]!;executeArmy(s,i,a,budget);armiesDone++;}
   c.aiArmyCursor=(start+limit)%armies.length;
+  const war=s.wars?.find(w=>[...w.attackers,...w.defenders].includes(id));if(war&&c.aiStrategy){const assigned=armies.filter(a=>a.militaryPlan?.source==='AI'&&a.militaryPlan.objective!=='Reserve');c.aiStrategy.operation={warId:war.id,targetCountryId:(war.attackers.includes(id)?war.defenders:war.attackers)[0]!,assignedArmyIds:assigned.slice(0,120).map(a=>a.id),stagingProvinceIds:[...new Set(assigned.map(a=>a.militaryPlan!.stagingProvinceId).filter((id):id is string=>!!id))].slice(0,12),priority:Math.max(0,...assigned.map(a=>a.militaryPlan!.priority)),status:assigned.some(a=>a.order)?'Executing':'Holding',reviewDay:day+7};}
+
  }
  s.aiMilitaryCursor=ids.length?(cursor+countriesDone)%ids.length:0;
  // AI can finish a favourable siege rather than wait pointlessly for months.

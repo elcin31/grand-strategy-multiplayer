@@ -26,6 +26,11 @@ test('a sole distant capital army marches to the front, attacks and continues af
  assert.ok(s.armies[0]!.militaryPlan!.targetProvinceId!==target);assert.equal(s.players.some(p=>p.countryId==='poland'),false);
  s.players=[{id:'host',countryId:'germany',displayName:'QA',ready:true,isHost:true}];decodeCampaign(encodeCampaign(s,1));
 });
+test('AI initiates a real defended battle and continues the same campaign after victory',()=>{
+ let {s,home,enemy,army}=fixture();army.provinceId=home[2]!.id;s.armies.push(scenarioArmy({id:'defender',ownerId:'germany',provinceId:enemy[0]!.id,troops:2500,morale:100,organization:100}));periodicMilitaryAI(s);assert.equal(army.order?.type,'ATTACK');let battled=false;
+ for(let n=0;n<24;n++){s=applyCommand(s,{type:'ADVANCE_DAY'},true);battled||=(s.activeBattles?.length??0)>0;if(s.provinces.find(p=>p.id===enemy[1]!.id)!.controllerId==='poland')break;}
+ assert.ok(battled);assert.ok(s.battleLog.some(b=>b.attackerId==='poland'&&b.winnerId==='poland'));assert.equal(s.provinces.find(p=>p.id===enemy[1]!.id)!.controllerId,'poland');
+});
 test('reserves receive a route to an attacked province and human takeover ends national auto command',()=>{
  const {s,home,enemy,army}=fixture();const guard=scenarioArmy({id:'guard',ownerId:'poland',provinceId:home[2]!.id,troops:1000,morale:80,organization:80});
  const invader=scenarioArmy({id:'invader',ownerId:'germany',provinceId:enemy[0]!.id,troops:10000,morale:80,organization:80});s.armies.push(guard,invader);beginBattle(s,invader,home[2]!);periodicMilitaryAI(s);

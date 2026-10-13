@@ -1,4 +1,5 @@
 import {technologyBonuses} from './technologyTree.ts';
+import {MOBILIZATION} from './militaryDevelopment.ts';
 import {focusBonuses} from './focusCatalogue.ts';
 import { techLevel } from './technologySystem.ts';
 import { provinceBuildingMaintenance, provinceBuildingModifiers } from './buildingSystem.ts';
@@ -63,15 +64,15 @@ export function recalcEconomy(state: GameState): void {
   }
   for (const c of Object.values(state.countries)) {
     const rawTax = taxBase.get(c.id) ?? 0, rawTrade = tradeBase.get(c.id) ?? 0;
-    const policy=economicPolicy(c),course=focusBonuses(c);
+    const policy=economicPolicy(c),course=focusBonuses(c),mobilization=MOBILIZATION[c.mobilization??'Peacetime'];
     const warPressure=1-(c.warExhaustion??0)*.002;
     const taxIncome = money(warPressure*governmentIncome(rawTax, c.governmentType) * c.taxRate! / DEFAULT_TAX_RATE * (1 + techLevel(c, 'Economy') * .04)*policy.tax*(1+course.tax+technologyBonuses(c).tax));
     const people = population.get(c.id) ?? 0;
     const meanDevelopment = people > 0 ? (development.get(c.id) ?? 0) / people : 0;
-    const tradeIncome = money(rawTrade * (.1 + (diplomatic.tradeBonus.get(c.id) ?? 0)) * meanDevelopment / 100 * (.5 + c.stability / 200)*policy.trade*(1+course.trade+technologyBonuses(c).trade));
+    const tradeIncome = money(rawTrade * (.1 + (diplomatic.tradeBonus.get(c.id) ?? 0)) * meanDevelopment / 100 * (.5 + c.stability / 200)*mobilization.trade*policy.trade*(1+course.trade+technologyBonuses(c).trade));
     const sabotage=espionageModifiers(state,c.id).productionMultiplier;
     const resourceIncome = money(c.stockpile?c.stockpile.tradeRevenue:(resources.get(c.id) ?? 0)*sabotage*policy.production*(1+course.production)), buildingMaintenance = buildingCosts.get(c.id) ?? 0;
-    const productionIncome=money((c.stockpile?.industrialIncome??0)+(production.get(c.id)??0)*sabotage*policy.production*(1+course.production)),administrationMaintenance=money((administration.get(c.id)??0)*policy.administration*(1-course.administration));
+    const productionIncome=money(((c.stockpile?.industrialIncome??0)+(production.get(c.id)??0)*sabotage*policy.production)*mobilization.production*(1+course.production)),administrationMaintenance=money((administration.get(c.id)??0)*policy.administration*(1-course.administration));
     const monthlyIncome = money(taxIncome + tradeIncome + resourceIncome + productionIncome);
     c.militaryUpkeepBase=money(militaryCosts.get(c.id)??0);
     const armyMaintenance = money(c.militaryUpkeepBase*militaryFundingCost(c));

@@ -1,4 +1,5 @@
 import {AudioPressable as Pressable} from './AudioPressable';
+import {UNIT_TYPES,UNITS} from '../../supabase/functions/_shared/unitCatalogue';
 import {useState} from 'react';
 import {Text, View, ScrollView} from 'react-native';
 import type {Army,GameState,GameCommand} from '../types/game';
@@ -7,7 +8,8 @@ import {dateAfterDays} from '../../supabase/functions/_shared/calendarSystem';
 import {styles} from './strategyStyles';
 const labels:Record<Formation,string>={Balanced:'Сбалансированная',Assault:'Штурмовая',Defensive:'Оборонительная',Mobile:'Манёвренная'};
 export function ArmyOperations({state,army,playerId,onCommand,view='Приказы'}:{state:GameState;army:Army;playerId:string;onCommand:(c:GameCommand)=>void;view?:'Приказы'|'Построение'}){
- const [waypoints,setWaypoints]=useState<string[]>([]),rows=armyFormation(army),others=state.armies.filter(a=>a.id!==army.id&&a.ownerId===army.ownerId&&a.provinceId===army.provinceId&&!a.order);
+ const [recipient,setRecipient]=useState('');
+ const [waypoints,setWaypoints]=useState<string[]>([]),rows=armyFormation(army),others=state.armies.filter(a=>a.id!==army.id&&a.ownerId===army.ownerId&&a.provinceId===army.provinceId&&!a.order&&!a.formationId);
  const next=state.provinces.find(p=>p.id===army.order?.route[0]),travel=next?armyTravelInfo(state,army,next):null;
  const from=waypoints.at(-1)??army.provinceId,province=state.provinces.find(p=>p.id===from);
  return <View style={styles.card}>
@@ -18,6 +20,7 @@ export function ArmyOperations({state,army,playerId,onCommand,view='Приказ
  </>}
  {view==='Приказы'&&<>
  <View style={{flexDirection:'row',gap:5,flexWrap:'wrap'}}><Pressable style={styles.button} onPress={()=>onCommand({type:'SPLIT_ARMY',playerId,armyId:army.id,percent:50})}><Text style={styles.text}>Разделить 50%</Text></Pressable><Pressable style={[styles.button,!others.length&&styles.disabled]} disabled={!others.length} onPress={()=>onCommand({type:'MERGE_ARMIES',playerId,armyIds:[army.id,...others.slice(0,19).map(a=>a.id)]})}><Text style={styles.text}>Объединить ({others.length+1})</Text></Pressable></View>
+ {others.length>0&&<><Text style={styles.title}>Передать полк другой армии</Text><ScrollView horizontal contentContainerStyle={styles.row}>{others.map(a=><Pressable key={a.id} style={styles.button} onPress={()=>setRecipient(a.id)}><Text style={styles.text}>{a.id===(recipient||others[0]?.id)?'✓ ':''}{a.name??a.id}</Text></Pressable>)}</ScrollView><ScrollView horizontal contentContainerStyle={styles.row}>{UNIT_TYPES.filter(t=>(army.composition?.[t]??0)>=1000).map(unitType=><Pressable key={unitType} style={styles.button} onPress={()=>onCommand({type:'TRANSFER_REGIMENT',playerId,fromArmyId:army.id,toArmyId:recipient||others[0]!.id,unitType,troops:1000})}><Text style={styles.text}>{UNITS[unitType].name} · 1000</Text></Pressable>)}</ScrollView></>}
  <Text style={styles.title}>Маршрут с промежуточными точками</Text><Text style={styles.text}>{waypoints.map(id=>state.provinces.find(p=>p.id===id)?.name).join(' → ')||'Выберите соседние провинции; обычный приказ можно отдать на карте.'}</Text>
  <ScrollView horizontal contentContainerStyle={styles.row}>{province?.neighbors.filter(id=>!waypoints.includes(id)).slice(0,16).map(id=><Pressable key={id} style={styles.button} disabled={waypoints.length>=12} onPress={()=>setWaypoints(v=>[...v,id])}><Text style={styles.text}>{state.provinces.find(p=>p.id===id)?.name}</Text></Pressable>)}</ScrollView>
  {waypoints.length>0&&<View style={{flexDirection:'row',gap:4}}>{[false,true].map(redeploy=><Pressable key={String(redeploy)} style={styles.button} onPress={()=>{onCommand({type:'ROUTE_ARMY',playerId,armyId:army.id,waypoints,redeploy});setWaypoints([]);}}><Text style={styles.text}>{redeploy?'Переброска':'Марш'}</Text></Pressable>)}<Pressable style={styles.button} onPress={()=>setWaypoints([])}><Text style={styles.text}>Сброс</Text></Pressable></View>}

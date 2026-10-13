@@ -178,6 +178,8 @@ export function diplomacyAcceptance(s:GameState,from:string,to:string,terms:Dipl
   const reasons=[{label:'Отношения',value:l?.relation??0},{label:'Доверие',value:((l?.trust??50)-50)*.5},
     {label:'Репутация отправителя',value:(a.diplomaticReputation??50)/10},{label:'Дипломатические технологии',value:techLevel(a,'Diplomacy')*4},{label:'Национальный дипломатический курс',value:focusBonuses(a).diplomacy},
     {label:'Общие враги',value:Math.min(30,common*15)},{label:'Агрессивная экспансия',value:-(a.aggressiveExpansion??0)},
+    {label:'Международная угроза',value:-(a.internationalThreat??0)*.3},
+    {label:'Общий опасный сосед',value:terms.kind==='Treaty'&&['Alliance','DefensivePact','MilitaryAccess'].includes(terms.treaty)?Math.min(30,(a.regionalInterests?.neighbours??[]).filter(id=>b.regionalInterests?.neighbours.includes(id)&&(s.countries[id]?.internationalThreat??0)>=35).length*20):0},
     {label:'Соперничество',value:l?.rivals.length?-100:0},{label:'Военное сотрудничество',value:terms.kind==='Treaty'&&terms.treaty==='Alliance'?Math.min(15,Math.round(5*a.army/Math.max(1000,b.army))):0}];
   let required=20;
   if(terms.kind==='Treaty'&&terms.treaty==='TradeAgreement')reasons.push({label:'Доход от торговли',value:15});
@@ -287,6 +289,7 @@ export function diplomacyResponseAvailability(s:GameState,actor:string,o:Diploma
 }
 export function canEnterTerritory(s:GameState,owner:string,controller:string,armyId?:string,targetProvinceId?:string):boolean {
   if(!s.dataset||owner===controller||warBetween(s,owner,controller))return true;
+  if(s.wars?.some(w=>w.attackers.includes(owner)&&w.attackers.includes(controller)||w.defenders.includes(owner)&&w.defenders.includes(controller)))return true;
   const l=s.diplomacy?.[pairKey(owner,controller)];
   if(l?.terms?.some(t=>['Alliance','PoliticalUnion'].includes(t.type)&&t.untilTick>s.tick))return true;
   if(l?.terms?.some(t=>t.type==='MilitaryAccess'&&t.from===controller&&t.to===owner&&t.untilTick>s.tick))return true;

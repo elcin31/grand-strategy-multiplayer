@@ -1,0 +1,12 @@
+import {Text,View} from 'react-native';
+import {AudioPressable as Pressable} from './AudioPressable';
+import type {StrategyProps} from './StrategyPanel';
+import {styles} from './strategyStyles';
+import type {CrisisResolution} from '../../supabase/functions/_shared/geopoliticsSystem';
+const resolutions:Record<CrisisResolution,string>={Negotiate:'Переговоры · 25 млн',Concede:'Компенсация · 50 млн',Mobilize:'Мобилизация',StandFirm:'Отстоять позицию · 5 PP'};
+export function GeopoliticsPanel({state,playerId,onCommand}:StrategyProps){const owner=state.players.find(p=>p.id===playerId)?.countryId;if(!owner)return null;const c=state.countries[owner]!;
+ return <View style={styles.wrap}><View style={styles.card}><Text style={styles.title}>Международная угроза: {(c.internationalThreat??0).toFixed(1)} / 100</Text><Text style={styles.text}>Агрессивные войны и быстрые захваты тревожат соседей. Защитные коалиции реагируют на угрозу каждого государства.</Text>{c.regionalInterests&&<Text style={styles.text}>{c.regionalInterests.reason}</Text>}</View>
+ {(state.diplomaticCrises??[]).filter(x=>x.status==='Open'&&[x.from,x.to].includes(owner)).map(x=><View key={x.id} style={styles.card}><Text style={styles.title}>{state.countries[x.from]!.shortName} — {state.countries[x.to]!.shortName}</Text><Text style={styles.text}>{x.reason} · до месяца {x.deadlineTick}</Text><View style={{flexDirection:'row',flexWrap:'wrap',gap:5}}>{(Object.keys(resolutions) as CrisisResolution[]).map(resolution=><Pressable key={resolution} accessibilityRole="button" style={styles.button} onPress={()=>onCommand({type:'RESOLVE_DIPLOMATIC_CRISIS',playerId,crisisId:x.id,resolution})}><Text style={styles.text}>{resolutions[resolution]}</Text></Pressable>)}</View></View>)}
+ {(state.coalitions??[]).map(q=><View key={q.id} style={styles.card}><Text style={styles.title}>Коалиция сдерживает {state.countries[q.targetId]!.name}</Text><Text style={styles.text}>{q.members.map(id=>state.countries[id]!.shortName).join(', ')}</Text><Text style={styles.text}>Члены поддержат друг друга при нападении этой державы. Участие истекает через {q.untilTick-state.tick} мес.</Text>{owner!==q.targetId&&!q.members.includes(owner)&&<Pressable accessibilityRole="button" style={styles.button} onPress={()=>onCommand({type:'JOIN_COALITION',playerId,coalitionId:q.id})}><Text style={styles.title}>Присоединиться · 10 PP</Text></Pressable>}</View>)}
+ </View>;
+}

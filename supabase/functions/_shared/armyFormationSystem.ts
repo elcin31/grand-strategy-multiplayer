@@ -24,6 +24,10 @@ export function assertFormationComposition(input:unknown):asserts input is Compo
  const total=compositionTotal(input as Composition);if(!Number.isSafeInteger(total)||total<1000||total>MAX_FORMATION_TROOPS)throw Error('Допустимый размер армии: 1 000–1 000 000 солдат');
 }
 export function formationCapacity(s:GameState,owner:string,province:string):number{const p=s.provinces.find(p=>p.id===province);return Math.min(MAX_RECRUIT_BATCH,10000+(p?.buildings?.Barracks??0)*5000+(p?.buildings?.MilitaryBase??0)*5000+(s.countries[owner]?.militaryDoctrine==='Logistics'?2000:0));}
+export function formationDays(s:GameState,owner:string,province:string,troops:number,excludeId?:string):number{
+ const pending=(s.armyFormations??[]).filter(q=>q.ownerId===owner&&q.provinceId===province&&q.id!==excludeId).map(q=>compositionTotal(q.composition)-compositionTotal(q.formed));pending.push(troops);let days=0;
+ while(pending.at(-1)!>0&&days<1000){const active=pending.filter(n=>n>0).length,capacity=Math.max(1000,Math.floor(formationCapacity(s,owner,province)/Math.max(1,active)));for(let n=0;n<pending.length;n++)pending[n]=Math.max(0,pending[n]!-capacity);days++;}return days;
+}
 export function formationQuote(s:GameState,owner:string,provinceId:string,parts:Composition,commanderId:string|null=null):{troops:number;cost:number;materials:ResourceLedger;days:number;reason:string|null}{
  let error:string|null=null;try{assertFormationComposition(parts);}catch(e){error=e instanceof Error?e.message:'Некорректный состав';}
  const c=s.countries[owner],p=s.provinces.find(p=>p.id===provinceId),troops=compositionTotal(parts),materials:ResourceLedger={};let cost=0;
@@ -36,7 +40,7 @@ export function formationQuote(s:GameState,owner:string,provinceId:string,parts:
  else if(c.militaryCeiling&&s.tick<c.militaryCeiling.untilTick&&c.army+(s.armyFormations??[]).filter(q=>q.ownerId===owner).reduce((n,q)=>n+compositionTotal(q.composition)-compositionTotal(q.formed),0)+troops>c.militaryCeiling.troops)error='Мирный договор ограничивает численность армии';
  else if(commanderId&&(!s.commanders?.[commanderId]||s.commanders[commanderId]!.countryId!==owner||s.armies.some(a=>a.commanderId===commanderId)||s.armyFormations?.some(q=>q.commanderId===commanderId)))error='Командир недоступен';
  else if(c.stockpile)error=materialReason(c,materials);}
- return {troops,cost:money(cost),materials,days:Math.ceil(troops/formationCapacity(s,owner,provinceId)),reason:error};
+ return {troops,cost:money(cost),materials,days:formationDays(s,owner,provinceId,troops),reason:error};
 }
 export function createArmyFormation(s:GameState,owner:string,name:string,province:string,parts:Composition,commanderId:string|null):void{
  const q=formationQuote(s,owner,province,parts,commanderId);if(q.reason)throw Error(q.reason);const c=s.countries[owner]!;

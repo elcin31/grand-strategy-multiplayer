@@ -33,7 +33,7 @@ export class HttpTransport implements MultiplayerTransport {
   const pending=s.pending;
   // Only absolute, unpaid controls can be rebased after an explicit CAS refusal.
   // Paid/relative intents retain the existing visible rejection behavior.
-  const rebasable=['SELECT_COUNTRY','SET_READY','START_GAME','SET_SPEED'].includes(pending.command.type);
+  const rebasable=['SELECT_COUNTRY','SET_READY','START_GAME','SET_SPEED','SET_AI_DIFFICULTY'].includes(pending.command.type);
   this.delivering.add(s.gameId);
   try{
   for(let attempt=0;;attempt++){
