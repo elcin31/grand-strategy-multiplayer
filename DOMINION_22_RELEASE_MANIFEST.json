@@ -1,0 +1,56 @@
+{
+  "version": "2.2.0",
+  "versionCode": 14,
+  "branch": "dominion-2.2-world-map-overhaul",
+  "baseline": "604f9d3ffc5876e5a594d4821ae49828abdc485a",
+  "runtimeSha": "b8520ef933f0652044d31f3709ab810cf8888b26",
+  "buildRun": 38381764786,
+  "buildStatus": "SUCCESS",
+  "releaseTag": "v2.2-playtest.1",
+  "apkName": "Dominion-2.2-playtest.apk",
+  "schemaVersion": 25,
+  "backendChanged": false,
+  "saveIdsChanged": false,
+  "atlasAssets": 183,
+  "atlasCompressedBytes": 8630964,
+  "verification": {
+    "typecheck": true,
+    "focusedTests": 19,
+    "assetHashesProjectionLicence": true,
+    "nativeLandscapeTextureRecorderSource": true,
+    "androidSmoke": "pending final runtime build; previous candidate run 38370836032 passed",
+    "physicalRedmiMeasured": false,
+    "longBenchmarks": false,
+    "packagedAtlasHashes": true
+  },
+  "publicationStatus": "AWAITING_FINAL_NATIVE_SMOKE",
+  "apkArtifactId": 11804782696,
+  "apk": {
+    "name": "Dominion-2.2-playtest.apk",
+    "bytes": 165640716,
+    "sha256": "0fe6ae3b6125517a59518c0cb0bfca0b5b8983ebbbd253b9ffcf3c822dc6bd17",
+    "version": "2.2.0",
+    "versionCode": 14,
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "standalone": true,
+    "embeddedJavaScript": true,
+    "bundleBytes": 14560356,
+    "landscape": true,
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ]
+  },
+  "backend": {
+    "sourceChanged": false,
+    "rolloutRequired": false,
+    "endpoints": [
+      "game-command-v211",
+      "game-room-v211"
+    ],
+    "schemaVersion": 25
+  }
+}
