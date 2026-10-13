@@ -5,6 +5,7 @@ import {atlasTiles} from '../map/atlas22Assets';
 import {atlasLevel,atlasSurface,type AtlasTile} from '../map/atlas22';
 import {featurePath,overlaps,type Bounds} from '../map/geometry';
 import {countryRenderFeatures} from '../map/countryRender';
+import {worldCountries} from '../world/catalog';
 import {RasterCache} from '../map/rasterTiles';
 import {withNativeRecordingObjects} from '../map/nativeRecording';
 import type {MapScene} from '../map/worldScene';
@@ -13,6 +14,7 @@ interface Vector {id:string;rank:number;type:string;coordinates:number[][]|numbe
 const geography=require('../map/geography22.json') as {rivers:Vector[];lakes:Vector[]};
 const masks=new WeakMap<MapScene,Map<string,SkPath>>();
 const vectorPaths=new Map<string,SkPath>();
+const modernCountries=new Set(worldCountries.map(c=>c.sourceCode));
 function vectorPath(v:Vector):SkPath {
   let cached=vectorPaths.get(v.id);if(cached)return cached;
   const p=Skia.Path.Make();p.setFillType(1);
@@ -26,8 +28,13 @@ function vectorPath(v:Vector):SkPath {
 function landMask(scene:MapScene,tile:AtlasTile):SkPath {
   let cache=masks.get(scene);if(!cache){cache=new Map();masks.set(scene,cache);}
   const cached=cache.get(tile.key);if(cached)return cached;
+  const modern=scene.provinceGeometry.size>1000;
   const merged=tile.level==='world'?countryRenderFeatures(scene):[];
-  const features=merged.length?[...scene.features.filter(f=>!f.provinceId),...merged]:scene.spatialIndex.query(tile.imageBounds);
+  // The legacy background catalogue duplicates 169 countries now represented
+  // by real world provinces. An even-odd compound mask would erase those lands.
+  // Retain only background regions absent from the modern roster (e.g. Antarctica).
+  const context=scene.features.filter(f=>!f.provinceId&&!modernCountries.has(f.id));
+  const features=merged.length?[...context,...merged]:scene.spatialIndex.query(tile.imageBounds).filter(f=>!modern||f.provinceId||!modernCountries.has(f.id));
   const p=Skia.Path.Make();p.setFillType(1);
   for(const f of features)if(overlaps(f.bounds,tile.imageBounds)){
     const path=Skia.Path.MakeFromSVGString(featurePath(f));if(path){p.addPath(path);path.dispose();}
