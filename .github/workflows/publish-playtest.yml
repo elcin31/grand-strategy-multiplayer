@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   publish:
-    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art'
+    if: github.ref != 'refs/heads/dominion-2.1-overhaul' && github.ref != 'refs/heads/dominion-2.1.1-warfare-interface-art' && github.ref != 'refs/heads/dominion-2.1.2-living-world'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -323,4 +323,88 @@ jobs:
             release211/SHA256SUMS.txt
             release211/dominion211-integrity.txt
             published211.json
+          retention-days: 30
+  publish212:
+    if: github.ref == 'refs/heads/dominion-2.1.2-living-world'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: elcin31/grand-strategy-multiplayer
+      NATIVE_RUN_ID: ${{ inputs.native_run_id }}
+      BUILD_RUN_ID: '38350841398'
+      RUNTIME_SHA: 4d10489c152349b63e5c5b7e21757ebc5a9e5d60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Bind the existing APK to completed short checks
+        run: |
+          [[ "$NATIVE_RUN_ID" =~ ^[0-9]+$ ]]
+          mkdir -p release212
+          gh api "repos/$GH_REPO/actions/runs/$BUILD_RUN_ID/jobs?per_page=30" > release212/build-jobs.json
+          gh api "repos/$GH_REPO/actions/runs/$NATIVE_RUN_ID" > release212/native-run.json
+          python -c "import json;r=json.load(open('release212/build-jobs.json'));assert any(j['name']=='build-apk' and j['conclusion']=='success' for j in r['jobs']);assert json.load(open('release212/native-run.json'))['conclusion']=='success'"
+          native_sha=$(python -c "import json;print(json.load(open('release212/native-run.json'))['head_sha'])")
+          git diff --exit-code "$RUNTIME_SHA" HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json metro.config.js assets src supabase/functions plugins
+          git diff --exit-code "$native_sha" HEAD -- scripts/android211-smoke.py scripts/android_accessibility.py scripts/map_paint_check.py
+          for tag in v2.0.0-playtest.1 v2.1.0-playtest.1 v2.1.1-playtest.1; do gh api "repos/$GH_REPO/releases/tags/$tag" > "release212/old-$tag-before.json"; done
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion-camera-illustrated-release
+          run-id: 38350841398
+          github-token: ${{ github.token }}
+          path: release212
+      - uses: actions/download-artifact@v4
+        with:
+          name: dominion211-short-native-smoke
+          run-id: ${{ inputs.native_run_id }}
+          github-token: ${{ github.token }}
+          path: native212
+      - run: python -m pip install -r scripts/camera-profile-requirements.txt
+      - name: Verify real APK bytes, signature and native result
+        run: |
+          python scripts/verify-apk.py release212/Dominion-2.1.2-playtest.apk
+          python scripts/verify-release.py release212/Dominion-2.1.2-playtest.apk > release212/dominion212-integrity.txt
+          gh api "repos/$GH_REPO/actions/artifacts/11790939061/zip" > release212/Dominion-2.1.2-playtest.zip
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          p=Path('release212');apk=p/'Dominion-2.1.2-playtest.apk';archive=p/'Dominion-2.1.2-playtest.zip'
+          assert hashlib.sha256(apk.read_bytes()).hexdigest()=='7f1ea498525143585c69b3fe991199044917275297cb87c2cd41d6f7b17c6961'
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()=='4c7c0ddfc6e950ff4b99429068b32c3aa98d00df7633d055c2278aac40995506'
+          result=json.loads(next(Path('native212').rglob('result.json')).read_text());assert all(result[k] for k in ['releaseColdLaunch','armyOrder','armyMovement','saveRestart','mapPainted','noFatalLogs'])
+          m=json.loads(Path('DOMINION_212_RELEASE_MANIFEST.json').read_text());m['nativeSmoke']=result;m['nativeRunId']=int(__import__('os').environ['NATIVE_RUN_ID']);m['publicationStatus']='VERIFIED_READY';(p/'DOMINION_212_RELEASE_MANIFEST.json').write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\n')
+          (p/'SHA256SUMS.txt').write_text(''.join(hashlib.sha256((p/n).read_bytes()).hexdigest()+'  '+n+'\n' for n in [apk.name,archive.name]))
+          PY
+      - name: Publish only the new Dominion 2.1.2 release
+        run: |
+          gh release view v2.1.2-playtest.1 --json isDraft,targetCommitish > release212/draft.json
+          python -c "import json,os;r=json.load(open('release212/draft.json'));assert r['isDraft'] and r['targetCommitish']==os.environ['RUNTIME_SHA']"
+          gh release upload v2.1.2-playtest.1 release212/Dominion-2.1.2-playtest.apk release212/Dominion-2.1.2-playtest.zip release212/SHA256SUMS.txt release212/dominion212-integrity.txt release212/DOMINION_212_RELEASE_MANIFEST.json --clobber
+          gh release edit v2.1.2-playtest.1 --draft=false --prerelease --notes-file RELEASE_NOTES_212.md
+      - name: Verify public APK and retained previous releases
+        run: |
+          curl --fail --location --retry 2 --max-time 180 https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.1.2-playtest.1/Dominion-2.1.2-playtest.apk -o public212.apk
+          cmp release212/Dominion-2.1.2-playtest.apk public212.apk
+          gh api "repos/$GH_REPO/releases/tags/v2.1.2-playtest.1" > release212/published.json
+          for tag in v2.0.0-playtest.1 v2.1.0-playtest.1 v2.1.1-playtest.1; do gh api "repos/$GH_REPO/releases/tags/$tag" > "release212/old-$tag-after.json"; done
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('release212');m=json.loads((p/'DOMINION_212_RELEASE_MANIFEST.json').read_text());r=json.loads((p/'published.json').read_text());assert not r['draft'];a=next(a for a in r['assets'] if a['name']=='Dominion-2.1.2-playtest.apk');assert a['size']==153574512
+          for tag in ['v2.0.0-playtest.1','v2.1.0-playtest.1','v2.1.1-playtest.1']:
+              before=json.loads((p/('old-'+tag+'-before.json')).read_text());after=json.loads((p/('old-'+tag+'-after.json')).read_text());assert before['id']==after['id'];assert [(a['id'],a['name'],a['size']) for a in before['assets']]==[(a['id'],a['name'],a['size']) for a in after['assets']]
+          m.update(publicationStatus='PUBLISHED_VERIFIED',publicApkByteMatch=True,previousReleasesPreserved=True,releaseId=r['id'],apkAssetId=a['id'],apkUrl=a['browser_download_url']);(p/'DOMINION_212_RELEASE_MANIFEST.json').write_text(json.dumps(m,indent=2,ensure_ascii=False)+'\n')
+          PY
+          gh release upload v2.1.2-playtest.1 release212/DOMINION_212_RELEASE_MANIFEST.json --clobber
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dominion212-publication-checkpoint
+          path: |
+            release212/DOMINION_212_RELEASE_MANIFEST.json
+            release212/SHA256SUMS.txt
+            release212/dominion212-integrity.txt
+            release212/published.json
           retention-days: 30

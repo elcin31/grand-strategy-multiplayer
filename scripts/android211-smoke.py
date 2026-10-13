@@ -53,7 +53,7 @@ def navigation(label,name,direction='up'):
         if node is not None:
             box=visible_bounds(tree,node)
             if box is not None:
-                if tap_control:tap(node,box)
+                tap(node,box)
                 return node
         rails=[]
         for n in tree.iter('node'):
