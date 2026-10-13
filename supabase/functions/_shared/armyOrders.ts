@@ -3,9 +3,18 @@ import type {Army,GameState,Province} from './gameTypes.ts';
 import {warBetween} from './diplomacySystem.ts';
 import {canEnterTerritory} from './diplomacy2System.ts';
 export interface ArmyOrder { type:'MOVE'|'ATTACK'; targetProvinceId:string; route:string[]; issuedTick:number;travelProgress?:number;redeploy?:boolean }
+const routeIndexes=new WeakMap<GameState,{provinces:Map<string,Province>;signature:string}>();
+const routeCache=new Map<string,string[]>();
+function routeIndex(s:GameState){
+ let index=routeIndexes.get(s);if(index)return index;
+ // A cache entry cannot outlive a border, war or access change. The signature is
+ // built once per authoritative state, never by the renderer.
+ index={provinces:new Map(s.provinces.map(p=>[p.id,p])),signature:s.provinces.map(p=>p.id+':'+(p.controllerId??p.ownerId)).join(',')+'|'+JSON.stringify(s.wars?.map(w=>[w.attackers,w.defenders]))+'|'+JSON.stringify(Object.values(s.diplomacy??{}).map(l=>[l.a,l.b,l.terms]))+'|'+s.tick};routeIndexes.set(s,index);return index;
+}
 /** Uniform-cost graph: BFS is optimal in monthly steps. Once per order, never per frame. */
 export function findArmyRoute(state:GameState,army:Army,targetId:string):string[] {
- const provinces=new Map(state.provinces.map(p=>[p.id,p]));
+ const {provinces,signature}=routeIndex(state),key=state.id+'|'+army.ownerId+'|'+army.provinceId+'|'+targetId+'|'+signature;
+ const cached=routeCache.get(key);if(cached)return [...cached];
  const target=provinces.get(targetId);if(!target)throw Error('Провинция не найдена');
  const passable=(p:Province)=>canEnterTerritory(state,army.ownerId,p.controllerId??p.ownerId);
  if(!passable(target))throw Error('Нет права прохода: сначала объявите войну через дипломатию');
@@ -16,7 +25,7 @@ export function findArmyRoute(state:GameState,army:Army,targetId:string):string[
   for(const id of provinces.get(current)?.neighbors??[]){
    const p=provinces.get(id);if(!p||previous.has(id)||!passable(p))continue;
    previous.set(id,current);
-   if(id===targetId){const route=[id];let node=current;while(node!==army.provinceId){route.push(node);node=previous.get(node)!;}return route.reverse();}
+   if(id===targetId){const route=[id];let node=current;while(node!==army.provinceId){route.push(node);node=previous.get(node)!;}route.reverse();routeCache.set(key,route);if(routeCache.size>96)routeCache.delete(routeCache.keys().next().value!);return [...route];}
    queue.push(id);
   }
  }

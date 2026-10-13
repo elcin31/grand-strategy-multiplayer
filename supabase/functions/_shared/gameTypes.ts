@@ -26,6 +26,7 @@ export interface Country {
   completedProjects?:import('./construction3System.ts').NationalProjectId[];
   stockpile?:import('./stockpileSystem.ts').Stockpile;
   lastResourceCrisis?:boolean;
+  aiArmyCursor?:number;
   aiStrategy?:import('./ai3System.ts').AIStrategy;
   autoPause?: import('./notificationSystem.ts').NotificationCategory[];
   notificationReadThrough?: number;
@@ -147,6 +148,8 @@ export interface Construction {
 }
 
 export interface Army {
+  name?:string;
+  militaryPlan?:import('./ai3System.ts').MilitaryPlan;
   intelligenceLevel?:'Detailed'|'Estimate';
   formation?:import('./military3System.ts').Formation;
   escortArmyId?:string;
@@ -229,6 +232,8 @@ export interface Leader {
 }
 
 export interface GameState {
+  aiDifficulty?:'Easy'|'Normal'|'Hard'|'VeryHard';
+  aiMilitaryCursor?:number;
   clockNeedsReset?:boolean;
   resourceLeaderOutput?:Partial<Record<import('./resourceCatalogue.ts').ResourceType,{countryId:string;units:number}[]>>;
   fogViewerId?:string;

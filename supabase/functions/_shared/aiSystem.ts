@@ -1,4 +1,4 @@
-import {armyInBattle} from './military3System.ts';
+import {armyFormation} from './military3System.ts';
 import {NATIONAL_PROJECTS,nationalProjectReason,startNationalProject,type NationalProjectId} from './construction3System.ts';
 import {appointAdviser,vassalPolicy} from './strategy3System.ts';
 import {PRODUCTION_RECIPES,recipeReason,type RecipeId} from './productionSystem.ts';
@@ -13,7 +13,6 @@ import { BUILDINGS, buildingQuote,buildingRequirementReason,provinceBuildingModi
 import {policyAvailability,setEconomicPolicy,fundingAvailability,setFunding,type EconomicPolicy} from './economy2System.ts';
 import { combatMultiplier } from './militarySystem.ts';
 import {UNITS,type UnitType} from './unitCatalogue.ts';
-import {retreatArmy,retreatDestination} from './militaryLogistics.ts';
 import { startTechnology, techLevel, type TechnologyBranch } from './technologySystem.ts';
 import {TECHNOLOGY_IDS,technologyNode,legacyTechnologyNode,namedResearchQuote,scienceLevel} from './technologyTree.ts';
 import { declareWar, diplomaticAction, pairKey, offerTreaty, warBetween,type DiplomacyLink } from './diplomacySystem.ts';
@@ -64,8 +63,14 @@ export function warDecisionScore(s:GameState,id:string,target:string,context:AIS
 }
 /** Uses the same combat factors as the authoritative resolver, including fortifications and readiness. */
 export function attackRatio(s:GameState,a:Army,p:Province,byProvince?:ReadonlyMap<string,readonly Army[]>):number {
-  const enemy=p.controllerId??p.ownerId,c=s.countries[a.ownerId]!,d=s.countries[enemy]!;
-  const defenders=(byProvince?.get(p.id)??(byProvince?[]:s.armies)).filter(x=>x.provinceId===p.id&&x.ownerId===enemy),troops=defenders.reduce((n,x)=>n+x.troops,0);
+  const enemy=p.controllerId??p.ownerId;
+  const defenders=(byProvince?.get(p.id)??(byProvince?[]:s.armies)).filter(x=>x.provinceId===p.id&&warBetween(s,a.ownerId,x.ownerId));
+  if(s.day!==undefined){
+    const attack=a.troops*combatMultiplier(s,a,p,false)*armyFormation(a).attack;
+    const defense=defenders.reduce((n,d)=>n+d.troops*combatMultiplier(s,d,p,true)*armyFormation(d).defense*(d.order?.redeploy?.55:1),0)*(1+provinceBuildingModifiers(p).defensePercent/100);
+    return attack/Math.max(defense,(p.buildings?.Fort??0)>0?1500+(p.buildings?.Fort??0)*1500:1000);
+  }
+  const c=s.countries[a.ownerId]!,d=s.countries[enemy]!,troops=defenders.reduce((n,x)=>n+x.troops,0);
   const readiness=troops?defenders.reduce((n,x)=>n+x.troops*combatMultiplier(s,x,p,true),0)/troops:1;
   return a.troops*(1+c.technology/200)*(.75+c.stability/200)*combatMultiplier(s,a,p,false)/Math.max(1,(troops+2500)*(1+d.technology/180)*(.85+d.stability/250)*1.12*(1+provinceBuildingModifiers(p).defensePercent/100)*readiness);
 }
@@ -81,7 +86,6 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
   let armySource:Army[]|undefined,armyCount=-1;
   let byProvince=new Map<string,Army[]>(),byOwner=new Map<string,Army[]>();
   const indexArmies=()=>{if(armySource===s.armies&&armyCount===s.armies.length)return;armySource=s.armies;armyCount=s.armies.length;byProvince=new Map();byOwner=new Map();for(const a of s.armies){const at=byProvince.get(a.provinceId)??[];at.push(a);byProvince.set(a.provinceId,at);const own=byOwner.get(a.ownerId)??[];own.push(a);byOwner.set(a.ownerId,own);}};
-  const moveIndexed:Actions['move']=(state,owner,army,to)=>{actions.move(state,owner,army,to);armySource=undefined;};
   const assignedCommanders=new Set(s.armies.map(a=>a.commanderId).filter(Boolean));
   const freeCommanders=new Map<string,string[]>();
   for(const g of Object.values(s.commanders??{}))if(!assignedCommanders.has(g.id)){const list=freeCommanders.get(g.countryId)??[];list.push(g.id);freeCommanders.set(g.countryId,list);}
@@ -187,23 +191,12 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
           if((style==='Expansionist'||style==='Militarist')&&enemy&&s.countries[enemy.target]!.army>c.army){const l=s.diplomacy?.[pairKey(id,enemy.target)];if(!l?.treaties.length&&!l?.rivals.includes(id))diplomaticAction(s,id,enemy.target,'Rival');}}
       }
     }
-    // Deterministic work budget: at most ceil(countryCount/4)*3 tactical stacks.
-    // Every country gets a slot within four ticks; treaty/peace responses above stay immediate.
-    if((index+s.tick)%4!==0)continue;
-    // Retain capital garrison; spread spare stacks toward valuable threatened borders.
+    // Daily operational orders live in ai3System. Monthly development may assign
+    // generals and replacements, but must never redirect a committed operation.
     indexArmies();
-    const armies=[...(byOwner.get(id)??[])].sort((a,b)=>b.troops-a.troops).slice(0,3);
-    for(const army of armies){if(army.order||armyInBattle(s,army.id)||s.sieges?.some(x=>x.armyIds.includes(army.id)))continue;indexArmies();const origin=provinces.get(army.provinceId);if(!origin)continue;
+    for(const army of byOwner.get(id)??[]){
       army.reinforcementEnabled=context().incomeBalance>0&&c.treasury>context().treasuryReserve;
       if(!army.commanderId){const general=freeCommanders.get(id)?.shift();if(general)army.commanderId=general;}
-      if((army.supply??100)<30||(army.organization??80)<25||(army.morale??80)<25){const exit=retreatDestination(s,army);if(exit&&s.tick>=(army.retreatUntilTick??0)){retreatArmy(s,id,army.id,exit.id);armySource=undefined;}continue;}
-      const targets=origin.neighbors.map(n=>provinces.get(n)!).filter(Boolean);
-      const attack=targets.filter(p=>warBetween(s,id,p.controllerId??p.ownerId)&&attackRatio(s,army,p,byProvince)>=(style==='Defensive'?1.65:1.25)).sort((a,b)=>b.income-a.income)[0];
-      if(attack&&s.tick>=(army.retreatUntilTick??0)&&(origin.id!==capital||home.length===1||(byProvince.get(capital)??[]).some(a=>a.id!==army.id&&a.ownerId===id))&&army.organization!>=55&&army.morale!>=55){moveIndexed(s,id,army.id,attack.id);continue;}
-      if(origin.id===capital&&(byProvince.get(capital)??[]).filter(a=>a.ownerId===id).length<=1)continue;
-      const urgency=(p:Province)=> (p.id===capital?100:0)+p.income+ p.neighbors.reduce((n,q)=>n+(warBetween(s,id,provinces.get(q)?.controllerId??provinces.get(q)?.ownerId??id)?50:0),0)-(byProvince.get(p.id)??[]).filter(a=>a.ownerId===id).reduce((n,a)=>n+a.troops/1000,0);
-      const destination=targets.filter(p=>(p.controllerId??p.ownerId)===id&&!p.rebellion).sort((a,b)=>urgency(b)-urgency(a))[0];
-      if(destination&&urgency(destination)>urgency(origin)+5)moveIndexed(s,id,army.id,destination.id);
     }
   }
 }
