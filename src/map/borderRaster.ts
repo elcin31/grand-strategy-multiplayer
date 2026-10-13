@@ -1,5 +1,12 @@
 import type {Bounds} from './geometry';
 
+/** Small pinch/cull jitter must not replace every prepared border snapshot.
+ * The four-percent band changes a 1dp stroke by at most .04dp; hit geometry
+ * and geography/political LOD thresholds are independent and stay exact. */
+export function stableBorderZoom(zoom:number,previous:number):number{
+  return zoom>=previous/1.04&&zoom<=previous*1.04?previous:zoom;
+}
+
 /** Supersample the existing stroke at the device's actual density. Never
  * downsample to make a tile fit: reject it and keep exact vector drawing. */
 export function borderRasterPlan(bounds:Bounds,zoom:number,pixelRatio:number,maxBytes:number){

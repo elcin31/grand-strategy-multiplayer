@@ -1,8 +1,14 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {borderRasterPlan,borderPriority} from '../src/map/borderRaster';
+import {borderRasterPlan,borderPriority,stableBorderZoom} from '../src/map/borderRaster';
 import {borderRasterBudget} from '../src/map/mobileBudgets';
 import {RasterCache} from '../src/map/rasterTiles';
+
+test('small pinch reversals reuse prepared strokes, while large zoom changes refine them',()=>{
+  let prepared=3.5;
+  for(const zoom of [3.50000001,3.49999999,3.45,3.55,3.48,3.52])prepared=stableBorderZoom(zoom,prepared);
+  assert.equal(prepared,3.5);assert.equal(stableBorderZoom(6,prepared),6);assert.equal(stableBorderZoom(2,prepared),2);
+});
 
 test('border snapshots preserve physical stroke resolution and reject allocation pressure',()=>{
   const bounds={left:64,right:128,top:64,bottom:128};
