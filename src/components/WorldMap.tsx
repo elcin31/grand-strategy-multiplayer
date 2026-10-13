@@ -62,7 +62,7 @@ interface WorldMapProps {
 type NativePath=ReturnType<typeof Skia.Path.Make>;
 class LazyPaths extends Map<string,NativePath>{
   constructor(private featuresById:Map<string,import('../map/geometry').MapFeature>,private lod:GeometryLod){super();}
-  override get(id:string):NativePath|undefined{let value=super.get(id);if(!value){const feature=this.featuresById.get(id);if(!feature)return undefined;value=Skia.Path.MakeFromSVGString(featurePath(geometryForLod(feature,this.lod)))??undefined;if(value)this.set(id,value);}return value;}
+  override get(id:string):NativePath|undefined{let value=super.get(id);if(!value){const feature=this.featuresById.get(id);if(!feature)return undefined;value=Skia.Path.MakeFromSVGString(featurePath(feature.provinceId&&!feature.id.startsWith('render-country-')?feature:geometryForLod(feature,this.lod)))??undefined;if(value)this.set(id,value);}return value;}
 }
 const nativeScenes = new WeakMap<MapScene,Map<GeometryLod,{paths:LazyPaths;contextPath:NativePath}>>();
 function nativeScene(scene:MapScene,lod:GeometryLod){
