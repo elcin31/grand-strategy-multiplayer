@@ -23,7 +23,7 @@ assert 'Verified' in signature or 'Verifies' in signature
 with zipfile.ZipFile(apk) as archive:
     bundle=archive.read('assets/index.android.bundle')
     assert b'dfjsnjxnyjspwugjguhq.supabase.co' in bundle, 'Dedicated production backend missing'
-    if config['version']=='2.1.1':
+    if config['version'] in ['2.1.1','2.1.2']:
         assert b'-v211' in bundle, 'Dominion 2.1.1 endpoint suffix missing'
         assert 'android.permission.RECORD_AUDIO' not in manifest, 'Unexpected microphone permission'
 baseline=json.loads((Path(__file__).resolve().parent.parent/'PLAYTEST_RELEASE_MANIFEST.json').read_text())['apk']
