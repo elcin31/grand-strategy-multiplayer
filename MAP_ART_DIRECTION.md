@@ -1,6 +1,11 @@
 # Dominion 2.2 map direction
 
 Approved references: the five user attachments in the 2.2 implementation request.
+- Political: `1000209652.jpg`.
+- Terrain: `1000209654.jpg`.
+- Military: `1000209651.jpg`.
+- Province: `1000209650.jpg`.
+- Economy: `1000209653.jpg`.
 Political: textured country colours, fine dark/gold boundaries, cream serif labels.
 Terrain: geographic shaded relief, forest/plains/desert transitions and blue rivers.
 Military: real flagged counters, directional orders, fronts, occupation hatching,
@@ -11,7 +16,7 @@ production and accepted trade-contract connections.
 Deep navy water and panels, brass accents, warm typography. No concept statistics,
 invented cities/armies/routes, AI geographic shapes or baked-in country borders.
 
-Geography uses Natural Earth public-domain shaded relief/land cover and vectors.
+Geography uses public-domain NOAA ETOPO 2022 elevations and Natural Earth landcover, shaded relief and vectors. Snow tint follows a stylized elevation/latitude line.
 The atlas is equirectangular: x=(longitude+180)*4, y=(90-latitude)*4, 1440×720.
 Province geometry, IDs, hit testing, camera, simulation and save schema stay authoritative.
 Raster relief is cartographic geography; province terrain remains the combat rule.

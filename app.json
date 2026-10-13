@@ -2,7 +2,7 @@
   "expo": {
     "name": "Dominion",
     "slug": "grand-strategy-multiplayer",
-    "version": "2.1.2",
+    "version": "2.2.0",
     "orientation": "landscape",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
@@ -11,7 +11,7 @@
       "adaptiveIcon": {
         "backgroundColor": "#0B1020"
       },
-      "versionCode": 13
+      "versionCode": 14
     },
     "plugins": [
       "expo-secure-store",

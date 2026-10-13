@@ -35,7 +35,7 @@ export const MapOperationsLayer=memo(function MapOperationsLayer({state,scene,vi
     const anchor=(q:Point)=>{c.save();c.translate(q.x,q.y);c.scale(1/zoom,1/(zoom*TILT));};
     const flag=(id:string,x:number)=>{const flag=countryFlagImage(id);if(flag)c.drawImageRect(flag,Skia.XYWHRect(0,0,60,42),Skia.XYWHRect(x,-21,15,10),p);};
     for(const battle of (state.activeBattles??[]).filter(b=>visible.has(b.provinceId)).slice(0,12)){
-      const q=scene.provinceGeometry.get(battle.provinceId)?.anchor;if(!q)continue;anchor(q);p.setStyle(PaintStyle.Fill);p.setColor(Skia.Color('#13202de8'));c.drawCircle(0,-22,13,p);
+      const q=scene.provinceGeometry.get(battle.provinceId)?.anchor;if(!q)continue;anchor(q);if(GRAPHICS[preset].shadows){p.setStyle(PaintStyle.Fill);p.setColor(Skia.Color('#37404a55'));c.drawCircle(5,-38,6,p);c.drawCircle(-3,-32,4,p);}p.setStyle(PaintStyle.Fill);p.setColor(Skia.Color('#13202de8'));c.drawCircle(0,-22,13,p);
       c.save();c.translate(0,-22);p.setStyle(PaintStyle.Stroke);p.setColor(Skia.Color('#f2ba78'));p.setStrokeWidth(1.6);c.drawPath(mapSymbol('arms'),p);c.restore();
       p.setStyle(PaintStyle.Fill);flag(battle.attackerId,-34);flag(battle.defenderId,19);
       const attacker=Math.max(0,battle.attackerInitial-battle.attackerLosses),defender=Math.max(0,battle.defenderInitial-battle.defenderLosses),share=attacker/Math.max(1,attacker+defender);

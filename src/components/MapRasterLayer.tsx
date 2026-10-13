@@ -31,7 +31,7 @@ function drawTile(tile:RasterTile,d:Drawing,canvas:SkCanvas){
       p=own(Skia.Paint());p.setAntiAlias(true);p.setColor(Skia.Color(color));p.setAlphaf(opacity);if(stroke){p.setStyle(PaintStyle.Stroke);p.setStrokeWidth(stroke);}paints.set(key,p);return p;
     };
     const grouped=new Map<string,SkPath>();
-    for(const f of tile.features){const color=f.provinceId?d.colors.get(f.provinceId)??'#37423f':'#354440';let group=grouped.get(color);if(!group){group=own(Skia.Path.Make());group.setFillType(1);grouped.set(color,group);}appendNativePath(f,d,group);}
+    for(const f of tile.features){const color=f.provinceId?d.colors.get(f.provinceId)??'#adab88':'#c6c0a4';let group=grouped.get(color);if(!group){group=own(Skia.Path.Make());group.setFillType(1);grouped.set(color,group);}appendNativePath(f,d,group);}
     for(const [color,path]of grouped)canvas.drawPath(path,paint(color));
 
   });

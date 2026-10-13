@@ -1,6 +1,6 @@
 {
   "name": "grand-strategy-multiplayer",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "private": true,
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -18,7 +18,8 @@
     "test:lean": "node --import tsx --test tests/dominion21_*.test.ts tests/army_selection.test.ts tests/state_wire.test.ts tests/security.test.ts tests/final_security.test.ts tests/command_fuzz.test.ts tests/edge_persistence.test.ts",
     "test:211": "node --import tsx --test tests/dominion211_*.test.ts tests/dominion21_*.test.ts tests/army_selection.test.ts tests/state_wire.test.ts tests/security.test.ts tests/final_security.test.ts tests/command_fuzz.test.ts tests/edge_persistence.test.ts tests/client_compatibility.test.ts tests/multiplayer_controls.test.ts tests/launch_action.test.ts",
     "verify:art211": "python scripts/verify-art211.py",
-    "test:212": "node --import tsx --test tests/dominion212_*.test.ts tests/dominion211_*.test.ts tests/dominion21_*.test.ts tests/army_selection.test.ts tests/state_wire.test.ts tests/security.test.ts tests/final_security.test.ts tests/command_fuzz.test.ts tests/edge_persistence.test.ts tests/client_compatibility.test.ts tests/multiplayer_controls.test.ts tests/launch_action.test.ts"
+    "test:212": "node --import tsx --test tests/dominion212_*.test.ts tests/dominion211_*.test.ts tests/dominion21_*.test.ts tests/army_selection.test.ts tests/state_wire.test.ts tests/security.test.ts tests/final_security.test.ts tests/command_fuzz.test.ts tests/edge_persistence.test.ts tests/client_compatibility.test.ts tests/multiplayer_controls.test.ts tests/launch_action.test.ts",
+    "test:22": "node --import tsx --test tests/dominion22_map.test.ts tests/map_modes.test.ts tests/army_selection.test.ts tests/client_compatibility.test.ts tests/state_wire.test.ts"
   },
   "dependencies": {
     "@shopify/react-native-skia": "2.6.2",

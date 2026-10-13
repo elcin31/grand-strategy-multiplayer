@@ -1,6 +1,6 @@
 # Map atlas
 
-Generated terrain and water tiles: `terrain/`. Geographic vectors: `src/map/geography22.json`.
+NOAA ETOPO elevation / Natural Earth landcover. Generated terrain and water tiles: `terrain/`. Geographic vectors: `src/map/geography22.json`.
 City, military and economy symbols are original retained Skia paths in the map
 renderer; UI text is native. No duplicate bitmap icon library is required.
 

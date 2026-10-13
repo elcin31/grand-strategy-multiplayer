@@ -261,7 +261,7 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
   };
   const selectedPath = useMemo(() => { const path = Skia.Path.Make(); const silhouette=!selectedProvinceId?renderFeatures.find(f=>f.id==='render-country-'+selectedCountryId):undefined;if(silhouette){path.addPath(paths.get(silhouette.id)!);return path;} visible.filter(f => selectedProvinceId ? f.provinceId === selectedProvinceId : owners.get(f.provinceId!) === selectedCountryId).forEach(f => path.addPath(paths.get(f.id)!)); return path; }, [visible, selectedProvinceId, selectedCountryId, owners, paths,renderFeatures]);
   const labelZoom = Math.exp(Math.round(Math.log(snapshot.zoom) * 4) / 4);
-  const preparedLabels = useMemo(() => preparedCountryLabels(features,owners),[features,owners]);
+  const preparedLabels = useMemo(() => preparedCountryLabels(features,controllers),[features,controllers]);
   const labels = useMemo(() => {
     const blockers=[...cityLabels.values()].map(label=>label.box).concat(armyLabelBlockers);
     return preparedLabels.filter(label=>label.anchor.x>=bounds.left&&label.anchor.x<=bounds.right&&label.anchor.y>=bounds.top&&label.anchor.y<=bounds.bottom).sort((a,b)=>Number(b.countryId===selectedCountryId)-Number(a.countryId===selectedCountryId)||b.width-a.width).slice(0,Math.min(budgets.labels,preset==='Performance'?8:18)).map(label=>{
