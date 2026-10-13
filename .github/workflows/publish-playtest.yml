@@ -12,7 +12,7 @@ on:
         required: false
         type: string
       zip_only:
-        description: Add a ZIP containing the already published Dominion 2.2 APK
+        description: Add a ZIP containing the unchanged published Dominion 2.2 or 2.2.1 APK
         required: false
         type: boolean
         default: false
@@ -578,7 +578,7 @@ jobs:
           retention-days: 30
 
   publish221:
-    if: github.ref == 'refs/heads/dominion-2.2.1-performance-hotfix'
+    if: github.ref == 'refs/heads/dominion-2.2.1-performance-hotfix' && !inputs.zip_only
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -663,4 +663,61 @@ jobs:
         with:
           name: dominion221-publication
           path: release/
+          retention-days: 30
+
+  archive221:
+    if: github.ref == 'refs/heads/dominion-2.2.1-performance-hotfix' && inputs.zip_only
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: elcin31/grand-strategy-multiplayer
+    steps:
+      - name: Package the unchanged published APK and add its ZIP
+        run: |
+          mkdir -p archive221
+          gh api "repos/$GH_REPO/releases/tags/v2.2.1-performance-hotfix" > archive221/before.json
+          curl --fail --location --retry 2 --max-time 180 https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.2.1-performance-hotfix/Dominion-2.2.1-performance-hotfix.apk -o archive221/Dominion-2.2.1-performance-hotfix.apk
+          python - <<'PY'
+          import hashlib,json,zipfile
+          from pathlib import Path
+          p=Path('archive221');apk=p/'Dominion-2.2.1-performance-hotfix.apk';data=apk.read_bytes()
+          assert hashlib.sha256(data).hexdigest()=='a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb'
+          before=json.loads((p/'before.json').read_text());assert not before['draft']
+          assert not any(a['name']=='Dominion-2.2.1-performance-hotfix.zip' for a in before['assets'])
+          archive=p/'Dominion-2.2.1-performance-hotfix.zip';info=zipfile.ZipInfo(apk.name,(2026,10,13,0,0,0));info.external_attr=0o100644<<16
+          with zipfile.ZipFile(archive,'w') as z:z.writestr(info,data,compress_type=zipfile.ZIP_DEFLATED,compresslevel=9)
+          with zipfile.ZipFile(archive) as z:
+              assert z.namelist()==[apk.name] and z.testzip() is None
+              assert z.read(apk.name)==data
+          (p/'Dominion-2.2.1-performance-hotfix.zip.sha256').write_text(hashlib.sha256(archive.read_bytes()).hexdigest()+'  '+archive.name+'\n')
+          print('PASS: ZIP contains the exact verified release APK')
+          PY
+          gh release upload v2.2.1-performance-hotfix archive221/Dominion-2.2.1-performance-hotfix.zip archive221/Dominion-2.2.1-performance-hotfix.zip.sha256
+      - name: Download and verify the public ZIP
+        run: |
+          curl --fail --location --retry 2 --max-time 180 https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.2.1-performance-hotfix/Dominion-2.2.1-performance-hotfix.zip -o archive221/public.zip
+          gh api "repos/$GH_REPO/releases/tags/v2.2.1-performance-hotfix" > archive221/after.json
+          python - <<'PY'
+          import hashlib,json,os,zipfile
+          from pathlib import Path
+          p=Path('archive221');original=p/'Dominion-2.2.1-performance-hotfix.zip';public=p/'public.zip'
+          assert hashlib.sha256(public.read_bytes()).digest()==hashlib.sha256(original.read_bytes()).digest()
+          with zipfile.ZipFile(public) as z:
+              assert z.namelist()==['Dominion-2.2.1-performance-hotfix.apk'] and z.testzip() is None
+              assert hashlib.sha256(z.read(z.namelist()[0])).hexdigest()=='a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb'
+          before=json.loads((p/'before.json').read_text());after=json.loads((p/'after.json').read_text());assert before['id']==after['id']
+          assert {(a['id'],a['name'],a['size']) for a in before['assets']} <= {(a['id'],a['name'],a['size']) for a in after['assets']}
+          asset=next(a for a in after['assets'] if a['name']==original.name)
+          proof={'name':original.name,'bytes':original.stat().st_size,'sha256':hashlib.sha256(original.read_bytes()).hexdigest(),'url':asset['browser_download_url'],'assetId':asset['id'],'publicationRunId':int(os.environ['GITHUB_RUN_ID']),'publicZipVerified':True,'containedApkSha256':'a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb','existingAssetsPreserved':True}
+          (p/'archive-proof.json').write_text(json.dumps(proof,indent=2)+'\n')
+          print('PASS: public ZIP downloaded, APK hash matches, existing release assets retained')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dominion221-zip-delivery
+          path: |
+            archive221/archive-proof.json
+            archive221/Dominion-2.2.1-performance-hotfix.zip.sha256
           retention-days: 30
