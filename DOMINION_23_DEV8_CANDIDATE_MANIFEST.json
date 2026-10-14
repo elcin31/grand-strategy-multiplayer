@@ -1,5 +1,5 @@
 {
-  "status": "built-functional-native-validated-primary-matrix-and-memory-pending",
+  "status": "unaccepted-full-monthly-fixture-matrix-has-tail-regressions",
   "compiledSourceSha": "82039b6ae4c1df0e92445a821b776b2ed9391634",
   "buildRunId": 38515162900,
   "buildJobId": 115692214406,
@@ -59,9 +59,7 @@
     "failure": "Quickstep system ANR overlays baseline2.2.1 menu; Resume button visibly exists behind it. Not a candidate runtime/metric regression.",
     "screenshotReviewed": true
   },
-  "pendingValidation": {
-    "immutableFullMatrixRunId": 38517715562
-  },
+  "pendingValidation": {},
   "cameraGatePassed": false,
   "completeDominion23Release": false,
   "published": false,
@@ -392,5 +390,13 @@
       "Same initial day25 fixture; actual end dates50/48 and tick1/month2 retained, no identical final dates assumed.",
       "Higher candidate PSS endpoint (+63721KiB) is an unresolved memory observation, not concealed or declared a confirmed leak. Complete extended trend is still pending."
     ]
+  },
+  "nativeMatrixValidation": {
+    "runId": 38517715562,
+    "jobId": 115700166046,
+    "artifactId": 11873796220,
+    "artifactZipSha256": "1dd5bbbf3de566d80cec460ee2f9adc88781d6ba9d06a0e6e6f55d5c813e2d3a",
+    "cameraGatePassed": false,
+    "report": "DOMINION_23_PERFORMANCE_DEV8_UNACCEPTED.json"
   }
 }
