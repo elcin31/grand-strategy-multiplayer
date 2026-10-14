@@ -1,0 +1,377 @@
+{
+  "diagnosticOnly": true,
+  "runId": 38531125301,
+  "compiledSourceSha": "d6f45cb1057043f75e008205e6843027dbdc94ce",
+  "artifactId": 11878242017,
+  "artifactZipSha256": "c5eb1a282d40f9fbd3e0ae55ab8ff9d00a3cadb881d9cf003151d32854ab8bbe",
+  "comparison": {
+    "diagnosticOnly": true,
+    "displayedFrameGateEvaluated": false,
+    "physicalRedmiTest": false,
+    "processOrder": [
+      "mutable",
+      "retained",
+      "retained",
+      "mutable"
+    ],
+    "runs": [
+      {
+        "mode": "mutable",
+        "repeat": 1,
+        "rawSha256": "af4782a8291c154b3bbaa2aa2845f45e09c0801fa98f9e80526f999d48517bcb",
+        "glRenderer": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
+        "cacheLimitBytes": 268435456,
+        "peakRssKiB": 76048,
+        "peakCacheBytes": 148172891,
+        "scenarios": {
+          "pan": {
+            "recordMs": {
+              "p50": 0,
+              "p95": 0.52939,
+              "p99": 0.613705,
+              "max": 0.727195
+            },
+            "drawMs": {
+              "p50": 1.96139,
+              "p95": 2.22642,
+              "p99": 3.31699,
+              "max": 3.46376
+            },
+            "flushMs": {
+              "p50": 4.30808,
+              "p95": 6.30159,
+              "p99": 10.2961,
+              "max": 290.899
+            },
+            "completionMs": {
+              "p50": 23.2383,
+              "p95": 26.5119,
+              "p99": 29.0711,
+              "max": 85.4151
+            },
+            "totalMs": {
+              "p50": 30.01511,
+              "p95": 33.8609,
+              "p99": 35.579930000000004,
+              "max": 379.032195
+            }
+          },
+          "zoom": {
+            "recordMs": {
+              "p50": 0,
+              "p95": 0.445514,
+              "p99": 0.555799,
+              "max": 0.617131
+            },
+            "drawMs": {
+              "p50": 4.88537,
+              "p95": 9.44229,
+              "p99": 19.8586,
+              "max": 19.9718
+            },
+            "flushMs": {
+              "p50": 2.76951,
+              "p95": 26.7366,
+              "p99": 48.1715,
+              "max": 55.1116
+            },
+            "completionMs": {
+              "p50": 8.84011,
+              "p95": 42.7567,
+              "p99": 81.8686,
+              "max": 128.771
+            },
+            "totalMs": {
+              "p50": 19.14311,
+              "p95": 59.86459,
+              "p99": 138.43664,
+              "max": 149.45039999999997
+            }
+          }
+        }
+      },
+      {
+        "mode": "retained",
+        "repeat": 1,
+        "rawSha256": "4bf80d48ee7fbf30c61ff7bbe27828adedaaaf632e40ca5a002a4638ea92e39c",
+        "glRenderer": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
+        "cacheLimitBytes": 268435456,
+        "peakRssKiB": 75260,
+        "peakCacheBytes": 179032955,
+        "scenarios": {
+          "pan": {
+            "recordMs": {
+              "p50": 0,
+              "p95": 0.043925,
+              "p99": 0.046219,
+              "max": 0.059608
+            },
+            "drawMs": {
+              "p50": 1.89001,
+              "p95": 2.27767,
+              "p99": 2.87004,
+              "max": 2.96919
+            },
+            "flushMs": {
+              "p50": 4.2332,
+              "p95": 6.06587,
+              "p99": 7.7777,
+              "max": 164.288
+            },
+            "completionMs": {
+              "p50": 22.4094,
+              "p95": 26.6223,
+              "p99": 40.3688,
+              "max": 45.1555
+            },
+            "totalMs": {
+              "p50": 28.931289999999997,
+              "p95": 33.10671,
+              "p99": 46.317315,
+              "max": 211.552173
+            }
+          },
+          "zoom": {
+            "recordMs": {
+              "p50": 0,
+              "p95": 0.031938,
+              "p99": 0.044306,
+              "max": 0.052909
+            },
+            "drawMs": {
+              "p50": 5.20463,
+              "p95": 9.99235,
+              "p99": 19.0949,
+              "max": 22.0607
+            },
+            "flushMs": {
+              "p50": 2.65336,
+              "p95": 26.4954,
+              "p99": 47.9209,
+              "max": 50.3396
+            },
+            "completionMs": {
+              "p50": 8.65755,
+              "p95": 40.1545,
+              "p99": 82.4219,
+              "max": 130.784
+            },
+            "totalMs": {
+              "p50": 18.714100000000002,
+              "p95": 57.652969999999996,
+              "p99": 131.74358999999998,
+              "max": 148.71697
+            }
+          }
+        }
+      },
+      {
+        "mode": "retained",
+        "repeat": 2,
+        "rawSha256": "b9bb068bbeb7de0f0690119f783b63ae02baf0cccee5290fdf25412d0b91e37c",
+        "glRenderer": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
+        "cacheLimitBytes": 268435456,
+        "peakRssKiB": 75712,
+        "peakCacheBytes": 179032955,
+        "scenarios": {
+          "pan": {
+            "recordMs": {
+              "p50": 0,
+              "p95": 0.043284,
+              "p99": 0.045057,
+              "max": 0.045548
+            },
+            "drawMs": {
+              "p50": 1.92133,
+              "p95": 2.20263,
+              "p99": 2.65977,
+              "max": 3.07891
+            },
+            "flushMs": {
+              "p50": 4.13138,
+              "p95": 6.29482,
+              "p99": 7.94954,
+              "max": 212.728
+            },
+            "completionMs": {
+              "p50": 22.6364,
+              "p95": 25.1619,
+              "p99": 26.45,
+              "max": 60.0875
+            },
+            "totalMs": {
+              "p50": 29.25385,
+              "p95": 31.86055,
+              "p99": 35.67979,
+              "max": 275.167846
+            }
+          },
+          "zoom": {
+            "recordMs": {
+              "p50": 0,
+              "p95": 0.031628,
+              "p99": 0.044556,
+              "max": 0.06711
+            },
+            "drawMs": {
+              "p50": 5.14207,
+              "p95": 9.87401,
+              "p99": 18.6123,
+              "max": 21.6433
+            },
+            "flushMs": {
+              "p50": 2.61806,
+              "p95": 28.2004,
+              "p99": 50.0668,
+              "max": 53.8611
+            },
+            "completionMs": {
+              "p50": 8.3639,
+              "p95": 39.5513,
+              "p99": 70.124,
+              "max": 128.773
+            },
+            "totalMs": {
+              "p50": 17.8395,
+              "p95": 62.06393,
+              "p99": 125.51729,
+              "max": 146.27819
+            }
+          }
+        }
+      },
+      {
+        "mode": "mutable",
+        "repeat": 2,
+        "rawSha256": "b428623fdbaf1dcf6e099745aa5ff4592616415ca2ef12630b35bb9cc78d5bf0",
+        "glRenderer": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
+        "cacheLimitBytes": 268435456,
+        "peakRssKiB": 76196,
+        "peakCacheBytes": 148172891,
+        "scenarios": {
+          "pan": {
+            "recordMs": {
+              "p50": 0,
+              "p95": 0.493416,
+              "p99": 0.506966,
+              "max": 0.50925
+            },
+            "drawMs": {
+              "p50": 1.90889,
+              "p95": 2.05802,
+              "p99": 2.4133,
+              "max": 2.43995
+            },
+            "flushMs": {
+              "p50": 3.87454,
+              "p95": 5.72515,
+              "p99": 6.77194,
+              "max": 166.037
+            },
+            "completionMs": {
+              "p50": 22.0005,
+              "p95": 24.3565,
+              "p99": 25.7832,
+              "max": 44.8413
+            },
+            "totalMs": {
+              "p50": 28.24105,
+              "p95": 31.15973,
+              "p99": 32.6712,
+              "max": 213.375741
+            }
+          },
+          "zoom": {
+            "recordMs": {
+              "p50": 0,
+              "p95": 0.406076,
+              "p99": 0.499085,
+              "max": 0.517793
+            },
+            "drawMs": {
+              "p50": 4.83494,
+              "p95": 9.35337,
+              "p99": 18.2862,
+              "max": 19.6289
+            },
+            "flushMs": {
+              "p50": 2.63119,
+              "p95": 26.9236,
+              "p99": 45.0586,
+              "max": 54.769
+            },
+            "completionMs": {
+              "p50": 9.02694,
+              "p95": 42.5748,
+              "p99": 88.7454,
+              "max": 129.07
+            },
+            "totalMs": {
+              "p50": 18.65801,
+              "p95": 59.592150000000004,
+              "p99": 144.8992,
+              "max": 146.2416
+            }
+          }
+        }
+      }
+    ],
+    "note": "Four separate native processes on one software emulator. Pbuffer draw/submit/glFinish costs and Ganesh resource cache only. Not the app atlas, input latency, compositor completion, FPS or an APK acceptance gate."
+  },
+  "boundedCacheDiagnostics": [
+    {
+      "mode": "mutable",
+      "rawSha256": "788cdeba4cf5a382ccb72d8e7955c15b7cc07ff779ed38168d2d950735aa5fde",
+      "cacheLimitBytes": 100663296,
+      "peakCacheBytes": 100648450,
+      "observedSamples": 0,
+      "observedStencilBits": 8,
+      "scenarios": {
+        "pan": {
+          "p50Ms": 28.2665,
+          "p95Ms": 31.58574,
+          "p99Ms": 49.17089
+        },
+        "zoom": {
+          "p50Ms": 17.787456,
+          "p95Ms": 55.19583,
+          "p99Ms": 117.33336
+        }
+      }
+    },
+    {
+      "mode": "retained",
+      "rawSha256": "bda6cc977431f7189a7039d6bfe930728337f2b8ab395cedba6705dd130939e0",
+      "cacheLimitBytes": 100663296,
+      "peakCacheBytes": 100656970,
+      "observedSamples": 0,
+      "observedStencilBits": 8,
+      "scenarios": {
+        "pan": {
+          "p50Ms": 28.02984,
+          "p95Ms": 30.1414,
+          "p99Ms": 33.86554
+        },
+        "zoom": {
+          "p50Ms": 17.577426,
+          "p95Ms": 56.83101,
+          "p99Ms": 120.06185
+        }
+      }
+    }
+  ],
+  "cacheLimitAppliedToApp": false,
+  "physicalRedmiTest": false,
+  "actualApkPerformanceGatePassed": false,
+  "findings": [
+    "Retained paths reduce CPU recording cost but do not show a consistent 20% Ganesh pan/zoom P95 improvement in these warmed diagnostic processes.",
+    "Default Ganesh budget is 256 MiB; retained border geometry raised observed GPU cache peak from 148172891 to 179032955 bytes in this fixture.",
+    "A diagnostic 96 MiB budget reduced retained cache peak to 100656970 bytes; no atlas, text, marker or active-simulation workload is included, so this is not an app-cache acceptance result."
+  ],
+  "limitations": [
+    "No compositor in EGL pbuffer; draw/flush/glFinish are not displayed frames or input latency.",
+    "No measurement on Redmi Note 12.",
+    "Native config requested zero stencil, but the driver selected 8 stencil bits, with zero MSAA samples.",
+    "Cold/global shader and host scheduling effects may differ between processes and runners. Raw results retained."
+  ]
+}
