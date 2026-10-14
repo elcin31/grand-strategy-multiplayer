@@ -46,6 +46,7 @@ if './plugins/withSkiaImmutableBorders.cjs' in config.get('plugins',[]):
     assert proof['skiaVersion']=='2.6.2' and proof['immutableBorderApi']==1
     assert proof['mutablePathApiUnchanged'] is True and proof['livePathsDisposed'] is False
     assert proof['imagesOrSurfacesAdded'] is False and proof['nativeMemoryPressure'] is True
+    assert proof['boundsPreparedBeforeSharing'] is True
     for entry in [*proof['files'],proof['header']]:
         assert hashlib.sha256(Path(entry['file']).read_bytes()).hexdigest()==entry['sha256']
     # Validate the exact original source and reversible pinned edits as well.

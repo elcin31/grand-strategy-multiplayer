@@ -12,7 +12,11 @@ class JsiDominionImmutablePath
 public:
   JsiDominionImmutablePath(std::shared_ptr<RNSkPlatformContext> context,SkPath path)
       : JsiSkWrappingSharedPtrHostObject<const SkPath>(
-          std::move(context),std::make_shared<const SkPath>(std::move(path))) {}
+          std::move(context),std::make_shared<const SkPath>(std::move(path))) {
+    // SkPath's bounds are lazy. Prepare them on the producing JS thread before
+    // any picture can share this geometry with the UI/GPU renderer.
+    getObject()->updateBoundsCache();
+  }
   EXPORT_JSI_API_TYPENAME(JsiDominionImmutablePath,DominionImmutablePath)
   JSI_HOST_FUNCTION(countPoints) {return jsi::Value(getObject()->countPoints());}
   JSI_HOST_FUNCTION(getGenerationID) {return jsi::Value(static_cast<double>(getObject()->getGenerationID()));}

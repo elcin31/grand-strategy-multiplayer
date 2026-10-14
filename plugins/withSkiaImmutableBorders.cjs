@@ -53,7 +53,8 @@ function apply(projectRoot,proofDir){
   for(const edit of edits)fs.writeFileSync(path.join(projectRoot,edit.file),edit.source);
   fs.writeFileSync(path.join(projectRoot,root,header),nativeHeader);
   const proof={skiaVersion:pkg.version,immutableBorderApi:1,mutablePathApiUnchanged:true,livePathsDisposed:false,
-    imagesOrSurfacesAdded:false,nativeMemoryPressure:true,files:edits.map(e=>({file:e.file,originalSha256:e.originalSha256,sha256:hash(e.source)})),
+    imagesOrSurfacesAdded:false,nativeMemoryPressure:true,boundsPreparedBeforeSharing:true,
+    files:edits.map(e=>({file:e.file,originalSha256:e.originalSha256,sha256:hash(e.source)})),
     header:{file:root+header,sha256:hash(nativeHeader)}};
   if(proofDir){fs.mkdirSync(proofDir,{recursive:true});fs.writeFileSync(path.join(proofDir,'skia-immutable-borders.json'),JSON.stringify(proof,null,2)+'\n');}
   return proof;
