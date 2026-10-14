@@ -1,5 +1,5 @@
 {
-  "status": "built and binary-verified; native performance and interaction gates pending",
+  "status": "rejected by complete A-I native metric gate; experimental renderer removed from current source",
   "runtimeSha": "4cc3ef24f0d5f5c2dbff912544f0241b51802b0b",
   "compiledSourceSha": "a90c6372d3690f6c0056360fd743ad3cece90e78",
   "versionName": "2.3.0-dev.5",
@@ -23,7 +23,111 @@
   "nativeMatrix": {
     "run": 38502403584,
     "job": 115656995043,
-    "status": "pending"
+    "status": "completed; metric gate failed",
+    "artifact": 11867393735,
+    "report": "DOMINION_23_PERFORMANCE_DEV5_REJECTED.json",
+    "peakPssKiB": [
+      471489,
+      412074
+    ],
+    "memoryRegressionOver32MiB": false,
+    "regressionsOver10Percent": [
+      {
+        "scenario": "A-horizontal-pan",
+        "metric": "p99Ms",
+        "ratio": 1.1829076999565813
+      },
+      {
+        "scenario": "B-rapid-zoom-in",
+        "metric": "p95Ms",
+        "ratio": 1.5712413126105038
+      },
+      {
+        "scenario": "B-rapid-zoom-in",
+        "metric": "p99Ms",
+        "ratio": 1.5388831957272597
+      },
+      {
+        "scenario": "C-rapid-zoom-out",
+        "metric": "p95Ms",
+        "ratio": 1.7104992957455705
+      },
+      {
+        "scenario": "C-rapid-zoom-out",
+        "metric": "p99Ms",
+        "ratio": 1.2852524698511563
+      },
+      {
+        "scenario": "D-pinch-pan",
+        "metric": "p95Ms",
+        "ratio": 1.6475567079618818
+      },
+      {
+        "scenario": "D-pinch-pan",
+        "metric": "p99Ms",
+        "ratio": 1.297745081279626
+      },
+      {
+        "scenario": "E-lod-transitions",
+        "metric": "p95Ms",
+        "ratio": 1.5603764618631637
+      },
+      {
+        "scenario": "E-lod-transitions",
+        "metric": "p99Ms",
+        "ratio": 1.8502856122149656
+      },
+      {
+        "scenario": "F-terrain",
+        "metric": "p95Ms",
+        "ratio": 1.6035138361519783
+      },
+      {
+        "scenario": "F-terrain",
+        "metric": "p99Ms",
+        "ratio": 1.734646443883103
+      },
+      {
+        "scenario": "G-war-armies",
+        "metric": "p95Ms",
+        "ratio": 2.537313510374546
+      },
+      {
+        "scenario": "G-war-armies",
+        "metric": "p99Ms",
+        "ratio": 1.1523640528921886
+      },
+      {
+        "scenario": "H-active-simulation",
+        "metric": "p95Ms",
+        "ratio": 3.3921988175949958
+      },
+      {
+        "scenario": "H-active-simulation",
+        "metric": "p99Ms",
+        "ratio": 4.137222704088297
+      },
+      {
+        "scenario": "I-extended-0",
+        "metric": "p95Ms",
+        "ratio": 1.5595354380030462
+      },
+      {
+        "scenario": "I-extended-0",
+        "metric": "p99Ms",
+        "ratio": 2.04235657965231
+      },
+      {
+        "scenario": "I-extended-11",
+        "metric": "p95Ms",
+        "ratio": 1.9010621597850226
+      },
+      {
+        "scenario": "I-extended-11",
+        "metric": "p99Ms",
+        "ratio": 1.9899041492603298
+      }
+    ]
   },
   "identicalApkControl": {
     "run": 38502407930,
@@ -40,7 +144,58 @@
   },
   "upgradeAndMonthly": {
     "run": 38504108979,
-    "status": "pending"
+    "status": "completed; functional upgrade/interaction/monthly smoke passed",
+    "artifact": 11867112864,
+    "smoke": {
+      "coldLaunch": true,
+      "inPlaceUpgrade22": true,
+      "savedPausedCampaignPreserved": true,
+      "balancedAndPerformance": true,
+      "shortRealPanZoom": true,
+      "politicalTerrainMilitary": true,
+      "provinceSelection": true,
+      "armySelection": true,
+      "confirmedRoute": true,
+      "shortMarch": true,
+      "saveRestart": true,
+      "launcherScreenshot": true,
+      "noFatalLogs": true,
+      "soak": false,
+      "physicalRedmiTest": false
+    },
+    "monthlyBefore": {
+      "monthlyEconomyAndAI": true,
+      "startDay": 25,
+      "endDay": 55,
+      "endTick": 1,
+      "endMonth": 2,
+      "noFatalLogs": true,
+      "physicalRedmiTest": false
+    },
+    "monthlyAfter": {
+      "monthlyEconomyAndAI": true,
+      "startDay": 25,
+      "endDay": 58,
+      "endTick": 1,
+      "endMonth": 2,
+      "noFatalLogs": true,
+      "physicalRedmiTest": false
+    },
+    "identicalElapsedCalendarWorkload": false,
+    "presentationP95Ms": [
+      165.020928,
+      170.645693
+    ],
+    "presentationP99Ms": [
+      307.127311,
+      407.009964
+    ],
+    "pssKiB": [
+      503586,
+      570833
+    ],
+    "memoryAttribution": "Single endpoint; Native Heap +26550KiB, Dalvik +15696KiB. Not proof of leak; verify complete A-I trend.",
+    "actualApkVisualReviewed": true
   },
   "stagedLod": {
     "run": 38504112090,
