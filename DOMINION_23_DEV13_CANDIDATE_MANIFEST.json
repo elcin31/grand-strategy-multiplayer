@@ -1,0 +1,28 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "versionName": "2.3.0-dev.13",
+  "versionCode": 28,
+  "compiledSourceSha": "9c519a8ddf86fa106ec0ca3d6e080086c6c744d9",
+  "package": "com.elcin31.grandstrategymultiplayer",
+  "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "buildRun": 38575813534,
+  "buildJob": 115892485991,
+  "artifactId": 11900623232,
+  "artifactBytes": 92877523,
+  "artifactSha256": "5f2738c335152f4444bbb306ce7894bb2d8a635fbe52fb5b4be36ba6b467d18c",
+  "apkBytes": 174187282,
+  "apkSha256": "7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764",
+  "embeddedHermesBytes": 11311988,
+  "abis": [
+    "arm64-v8a",
+    "armeabi-v7a",
+    "x86",
+    "x86_64"
+  ],
+  "crcVerifiedLocally": true,
+  "postedJavaModePackaged": true,
+  "earlierNativeExperimentsAbsent": true,
+  "nativePerformanceAcceptance": "pending",
+  "physicalRedmiTest": false,
+  "dominion23Complete": false
+}
