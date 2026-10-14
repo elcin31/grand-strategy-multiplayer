@@ -42,6 +42,7 @@ jobs:
           python scripts/verify-map22.py Dominion-2.3-performance-candidate.apk
           python scripts/verify-hotfix-assets.py Dominion-2.3-performance-candidate.apk
           python scripts/verify-immutable-borders-apk.py Dominion-2.3-performance-candidate.apk >> integrity.txt
+          python scripts/verify-ui-dispatch-apk.py Dominion-2.3-performance-candidate.apk >> integrity.txt
           sha256sum Dominion-2.3-performance-candidate.apk >> integrity.txt
       - uses: actions/upload-artifact@v4
         with:
@@ -53,6 +54,7 @@ jobs:
             android/map-texture-opacity.json
             android/skia-recorder-lifecycle.json
             android/skia-immutable-borders.json
+            android/skia-ui-dispatch.json
           retention-days: 30
   profile:
     needs: build-candidate
@@ -109,6 +111,7 @@ jobs:
             if [ -f "$trace/trace-capture.json" ]; then
               python scripts/analyze-camera-trace.py "$trace"
               python scripts/analyze-camera-cpu.py "$trace"
+              python scripts/analyze-ui-dispatch.py "$trace"
             fi
           done
       - name: Require the completed matrix metric gate

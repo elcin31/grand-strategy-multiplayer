@@ -25,6 +25,21 @@ for plugin, filename, expected in original_presentation_sources:
         assert hashlib.sha256(source.read_bytes()).hexdigest() == expected, \
             f'Inactive presentation experiment left patched {filename}; restore pinned dependencies before building'
         print(f'PASS: inactive presentation experiment has original pinned {filename}')
+if './plugins/withSkiaUiDispatch.cjs' in config.get('plugins', []):
+    import subprocess
+    proof=json.loads(Path('android/skia-ui-dispatch.json').read_text())
+    assert proof['dispatch']=='posted-main-loop' and proof['synchronousUiDrain'] is False
+    assert proof['callbackRunsOnUiThread'] is True and proof['nativeWindowAndEglUnchanged'] is True
+    assert proof['geometryChanges'] is False and proof['extraImagesOrSurfaces'] is False
+    guarded=json.loads(subprocess.check_output(['node','-e',
+        "console.log(JSON.stringify(require('./plugins/withSkiaUiDispatch.cjs').applyUiDispatch(process.cwd())))"],text=True))
+    assert guarded==proof,'UI dispatch proof differs from guarded original SDK source'
+    print('PASS: pinned posted UI task dispatch; native queue, view and EGL unchanged')
+else:
+    source=Path('node_modules/@shopify/react-native-skia/android/src/main/java/com/shopify/reactnative/skia/PlatformContext.java')
+    assert hashlib.sha256(source.read_bytes()).hexdigest()=='455b3245841865b895e87f2088a74a6f22665b2a7cd2b07ebf4f4b4ded81617e', \
+        'Inactive UI dispatch experiment left patched native Java; restore pinned dependencies'
+    print('PASS: original pinned Java UI dispatch')
 if './plugins/withMapTextureOpacity.cjs' in config.get('plugins',[]):
     proof=json.loads(Path('android/map-texture-opacity.json').read_text())
     native=Path(proof['nativePath']).read_text()

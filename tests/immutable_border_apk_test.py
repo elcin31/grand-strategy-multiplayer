@@ -11,6 +11,8 @@ spec=importlib.util.spec_from_file_location('border_binary',Path(__file__).resol
 binary=importlib.util.module_from_spec(spec);spec.loader.exec_module(binary)
 
 class ImmutableBorderBinaryTest(unittest.TestCase):
+    def adb(self,logs):
+        return lambda *args:'1234' if args[:2]==('shell','pidof') else logs
     def apk(self,directory,missing_abi=None,missing_symbol=None,modern=True):
         apk=Path(directory)/'fixture.apk'
         with zipfile.ZipFile(apk,'w') as z:
@@ -35,13 +37,13 @@ class ImmutableBorderBinaryTest(unittest.TestCase):
     def test_candidate_must_execute_native_api_not_merely_package_it(self):
         with tempfile.TemporaryDirectory() as directory:
             apk=self.apk(directory);dest=Path(directory)/'startup'
-            with self.assertRaises(AssertionError):verify_border_api(apk,lambda *_:'map loaded',dest)
-            verify_border_api(apk,lambda *_:MARKER,dest)
+            with self.assertRaises(AssertionError):verify_border_api(apk,self.adb('map loaded'),dest)
+            verify_border_api(apk,self.adb(MARKER),dest)
             self.assertIn('"successfulNativeBorderDrawObserved": true',dest.with_suffix('.json').read_text())
 
     def test_exact_legacy_baseline_does_not_require_candidate_api(self):
         with tempfile.TemporaryDirectory() as directory:
-            verify_border_api(self.apk(directory,modern=False),lambda *_:'map loaded',Path(directory)/'startup')
+            verify_border_api(self.apk(directory,modern=False),self.adb('map loaded'),Path(directory)/'startup')
 
     def test_restored_renderer_rejects_accidental_experiment_bundling(self):
         with tempfile.TemporaryDirectory() as directory:

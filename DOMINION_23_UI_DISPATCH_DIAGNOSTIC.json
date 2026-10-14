@@ -1,0 +1,1470 @@
+{
+  "diagnosticOnly": true,
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "nativeJavaSourceSha256": "455b3245841865b895e87f2088a74a6f22665b2a7cd2b07ebf4f4b4ded81617e",
+  "sourceBehavior": "UI caller synchronously drains existing native task queue",
+  "observations": [
+    {
+      "diagnosticOnly": true,
+      "traceSha256": "5c1f10fdb5f51fdeb3728c81d198bd24c7fb0b23d49df3641178e063b666bfde",
+      "gamePid": 2294,
+      "gestureMarker": "DOMINION_PANEL_CLOSED_PAN_TRACE",
+      "markerStartNs": 124112200982,
+      "markerEndNs": 136615701425,
+      "markerDurationMs": 12503.500443,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        },
+        {
+          "name": "perf_cpu_lost_records",
+          "index": 0,
+          "value": 1,
+          "severity": "data_loss"
+        }
+      ],
+      "attributionComplete": false,
+      "completedUiSwaps": 140,
+      "completedUiSwapsInsideDoFrame": 130,
+      "doFramesWithMultipleUiSwaps": 0,
+      "swapsByDoFrame": [
+        {
+          "frameId": 2726,
+          "name": "Choreographer#doFrame 35324",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 3837,
+          "name": "Choreographer#doFrame - resynced to 35334 in 23.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 4993,
+          "name": "Choreographer#doFrame - resynced to 35342 in 26.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 6134,
+          "name": "Choreographer#doFrame - resynced to 35349 in 30.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 7744,
+          "name": "Choreographer#doFrame - resynced to 35358 in 19.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 9464,
+          "name": "Choreographer#doFrame - resynced to 35366 in 25.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 10917,
+          "name": "Choreographer#doFrame - resynced to 35374 in 28.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 12169,
+          "name": "Choreographer#doFrame - resynced to 35381 in 18.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 13795,
+          "name": "Choreographer#doFrame - resynced to 35390 in 32.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 15589,
+          "name": "Choreographer#doFrame - resynced to 35398 in 23.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 16870,
+          "name": "Choreographer#doFrame - resynced to 35406 in 29.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 20561,
+          "name": "Choreographer#doFrame - resynced to 35418 in 19.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 21888,
+          "name": "Choreographer#doFrame 35425",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 23027,
+          "name": "Choreographer#doFrame - resynced to 35435 in 18.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 24367,
+          "name": "Choreographer#doFrame - resynced to 35444 in 31.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 26143,
+          "name": "Choreographer#doFrame - resynced to 35452 in 20.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 27439,
+          "name": "Choreographer#doFrame - resynced to 35460 in 21.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 28907,
+          "name": "Choreographer#doFrame - resynced to 35468 in 28.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 30483,
+          "name": "Choreographer#doFrame - resynced to 35476 in 24.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 32120,
+          "name": "Choreographer#doFrame - resynced to 35484 in 18.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 33530,
+          "name": "Choreographer#doFrame - resynced to 35492 in 18.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 35285,
+          "name": "Choreographer#doFrame - resynced to 35501 in 26.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 36813,
+          "name": "Choreographer#doFrame - resynced to 35510 in 28.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 42591,
+          "name": "Choreographer#doFrame - resynced to 35529 in 20.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 44058,
+          "name": "Choreographer#doFrame 35535",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 45528,
+          "name": "Choreographer#doFrame - resynced to 35548 in 27.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 46808,
+          "name": "Choreographer#doFrame - resynced to 35556 in 25.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 48317,
+          "name": "Choreographer#doFrame - resynced to 35564 in 29.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 49853,
+          "name": "Choreographer#doFrame - resynced to 35571 in 16.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 51339,
+          "name": "Choreographer#doFrame - resynced to 35580 in 23.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 52742,
+          "name": "Choreographer#doFrame - resynced to 35587 in 25.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 54452,
+          "name": "Choreographer#doFrame - resynced to 35596 in 23.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 58048,
+          "name": "Choreographer#doFrame - resynced to 35608 in 21.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 59288,
+          "name": "Choreographer#doFrame 35614",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 60538,
+          "name": "Choreographer#doFrame - resynced to 35626 in 23.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 62027,
+          "name": "Choreographer#doFrame - resynced to 35633 in 20.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 63195,
+          "name": "Choreographer#doFrame - resynced to 35641 in 23.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 64649,
+          "name": "Choreographer#doFrame - resynced to 35648 in 18.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 66164,
+          "name": "Choreographer#doFrame - resynced to 35657 in 18.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 67711,
+          "name": "Choreographer#doFrame - resynced to 35666 in 32.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 69211,
+          "name": "Choreographer#doFrame - resynced to 35674 in 28.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 70731,
+          "name": "Choreographer#doFrame - resynced to 35682 in 30.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 76105,
+          "name": "Choreographer#doFrame - resynced to 35694 in 32.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 77456,
+          "name": "Choreographer#doFrame 35700",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 78975,
+          "name": "Choreographer#doFrame - resynced to 35713 in 31.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 80467,
+          "name": "Choreographer#doFrame - resynced to 35721 in 25.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 81666,
+          "name": "Choreographer#doFrame - resynced to 35727 in 29.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 83229,
+          "name": "Choreographer#doFrame - resynced to 35736 in 21.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 84932,
+          "name": "Choreographer#doFrame - resynced to 35743 in 24.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 86226,
+          "name": "Choreographer#doFrame - resynced to 35752 in 33.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 87757,
+          "name": "Choreographer#doFrame - resynced to 35759 in 18.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 89274,
+          "name": "Choreographer#doFrame - resynced to 35768 in 32.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 90727,
+          "name": "Choreographer#doFrame - resynced to 35775 in 25.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 92352,
+          "name": "Choreographer#doFrame - resynced to 35784 in 20.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 93919,
+          "name": "Choreographer#doFrame - resynced to 35791 in 21.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 95755,
+          "name": "Choreographer#doFrame - resynced to 35803 in 31.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 97081,
+          "name": "Choreographer#doFrame - resynced to 35815 in 26.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 98552,
+          "name": "Choreographer#doFrame - resynced to 35822 in 16.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 100323,
+          "name": "Choreographer#doFrame - resynced to 35831 in 26.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 101667,
+          "name": "Choreographer#doFrame - resynced to 35839 in 28.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 103215,
+          "name": "Choreographer#doFrame - resynced to 35847 in 22.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 104727,
+          "name": "Choreographer#doFrame - resynced to 35854 in 19.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 106336,
+          "name": "Choreographer#doFrame - resynced to 35863 in 31.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 108281,
+          "name": "Choreographer#doFrame - resynced to 35871 in 23.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 109713,
+          "name": "Choreographer#doFrame - resynced to 35879 in 24.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 111354,
+          "name": "Choreographer#doFrame - resynced to 35887 in 26.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 112984,
+          "name": "Choreographer#doFrame - resynced to 35894 in 19.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 114561,
+          "name": "Choreographer#doFrame - resynced to 35903 in 18.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 116199,
+          "name": "Choreographer#doFrame - resynced to 35911 in 26.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 117725,
+          "name": "Choreographer#doFrame - resynced to 35919 in 28.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 119241,
+          "name": "Choreographer#doFrame - resynced to 35927 in 29.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 120975,
+          "name": "Choreographer#doFrame - resynced to 35934 in 17.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 122691,
+          "name": "Choreographer#doFrame - resynced to 35943 in 21.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 124102,
+          "name": "Choreographer#doFrame - resynced to 35951 in 25.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 125969,
+          "name": "Choreographer#doFrame - resynced to 35959 in 30.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 127529,
+          "name": "Choreographer#doFrame - resynced to 35967 in 25.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 128857,
+          "name": "Choreographer#doFrame - resynced to 35975 in 30.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 130343,
+          "name": "Choreographer#doFrame - resynced to 35983 in 30.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 131884,
+          "name": "Choreographer#doFrame - resynced to 35991 in 19.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 133422,
+          "name": "Choreographer#doFrame - resynced to 35999 in 27.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 135009,
+          "name": "Choreographer#doFrame - resynced to 36007 in 31.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 136607,
+          "name": "Choreographer#doFrame - resynced to 36015 in 18.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 138122,
+          "name": "Choreographer#doFrame - resynced to 36022 in 19.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 139786,
+          "name": "Choreographer#doFrame - resynced to 36031 in 25.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 141782,
+          "name": "Choreographer#doFrame - resynced to 36039 in 30.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 143810,
+          "name": "Choreographer#doFrame 36050",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 145266,
+          "name": "Choreographer#doFrame - resynced to 36064 in 28.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 146890,
+          "name": "Choreographer#doFrame - resynced to 36073 in 25.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 148103,
+          "name": "Choreographer#doFrame - resynced to 36078 in 27.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 149642,
+          "name": "Choreographer#doFrame - resynced to 36087 in 27.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 151259,
+          "name": "Choreographer#doFrame - resynced to 36095 in 25.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 152838,
+          "name": "Choreographer#doFrame - resynced to 36103 in 27.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 154335,
+          "name": "Choreographer#doFrame - resynced to 36111 in 26.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 155777,
+          "name": "Choreographer#doFrame - resynced to 36118 in 29.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 157489,
+          "name": "Choreographer#doFrame - resynced to 36127 in 25.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 158804,
+          "name": "Choreographer#doFrame - resynced to 36134 in 16.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 160328,
+          "name": "Choreographer#doFrame - resynced to 36143 in 28.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 161888,
+          "name": "Choreographer#doFrame - resynced to 36151 in 32.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 163410,
+          "name": "Choreographer#doFrame - resynced to 36158 in 18.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 164864,
+          "name": "Choreographer#doFrame - resynced to 36166 in 17.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 166221,
+          "name": "Choreographer#doFrame - resynced to 36175 in 29.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 167851,
+          "name": "Choreographer#doFrame - resynced to 36183 in 19.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 169372,
+          "name": "Choreographer#doFrame - resynced to 36191 in 25.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 170923,
+          "name": "Choreographer#doFrame - resynced to 36199 in 28.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 172734,
+          "name": "Choreographer#doFrame - resynced to 36207 in 27.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 174122,
+          "name": "Choreographer#doFrame - resynced to 36215 in 19.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 175714,
+          "name": "Choreographer#doFrame - resynced to 36223 in 29.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 177477,
+          "name": "Choreographer#doFrame - resynced to 36231 in 26.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 179110,
+          "name": "Choreographer#doFrame - resynced to 36239 in 23.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 180734,
+          "name": "Choreographer#doFrame - resynced to 36247 in 25.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 182296,
+          "name": "Choreographer#doFrame - resynced to 36255 in 31.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 183869,
+          "name": "Choreographer#doFrame - resynced to 36263 in 27.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 185361,
+          "name": "Choreographer#doFrame - resynced to 36271 in 30.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 186881,
+          "name": "Choreographer#doFrame - resynced to 36279 in 25.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 188538,
+          "name": "Choreographer#doFrame - resynced to 36287 in 23.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 190031,
+          "name": "Choreographer#doFrame - resynced to 36295 in 30.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 191458,
+          "name": "Choreographer#doFrame - resynced to 36303 in 19.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 193018,
+          "name": "Choreographer#doFrame - resynced to 36310 in 28.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 194610,
+          "name": "Choreographer#doFrame - resynced to 36319 in 18.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 196188,
+          "name": "Choreographer#doFrame - resynced to 36326 in 18.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 197847,
+          "name": "Choreographer#doFrame - resynced to 36334 in 20.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 199151,
+          "name": "Choreographer#doFrame - resynced to 36343 in 24.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 200710,
+          "name": "Choreographer#doFrame - resynced to 36351 in 22.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 202162,
+          "name": "Choreographer#doFrame - resynced to 36359 in 32.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 203832,
+          "name": "Choreographer#doFrame - resynced to 36367 in 20.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 205699,
+          "name": "Choreographer#doFrame - resynced to 36375 in 23.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 207064,
+          "name": "Choreographer#doFrame - resynced to 36383 in 29.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 208630,
+          "name": "Choreographer#doFrame - resynced to 36391 in 30.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 210398,
+          "name": "Choreographer#doFrame - resynced to 36399 in 22.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 211935,
+          "name": "Choreographer#doFrame - resynced to 36407 in 24.3ms",
+          "completedUiSwaps": 1
+        }
+      ],
+      "completedNestedSlices": [
+        {
+          "name": "animation",
+          "completedCalls": 185,
+          "nestedInclusiveMs": 10159.195023,
+          "maxCompletedMs": 102.434632
+        },
+        {
+          "name": "eglSwapBuffers",
+          "completedCalls": 140,
+          "nestedInclusiveMs": 8698.013378,
+          "maxCompletedMs": 84.10576
+        },
+        {
+          "name": "input",
+          "completedCalls": 134,
+          "nestedInclusiveMs": 309.999675,
+          "maxCompletedMs": 66.295942
+        }
+      ],
+      "note": "Actual scoped game PID and complete marker only. Swaps are not displayed frames. Posted draws may be outside doFrame; this does not establish better FPS or acceptance. Nested durations overlap; CPU time is not their sum. Software emulator only."
+    },
+    {
+      "diagnosticOnly": true,
+      "traceSha256": "b210ac8cb19b1b8c76511d95d8ee684c6da2b3a5639cdef7620c0ffb06479c48",
+      "gamePid": 2373,
+      "gestureMarker": "DOMINION_PINCH_TRACE",
+      "markerStartNs": 112121122504,
+      "markerEndNs": 142144993781,
+      "markerDurationMs": 30023.871277,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "attributionComplete": false,
+      "completedUiSwaps": 253,
+      "completedUiSwapsInsideDoFrame": 147,
+      "doFramesWithMultipleUiSwaps": 4,
+      "swapsByDoFrame": [
+        {
+          "frameId": 3995,
+          "name": "Choreographer#doFrame 29942",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 6548,
+          "name": "Choreographer#doFrame - resynced to 29954 in 21.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 9090,
+          "name": "Choreographer#doFrame - resynced to 29962 in 18.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 11341,
+          "name": "Choreographer#doFrame - resynced to 29971 in 26.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 13953,
+          "name": "Choreographer#doFrame - resynced to 29986 in 28.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 20113,
+          "name": "Choreographer#doFrame - resynced to 30002 in 21.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 22333,
+          "name": "Choreographer#doFrame 30009",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 22998,
+          "name": "Choreographer#doFrame - resynced to 30022 in 21.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 25328,
+          "name": "Choreographer#doFrame - resynced to 30040 in 26.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 26112,
+          "name": "Choreographer#doFrame 30046",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 27103,
+          "name": "Choreographer#doFrame - resynced to 30062 in 32.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 29907,
+          "name": "Choreographer#doFrame 30084",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 34514,
+          "name": "Choreographer#doFrame - resynced to 30124 in 25.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 37697,
+          "name": "Choreographer#doFrame - resynced to 30255 in 23.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 40347,
+          "name": "Choreographer#doFrame - resynced to 30279 in 20.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 43094,
+          "name": "Choreographer#doFrame - resynced to 30302 in 23.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 45908,
+          "name": "Choreographer#doFrame - resynced to 30328 in 19.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 49122,
+          "name": "Choreographer#doFrame - resynced to 30358 in 30.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 52403,
+          "name": "Choreographer#doFrame - resynced to 30388 in 30.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 54037,
+          "name": "Choreographer#doFrame 30402",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 56869,
+          "name": "Choreographer#doFrame - resynced to 30418 in 32.1ms",
+          "completedUiSwaps": 2
+        },
+        {
+          "frameId": 59620,
+          "name": "Choreographer#doFrame - resynced to 30432 in 28.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 65445,
+          "name": "Choreographer#doFrame - resynced to 30447 in 19.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 66830,
+          "name": "Choreographer#doFrame 30453",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 68156,
+          "name": "Choreographer#doFrame - resynced to 30469 in 28.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 71026,
+          "name": "Choreographer#doFrame - resynced to 30485 in 22.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 72286,
+          "name": "Choreographer#doFrame 30492",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 74860,
+          "name": "Choreographer#doFrame - resynced to 30516 in 17.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 77653,
+          "name": "Choreographer#doFrame - resynced to 30655 in 31.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 79602,
+          "name": "Choreographer#doFrame - resynced to 30686 in 29.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 81598,
+          "name": "Choreographer#doFrame - resynced to 30709 in 32.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 83649,
+          "name": "Choreographer#doFrame - resynced to 30732 in 26.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 85747,
+          "name": "Choreographer#doFrame - resynced to 30768 in 17.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 87799,
+          "name": "Choreographer#doFrame - resynced to 30804 in 17.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 90278,
+          "name": "Choreographer#doFrame - resynced to 30843 in 26.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 93090,
+          "name": "Choreographer#doFrame - resynced to 30861 in 28.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 93896,
+          "name": "Choreographer#doFrame - resynced to 30871 in 21.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 95041,
+          "name": "Choreographer#doFrame - resynced to 30880 in 21.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 97275,
+          "name": "Choreographer#doFrame - resynced to 30892 in 29.0ms",
+          "completedUiSwaps": 2
+        },
+        {
+          "frameId": 99018,
+          "name": "Choreographer#doFrame - resynced to 30903 in 29.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 100492,
+          "name": "Choreographer#doFrame - resynced to 30914 in 24.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 101945,
+          "name": "Choreographer#doFrame - resynced to 30929 in 27.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 103980,
+          "name": "Choreographer#doFrame - resynced to 30944 in 17.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 105809,
+          "name": "Choreographer#doFrame - resynced to 30959 in 19.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 110416,
+          "name": "Choreographer#doFrame - resynced to 30975 in 28.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 111709,
+          "name": "Choreographer#doFrame 30982",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 113162,
+          "name": "Choreographer#doFrame - resynced to 30997 in 23.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 116442,
+          "name": "Choreographer#doFrame - resynced to 31013 in 18.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 120789,
+          "name": "Choreographer#doFrame - resynced to 31028 in 20.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 121676,
+          "name": "Choreographer#doFrame - resynced to 31039 in 32.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 126158,
+          "name": "Choreographer#doFrame - resynced to 31196 in 29.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 129204,
+          "name": "Choreographer#doFrame - resynced to 31223 in 29.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 132249,
+          "name": "Choreographer#doFrame - resynced to 31253 in 28.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 134953,
+          "name": "Choreographer#doFrame - resynced to 31272 in 32.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 138893,
+          "name": "Choreographer#doFrame - resynced to 31299 in 27.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 143748,
+          "name": "Choreographer#doFrame - resynced to 31336 in 22.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 145418,
+          "name": "Choreographer#doFrame 31349",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 147221,
+          "name": "Choreographer#doFrame - resynced to 31363 in 28.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 149940,
+          "name": "Choreographer#doFrame - resynced to 31373 in 23.6ms",
+          "completedUiSwaps": 2
+        },
+        {
+          "frameId": 152787,
+          "name": "Choreographer#doFrame - resynced to 31384 in 30.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 155051,
+          "name": "Choreographer#doFrame - resynced to 31393 in 30.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 157351,
+          "name": "Choreographer#doFrame - resynced to 31403 in 32.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 164176,
+          "name": "Choreographer#doFrame - resynced to 31419 in 29.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 166536,
+          "name": "Choreographer#doFrame 31425",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 169311,
+          "name": "Choreographer#doFrame - resynced to 31441 in 26.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 178367,
+          "name": "Choreographer#doFrame - resynced to 31457 in 18.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 181545,
+          "name": "Choreographer#doFrame 31464",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 190756,
+          "name": "Choreographer#doFrame - resynced to 31495 in 32.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 197148,
+          "name": "Choreographer#doFrame - resynced to 31533 in 27.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 203299,
+          "name": "Choreographer#doFrame - resynced to 31570 in 33.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 209180,
+          "name": "Choreographer#doFrame - resynced to 31600 in 23.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 215152,
+          "name": "Choreographer#doFrame 31937",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 217690,
+          "name": "Choreographer#doFrame - resynced to 31949 in 33.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 220257,
+          "name": "Choreographer#doFrame - resynced to 31956 in 26.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 222757,
+          "name": "Choreographer#doFrame - resynced to 31964 in 27.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 225693,
+          "name": "Choreographer#doFrame - resynced to 31974 in 22.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 234003,
+          "name": "Choreographer#doFrame - resynced to 31990 in 29.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 236994,
+          "name": "Choreographer#doFrame 31997",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 237684,
+          "name": "Choreographer#doFrame - resynced to 32012 in 30.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 240221,
+          "name": "Choreographer#doFrame - resynced to 32028 in 19.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 241242,
+          "name": "Choreographer#doFrame 32034",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 241997,
+          "name": "Choreographer#doFrame - resynced to 32048 in 20.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 243985,
+          "name": "Choreographer#doFrame - resynced to 32059 in 18.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 246903,
+          "name": "Choreographer#doFrame - resynced to 32074 in 29.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 253775,
+          "name": "Choreographer#doFrame 32673",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 254992,
+          "name": "Choreographer#doFrame - resynced to 32684 in 31.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 256142,
+          "name": "Choreographer#doFrame - resynced to 32691 in 22.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 257242,
+          "name": "Choreographer#doFrame - resynced to 32699 in 25.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 260794,
+          "name": "Choreographer#doFrame - resynced to 32711 in 19.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 261994,
+          "name": "Choreographer#doFrame 32717",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 262803,
+          "name": "Choreographer#doFrame - resynced to 32730 in 26.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 266138,
+          "name": "Choreographer#doFrame - resynced to 32742 in 17.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 267199,
+          "name": "Choreographer#doFrame 32749",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 268141,
+          "name": "Choreographer#doFrame - resynced to 32760 in 23.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 270716,
+          "name": "Choreographer#doFrame - resynced to 32773 in 32.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 271748,
+          "name": "Choreographer#doFrame 32780",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 272423,
+          "name": "Choreographer#doFrame - resynced to 32790 in 20.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 273664,
+          "name": "Choreographer#doFrame - resynced to 32803 in 27.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 275756,
+          "name": "Choreographer#doFrame - resynced to 32826 in 20.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 278593,
+          "name": "Choreographer#doFrame - resynced to 32964 in 22.2ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 280196,
+          "name": "Choreographer#doFrame - resynced to 32987 in 19.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 282313,
+          "name": "Choreographer#doFrame - resynced to 33021 in 20.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 283969,
+          "name": "Choreographer#doFrame - resynced to 33041 in 23.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 285560,
+          "name": "Choreographer#doFrame - resynced to 33065 in 25.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 287172,
+          "name": "Choreographer#doFrame - resynced to 33086 in 18.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 288736,
+          "name": "Choreographer#doFrame - resynced to 33109 in 28.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 290495,
+          "name": "Choreographer#doFrame - resynced to 33133 in 19.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 292195,
+          "name": "Choreographer#doFrame - resynced to 33157 in 23.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 294436,
+          "name": "Choreographer#doFrame - resynced to 33201 in 30.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 296574,
+          "name": "Choreographer#doFrame - resynced to 33221 in 24.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 298787,
+          "name": "Choreographer#doFrame - resynced to 33249 in 30.6ms",
+          "completedUiSwaps": 2
+        },
+        {
+          "frameId": 299944,
+          "name": "Choreographer#doFrame - resynced to 33253 in 20.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 300613,
+          "name": "Choreographer#doFrame - resynced to 33261 in 23.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 301831,
+          "name": "Choreographer#doFrame - resynced to 33270 in 30.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 302715,
+          "name": "Choreographer#doFrame - resynced to 33278 in 29.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 303790,
+          "name": "Choreographer#doFrame - resynced to 33286 in 24.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 304882,
+          "name": "Choreographer#doFrame - resynced to 33295 in 31.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 306124,
+          "name": "Choreographer#doFrame - resynced to 33303 in 25.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 309065,
+          "name": "Choreographer#doFrame - resynced to 33315 in 33.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 309988,
+          "name": "Choreographer#doFrame 33321",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 311172,
+          "name": "Choreographer#doFrame - resynced to 33337 in 20.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 312349,
+          "name": "Choreographer#doFrame - resynced to 33349 in 25.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 313483,
+          "name": "Choreographer#doFrame - resynced to 33356 in 19.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 317260,
+          "name": "Choreographer#doFrame - resynced to 33368 in 31.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 318711,
+          "name": "Choreographer#doFrame 33375",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 320822,
+          "name": "Choreographer#doFrame - resynced to 33390 in 28.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 328027,
+          "name": "Choreographer#doFrame - resynced to 33406 in 27.3ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 329455,
+          "name": "Choreographer#doFrame - resynced to 33417 in 20.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 336911,
+          "name": "Choreographer#doFrame 33985",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 338537,
+          "name": "Choreographer#doFrame - resynced to 33996 in 17.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 340260,
+          "name": "Choreographer#doFrame - resynced to 34004 in 27.5ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 342049,
+          "name": "Choreographer#doFrame - resynced to 34012 in 32.7ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 344311,
+          "name": "Choreographer#doFrame - resynced to 34020 in 18.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 346729,
+          "name": "Choreographer#doFrame - resynced to 34030 in 23.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 349358,
+          "name": "Choreographer#doFrame - resynced to 34045 in 23.0ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 352099,
+          "name": "Choreographer#doFrame - resynced to 34060 in 20.1ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 359722,
+          "name": "Choreographer#doFrame - resynced to 34076 in 26.6ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 362582,
+          "name": "Choreographer#doFrame 34083",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 365480,
+          "name": "Choreographer#doFrame - resynced to 34098 in 19.9ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 368726,
+          "name": "Choreographer#doFrame - resynced to 34113 in 23.4ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 372341,
+          "name": "Choreographer#doFrame 34134",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 375843,
+          "name": "Choreographer#doFrame - resynced to 34150 in 25.8ms",
+          "completedUiSwaps": 1
+        },
+        {
+          "frameId": 388487,
+          "name": "Choreographer#doFrame - resynced to 34166 in 30.4ms",
+          "completedUiSwaps": 1
+        }
+      ],
+      "completedNestedSlices": [
+        {
+          "name": "animation",
+          "completedCalls": 589,
+          "nestedInclusiveMs": 12053.971896,
+          "maxCompletedMs": 256.041472
+        },
+        {
+          "name": "eglSwapBuffers",
+          "completedCalls": 253,
+          "nestedInclusiveMs": 14644.415482,
+          "maxCompletedMs": 112.278935
+        },
+        {
+          "name": "input",
+          "completedCalls": 166,
+          "nestedInclusiveMs": 1568.756539,
+          "maxCompletedMs": 118.003674
+        }
+      ],
+      "note": "Actual scoped game PID and complete marker only. Swaps are not displayed frames. Posted draws may be outside doFrame; this does not establish better FPS or acceptance. Nested durations overlap; CPU time is not their sum. Software emulator only."
+    }
+  ],
+  "nativePerformanceGatePassed": false,
+  "physicalRedmiTest": false,
+  "dominion23Complete": false
+}
