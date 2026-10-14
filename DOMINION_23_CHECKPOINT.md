@@ -2,6 +2,16 @@
 
 Only `elcin31/grand-strategy-multiplayer` is in scope. AssetMind, other repositories, production campaigns, multiplayer rooms, database/auth/storage and previous releases have not been modified. No backend rollout or new Supabase project.
 
+## Latest continuation status — dev12 rejected, ZIP verified
+
+**Stage A remains open. Stages B–G are unfinished. No Dominion 2.3 release or merge into main.** The chronological notes below retain previous dispatches and pending states; this section supersedes those states.
+
+- Dev12 compiled `9a12e22a1998d2ffbb40c9658eff8d5f156aacc4`, version2.3.0-dev.12/code27, combined the guarded TextureView consumer and EGL swap-zero experiments. Build38544591614 succeeded. Complete matched native A–I failed: panP95+70.25%, zoom-outP95+35.68%, militaryP95+39.72%, 15 tail violations in total. Full original results are in `DOMINION_23_PERFORMANCE_DEV12_UNACCEPTED.json`. Peak extended PSS453104→459287KiB passed the narrow32MiB comparison; this does not prove absence of leaks or accept the APK.
+- Actual frozen APK SHA256 `3fd231a32817e382538a2a7766433f9d73f6e7bb77c805a1365eba4ed9409b41`,174187310 bytes. Compatible package/certificate, all4ABI, embedded Hermes, landscape and original graphics verified. Interaction/monthly38547041316 and LOD38547040294 succeeded. The LOD supplement completed182→117 real App FrameTimeline records, with setup warnings retained; it does not override the primary camera failure. Only an Android emulator was available, not Redmi Note12.
+- ZIP workflow38557678673 succeeded at packaging source `4ab90a7ec6e07820c5268171387b8b5473c2b4ac`. [Actual artifact11890304616](https://github.com/elcin31/grand-strategy-multiplayer/actions/runs/38557678673/artifacts/11890304616) contains `Dominion-2.3-playtest-checkpoint.zip` and its SHA256 file. Inner ZIP91521430 bytes, SHA256 `e9b12b899476776d8cad7ccc5f3248168d27902188efe27fb1e1996a4b5997f3`. Local CRC and all28 internal hashes passed, including exact compiled source/APK binding. Both README and manifest explicitly say incomplete2.3 and camera gate failed. This is an experimental checkpoint, not the requested finished update or an accepted optimization.
+- Default continuation branch `dominion-2.3-performance` keeps the original accepted renderer. Every `src/`, `supabase/functions/`, `assets/` file remains identical to25fb66d. Swap-zero, consumer-ownership and immutable-border plugins are not registered. A new prebuild guard refuses stale patched native presentation files when their plugins are inactive. Preserve dev12 only on `dominion-2.3-texture-presentation-fix`.
+- Still required: an actually successful native camera gate, then engine/scheduling work and59 existing source-test failures; strict tick1000 save mismatch; substantive gameplay/events/focus/scenario integration; two real multiplayer clients; full10,000-step simulation; final camera regression and verified release. No new gameplay implementation is claimed. Detailed delivery/checkpoint information is in `DOMINION_23_DELIVERY_CHECKPOINT.md`.
+
 ## Recovered baseline
 
 - Branch head recovered: `dominion-2.2.1-performance-hotfix`, `25fb66de948dc061262148b25f4094f25c160932`.

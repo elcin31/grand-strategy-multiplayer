@@ -11,6 +11,20 @@ strings = ET.parse('android/app/src/main/res/values/strings.xml').getroot()
 assert next(s.text for s in strings if s.get('name') == 'app_name') == 'Dominion'
 print('PASS: landscape manifest and app identity')
 config=json.loads(Path('app.json').read_text())['expo']
+# A previously checked-out experiment can leave patched node_modules behind.
+# Disabling its Expo plugin alone must not silently ship the rejected native code.
+original_presentation_sources = [
+    ('./plugins/withSkiaSwapPacing.cjs', 'OpenGLWindowContext.cpp',
+     'fc204391ec75d5df6e5d2eb11c2a4395e1415b5ae1d3d75fbaa19c31e636e705'),
+    ('./plugins/withSkiaTextureConsumer.cjs', 'RNSkOpenGLCanvasProvider.cpp',
+     'dd82eeb01ff28830b9705ac4069a7e967825aee60e4778f82e9f6de19f405bd8'),
+]
+for plugin, filename, expected in original_presentation_sources:
+    if plugin not in config.get('plugins', []):
+        source = Path('node_modules/@shopify/react-native-skia/android/cpp/rnskia-android') / filename
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == expected, \
+            f'Inactive presentation experiment left patched {filename}; restore pinned dependencies before building'
+        print(f'PASS: inactive presentation experiment has original pinned {filename}')
 if './plugins/withMapTextureOpacity.cjs' in config.get('plugins',[]):
     proof=json.loads(Path('android/map-texture-opacity.json').read_text())
     native=Path(proof['nativePath']).read_text()

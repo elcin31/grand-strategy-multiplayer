@@ -1,0 +1,16 @@
+{
+  "status": "built-unaccepted-native-and-immutable-validation-running",
+  "compiledSourceSha": "9a12e22a1998d2ffbb40c9658eff8d5f156aacc4",
+  "runId": 38544591614,
+  "buildJobId": 115787408497,
+  "artifactId": 11884996295,
+  "artifactZipSha256": "f0b62a67a7d265fc208a2e3658a752f88c4f8696f9bb5705e6b7a31b139e7048",
+  "apkBytes": 174187310,
+  "apkSha256": "3fd231a32817e382538a2a7766433f9d73f6e7bb77c805a1365eba4ed9409b41",
+  "versionName": "2.3.0-dev.12",
+  "versionCode": 27,
+  "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "bothNativeChangesVerifiedAllAbi": true,
+  "physicalRedmiTest": false,
+  "dominion23Complete": false
+}
