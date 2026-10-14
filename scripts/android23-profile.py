@@ -13,6 +13,7 @@ from camera_surface_stats import SurfaceSampler,map_surface_layer
 from camera_telemetry import camera_telemetry
 from map_paint_check import assert_map_painted
 from android_immutable_borders import verify_border_api
+from android_campaign_pull import copy_campaign_saves
 
 OUT=Path(os.environ.get('CAMERA23_OUT','android23-profile'));OUT.mkdir(exist_ok=True);h.OUT=OUT
 PACKAGE=h.PACKAGE;FIXTURES=Path(sys.argv[2]);manifest=json.loads((FIXTURES/'manifest.json').read_text());rows=[]
@@ -50,18 +51,7 @@ def configure():
     if node is not None:h.tap(node)
     h.control('Закрыть ×','settings-close',True)
 def pull_saves(destination):
-    # Read-only diagnostics outside every timed capture. A transient ADB
-    # transport failure may be retried only if the same app and boot survive.
-    pid=h.adb('shell','pidof',PACKAGE).strip();boot=h.adb('shell','cat','/proc/sys/kernel/random/boot_id').strip()
-    directory='/data/user/0/'+PACKAGE+'/files/dominion-campaigns'
-    try:h.adb('pull',directory,destination)
-    except subprocess.CalledProcessError as error:
-        if 'device offline' not in (error.output or ''):raise
-        (OUT/'diagnostic-adb-recovery.txt').write_text(str(error.output)+'\n')
-        h.adb('wait-for-device',timeout=30)
-        assert h.adb('shell','pidof',PACKAGE).strip()==pid,'App restarted during diagnostic transport failure'
-        assert h.adb('shell','cat','/proc/sys/kernel/random/boot_id').strip()==boot,'Emulator rebooted; comparison invalid'
-        h.adb('pull',directory,destination)
+    copy_campaign_saves(h.adb,PACKAGE,destination,OUT/'diagnostic-save-copy.json')
 def confirm_time_control(running,name):
     # ADB delivery is not command acknowledgement. Wait for the resulting HUD
     # outside timed captures, and keep missed/late taps visible in diagnostics.

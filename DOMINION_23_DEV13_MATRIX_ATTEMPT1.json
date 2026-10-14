@@ -1,0 +1,18 @@
+{
+  "compiledSourceSha": "9c519a8ddf86fa106ec0ca3d6e080086c6c744d9",
+  "apkSha256": "7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764",
+  "run": 38575813534,
+  "profileJob": 115900858227,
+  "artifactId": 11902608097,
+  "artifactBytes": 13130463,
+  "artifactSha256": "c8d157e014205daccdcfcd33db6bc81d8d67e71f7b7a85db4846c2e6a661f3b1",
+  "status": "incomplete; baseline-only A-H, no I and no candidate cases",
+  "failure": "adb pull of live baseline campaign directory returned status1; original error output was not retained by old helper",
+  "exactErrorCauseEstablished": false,
+  "candidatePerformanceMeasured": false,
+  "metricGatePassed": false,
+  "harnessChange": "copy only committed JSON generations; preserve all copy failures; narrow bounded transport/generation-rotation retry with unchanged PID/boot; no device mutation",
+  "apkRuntimeInputsUnchanged": true,
+  "physicalRedmiTest": false,
+  "dominion23Complete": false
+}
