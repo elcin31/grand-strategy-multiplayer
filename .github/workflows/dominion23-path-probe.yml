@@ -51,6 +51,8 @@ jobs:
             adb shell /data/local/tmp/border-gpu-probe /data/local/tmp/border-path-fixture.bin retained > gpu-probe-retained-1.json
             adb shell /data/local/tmp/border-gpu-probe /data/local/tmp/border-path-fixture.bin retained > gpu-probe-retained-2.json
             adb shell /data/local/tmp/border-gpu-probe /data/local/tmp/border-path-fixture.bin mutable > gpu-probe-mutable-2.json
+            adb shell /data/local/tmp/border-gpu-probe /data/local/tmp/border-path-fixture.bin mutable 96 > gpu-probe-mutable-cap96.json
+            adb shell /data/local/tmp/border-gpu-probe /data/local/tmp/border-path-fixture.bin retained 96 > gpu-probe-retained-cap96.json
             sha256sum border-gpu-probe > gpu-probe-integrity.txt
       - uses: actions/upload-artifact@v4
         if: always()

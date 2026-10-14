@@ -33,12 +33,13 @@ struct EglTarget {
 double elapsed(std::chrono::steady_clock::time_point start){return std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();}
 
 int main(int argc,char** argv){try{
-  if(argc!=3)throw std::runtime_error("Usage: gpu-probe fixture.bin mutable|retained");
+  if(argc!=3&&argc!=4)throw std::runtime_error("Usage: gpu-probe fixture.bin mutable|retained [cacheMiB]");
   const bool reuse=std::string(argv[2])=="retained";
   if(!reuse&&std::string(argv[2])!="mutable")throw std::runtime_error("Invalid mode");
   auto chunks=load(argv[1]);
   for(auto& c:chunks){c.fixedOuter.updateBoundsCache();c.fixedInner.updateBoundsCache();}
   EglTarget egl;auto context=GrDirectContexts::MakeGL();if(!context)throw std::runtime_error("No pinned Skia GL context");
+  if(argc==4){const auto mb=std::stoul(argv[3]);if(mb<16||mb>256)throw std::runtime_error("Invalid diagnostic cache limit");context->setResourceCacheLimit(mb*1024*1024);}
   GLint samples,stencil;glGetIntegerv(GL_SAMPLES,&samples);glGetIntegerv(GL_STENCIL_BITS,&stencil);
   GrGLFramebufferInfo info;info.fFBOID=0;info.fFormat=GR_GL_RGBA8;
   auto rt=GrBackendRenderTargets::MakeGL(1280,720,samples,stencil,info);
