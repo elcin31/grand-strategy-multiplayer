@@ -12,6 +12,7 @@ from camera_frame_stats import frame_stats,thread_stats
 from camera_surface_stats import SurfaceSampler,map_surface_layer
 from camera_telemetry import camera_telemetry
 from map_paint_check import assert_map_painted
+from android_immutable_borders import verify_border_api
 
 OUT=Path(os.environ.get('CAMERA23_OUT','android23-profile'));OUT.mkdir(exist_ok=True);h.OUT=OUT
 PACKAGE=h.PACKAGE;FIXTURES=Path(sys.argv[2]);manifest=json.loads((FIXTURES/'manifest.json').read_text());rows=[]
@@ -37,7 +38,9 @@ def install_fixture(name):
     item=manifest[name];file=FIXTURES/item['filename'];assert hashlib.sha256(file.read_bytes()).hexdigest()==item['sha256']
     h.adb('push',file,directory+'/'+file.name);h.adb('shell','chown',uid[1]+':'+uid[1],app+'/files');h.adb('shell','chown','-R',uid[1]+':'+uid[1],directory)
     label_test_fixture(h.adb,app,directory,directory+'/'+file.name)
+    h.adb('logcat','-c')
     h.launch();h.control('Продолжить','restore-'+name);time.sleep(12)
+    verify_border_api(sys.argv[1],h.adb,OUT/('startup-border-api-'+name))
     mode('Политическая');reset()
 def configure():
     settings();h.control('Balanced','balanced',True)

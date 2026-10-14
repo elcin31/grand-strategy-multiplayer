@@ -2,7 +2,7 @@
   "expo": {
     "name": "Dominion",
     "slug": "grand-strategy-multiplayer",
-    "version": "2.3.0-dev.6",
+    "version": "2.3.0-dev.7",
     "orientation": "landscape",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
@@ -12,13 +12,14 @@
         "foregroundImage": "./assets/icon/dominion-adaptive-foreground.png",
         "backgroundColor": "#0B2030"
       },
-      "versionCode": 21,
+      "versionCode": 22,
       "icon": "./assets/icon/dominion.png"
     },
     "plugins": [
       "expo-secure-store",
       "./plugins/withMapTextureOpacity.cjs",
       "./plugins/withSkiaRecorderLifecycle.cjs",
+      "./plugins/withSkiaImmutableBorders.cjs",
       [
         "expo-audio",
         {

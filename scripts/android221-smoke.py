@@ -64,6 +64,8 @@ try:
     # Real installation upgrade retains signing identity, settings and schema25 save.
     h.adb('shell','am','force-stop',PACKAGE);h.adb('install','-r',sys.argv[2]);h.launch();h.capture('candidate-cold-menu')
     h.control('Продолжить','upgrade-continue');time.sleep(12);h.capture('candidate-restored');assert_map_painted(OUT/'candidate-restored.png')
+    from android_immutable_borders import verify_border_api
+    verify_border_api(sys.argv[2],h.adb,OUT/'candidate-border-api')
     tree=h.root('same-paused-game');assert find_enabled_control(tree,'Продолжить') is not None,'Paused game not preserved'
     if not reuse:profile('candidate')
     mode('Армии');time.sleep(1);h.capture('candidate-military');assert_map_painted(OUT/'candidate-military.png');mode('Политическая')

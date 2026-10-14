@@ -41,3 +41,16 @@ if './plugins/withSkiaRecorderLifecycle.cjs' in config.get('plugins',[]):
     import subprocess
     subprocess.run(['node','-e',"require('./plugins/withSkiaRecorderLifecycle.cjs').applySkiaRecorderLifecycle(process.cwd())"],check=True)
     print('PASS: pinned native recorder lifetime and UI reset contract verified')
+if './plugins/withSkiaImmutableBorders.cjs' in config.get('plugins',[]):
+    proof=json.loads(Path('android/skia-immutable-borders.json').read_text())
+    assert proof['skiaVersion']=='2.6.2' and proof['immutableBorderApi']==1
+    assert proof['mutablePathApiUnchanged'] is True and proof['livePathsDisposed'] is False
+    assert proof['imagesOrSurfacesAdded'] is False and proof['nativeMemoryPressure'] is True
+    for entry in [*proof['files'],proof['header']]:
+        assert hashlib.sha256(Path(entry['file']).read_bytes()).hexdigest()==entry['sha256']
+    # Validate the exact original source and reversible pinned edits as well.
+    import subprocess
+    guarded=json.loads(subprocess.check_output(['node','-e',
+        "console.log(JSON.stringify(require('./plugins/withSkiaImmutableBorders.cjs').applyImmutableBorders(process.cwd())))"],text=True))
+    assert guarded==proof, 'Native border proof does not match the reviewed pinned patch'
+    print('PASS: pinned immutable border API; original mutable API and cache ownership preserved')

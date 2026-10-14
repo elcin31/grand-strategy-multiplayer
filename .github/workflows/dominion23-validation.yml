@@ -53,6 +53,7 @@ jobs:
         run: |
           python scripts/verify-apk.py Dominion-2.3-performance-candidate.apk
           python scripts/verify-release.py Dominion-2.3-performance-candidate.apk > candidate-integrity.txt
+          python scripts/verify-immutable-borders-apk.py Dominion-2.3-performance-candidate.apk >> candidate-integrity.txt
           gh release download v2.2.1-performance-hotfix -R elcin31/grand-strategy-multiplayer -D baseline-apk -p Dominion-2.2.1-performance-hotfix.apk
           echo 'a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb  baseline-apk/Dominion-2.2.1-performance-hotfix.apk' | sha256sum --check
           for driver in CameraGesture CameraGesture23; do
