@@ -1,0 +1,151 @@
+{
+  "kind": "offline-cpu-Skia-border-draw-order-comparison",
+  "canvasKitVersion": "0.41.0",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "rows": [
+    {
+      "preset": "Balanced",
+      "zoom": 0.9,
+      "chunks": 156,
+      "segments": 53294,
+      "beforePathDraws": 312,
+      "afterPathDraws": 2,
+      "changedPixels": 1629,
+      "pixelsOver8": 644,
+      "pixelFractionOver8": 0.0006987847222222222,
+      "maxChannelDelta": 105,
+      "meanChannelDelta": 0.014251302083333334,
+      "sha256": [
+        "4e3c2a7128652553bfd2fedb4d0dea6c7b188e02d53d33e218935a3be724dce9",
+        "9e9b5bae708d1f2e459a9dfdc997a54fae626c638e1e8c24ba84310c0ceee173"
+      ]
+    },
+    {
+      "preset": "Balanced",
+      "zoom": 3.5,
+      "chunks": 47,
+      "segments": 37867,
+      "beforePathDraws": 141,
+      "afterPathDraws": 3,
+      "changedPixels": 669,
+      "pixelsOver8": 161,
+      "pixelFractionOver8": 0.00017469618055555554,
+      "maxChannelDelta": 80,
+      "meanChannelDelta": 0.0034733072916666666,
+      "sha256": [
+        "3da61ec92553ecf21a6e5947923f33affbdfdf18c33a3fd81dedeb9d3882e432",
+        "43e8480e7f16c6e6bfc575726fbf1321b454687465479cf0225923532950905d"
+      ]
+    },
+    {
+      "preset": "Balanced",
+      "zoom": 7,
+      "chunks": 17,
+      "segments": 21730,
+      "beforePathDraws": 51,
+      "afterPathDraws": 3,
+      "changedPixels": 735,
+      "pixelsOver8": 73,
+      "pixelFractionOver8": 0.00007921006944444444,
+      "maxChannelDelta": 67,
+      "meanChannelDelta": 0.0017068142361111112,
+      "sha256": [
+        "c96978b243d735884b5b3a55a8a3c9512cac5a06de603439cf35511c8f59826e",
+        "1fefbe532a5ad4ab5aa15cd0f9a13cf2080b64a8d6a54c69525bde4ea5903f0c"
+      ]
+    },
+    {
+      "preset": "Balanced",
+      "zoom": 12,
+      "chunks": 12,
+      "segments": 17796,
+      "beforePathDraws": 36,
+      "afterPathDraws": 3,
+      "changedPixels": 529,
+      "pixelsOver8": 19,
+      "pixelFractionOver8": 0.000020616319444444445,
+      "maxChannelDelta": 45,
+      "meanChannelDelta": 0.0006090856481481481,
+      "sha256": [
+        "180efd9457f385537f4c0117ec76599a43783b909b6158e02eddbf59acc03e3f",
+        "423e80d84ebaba3c32ca2e5397e557ce1770ea0e75093985d177d4bdfc3c3003"
+      ]
+    },
+    {
+      "preset": "Performance",
+      "zoom": 0.9,
+      "chunks": 156,
+      "segments": 53294,
+      "beforePathDraws": 312,
+      "afterPathDraws": 2,
+      "changedPixels": 1548,
+      "pixelsOver8": 545,
+      "pixelFractionOver8": 0.0005913628472222222,
+      "maxChannelDelta": 91,
+      "meanChannelDelta": 0.011821108217592592,
+      "sha256": [
+        "0169ca3de241ba59490721828dedb1f9c9c72e283e1a77023529b9530b148cbd",
+        "2cae8e74110f919268b20a8a8d31c747398cb4769450bb392bb23d0094f211df"
+      ]
+    },
+    {
+      "preset": "Performance",
+      "zoom": 3.5,
+      "chunks": 47,
+      "segments": 20246,
+      "beforePathDraws": 94,
+      "afterPathDraws": 2,
+      "changedPixels": 626,
+      "pixelsOver8": 135,
+      "pixelFractionOver8": 0.000146484375,
+      "maxChannelDelta": 57,
+      "meanChannelDelta": 0.002759331597222222,
+      "sha256": [
+        "b45df4f3cc871373be22d72530e6a576e283df20dc55d31a091c24dbdeb982b6",
+        "874942c7ae1bf574d20699b5b6f395ba6d565dec399794e55460e4718f07f190"
+      ]
+    },
+    {
+      "preset": "Performance",
+      "zoom": 7,
+      "chunks": 17,
+      "segments": 21730,
+      "beforePathDraws": 51,
+      "afterPathDraws": 3,
+      "changedPixels": 643,
+      "pixelsOver8": 63,
+      "pixelFractionOver8": 0.000068359375,
+      "maxChannelDelta": 43,
+      "meanChannelDelta": 0.0013704427083333333,
+      "sha256": [
+        "21400774cfe428af1d58c0f3dce5371ebcd69e15d216c67c7ac2ffcef21e458c",
+        "74104ebadda89252df7ef29cc6a33c93da6d408b1a4b307fe28674f92ca1bcb8"
+      ]
+    },
+    {
+      "preset": "Performance",
+      "zoom": 12,
+      "chunks": 12,
+      "segments": 17796,
+      "beforePathDraws": 36,
+      "afterPathDraws": 3,
+      "changedPixels": 523,
+      "pixelsOver8": 14,
+      "pixelFractionOver8": 0.000015190972222222222,
+      "maxChannelDelta": 42,
+      "meanChannelDelta": 0.0005374710648148148,
+      "sha256": [
+        "72bd9c379b77c83790701bc99c9aa5c64463a630f4685c680ed87b189de24401",
+        "512096194b886d72cbaf7133b75e5e72f9f111af78cd1430823f11420440a312"
+      ]
+    }
+  ],
+  "limitations": [
+    "CanvasKit software raster differs from Android native Skia/GPU.",
+    "Exact vertices are retained, but batching can change overlapping stroke antialiasing at joins.",
+    "This comparison does not measure Android frame time or pass the performance gate."
+  ]
+}

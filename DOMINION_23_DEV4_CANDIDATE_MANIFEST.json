@@ -1,0 +1,126 @@
+{
+  "status": "rejected by complete native A-I performance gate",
+  "runtimeSha": "d1a47f0e8896fc9ca984ef661767afc8ccb8b450",
+  "versionName": "2.3.0-dev.4",
+  "versionCode": 19,
+  "packageName": "com.elcin31.grandstrategymultiplayer",
+  "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "apkBytes": 174188042,
+  "apkSha256": "21de43f629502a1ac29d05bd64ec12399eafd8c9a6c2b46d87598043f51b2404",
+  "baselineApkSha256": "a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb",
+  "build": {
+    "run": 38455226557,
+    "artifact": 11843946718,
+    "artifactZipSha256": "4bf0eb599b1a45c92200a18171c4fdc5c86556820c14857eddea906598f3ab51",
+    "fourAbiAndEmbeddedHermesAndGraphicsVerified": true
+  },
+  "nativeMatrix": {
+    "run": 38455226557,
+    "artifact": 11845517070,
+    "comparison": "DOMINION_23_PERFORMANCE_DEV4_REJECTED.json",
+    "metricGate": "fail",
+    "regressionsOver10Percent": [
+      {
+        "scenario": "D-pinch-pan",
+        "metric": "p99Ms",
+        "ratio": 1.1856806701010405
+      },
+      {
+        "scenario": "E-lod-transitions",
+        "metric": "p95Ms",
+        "ratio": 1.3254940220584728
+      },
+      {
+        "scenario": "F-terrain",
+        "metric": "p95Ms",
+        "ratio": 1.108387382937671
+      },
+      {
+        "scenario": "G-war-armies",
+        "metric": "p99Ms",
+        "ratio": 1.1262613317609729
+      },
+      {
+        "scenario": "I-extended-11",
+        "metric": "p95Ms",
+        "ratio": 1.1788302868083114
+      }
+    ],
+    "peakPssKiB": [
+      474508,
+      445600
+    ]
+  },
+  "upgradeAndMonthly": {
+    "run": 38457722223,
+    "artifact": 11845685227,
+    "smoke": {
+      "coldLaunch": true,
+      "inPlaceUpgrade22": true,
+      "savedPausedCampaignPreserved": true,
+      "balancedAndPerformance": true,
+      "shortRealPanZoom": true,
+      "politicalTerrainMilitary": true,
+      "provinceSelection": true,
+      "armySelection": true,
+      "confirmedRoute": true,
+      "shortMarch": true,
+      "saveRestart": true,
+      "launcherScreenshot": true,
+      "noFatalLogs": true,
+      "soak": false,
+      "physicalRedmiTest": false
+    },
+    "monthlyBefore": {
+      "monthlyEconomyAndAI": true,
+      "startDay": 25,
+      "endDay": 60,
+      "endTick": 2,
+      "endMonth": 3,
+      "noFatalLogs": true,
+      "physicalRedmiTest": false
+    },
+    "monthlyAfter": {
+      "monthlyEconomyAndAI": true,
+      "startDay": 25,
+      "endDay": 59,
+      "endTick": 2,
+      "endMonth": 3,
+      "noFatalLogs": true,
+      "physicalRedmiTest": false
+    },
+    "identicalElapsedCalendarWorkload": false
+  },
+  "stagedLod": {
+    "run": 38457728477,
+    "artifact": 11844043397,
+    "completeAppFrames": [
+      185,
+      192
+    ],
+    "p50Ms": [
+      58.755999,
+      39.78389
+    ],
+    "p95Ms": [
+      154.211443,
+      156.251338
+    ],
+    "p99Ms": [
+      237.151977,
+      233.386415
+    ],
+    "traceSha256": [
+      "338d22746f413469b4ded638ebb235ced568c0966cba0ec7eae4cded80c0712e",
+      "4dde4bc1763b1efd0b0563fd1896720f2b3848e5a795c14e75ea101a772154e0"
+    ],
+    "ftraceSetupErrors": [
+      36,
+      36
+    ],
+    "candidateCpuLostRecords": 4,
+    "attributionComplete": false
+  },
+  "physicalRedmiTest": false,
+  "fullDominion23Release": false
+}
