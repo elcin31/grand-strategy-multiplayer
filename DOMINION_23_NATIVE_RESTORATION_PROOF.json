@@ -1,0 +1,24 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "defaultBranch": "dominion-2.3-performance",
+  "configVersion": "2.3.0-dev.9",
+  "defaultPresentationGuardPassed": true,
+  "negativeChecks": [
+    {
+      "inactivePlugin": "withSkiaSwapPacing.cjs",
+      "nativeFile": "OpenGLWindowContext.cpp",
+      "stalePatchedDependencyRejected": true,
+      "restoredSourceSha256": "fc204391ec75d5df6e5d2eb11c2a4395e1415b5ae1d3d75fbaa19c31e636e705"
+    },
+    {
+      "inactivePlugin": "withSkiaTextureConsumer.cjs",
+      "nativeFile": "RNSkOpenGLCanvasProvider.cpp",
+      "stalePatchedDependencyRejected": true,
+      "restoredSourceSha256": "dd82eeb01ff28830b9705ac4069a7e967825aee60e4778f82e9f6de19f405bd8"
+    }
+  ],
+  "defaultActiveExperimentalPlugins": [],
+  "srcEngineAndAssetsUnchangedFrom": "25fb66de948dc061262148b25f4094f25c160932",
+  "nativeCameraAcceptance": false,
+  "fullDominion23Complete": false
+}
