@@ -20,12 +20,13 @@ def prepare(evidence, output):
     assert not output.exists(),'Use a fresh curated payload directory'
     build=load(evidence/'build-run.json');jobs=load(evidence/'build-jobs.json')['jobs']
     smoke=load(evidence/'smoke-run.json');lod=load(evidence/'lod-run.json')
-    for run in [build,smoke,lod]:
+    camera=load(evidence/'camera-run.json') if (evidence/'camera-run.json').exists() else build
+    for run in [build,camera,smoke,lod]:
         assert run['repository']['full_name']==REPOSITORY and run['status']=='completed'
     assert any(j['name']=='build-candidate' and j['conclusion']=='success' for j in jobs)
     assert smoke['conclusion']==lod['conclusion']=='success','Do not distribute a failed interaction/LOD binary'
     sha=build['head_sha']
-    for reference in [sha,smoke['head_sha'],lod['head_sha']]:
+    for reference in [sha,camera['head_sha'],smoke['head_sha'],lod['head_sha']]:
         subprocess.run(['git','diff','--exit-code',reference,'HEAD','--',*RUNTIME],check=True)
     config=json.loads(subprocess.check_output(['git','show',sha+':app.json'],text=True))['expo']
     apk=evidence/'binary/Dominion-2.3-performance-candidate.apk'
@@ -60,7 +61,7 @@ def prepare(evidence, output):
               'apk':{'filename':name,'sha256':digest,'versionName':config['version'],
                      'versionCode':config['android']['versionCode'],'package':config['android']['package'],
                      'certificateSha256':'fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c'},
-              'runs':{'buildAndCamera':build['id'],'interactionAndMonthly':smoke['id'],'repeatedLod':lod['id']},
+              'runs':{'build':build['id'],'camera':camera['id'],'interactionAndMonthly':smoke['id'],'repeatedLod':lod['id']},
               'mandatoryChecks':mandatory,'physicalRedmiTest':False,
               'cameraRegressionsOver10Percent':comparison['regressionsOver10Percent']}
     (output/'MANIFEST.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n')
@@ -75,6 +76,8 @@ def prepare(evidence, output):
                  'DOMINION_23_COMBINED_TEXTURE_PROBE.md',
                  'DOMINION_23_UI_DISPATCH_PROBE.md','DOMINION_23_UI_DISPATCH_DIAGNOSTIC.json',
                  'DOMINION_23_DEV13_CANDIDATE_MANIFEST.json','DOMINION_23_PERFORMANCE_DEV13.json',
+                 'DOMINION_23_DEV13_INTERACTION_PROOF.json','DOMINION_23_DEV13_LOD_PROOF.json',
+                 'DOMINION_23_DEV13_MATRIX_ATTEMPT1.json','DOMINION_23_DEV13_MONTHLY_ATTEMPT1.json',
                  'DOMINION_23_SOURCE_REGRESSION_AUDIT.json','DOMINION_23_LEGACY_SAVE_FAILURE.json']:
         path=Path(file)
         if path.exists():copy(path,output/'reports'/file)

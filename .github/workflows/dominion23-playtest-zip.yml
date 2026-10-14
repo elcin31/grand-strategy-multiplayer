@@ -5,7 +5,8 @@ on:
     paths: [.github/workflows/dominion23-playtest-zip.yml]
   workflow_dispatch:
     inputs:
-      apk_run_id: {description: 'Immutable candidate build and complete camera run', required: true, type: string}
+      apk_run_id: {description: 'Immutable candidate build run', required: true, type: string}
+      camera_run_id: {description: 'Separate successful immutable full A-I run; omit when included in build run', required: false, type: string}
       smoke_run_id: {description: 'Successful immutable interaction and monthly validation run', required: true, type: string}
       lod_run_id: {description: 'Successful immutable repeated LOD validation run', required: true, type: string}
 permissions:
@@ -19,6 +20,7 @@ jobs:
     env:
       GH_TOKEN: '${{ github.token }}'
       APK_RUN_ID: '${{ inputs.apk_run_id }}'
+      CAMERA_RUN_ID: '${{ inputs.camera_run_id }}'
       SMOKE_RUN_ID: '${{ inputs.smoke_run_id }}'
       LOD_RUN_ID: '${{ inputs.lod_run_id }}'
     steps:
@@ -33,10 +35,16 @@ jobs:
           mkdir -p zip-evidence
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$APK_RUN_ID" > zip-evidence/build-run.json
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$APK_RUN_ID/jobs" > zip-evidence/build-jobs.json
+          camera_run="${CAMERA_RUN_ID:-$APK_RUN_ID}"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$camera_run" > zip-evidence/camera-run.json
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SMOKE_RUN_ID" > zip-evidence/smoke-run.json
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$LOD_RUN_ID" > zip-evidence/lod-run.json
           gh run download "$APK_RUN_ID" -R "$GITHUB_REPOSITORY" -n dominion23-performance-candidate -D zip-evidence/binary
-          gh run download "$APK_RUN_ID" -R "$GITHUB_REPOSITORY" -n dominion23-native-performance -D zip-evidence/camera
+          if [ -n "$CAMERA_RUN_ID" ]; then
+            gh run download "$CAMERA_RUN_ID" -R "$GITHUB_REPOSITORY" -n dominion23-immutable-apk-validation -D zip-evidence/camera
+          else
+            gh run download "$APK_RUN_ID" -R "$GITHUB_REPOSITORY" -n dominion23-native-performance -D zip-evidence/camera
+          fi
           gh run download "$SMOKE_RUN_ID" -R "$GITHUB_REPOSITORY" -n dominion23-immutable-apk-validation -D zip-evidence/smoke
           gh run download "$LOD_RUN_ID" -R "$GITHUB_REPOSITORY" -n dominion23-immutable-apk-validation -D zip-evidence/lod
       - name: Recheck packaged binary and bind reports to the compiled source
