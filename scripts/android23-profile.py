@@ -14,6 +14,7 @@ from camera_telemetry import camera_telemetry
 from map_paint_check import assert_map_painted
 from android_immutable_borders import verify_border_api
 from android_campaign_pull import copy_campaign_saves
+from android_saved_generation import latest_war_state
 
 OUT=Path(os.environ.get('CAMERA23_OUT','android23-profile'));OUT.mkdir(exist_ok=True);h.OUT=OUT
 PACKAGE=h.PACKAGE;FIXTURES=Path(sys.argv[2]);manifest=json.loads((FIXTURES/'manifest.json').read_text());rows=[]
@@ -74,9 +75,7 @@ def confirmed_saved_state(name):
     end=time.monotonic()+35
     while time.monotonic()<end:
         pull_saves(OUT/'native-saves')
-        states=[json.loads(p.read_text()).get('state') for p in (OUT/'native-saves').rglob('camera23-war.*.json')]
-        states=[s for s in states if s]
-        latest=max(states,key=lambda s:s['simulationDay'])
+        latest=latest_war_state(OUT/'native-saves')
         if latest['tick']>0 and latest['month']>=2 and latest['phase']=='paused':return latest
         time.sleep(1)
     raise AssertionError('Completed paused monthly save was not observed')

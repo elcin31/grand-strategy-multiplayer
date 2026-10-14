@@ -1,0 +1,27 @@
+{
+  "buildRun": 38575813534,
+  "compiledSourceSha": "9c519a8ddf86fa106ec0ca3d6e080086c6c744d9",
+  "apkSha256": "7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764",
+  "validationRun": 38578887823,
+  "job": 115903181969,
+  "artifactId": 11904085321,
+  "artifactBytes": 24384797,
+  "artifactSha256": "51b807c5e11b9310fcb6c138778ab0dcb35a339ef902cbd7c08f67ea3ce89900",
+  "status": "incomplete; interaction passed, monthly baseline falsely rejected; candidate monthly not run",
+  "causeEstablished": true,
+  "cause": "max(simulationDay) picked generation3 running at day48 over later generations4/5 paused at the same day48",
+  "actualPausedSaveEvidence": {
+    "baselineApkSha256": "a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb",
+    "generation": 5,
+    "simulationDay": 48,
+    "tick": 1,
+    "month": 2,
+    "phase": "paused",
+    "speed": 0
+  },
+  "runtimeInputsUnchangedByHarnessFix": true,
+  "monthlyValidationPassed": false,
+  "nativeCameraAcceptance": false,
+  "physicalRedmiTest": false,
+  "dominion23Complete": false
+}
