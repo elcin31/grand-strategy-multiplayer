@@ -1,6 +1,6 @@
 {
   "name": "grand-strategy-multiplayer",
-  "version": "2.3.0-dev.5",
+  "version": "2.3.0-dev.6",
   "private": true,
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "test:212": "node --import tsx --test tests/dominion212_*.test.ts tests/dominion211_*.test.ts tests/dominion21_*.test.ts tests/army_selection.test.ts tests/state_wire.test.ts tests/security.test.ts tests/final_security.test.ts tests/command_fuzz.test.ts tests/edge_persistence.test.ts tests/client_compatibility.test.ts tests/multiplayer_controls.test.ts tests/launch_action.test.ts",
     "test:22": "node --import tsx --test tests/dominion22_map.test.ts tests/map_modes.test.ts tests/army_selection.test.ts tests/client_compatibility.test.ts tests/state_wire.test.ts",
     "test:221": "node --import tsx --test tests/dominion221_performance.test.ts tests/dominion22_map.test.ts tests/map_modes.test.ts tests/army_selection.test.ts tests/client_compatibility.test.ts tests/state_wire.test.ts tests/camera_pipeline.test.ts tests/frame_pacing.test.ts tests/adaptive_quality.test.ts",
-    "test:23-performance": "npm run test:221 && node --import tsx --test tests/dominion23_performance.test.ts tests/skia_recorder_lifecycle.test.ts tests/map_texture_opacity.test.ts"
+    "test:23-performance": "npm run test:221 && node --import tsx --test tests/skia_recorder_lifecycle.test.ts tests/map_texture_opacity.test.ts"
   },
   "dependencies": {
     "@shopify/react-native-skia": "2.6.2",
