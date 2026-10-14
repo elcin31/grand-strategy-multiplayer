@@ -1,5 +1,5 @@
 {
-  "status": "built-unaccepted-first-matrix-incomplete-external-launcher-anr-retry-running",
+  "status": "built-native-lod-verified-primary-and-interaction-pending",
   "compiledSourceSha": "82039b6ae4c1df0e92445a821b776b2ed9391634",
   "buildRunId": 38515162900,
   "buildJobId": 115692214406,
@@ -61,8 +61,7 @@
   },
   "pendingValidation": {
     "immutableFullMatrixRunId": 38517715562,
-    "immutableInteractionMonthlyRunId": 38517718847,
-    "immutableLodRunId": 38517722864
+    "immutableInteractionMonthlyRunId": 38517718847
   },
   "cameraGatePassed": false,
   "completeDominion23Release": false,
@@ -77,5 +76,52 @@
     "Previous dev7 primary gate fails horizontal-pan P95+17.66%; zoom and memory wins do not override it.",
     "Existing CameraWorkGate is a nested activity counter and correctly holds frame motion after gesture finalization; earlier source suspicion was disproved, no rewrite performed.",
     "StageA is open. StagesB-G and59 legacy source failures/tick1000 save mismatch remain unfinished."
-  ]
+  ],
+  "immutableLodValidation": {
+    "runId": 38517722864,
+    "jobId": 115700189459,
+    "artifactId": 11873011253,
+    "artifactZipSha256": "454f4eca66aa499b080461b7a57697d5829365e8b812bd7baccda6346cfa4c3b",
+    "stagedWorldRegionProvince": true,
+    "actualImmutableNativeDrawObserved": true,
+    "noFatalLogs": true,
+    "actualCompleteAppFrames": [
+      {
+        "traceSha256": "ff941f2526ca02585cbfa5045eac1e64c92637010fbf45326424b09a3e24cd03",
+        "scopedCompleteFrames": 199,
+        "p50Ms": 54.120082,
+        "p95Ms": 145.590913,
+        "p99Ms": 221.398836,
+        "traceLossOrErrors": [
+          {
+            "name": "ftrace_setup_errors",
+            "index": null,
+            "value": 36,
+            "severity": "info"
+          }
+        ]
+      },
+      {
+        "traceSha256": "1a488fdc2defe5e4bf4ff609190bd3ba9bd01a29d5e4c9b63aaa838ca8ba9b32",
+        "scopedCompleteFrames": 199,
+        "p50Ms": 56.345532,
+        "p95Ms": 143.932763,
+        "p99Ms": 208.914941,
+        "traceLossOrErrors": [
+          {
+            "name": "ftrace_setup_errors",
+            "index": null,
+            "value": 36,
+            "severity": "info"
+          }
+        ]
+      }
+    ],
+    "cameraGatePassed": false,
+    "physicalRedmiTest": false,
+    "limits": [
+      "Both traces retain36 setup warnings; actual complete frames and native execution observed.",
+      "Staged LOD supplement does not accept the pending continuous A-I primary matrix or a physical phone."
+    ]
+  }
 }
