@@ -28,8 +28,15 @@
   "identicalApkControl": {
     "run": 38502407930,
     "job": 115652187842,
-    "status": "pending",
-    "cannotAcceptCandidate": true
+    "status": "completed; same-binary metric gate failed from measured P99 variation",
+    "cannotAcceptCandidate": true,
+    "artifact": 11867267663,
+    "report": "DOMINION_23_IDENTICAL_APK_CONTROL.json",
+    "p99Ratios": {
+      "B-rapid-zoom-in": 1.3133776238382362,
+      "E-lod-transitions": 1.1108701494506565,
+      "H-active-simulation": 1.2111130137816302
+    }
   },
   "upgradeAndMonthly": {
     "run": 38504108979,
@@ -37,7 +44,32 @@
   },
   "stagedLod": {
     "run": 38504112090,
-    "status": "pending"
+    "status": "completed functional/traces; adverse P95 and P99",
+    "artifact": 11867181501,
+    "completeAppFrames": [
+      235,
+      231
+    ],
+    "p50Ms": [
+      58.707602,
+      47.506633
+    ],
+    "p95Ms": [
+      105.968639,
+      131.03143
+    ],
+    "p99Ms": [
+      140.880722,
+      168.939044
+    ],
+    "traceSha256": [
+      "9c92e947f6531f1696acd385288ae58fc6fffb30c5d3a7867c1856087cdad874",
+      "2b2decdd529890f6206943bfa0fea59d1f16078811fb47d3fd8655a4cbf6195b"
+    ],
+    "ftraceSetupErrors": [
+      36,
+      36
+    ]
   },
   "fullSourceRegression": "59 identical existing failure names on hotfix and candidate; full source gate blocked",
   "physicalRedmiTest": false,
