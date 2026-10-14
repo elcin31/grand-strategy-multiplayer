@@ -1,0 +1,53 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "compiledSourceSha": "9c519a8ddf86fa106ec0ca3d6e080086c6c744d9",
+  "apkSha256": "7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764",
+  "run": 38582282714,
+  "job": 115915009391,
+  "artifactId": 11905270064,
+  "artifactBytes": 23935614,
+  "artifactSha256": "27139fb5846a75c984ade02effb07846ffa95cac8242e0e35fd5b1a7bb0a5ad9",
+  "checks": {
+    "monthly-baseline": {
+      "monthlyEconomyAndAI": true,
+      "startDay": 25,
+      "endDay": 55,
+      "endTick": 1,
+      "endMonth": 2,
+      "noFatalLogs": true,
+      "physicalRedmiTest": false
+    },
+    "monthly-candidate": {
+      "monthlyEconomyAndAI": true,
+      "startDay": 25,
+      "endDay": 49,
+      "endTick": 1,
+      "endMonth": 2,
+      "noFatalLogs": true,
+      "physicalRedmiTest": false
+    },
+    "android-hotfix": {
+      "coldLaunch": true,
+      "inPlaceUpgrade22": true,
+      "savedPausedCampaignPreserved": true,
+      "balancedAndPerformance": true,
+      "shortRealPanZoom": true,
+      "politicalTerrainMilitary": true,
+      "provinceSelection": true,
+      "armySelection": true,
+      "confirmedRoute": true,
+      "shortMarch": true,
+      "saveRestart": true,
+      "launcherScreenshot": true,
+      "noFatalLogs": true,
+      "soak": false,
+      "physicalRedmiTest": false
+    }
+  },
+  "physicalRedmiTest": false,
+  "notes": [
+    "Same frozen APK, no rebuild.",
+    "Both monthly captures crossed exactly one accounting period; actual end days differ and are retained.",
+    "Full Dominion 2.3 gameplay, multiplayer and 10000-step gates remain incomplete."
+  ]
+}

@@ -2,7 +2,18 @@
 
 Only `elcin31/grand-strategy-multiplayer` is in scope. AssetMind, other repositories, production campaigns, multiplayer rooms, database/auth/storage and previous releases have not been modified. No backend rollout or new Supabase project.
 
-## Latest continuation status — dev12 rejected, ZIP verified
+## Latest continuation status — dev13 camera gate passed; Stage B active
+
+**Stage A passed on the Android emulator. Stages B–G remain unfinished. No complete Dominion 2.3 release or merge into main.** This section supersedes earlier pending states; all failed attempts remain below.
+
+- Accepted runtime source `9c519a8ddf86fa106ec0ca3d6e080086c6c744d9`, version2.3.0-dev.13/code28. Actual APK174187282 bytes, SHA256 `7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764`. Existing package, certificate, four ABI, embedded Hermes and original2.2 graphics verified.
+- The pinned Skia Java bridge now posts the existing native task drain to its existing main-thread Handler. It avoids synchronous rendering inside gesture/animation callbacks. Native queue, GL/EGL, geometry, image lifetime and caches are unchanged. Prior rejected native experiments remain inactive.
+- Complete frozen-APK A–I comparison38580711172/job115909556711/artifact11905735026 passed the unchanged actual-presentation gate. P95 improvement: pan24%, zoom-in34%, zoom-out56%, LOD35%; all ten P95 scenarios improve24–57%, no P95/P99 regression exceeds10%. Extended peak PSS463129→458712KiB. Full report: `DOMINION_23_PERFORMANCE_DEV13.json`. Emulator results do not establish Redmi Note12 performance or long-term leak absence.
+- Frozen-binary interaction/monthly38582282714 and staged LOD38578883519 passed. Cold launch, in-place upgrade preserving the paused campaign, province/army selection, confirmed march, modes, save/restart and no fatal logs passed. Proofs: `DOMINION_23_DEV13_INTERACTION_PROOF.json`, `DOMINION_23_DEV13_LOD_PROOF.json`. The actual map screenshot retains2.2 visuals.
+- Initial baseline-only ADB pull and saved-generation tie harness failures are retained separately; the repeats use the same APK. Original build38575813534 has a successful build job and an incomplete failed profiling job; it is not relabelled as an entirely successful workflow.
+- Stage B starts with the tick1000 strict save/restore mismatch and59 pre-existing source failures. New gameplay/events/scenarios, two real multiplayer clients, full10000-step validation, final camera regression and final APK/ZIP are still required. The previously delivered dev12 ZIP is a rejected experimental checkpoint, not the finished update.
+
+## Previous continuation status — dev12 rejected, ZIP verified
 
 **Stage A remains open. Stages B–G are unfinished. No Dominion 2.3 release or merge into main.** The chronological notes below retain previous dispatches and pending states; this section supersedes those states.
 

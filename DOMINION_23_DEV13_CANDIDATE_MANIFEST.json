@@ -22,7 +22,15 @@
   "crcVerifiedLocally": true,
   "postedJavaModePackaged": true,
   "earlierNativeExperimentsAbsent": true,
-  "nativePerformanceAcceptance": "pending",
+  "nativePerformanceAcceptance": "pass-on-emulator",
   "physicalRedmiTest": false,
-  "dominion23Complete": false
+  "dominion23Complete": false,
+  "nativeMatrixRun": 38580711172,
+  "nativeMatrixJob": 115909556711,
+  "nativeMatrixArtifactId": 11905735026,
+  "nativeMatrixArtifactSha256": "eea62b5044e53250a78406052e9d33bac5d80585c17f9798d4f1b8bd90d501b3",
+  "nativeComparisonFile": "DOMINION_23_PERFORMANCE_DEV13.json",
+  "nativeComparisonSha256": "aa9dde58f34bd9a61e518620920ed87e104ff9716b52ae2aad9e150a1165b582",
+  "interactionRun": 38582282714,
+  "lodRun": 38578883519
 }
