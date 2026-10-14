@@ -1,0 +1,57 @@
+name: Dominion 2.3 tested playtest checkpoint ZIP
+on:
+  push:
+    branches: [dominion-2.3-performance, dominion-2.3-presentation-probe]
+    paths: [.github/workflows/dominion23-playtest-zip.yml]
+  workflow_dispatch:
+    inputs:
+      apk_run_id: {description: 'Immutable candidate build and complete camera run', required: true, type: string}
+      smoke_run_id: {description: 'Successful immutable interaction and monthly validation run', required: true, type: string}
+      lod_run_id: {description: 'Successful immutable repeated LOD validation run', required: true, type: string}
+permissions:
+  contents: read
+  actions: read
+jobs:
+  package:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: '${{ github.token }}'
+      APK_RUN_ID: '${{ inputs.apk_run_id }}'
+      SMOKE_RUN_ID: '${{ inputs.smoke_run_id }}'
+      LOD_RUN_ID: '${{ inputs.lod_run_id }}'
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - name: Download immutable binary and completed native checks from this repository
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = elcin31/grand-strategy-multiplayer
+          mkdir -p zip-evidence
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$APK_RUN_ID" > zip-evidence/build-run.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$APK_RUN_ID/jobs" > zip-evidence/build-jobs.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SMOKE_RUN_ID" > zip-evidence/smoke-run.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$LOD_RUN_ID" > zip-evidence/lod-run.json
+          gh run download "$APK_RUN_ID" -R "$GITHUB_REPOSITORY" -n dominion23-performance-candidate -D zip-evidence/binary
+          gh run download "$APK_RUN_ID" -R "$GITHUB_REPOSITORY" -n dominion23-native-performance -D zip-evidence/camera
+          gh run download "$SMOKE_RUN_ID" -R "$GITHUB_REPOSITORY" -n dominion23-immutable-apk-validation -D zip-evidence/smoke
+          gh run download "$LOD_RUN_ID" -R "$GITHUB_REPOSITORY" -n dominion23-immutable-apk-validation -D zip-evidence/lod
+      - name: Recheck packaged binary and bind reports to the compiled source
+        run: |
+          python scripts/verify-apk.py zip-evidence/binary/Dominion-2.3-performance-candidate.apk
+          python scripts/verify-release.py zip-evidence/binary/Dominion-2.3-performance-candidate.apk > zip-evidence/rechecked-integrity.txt
+          python scripts/verify-immutable-borders-apk.py zip-evidence/binary/Dominion-2.3-performance-candidate.apk
+          python scripts/verify-presentation-apk.py zip-evidence/binary/Dominion-2.3-performance-candidate.apk
+          python scripts/prepare-playtest-checkpoint.py zip-evidence playtest-payload
+          python scripts/package-playtest.py playtest-payload Dominion-2.3-playtest-checkpoint.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dominion23-tested-playtest-checkpoint-zip
+          compression-level: 0
+          path: |
+            Dominion-2.3-playtest-checkpoint.zip
+            Dominion-2.3-playtest-checkpoint.zip.sha256
+          retention-days: 30
