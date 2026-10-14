@@ -30,7 +30,9 @@ export function initializeWars(state:GameState):void {
     if(!Number.isFinite(w.warScore)||Math.abs(w.warScore)>100)throw new Error('Invalid war score');
     if(w.peaceOffer){if(!isWarLeader(w,w.peaceOffer.from)||!Number.isSafeInteger(w.peaceOffer.expiresTick)||w.peaceOffer.expiresTick<0)throw new Error('Invalid peace proposal');assertPeaceTerms(w.peaceOffer.terms);}
   }
-  refreshWars(state);
+  // Normalization validates a committed snapshot. Recomputing derived scores here
+  // changes new wars and monthly exhaustion between save and restore. Simulation
+  // phases and battles refresh these values explicitly through refreshWars.
 }
 const capitalCaches=new WeakMap<object,Set<string>>();
 function capitalProvinces(state:GameState):Set<string>{if(!state.cities)return new Set();let cache=capitalCaches.get(state.cities);if(!cache){cache=new Set(state.cities.filter(c=>c.isCapital).map(c=>c.provinceId));capitalCaches.set(state.cities,cache);}return cache;}
