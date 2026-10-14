@@ -1,0 +1,50 @@
+{
+  "diagnosticOnly": true,
+  "sourceMatrixRun": 38537487393,
+  "physicalRedmiTest": false,
+  "rows": [
+    {
+      "slot": "baseline",
+      "traceSha256": "48ce071a455a8b7a9f813cfe8c890c8395b2e0ced710a6644478e43032bbbf71",
+      "markerDurationMs": 12613.611706,
+      "completedUiSwapCalls": 127,
+      "swapP50Ms": 66.069402,
+      "swapP95Ms": 86.046511,
+      "swapP99Ms": 90.072379,
+      "inclusiveSwapWallMs": 8618.907091,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        },
+        {
+          "name": "perf_cpu_lost_records",
+          "index": 0,
+          "value": 1,
+          "severity": "data_loss"
+        }
+      ]
+    },
+    {
+      "slot": "candidate",
+      "traceSha256": "05e80cbb0d666f638e87b8d6e5d87651707bb4d51af3d5d5cdf038377afd2acd",
+      "markerDurationMs": 12559.21002,
+      "completedUiSwapCalls": 150,
+      "swapP50Ms": 55.781479,
+      "swapP95Ms": 75.089677,
+      "swapP99Ms": 84.782415,
+      "inclusiveSwapWallMs": 8694.571679,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ]
+    }
+  ],
+  "note": "Completed main-thread EGL swap slices only inside real pan markers. Inclusive wall time is not GPU/CPU attribution. Different completed call counts and retained trace errors prevent a queue-causation claim; raw traces preserved. This additional diagnostic does not change the failed primary native gate."
+}
