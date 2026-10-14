@@ -1,0 +1,2148 @@
+{
+  "status": "unaccepted-complete-native-regression",
+  "compiledSourceSha": "9a12e22a1998d2ffbb40c9658eff8d5f156aacc4",
+  "runId": 38544591614,
+  "jobId": 115795174123,
+  "artifactId": 11886501124,
+  "artifactZipSha256": "d6b48e8e5710116354e84117e99bbf4e269dac0347b2b3894abe9b1c79ccba36",
+  "comparison": {
+    "comparisonKind": "candidate-vs-optimized-baseline",
+    "sameEmulatorRequired": true,
+    "presentationScope": "device-first-down-to-final-up-plus100ms-v1",
+    "baselineApkSha256": "a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb",
+    "candidateApkSha256": "3fd231a32817e382538a2a7766433f9d73f6e7bb77c805a1365eba4ed9409b41",
+    "fixtureChecksums": {
+      "peace": "78e939d5",
+      "war": "01e0a16a"
+    },
+    "physicalRedmiTest": false,
+    "metricGate": "fail",
+    "regressionsOver10Percent": [
+      {
+        "scenario": "A-horizontal-pan",
+        "metric": "p95Ms",
+        "ratio": 1.7024933244794471
+      },
+      {
+        "scenario": "B-rapid-zoom-in",
+        "metric": "p95Ms",
+        "ratio": 1.136412232966362
+      },
+      {
+        "scenario": "C-rapid-zoom-out",
+        "metric": "p95Ms",
+        "ratio": 1.35677555617239
+      },
+      {
+        "scenario": "C-rapid-zoom-out",
+        "metric": "p99Ms",
+        "ratio": 1.1461024351784252
+      },
+      {
+        "scenario": "D-pinch-pan",
+        "metric": "p95Ms",
+        "ratio": 1.4008430396296523
+      },
+      {
+        "scenario": "D-pinch-pan",
+        "metric": "p99Ms",
+        "ratio": 1.1524857176035317
+      },
+      {
+        "scenario": "E-lod-transitions",
+        "metric": "p95Ms",
+        "ratio": 1.3662817777140752
+      },
+      {
+        "scenario": "F-terrain",
+        "metric": "p95Ms",
+        "ratio": 1.2538380856979334
+      },
+      {
+        "scenario": "G-war-armies",
+        "metric": "p95Ms",
+        "ratio": 1.3972168217508913
+      },
+      {
+        "scenario": "G-war-armies",
+        "metric": "p99Ms",
+        "ratio": 1.629832024960973
+      },
+      {
+        "scenario": "H-active-simulation",
+        "metric": "p95Ms",
+        "ratio": 1.4373751941905084
+      },
+      {
+        "scenario": "H-active-simulation",
+        "metric": "p99Ms",
+        "ratio": 1.183863259112416
+      },
+      {
+        "scenario": "I-extended-0",
+        "metric": "p95Ms",
+        "ratio": 1.471024876519767
+      },
+      {
+        "scenario": "I-extended-0",
+        "metric": "p99Ms",
+        "ratio": 1.17474520497344
+      },
+      {
+        "scenario": "I-extended-11",
+        "metric": "p95Ms",
+        "ratio": 1.3428295274178235
+      }
+    ],
+    "engineering20PercentP95GoalObserved": false,
+    "peakPssKiB": [
+      453104,
+      459287
+    ],
+    "memoryRegressionOver32MiB": false,
+    "memoryTrends": [
+      [
+        {
+          "block": 0,
+          "pssKiB": 406241
+        },
+        {
+          "block": 1,
+          "pssKiB": 441464
+        },
+        {
+          "block": 2,
+          "pssKiB": 435453
+        },
+        {
+          "block": 3,
+          "pssKiB": 452042
+        },
+        {
+          "block": 4,
+          "pssKiB": 429132
+        },
+        {
+          "block": 5,
+          "pssKiB": 438321
+        },
+        {
+          "block": 6,
+          "pssKiB": 453104
+        },
+        {
+          "block": 7,
+          "pssKiB": 430482
+        },
+        {
+          "block": 8,
+          "pssKiB": 449092
+        },
+        {
+          "block": 9,
+          "pssKiB": 446740
+        },
+        {
+          "block": 10,
+          "pssKiB": 431240
+        },
+        {
+          "block": 11,
+          "pssKiB": 442594
+        }
+      ],
+      [
+        {
+          "block": 0,
+          "pssKiB": 448955
+        },
+        {
+          "block": 1,
+          "pssKiB": 436105
+        },
+        {
+          "block": 2,
+          "pssKiB": 439811
+        },
+        {
+          "block": 3,
+          "pssKiB": 441622
+        },
+        {
+          "block": 4,
+          "pssKiB": 424504
+        },
+        {
+          "block": 5,
+          "pssKiB": 432132
+        },
+        {
+          "block": 6,
+          "pssKiB": 456103
+        },
+        {
+          "block": 7,
+          "pssKiB": 403047
+        },
+        {
+          "block": 8,
+          "pssKiB": 459287
+        },
+        {
+          "block": 9,
+          "pssKiB": 453475
+        },
+        {
+          "block": 10,
+          "pssKiB": 417112
+        },
+        {
+          "block": 11,
+          "pssKiB": 433399
+        }
+      ]
+    ],
+    "results": [
+      {
+        "scenario": "A-horizontal-pan",
+        "before": {
+          "p50Ms": 89.683758,
+          "p95Ms": 158.09254,
+          "p99Ms": 270.486579,
+          "frames": 122
+        },
+        "after": {
+          "p50Ms": 199.217276,
+          "p95Ms": 269.151494,
+          "p99Ms": 291.962618,
+          "frames": 61
+        },
+        "beforePssKiB": 422305,
+        "afterPssKiB": 416655,
+        "hwuiBefore": {
+          "vsyncDelayMs": {
+            "samples": 120,
+            "p50": 66.666664,
+            "p95": 183.333326,
+            "p99": 266.666656
+          },
+          "uiWorkMs": {
+            "samples": 120,
+            "p50": 80.883537,
+            "p95": 95.492156,
+            "p99": 98.874926
+          },
+          "syncWaitMs": {
+            "samples": 120,
+            "p50": 1.584482,
+            "p95": 6.949047,
+            "p99": 16.727982
+          },
+          "renderCompletionMs": {
+            "samples": 120,
+            "p50": 14.101406,
+            "p95": 26.01349,
+            "p99": 27.993161
+          }
+        },
+        "hwuiAfter": {
+          "vsyncDelayMs": {
+            "samples": 66,
+            "p50": 49.999998,
+            "p95": 66.666664,
+            "p99": 66.666664
+          },
+          "uiWorkMs": {
+            "samples": 66,
+            "p50": 59.893875,
+            "p95": 79.037477,
+            "p99": 93.803943
+          },
+          "syncWaitMs": {
+            "samples": 66,
+            "p50": 0.935695,
+            "p95": 3.053256,
+            "p99": 3.574823
+          },
+          "renderCompletionMs": {
+            "samples": 66,
+            "p50": 10.888257,
+            "p95": 21.212726,
+            "p99": 23.945318
+          }
+        },
+        "hwuiRecentRingTruncated": [
+          true,
+          false
+        ],
+        "deviceScope": [
+          {
+            "available": true,
+            "frames": 122,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 89.683758,
+            "p95Ms": 158.09254,
+            "p99Ms": 270.486579,
+            "maxMs": 327.69413,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 93680224972,
+            "lastPresentNs": 105088388096,
+            "complete": true,
+            "polls": 45,
+            "maxPollGapSeconds": 0.3511740270000132,
+            "captureSeconds": 12.711139863000028,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 93434242298,
+            "deviceWindowEndNs": 105121304195,
+            "unboundedCaptureFrames": 129,
+            "excludedBeforeInputFrames": 3,
+            "excludedAfterGraceFrames": 4,
+            "firstWindowPresentationDelayMs": 245.982674,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "fea166cba16e4c285a798f15c2b4bff9fe6ae274d4b1663f972918eea7dd4079",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#121"
+          },
+          {
+            "available": true,
+            "frames": 61,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 199.217276,
+            "p95Ms": 269.151494,
+            "p99Ms": 291.962618,
+            "maxMs": 291.962618,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 889549125737,
+            "lastPresentNs": 900829990813,
+            "complete": true,
+            "polls": 46,
+            "maxPollGapSeconds": 0.3574872230001347,
+            "captureSeconds": 12.714765655000065,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 889300085140,
+            "deviceWindowEndNs": 900996877655,
+            "unboundedCaptureFrames": 64,
+            "excludedBeforeInputFrames": 1,
+            "excludedAfterGraceFrames": 2,
+            "firstWindowPresentationDelayMs": 249.040597,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "8e3b9d87980294ff757b406f17ec570de9de47800b0c7c8b986bddb4a15802d7",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#314"
+          }
+        ],
+        "originalUnboundedPresentation": [
+          {
+            "available": true,
+            "frames": 129,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 88.694925,
+            "p95Ms": 188.609126,
+            "p99Ms": 327.69413,
+            "maxMs": 631.962872,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 93381281026,
+            "lastPresentNs": 105810198736,
+            "complete": true,
+            "polls": 45,
+            "maxPollGapSeconds": 0.3511740270000132,
+            "captureSeconds": 12.711139863000028,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#121"
+          },
+          {
+            "available": true,
+            "frames": 64,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 199.473742,
+            "p95Ms": 283.053078,
+            "p99Ms": 353.009009,
+            "maxMs": 353.009009,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 889196116728,
+            "lastPresentNs": 901280062558,
+            "complete": true,
+            "polls": 46,
+            "maxPollGapSeconds": 0.3574872230001347,
+            "captureSeconds": 12.714765655000065,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#314"
+          }
+        ],
+        "ratios": {
+          "p50Ms": 2.2213306003524074,
+          "p95Ms": 1.7024933244794471,
+          "p99Ms": 1.079397798883027
+        }
+      },
+      {
+        "scenario": "B-rapid-zoom-in",
+        "before": {
+          "p50Ms": 119.575083,
+          "p95Ms": 324.212712,
+          "p99Ms": 350.042953,
+          "frames": 24
+        },
+        "after": {
+          "p50Ms": 186.753946,
+          "p95Ms": 368.439292,
+          "p99Ms": 368.439292,
+          "frames": 16
+        },
+        "beforePssKiB": 424762,
+        "afterPssKiB": 436213,
+        "hwuiBefore": {
+          "vsyncDelayMs": {
+            "samples": 51,
+            "p50": 49.999998,
+            "p95": 249.99999,
+            "p99": 266.666656
+          },
+          "uiWorkMs": {
+            "samples": 51,
+            "p50": 4.138819,
+            "p95": 102.262211,
+            "p99": 112.482782
+          },
+          "syncWaitMs": {
+            "samples": 51,
+            "p50": 1.192767,
+            "p95": 6.97467,
+            "p99": 21.599987
+          },
+          "renderCompletionMs": {
+            "samples": 51,
+            "p50": 14.424789,
+            "p95": 66.660475,
+            "p99": 81.031764
+          }
+        },
+        "hwuiAfter": {
+          "vsyncDelayMs": {
+            "samples": 38,
+            "p50": 33.333332,
+            "p95": 249.99999,
+            "p99": 283.333322
+          },
+          "uiWorkMs": {
+            "samples": 38,
+            "p50": 1.07297,
+            "p95": 88.515001,
+            "p99": 90.260454
+          },
+          "syncWaitMs": {
+            "samples": 38,
+            "p50": 1.169755,
+            "p95": 3.825012,
+            "p99": 5.495795
+          },
+          "renderCompletionMs": {
+            "samples": 38,
+            "p50": 10.78257,
+            "p95": 25.203908,
+            "p99": 27.412621
+          }
+        },
+        "hwuiRecentRingTruncated": [
+          false,
+          false
+        ],
+        "deviceScope": [
+          {
+            "available": true,
+            "frames": 24,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 119.575083,
+            "p95Ms": 324.212712,
+            "p99Ms": 350.042953,
+            "maxMs": 350.042953,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 186460190563,
+            "lastPresentNs": 189933034039,
+            "complete": true,
+            "polls": 20,
+            "maxPollGapSeconds": 0.30040771800003085,
+            "captureSeconds": 5.015775550000001,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 185984781145,
+            "deviceWindowEndNs": 189968461692,
+            "unboundedCaptureFrames": 33,
+            "excludedBeforeInputFrames": 0,
+            "excludedAfterGraceFrames": 9,
+            "firstWindowPresentationDelayMs": 475.409418,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "5dd50262756b37acf86127a077bd371f3f836bdc5f149eabf3ba3dd4dc218764",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#121"
+          },
+          {
+            "available": true,
+            "frames": 16,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 186.753946,
+            "p95Ms": 368.439292,
+            "p99Ms": 368.439292,
+            "maxMs": 368.439292,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 985029317036,
+            "lastPresentNs": 988308046549,
+            "complete": true,
+            "polls": 19,
+            "maxPollGapSeconds": 0.3524067120001746,
+            "captureSeconds": 4.984355580999818,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 984528950818,
+            "deviceWindowEndNs": 988470455327,
+            "unboundedCaptureFrames": 24,
+            "excludedBeforeInputFrames": 0,
+            "excludedAfterGraceFrames": 8,
+            "firstWindowPresentationDelayMs": 500.366218,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "6d6b5a8fa70c870f02d738f73145f37a8e3de160ea21b362dbee483fdd75b147",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#314"
+          }
+        ],
+        "originalUnboundedPresentation": [
+          {
+            "available": true,
+            "frames": 33,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 103.952895,
+            "p95Ms": 324.212712,
+            "p99Ms": 350.042953,
+            "maxMs": 350.042953,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 186460190563,
+            "lastPresentNs": 190839714722,
+            "complete": true,
+            "polls": 20,
+            "maxPollGapSeconds": 0.30040771800003085,
+            "captureSeconds": 5.015775550000001,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#121"
+          },
+          {
+            "available": true,
+            "frames": 24,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 184.13003,
+            "p95Ms": 345.116377,
+            "p99Ms": 368.439292,
+            "maxMs": 368.439292,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 985029317036,
+            "lastPresentNs": 989348086143,
+            "complete": true,
+            "polls": 19,
+            "maxPollGapSeconds": 0.3524067120001746,
+            "captureSeconds": 4.984355580999818,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#314"
+          }
+        ],
+        "ratios": {
+          "p50Ms": 1.5618132249174355,
+          "p95Ms": 1.136412232966362,
+          "p99Ms": 1.0525545189307097
+        }
+      },
+      {
+        "scenario": "C-rapid-zoom-out",
+        "before": {
+          "p50Ms": 107.746715,
+          "p95Ms": 282.006178,
+          "p99Ms": 333.84371,
+          "frames": 27
+        },
+        "after": {
+          "p50Ms": 230.839074,
+          "p95Ms": 382.619089,
+          "p99Ms": 382.619089,
+          "frames": 16
+        },
+        "beforePssKiB": 434587,
+        "afterPssKiB": 446213,
+        "hwuiBefore": {
+          "vsyncDelayMs": {
+            "samples": 43,
+            "p50": 66.666664,
+            "p95": 316.666654,
+            "p99": 366.666652
+          },
+          "uiWorkMs": {
+            "samples": 43,
+            "p50": 79.031847,
+            "p95": 118.277289,
+            "p99": 169.550346
+          },
+          "syncWaitMs": {
+            "samples": 43,
+            "p50": 1.762002,
+            "p95": 7.795839,
+            "p99": 21.013298
+          },
+          "renderCompletionMs": {
+            "samples": 43,
+            "p50": 11.294594,
+            "p95": 27.37569,
+            "p99": 28.393552
+          }
+        },
+        "hwuiAfter": {
+          "vsyncDelayMs": {
+            "samples": 26,
+            "p50": 49.999998,
+            "p95": 266.666656,
+            "p99": 266.666656
+          },
+          "uiWorkMs": {
+            "samples": 26,
+            "p50": 74.115741,
+            "p95": 131.726078,
+            "p99": 183.532554
+          },
+          "syncWaitMs": {
+            "samples": 26,
+            "p50": 0.738955,
+            "p95": 5.742083,
+            "p99": 7.659925
+          },
+          "renderCompletionMs": {
+            "samples": 26,
+            "p50": 12.964167,
+            "p95": 24.602095,
+            "p99": 30.796374
+          }
+        },
+        "hwuiRecentRingTruncated": [
+          false,
+          false
+        ],
+        "deviceScope": [
+          {
+            "available": true,
+            "frames": 27,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 107.746715,
+            "p95Ms": 282.006178,
+            "p99Ms": 333.84371,
+            "maxMs": 333.84371,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 229704760183,
+            "lastPresentNs": 233108926029,
+            "complete": true,
+            "polls": 19,
+            "maxPollGapSeconds": 0.34122205999995003,
+            "captureSeconds": 4.967324086000076,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 229229940534,
+            "deviceWindowEndNs": 233224402289,
+            "unboundedCaptureFrames": 32,
+            "excludedBeforeInputFrames": 0,
+            "excludedAfterGraceFrames": 5,
+            "firstWindowPresentationDelayMs": 474.819649,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "4ccc2359617d55b2bf5008840af0eb49bc8e3745a03f336f8999b69ed797333b",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#121"
+          },
+          {
+            "available": true,
+            "frames": 16,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 230.839074,
+            "p95Ms": 382.619089,
+            "p99Ms": 382.619089,
+            "maxMs": 382.619089,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1024102785938,
+            "lastPresentNs": 1027578656521,
+            "complete": true,
+            "polls": 19,
+            "maxPollGapSeconds": 0.3341850509998494,
+            "captureSeconds": 4.921614608000027,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 1023646832902,
+            "deviceWindowEndNs": 1027591165010,
+            "unboundedCaptureFrames": 19,
+            "excludedBeforeInputFrames": 0,
+            "excludedAfterGraceFrames": 3,
+            "firstWindowPresentationDelayMs": 455.953036,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "3639223b6842a30455a536a23c751cfe29cc4cd2deb4653934209fee4de0aba4",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#314"
+          }
+        ],
+        "originalUnboundedPresentation": [
+          {
+            "available": true,
+            "frames": 32,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 114.902503,
+            "p95Ms": 282.006178,
+            "p99Ms": 333.84371,
+            "maxMs": 333.84371,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 229704760183,
+            "lastPresentNs": 233745916515,
+            "complete": true,
+            "polls": 19,
+            "maxPollGapSeconds": 0.34122205999995003,
+            "captureSeconds": 4.967324086000076,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#121"
+          },
+          {
+            "available": true,
+            "frames": 19,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 230.116558,
+            "p95Ms": 382.619089,
+            "p99Ms": 382.619089,
+            "maxMs": 382.619089,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1024102785938,
+            "lastPresentNs": 1028074553814,
+            "complete": true,
+            "polls": 19,
+            "maxPollGapSeconds": 0.3341850509998494,
+            "captureSeconds": 4.921614608000027,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#314"
+          }
+        ],
+        "ratios": {
+          "p50Ms": 2.1424233119311342,
+          "p95Ms": 1.35677555617239,
+          "p99Ms": 1.1461024351784252
+        }
+      },
+      {
+        "scenario": "D-pinch-pan",
+        "before": {
+          "p50Ms": 104.424808,
+          "p95Ms": 272.584576,
+          "p99Ms": 388.792596,
+          "frames": 82
+        },
+        "after": {
+          "p50Ms": 175.424991,
+          "p95Ms": 381.848206,
+          "p99Ms": 448.077914,
+          "frames": 57
+        },
+        "beforePssKiB": 433418,
+        "afterPssKiB": 434842,
+        "hwuiBefore": {
+          "vsyncDelayMs": {
+            "samples": 89,
+            "p50": 66.666664,
+            "p95": 266.666656,
+            "p99": 416.66665
+          },
+          "uiWorkMs": {
+            "samples": 89,
+            "p50": 82.793069,
+            "p95": 113.431833,
+            "p99": 163.615225
+          },
+          "syncWaitMs": {
+            "samples": 89,
+            "p50": 0.473306,
+            "p95": 2.892726,
+            "p99": 11.77841
+          },
+          "renderCompletionMs": {
+            "samples": 89,
+            "p50": 10.285089,
+            "p95": 23.727023,
+            "p99": 27.87189
+          }
+        },
+        "hwuiAfter": {
+          "vsyncDelayMs": {
+            "samples": 61,
+            "p50": 49.999998,
+            "p95": 249.99999,
+            "p99": 383.333318
+          },
+          "uiWorkMs": {
+            "samples": 61,
+            "p50": 81.404909,
+            "p95": 103.920837,
+            "p99": 182.36572
+          },
+          "syncWaitMs": {
+            "samples": 61,
+            "p50": 0.450191,
+            "p95": 2.710355,
+            "p99": 5.330945
+          },
+          "renderCompletionMs": {
+            "samples": 61,
+            "p50": 11.114489,
+            "p95": 26.144005,
+            "p99": 33.088995
+          }
+        },
+        "hwuiRecentRingTruncated": [
+          false,
+          true
+        ],
+        "deviceScope": [
+          {
+            "available": true,
+            "frames": 82,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 104.424808,
+            "p95Ms": 272.584576,
+            "p99Ms": 388.792596,
+            "maxMs": 388.792596,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 253610381474,
+            "lastPresentNs": 264843456881,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.3270250020000276,
+            "captureSeconds": 12.582348147000062,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 253212401422,
+            "deviceWindowEndNs": 264844407068,
+            "unboundedCaptureFrames": 87,
+            "excludedBeforeInputFrames": 0,
+            "excludedAfterGraceFrames": 5,
+            "firstWindowPresentationDelayMs": 397.980052,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "552a81f555f8ed1294bc4d5117fb7171de5992d5a89e87ea44b5b3e7435af2aa",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#121"
+          },
+          {
+            "available": true,
+            "frames": 57,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 175.424991,
+            "p95Ms": 381.848206,
+            "p99Ms": 448.077914,
+            "maxMs": 448.077914,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1049073282523,
+            "lastPresentNs": 1060236505552,
+            "complete": true,
+            "polls": 46,
+            "maxPollGapSeconds": 0.3307086800000434,
+            "captureSeconds": 12.615730567000128,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 1048660701780,
+            "deviceWindowEndNs": 1060291851136,
+            "unboundedCaptureFrames": 60,
+            "excludedBeforeInputFrames": 0,
+            "excludedAfterGraceFrames": 3,
+            "firstWindowPresentationDelayMs": 412.580743,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "fea7d7f58bcf807c37d81007bd120df5d3eb048f27bc25b1abcb8a507ccfed7a",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#314"
+          }
+        ],
+        "originalUnboundedPresentation": [
+          {
+            "available": true,
+            "frames": 87,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 103.618476,
+            "p95Ms": 272.584576,
+            "p99Ms": 388.792596,
+            "maxMs": 388.792596,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 253610381474,
+            "lastPresentNs": 265279238447,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.3270250020000276,
+            "captureSeconds": 12.582348147000062,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#121"
+          },
+          {
+            "available": true,
+            "frames": 60,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 175.424991,
+            "p95Ms": 381.848206,
+            "p99Ms": 448.077914,
+            "maxMs": 448.077914,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1049073282523,
+            "lastPresentNs": 1060745659968,
+            "complete": true,
+            "polls": 46,
+            "maxPollGapSeconds": 0.3307086800000434,
+            "captureSeconds": 12.615730567000128,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#314"
+          }
+        ],
+        "ratios": {
+          "p50Ms": 1.6799168163182068,
+          "p95Ms": 1.4008430396296523,
+          "p99Ms": 1.1524857176035317
+        }
+      },
+      {
+        "scenario": "E-lod-transitions",
+        "before": {
+          "p50Ms": 102.976865,
+          "p95Ms": 290.209594,
+          "p99Ms": 418.766838,
+          "frames": 80
+        },
+        "after": {
+          "p50Ms": 198.019099,
+          "p95Ms": 396.50808,
+          "p99Ms": 446.007056,
+          "frames": 54
+        },
+        "beforePssKiB": 446547,
+        "afterPssKiB": 463642,
+        "hwuiBefore": {
+          "vsyncDelayMs": {
+            "samples": 88,
+            "p50": 66.666664,
+            "p95": 283.333322,
+            "p99": 399.999984
+          },
+          "uiWorkMs": {
+            "samples": 88,
+            "p50": 82.028569,
+            "p95": 103.06039,
+            "p99": 158.94229
+          },
+          "syncWaitMs": {
+            "samples": 88,
+            "p50": 0.712726,
+            "p95": 4.362392,
+            "p99": 13.718451
+          },
+          "renderCompletionMs": {
+            "samples": 88,
+            "p50": 12.616869,
+            "p95": 22.832218,
+            "p99": 34.74924
+          }
+        },
+        "hwuiAfter": {
+          "vsyncDelayMs": {
+            "samples": 58,
+            "p50": 66.666664,
+            "p95": 299.999988,
+            "p99": 433.333316
+          },
+          "uiWorkMs": {
+            "samples": 58,
+            "p50": 77.737724,
+            "p95": 110.868151,
+            "p99": 114.959269
+          },
+          "syncWaitMs": {
+            "samples": 58,
+            "p50": 0.522934,
+            "p95": 2.894729,
+            "p99": 7.709616
+          },
+          "renderCompletionMs": {
+            "samples": 58,
+            "p50": 12.712477,
+            "p95": 25.399381,
+            "p99": 27.332462
+          }
+        },
+        "hwuiRecentRingTruncated": [
+          false,
+          true
+        ],
+        "deviceScope": [
+          {
+            "available": true,
+            "frames": 80,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 102.976865,
+            "p95Ms": 290.209594,
+            "p99Ms": 418.766838,
+            "maxMs": 418.766838,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 285198984798,
+            "lastPresentNs": 296209088406,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.33927713200000653,
+            "captureSeconds": 12.586843471999941,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 284816631971,
+            "deviceWindowEndNs": 296443072238,
+            "unboundedCaptureFrames": 86,
+            "excludedBeforeInputFrames": 0,
+            "excludedAfterGraceFrames": 6,
+            "firstWindowPresentationDelayMs": 382.352827,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "56414d6dae92e637a0aae4c2fb9b7765d462dc9a55380b4ba0f81f2847ae3b14",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#121"
+          },
+          {
+            "available": true,
+            "frames": 54,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 198.019099,
+            "p95Ms": 396.50808,
+            "p99Ms": 446.007056,
+            "maxMs": 446.007056,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1081728821967,
+            "lastPresentNs": 1092945726512,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.3337660600000163,
+            "captureSeconds": 12.604058991000102,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 1081355168796,
+            "deviceWindowEndNs": 1092992857823,
+            "unboundedCaptureFrames": 56,
+            "excludedBeforeInputFrames": 0,
+            "excludedAfterGraceFrames": 2,
+            "firstWindowPresentationDelayMs": 373.653171,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "721addaa1fb627c5b0933c09a77f9f231b701d0ba146635d79e2324fc364d485",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#314"
+          }
+        ],
+        "originalUnboundedPresentation": [
+          {
+            "available": true,
+            "frames": 86,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 103.225015,
+            "p95Ms": 273.048408,
+            "p99Ms": 418.766838,
+            "maxMs": 418.766838,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 285198984798,
+            "lastPresentNs": 296945836614,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.33927713200000653,
+            "captureSeconds": 12.586843471999941,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#121"
+          },
+          {
+            "available": true,
+            "frames": 56,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 198.019099,
+            "p95Ms": 396.50808,
+            "p99Ms": 446.007056,
+            "maxMs": 446.007056,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1081728821967,
+            "lastPresentNs": 1093277791312,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.3337660600000163,
+            "captureSeconds": 12.604058991000102,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#314"
+          }
+        ],
+        "ratios": {
+          "p50Ms": 1.9229474406702904,
+          "p95Ms": 1.3662817777140752,
+          "p99Ms": 1.0650486512496962
+        }
+      },
+      {
+        "scenario": "F-terrain",
+        "before": {
+          "p50Ms": 99.620162,
+          "p95Ms": 266.427545,
+          "p99Ms": 492.458859,
+          "frames": 87
+        },
+        "after": {
+          "p50Ms": 166.722105,
+          "p95Ms": 334.057003,
+          "p99Ms": 402.982414,
+          "frames": 61
+        },
+        "beforePssKiB": 425944,
+        "afterPssKiB": 445637,
+        "hwuiBefore": {
+          "vsyncDelayMs": {
+            "samples": 94,
+            "p50": 66.666664,
+            "p95": 283.333322,
+            "p99": 416.66665
+          },
+          "uiWorkMs": {
+            "samples": 94,
+            "p50": 81.164576,
+            "p95": 109.017137,
+            "p99": 137.380108
+          },
+          "syncWaitMs": {
+            "samples": 94,
+            "p50": 0.634506,
+            "p95": 3.618819,
+            "p99": 6.741577
+          },
+          "renderCompletionMs": {
+            "samples": 94,
+            "p50": 11.785665,
+            "p95": 24.317883,
+            "p99": 30.590927
+          }
+        },
+        "hwuiAfter": {
+          "vsyncDelayMs": {
+            "samples": 67,
+            "p50": 49.999998,
+            "p95": 299.999988,
+            "p99": 416.66665
+          },
+          "uiWorkMs": {
+            "samples": 67,
+            "p50": 74.366109,
+            "p95": 107.684071,
+            "p99": 121.647311
+          },
+          "syncWaitMs": {
+            "samples": 67,
+            "p50": 0.435985,
+            "p95": 3.275913,
+            "p99": 10.589773
+          },
+          "renderCompletionMs": {
+            "samples": 67,
+            "p50": 12.784854,
+            "p95": 26.687525,
+            "p99": 70.427549
+          }
+        },
+        "hwuiRecentRingTruncated": [
+          false,
+          false
+        ],
+        "deviceScope": [
+          {
+            "available": true,
+            "frames": 87,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 99.620162,
+            "p95Ms": 266.427545,
+            "p99Ms": 492.458859,
+            "maxMs": 492.458859,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 325499510907,
+            "lastPresentNs": 336509551921,
+            "complete": true,
+            "polls": 46,
+            "maxPollGapSeconds": 0.3599127520000138,
+            "captureSeconds": 12.582020686000078,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 325093722526,
+            "deviceWindowEndNs": 336722895962,
+            "unboundedCaptureFrames": 93,
+            "excludedBeforeInputFrames": 0,
+            "excludedAfterGraceFrames": 6,
+            "firstWindowPresentationDelayMs": 405.788381,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "27dd19ffe2cac56d6abbf5cb13d0aabae66330991a2f58dfa0f86f167316ebb3",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#121"
+          },
+          {
+            "available": true,
+            "frames": 61,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 166.722105,
+            "p95Ms": 334.057003,
+            "p99Ms": 402.982414,
+            "maxMs": 402.982414,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1125095673425,
+            "lastPresentNs": 1136274292870,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.31152085100006843,
+            "captureSeconds": 12.597247547000052,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 1124727830808,
+            "deviceWindowEndNs": 1136357004118,
+            "unboundedCaptureFrames": 64,
+            "excludedBeforeInputFrames": 0,
+            "excludedAfterGraceFrames": 3,
+            "firstWindowPresentationDelayMs": 367.842617,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "c9b56f66ee46a6802df5aa75ccd4a2a8f7eb6ae0d3d75453ff38bed36235edfb",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#314"
+          }
+        ],
+        "originalUnboundedPresentation": [
+          {
+            "available": true,
+            "frames": 93,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 100.259435,
+            "p95Ms": 266.427545,
+            "p99Ms": 492.458859,
+            "maxMs": 492.458859,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 325499510907,
+            "lastPresentNs": 337345888529,
+            "complete": true,
+            "polls": 46,
+            "maxPollGapSeconds": 0.3599127520000138,
+            "captureSeconds": 12.582020686000078,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#121"
+          },
+          {
+            "available": true,
+            "frames": 64,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 166.722105,
+            "p95Ms": 343.570867,
+            "p99Ms": 402.982414,
+            "maxMs": 402.982414,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1125095673425,
+            "lastPresentNs": 1136762053096,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.31152085100006843,
+            "captureSeconds": 12.597247547000052,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#314"
+          }
+        ],
+        "ratios": {
+          "p50Ms": 1.6735779349565805,
+          "p95Ms": 1.2538380856979334,
+          "p99Ms": 0.8183067613369912
+        }
+      },
+      {
+        "scenario": "G-war-armies",
+        "before": {
+          "p50Ms": 165.600343,
+          "p95Ms": 301.39859,
+          "p99Ms": 421.08935,
+          "frames": 68
+        },
+        "after": {
+          "p50Ms": 245.605757,
+          "p95Ms": 421.11918,
+          "p99Ms": 686.304908,
+          "frames": 45
+        },
+        "beforePssKiB": 451933,
+        "afterPssKiB": 456408,
+        "hwuiBefore": {
+          "vsyncDelayMs": {
+            "samples": 93,
+            "p50": 66.666664,
+            "p95": 316.666654,
+            "p99": 416.66665
+          },
+          "uiWorkMs": {
+            "samples": 93,
+            "p50": 78.370057,
+            "p95": 176.029647,
+            "p99": 404.732563
+          },
+          "syncWaitMs": {
+            "samples": 93,
+            "p50": 0.714636,
+            "p95": 4.412702,
+            "p99": 9.167673
+          },
+          "renderCompletionMs": {
+            "samples": 93,
+            "p50": 12.320458,
+            "p95": 31.667492,
+            "p99": 33.028801
+          }
+        },
+        "hwuiAfter": {
+          "vsyncDelayMs": {
+            "samples": 58,
+            "p50": 66.666664,
+            "p95": 449.999982,
+            "p99": 566.666644
+          },
+          "uiWorkMs": {
+            "samples": 58,
+            "p50": 75.885504,
+            "p95": 228.877454,
+            "p99": 255.609858
+          },
+          "syncWaitMs": {
+            "samples": 58,
+            "p50": 0.618271,
+            "p95": 3.030106,
+            "p99": 10.709055
+          },
+          "renderCompletionMs": {
+            "samples": 58,
+            "p50": 11.224539,
+            "p95": 26.514326,
+            "p99": 35.149166
+          }
+        },
+        "hwuiRecentRingTruncated": [
+          false,
+          false
+        ],
+        "deviceScope": [
+          {
+            "available": true,
+            "frames": 68,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 165.600343,
+            "p95Ms": 301.39859,
+            "p99Ms": 421.08935,
+            "maxMs": 421.08935,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 385133803300,
+            "lastPresentNs": 396443872281,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.32921525400001883,
+            "captureSeconds": 12.744812980999995,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 385042261669,
+            "deviceWindowEndNs": 396669289501,
+            "unboundedCaptureFrames": 76,
+            "excludedBeforeInputFrames": 2,
+            "excludedAfterGraceFrames": 6,
+            "firstWindowPresentationDelayMs": 91.541631,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "0e00a12a06d3b31841a18edd966ffdfaede5c959ff013773a5d418a9e669e7b0",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#182"
+          },
+          {
+            "available": true,
+            "frames": 45,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 245.605757,
+            "p95Ms": 421.11918,
+            "p99Ms": 686.304908,
+            "maxMs": 686.304908,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1185406891943,
+            "lastPresentNs": 1196674574718,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.2930078939998566,
+            "captureSeconds": 12.698790398000028,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 1185186903396,
+            "deviceWindowEndNs": 1196824696764,
+            "unboundedCaptureFrames": 48,
+            "excludedBeforeInputFrames": 1,
+            "excludedAfterGraceFrames": 2,
+            "firstWindowPresentationDelayMs": 219.988547,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "234bfe1ef7c6201ef055370551c217ea5ddd2f3faefdc594a8d77a6531fac789",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#375"
+          }
+        ],
+        "originalUnboundedPresentation": [
+          {
+            "available": true,
+            "frames": 76,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 164.160717,
+            "p95Ms": 317.143516,
+            "p99Ms": 427.721855,
+            "maxMs": 427.721855,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 384926825804,
+            "lastPresentNs": 397476709306,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.32921525400001883,
+            "captureSeconds": 12.744812980999995,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#182"
+          },
+          {
+            "available": true,
+            "frames": 48,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 251.374835,
+            "p95Ms": 421.11918,
+            "p99Ms": 686.304908,
+            "maxMs": 686.304908,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1185140946252,
+            "lastPresentNs": 1197178597466,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.2930078939998566,
+            "captureSeconds": 12.698790398000028,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#375"
+          }
+        ],
+        "ratios": {
+          "p50Ms": 1.483123480003903,
+          "p95Ms": 1.3972168217508913,
+          "p99Ms": 1.629832024960973
+        }
+      },
+      {
+        "scenario": "H-active-simulation",
+        "before": {
+          "p50Ms": 103.190954,
+          "p95Ms": 235.433752,
+          "p99Ms": 414.012758,
+          "frames": 98
+        },
+        "after": {
+          "p50Ms": 266.194888,
+          "p95Ms": 338.406635,
+          "p99Ms": 490.134493,
+          "frames": 46
+        },
+        "beforePssKiB": 457267,
+        "afterPssKiB": 444841,
+        "hwuiBefore": {
+          "vsyncDelayMs": {
+            "samples": 106,
+            "p50": 83.33333,
+            "p95": 233.333324,
+            "p99": 249.99999
+          },
+          "uiWorkMs": {
+            "samples": 106,
+            "p50": 89.153894,
+            "p95": 114.947121,
+            "p99": 121.942296
+          },
+          "syncWaitMs": {
+            "samples": 106,
+            "p50": 1.300749,
+            "p95": 5.66013,
+            "p99": 7.108264
+          },
+          "renderCompletionMs": {
+            "samples": 106,
+            "p50": 12.306256,
+            "p95": 25.860197,
+            "p99": 28.974057
+          }
+        },
+        "hwuiAfter": {
+          "vsyncDelayMs": {
+            "samples": 53,
+            "p50": 66.666664,
+            "p95": 233.333324,
+            "p99": 333.33332
+          },
+          "uiWorkMs": {
+            "samples": 53,
+            "p50": 76.701529,
+            "p95": 100.431307,
+            "p99": 116.129728
+          },
+          "syncWaitMs": {
+            "samples": 53,
+            "p50": 1.048393,
+            "p95": 5.697546,
+            "p99": 7.097809
+          },
+          "renderCompletionMs": {
+            "samples": 53,
+            "p50": 12.606233,
+            "p95": 24.184594,
+            "p99": 29.020051
+          }
+        },
+        "hwuiRecentRingTruncated": [
+          false,
+          false
+        ],
+        "deviceScope": [
+          {
+            "available": true,
+            "frames": 98,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 103.190954,
+            "p95Ms": 235.433752,
+            "p99Ms": 414.012758,
+            "maxMs": 414.012758,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 402895742028,
+            "lastPresentNs": 414262593442,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.29655869299995175,
+            "captureSeconds": 12.657983082999976,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 402662510679,
+            "deviceWindowEndNs": 414289073934,
+            "unboundedCaptureFrames": 103,
+            "excludedBeforeInputFrames": 2,
+            "excludedAfterGraceFrames": 3,
+            "firstWindowPresentationDelayMs": 233.231349,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "a4c3b11ff0cf008c72392c1e4aebc2cf798a8160f9df4fbcb9a1a6a1e34fd102",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#182"
+          },
+          {
+            "available": true,
+            "frames": 46,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 266.194888,
+            "p95Ms": 338.406635,
+            "p99Ms": 490.134493,
+            "maxMs": 490.134493,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1203129444776,
+            "lastPresentNs": 1214366473919,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.2910748599999806,
+            "captureSeconds": 12.658166717000086,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 1202857975161,
+            "deviceWindowEndNs": 1214483564762,
+            "unboundedCaptureFrames": 51,
+            "excludedBeforeInputFrames": 2,
+            "excludedAfterGraceFrames": 3,
+            "firstWindowPresentationDelayMs": 271.469615,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "d2fd13ff9c212e4ca621b3bc4b0ef4ebba01b0a994352e20d3d3a0fe7e42d6a7",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#375"
+          }
+        ],
+        "originalUnboundedPresentation": [
+          {
+            "available": true,
+            "frames": 103,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 103.190954,
+            "p95Ms": 241.593208,
+            "p99Ms": 387.048005,
+            "maxMs": 414.012758,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 402526655012,
+            "lastPresentNs": 414907557196,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.29655869299995175,
+            "captureSeconds": 12.657983082999976,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#182"
+          },
+          {
+            "available": true,
+            "frames": 51,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 263.576004,
+            "p95Ms": 370.34712,
+            "p99Ms": 490.134493,
+            "maxMs": 490.134493,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1202749735783,
+            "lastPresentNs": 1215143302708,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.2910748599999806,
+            "captureSeconds": 12.658166717000086,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#375"
+          }
+        ],
+        "ratios": {
+          "p50Ms": 2.579633947371007,
+          "p95Ms": 1.4373751941905084,
+          "p99Ms": 1.183863259112416
+        }
+      },
+      {
+        "scenario": "I-extended-0",
+        "before": {
+          "p50Ms": 113.74642,
+          "p95Ms": 297.44032,
+          "p99Ms": 415.875955,
+          "frames": 75
+        },
+        "after": {
+          "p50Ms": 243.005237,
+          "p95Ms": 437.54211,
+          "p99Ms": 488.548284,
+          "frames": 50
+        },
+        "beforePssKiB": 409793,
+        "afterPssKiB": 463474,
+        "hwuiBefore": {
+          "vsyncDelayMs": {
+            "samples": 85,
+            "p50": 66.666664,
+            "p95": 283.333322,
+            "p99": 333.33332
+          },
+          "uiWorkMs": {
+            "samples": 85,
+            "p50": 82.13986,
+            "p95": 118.296638,
+            "p99": 204.815959
+          },
+          "syncWaitMs": {
+            "samples": 85,
+            "p50": 1.166659,
+            "p95": 3.930593,
+            "p99": 6.359848
+          },
+          "renderCompletionMs": {
+            "samples": 85,
+            "p50": 10.676111,
+            "p95": 28.378605,
+            "p99": 32.935492
+          }
+        },
+        "hwuiAfter": {
+          "vsyncDelayMs": {
+            "samples": 54,
+            "p50": 66.666664,
+            "p95": 366.666652,
+            "p99": 583.33331
+          },
+          "uiWorkMs": {
+            "samples": 54,
+            "p50": 79.485324,
+            "p95": 106.77094,
+            "p99": 234.844443
+          },
+          "syncWaitMs": {
+            "samples": 54,
+            "p50": 0.455959,
+            "p95": 2.503897,
+            "p99": 3.057462
+          },
+          "renderCompletionMs": {
+            "samples": 54,
+            "p50": 10.528712,
+            "p95": 25.577341,
+            "p99": 26.968309
+          }
+        },
+        "hwuiRecentRingTruncated": [
+          false,
+          false
+        ],
+        "deviceScope": [
+          {
+            "available": true,
+            "frames": 75,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 113.74642,
+            "p95Ms": 297.44032,
+            "p99Ms": 415.875955,
+            "maxMs": 415.875955,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 481062721105,
+            "lastPresentNs": 492163618971,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.3535548549999703,
+            "captureSeconds": 12.624953124000058,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 480605507932,
+            "deviceWindowEndNs": 492243063015,
+            "unboundedCaptureFrames": 81,
+            "excludedBeforeInputFrames": 0,
+            "excludedAfterGraceFrames": 6,
+            "firstWindowPresentationDelayMs": 457.213173,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "9043d95e8332bb77dd66f0fdf35729cd986bd6c75a976d4447a4b168b51b3d39",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#218"
+          },
+          {
+            "available": true,
+            "frames": 50,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 243.005237,
+            "p95Ms": 437.54211,
+            "p99Ms": 488.548284,
+            "maxMs": 488.548284,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1283094897240,
+            "lastPresentNs": 1294216056437,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.3344475420001345,
+            "captureSeconds": 12.659277476999932,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 1282594542884,
+            "deviceWindowEndNs": 1294271695828,
+            "unboundedCaptureFrames": 52,
+            "excludedBeforeInputFrames": 0,
+            "excludedAfterGraceFrames": 2,
+            "firstWindowPresentationDelayMs": 500.354356,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "22602162b1c506fc1ece68d999ab2e2147c74c1dada87fac52dfa7eb71d31a29",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#411"
+          }
+        ],
+        "originalUnboundedPresentation": [
+          {
+            "available": true,
+            "frames": 81,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 113.74642,
+            "p95Ms": 297.44032,
+            "p99Ms": 436.257086,
+            "maxMs": 436.257086,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 481062721105,
+            "lastPresentNs": 492996764724,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.3535548549999703,
+            "captureSeconds": 12.624953124000058,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#218"
+          },
+          {
+            "available": true,
+            "frames": 52,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 243.005237,
+            "p95Ms": 437.54211,
+            "p99Ms": 488.548284,
+            "maxMs": 488.548284,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1283094897240,
+            "lastPresentNs": 1294676735367,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.3344475420001345,
+            "captureSeconds": 12.659277476999932,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#411"
+          }
+        ],
+        "ratios": {
+          "p50Ms": 2.1363770130084094,
+          "p95Ms": 1.471024876519767,
+          "p99Ms": 1.17474520497344
+        }
+      },
+      {
+        "scenario": "I-extended-11",
+        "before": {
+          "p50Ms": 116.02375,
+          "p95Ms": 286.815747,
+          "p99Ms": 461.685779,
+          "frames": 77
+        },
+        "after": {
+          "p50Ms": 229.885428,
+          "p95Ms": 385.144654,
+          "p99Ms": 444.742436,
+          "frames": 50
+        },
+        "beforePssKiB": 453968,
+        "afterPssKiB": 442445,
+        "hwuiBefore": {
+          "vsyncDelayMs": {
+            "samples": 85,
+            "p50": 66.666664,
+            "p95": 316.666654,
+            "p99": 499.99998
+          },
+          "uiWorkMs": {
+            "samples": 85,
+            "p50": 83.405401,
+            "p95": 112.382899,
+            "p99": 141.430204
+          },
+          "syncWaitMs": {
+            "samples": 85,
+            "p50": 1.032954,
+            "p95": 4.195228,
+            "p99": 10.884578
+          },
+          "renderCompletionMs": {
+            "samples": 85,
+            "p50": 12.240689,
+            "p95": 23.670989,
+            "p99": 26.185686
+          }
+        },
+        "hwuiAfter": {
+          "vsyncDelayMs": {
+            "samples": 54,
+            "p50": 66.666664,
+            "p95": 366.666652,
+            "p99": 383.333318
+          },
+          "uiWorkMs": {
+            "samples": 54,
+            "p50": 77.131395,
+            "p95": 132.481568,
+            "p99": 151.988567
+          },
+          "syncWaitMs": {
+            "samples": 54,
+            "p50": 0.504091,
+            "p95": 2.478704,
+            "p99": 3.754671
+          },
+          "renderCompletionMs": {
+            "samples": 54,
+            "p50": 11.559989,
+            "p95": 25.152733,
+            "p99": 25.378814
+          }
+        },
+        "hwuiRecentRingTruncated": [
+          true,
+          true
+        ],
+        "deviceScope": [
+          {
+            "available": true,
+            "frames": 77,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 116.02375,
+            "p95Ms": 286.815747,
+            "p99Ms": 461.685779,
+            "maxMs": 461.685779,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 794662574874,
+            "lastPresentNs": 806127094756,
+            "complete": true,
+            "polls": 46,
+            "maxPollGapSeconds": 0.3350314270001036,
+            "captureSeconds": 12.678748560000031,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 794562713848,
+            "deviceWindowEndNs": 806189441949,
+            "unboundedCaptureFrames": 84,
+            "excludedBeforeInputFrames": 3,
+            "excludedAfterGraceFrames": 4,
+            "firstWindowPresentationDelayMs": 99.861026,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "69c370cd21cec47c575c0d7526554faaf92d8135cca4cb18268d2ba4e01f6de5",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#218"
+          },
+          {
+            "available": true,
+            "frames": 50,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 229.885428,
+            "p95Ms": 385.144654,
+            "p99Ms": 444.742436,
+            "maxMs": 444.742436,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS. Only frames from real device pointer-down to pointer-up plus the fixed100ms grace are included; raw captures and boundary exclusions retained.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1595364118379,
+            "lastPresentNs": 1606697127610,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.3140055859998938,
+            "captureSeconds": 12.715673534000189,
+            "snapshotRingWasFull": true,
+            "deviceWindowStartNs": 1595111267104,
+            "deviceWindowEndNs": 1606740148284,
+            "unboundedCaptureFrames": 54,
+            "excludedBeforeInputFrames": 2,
+            "excludedAfterGraceFrames": 2,
+            "firstWindowPresentationDelayMs": 252.851275,
+            "firstPresentationNote": "First window presentation after input; not proof that map pixels responded.",
+            "scopePolicy": "device-first-down-to-final-up-plus100ms-v1",
+            "rawPollsSha256": "7491663ca865bf736c6d1ec35d93f24da925a49b5c55a4fc924e1840c6cb4494",
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#411"
+          }
+        ],
+        "originalUnboundedPresentation": [
+          {
+            "available": true,
+            "frames": 84,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 116.02375,
+            "p95Ms": 286.815747,
+            "p99Ms": 461.685779,
+            "maxMs": 461.685779,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 794296369066,
+            "lastPresentNs": 806628614453,
+            "complete": true,
+            "polls": 46,
+            "maxPollGapSeconds": 0.3350314270001036,
+            "captureSeconds": 12.678748560000031,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#218"
+          },
+          {
+            "available": true,
+            "frames": 54,
+            "invalidRows": 0,
+            "unpresentedRows": 0,
+            "nonIncreasingRows": 0,
+            "recentRingMayBeTruncated": false,
+            "p50Ms": 222.28223,
+            "p95Ms": 385.144654,
+            "p99Ms": 444.742436,
+            "maxMs": 444.742436,
+            "note": "Actual presentation intervals throughout polled capture; overlapping rings deduplicated. Not physical handset FPS.",
+            "refreshPeriodNs": 16666666,
+            "firstPresentNs": 1594866971760,
+            "lastPresentNs": 1607046197739,
+            "complete": true,
+            "polls": 47,
+            "maxPollGapSeconds": 0.3140055859998938,
+            "captureSeconds": 12.715673534000189,
+            "snapshotRingWasFull": true,
+            "layer": "com.elcin31.grandstrategymultiplayer/com.elcin31.grandstrategymultiplayer.MainActivity#411"
+          }
+        ],
+        "ratios": {
+          "p50Ms": 1.9813652635775,
+          "p95Ms": 1.3428295274178235,
+          "p99Ms": 0.9633011373304612
+        }
+      }
+    ],
+    "limitations": [
+      "One paired software-emulator run; repeat adverse/noisy cases before acceptance.",
+      "An identical-APK control measures environment variation and cannot accept a new renderer.",
+      "HWUI quantiles cover its recent CSV ring; actual presentation polling covers the complete motion.",
+      "PSS trend is a short bounded soak, not proof of indefinite memory stability.",
+      "Separate interaction/upgrade/save smoke and visual review are required before the phase gate.",
+      "No fixed physical-device FPS or isolated hardware GPU utilization claimed."
+    ]
+  },
+  "nativeCombinationPromoted": false,
+  "defaultRendererUnchanged": true,
+  "physicalRedmiTest": false,
+  "interaction": {
+    "runId": 38547041316,
+    "artifactId": 11885079037,
+    "passed": true,
+    "baselineEnd": {
+      "day": 48,
+      "tick": 1,
+      "month": 2
+    },
+    "candidateEnd": {
+      "day": 49,
+      "tick": 1,
+      "month": 2
+    }
+  },
+  "lod": {
+    "runId": 38547040294,
+    "artifactId": 11885526151,
+    "passedFunctionally": true,
+    "baseline": {
+      "scopedCompleteFrames": 182,
+      "p50Ms": 55.958028,
+      "p95Ms": 156.489113,
+      "p99Ms": 189.657472,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ]
+    },
+    "candidate": {
+      "scopedCompleteFrames": 117,
+      "p50Ms": 65.758689,
+      "p95Ms": 155.451895,
+      "p99Ms": 200.656376,
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ]
+    }
+  },
+  "note": "Both guarded native changes executed, but the complete presentation gate failed. A UI-thread producer scheduling redesign remains unproved; no new gameplay or complete2.3 release is authorized by these results."
+}
