@@ -43,4 +43,14 @@ class ImmutableBorderBinaryTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             verify_border_api(self.apk(directory,modern=False),lambda *_:'map loaded',Path(directory)/'startup')
 
+    def test_restored_renderer_rejects_accidental_experiment_bundling(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaises(AssertionError):binary.verify_original(self.apk(directory))
+            with self.assertRaises(AssertionError):binary.verify_original(self.apk(directory,modern=False))
+            apk=Path(directory)/'original.apk'
+            with zipfile.ZipFile(apk,'w') as z:
+                z.writestr('assets/index.android.bundle','original renderer')
+                for abi in binary.ABIS:z.writestr(f'lib/{abi}/librnskia.so','original native path API')
+            self.assertEqual(binary.verify_original(apk),binary.ABIS)
+
 if __name__=='__main__':unittest.main()

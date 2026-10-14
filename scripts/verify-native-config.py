@@ -55,3 +55,7 @@ if './plugins/withSkiaImmutableBorders.cjs' in config.get('plugins',[]):
         "console.log(JSON.stringify(require('./plugins/withSkiaImmutableBorders.cjs').applyImmutableBorders(process.cwd())))"],text=True))
     assert guarded==proof, 'Native border proof does not match the reviewed pinned patch'
     print('PASS: pinned immutable border API; original mutable API and cache ownership preserved')
+else:
+    import subprocess
+    subprocess.run(['node','-e',"const fs=require('node:fs'),crypto=require('node:crypto');for(const b of require('./plugins/withSkiaImmutableBorders.cjs').bindings){const s=fs.readFileSync('node_modules/@shopify/react-native-skia/'+b.file);if(crypto.createHash('sha256').update(s).digest('hex')!==b.sha)throw Error('Restored renderer has changed native path API')}"],check=True)
+    print('PASS: restored accepted renderer has the exact original pinned native path API')
