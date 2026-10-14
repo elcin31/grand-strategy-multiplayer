@@ -1,3 +1,5 @@
+Current2.3 source: dev8 explicit SkPath bounds preparation at `82039b6ae4c1df0e92445a821b776b2ed9391634`, build/A-I38515162900 pending. Dev7 compiled APK7ca181ab... passes cold upgrade/interaction/monthly/LOD, fullA-I38511480652 still running. StageA open; no2.3 release published. Exact evidence: [checkpoint](DOMINION_23_CHECKPOINT.md).
+
 Dominion2.3 current work: dev7 readonly native border paths at `f36140785edb6272577e9abf310e5b59b3ef779b`; separate native geometry/lifetime/CPU probe passed, actual APK/A-I gate pending. See [checkpoint](DOMINION_23_CHECKPOINT.md) and [native proof](DOMINION_23_NATIVE_PATH_PROOF.json). StageA is open; later stages and59 legacy source failures/tick1000 save mismatch remain unresolved.
 
 # Dominion 2.3 — ongoing native camera gate
