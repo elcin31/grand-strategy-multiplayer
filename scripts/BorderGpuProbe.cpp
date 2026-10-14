@@ -40,7 +40,8 @@ int main(int argc,char** argv){try{
   GLint samples,stencil;glGetIntegerv(GL_SAMPLES,&samples);glGetIntegerv(GL_STENCIL_BITS,&stencil);
   GrGLFramebufferInfo info;info.fFBOID=0;info.fFormat=GR_GL_RGBA8;
   auto rt=GrBackendRenderTargets::MakeGL(1280,720,samples,stencil,info);
-  auto surface=SkSurfaces::WrapBackendRenderTarget(context.get(),rt,kBottomLeft_GrSurfaceOrigin,kRGBA_8888_SkColorType,nullptr);
+  const SkSurfaceProps props(0,kRGB_H_SkPixelGeometry);
+  auto surface=SkSurfaces::WrapBackendRenderTarget(context.get(),rt,kBottomLeft_GrSurfaceOrigin,kRGBA_8888_SkColorType,nullptr,&props);
   if(!surface)throw std::runtime_error("No GPU-backed surface");
   const char* renderer=reinterpret_cast<const char*>(glGetString(GL_RENDERER));
   std::cout<<"{\"mode\":\""<<argv[2]<<"\",\"diagnosticOnly\":true,\"pbufferHasCompositor\":false,\"physicalRedmiTest\":false,\"glRenderer\":\""<<(renderer?renderer:"unknown")<<"\",\"cacheLimitBytes\":"<<context->getResourceCacheLimit()<<",\"frames\":[";
