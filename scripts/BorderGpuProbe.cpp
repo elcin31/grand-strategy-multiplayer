@@ -17,8 +17,10 @@ struct EglTarget {
   EglTarget(){
     display=eglGetDisplay(EGL_DEFAULT_DISPLAY);
     if(display==EGL_NO_DISPLAY||!eglInitialize(display,nullptr,nullptr))throw std::runtime_error("No EGL display");
-    const EGLint attrs[]={EGL_SURFACE_TYPE,EGL_PBUFFER_BIT,EGL_RENDERABLE_TYPE,EGL_OPENGL_ES2_BIT,
-      EGL_RED_SIZE,8,EGL_GREEN_SIZE,8,EGL_BLUE_SIZE,8,EGL_ALPHA_SIZE,8,EGL_STENCIL_SIZE,8,EGL_NONE};
+    // Match pinned gl::Display::chooseConfig. Only the target is a pbuffer.
+    const EGLint attrs[]={EGL_SURFACE_TYPE,EGL_WINDOW_BIT|EGL_PBUFFER_BIT,EGL_RENDERABLE_TYPE,EGL_OPENGL_ES2_BIT,
+      EGL_RED_SIZE,8,EGL_GREEN_SIZE,8,EGL_BLUE_SIZE,8,EGL_ALPHA_SIZE,8,
+      EGL_DEPTH_SIZE,0,EGL_STENCIL_SIZE,0,EGL_SAMPLE_BUFFERS,0,EGL_NONE};
     EGLConfig config;EGLint count;
     if(!eglChooseConfig(display,attrs,&config,1,&count)||count!=1)throw std::runtime_error("No stencil RGBA EGL config");
     const EGLint ctx[]={EGL_CONTEXT_CLIENT_VERSION,2,EGL_NONE},size[]={EGL_WIDTH,1280,EGL_HEIGHT,720,EGL_NONE};
@@ -44,7 +46,7 @@ int main(int argc,char** argv){try{
   auto surface=SkSurfaces::WrapBackendRenderTarget(context.get(),rt,kBottomLeft_GrSurfaceOrigin,kRGBA_8888_SkColorType,nullptr,&props);
   if(!surface)throw std::runtime_error("No GPU-backed surface");
   const char* renderer=reinterpret_cast<const char*>(glGetString(GL_RENDERER));
-  std::cout<<"{\"mode\":\""<<argv[2]<<"\",\"diagnosticOnly\":true,\"pbufferHasCompositor\":false,\"physicalRedmiTest\":false,\"glRenderer\":\""<<(renderer?renderer:"unknown")<<"\",\"cacheLimitBytes\":"<<context->getResourceCacheLimit()<<",\"frames\":[";
+  std::cout<<"{\"mode\":\""<<argv[2]<<"\",\"diagnosticOnly\":true,\"pbufferHasCompositor\":false,\"physicalRedmiTest\":false,\"observedSamples\":"<<samples<<",\"observedStencilBits\":"<<stencil<<",\"glRenderer\":\""<<(renderer?renderer:"unknown")<<"\",\"cacheLimitBytes\":"<<context->getResourceCacheLimit()<<",\"frames\":[";
   sk_sp<SkPicture> picture;float preparedZoom=0;
   for(int frame=0;frame<240;++frame){
     // Two fixed pan cycles followed by two World/Province transitions.

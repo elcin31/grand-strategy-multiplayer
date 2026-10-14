@@ -1,0 +1,286 @@
+{
+  "diagnosticOnly": true,
+  "appPerformanceGate": "still-blocked",
+  "capturedMatrixRunId": 38517715562,
+  "nativeSkiaVersion": "2.6.2",
+  "physicalRedmiTest": false,
+  "reports": [
+    {
+      "slot": "baseline",
+      "traceSha256": "0eda68a4e8d04d717319b58d3cd299bd9adc0dc8715b29eec938fee068f7790f",
+      "markerStartNs": 137591902660,
+      "markerEndNs": 150164169731,
+      "markerDurationMs": 12572.267071,
+      "lossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "attributionComplete": false,
+      "observedCompletedSlices": [
+        {
+          "tid": 2334,
+          "thread": "tegymultiplayer",
+          "name": "eglSwapBuffers",
+          "n": 121,
+          "ms": 8370.868806,
+          "max_ms": 97.859229
+        },
+        {
+          "tid": 2348,
+          "thread": "RenderThread",
+          "name": "eglSwapBuffersWithDamageKHR",
+          "n": 114,
+          "ms": 947.574488,
+          "max_ms": 21.247241
+        },
+        {
+          "tid": 2334,
+          "thread": "tegymultiplayer",
+          "name": "glBufferDataSyncAEMU encode",
+          "n": 1372,
+          "ms": 681.707002,
+          "max_ms": 15.87611
+        },
+        {
+          "tid": 2348,
+          "thread": "RenderThread",
+          "name": "flush commands",
+          "n": 114,
+          "ms": 178.081715,
+          "max_ms": 6.456917
+        },
+        {
+          "tid": 2348,
+          "thread": "RenderThread",
+          "name": "auto skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)::(anonymous class)::operator()() const",
+          "n": 114,
+          "ms": 61.327907,
+          "max_ms": 5.94116
+        },
+        {
+          "tid": 2348,
+          "thread": "RenderThread",
+          "name": "glBufferDataSyncAEMU encode",
+          "n": 228,
+          "ms": 60.60869,
+          "max_ms": 4.047972
+        },
+        {
+          "tid": 2348,
+          "thread": "RenderThread",
+          "name": "TextureOp",
+          "n": 456,
+          "ms": 13.987457,
+          "max_ms": 0.542211
+        },
+        {
+          "tid": 2348,
+          "thread": "RenderThread",
+          "name": "auto skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)::(anonymous class)::operator()() const",
+          "n": 114,
+          "ms": 12.502355,
+          "max_ms": 1.754053
+        },
+        {
+          "tid": 2334,
+          "thread": "tegymultiplayer",
+          "name": "glBindTexture encode",
+          "n": 6431,
+          "ms": 5.691508,
+          "max_ms": 1.583608
+        },
+        {
+          "tid": 2348,
+          "thread": "RenderThread",
+          "name": "glBindTexture encode",
+          "n": 2289,
+          "ms": 3.886131,
+          "max_ms": 2.252728
+        },
+        {
+          "tid": 2334,
+          "thread": "tegymultiplayer",
+          "name": "glActiveTexture encode",
+          "n": 4441,
+          "ms": 2.730103,
+          "max_ms": 0.068608
+        },
+        {
+          "tid": 2334,
+          "thread": "tegymultiplayer",
+          "name": "dequeueBuffer - SurfaceTexture-0-2334-0",
+          "n": 121,
+          "ms": 2.290545,
+          "max_ms": 0.252371
+        },
+        {
+          "tid": 2334,
+          "thread": "tegymultiplayer",
+          "name": "TextureView#draw()",
+          "n": 114,
+          "ms": 0.833749,
+          "max_ms": 0.072114
+        },
+        {
+          "tid": 2348,
+          "thread": "RenderThread",
+          "name": "Texture release(1174)",
+          "n": 1,
+          "ms": 0.444329,
+          "max_ms": 0.444329
+        },
+        {
+          "tid": 2348,
+          "thread": "RenderThread",
+          "name": "glActiveTexture encode",
+          "n": 311,
+          "ms": 0.312929,
+          "max_ms": 0.104905
+        }
+      ]
+    },
+    {
+      "slot": "candidate",
+      "traceSha256": "53641a3e996ab77ac71dac451029a6ce6095f77f011c3b632db5557f8e1b5105",
+      "markerStartNs": 958553330757,
+      "markerEndNs": 971114429864,
+      "markerDurationMs": 12561.099107,
+      "lossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "attributionComplete": false,
+      "observedCompletedSlices": [
+        {
+          "tid": 8519,
+          "thread": "tegymultiplayer",
+          "name": "eglSwapBuffers",
+          "n": 135,
+          "ms": 8279.561996,
+          "max_ms": 87.521843
+        },
+        {
+          "tid": 8532,
+          "thread": "RenderThread",
+          "name": "eglSwapBuffersWithDamageKHR",
+          "n": 105,
+          "ms": 860.404471,
+          "max_ms": 25.788965
+        },
+        {
+          "tid": 8519,
+          "thread": "tegymultiplayer",
+          "name": "glBufferDataSyncAEMU encode",
+          "n": 1489,
+          "ms": 656.02546,
+          "max_ms": 12.481011
+        },
+        {
+          "tid": 8532,
+          "thread": "RenderThread",
+          "name": "flush commands",
+          "n": 105,
+          "ms": 160.104235,
+          "max_ms": 6.756235
+        },
+        {
+          "tid": 8532,
+          "thread": "RenderThread",
+          "name": "glBufferDataSyncAEMU encode",
+          "n": 210,
+          "ms": 70.525017,
+          "max_ms": 5.990036
+        },
+        {
+          "tid": 8532,
+          "thread": "RenderThread",
+          "name": "auto skgpu::ganesh::OpsTask::onExecute(GrOpFlushState *)::(anonymous class)::operator()() const",
+          "n": 105,
+          "ms": 50.853866,
+          "max_ms": 4.351539
+        },
+        {
+          "tid": 8532,
+          "thread": "RenderThread",
+          "name": "TextureOp",
+          "n": 420,
+          "ms": 16.497476,
+          "max_ms": 4.125036
+        },
+        {
+          "tid": 8532,
+          "thread": "RenderThread",
+          "name": "auto skgpu::ganesh::OpsTask::onPrepare(GrOpFlushState *)::(anonymous class)::operator()() const",
+          "n": 105,
+          "ms": 10.627899,
+          "max_ms": 1.952393
+        },
+        {
+          "tid": 8519,
+          "thread": "tegymultiplayer",
+          "name": "glBindTexture encode",
+          "n": 6954,
+          "ms": 4.645697,
+          "max_ms": 0.448938
+        },
+        {
+          "tid": 8519,
+          "thread": "tegymultiplayer",
+          "name": "dequeueBuffer - SurfaceTexture-0-8519-0",
+          "n": 135,
+          "ms": 2.992148,
+          "max_ms": 0.393524
+        },
+        {
+          "tid": 8519,
+          "thread": "tegymultiplayer",
+          "name": "glActiveTexture encode",
+          "n": 5028,
+          "ms": 2.950866,
+          "max_ms": 0.140462
+        },
+        {
+          "tid": 8532,
+          "thread": "RenderThread",
+          "name": "glBindTexture encode",
+          "n": 2108,
+          "ms": 1.333498,
+          "max_ms": 0.07997
+        },
+        {
+          "tid": 8519,
+          "thread": "tegymultiplayer",
+          "name": "TextureView#draw()",
+          "n": 101,
+          "ms": 0.830298,
+          "max_ms": 0.174726
+        },
+        {
+          "tid": 8519,
+          "thread": "tegymultiplayer",
+          "name": "SurfaceTexture-0-8519-0: 0",
+          "n": 110,
+          "ms": 0.468889,
+          "max_ms": 0.378376
+        },
+        {
+          "tid": 8532,
+          "thread": "RenderThread",
+          "name": "Texture upload(693) 144x72",
+          "n": 2,
+          "ms": 0.339773,
+          "max_ms": 0.202868
+        }
+      ]
+    }
+  ],
+  "note": "Completed synchronous slices fully inside each actual input marker. Inclusive wall time, NOT CPU or GPU time and NOT a quantitative comparison of gated scenario A. Software emulator driver waits are observable; physical-device attribution remains unavailable. Raw ftrace errors retained."
+}
