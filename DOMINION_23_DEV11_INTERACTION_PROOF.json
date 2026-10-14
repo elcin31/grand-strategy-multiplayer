@@ -1,0 +1,35 @@
+{
+  "status": "functional-immutable-upgrade-and-monthly-passed-performance-unaccepted",
+  "runId": 38542528962,
+  "jobId": 115780549790,
+  "artifactId": 11883089750,
+  "artifactZipSha256": "f769e98250c0c94610f09fb3ac6990c4fb0f98ac75399c7ec2369200f6091d99",
+  "compiledSourceSha": "d069e318c33efa8c5b84becae43f630a6cfb7d83",
+  "apkSha256": "3d202cd617e9a5306f1777490e0bd8d1d65ab1eb9aa6d2150f140ecf9bc48fdd",
+  "passed": [
+    "coldLaunch",
+    "sameSignatureUpgrade",
+    "pausedCampaignPreserved",
+    "BalancedPerformanceModes",
+    "provinceAndArmySelection",
+    "routeMarch",
+    "saveRestart",
+    "monthlyEconomyAndAI",
+    "noFatalLogs",
+    "nativeConsumerPathCurrentPid"
+  ],
+  "baselineEnd": {
+    "day": 51,
+    "tick": 1,
+    "month": 2
+  },
+  "candidateEnd": {
+    "day": 47,
+    "tick": 1,
+    "month": 2
+  },
+  "calendarDifferencePreserved": true,
+  "physicalRedmiTest": false,
+  "defaultRendererUnchanged": true,
+  "noPerformanceAcceptance": true
+}

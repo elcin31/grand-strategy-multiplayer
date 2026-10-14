@@ -1,0 +1,17 @@
+{
+  "status": "harness-false-positive-immutable-apk-retest-required",
+  "runId": 38540287067,
+  "jobId": 115773064270,
+  "artifactId": 11882108002,
+  "artifactZipSha256": "cbcb6fae8abf2c2bfd060a77bcf4bb0e3f2b5e5d22103f2a42a0611ae06de29f",
+  "candidateSourceSha": "d069e318c33efa8c5b84becae43f630a6cfb7d83",
+  "apkSha256": "3d202cd617e9a5306f1777490e0bd8d1d65ab1eb9aa6d2150f140ecf9bc48fdd",
+  "baselinePid": 2224,
+  "candidatePid": 4836,
+  "observedFailure": "Validator inspected whole logcat and treated dead baseline producer warnings as candidate failures.",
+  "fixCommit": "25c6cc2",
+  "runtimeChanged": false,
+  "rawBaselineLogsPreserved": true,
+  "livePidFailureCheckRetained": true,
+  "physicalRedmiTest": false
+}
