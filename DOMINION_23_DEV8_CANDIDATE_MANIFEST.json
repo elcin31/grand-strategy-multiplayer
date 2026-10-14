@@ -1,0 +1,81 @@
+{
+  "status": "built-unaccepted-first-matrix-incomplete-external-launcher-anr-retry-running",
+  "compiledSourceSha": "82039b6ae4c1df0e92445a821b776b2ed9391634",
+  "buildRunId": 38515162900,
+  "buildJobId": 115692214406,
+  "artifactId": 11872042129,
+  "apk": {
+    "version": "2.3.0-dev.8",
+    "versionCode": 23,
+    "bytes": 174220770,
+    "sha256": "85b1b2dd6d63785937b90a1b76ce85ca1852d8420363d78afdc6e8736c4e31a6",
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "abi": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ]
+  },
+  "artifactZip": {
+    "bytes": 92891921,
+    "sha256": "5ceed1962758aab949db70b2329db054444395b5b8ba95d23e95263e05aa3a5a"
+  },
+  "nativeBorderProof": {
+    "skiaVersion": "2.6.2",
+    "immutableBorderApi": 1,
+    "mutablePathApiUnchanged": true,
+    "livePathsDisposed": false,
+    "imagesOrSurfacesAdded": false,
+    "nativeMemoryPressure": true,
+    "boundsPreparedBeforeSharing": true,
+    "files": [
+      {
+        "file": "node_modules/@shopify/react-native-skia/cpp/api/JsiSkPathFactory.h",
+        "originalSha256": "62c2a1186da194c85d04e65aca643f98427e86ccd33320cd52351b054d8b0164",
+        "sha256": "8fa65f7080ddf874053da01095e03be9cf3b19e60e4010420dd4b0cd0f36c480"
+      },
+      {
+        "file": "node_modules/@shopify/react-native-skia/cpp/api/JsiSkCanvas.h",
+        "originalSha256": "4e20c521175c6a80dc950f1aa47d70d96bd6ac654959e9ae1c9b5b647e61ba95",
+        "sha256": "967162f16ab24051c2010bf999718e5ad2c1a6b03f146448687db5d536f722c7"
+      }
+    ],
+    "header": {
+      "file": "node_modules/@shopify/react-native-skia/cpp/api/DominionImmutablePath.h",
+      "sha256": "a0fc090989ba26969c6ef99cecb1ab1d26bef7c4f421f173098462753c8aefed"
+    }
+  },
+  "archiveCrcCheckedLocally": true,
+  "privateNativeApiCheckedAllAbis": true,
+  "firstMatrixAttempt": {
+    "jobId": 115696460530,
+    "artifactId": 11871732754,
+    "artifactZipSha256": "644df42d3a06cbe881c4c0e5f50065363e3245c12a8c2ceafde97b1ec8b58320",
+    "incomplete": true,
+    "cameraCasesRecorded": 0,
+    "candidateExecuted": false,
+    "failure": "Quickstep system ANR overlays baseline2.2.1 menu; Resume button visibly exists behind it. Not a candidate runtime/metric regression.",
+    "screenshotReviewed": true
+  },
+  "pendingValidation": {
+    "immutableFullMatrixRunId": 38517715562,
+    "immutableInteractionMonthlyRunId": 38517718847,
+    "immutableLodRunId": 38517722864
+  },
+  "cameraGatePassed": false,
+  "completeDominion23Release": false,
+  "published": false,
+  "physicalRedmiTest": false,
+  "evidence": {
+    "buildLogSha256": "8acd1ddb26382a112b7b0ca633affbe3ad15a15a78e3a9c20b06153015a4c8c8",
+    "incompleteProfileLogSha256": "6485ef9d2a0556870fb45d5747edea51c39df57700c38f5830015c77377e1ee4"
+  },
+  "limits": [
+    "No complete dev8 native matrix or interaction/LOD acceptance yet.",
+    "Previous dev7 primary gate fails horizontal-pan P95+17.66%; zoom and memory wins do not override it.",
+    "Existing CameraWorkGate is a nested activity counter and correctly holds frame motion after gesture finalization; earlier source suspicion was disproved, no rewrite performed.",
+    "StageA is open. StagesB-G and59 legacy source failures/tick1000 save mismatch remain unfinished."
+  ]
+}
