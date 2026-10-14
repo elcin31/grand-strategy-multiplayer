@@ -43,9 +43,11 @@ def prepare(evidence, output):
     assert monthly['monthlyEconomyAndAI'] is True and monthly['noFatalLogs'] is True
     lod_result=load(evidence/'lod/lod-candidate/result.json')
     assert lod_result['stagedWorldRegionProvince'] is True and lod_result['noFatalLogs'] is True
-    # Both validators retain a SHA-bound native binary proof from their downloads.
-    for directory in ['smoke','lod']:
-        assert digest in (evidence/directory/'candidate-integrity.txt').read_text()
+    # Actual capture metadata contains the hash of the installed APK. The
+    # apksigner text contains certificate hashes, not an APK content digest.
+    for path in [evidence/'smoke/monthly-candidate/profiles.json',
+                 evidence/'lod/lod-candidate/profiles.json']:
+        assert load(path)['apkSha256']==digest,'Validation used a different APK'
     output.mkdir()
     name='Dominion-'+config['version']+'-playtest.apk';copy(apk,output/name)
     mandatory={'cameraNativeGate':comparison['metricGate']=='pass','graphicsAndInteraction':True,
