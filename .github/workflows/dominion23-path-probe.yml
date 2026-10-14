@@ -29,6 +29,7 @@ jobs:
           compiler="$ANDROID_HOME/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang++"
           skia_dir=node_modules/@shopify/react-native-skia
           "$compiler" -std=c++20 -O2 -static-libstdc++ -DSK_BUILD_FOR_ANDROID -DSK_GANESH -DSK_GL -I "$skia_dir/cpp/skia" scripts/BorderPathProbe.cpp "$skia_dir/libs/android/x86_64/libskia.a" -llog -landroid -lz -ljnigraphics -ldl -lEGL -lGLESv2 -o border-path-probe
+          "$compiler" -std=c++20 -O2 -static-libstdc++ -DSK_BUILD_FOR_ANDROID -DSK_GANESH -DSK_GL -I "$skia_dir/cpp/skia" scripts/BorderGpuProbe.cpp "$skia_dir/libs/android/x86_64/libskia.a" -llog -landroid -lz -ljnigraphics -ldl -lEGL -lGLESv2 -o border-gpu-probe
           sha256sum "$skia_dir/libs/android/x86_64/libskia.a" border-path-probe border-path-fixture.bin > path-probe-integrity.txt
       - name: Enable KVM
         run: |
@@ -42,10 +43,15 @@ jobs:
           profile: pixel_2
           emulator-options: -no-window -gpu swiftshader_indirect -memory 3072 -noaudio -no-boot-anim -camera-back none
           script: |
-            adb push border-path-probe border-path-fixture.bin /data/local/tmp/
-            adb shell chmod 755 /data/local/tmp/border-path-probe
+            adb push border-path-probe border-gpu-probe border-path-fixture.bin /data/local/tmp/
+            adb shell chmod 755 /data/local/tmp/border-path-probe /data/local/tmp/border-gpu-probe
             adb shell /data/local/tmp/border-path-probe /data/local/tmp/border-path-fixture.bin mutable > path-probe-mutable.json
             adb shell /data/local/tmp/border-path-probe /data/local/tmp/border-path-fixture.bin retained > path-probe-retained.json
+            adb shell /data/local/tmp/border-gpu-probe /data/local/tmp/border-path-fixture.bin mutable > gpu-probe-mutable-1.json
+            adb shell /data/local/tmp/border-gpu-probe /data/local/tmp/border-path-fixture.bin retained > gpu-probe-retained-1.json
+            adb shell /data/local/tmp/border-gpu-probe /data/local/tmp/border-path-fixture.bin retained > gpu-probe-retained-2.json
+            adb shell /data/local/tmp/border-gpu-probe /data/local/tmp/border-path-fixture.bin mutable > gpu-probe-mutable-2.json
+            sha256sum border-gpu-probe > gpu-probe-integrity.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -54,4 +60,6 @@ jobs:
             path-probe-*.json
             path-probe-integrity.txt
             border-path-fixture.bin.json
+            gpu-probe-*.json
+            gpu-probe-integrity.txt
           retention-days: 30
