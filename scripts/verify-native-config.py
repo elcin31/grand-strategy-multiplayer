@@ -59,3 +59,16 @@ else:
     import subprocess
     subprocess.run(['node','-e',"const fs=require('node:fs'),crypto=require('node:crypto');for(const b of require('./plugins/withSkiaImmutableBorders.cjs').bindings){const s=fs.readFileSync('node_modules/@shopify/react-native-skia/'+b.file);if(crypto.createHash('sha256').update(s).digest('hex')!==b.sha)throw Error('Restored renderer has changed native path API')}"],check=True)
     print('PASS: restored accepted renderer has the exact original pinned native path API')
+if './plugins/withSkiaSwapPacing.cjs' in config.get('plugins',[]):
+    import subprocess
+    proof=json.loads(Path('android/skia-swap-pacing.json').read_text())
+    assert proof['requestedSwapInterval']==0 and proof['oncePerSurface'] is True
+    assert proof['driverMinimumMayClamp'] is True and proof['appliesAfterWindowMadeCurrent'] is True
+    assert proof['unsupportedRequestKeepsDriverBehavior'] is True
+    assert proof['presentationBackend']=='TextureView' and proof['geometryChanges'] is False
+    assert proof['extraImagesOrSurfaces'] is False and proof['simulationChanges'] is False
+    assert hashlib.sha256(Path(proof['nativePath']).read_bytes()).hexdigest()==proof['nativeSourceSha256']
+    guarded=json.loads(subprocess.check_output(['node','-e',
+        "console.log(JSON.stringify(require('./plugins/withSkiaSwapPacing.cjs').applySwapPacing(process.cwd())))"],text=True))
+    assert guarded==proof, 'Native swap proof differs from pinned guarded patch'
+    print('PASS: guarded UI scheduled EGL swap request; pixel geometry and backend unchanged')
