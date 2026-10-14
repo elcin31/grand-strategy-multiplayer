@@ -75,7 +75,8 @@ def prepare(evidence, output):
                           (evidence/'smoke/monthly-candidate/result.json','monthly.json'),
                           (evidence/'lod/lod-candidate/result.json','lod.json')]:
         copy(source,output/'reports'/target)
-    for path in sorted((evidence/'binary').glob('*.json')):copy(path,output/'reports'/path.name)
+    for path in sorted((evidence/'binary').rglob('*.json')):
+        copy(path,output/'reports/native-proof'/path.relative_to(evidence/'binary'))
     return manifest
 
 
