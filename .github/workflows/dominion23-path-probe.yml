@@ -1,10 +1,14 @@
 name: Dominion 2.3 native path identity and lifetime probe
 on:
+  push:
+    branches: [dominion-2.3-performance]
+    paths: [.github/workflows/dominion23-path-probe.yml]
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   probe:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

@@ -75,6 +75,7 @@ int main(int argc,char** argv){try{
   auto lifetimeChunks=load(argv[1]);auto kept=record(lifetimeChunks,3.5f,false,true);const auto expected=pixels(kept,3.5f);
   auto old=lifetimeChunks[0].fixedOuter;lifetimeChunks[0].outer.moveTo(5,5).lineTo(10,10);
   if(!(old==lifetimeChunks[0].fixedOuter))throw std::runtime_error("Builder mutation changed immutable snapshot");
+  if(pixels(record(lifetimeChunks,3.5f,false,true),3.5f)!=expected)throw std::runtime_error("Reused snapshot changed after source mutation");
   lifetimeChunks.clear();if(pixels(kept,3.5f)!=expected)throw std::runtime_error("Picture lost retained geometry");
   std::vector<double> times;std::vector<sk_sp<SkPicture>> live;size_t pathBytes=0;
   for(const auto& c:chunks)pathBytes+=c.fixedOuter.approximateBytesUsed()+c.fixedInner.approximateBytesUsed();
