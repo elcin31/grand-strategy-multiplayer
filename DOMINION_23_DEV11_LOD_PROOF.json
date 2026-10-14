@@ -1,0 +1,87 @@
+{
+  "status": "functional-lod-passed-full-matrix-still-pending",
+  "runId": 38540286611,
+  "jobId": 115773062805,
+  "artifactId": 11882336857,
+  "artifactZipSha256": "3c08780f22e93bac66cabdbd798f1031fb15e1a38fd9d4906b3787e94b9ec276",
+  "compiledSourceSha": "d069e318c33efa8c5b84becae43f630a6cfb7d83",
+  "apkSha256": "3d202cd617e9a5306f1777490e0bd8d1d65ab1eb9aa6d2150f140ecf9bc48fdd",
+  "physicalRedmiTest": false,
+  "actualApkPerformanceGatePassed": false,
+  "slots": {
+    "baseline": {
+      "actualStagedMarkerDurationMs": 29790.234,
+      "completeAppFrameTimeline": {
+        "scopedCompleteFrames": 209,
+        "p50Ms": 59.432621,
+        "p95Ms": 135.137475,
+        "p99Ms": 174.207009,
+        "traceLossOrErrors": [
+          {
+            "name": "ftrace_setup_errors",
+            "index": null,
+            "value": 36,
+            "severity": "info"
+          }
+        ]
+      },
+      "retainedProducerFailureMessages": 220,
+      "result": {
+        "stagedWorldRegionProvince": true,
+        "traceSha256": "be7ec0749263253a02690e42f09ddc20f36a0c88c44d5eb81cf3e33baa91338f",
+        "noFatalLogs": true,
+        "physicalRedmiTest": false
+      },
+      "nativeStartup": {
+        "immutableNativeApiRequired": false,
+        "successfulNativeBorderDrawObserved": false,
+        "nativeSwapRequestRequired": false,
+        "nativeSwapRequestObserved": false,
+        "hwuiConsumerRequired": false,
+        "hwuiConsumerObserved": false,
+        "frameTimeBenefitProven": false,
+        "physicalRedmiTest": false
+      }
+    },
+    "candidate": {
+      "actualStagedMarkerDurationMs": 29734.364,
+      "completeAppFrameTimeline": {
+        "scopedCompleteFrames": 135,
+        "p50Ms": 54.976854,
+        "p95Ms": 125.034036,
+        "p99Ms": 159.192945,
+        "traceLossOrErrors": [
+          {
+            "name": "ftrace_setup_errors",
+            "index": null,
+            "value": 36,
+            "severity": "info"
+          }
+        ]
+      },
+      "retainedProducerFailureMessages": 0,
+      "result": {
+        "stagedWorldRegionProvince": true,
+        "traceSha256": "4aa84a41625043cd5ed386cb86c147d2977b1ea4e2a113ea6350c15f322cbf90",
+        "noFatalLogs": true,
+        "physicalRedmiTest": false
+      },
+      "nativeStartup": {
+        "immutableNativeApiRequired": false,
+        "successfulNativeBorderDrawObserved": false,
+        "nativeSwapRequestRequired": false,
+        "nativeSwapRequestObserved": false,
+        "hwuiConsumerRequired": true,
+        "hwuiConsumerObserved": true,
+        "frameTimeBenefitProven": false,
+        "physicalRedmiTest": false
+      }
+    }
+  },
+  "limitations": [
+    "Retained log messages, not complete calls/FPS.",
+    "Complete frame counts differ (209 versus135) despite similar real marker durations; lower frame duration quantiles alone do not establish more presentations or smoother continuous motion.",
+    "36 informational ftrace setup errors retained per slot; full attribution remains incomplete.",
+    "Repeated LOD functional result does not override the continuous A\u2013I primary gate or missing physical Redmi measurement."
+  ]
+}
