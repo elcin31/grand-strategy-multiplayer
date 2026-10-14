@@ -68,6 +68,8 @@ def prepare(evidence, output):
     (output/'README.txt').write_text(readme)
     for file in ['DOMINION_23_CHECKPOINT.md','DOMINION_23_PRESENTATION_PROBE.md',
                  'DOMINION_23_NATIVE_GPU_PROOF.json','DOMINION_23_UI_SWAP_DIAGNOSTIC.json',
+                 'DOMINION_23_TEXTURE_CONSUMER_PROBE.md','DOMINION_23_TEXTURE_CONSUMER_DIAGNOSTIC.json',
+                 'DOMINION_23_DEV11_CANDIDATE_MANIFEST.json','DOMINION_23_PERFORMANCE_DEV10_UNACCEPTED.json',
                  'DOMINION_23_SOURCE_REGRESSION_AUDIT.json','DOMINION_23_LEGACY_SAVE_FAILURE.json']:
         path=Path(file)
         if path.exists():copy(path,output/'reports'/file)
