@@ -71,6 +71,8 @@ def prepare(evidence, output):
                  'DOMINION_23_TEXTURE_CONSUMER_PROBE.md','DOMINION_23_TEXTURE_CONSUMER_DIAGNOSTIC.json',
                  'DOMINION_23_DEV11_CANDIDATE_MANIFEST.json','DOMINION_23_PERFORMANCE_DEV10_UNACCEPTED.json',
                  'DOMINION_23_DEV11_LOD_PROOF.json','DOMINION_23_DEV11_UPGRADE_RETEST.json',
+                 'DOMINION_23_DEV12_CANDIDATE_MANIFEST.json','DOMINION_23_PERFORMANCE_DEV12_UNACCEPTED.json',
+                 'DOMINION_23_COMBINED_TEXTURE_PROBE.md',
                  'DOMINION_23_SOURCE_REGRESSION_AUDIT.json','DOMINION_23_LEGACY_SAVE_FAILURE.json']:
         path=Path(file)
         if path.exists():copy(path,output/'reports'/file)
