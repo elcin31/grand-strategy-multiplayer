@@ -3,6 +3,7 @@
 #include "BorderPathFixture.h"
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
+#include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
 #include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
