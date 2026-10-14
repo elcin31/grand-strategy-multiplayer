@@ -37,17 +37,35 @@ export function initializeWars(state:GameState):void {
 const capitalCaches=new WeakMap<object,Set<string>>();
 function capitalProvinces(state:GameState):Set<string>{if(!state.cities)return new Set();let cache=capitalCaches.get(state.cities);if(!cache){cache=new Set(state.cities.filter(c=>c.isCapital).map(c=>c.provinceId));capitalCaches.set(state.cities,cache);}return cache;}
 function strategicWeight(state:GameState,p:GameState['provinces'][number]):number{return 1+Math.sqrt(Math.max(0,p.population)/1e6)*.3+(p.development??40)/100*.6+(capitalProvinces(state).has(p.id)?2.5:0)+(p.resourceDeposit?.25:0);}
-export function warMetrics(state:GameState,w:War,id:string){
- const side=warSide(w,id),enemy=opponentSide(w,id),own=state.provinces.filter(p=>side.includes(p.ownerId)),foreign=state.provinces.filter(p=>enemy.includes(p.ownerId));
+interface WarProvinceRows {attackers:GameState['provinces'];defenders:GameState['provinces'];occupied:string[]}
+/** A phase-local index: never retained across commands, ownership changes or restores. */
+function warProvinceIndex(state:GameState,wars:War[]){
+ const byId=new Map<string,GameState['provinces'][number]>(),rows=new Map<War,WarProvinceRows>();
+ const owners=new Map<string,{provinces:GameState['provinces'];row:WarProvinceRows;enemies:Set<string>}>();
+ for(const w of wars){const row:WarProvinceRows={attackers:[],defenders:[],occupied:[]};rows.set(w,row);
+  const attackers=new Set(w.attackers),defenders=new Set(w.defenders);
+  for(const id of attackers)owners.set(id,{provinces:row.attackers,row,enemies:defenders});
+  for(const id of defenders)owners.set(id,{provinces:row.defenders,row,enemies:attackers});
+ }
+ // Preserve source province order, including floating-point reduction order.
+ for(const p of state.provinces){byId.set(p.id,p);const owner=owners.get(p.ownerId);if(!owner)continue;owner.provinces.push(p);if(owner.enemies.has(p.controllerId??p.ownerId))owner.row.occupied.push(p.id);}
+ return {byId,rows};
+}
+export function warMetrics(state:GameState,w:War,id:string,index=warProvinceIndex(state,[w])){
+ const side=warSide(w,id),enemy=opponentSide(w,id),rows=index.rows.get(w)!;
+ const own=w.attackers.includes(id)?rows.attackers:rows.defenders,foreign=w.attackers.includes(id)?rows.defenders:rows.attackers;
  const captured=foreign.filter(p=>side.includes(p.controllerId??p.ownerId)),lost=own.filter(p=>enemy.includes(p.controllerId??p.ownerId)),weight=(rows:typeof own)=>rows.reduce((n,p)=>n+strategicWeight(state,p),0);
  const capitals=(rows:typeof own)=>rows.filter(p=>capitalProvinces(state).has(p.id));
- const goalRatio=(actor:string[],controllers:string[])=>{const goals=actor.flatMap(c=>w.goals?.[c]?.provinceIds??[]);return goals.length?goals.filter(id=>controllers.includes(state.provinces.find(p=>p.id===id)?.controllerId??state.provinces.find(p=>p.id===id)?.ownerId??'')).length/goals.length:0;};
+ const goalRatio=(actor:string[],controllers:string[])=>{const goals=actor.flatMap(c=>w.goals?.[c]?.provinceIds??[]);return goals.length?goals.filter(id=>{const p=index.byId.get(id);return controllers.includes(p?.controllerId??p?.ownerId??'');}).length/goals.length:0;};
  const losses=(rows:string[])=>rows.reduce((n,c)=>n+(w.casualties?.[c]??0),0),ours=losses(side),theirs=losses(enemy),exhaustion=(rows:string[])=>rows.reduce((n,c)=>n+(state.countries[c]?.warExhaustion??0),0)/Math.max(1,rows.length);
  const factors={occupation:65*(weight(captured)/Math.max(1,weight(foreign))-weight(lost)/Math.max(1,weight(own))),capitals:10*(capitals(captured).length/Math.max(1,capitals(foreign).length)-capitals(lost).length/Math.max(1,capitals(own).length)),objectives:10*(goalRatio(side,side)-goalRatio(enemy,enemy)),battles:(w.battleScore??0)*(w.attackers.includes(id)?1:-1),losses:5*(theirs-ours)/Math.max(10000,ours+theirs),exhaustion:5*(exhaustion(enemy)-exhaustion(side))/100};
  const score=foreign.length&&captured.length===foreign.length&&!lost.length?100:own.length&&lost.length===own.length&&!captured.length?-100:Math.max(-100,Math.min(100,Object.values(factors).reduce((n,v)=>n+v,0)));
  return {occupationPercent:100*captured.length/Math.max(1,foreign.length),captured:captured.length,enemyProvinces:foreign.length,score,factors};
 }
-export function refreshWars(state:GameState):void{if(!state.dataset)return;for(const w of state.wars??[]){w.occupiedProvinceIds=state.provinces.filter(p=>w.attackers.includes(p.ownerId)&&w.defenders.includes(p.controllerId??p.ownerId)||w.defenders.includes(p.ownerId)&&w.attackers.includes(p.controllerId??p.ownerId)).map(p=>p.id);w.warScore=warMetrics(state,w,w.attackers[0]!).score;}}
+export function refreshWars(state:GameState):void{
+ if(!state.dataset||!state.wars?.length)return;const index=warProvinceIndex(state,state.wars);
+ for(const w of state.wars){w.occupiedProvinceIds=index.rows.get(w)!.occupied;w.warScore=warMetrics(state,w,w.attackers[0]!,index).score;}
+}
 export function recordWarBattle(state:GameState,event:BattleEvent):void {
   if(!state.dataset)return;const w=warBetween(state,event.attackerId,event.defenderId);if(!w)return;
   w.casualties??={};

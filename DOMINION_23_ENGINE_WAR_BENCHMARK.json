@@ -1,0 +1,44 @@
+{
+  "warCount": 11,
+  "provinces": 2924,
+  "exactComparisons": 540,
+  "rounds": [
+    {
+      "legacy": 9.633413623333333,
+      "indexed": 0.7140555900000012
+    },
+    {
+      "indexed": 0.6084561333333356,
+      "legacy": 7.937600203333331
+    },
+    {
+      "legacy": 8.10197087666666,
+      "indexed": 0.5922423100000015
+    },
+    {
+      "indexed": 0.6571894466666587,
+      "legacy": 8.384538650000007
+    },
+    {
+      "legacy": 7.67746744,
+      "indexed": 0.8909728566666673
+    },
+    {
+      "indexed": 0.5084360133333393,
+      "legacy": 8.484416013333332
+    },
+    {
+      "legacy": 7.449022763333342,
+      "indexed": 0.6051533033333302
+    },
+    {
+      "indexed": 0.6305005633333348,
+      "legacy": 7.140444693333339
+    }
+  ],
+  "medianMs": {
+    "legacy": 8.10197087666666,
+    "indexed": 0.6305005633333348
+  },
+  "scope": "Node host, refreshWars only; unchanged float reduction order; not Android FPS"
+}

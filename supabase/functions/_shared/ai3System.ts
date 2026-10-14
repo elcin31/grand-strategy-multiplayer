@@ -162,9 +162,19 @@ function executeArmy(s:GameState,i:MilitaryIndex,a:Army,budget:{nodes:number},pl
 /** Bounded daily war work: <=24 countries, <=96 armies, <=12000 BFS nodes.
  * Nations and stacks rotate; a large empire cannot starve other fronts. */
 export function periodicMilitaryAI(s:GameState):void{
- if(!s.dataset)return;const i=militaryIndex(s),budget={nodes:12000},day=s.simulationDay??0;
+ if(!s.dataset)return;
+ // Peaceful countries without player operations have no tactical work. Keep
+ // human takeovers effective before skipping geography/supply index creation.
+ const humans=new Set(s.players.filter(p=>p.countryId&&!p.aiControlled).map(p=>p.countryId));
+ let pending=false;
+ for(const a of s.armies){
+  if(humans.has(a.ownerId)&&a.militaryPlan?.source==='AI')delete a.militaryPlan;
+  if(a.escortArmyId||a.militaryPlan?.source==='Player'&&a.militaryPlan.autoCommand)pending=true;
+ }
+ if(!s.wars?.length&&!s.sieges?.length&&!pending&&!(s.armyGroups??[]).some(g=>humans.has(g.ownerId))){s.aiMilitaryCursor=0;return;}
+ const i=militaryIndex(s),budget={nodes:12000},day=s.simulationDay??0;
  // Opt-in player plans and legacy groups have the same legal operational logic.
- let work=0;for(const a of s.armies)if(!aiControls(s,a.ownerId)&&a.militaryPlan?.source==='AI')delete a.militaryPlan;
+ let work=0;
  for(const a of s.armies)if(a.militaryPlan?.source==='Player'&&a.militaryPlan.autoCommand&&work++<24)executeArmy(s,i,a,budget,true);
  for(const g of s.armyGroups??[])if(!aiControls(s,g.ownerId))for(const id of g.armyIds){const a=(i.byOwner.get(g.ownerId)??[]).find(a=>a.id===id);if(!a||a.militaryPlan||a.order||i.busy.has(a.id)||work++>=40)continue;const target=i.provinces.get(g.targetProvinceId);if(!target)continue;if(g.objective==='Offensive'&&attackRatio(s,a,target,i.byProvince)<1.12)continue;try{setArmyOrder(s,g.ownerId,a.id,target.id);}catch{}}
  for(const a of s.armies)if(a.escortArmyId&&!a.order&&!i.busy.has(a.id)&&work++<48){const leader=s.armies.find(b=>b.id===a.escortArmyId);if(!leader||!canEnterTerritory(s,a.ownerId,leader.ownerId)||warBetween(s,a.ownerId,leader.ownerId)){delete a.escortArmyId;continue;}if(a.provinceId!==leader.provinceId)try{setArmyOrder(s,a.ownerId,a.id,leader.provinceId);}catch{}}

@@ -177,7 +177,9 @@ function checkWinner(state: GameState) { if (new Set(state.provinces.map((provin
 
 function applyCoreCommand(state: GameState, command: GameCommand, validatedLocalState = false,monthlyFromDay=false): GameState {
   assertGameCommand(command, Object.keys(state.countries));
-  const next = clone(state);
+  // The monthly hand-off already owns the daily reducer's private clone.
+  // External commands always clone; advancing a date never copies the world twice.
+  const next = monthlyFromDay ? state : clone(state);
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   if(['ORDER_ARMY','MOVE_ARMY','ROUTE_ARMY','CANCEL_ARMY_ORDER','RETREAT_ARMY'].includes(command.type)&&'armyId' in command){const p=getPlayer(next,command.playerId),a=next.armies.find(a=>a.id===command.armyId&&a.ownerId===p.countryId);if(a){if(a.militaryPlan){a.militaryPlan.autoCommand=false;a.militaryPlan.status='Holding';a.militaryPlan.reason='Ручной приказ игрока';}delete a.escortArmyId;for(const g of next.armyGroups??[])g.armyIds=g.armyIds.filter(id=>id!==a.id);}}
   switch (command.type) {
