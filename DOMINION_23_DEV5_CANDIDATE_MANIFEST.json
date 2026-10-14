@@ -1,0 +1,45 @@
+{
+  "status": "built and binary-verified; native performance and interaction gates pending",
+  "runtimeSha": "4cc3ef24f0d5f5c2dbff912544f0241b51802b0b",
+  "compiledSourceSha": "a90c6372d3690f6c0056360fd743ad3cece90e78",
+  "versionName": "2.3.0-dev.5",
+  "versionCode": 20,
+  "packageName": "com.elcin31.grandstrategymultiplayer",
+  "apkBytes": 174188934,
+  "apkSha256": "a6bc5e90fc40f9efba616131448dd7adca023082a1a999d2b6445cb30ab9cea4",
+  "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "baselineApkSha256": "a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb",
+  "build": {
+    "run": 38502403584,
+    "job": 115652173293,
+    "artifact": 11867001513,
+    "artifactZipBytes": 92881200,
+    "artifactZipSha256": "aea0d0fa2e94eff9bd3d55f7f53acb33b0b160ac6b3424756e9970f85e9b2b0a",
+    "allFourAbiVerified": true,
+    "embeddedHermesBytes": 11313652,
+    "retainedGraphicsAndNativeConfigVerified": true,
+    "localZipCrcVerified": true
+  },
+  "nativeMatrix": {
+    "run": 38502403584,
+    "job": 115656995043,
+    "status": "pending"
+  },
+  "identicalApkControl": {
+    "run": 38502407930,
+    "job": 115652187842,
+    "status": "pending",
+    "cannotAcceptCandidate": true
+  },
+  "upgradeAndMonthly": {
+    "run": 38504108979,
+    "status": "pending"
+  },
+  "stagedLod": {
+    "run": 38504112090,
+    "status": "pending"
+  },
+  "fullSourceRegression": "59 identical existing failure names on hotfix and candidate; full source gate blocked",
+  "physicalRedmiTest": false,
+  "fullDominion23Release": false
+}
