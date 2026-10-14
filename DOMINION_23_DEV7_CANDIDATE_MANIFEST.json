@@ -1,5 +1,5 @@
 {
-  "status": "built-unaccepted-native-and-interaction-gates-pending",
+  "status": "not-accepted-pan-p95-regression-repeat-required",
   "repository": "elcin31/grand-strategy-multiplayer",
   "runtimeSourceSha": "f36140785edb6272577e9abf310e5b59b3ef779b",
   "compiledSourceSha": "49b3aacbcd321c009b3e94839e5dc6d3b29a803b",
@@ -65,10 +65,7 @@
     "nativeBuildLogSha256": "caef6f6e4eae5346da5e684e2ea9cb3987aa831bea9c30b7a090e0dde8131935",
     "integritySha256": "ae53a2c0573ba04537764e94f3227d091efe571b6fa0c3b0ca881a235298cd09"
   },
-  "pendingValidation": {
-    "nativeMatrixRunId": 38511480652,
-    "nativeMatrixJobId": 115686051100
-  },
+  "pendingValidation": {},
   "cameraGatePassed": false,
   "physicalRedmiTest": false,
   "completeDominion23Release": false,
@@ -413,5 +410,13 @@
       "A single post-sample PSS endpoint is not a memory leak/stability proof.",
       "Only the complete A-I gate can accept camera performance; complete release/source/long-simulation/multiplayer gates remain unfinished."
     ]
+  },
+  "nativeMatrixValidation": {
+    "runId": 38511480652,
+    "profileJobId": 115686051100,
+    "artifactId": 11871421661,
+    "artifactZipSha256": "c849d5fc922da9c650ac5aa800d82bfc124ede1f04443b288c3d8261274d9127",
+    "cameraGatePassed": false,
+    "report": "DOMINION_23_PERFORMANCE_DEV7_UNACCEPTED.json"
   }
 }
