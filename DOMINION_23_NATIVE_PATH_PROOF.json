@@ -1,0 +1,78 @@
+{
+  "status": "native-geometry-and-recording-probe-passed-camera-gate-pending",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "probeRunId": 38510089690,
+  "probeSourceSha": "c7787169f5959ae5df4ea9b0e3a928dd4dc9aa4c",
+  "probeArtifactId": 11868804251,
+  "candidateRuntimeSha": "f36140785edb6272577e9abf310e5b59b3ef779b",
+  "candidateVersion": "2.3.0-dev.7",
+  "candidateVersionCode": 22,
+  "candidateApkBuilt": false,
+  "cameraGatePassed": false,
+  "physicalRedmiTest": false,
+  "fixture": {
+    "format": "D23B-v1",
+    "camera": {
+      "x": 800,
+      "y": 160,
+      "zoom": 3.5
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "chunks": 46,
+    "segments": 36206,
+    "countries": 195,
+    "provinceOwnerships": 2924,
+    "bytes": 579676,
+    "sha256": "2cb92f08e61a0b3d8992013239137665e1b0364ab91422852d144b239d83cb63",
+    "note": "Detached original render edges, converted to the same native float coordinates. No campaign/backend mutation."
+  },
+  "baselineMutable": {
+    "mode": "mutable",
+    "chunks": 46,
+    "records": 64,
+    "mutableUniqueIds": 64,
+    "retainedUniqueIds": 1,
+    "changedNativeRasterPixels": 0,
+    "pictureRetainsReleasedGeometry": true,
+    "snapshotSurvivesMutation": true,
+    "pathBytes": 653180,
+    "recordP50Ms": 0.64282,
+    "recordP95Ms": 9.15602,
+    "recordP99Ms": 23.0163,
+    "peakRssKiB": 119164,
+    "physicalRedmiTest": false,
+    "note": "Native Skia identity/CPU recording/lifetime probe only; not displayed frame time, GPU workload or camera acceptance."
+  },
+  "candidateRetained": {
+    "mode": "retained",
+    "chunks": 46,
+    "records": 64,
+    "mutableUniqueIds": 64,
+    "retainedUniqueIds": 1,
+    "changedNativeRasterPixels": 0,
+    "pictureRetainsReleasedGeometry": true,
+    "snapshotSurvivesMutation": true,
+    "pathBytes": 653180,
+    "recordP50Ms": 0.014607,
+    "recordP95Ms": 0.095318,
+    "recordP99Ms": 0.925597,
+    "peakRssKiB": 51636,
+    "physicalRedmiTest": false,
+    "note": "Native Skia identity/CPU recording/lifetime probe only; not displayed frame time, GPU workload or camera acceptance."
+  },
+  "rawEvidence": {
+    "path-probe-retained.json": "b0f87ccb2a6dbd81d8a4edfe600f716006ba051ccd2683f63dd918e2bf8c1011",
+    "border-path-fixture.bin.json": "5343ee842a82d3af48d7ef92d958170c6ba24ddef2a8726a775bdf60ce15a8bd",
+    "path-probe-integrity.txt": "c70301746ee0212a097ad3266a8a6dedb85c7e311ad7e86b12c6d51d9e805fa4",
+    "path-probe-mutable.json": "5fbdc737acd18df963e71983aa48487269c48059a89c378034a1463b61b4d028"
+  },
+  "limits": [
+    "Native CPU recording and exact raster/lifetime proof only. Not a displayed camera frame-time, GPU or physical-phone measurement.",
+    "Peak RSS is from two separate diagnostic processes, not app PSS or a campaign memory acceptance test.",
+    "All previous five APK candidates remain rejected. Full A-I, immutable-binary interaction/LOD and memory validation are still required.",
+    "Source regression has 59 reproduced baseline failures and long simulation stops at tick1000 save restoration; later stages remain blocked."
+  ]
+}

@@ -1,3 +1,5 @@
+Dominion2.3 current work: dev7 readonly native border paths at `f36140785edb6272577e9abf310e5b59b3ef779b`; separate native geometry/lifetime/CPU probe passed, actual APK/A-I gate pending. See [checkpoint](DOMINION_23_CHECKPOINT.md) and [native proof](DOMINION_23_NATIVE_PATH_PROOF.json). StageA is open; later stages and59 legacy source failures/tick1000 save mismatch remain unresolved.
+
 # Dominion 2.3 — ongoing native camera gate
 
 - Continue on `dominion-2.3-performance`; exact runtime/candidate/CI identity and measured limitations are in [DOMINION_23_CHECKPOINT.md](DOMINION_23_CHECKPOINT.md). Stage A is unfinished; no new gameplay or backend rollout has started and no 2.3 release has been published.
