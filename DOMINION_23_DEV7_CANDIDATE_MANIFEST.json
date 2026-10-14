@@ -69,9 +69,7 @@
     "nativeMatrixRunId": 38511480652,
     "nativeMatrixJobId": 115686051100,
     "immutableInteractionMonthlyRunId": 38513220519,
-    "immutableInteractionMonthlyJobId": 115686197686,
-    "immutableLodRunId": 38513223414,
-    "immutableLodJobId": 115686205247
+    "immutableInteractionMonthlyJobId": 115686197686
   },
   "cameraGatePassed": false,
   "physicalRedmiTest": false,
@@ -81,5 +79,72 @@
     "Native CPU recording proof is not displayed camera frame-time or GPU/phone evidence.",
     "Actual cold/upgrade/input/save and matched A-I/LOD/memory validation is still running.",
     "StagesB-G remain unfinished;59 reproduced baseline source failures and long-simulation tick1000 save mismatch are unresolved."
-  ]
+  ],
+  "immutableLodValidation": {
+    "runId": 38513223414,
+    "jobId": 115686205247,
+    "artifactId": 11870133986,
+    "artifactZipSha256": "20a817b1f91625c415d4c61f7c396bafdb458e48e5058a4a652571918507acf4",
+    "stagedWorldRegionProvince": true,
+    "noFatalLogs": true,
+    "actualImmutableNativeDrawObserved": true,
+    "physicalRedmiTest": false,
+    "visualScreenshotReviewed": true,
+    "screenshotSha256": "3cc35c4363f8f99ebf5a42ececee3677c60a9c434366175d8ff5325867f3201e",
+    "actualCompleteAppFrames": [
+      {
+        "traceSha256": "0426bf28539b95d2b4c7bc65146ef42ff47a9d1507094c5d045de32ec670c2ed",
+        "scopedCompleteFrames": 180,
+        "p50Ms": 74.621831,
+        "p95Ms": 164.716749,
+        "p99Ms": 262.949505,
+        "traceLossOrErrors": [
+          {
+            "name": "ftrace_setup_errors",
+            "index": null,
+            "value": 36,
+            "severity": "info"
+          },
+          {
+            "name": "perf_cpu_lost_records",
+            "index": 0,
+            "value": 1,
+            "severity": "data_loss"
+          },
+          {
+            "name": "perf_cpu_lost_records",
+            "index": 1,
+            "value": 3,
+            "severity": "data_loss"
+          }
+        ]
+      },
+      {
+        "traceSha256": "fd4bd942d6677b7af40b22954b12cf4363857b3ca2fefe0f9376af837ae7bcb8",
+        "scopedCompleteFrames": 180,
+        "p50Ms": 75.865064,
+        "p95Ms": 166.834341,
+        "p99Ms": 271.751262,
+        "traceLossOrErrors": [
+          {
+            "name": "ftrace_setup_errors",
+            "index": null,
+            "value": 36,
+            "severity": "info"
+          }
+        ]
+      }
+    ],
+    "ratios": {
+      "p50Ms": 1.0166604461903381,
+      "p95Ms": 1.012855960385668,
+      "p99Ms": 1.0334731833779265
+    },
+    "cameraGatePassed": false,
+    "limits": [
+      "Actual App FrameTimeline durations are from the staged LOD supplement, not the continuous A-I matrix or physical phone.",
+      "Baseline has4 lost CPU samples; all36 setup warnings are retained. No isolated GPU attribution claimed.",
+      "No clear measured frame-time improvement in this LOD pair; full matrix and memory checks remain pending."
+    ]
+  }
 }
