@@ -1,3 +1,4 @@
+# Native diagnostic only; the shipping renderer remains the exact hotfix.
 name: Dominion 2.3 native path identity and lifetime probe
 on:
   push:
