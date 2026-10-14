@@ -9,12 +9,16 @@ on:
         description: Build current runtime and compare with the exact published 2.2.1 APK
         type: boolean
         default: false
+      baseline_control:
+        description: Measure emulator variation with the identical published APK twice; no candidate acceptance
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
 jobs:
   build-candidate:
-    if: inputs.build_candidate == true
+    if: inputs.build_candidate == true && inputs.baseline_control != true
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
@@ -55,6 +59,9 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
+      - name: Reject conflicting comparison modes
+        env: {BUILD_CANDIDATE: '${{ inputs.build_candidate }}', BASELINE_CONTROL: '${{ inputs.baseline_control }}'}
+        run: test "$BUILD_CANDIDATE" != true || test "$BASELINE_CONTROL" != true
       - uses: actions/setup-node@v4
         with: {node-version: '22', cache: npm}
       - uses: actions/setup-java@v4
@@ -82,7 +89,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - uses: reactivecircus/android-emulator-runner@v2
-        env: {COMPARE_CANDIDATE: '${{ inputs.build_candidate }}'}
+        env: {COMPARE_CANDIDATE: '${{ inputs.build_candidate }}', BASELINE_CONTROL: '${{ inputs.baseline_control }}'}
         with:
           api-level: 35
           arch: x86_64
@@ -92,6 +99,7 @@ jobs:
             adb push dominion-camera23.jar /data/local/tmp/dominion-camera23.jar
             CAMERA23_OUT=profile-baseline python scripts/android23-profile.py baseline-apk/Dominion-2.2.1-performance-hotfix.apk camera23-fixture
             if [ "$COMPARE_CANDIDATE" = 'true' ]; then CAMERA23_OUT=profile-candidate python scripts/android23-profile.py candidate-apk/Dominion-2.3-performance-candidate.apk camera23-fixture; fi
+            if [ "$BASELINE_CONTROL" = 'true' ]; then CAMERA23_OUT=profile-candidate python scripts/android23-profile.py baseline-apk/Dominion-2.2.1-performance-hotfix.apk camera23-fixture; fi
       - name: Analyze observed scheduler and CPU samples; retain incomplete attribution
         if: always()
         run: |
@@ -102,7 +110,7 @@ jobs:
             fi
           done
       - name: Require the completed matrix metric gate
-        if: success() && inputs.build_candidate == true
+        if: success() && (inputs.build_candidate == true || inputs.baseline_control == true)
         run: python scripts/compare-camera23.py profile-baseline profile-candidate --check
       - uses: actions/upload-artifact@v4
         if: always()
