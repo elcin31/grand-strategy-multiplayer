@@ -1,0 +1,85 @@
+{
+  "status": "built-unaccepted-native-and-interaction-gates-pending",
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "runtimeSourceSha": "f36140785edb6272577e9abf310e5b59b3ef779b",
+  "compiledSourceSha": "49b3aacbcd321c009b3e94839e5dc6d3b29a803b",
+  "buildRunId": 38511480652,
+  "buildJobId": 115680764910,
+  "artifactId": 11870568143,
+  "apk": {
+    "name": "Dominion-2.3-performance-candidate.apk",
+    "version": "2.3.0-dev.7",
+    "versionCode": 22,
+    "bytes": 174220774,
+    "sha256": "7ca181ab96919c8e849d29ecee906ed726d0e145b81fc54104867e729f7cd875",
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "signatureScheme": "v2",
+    "abi": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "embeddedHermesBundleBytes": 11312712
+  },
+  "artifactZip": {
+    "bytes": 92891219,
+    "sha256": "ba91f81430f95764233e658ff49d7379e784c72a04bc17f89d8c8493edc32f11"
+  },
+  "nativeBorderProof": {
+    "skiaVersion": "2.6.2",
+    "immutableBorderApi": 1,
+    "mutablePathApiUnchanged": true,
+    "livePathsDisposed": false,
+    "imagesOrSurfacesAdded": false,
+    "nativeMemoryPressure": true,
+    "files": [
+      {
+        "file": "node_modules/@shopify/react-native-skia/cpp/api/JsiSkPathFactory.h",
+        "originalSha256": "62c2a1186da194c85d04e65aca643f98427e86ccd33320cd52351b054d8b0164",
+        "sha256": "8fa65f7080ddf874053da01095e03be9cf3b19e60e4010420dd4b0cd0f36c480"
+      },
+      {
+        "file": "node_modules/@shopify/react-native-skia/cpp/api/JsiSkCanvas.h",
+        "originalSha256": "4e20c521175c6a80dc950f1aa47d70d96bd6ac654959e9ae1c9b5b647e61ba95",
+        "sha256": "967162f16ab24051c2010bf999718e5ad2c1a6b03f146448687db5d536f722c7"
+      }
+    ],
+    "header": {
+      "file": "node_modules/@shopify/react-native-skia/cpp/api/DominionImmutablePath.h",
+      "sha256": "ef89be9c5c76e002be85ea9266f413c234ef26736cedbc5426b38ee4d91bcc8e"
+    }
+  },
+  "archiveCrcCheckedLocally": true,
+  "privateNativeApiCheckedAllAbis": true,
+  "prebuildAndBuiltBinaryVerifiedInCI": [
+    "landscape",
+    "existing package and certificate",
+    "embedded production backend and JS bundle",
+    "original Dominion2.2 graphics and2.2.1 optimized raster atlas",
+    "native opaque TextureView and recorder lifecycle",
+    "pinned readonly border API and all4ABI"
+  ],
+  "evidence": {
+    "nativeBuildLogSha256": "caef6f6e4eae5346da5e684e2ea9cb3987aa831bea9c30b7a090e0dde8131935",
+    "integritySha256": "ae53a2c0573ba04537764e94f3227d091efe571b6fa0c3b0ca881a235298cd09"
+  },
+  "pendingValidation": {
+    "nativeMatrixRunId": 38511480652,
+    "nativeMatrixJobId": 115686051100,
+    "immutableInteractionMonthlyRunId": 38513220519,
+    "immutableInteractionMonthlyJobId": 115686197686,
+    "immutableLodRunId": 38513223414,
+    "immutableLodJobId": 115686205247
+  },
+  "cameraGatePassed": false,
+  "physicalRedmiTest": false,
+  "completeDominion23Release": false,
+  "published": false,
+  "limitations": [
+    "Native CPU recording proof is not displayed camera frame-time or GPU/phone evidence.",
+    "Actual cold/upgrade/input/save and matched A-I/LOD/memory validation is still running.",
+    "StagesB-G remain unfinished;59 reproduced baseline source failures and long-simulation tick1000 save mismatch are unresolved."
+  ]
+}

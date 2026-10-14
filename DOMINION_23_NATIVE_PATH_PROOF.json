@@ -7,7 +7,7 @@
   "candidateRuntimeSha": "f36140785edb6272577e9abf310e5b59b3ef779b",
   "candidateVersion": "2.3.0-dev.7",
   "candidateVersionCode": 22,
-  "candidateApkBuilt": false,
+  "candidateApkBuilt": true,
   "cameraGatePassed": false,
   "physicalRedmiTest": false,
   "fixture": {
@@ -74,5 +74,6 @@
     "Peak RSS is from two separate diagnostic processes, not app PSS or a campaign memory acceptance test.",
     "All previous five APK candidates remain rejected. Full A-I, immutable-binary interaction/LOD and memory validation are still required.",
     "Source regression has 59 reproduced baseline failures and long simulation stops at tick1000 save restoration; later stages remain blocked."
-  ]
+  ],
+  "candidateApkManifest": "DOMINION_23_DEV7_CANDIDATE_MANIFEST.json"
 }
