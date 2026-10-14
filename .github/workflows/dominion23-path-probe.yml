@@ -1,0 +1,52 @@
+name: Dominion 2.3 native path identity and lifetime probe
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: npm}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - run: npm ci --include=dev --no-audit --no-fund
+      - run: node --import tsx scripts/make-border-path-fixture.ts border-path-fixture.bin
+      - name: Compile against the pinned actual Android Skia library
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(node -p "require('@shopify/react-native-skia/package.json').version")" = 2.6.2
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'ndk;27.1.12297006'
+          compiler="$ANDROID_HOME/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android24-clang++"
+          skia_dir=node_modules/@shopify/react-native-skia
+          "$compiler" -std=c++20 -O2 -static-libstdc++ -DSK_BUILD_FOR_ANDROID -DSK_GANESH -DSK_GL -I "$skia_dir/cpp/skia" scripts/BorderPathProbe.cpp "$skia_dir/libs/android/x86_64/libskia.a" -llog -landroid -lz -ljnigraphics -ldl -lEGL -lGLESv2 -o border-path-probe
+          sha256sum "$skia_dir/libs/android/x86_64/libskia.a" border-path-probe border-path-fixture.bin > path-probe-integrity.txt
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_2
+          emulator-options: -no-window -gpu swiftshader_indirect -memory 3072 -noaudio -no-boot-anim -camera-back none
+          script: |
+            adb push border-path-probe border-path-fixture.bin /data/local/tmp/
+            adb shell chmod 755 /data/local/tmp/border-path-probe
+            adb shell /data/local/tmp/border-path-probe /data/local/tmp/border-path-fixture.bin mutable > path-probe-mutable.json
+            adb shell /data/local/tmp/border-path-probe /data/local/tmp/border-path-fixture.bin retained > path-probe-retained.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dominion23-native-path-probe
+          path: |
+            path-probe-*.json
+            path-probe-integrity.txt
+            border-path-fixture.bin.json
+          retention-days: 30
