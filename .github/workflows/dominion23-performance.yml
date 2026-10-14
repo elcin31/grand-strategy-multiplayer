@@ -55,6 +55,7 @@ jobs:
             android/skia-recorder-lifecycle.json
             android/skia-immutable-borders.json
             android/skia-swap-pacing.json
+            android/skia-texture-consumer.json
           retention-days: 30
   profile:
     needs: build-candidate

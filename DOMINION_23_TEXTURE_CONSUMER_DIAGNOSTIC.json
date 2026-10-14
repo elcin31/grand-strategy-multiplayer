@@ -1,0 +1,68 @@
+{
+  "diagnosticOnly": true,
+  "sourceMatrixRun": 38517715562,
+  "nativeSkiaVersion": "2.6.2",
+  "providerOriginalSha256": "dd82eeb01ff28830b9705ac4069a7e967825aee60e4778f82e9f6de19f405bd8",
+  "currentProviderPatchedSha256": "23c208a6b02c9732c52b5ffe97a7b56b749c517ac14f291079a5324c56fa2296",
+  "records": [
+    {
+      "slot": "baseline",
+      "scenario": "A-horizontal-pan",
+      "logSha256": "d4f8319568db9994e0a9df344a16d322127cae2c47fb4aabeb07c20587dfc435",
+      "retainedProducerFailureMessages": 25,
+      "retainedConsumerDetachedMessages": 25
+    },
+    {
+      "slot": "baseline",
+      "scenario": "B-rapid-zoom-in",
+      "logSha256": "01282daa44e4cdd4f0a4e653a45565a6334798a4001caf0b4ed9d1e04879163c",
+      "retainedProducerFailureMessages": 40,
+      "retainedConsumerDetachedMessages": 40
+    },
+    {
+      "slot": "baseline",
+      "scenario": "D-pinch-pan",
+      "logSha256": "e8708f1cca4b7073d97db9dab9f7d3213f22f074601f90a48e5a88cabd694979",
+      "retainedProducerFailureMessages": 61,
+      "retainedConsumerDetachedMessages": 61
+    },
+    {
+      "slot": "baseline",
+      "scenario": "H-active-simulation",
+      "logSha256": "ae4a5619044a1545408cfe425392741fd9c08581e8e0ad2c4a98f270e00fe076",
+      "retainedProducerFailureMessages": 25,
+      "retainedConsumerDetachedMessages": 25
+    },
+    {
+      "slot": "candidate",
+      "scenario": "A-horizontal-pan",
+      "logSha256": "324393945c8cee1ece2f59ed9cc7c4d4208b66194aea3bb8363444f34612840b",
+      "retainedProducerFailureMessages": 25,
+      "retainedConsumerDetachedMessages": 25
+    },
+    {
+      "slot": "candidate",
+      "scenario": "B-rapid-zoom-in",
+      "logSha256": "fef49af278f1f1588e6aa0cc9e172426a8ec74bd143bf6a5cbed59875f6b0fd2",
+      "retainedProducerFailureMessages": 37,
+      "retainedConsumerDetachedMessages": 37
+    },
+    {
+      "slot": "candidate",
+      "scenario": "D-pinch-pan",
+      "logSha256": "4c30993a44236e5efd74e7b9f93e5e915dcef4570bbab977a4417a1d3d2d4410",
+      "retainedProducerFailureMessages": 65,
+      "retainedConsumerDetachedMessages": 65
+    },
+    {
+      "slot": "candidate",
+      "scenario": "H-active-simulation",
+      "logSha256": "26063a34e976c665eda788b73f02b2d0cd879d3d20acc80e05a5eec44078224f",
+      "retainedProducerFailureMessages": 28,
+      "retainedConsumerDetachedMessages": 28
+    }
+  ],
+  "newApkFrameImprovementProven": false,
+  "physicalRedmiTest": false,
+  "note": "Exact retained log messages; logcat coalescing/ring retention prevents treating this as a complete call count or FPS. Pinned provider calls updateTexImage on each producer render, while the Java object comes from TextureView.SurfaceTextureListener. Failed producer-side calls are removed only on the isolated consumer-fix branch; actual APK validation and unchanged camera gate remain required."
+}

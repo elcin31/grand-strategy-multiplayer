@@ -56,3 +56,8 @@ module.exports.patchSwapPacing = patchSwapPacing;
 module.exports.applySwapPacing = applySwapPacing;
 module.exports.nativePath = NATIVE_PATH;
 module.exports.originalSha256 = ORIGINAL_SHA256;
+module.exports.restoreSwapPacing = source => {
+  const original = source.includes(MARKER) ? source.replace(AFTER, BEFORE) : source;
+  if (hash(original) !== ORIGINAL_SHA256) throw new Error('Cannot restore unreviewed native window context');
+  return original;
+};

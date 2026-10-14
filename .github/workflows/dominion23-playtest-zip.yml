@@ -1,7 +1,7 @@
 name: Dominion 2.3 tested playtest checkpoint ZIP
 on:
   push:
-    branches: [dominion-2.3-performance, dominion-2.3-presentation-probe]
+    branches: [dominion-2.3-performance, dominion-2.3-presentation-probe, dominion-2.3-texture-consumer-fix]
     paths: [.github/workflows/dominion23-playtest-zip.yml]
   workflow_dispatch:
     inputs:

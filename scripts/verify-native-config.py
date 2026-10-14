@@ -72,3 +72,15 @@ if './plugins/withSkiaSwapPacing.cjs' in config.get('plugins',[]):
         "console.log(JSON.stringify(require('./plugins/withSkiaSwapPacing.cjs').applySwapPacing(process.cwd())))"],text=True))
     assert guarded==proof, 'Native swap proof differs from pinned guarded patch'
     print('PASS: guarded UI scheduled EGL swap request; pixel geometry and backend unchanged')
+if './plugins/withSkiaTextureConsumer.cjs' in config.get('plugins',[]):
+    import subprocess
+    proof=json.loads(Path('android/skia-texture-consumer.json').read_text())
+    assert proof['producerCallsUpdateTexImage'] is False and proof['consumerOwner']=='Android HWUI'
+    assert proof['javaSurfaceLifecycleUnchanged'] is True and proof['nativeWindowLifecycleUnchanged'] is True
+    assert proof['drawingAndPresentUnchanged'] is True and proof['geometryChanges'] is False
+    assert proof['extraImagesOrSurfaces'] is False
+    assert hashlib.sha256(Path(proof['nativePath']).read_bytes()).hexdigest()==proof['nativeSourceSha256']
+    guarded=json.loads(subprocess.check_output(['node','-e',
+        "console.log(JSON.stringify(require('./plugins/withSkiaTextureConsumer.cjs').applyTextureConsumer(process.cwd())))"],text=True))
+    assert guarded==proof
+    print('PASS: pinned TextureView consumer ownership; producer draw and surface lifecycle retained')

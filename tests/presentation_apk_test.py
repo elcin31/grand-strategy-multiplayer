@@ -38,5 +38,18 @@ class PresentationBinaryTest(unittest.TestCase):
             verify_border_api(apk,lambda *_:binary.MARKER.decode(),destination)
             self.assertIn('"nativeSwapRequestObserved": true',destination.with_suffix('.json').read_text())
 
+    def test_consumer_fix_requires_all_abis_and_no_old_producer_warning(self):
+        with tempfile.TemporaryDirectory() as d:
+            apk=Path(d)/'consumer.apk'
+            with zipfile.ZipFile(apk,'w') as z:
+                z.writestr('assets/index.android.bundle','original map geometry')
+                for abi in binary.ABIS:z.writestr(f'lib/{abi}/librnskia.so',binary.CONSUMER_MARKER)
+            self.assertEqual(binary.verify(apk,False,True),binary.ABIS)
+            with self.assertRaises(AssertionError):binary.verify(apk,False,False)
+            destination=Path(d)/'consumer-startup'
+            with self.assertRaises(AssertionError):verify_border_api(apk,lambda *_:'map loaded',destination)
+            with self.assertRaises(AssertionError):verify_border_api(apk,lambda *_:binary.CONSUMER_MARKER.decode()+' updateAndRelease() failed',destination)
+            verify_border_api(apk,lambda *_:binary.CONSUMER_MARKER.decode(),destination)
+
 
 if __name__=='__main__':unittest.main()
