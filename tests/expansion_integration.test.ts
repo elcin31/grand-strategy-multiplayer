@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {createWorldState} from '../supabase/functions/_shared/worldState';
+import {createWorldState} from './helpers/isolatedWorld';
 import {applyServerCommand} from '../supabase/functions/_shared/serverCommand';
 import {startConstruction,completeConstructions,constructionProgress} from '../supabase/functions/_shared/buildingSystem';
 import {queueConstruction,processConstructionQueue,cancelConstruction} from '../supabase/functions/_shared/constructionQueueSystem';
@@ -79,6 +79,6 @@ test('intelligence and counterintelligence reserve their post-completion effect 
 });
 
 test('strict saves reject future construction starts and forged effective work, retaining valid delayed jobs',()=>{
-  for(const mutation of [(s:GameState)=>{const j=s.constructions![0]!;j.startedTick=1;j.completeTick=13;},(s:GameState)=>{const j=s.constructions![0]!;s.tick=1;j.workTick=1;j.workDone=2;},(s:GameState)=>{const j=s.constructions![0]!;j.workTick=0;j.workDone=.1;}]){const s=world();startConstruction(s,'germany',site(s),'Factory');mutation(s);const before=structuredClone(s);assert.throws(()=>validateCampaign(s));assert.deepEqual(s,before);}
+  for(const mutation of [(s:GameState)=>{const j=s.constructions![0]!;j.startedTick=1;j.completeTick=13;},(s:GameState)=>{const j=s.constructions![0]!;s.tick=1;j.workTick=1;j.workDone=2.1;},(s:GameState)=>{const j=s.constructions![0]!;j.workTick=0;j.workDone=.1;}]){const s=world();startConstruction(s,'germany',site(s),'Factory');mutation(s);const before=structuredClone(s);assert.throws(()=>validateCampaign(s));assert.deepEqual(s,before);}
   const s=world();startConstruction(s,'germany',site(s),'Factory');sabotage(s);for(let tick=1;tick<=13;tick++)month(s,tick);assert.ok(s.tick>s.constructions![0]!.completeTick);assert.deepEqual(decodeCampaign(encodeCampaign(s,1)).state,s);
 });

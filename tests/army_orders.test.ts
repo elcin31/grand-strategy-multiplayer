@@ -1,3 +1,4 @@
+import {completeDailyMarch} from './helpers/dailyMarch';
 import {scenarioStrength} from './helpers/militaryFixture';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -26,8 +27,8 @@ test('attack reaches exact requested target; neutral and stale routes cannot byp
  assert.ok(route.length>1); // capital to foreign border is genuinely multi-step
  // Exercise real monthly reducer and combat with AI paused through human ownership of every country.
  n.players=Object.keys(n.countries).map((id,i)=>({id:i?'npc-'+i:'host',displayName:id,countryId:id,isHost:!i,ready:true}));n.speed=1;
- for(let i=0;i<route.length+1;i++)n=applyServerCommand(n,{type:'ADVANCE_TICK'},'host');
- assert.equal(n.armies.find(v=>v.id===a.id)?.provinceId,target.id);assert.ok(n.battleLog.some(b=>b.provinceId===target.id&&b.attackerId==='germany'));
+ n=completeDailyMarch(n,a.id);
+ assert.equal(n.armies.find(v=>v.id===a.id)?.provinceId,target.id);assert.equal(n.provinces.find(p=>p.id===target.id)!.controllerId,'germany');
  const stale=campaign(),own=stale.armies.find(v=>v.ownerId==='germany')!;const ownTarget=stale.provinces.find(p=>p.ownerId==='germany'&&p.id!==own.provinceId)!;setArmyOrder(stale,'germany',own.id,ownTarget.id);
  stale.provinces.find(p=>p.id===own.order!.route[0])!.controllerId='france';let moved=false;advanceArmyOrders(stale,()=>{moved=true;});assert.equal(moved,false);assert.equal(own.order,undefined);
  assert.throws(()=>findArmyRoute(stale,own,'missing'));assert.throws(()=>findArmyRoute(stale,own,stale.provinces.find(p=>p.ownerId==='usa')!.id));

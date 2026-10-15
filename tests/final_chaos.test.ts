@@ -1,7 +1,7 @@
 import {takeArmyLosses} from '../supabase/functions/_shared/armyComposition';
 import {retreatDestination} from '../supabase/functions/_shared/militaryLogistics';
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {createWorldState} from '../supabase/functions/_shared/worldState';
+import {createWorldState} from './helpers/isolatedWorld';
 import {applyServerCommand} from '../supabase/functions/_shared/serverCommand';
 import {declareWar} from '../supabase/functions/_shared/diplomacySystem';
 import {joinCampaign} from '../supabase/functions/_shared/roomJoin';

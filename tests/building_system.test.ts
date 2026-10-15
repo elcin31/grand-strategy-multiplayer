@@ -1,5 +1,7 @@
+import {completeDailyMarch} from './helpers/dailyMarch';
 import {scenarioStrength} from './helpers/militaryFixture';
 import { declareWar } from '../supabase/functions/_shared/diplomacySystem';
+import {extractResources} from '../supabase/functions/_shared/stockpileSystem';
 import { recalcEconomy } from '../supabase/functions/_shared/economySystem';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -22,8 +24,8 @@ function capitalProvince(state: GameState, countryId='germany') {
 }
 
 test('building catalogue contains all ten required types with real costs, time, maintenance, levels and modifiers',()=>{
-  assert.deepEqual(new Set(BUILDING_TYPES),new Set<BuildingType>(['Farm','Mine','Factory','Barracks','Fort','University','Port','Infrastructure','Administration','Hospital']));
-  for(const type of BUILDING_TYPES){const d=BUILDINGS[type];assert.ok(d.baseCost>0&&Number.isInteger(d.baseBuildTime)&&d.baseBuildTime>0&&d.maintenance>=0&&d.maxLevel>=1);assert.ok(Object.keys(d.modifiers).length>0);}
+  assert.equal(BUILDING_TYPES.length,40);assert.ok((['Farm','Mine','Factory','Barracks','Fort','University','Port','Infrastructure','Administration','Hospital'] as BuildingType[]).every(t=>BUILDING_TYPES.includes(t)));
+  for(const type of BUILDING_TYPES){const d=BUILDINGS[type];assert.ok(d.baseCost>0&&Number.isInteger(d.baseBuildTime)&&d.baseBuildTime>0&&d.maintenance>=0&&d.maxLevel>=1);if(['Farm','Mine','Factory','Barracks','Fort','University','Port','Infrastructure','Administration','Hospital'].includes(type))assert.ok(Object.keys(d.modifiers).length>0);}
 });
 
 test('authenticated BUILD is server-priced, immutable, owner-bound and queues only one construction per province',()=>{
@@ -32,7 +34,7 @@ test('authenticated BUILD is server-priced, immutable, owner-bound and queues on
   const next=applyServerCommand(state,command,'host');
   assert.deepEqual(state,original); assert.deepEqual(next,applyCommand(state,command));
   assert.equal(next.countries.germany!.treasury,cash-quote.cost); assert.equal(next.constructions!.length,1);
-  assert.deepEqual(next.constructions![0],{id:next.constructions![0]!.id,provinceId:province.id,ownerId:'germany',buildingType:'Factory',targetLevel:1,startedTick:state.tick,completeTick:state.tick+quote.buildTime,cost:quote.cost});
+  const {workDone,workTick,materials,...job}=next.constructions![0]!;assert.deepEqual(materials,{cement:8,steel:4,timber:6});assert.equal(workDone??0,0);assert.equal(workTick??job.startedTick,state.tick);assert.deepEqual(job,{id:next.constructions![0]!.id,provinceId:province.id,ownerId:'germany',buildingType:'Factory',targetLevel:1,startedTick:state.tick,completeTick:state.tick+quote.buildTime,cost:quote.cost});
   assert.throws(()=>applyServerCommand(next,command,'host'));
   const foreign=next.provinces.find(p=>p.ownerId==='france')!;
   assert.throws(()=>applyServerCommand(next,{type:'BUILD',playerId:'host',provinceId:foreign.id,buildingType:'Farm'},'host'));
@@ -54,7 +56,9 @@ test('construction completes only after game time, then affects maintenance and 
   state=applyServerCommand(state,{type:'ADVANCE_TICK'},'host');
   assert.equal(capitalProvince(state).buildings?.Mine,1); assert.equal(state.constructions!.filter(q=>q.ownerId==='germany').length,0);
   assert.equal(state.countries.germany!.economy!.buildingMaintenance,BUILDINGS.Mine.maintenance);
-  assert.ok(state.countries.germany!.economy!.resourceIncome>beforeResource);
+  assert.equal(state.countries.germany!.economy!.resourceIncome,beforeResource);
+  const without=structuredClone(state);delete capitalProvince(without).buildings!.Mine;state.tick++;without.tick++;extractResources(state);extractResources(without);
+  assert.ok(state.countries.germany!.stockpile!.produced.iron!>without.countries.germany!.stockpile!.produced.iron!,'the completed mine must increase actual extracted iron');
 });
 
 test('building modifiers affect demographics, research and fort defense inputs rather than decorative UI only',()=>{
@@ -78,7 +82,7 @@ test('conquest preserves completed buildings but cancels the defeated owner cons
   const army=state.armies.find(a=>a.ownerId==='germany')!; army.provinceId=origin.id; scenarioStrength(army,5_000_000);
   state.armies=state.armies.filter(a=>a.ownerId!==defenderId||a.provinceId!==target.id);
   declareWar(state,'germany',defenderId);
-  const next=applyServerCommand(state,{type:'MOVE_ARMY',playerId:'host',armyId:army.id,provinceId:target.id},'host');
+  const next=completeDailyMarch(applyServerCommand(state,{type:'MOVE_ARMY',playerId:'host',armyId:army.id,provinceId:target.id},'host'),army.id);
   const captured=next.provinces.find(p=>p.id===target.id)!;
   assert.equal(captured.ownerId,defenderId); assert.equal(captured.controllerId,'germany'); assert.equal(captured.buildings?.Fort,1); assert.ok(!next.constructions!.some(c=>c.provinceId===target.id));
 });

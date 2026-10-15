@@ -80,8 +80,9 @@ test('modern monthly policies affect income, manpower, research, unrest and poin
   const raw = before.provinces.filter(p => p.ownerId === 'nru').reduce((sum, p) => sum + p.income, 0);
   // Monthly policy/religion unrest changes production before collection.
   assert.ok(Math.abs(nation.treasury - money(old.treasury + old.economy!.monthlyBalance)) < .01);
-  assert.equal(nation.income, governmentIncome(raw, 'Federation'));
-  assert.equal(nation.manpower, old.manpower + Math.max(500, Math.round(old.population * .00004 * .99)));
+  assert.equal(nation.income, money(governmentIncome(raw, 'Federation')*(1+(nation.technologies?.Economy??0)*.04)));
+  const natural=Math.max(500,Math.round(nation.population*.00004*.99)),available=Math.max(0,Math.floor(nation.population*.06)-old.army-old.manpower-old.reserveManpower!-(old.militaryLosses??0));
+  assert.equal(nation.manpower,old.manpower+Math.min(natural,available));assert.equal(nation.reserveManpower,old.reserveManpower);
   assert.equal(nation.politicalPower, 500);
   assert.ok(nation.technology > old.technology && nation.technology <= 100);
   assert.ok(nation.unrest! < old.unrest! && nation.unrest! >= 0);

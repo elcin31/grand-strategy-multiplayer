@@ -1,3 +1,4 @@
+import {money} from '../supabase/functions/_shared/economySystem';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createWorldState } from '../supabase/functions/_shared/worldState';
@@ -30,8 +31,9 @@ test('real-world monthly growth updates province/city/country counts, taxes and 
   }
   const nation = next.countries.germany!, old = before.countries.germany!;
   assert.ok(nation.population > old.population);
-  assert.equal(nation.income, governmentIncome(next.provinces.filter(p=>p.ownerId==='germany').reduce((n,p)=>n+p.income,0),nation.governmentType));
-  assert.equal(nation.manpower, old.manpower + Math.max(500, Math.round(nation.population * .00004 * (1 + governmentModifiers(nation.governmentType).manpowerPercent / 100))));
+  assert.equal(nation.income, money(governmentIncome(next.provinces.filter(p=>p.ownerId==='germany').reduce((n,p)=>n+p.income,0),nation.governmentType)*(1+(nation.technologies?.Economy??0)*.04)));
+  const natural=Math.max(500,Math.round(nation.population*.00004*(1+governmentModifiers(nation.governmentType).manpowerPercent/100))),available=Math.max(0,Math.floor(nation.population*.06)-old.army-old.manpower-old.reserveManpower!-(old.militaryLosses??0));
+  assert.equal(nation.manpower,old.manpower+Math.min(natural,available));assert.equal(nation.reserveManpower,old.reserveManpower);
   for (let i = 0; i < next.cities!.length; i++) assert.ok(next.cities![i]!.population >= before.cities![i]!.population);
 });
 

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createWorldState } from '../supabase/functions/_shared/worldState';
+import { createWorldState } from './helpers/isolatedWorld';
 import { applyServerCommand } from '../supabase/functions/_shared/serverCommand';
 import { normalizeGameState } from '../supabase/functions/_shared/stateMigrations';
 import { initializeTechnology, monthlyResearch, researchQuote, TECHNOLOGY_BRANCHES } from '../supabase/functions/_shared/technologySystem';

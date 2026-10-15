@@ -5,6 +5,7 @@ import { createInitialState, applyServerCommand } from '../supabase/functions/_s
 import { applyCommand } from '../src/engine/gameEngine';
 import { initialDeposit, initializeResources, RESOURCES, RESOURCE_TYPES, provinceProduction, resourceReport } from '../supabase/functions/_shared/resourceSystem';
 import { recalcEconomy, monthlyEconomy, money } from '../supabase/functions/_shared/economySystem';
+import {extractResources} from '../supabase/functions/_shared/stockpileSystem';
 import { buildProvinceColors } from '../src/map/scene';
 const world = () => createWorldState('resource-qa','RESQAA','host','Test',123);
 
@@ -16,14 +17,18 @@ test('all world deposits are seeded, bounded, complete and stable across orderin
  assert.notDeepEqual(state.provinces.map(p=>p.resourceDeposit),state.provinces.map(p=>initialDeposit(p.id,456)));
  const p=state.provinces[0]!, deposit=structuredClone(p.resourceDeposit);p.ownerId='germany';state.provinces.reverse();initializeResources(state);assert.deepEqual(p.resourceDeposit,deposit);
 });
-test('monthly sales are real owned income, conserve country ledgers and move with conquered provinces',()=>{
- const state=world(), c=state.countries.germany!;
- const rows=resourceReport(state,c.id);assert.ok(c.economy!.resourceIncome>0);
- assert.equal(money(rows.reduce((sum,r)=>sum+r.revenue,0)),c.economy!.resourceIncome);
- const cash=c.treasury,balance=c.economy!.monthlyBalance;monthlyEconomy(state);assert.equal(c.treasury,money(cash+balance));
- const p=state.provinces.find(p=>p.ownerId==='france')!, old=c.economy!.resourceIncome, original=structuredClone(p.resourceDeposit);
- p.ownerId='germany';p.controllerId='germany';recalcEconomy(state);
- assert.equal(c.economy!.resourceIncome,money(old+provinceProduction(p,c).revenue));assert.deepEqual(p.resourceDeposit,original);
+test('extraction credits controlled stockpiles once without free cash and follows conquest',()=>{
+ const state=world(),p=state.provinces.find(p=>p.ownerId==='france')!,original=structuredClone(p.resourceDeposit);
+ state.provinces=[p];for(const c of Object.values(state.countries)){c.stockpile!.amounts={};c.stockpile!.capacity=100000;}state.tick=1;
+ const conquered=structuredClone(state);conquered.provinces[0]!.ownerId='germany';conquered.provinces[0]!.controllerId='germany';
+ const cash=state.countries.france!.treasury;extractResources(state);extractResources(conquered);
+ const sum=(v:Record<string,number|undefined>)=>Object.values(v).reduce<number>((n,x)=>n+(x??0),0);
+ assert.ok(sum(state.countries.france!.stockpile!.produced)>0);assert.equal(sum(state.countries.germany!.stockpile!.produced),0);
+ assert.ok(sum(conquered.countries.germany!.stockpile!.produced)>0);assert.equal(sum(conquered.countries.france!.stockpile!.produced),0);
+ assert.equal(sum(state.countries.france!.stockpile!.amounts),sum(state.countries.france!.stockpile!.produced));assert.equal(state.countries.france!.treasury,cash);
+ const once=structuredClone(state);extractResources(state);assert.deepEqual(state,once);assert.deepEqual(conquered.provinces[0]!.resourceDeposit,original);
+ recalcEconomy(state);assert.equal(state.countries.france!.economy!.resourceIncome,0);assert.equal(resourceReport(state,'france').reduce((n,r)=>n+r.revenue,0),0);
+ const balance=state.countries.france!.economy!.monthlyBalance;monthlyEconomy(state);assert.equal(state.countries.france!.treasury,money(cash+balance));
 });
 test('production reacts to unrest, technology and development without negative or invalid output',()=>{
  const state=world(),p=state.provinces.find(p=>p.ownerId==='germany')!,c=state.countries.germany!;

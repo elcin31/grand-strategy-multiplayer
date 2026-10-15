@@ -1,10 +1,11 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {createWorldState} from '../supabase/functions/_shared/worldState';
+import {createWorldState} from './helpers/isolatedWorld';
 import {applyServerCommand} from '../supabase/functions/_shared/serverCommand';
 import {ESPIONAGE_MISSIONS,espionageQuote,startEspionage,monthlyEspionage,espionageModifiers,initializeEspionage,type EspionageKind} from '../supabase/functions/_shared/espionageSystem';
 import {money,recalcEconomy} from '../supabase/functions/_shared/economySystem';
 import {combatMultiplier} from '../supabase/functions/_shared/militarySystem';
+import {extractResources} from '../supabase/functions/_shared/stockpileSystem';
 import {resourceReport} from '../supabase/functions/_shared/resourceSystem';
 import {diplomaticLink,declareWar} from '../supabase/functions/_shared/diplomacySystem';
 import {runStrategicAI} from '../supabase/functions/_shared/aiSystem';
@@ -34,8 +35,9 @@ test('intel completes at its exact tick, grants a temporary combat effect and pe
   const pending=world();startEspionage(pending,'germany','france','IntelligenceGathering');pending.tick=2;monthlyEspionage(pending);assert.equal(pending.spyMissions!.length,1);assert.equal(pending.spyReports!.length,0);
 });
 test('sabotage changes actual production/resource budget and supply; capped effects expire completely',()=>{
-  const s=completed('Sabotage'),p=s.provinces.find(p=>p.ownerId==='france')!;p.buildings={...p.buildings,Factory:1};recalcEconomy(s);const damaged=s.countries.france!.economy!,effect=structuredClone(s.spyEffects![0]!);s.spyEffects=[];recalcEconomy(s);const clean=s.countries.france!.economy!;
-  assert.equal(damaged.productionIncome,money(clean.productionIncome*.8));assert.equal(damaged.resourceIncome,money(clean.resourceIncome*.8));assert.ok(damaged.monthlyBalance<clean.monthlyBalance);s.spyEffects=[effect];assert.equal(money(resourceReport(s,'france').reduce((n,r)=>n+r.revenue,0)),damaged.resourceIncome);
+  const s=completed('Sabotage'),p=s.provinces.find(p=>p.ownerId==='france')!;p.buildings={...p.buildings,Factory:1,Farm:1};recalcEconomy(s);const damaged=s.countries.france!.economy!,effect=structuredClone(s.spyEffects![0]!);s.spyEffects=[];recalcEconomy(s);const clean=s.countries.france!.economy!;
+  assert.equal(damaged.productionIncome,money(clean.productionIncome*.8));assert.equal(damaged.resourceIncome,money(clean.resourceIncome*.8));assert.ok(damaged.monthlyBalance<clean.monthlyBalance);
+  const sabotaged=structuredClone(s);sabotaged.spyEffects=[effect];sabotaged.tick++;s.tick++;extractResources(sabotaged);extractResources(s);assert.ok(Object.values(sabotaged.countries.france!.stockpile!.produced).reduce((n,x)=>n+x!,0)<Object.values(s.countries.france!.stockpile!.produced).reduce((n,x)=>n+x!,0));s.spyEffects=[effect];assert.ok(resourceReport(s,'france').reduce((n,r)=>n+r.units,0)>0);
   s.spyEffects=[effect,{...effect,id:'extra-effect',missionId:'other-mission'}];assert.equal(espionageModifiers(s,'france').productionMultiplier,.65);assert.equal(espionageModifiers(s,'france').supplyPenalty,30);s.tick=effect.untilTick;monthlyEspionage(s);recalcEconomy(s);assert.equal(s.countries.france!.economy!.productionIncome,clean.productionIncome);assert.equal(espionageModifiers(s,'france').supplyPenalty,0);
 });
 test('bounded world-wide reports retain human intelligence when NPC operations are numerous',()=>{

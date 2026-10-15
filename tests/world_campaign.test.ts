@@ -1,3 +1,6 @@
+import {completeDailyMarch} from './helpers/dailyMarch';
+import {dailyMilitary,beginBattle} from '../supabase/functions/_shared/military3System';
+import {money} from '../supabase/functions/_shared/economySystem';
 import {scenarioArmy} from './helpers/militaryFixture';
 import { declareWar } from '../supabase/functions/_shared/diplomacySystem';
 import { test } from 'node:test';
@@ -21,7 +24,7 @@ test('new campaigns contain every country, real provinces/cities and exact popul
   for (const country of Object.values(state.countries)) {
     const owned = state.provinces.filter(p => p.ownerId === country.id);
     assert.ok(owned.length > 0); assert.equal(country.population, owned.reduce((n,p) => n+p.population,0));
-    assert.equal(country.income, governmentIncome(owned.reduce((n,p) => n+p.income,0), country.governmentType));
+    assert.equal(country.income, money(governmentIncome(owned.reduce((n,p) => n+p.income,0), country.governmentType)*(1+(country.technologies?.Economy??0)*.04)));
     assert.equal(country.army,state.armies.filter(a => a.ownerId===country.id).reduce((n,a) => n+a.troops,0));
     assert.ok(owned.some(p => p.id === cities.get(country.capitalCityId!)!.provinceId));
     assert.ok(country.adjective && country.flag);
@@ -78,7 +81,7 @@ test('world gameplay pays for recruitment, respects land adjacency, and keeps a 
   state=applyServerCommand(state,{type:'RECRUIT',playerId:'host',provinceId:origin.id,troops:25000},'host');
   assert.equal(state.countries.usa!.treasury,before.countries.usa!.treasury-500);
   assert.equal(state.countries.usa!.manpower,before.countries.usa!.manpower-25000);
-  state=applyServerCommand(state,{type:'MOVE_ARMY',playerId:'host',armyId:army.id,provinceId:target},'host');
+  state=completeDailyMarch(applyServerCommand(state,{type:'MOVE_ARMY',playerId:'host',armyId:army.id,provinceId:target},'host'),army.id);
   assert.equal(state.armies.find(a=>a.id===army.id)!.provinceId,target);
   const paused=structuredClone(state);state=applyServerCommand(state,{type:'ADVANCE_TICK'},'host');assert.deepEqual(state,paused);
   assert.throws(()=>applyServerCommand(state,{type:'MOVE_ARMY',playerId:'host',armyId:army.id,provinceId:before.armies.find(a=>a.ownerId==='nzl')!.provinceId},'host'));
@@ -100,7 +103,7 @@ test('offline transport actually creates the modern world campaign', async()=> {
   await transport.leave(session.state.id);
 });
 
-test('battle IDs stay unique after the bounded log fills in a single paused tick', () => {
+test('daily battle IDs stay unique after the bounded log fills within one accounting period', () => {
   let state=createWorldState('entity-qa','ENTITY','host','Test');
   state.phase='paused';state.speed=0;state.players[0]!.countryId='germany';
   const germany=state.provinces.filter(p=>p.ownerId==='germany');
@@ -111,13 +114,13 @@ test('battle IDs stay unique after the bounded log fills in a single paused tick
   state.armies.push(scenarioArmy({id:'army-defender-test',ownerId:enemy,provinceId:destination,troops:1000000}));
   const ids=new Set<string>();
   for(let i=0;i<60;i++) {
-    // Independent fresh assaults exercise ID exhaustion in one paused tick;
+    // Independent fresh assaults finish through the daily combat system;
     // a survivor that just retreated cannot immediately assault again.
     const armyId='army-boundary-test-'+i;
     state.armies.push(scenarioArmy({id:armyId,ownerId:'germany',provinceId:origin.id,troops:1000}));
-    state=applyServerCommand(state,{type:'MOVE_ARMY',playerId:'host',armyId,provinceId:destination},'host');
+    const attacker=state.armies.find(a=>a.id===armyId)!;beginBattle(state,attacker,state.provinces.find(p=>p.id===destination)!);dailyMilitary(state);
     const id=state.battleLog[0]!.id;assert.ok(!ids.has(id));ids.add(id);
     assert.equal(new Set(state.battleLog.map(b=>b.id)).size,state.battleLog.length);
-    assert.ok(state.battleLog.length<=20);assert.equal(state.tick,0);
+    assert.ok(state.battleLog.length<=30);assert.equal(state.tick,0);
   }
 });

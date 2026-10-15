@@ -3,6 +3,7 @@ import mapping from '../src/world/data/province-v4-mapping.json';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
 import {validateCampaign} from '../src/persistence/campaignCodec';
 import {monthlyPopulationGrowth} from '../supabase/functions/_shared/populationSystem';
+import {monthlyProduction} from '../supabase/functions/_shared/productionSystem';
 import {recalcEconomy} from '../supabase/functions/_shared/economySystem';
 import {startConstruction,completeConstructions} from '../supabase/functions/_shared/buildingSystem';
 test('reduced world retains every source region, city, capital, population and reciprocal graph',()=>{
@@ -15,6 +16,6 @@ test('reduced world retains every source region, city, capital, population and r
 });
 test('factory completes once, produces revenue and administration offsets explicit upkeep',()=>{
  const s=createWorldState('build','BUILD1','host','Test',101),c=s.countries.germany!,p=s.provinces.find(p=>p.ownerId===c.id)!;c.treasury=100000;
- const quote=startConstruction(s,c.id,p,'Factory');assert.equal(Object.keys(p.buildings??{}).length,0);s.tick=quote.completeTick;completeConstructions(s);recalcEconomy(s);assert.equal(p.buildings?.Factory,1);assert.ok(c.economy!.productionIncome>0);assert.ok(c.economy!.buildingMaintenance>0);
+ const quote=startConstruction(s,c.id,p,'Factory');assert.equal(Object.keys(p.buildings??{}).length,0);s.tick=quote.completeTick;completeConstructions(s);monthlyProduction(s);recalcEconomy(s);assert.equal(p.buildings?.Factory,1);assert.ok(c.economy!.productionIncome>0);assert.ok(c.economy!.buildingMaintenance>0);
  completeConstructions(s);assert.equal(p.buildings?.Factory,1);const before=c.economy!.administrationMaintenance;p.buildings!.Administration=1;recalcEconomy(s);assert.ok(c.economy!.administrationMaintenance<before);
 });

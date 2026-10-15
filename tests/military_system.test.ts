@@ -1,7 +1,7 @@
 import {scenarioStrength} from './helpers/militaryFixture';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {createWorldState} from '../supabase/functions/_shared/worldState';
+import {createWorldState} from './helpers/isolatedWorld';
 import {applyServerCommand} from '../supabase/functions/_shared/serverCommand';
 import {combatMultiplier,initializeMilitary,recoverMilitary,UNITS,UNIT_TYPES} from '../supabase/functions/_shared/militarySystem';
 function campaign(){const s=createWorldState('military','MIL001','host','QA',37);s.phase='paused';s.players[0]!.countryId='germany';return s;}
@@ -9,7 +9,7 @@ test('all six units recruit at server prices, require research, and do not merge
   const s=campaign(),c=s.countries.germany!,p=s.provinces.find(p=>p.ownerId===c.id)!;c.treasury=100000;c.manpower=1000000;
   assert.throws(()=>applyServerCommand(s,{type:'RECRUIT_UNIT',playerId:'host',provinceId:p.id,troops:1000,unitType:'Armor'},'host'));
   c.technologies!.Military=5;let n=s;
-  for(const unitType of UNIT_TYPES){const before=n.countries.germany!.treasury;n=applyServerCommand(n,{type:'RECRUIT_UNIT',playerId:'host',provinceId:p.id,troops:1000,unitType},'host');assert.equal(n.countries.germany!.treasury,before-UNITS[unitType].cost);}
+  for(const unitType of UNIT_TYPES.filter(t=>['Infantry','Mechanized','Armor','Artillery','AirDefense','SpecialForces'].includes(t))){const before=n.countries.germany!.treasury;n=applyServerCommand(n,{type:'RECRUIT_UNIT',playerId:'host',provinceId:p.id,troops:1000,unitType},'host');assert.equal(n.countries.germany!.treasury,before-UNITS[unitType].cost);}
   assert.equal(new Set(n.armies.filter(a=>a.provinceId===p.id).map(a=>a.unitType)).size,6);
   assert.throws(()=>applyServerCommand(s,{type:'RECRUIT_UNIT',playerId:'host',provinceId:p.id,troops:1000,unitType:'Armor',morale:100} as never,'host'));
 });

@@ -22,7 +22,7 @@ test('dense city labels remain deterministic, prioritize capitals and avoid coun
     for (const b of labels.values()) if (a !== b) assert.ok(!overlap(a.box, b.box));
   }
   assert.deepEqual(cities, original);
-  assert.equal(cityLabelPlacements(cities, 3, TILT, width).size, 0);
+  assert.equal(cityLabelPlacements(cities, 2.79, TILT, width).size, 0);
   assert.equal(cityLabelPlacements(cities, NaN, TILT, width).size, 0);
   assert.equal(cityLabelPlacements(cities, 5, 0, width).size, 0);
   assert.equal(cityLabelPlacements([capital], 5, TILT, () => NaN).size, 0);

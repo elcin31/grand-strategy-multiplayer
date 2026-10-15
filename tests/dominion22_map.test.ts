@@ -1,3 +1,4 @@
+import {CURRENT_STATE_VERSION} from '../supabase/functions/_shared/stateMigrations';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createWorldState} from '../supabase/functions/_shared/worldState';
@@ -41,5 +42,5 @@ test('trade links include only accepted active contracts and existing capitals; 
 });
 test('2.1.2 schema and IDs round-trip through 2.2 without simulation changes',()=>{
   const loaded=decodeCampaign(encodeCampaign(s,1)).state;
-  assert.equal(loaded.stateVersion,25);assert.deepEqual(loaded.provinces.map(p=>p.id),s.provinces.map(p=>p.id));assert.deepEqual(loaded.armies,s.armies);
+  assert.equal(loaded.stateVersion,CURRENT_STATE_VERSION);assert.deepEqual(loaded.provinces.map(p=>p.id),s.provinces.map(p=>p.id));assert.deepEqual(loaded.armies,s.armies);
 });

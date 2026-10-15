@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {createWorldState} from '../supabase/functions/_shared/worldState';
+import {createWorldState} from './helpers/isolatedWorld';
 import {applyServerCommand} from '../supabase/functions/_shared/serverCommand';
 import {economicPolicy,initializeEconomy2,ECONOMIC_POLICIES,militaryFundingCost} from '../supabase/functions/_shared/economy2System';
 import {BUILDING_TYPES,BUILDINGS,buildingRequirementReason,completeConstructions,cancelConstructionInProvince} from '../supabase/functions/_shared/buildingSystem';
@@ -34,7 +34,7 @@ test('the final research month is paid before completion; bankruptcy pauses rath
   s=command(world(),{type:'START_RESEARCH',playerId:'host',branch:'Economy'});s.countries.germany!.bankruptcyUntilTick=24;monthlyResearch(s);assert.equal(s.countries.germany!.research!.progress,0);
 });
 test('all ten existing building types use the existing costs/time/effects and server-checked requirements',()=>{
-  for(const type of BUILDING_TYPES){let s=prepared(),p=site(s);p.buildings={Infrastructure:1};if(type==='Infrastructure')delete p.buildings.Infrastructure;const q=queuedBuildingQuote(s,p,type);s=command(s,{type:'BUILD',playerId:'host',provinceId:p.id,buildingType:type});assert.equal(s.constructions![0]!.cost,q.cost);s.tick=q.buildTime;completeConstructions(s);assert.equal(s.provinces.find(x=>x.id===p.id)!.buildings![type],q.targetLevel);recalcEconomy(s);assert.ok(s.countries.germany!.economy!.buildingMaintenance>=BUILDINGS[type].maintenance);assertInvariants(s);}
+  for(const type of BUILDING_TYPES.filter(t=>['Farm','Mine','Factory','Barracks','Fort','University','Port','Infrastructure','Administration','Hospital'].includes(t))){let s=prepared(),p=site(s);p.buildings={Infrastructure:1};if(type==='Infrastructure')delete p.buildings.Infrastructure;const q=queuedBuildingQuote(s,p,type);s=command(s,{type:'BUILD',playerId:'host',provinceId:p.id,buildingType:type});assert.equal(s.constructions![0]!.cost,q.cost);s.tick=q.buildTime;completeConstructions(s);assert.equal(s.provinces.find(x=>x.id===p.id)!.buildings![type],q.targetLevel);recalcEconomy(s);assert.ok(s.countries.germany!.economy!.buildingMaintenance>=BUILDINGS[type].maintenance);assertInvariants(s);}
   assert.ok(![...WATER_ACCESS].some(id=>['npl-','aut-','che-','srb-'].some(prefix=>id.startsWith(prefix))),'Internal/unrepresented land holes are not coasts');
   const s=world(),inland=s.provinces.find(p=>p.ownerId==='germany'&&!WATER_ACCESS.has(p.id))!;assert.match(buildingRequirementReason(s,inland,'Port')!,/воде/);const p=site(s);assert.match(buildingRequirementReason(s,p,'Port')!,/инфраструктура/);p.resourceDeposit={type:'food',richness:60};delete p.resourceMix;assert.match(buildingRequirementReason(s,p,'Mine')!,/минеральное/);assert.match(buildingRequirementReason(s,p,'Farm',3)!,/технология/);
 });

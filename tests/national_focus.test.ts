@@ -1,6 +1,7 @@
+import {FOCUS_EXPANSION} from '../supabase/functions/_shared/focusExpansion';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {createWorldState} from '../supabase/functions/_shared/worldState';
+import {createWorldState} from './helpers/isolatedWorld';
 import {applyServerCommand} from '../supabase/functions/_shared/serverCommand';
 import {normalizeGameState,CURRENT_STATE_VERSION} from '../supabase/functions/_shared/stateMigrations';
 import {FOCUS_IDS,FOCUS_NODES,focusNode,focusBelongsTo,focusBonuses,hasFocus,type FocusId} from '../supabase/functions/_shared/focusCatalogue';
@@ -20,10 +21,10 @@ import {encodeCampaign,decodeCampaign,validateCampaign} from '../src/persistence
 import {CampaignStore,type CampaignFiles} from '../src/persistence/campaignStore';
 function world(){const s=createWorldState('focus-qa','FOC001','host','QA',101);s.players[0]!.countryId='germany';s.phase='paused';s.speed=0;for(const c of Object.values(s.countries)){c.treasury=20000;c.politicalPower=500;}return s;}
 function finish(s:ReturnType<typeof world>,id:FocusId,owner='germany'){startFocus(s,owner,id);s.tick+=FOCUS_NODES[id]!.duration;monthlyFocus(s);recalcEconomy(s);normalizeGameState(s);return s.countries[owner]!;}
-test('forty original courses form four generic branches, five regional programs and five real major-power trees',()=>{
- const s=world();assert.equal(FOCUS_IDS.length,40);assert.equal(FOCUS_IDS.filter(id=>FOCUS_NODES[id]!.category==='Generic').length,20);assert.equal(FOCUS_IDS.filter(id=>FOCUS_NODES[id]!.category==='Regional').length,5);assert.equal(FOCUS_IDS.filter(id=>FOCUS_NODES[id]!.category==='Unique').length,15);
+test('125 original courses retain generic, regional and major-power branches',()=>{
+ const s=world();assert.equal(FOCUS_IDS.length,125);assert.equal(FOCUS_IDS.filter(id=>FOCUS_NODES[id]!.category==='Generic').length,65);assert.equal(FOCUS_IDS.filter(id=>FOCUS_NODES[id]!.category==='Regional').length,5);assert.equal(FOCUS_IDS.filter(id=>FOCUS_NODES[id]!.category==='Unique').length,55);
  const done=new Set<string>(),active=new Set<string>();function visit(id:string){const n=focusNode(id)!;assert.ok(n);assert.ok(!active.has(id));if(done.has(id))return;active.add(id);for(const parent of [...n.prerequisites,...n.eitherPrerequisites??[]])visit(parent);active.delete(id);done.add(id);assert.ok(n.duration>0&&n.cost>0&&n.pp>0);}
- for(const id of FOCUS_IDS)visit(id);assert.equal(done.size,40);for(const id of ['usa','russia','chn','germany','uk'])assert.equal(FOCUS_IDS.filter(f=>FOCUS_NODES[f]!.category==='Unique'&&focusBelongsTo(s.countries[id]!,FOCUS_NODES[f]!)).length,3);assert.equal(focusNode('toString'),undefined);
+ for(const id of FOCUS_IDS)visit(id);assert.equal(done.size,125);for(const id of ['usa','russia','chn','germany','uk'])assert.equal(FOCUS_IDS.filter(f=>FOCUS_NODES[f]!.category==='Unique'&&focusBelongsTo(s.countries[id]!,FOCUS_NODES[f]!)).length,8);assert.equal(focusNode('toString'),undefined);
 });
 test('starting a real course pays once and validates actor, prerequisites, territory, phase and forged rewards',()=>{
  const s=world(),copy=structuredClone(s),cmd={type:'START_NATIONAL_FOCUS',playerId:'host',focusId:'eco-audit'} as const,n=applyServerCommand(s,cmd,'host');assert.deepEqual(s,copy);assert.equal(n.countries.germany!.treasury,20000-220);assert.equal(n.countries.germany!.politicalPower,500-16);assert.equal(n.countries.germany!.nationalFocus!.progress,0);assert.equal(n.focusEvents![0]!.kind,'Started');
@@ -43,7 +44,7 @@ test('default pauses real focus months without later catch-up; cancellation keep
  const s=world(),c=s.countries.germany!;startFocus(s,c.id,'eco-audit');const paid=c.treasury;c.bankruptcyUntilTick=8;for(let tick=1;tick<8;tick++){s.tick=tick;monthlyFocus(s);}assert.equal(c.nationalFocus!.progress,0);s.tick=8;monthlyFocus(s);assert.equal(c.nationalFocus!.progress,1);cancelFocus(s,c.id);assert.equal(c.treasury,paid);assert.equal(c.completedFocuses!.length,0);assert.throws(()=>cancelFocus(s,c.id));startFocus(s,c.id,'eco-audit');assert.equal(c.nationalFocus!.progress,0);assert.equal(c.treasury,paid-220);
 });
 test('all five regional programs and three unique courses for each major require actual eligibility and scientific prerequisites',()=>{
- const s=world();for(const owner of ['usa','russia','chn','germany','uk']){finish(s,'eco-audit',owner);const c=s.countries[owner]!,regional=FOCUS_IDS.find(id=>FOCUS_NODES[id]!.category==='Regional'&&focusBelongsTo(c,FOCUS_NODES[id]!))!;finish(s,regional,owner);const unique=FOCUS_IDS.filter(id=>FOCUS_NODES[id]!.country===owner);finish(s,unique[0]!,owner);finish(s,unique[1]!,owner);assert.match(focusAvailability(s,owner,unique[2]!)!,/научные/);grantTechnology(s,c,'eco-ledger');grantTechnology(s,c,'science-method');finish(s,unique[2]!,owner);assert.equal(c.completedFocuses!.length,5);assert.ok(focusBonuses(c).research>=.08);}
+ const s=world();for(const owner of ['usa','russia','chn','germany','uk']){finish(s,'eco-audit',owner);const c=s.countries[owner]!,regional=FOCUS_IDS.find(id=>FOCUS_NODES[id]!.category==='Regional'&&focusBelongsTo(c,FOCUS_NODES[id]!))!;finish(s,regional,owner);const unique=FOCUS_IDS.filter(id=>FOCUS_NODES[id]!.country===owner&&!Object.hasOwn(FOCUS_EXPANSION,id));finish(s,unique[0]!,owner);finish(s,unique[1]!,owner);assert.match(focusAvailability(s,owner,unique[2]!)!,/научные/);grantTechnology(s,c,'eco-ledger');grantTechnology(s,c,'science-method');finish(s,unique[2]!,owner);assert.equal(c.completedFocuses!.length,5);assert.ok(focusBonuses(c).research>=.08);}
  for(const region of ['Africa','Asia','Americas','Europe','Oceania'])assert.ok(Object.values(s.countries).some(c=>c.region===region&&FOCUS_IDS.some(id=>FOCUS_NODES[id]!.region===region&&focusBelongsTo(c,FOCUS_NODES[id]!))));
 });
 test('course capabilities change actual supply, construction, research, combat and army upkeep',()=>{
@@ -65,7 +66,7 @@ test('old schema17 migrates with no invented rewards and creates a byte-exact fo
  const store=new CampaignStore(files),loaded=await store.load(old.id);assert.equal(loaded.stateVersion,CURRENT_STATE_VERSION);assert.deepEqual(loaded.focusEvents,[]);assert.deepEqual(loaded.countries.germany!.completedFocuses,[]);assert.equal(loaded.countries.germany!.treasury,cash);await store.save(loaded);assert.equal(map.get(old.id+'.before-focus-v18.backup'),raw);
 });
 test('scheduled AI selects an affordable personality-matched course and retains its reserve',()=>{
- const s=world();s.phase='running';s.players=Object.keys(s.countries).filter(id=>id!=='germany').map((countryId,i)=>({id:'p'+i,countryId,displayName:'QA',ready:true,isHost:i===0}));s.tick=Object.keys(s.countries).sort().indexOf('germany')%6;const c=s.countries.germany!;s.leaders![c.rulerId!]!.aiPersonality='Economic';runStrategicAI(s,{recruit:()=>{},move:()=>{}});assert.equal(c.nationalFocus?.focusId,'eco-audit');assert.ok(c.treasury>=strategicContext(s,c.id,[]).treasuryReserve);normalizeGameState(s);
+ const s=world();s.phase='running';s.players=Object.keys(s.countries).filter(id=>id!=='germany').map((countryId,i)=>({id:'p'+i,countryId,displayName:'QA',ready:true,isHost:i===0}));s.tick=Object.keys(s.countries).sort().indexOf('germany')%6;const c=s.countries.germany!;s.leaders![c.rulerId!]!.aiPersonality='Economic';c.aiStrategy={personality:'Trade',goal:'Economy',sinceTick:s.tick,reviewTick:s.tick+6,reason:'Economic test plan'};runStrategicAI(s,{recruit:()=>{},move:()=>{}});assert.equal(c.nationalFocus?.focusId,'eco-audit');assert.ok(c.treasury>=strategicContext(s,c.id,[]).treasuryReserve);normalizeGameState(s);
 });
 test('focus history stays bounded and reserves a human completion while many AI courses start',()=>{
  const s=world();finish(s,'eco-audit');const human=s.focusEvents!.find(e=>e.kind==='Completed'&&e.countryId==='germany')!.id;
