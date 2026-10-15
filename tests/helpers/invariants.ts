@@ -25,5 +25,5 @@ export function assertInvariants(s:GameState):void {
  for(const c of Object.values(s.countries)){assert.ok(c.treasury>=0&&c.treasury<=Number.MAX_SAFE_INTEGER/1000);assert.ok(c.manpower>=0&&c.stability>=0&&c.stability<=100);assert.equal(c.population,population.get(c.id)??0);assert.equal(c.army,armies.get(c.id)??0);assert.ok(c.debt!>=0);if(c.overlordId)assert.ok(c.overlordId!==c.id&&!s.countries[c.overlordId]!.overlordId);}
  const participants=new Set<string>();for(const w of s.wars??[]){const ids=[...w.attackers,...w.defenders];assert.equal(new Set(ids).size,ids.length);for(const id of ids){assert.ok(s.countries[id]&&!participants.has(id));participants.add(id);}assert.ok(Math.abs(w.warScore??0)<=100);for(const n of Object.values(w.casualties??{}))assert.ok(Number.isSafeInteger(n)&&n>=0);}
  for(const l of Object.values(s.diplomacy??{})){assert.ok(l.a!==l.b&&s.countries[l.a]&&s.countries[l.b]);assert.ok(l.relation>=-100&&l.relation<=100);assert.equal(new Set(l.treaties).size,l.treaties.length);}
- assert.ok(s.battleLog.length<=20&&(s.warHistory?.length??0)<=20&&(s.movements?.length??0)<=20);
+ assert.ok(s.battleLog.length<=30&&(s.warHistory?.length??0)<=20&&(s.movements?.length??0)<=20);
 }

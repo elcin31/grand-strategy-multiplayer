@@ -1,13 +1,14 @@
+import {money,recalcEconomy,refreshArmyBudget} from './economySystem.ts';
 import {canEnterTerritory} from './diplomacy2System.ts';
-import {provinceBuildingModifiers} from './buildingSystem.ts';
+import {provinceBuildingModifiers,cancelConstructionInProvince} from './buildingSystem.ts';
 import type {Army,GameState,Province,BattleEvent} from './gameTypes.ts';
-import {armyParts,takeArmyLosses,initializeArmyComposition} from './armyComposition.ts';
+import {armyParts,armyBaseUpkeep,takeArmyLosses,initializeArmyComposition} from './armyComposition.ts';
 import {UNIT_TYPES,UNITS} from './unitCatalogue.ts';
 import {combatMultiplier} from './militarySystem.ts';
 import {retreatDestination,retreatArmy,awardBattleExperience} from './militaryLogistics.ts';
 import {supplyAt,invalidateSupply,refreshSupplyLoads} from './supplySystem.ts';
 import {warBetween} from './diplomacySystem.ts';
-import {recordWarBattle} from './warSystem.ts';
+import {recordWarBattle,refreshWars} from './warSystem.ts';
 import {notify} from './notificationSystem.ts';
 export type Formation='Balanced'|'Assault'|'Defensive'|'Mobile';
 export interface ActiveBattle {countryLosses?:Record<string,number>;id:string;provinceId:string;attackerId:string;defenderId:string;attackerArmyIds:string[];defenderArmyIds:string[];startedDay:number;attackerInitial:number;defenderInitial:number;attackerLosses:number;defenderLosses:number;reasons:string[]}
@@ -41,7 +42,10 @@ export function siegeForecast(s:GameState,x:Siege){const p=provinceIndex(s).get(
  const rate=(s.countries[x.attackerId]?.militaryDoctrine==='Siege'?1.2:1)*Math.max(.2,(troops/Math.max(1000,x.garrison)*.65+siegeTroops/3000)*(supply/100+.15)*(1+generals/100)/(1+x.fortress*.4));
  return {supply,troops,siegeTroops,rate,days:Math.ceil((100-x.progress)/rate)};
 }
-export function occupy(s:GameState,a:Army,p:Province,controller=a.ownerId):void{p.controllerId=controller;a.provinceId=p.id;invalidateSupply(s);}
+export function occupy(s:GameState,a:Army,p:Province,controller=a.ownerId):void{
+ const changed=(p.controllerId??p.ownerId)!==controller;p.controllerId=controller;a.provinceId=p.id;invalidateSupply(s);
+ if(changed){cancelConstructionInProvince(s,p.id);p.productionQueue=[];refreshWars(s);recalcEconomy(s);}
+}
 export function beginSiege(s:GameState,a:Army,p:Province):void{
  const defender=p.controllerId??p.ownerId,existing=s.sieges?.find(x=>x.provinceId===p.id&&warBetween(s,a.ownerId,x.defenderId)&&!warBetween(s,a.ownerId,x.attackerId));a.provinceId=p.id;
  if(existing){if(!existing.armyIds.includes(a.id))existing.armyIds.push(a.id);return;}
@@ -79,6 +83,7 @@ export function assaultSiege(s:GameState,owner:string,id:string):void{
  if(won){for(const a of armies)occupy(s,a,p,x.attackerId);p.buildingDamage=Math.min(.85,(p.buildingDamage??0)+.2);s.sieges=s.sieges?.filter(q=>q.id!==id);notify(s,owner,'Siege','Крепость взята штурмом: '+p.name,p.id);}
 }
 export function dailyMilitary(s:GameState):void{
+ const hadCombat=!!(s.activeBattles?.length||s.sieges?.length);
  const provinces=new Map(s.provinces.map(p=>[p.id,p]));
  for(const b of [...s.activeBattles??[]]){
   if(!warBetween(s,b.attackerId,b.defenderId)){s.activeBattles=s.activeBattles?.filter(x=>x.id!==b.id);continue;}
@@ -100,7 +105,13 @@ export function dailyMilitary(s:GameState):void{
  }
  const fighting=new Set((s.activeBattles??[]).flatMap(b=>[...b.attackerArmyIds,...b.defenderArmyIds]));
  for(const a of s.armies){const p=provinces.get(a.provinceId)!;if(!fighting.has(a.id)&&!s.sieges?.some(x=>x.armyIds.includes(a.id))){const supply=supplyAt(s,a.ownerId,p.id).score;a.supply=supply;const friendly=(p.controllerId??p.ownerId)===a.ownerId;a.organization=Math.min(100,(a.organization??80)+(friendly?.5:.15)*supply/100);a.morale=Math.min(100,(a.morale??80)+.2*supply/100);if(supply<40){const lost=takeArmyLosses(a,Math.min(a.troops,Math.floor(a.troops*(40-supply)/120000)));s.countries[a.ownerId]!.militaryLosses=(s.countries[a.ownerId]!.militaryLosses??0)+lost;}}}
- s.armies=s.armies.filter(a=>a.troops>0);for(const c of Object.values(s.countries))c.army=0;for(const a of s.armies)s.countries[a.ownerId]!.army+=a.troops;refreshSupplyLoads(s);
+ s.armies=s.armies.filter(a=>a.troops>0);
+ const upkeep=new Map<string,number>();for(const c of Object.values(s.countries))c.army=0;
+ for(const a of s.armies){s.countries[a.ownerId]!.army+=a.troops;upkeep.set(a.ownerId,(upkeep.get(a.ownerId)??0)+armyBaseUpkeep(a));}
+ // Attrition updates only military costs. Battles also change exhaustion and
+ // taxable occupied land, so their daily accounting needs the full budget.
+ if(hadCombat)recalcEconomy(s);else for(const c of Object.values(s.countries)){c.militaryUpkeepBase=money(upkeep.get(c.id)??0);refreshArmyBudget(c);}
+ refreshSupplyLoads(s);
 }
 export function mergeArmies(s:GameState,owner:string,ids:string[]):void{
  const armies=ids.map(id=>s.armies.find(a=>a.id===id&&a.ownerId===owner));if(armies.some(a=>!a)||armies.length<2)throw Error('Выберите хотя бы две свои армии');const target=armies[0]!;
