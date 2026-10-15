@@ -21,5 +21,5 @@ export function countryGlyph(label:CountryLabel,country:Country,zoom:number,meas
 }
 export function hitCountryGlyph(glyph:CountryGlyph,x:number,y:number,preparedZoom:number,tilt:number):boolean {
   const px=(x-glyph.label.anchor.x)*preparedZoom/glyph.scale,py=(y-glyph.label.anchor.y)*preparedZoom*tilt/glyph.scale;
-  return px>=-glyph.width/2-4&&px<=glyph.width/2+4&&Math.abs(py)<=Math.max(14,22/glyph.scale);
+  return px>=-glyph.width/2-26&&px<=glyph.width/2+4&&Math.abs(py)<=Math.max(14,22/glyph.scale);
 }
