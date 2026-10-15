@@ -9,22 +9,45 @@ import {supplyAt} from './supplySystem.ts';
 import {canEnterTerritory} from './diplomacy2System.ts';
 export const STRATEGIC_PERSONALITIES=['Trade','Military','Defensive','Balancer','Reformer','Regional'] as const;
 export interface AIWarOperation {warId:string;targetCountryId:string;assignedArmyIds:string[];stagingProvinceIds:string[];priority:number;status:'Preparing'|'Executing'|'Holding'|'Complete';reviewDay:number}
-export interface AIStrategy {operation?:AIWarOperation;personality:typeof STRATEGIC_PERSONALITIES[number];goal:'Economy'|'Science'|'Integration'|'Modernization'|'Defense'|'Influence'|'Recovery'|'Expansion'|'Leadership';sinceTick:number;reviewTick:number;reason:string;targetCountryId?:string}
+export interface AIStrategy {operation?:AIWarOperation;personality:typeof STRATEGIC_PERSONALITIES[number];goal:'Economy'|'Science'|'Integration'|'Modernization'|'Defense'|'Influence'|'Recovery'|'Expansion'|'Leadership';sinceTick:number;reviewTick:number;reason:string;targetCountryId?:string;
+ id?:string;priority?:number;progress?:number;lastReviewedTick?:number;
+ baseline?:{treasury:number;stability:number;exhaustion:number;discoveries:number;territories:number};
+ previousPlan?:{id:string;goal:AIStrategy['goal'];endedTick:number;reason:string};
+}
+function planBaseline(c:Country):NonNullable<AIStrategy['baseline']>{return {treasury:c.treasury,stability:c.stability,exhaustion:c.warExhaustion??0,discoveries:c.scientificDiscoveries?.length??0,territories:c.provinceIds?.length??0};}
+function planProgress(c:Country,p:AIStrategy):number{
+ const b=p.baseline!;
+ const n=p.goal==='Economy'?(c.treasury-b.treasury)/Math.max(100,b.treasury*.25)*100:
+  p.goal==='Recovery'?Math.max(c.stability-b.stability,b.exhaustion-(c.warExhaustion??0))*5:
+  p.goal==='Science'?((c.scientificDiscoveries?.length??0)-b.discoveries)*25:
+  p.goal==='Expansion'?((c.provinceIds?.length??0)-b.territories)*25:0;
+ return Math.max(0,Math.min(100,Math.round(n)));
+}
 export function ensureStrategy(s:GameState,c:Country):AIStrategy{
- if(!c.aiStrategy){let h=0;for(const ch of c.id)h=(Math.imul(h,31)+ch.charCodeAt(0))>>>0;const personality=STRATEGIC_PERSONALITIES[h%STRATEGIC_PERSONALITIES.length]!;c.aiStrategy={personality,goal:personality==='Reformer'?'Science':personality==='Trade'?'Economy':personality==='Military'?'Modernization':personality==='Balancer'?'Integration':personality==='Regional'?'Influence':'Defense',sinceTick:s.tick,reviewTick:s.tick+6,reason:'Долгосрочная стратегия государства'};}return c.aiStrategy;
+ if(!c.aiStrategy){let h=0;for(const ch of c.id)h=(Math.imul(h,31)+ch.charCodeAt(0))>>>0;const personality=STRATEGIC_PERSONALITIES[h%STRATEGIC_PERSONALITIES.length]!;c.aiStrategy={personality,goal:personality==='Reformer'?'Science':personality==='Trade'?'Economy':personality==='Military'?'Modernization':personality==='Balancer'?'Integration':personality==='Regional'?'Influence':'Defense',sinceTick:s.tick,reviewTick:s.tick+6,reason:'Долгосрочная стратегия государства'};}
+ const p=c.aiStrategy;p.id??=`plan-${c.id}-${p.sinceTick}-${p.goal}`;p.priority??=50;p.progress??=0;p.lastReviewedTick??=p.sinceTick;p.baseline??=planBaseline(c);
+ if(!STRATEGIC_PERSONALITIES.includes(p.personality)||p.id!==`plan-${c.id}-${p.sinceTick}-${p.goal}`||!Number.isSafeInteger(p.sinceTick)||p.sinceTick<0||p.sinceTick>s.tick||!Number.isSafeInteger(p.lastReviewedTick)||p.lastReviewedTick<0||p.lastReviewedTick>s.tick||!Number.isInteger(p.priority)||p.priority<0||p.priority>100||!Number.isInteger(p.progress)||p.progress<0||p.progress>100||['treasury','stability','exhaustion','discoveries','territories'].some(k=>!Number.isFinite(p.baseline![k as keyof typeof p.baseline])||p.baseline![k as keyof typeof p.baseline]<0))throw Error('Invalid persistent AI plan');
+ return p;
 }
 export function reviewStrategy(s:GameState,c:Country):AIStrategy{
  const plan=ensureStrategy(s,c),war=s.wars?.some(w=>[...w.attackers,...w.defenders].includes(c.id));
- const urgent=war&&(plan.goal!=='Defense'&&plan.goal!=='Modernization')||(c.warExhaustion??0)>50&&plan.goal!=='Recovery';
+ const bankrupt=s.tick<(c.bankruptcyUntilTick??0),attacked=s.activeBattles?.some(b=>b.defenderId===c.id);
+ const capital=attacked&&c.capitalCityId?s.cities?.find(city=>city.id===c.capitalCityId)?.provinceId:undefined;
+ const capitalThreat=!!capital&&s.activeBattles?.some(b=>b.provinceId===capital&&warBetween(s,c.id,b.attackerId));
+ const urgent=capitalThreat&&plan.goal!=='Defense'||bankrupt&&plan.goal!=='Recovery'||war&&!['Defense','Modernization','Recovery'].includes(plan.goal)||(c.warExhaustion??0)>50&&plan.goal!=='Recovery';
  if(s.tick<plan.reviewTick&&!urgent)return plan;
  const old=plan.goal;
- if((c.warExhaustion??0)>50||c.stability<45){plan.goal='Recovery';plan.reason='Потери и внутреннее недовольство требуют восстановления';}
+ if(capitalThreat){plan.goal='Defense';plan.reason='Столица под атакой: приоритет обороне и переброске резервов';}
+ else if(bankrupt){plan.goal='Recovery';plan.reason='Банкротство: восстановление бюджета прежде новых обязательств';}
+ else if((c.warExhaustion??0)>50||c.stability<45){plan.goal='Recovery';plan.reason='Потери и внутреннее недовольство требуют восстановления';}
  else if(s.tick-(c.lastWarEndedTick??-100)<6){plan.goal='Recovery';plan.reason='Восстановление после войны и подготовка резервов';}
  else if(war){plan.goal=plan.personality==='Military'?'Modernization':'Defense';plan.reason='Защита столицы, снабжения и ключевых провинций';}
  else if((c.economy?.monthlyBalance??0)<0||c.treasury<(c.economy?.monthlyIncome??0)*3){plan.goal='Economy';plan.reason='Восстановить бюджет и стратегический резерв';}
  else {plan.goal=plan.personality==='Trade'?'Economy':plan.personality==='Reformer'?'Science':plan.personality==='Balancer'?'Leadership':plan.personality==='Military'?'Modernization':plan.personality==='Regional'?'Expansion':'Defense';plan.reason='План развития на шесть месяцев';}
  if(!war&&plan.operation)plan.operation.status='Complete';
- if(old!==plan.goal)plan.sinceTick=s.tick;plan.reviewTick=s.tick+6;return plan;
+ if(old!==plan.goal){plan.previousPlan={id:plan.id!,goal:old,endedTick:s.tick,reason:plan.reason};plan.sinceTick=s.tick;plan.id=`plan-${c.id}-${s.tick}-${plan.goal}`;plan.baseline=planBaseline(c);}
+ plan.priority=capitalThreat?100:bankrupt?95:plan.goal==='Recovery'?85:war?80:50;
+ plan.progress=planProgress(c,plan);plan.lastReviewedTick=s.tick;plan.reviewTick=s.tick+6;return plan;
 }
 export type MilitaryObjective='Capture'|'Defend'|'Border'|'Capital'|'Support'|'Reserve';
 export interface MilitaryPlan {
