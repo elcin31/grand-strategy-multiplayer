@@ -9,6 +9,10 @@ on:
         description: Accepted camera-only baseline build; empty uses the published hotfix
         type: string
         default: '38575813534'
+      gameplay_only:
+        description: Test the actual new event/economy/politics/focus UI and process restart
+        type: boolean
+        default: false
       apk_run_id:
         description: Run containing the verified performance candidate APK
         required: true
@@ -50,6 +54,7 @@ jobs:
           run-id: '${{ inputs.apk_run_id }}'
           github-token: '${{ github.token }}'
       - run: npm ci --include=dev --no-audit --no-fund
+      - run: node --import tsx scripts/make-gameplay23-fixture.ts gameplay23-fixture
       - run: python -m pip install -r scripts/camera-profile-requirements.txt -r scripts/camera-trace-requirements.txt
       - name: Check the downloaded binary again; prepare original and new real-pointer drivers
         env: {GH_TOKEN: '${{ github.token }}', BASELINE_RUN: '${{ inputs.baseline_apk_run_id }}'}
@@ -71,7 +76,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - uses: reactivecircus/android-emulator-runner@v2
-        env: {LOD_ONLY: '${{ inputs.lod_only }}', FULL_MATRIX_ONLY: '${{ inputs.full_matrix_only }}'}
+        env: {GAMEPLAY_ONLY: '${{ inputs.gameplay_only }}', LOD_ONLY: '${{ inputs.lod_only }}', FULL_MATRIX_ONLY: '${{ inputs.full_matrix_only }}'}
         with:
           api-level: 35
           arch: x86_64
@@ -98,6 +103,8 @@ jobs:
           name: dominion23-immutable-apk-validation
           path: |
             android-hotfix/
+            android23-gameplay/
+            gameplay23-fixture/manifest.json
             monthly-baseline/
             monthly-candidate/
             lod-baseline/

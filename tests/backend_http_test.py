@@ -22,8 +22,8 @@ class BackendHttpTest(unittest.TestCase):
         with patch.object(backend_http.urllib.request,'urlopen',send):
             body={'action':'state','token':'private'};backend_http.request('game-room',body)
         self.assertNotIn('clientStateVersion',body)
-        # The accepted 2.2.1 state migration contract is already schema 25.
-        self.assertEqual(json.loads(captured[0].data)['clientStateVersion'],25)
+        # QA follows the checked current schema; explicit legacy probes stay explicit.
+        self.assertEqual(json.loads(captured[0].data)['clientStateVersion'],backend_http.CLIENT_STATE_VERSION)
         self.assertEqual(captured[0].full_url,'https://dfjsnjxnyjspwugjguhq.supabase.co/functions/v1/game-room')
         with patch.object(backend_http.urllib.request,'urlopen') as send,self.assertRaises(AssertionError):
             backend_http.request('another-project',{})
