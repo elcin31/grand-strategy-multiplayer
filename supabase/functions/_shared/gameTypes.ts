@@ -10,6 +10,8 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital' | 'Ranch' | 'Fishery' | 'FoodProcessor' | 'IronMine' | 'CoalMine' | 'OilWell' | 'GasField' | 'Quarry' | 'RareMine' | 'Steelworks' | 'Refinery' | 'ChemicalPlant' | 'TextileMill' | 'Machinery' | 'ElectronicsPlant' | 'ArmsFactory' | 'AmmoFactory' | 'VehicleFactory' | 'MilitaryDepot' | 'RailHub' | 'TransportTerminal' | 'Warehouse' | 'PowerGrid' | 'CargoPort' | 'ResearchCenter' | 'Laboratory' | 'Embassy' | 'IntelligenceCenter' | 'CoastalFort' | 'MilitaryBase';
 
 export interface Country {
+  eventReceipts?:Record<string,import('./eventTypes.ts').EventReceipt>;
+  eventUnlockedFocuses?:string[];
   intelligenceLevel?:'Detailed'|'Estimate'|'Unknown';
   advisers?:Partial<Record<import('./strategy3System.ts').AdviserRole,import('./strategy3System.ts').Adviser>>;
   adviserCooldown?:number;
@@ -247,6 +249,7 @@ export interface Leader {
 }
 
 export interface GameState {
+  events?:import('./eventTypes.ts').CampaignEvents;
   commanderTraining?:import('./militaryDevelopment.ts').CommanderTraining[];
   coalitions?:import('./geopoliticsSystem.ts').Coalition[];
   diplomaticCrises?:import('./geopoliticsSystem.ts').DiplomaticCrisis[];
@@ -308,6 +311,7 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'RESOLVE_GAME_EVENT';playerId:string;eventId:string;choiceId:string}
   | {type:'SET_AI_DIFFICULTY';playerId:string;difficulty:NonNullable<GameState['aiDifficulty']>}
   | {type:'SET_MOBILIZATION';playerId:string;level:NonNullable<Country['mobilization']>}
   | {type:'SET_MILITARY_DOCTRINE';playerId:string;doctrine:import('./militaryDevelopment.ts').MilitaryDoctrine}

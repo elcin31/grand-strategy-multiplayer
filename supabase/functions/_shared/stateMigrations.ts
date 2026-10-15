@@ -1,4 +1,5 @@
 import {initializeMilitaryDevelopment} from './militaryDevelopment.ts';
+import {initializeGameEvents} from './eventSystem.ts';
 import {initializeGeopolitics} from './geopoliticsSystem.ts';
 import {initializeArmyFormations} from './armyFormationSystem.ts';
 import {initializeStrategy3} from './strategy3System.ts';
@@ -27,7 +28,7 @@ import { initializeTechnology } from './technologySystem.ts';
 import { initializeBuildings } from './buildingSystem.ts';
 import type { GameState } from './gameTypes.ts';
 
-export const CURRENT_STATE_VERSION = 25;
+export const CURRENT_STATE_VERSION = 26;
 
 /** Ordered schema migrations; every normalizer is also run as validation for current saves. */
 export function migrateV1ToV2(s:GameState){initializeBuildings(s);}
@@ -64,6 +65,7 @@ export function normalizeGameState(state:GameState):void {
  validateArmyOrders(state);
  // Schema 24 retains legacy peace offers, validates compound clauses, and initializes battle score.
  initializeWars(state);
+ initializeGameEvents(state,version<26);
  state.aiDifficulty??='Normal';state.aiMilitaryCursor??=0;
  if(!['Easy','Normal','Hard','VeryHard'].includes(state.aiDifficulty)||!Number.isSafeInteger(state.aiMilitaryCursor)||state.aiMilitaryCursor<0)throw Error('Invalid AI settings');
  for(const c of Object.values(state.countries))if(c.aiArmyCursor!==undefined&&(!Number.isSafeInteger(c.aiArmyCursor)||c.aiArmyCursor<0))throw Error('Invalid AI army cursor');

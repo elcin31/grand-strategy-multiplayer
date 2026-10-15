@@ -21,6 +21,7 @@ import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  RESOLVE_GAME_EVENT:['type','playerId','eventId','choiceId'],
   SET_AI_DIFFICULTY:['type','playerId','difficulty'],
   SET_MOBILIZATION:['type','playerId','level'],
   SET_MILITARY_DOCTRINE:['type','playerId','doctrine'],
@@ -119,6 +120,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
   if (typeof type !== 'string' || !Object.hasOwn(fields, type)) throw new Error('Unknown command');
   const allowed = fields[type]!;
   if (Object.keys(command).some(key => !allowed.includes(key)) || allowed.some(key => !Object.hasOwn(command, key))) throw new Error('Invalid command fields');
+  if(type==='RESOLVE_GAME_EVENT'&&(typeof command.eventId!=='string'||!/^ev-\d{1,16}$/.test(command.eventId)||typeof command.choiceId!=='string'||!/^[a-z][a-z0-9-]{0,63}$/.test(command.choiceId)))throw Error('Invalid event decision');
   for (const key of ['playerId', 'provinceId', 'armyId', 'commanderId', 'warId','missionId','offerId','treatyId','constructionId','contractId','orderId','formationId','fromArmyId','toArmyId','templateId','crisisId','coalitionId']) {
     // Natural Earth retains literal '+' and '?' in a few province IDs. Ownership
     // and exact membership are still checked by the authoritative reducer.

@@ -1,4 +1,5 @@
 import {setMobilization,setDoctrine,trainCommander,dailyCommanderTraining,manpowerGrowth,monthlyMobilization} from './militaryDevelopment.ts';
+import {monthlyGameEvents,resolveGameEvent} from './eventSystem.ts';
 import {monthlyGeopolitics,collectGeopolitics,resolveCrisis,joinCoalition} from './geopoliticsSystem.ts';
 import {createArmyFormation,cancelArmyFormation,processArmyFormations,transferRegiment} from './armyFormationSystem.ts';
 import {declareGoalWar,appointAdviser,vassalPolicy,monthlyInternalPolitics,collectChronicle,yearlyStateChanges} from './strategy3System.ts';
@@ -183,6 +184,11 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   if(['ORDER_ARMY','MOVE_ARMY','ROUTE_ARMY','CANCEL_ARMY_ORDER','RETREAT_ARMY'].includes(command.type)&&'armyId' in command){const p=getPlayer(next,command.playerId),a=next.armies.find(a=>a.id===command.armyId&&a.ownerId===p.countryId);if(a){if(a.militaryPlan){a.militaryPlan.autoCommand=false;a.militaryPlan.status='Holding';a.militaryPlan.reason='Ручной приказ игрока';}delete a.escortArmyId;for(const g of next.armyGroups??[])g.armyIds=g.armyIds.filter(id=>id!==a.id);}}
   switch (command.type) {
+    case 'RESOLVE_GAME_EVENT':{
+      if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');
+      const player=getPlayer(next,command.playerId);if(!player.countryId)throw Error('Страна не выбрана');
+      resolveGameEvent(next,player.countryId,command.eventId,command.choiceId);recalcCountryStats(next);return next;
+    }
     case 'SET_AI_DIFFICULTY':{const p=getPlayer(next,command.playerId);if(!p.isHost||!['lobby','paused'].includes(next.phase))throw Error('Сложность меняет хост в лобби или на паузе');next.aiDifficulty=command.difficulty;return next;}
     case 'SET_MOBILIZATION':case 'SET_MILITARY_DOCTRINE':case 'TRAIN_COMMANDER':{
       if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');const c=countryFor(next,p.countryId);
@@ -467,7 +473,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }
-      monthlyReligionEffects(next);if(next.dataset){extractResources(next);monthlyNationalProjects(next);monthlyDecisions(next);processResourceTrade(next);monthlyProduction(next);domesticConsumption(next);updateResourceMarkets(next);} monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next);monthlyInternalPolitics(next);monthlyMobilization(next); monthlyStability(next); runAi(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
+      monthlyReligionEffects(next);if(next.dataset){extractResources(next);monthlyNationalProjects(next);monthlyDecisions(next);processResourceTrade(next);monthlyProduction(next);domesticConsumption(next);updateResourceMarkets(next);} monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next);monthlyInternalPolitics(next);monthlyMobilization(next); monthlyStability(next); runAi(next);monthlyGameEvents(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
     }
   }
 }

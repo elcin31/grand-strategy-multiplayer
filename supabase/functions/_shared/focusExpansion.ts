@@ -13,6 +13,10 @@ export const NATIONAL_SPIRITS={
 export type NationalSpiritId=keyof typeof NATIONAL_SPIRITS;
 const f=(name:string,branch:FocusBranch,parent:string,art:BuildingType,rewards:FocusRewards,extra:Partial<FocusNode>={}):FocusNode=>({name,branch,category:'Generic',duration:8,cost:280,pp:18,prerequisites:[parent],rewards,art,description:'Государственная программа «'+name+'» связывает ведомства, регионы и долгосрочную стратегию.',...extra});
 export const FOCUS_EXPANSION:Record<string,FocusNode>={
+ 'event-fiscal-recovery':f('Финансовая программа восстановления','Economic','eco-audit','Administration',{bonuses:{administration:.03,tax:.02},unrest:-2},{eventUnlock:true,duration:6,cost:180,pp:10}),
+ 'event-regional-accord':f('Региональное соглашение о сотрудничестве','Diplomatic','dip-contacts','Embassy',{neighborRelations:5,reputation:3,bonuses:{trade:.02}},{eventUnlock:true,duration:6,cost:180,pp:15}),
+ 'event-modern-administration':f('Практическая административная модернизация','Political','pol-records','Administration',{addSpirits:['CohesiveService'],bonuses:{construction:.02},stability:2},{eventUnlock:true,duration:6,cost:160,pp:15}),
+ 'event-postwar-renewal':f('Послевоенное обновление государства','Political','pol-records','Hospital',{removeSpirits:['InfrastructureGap'],stability:3,unrest:-3},{eventUnlock:true,duration:6,cost:150,pp:10}),
  'eco-procurement':f('Согласованные гражданские закупки','Economic','eco-audit','Administration',{bonuses:{construction:.02},resources:{timber:20}}),
  'eco-foundries':f('Кооперация металлургических округов','Economic','eco-procurement','Steelworks',{bonuses:{production:.02},resources:{steel:20}},{technologies:['ind-steel']}),
  'eco-energy':f('Региональные энергетические балансы','Economic','eco-foundries','PowerGrid',{bonuses:{production:.02}}),

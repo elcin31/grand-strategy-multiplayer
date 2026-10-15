@@ -18,6 +18,7 @@ function prerequisites(c:Country,n:FocusNode):string|null{
 export function focusAvailability(s:GameState,id:string,focusId:string):string|null{
  const c=s.countries[id],n=focusNode(focusId);if(!c||!n||!focusBelongsTo(c,n))return 'Курс не доступен этой стране';
  if(!s.dataset||!['running','paused'].includes(s.phase)||!c.provinceIds?.length)return 'Нужна начатая действующая кампания';
+ if(n.eventUnlock&&!c.eventUnlockedFocuses?.includes(focusId))return 'Курс открывается решением связанного игрового события';
  if(hasFocus(c,focusId))return 'Курс уже завершён';if(c.nationalFocus)return 'Национальный курс уже выполняется';
  const reason=prerequisites(c,n);if(reason)return reason;if(s.tick<(c.bankruptcyUntilTick??0))return 'Курс приостановлен после банкротства';
  if(c.treasury<n.cost||(c.politicalPower??0)<n.pp)return 'Недостаточно средств или политической силы';

@@ -1,3 +1,4 @@
+import {GameEventsPanel} from './GameEventsPanel';
 import {HistoricalIllustration} from './HistoricalIllustration';
 import {focusScene} from '../art/curation';
 import {AudioPressable as Pressable} from './AudioPressable';
@@ -14,7 +15,7 @@ import {focusAvailability} from '../../supabase/functions/_shared/focusSystem';
 import {technologyNode} from '../../supabase/functions/_shared/technologyTree';
 type FocusTab=FocusBranch|'Regional'|'Unique';
 export function NationalFocusPanel({state,playerId,onCommand}:StrategyProps){
- const [decisions,setDecisions]=useState(false);
+ const [decisions,setDecisions]=useState<'Focus'|'Decisions'|'Events'>('Focus');
  const [tab,setTab]=useState<FocusTab>('Economic'),[selected,setSelected]=useState<FocusId>('eco-audit');
  const countryId=state.players.find(p=>p.id===playerId)?.countryId,c=countryId?state.countries[countryId]:undefined;
  const nodes=useMemo(()=>c?FOCUS_IDS.filter(id=>focusBelongsTo(c,FOCUS_NODES[id]!)&&(tab==='Regional'||tab==='Unique'?FOCUS_NODES[id]!.category===tab:FOCUS_NODES[id]!.category==='Generic'&&FOCUS_NODES[id]!.branch===tab)):[],[c?.id,c?.region,tab]);
@@ -27,8 +28,8 @@ export function NationalFocusPanel({state,playerId,onCommand}:StrategyProps){
  const width=Math.min(5,nodes.length)*190,height=Math.max(150,Math.ceil(nodes.length/5)*150);
  return <View style={styles.card}>
   <Text style={[styles.title,{fontSize:17}]}>DOMINION — НАЦИОНАЛЬНЫЙ КУРС</Text>
-  <View style={{flexDirection:'row',gap:6}}><Pressable style={styles.button} onPress={()=>setDecisions(false)}><Text style={styles.title}>Фокусы (120)</Text></Pressable><Pressable style={styles.button} onPress={()=>setDecisions(true)}><Text style={styles.title}>Особенности и решения</Text></Pressable></View>
-  {decisions?<PoliticalDecisionsPanel state={state} playerId={playerId} onCommand={onCommand}/>:<>
+  <View style={{flexDirection:'row',flexWrap:'wrap',gap:6}}><Pressable style={styles.button} onPress={()=>setDecisions('Focus')}><Text style={styles.title}>Фокусы ({FOCUS_IDS.length})</Text></Pressable><Pressable style={styles.button} onPress={()=>setDecisions('Decisions')}><Text style={styles.title}>Особенности и решения</Text></Pressable><Pressable accessibilityRole="button" accessibilityLabel="Игровые события" style={styles.button} onPress={()=>setDecisions('Events')}><Text style={styles.title}>События ({state.events?.pending.filter(e=>e.countryId===c.id).length??0})</Text></Pressable></View>
+  {decisions==='Events'?<GameEventsPanel state={state} playerId={playerId} onCommand={onCommand}/>:decisions==='Decisions'?<PoliticalDecisionsPanel state={state} playerId={playerId} onCommand={onCommand}/>:<>
   <CampaignArt year={state.year} kind="Project"/>
   <Text style={styles.text}>Одна программа одновременно. Цена оплачивается при выборе, результаты действуют после завершения. Альтернативные программы исключают друг друга; прерывание теряет вложения и прогресс.</Text>
   <Text style={styles.title}>Завершено курсов: {c.completedFocuses?.length??0}</Text>
