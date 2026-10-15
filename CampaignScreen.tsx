@@ -69,7 +69,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   const [launchSlow,setLaunchSlow]=useState(false);
   useEffect(()=>{if(lobbyOperation!=='start'){setLaunchSlow(false);return;}const timer=setTimeout(()=>setLaunchSlow(true),12000);return()=>clearTimeout(timer);},[lobbyOperation]);
 
-  const [transport, setTransport] = useState<MultiplayerTransport>(() => new HttpTransport(remoteUrl,undefined,'-v211'));
+  const [transport, setTransport] = useState<MultiplayerTransport>(() => new HttpTransport(remoteUrl,undefined,'-v23'));
   const [state, setState] = useState<GameState | null>(null);
   latestState.current=state;
   useEffect(()=>{if(state&&launchTapAt.current){traceStartup("campaign screen committed");recordMetrics({tapToScreenMs:performance.now()-launchTapAt.current});launchTapAt.current=0;}},[state?.id,state?.phase]);
@@ -233,7 +233,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
       try {
         if(intent.type==='offline'){const local=new LocalTransport();attach(await local.createRoom('Игрок 1'),local);}
         else if(intent.type==='load'){const local=new LocalTransport();attach(await local.restore(await campaignStore.load(intent.id)),local);}
-        else {const remote=new HttpTransport(remoteUrl,undefined,'-v211');const session=intent.type==='reconnect'?await remote.reconnect(intent.id):intent.type==='create'?await remote.createRoom(intent.name):await remote.joinRoom(intent.code,intent.name);attach(session,remote);}
+        else {const remote=new HttpTransport(remoteUrl,undefined,'-v23');const session=intent.type==='reconnect'?await remote.reconnect(intent.id):intent.type==='create'?await remote.createRoom(intent.name):await remote.joinRoom(intent.code,intent.name);attach(session,remote);}
       } catch(error){onError(error instanceof Error?error.message:String(error));}
     });
   },[]);

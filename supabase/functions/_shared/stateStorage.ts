@@ -1,3 +1,4 @@
+import {RequestError} from './requestValidation.ts';
 import {normalizeGameState} from './stateMigrations.ts';
 import type { GameState } from './gameTypes.ts';
 
@@ -54,7 +55,7 @@ export async function packRoomState(state: GameState): Promise<string> {
   return PREFIX + bytesToBase64(await gzip(json));
 }
 
-export async function unpackRoomState(row: StoredRoomState): Promise<GameState> {
+export async function unpackRoomState(row: StoredRoomState,requiredVersion?:number): Promise<GameState> {
   if (row.state_compressed) {
     if (!row.state_compressed.startsWith(PREFIX)) throw new Error('Unsupported persisted campaign codec');
     let decoded: unknown;
@@ -65,13 +66,19 @@ export async function unpackRoomState(row: StoredRoomState): Promise<GameState> 
     }
     assertState(decoded);
     if((decoded.stateVersion??1)<23)throw Error('Эта сетевая кампания сохранена для Dominion 2.0. Продолжите её в 2.0; для 2.1 создайте новую комнату.');
-    normalizeGameState(decoded);
+    assertRoomVersion(decoded,requiredVersion);normalizeGameState(decoded);
     return decoded;
   }
   if (row.state) {
     assertState(row.state);
     if((row.state.stateVersion??1)<23)throw Error('Сетевая кампания Dominion 2.0 сохранена без изменений.');
-    const restored=structuredClone(row.state);normalizeGameState(restored);return restored;
+    assertRoomVersion(row.state,requiredVersion);const restored=structuredClone(row.state);normalizeGameState(restored);return restored;
   }
   throw new Error('Campaign state is missing');
+}
+
+/** Network endpoints never migrate a live room into a different client cohort.
+ * Local campaign files retain their normal additive migration path. */
+function assertRoomVersion(state:GameState,requiredVersion:number|undefined):void{
+ if(requiredVersion!==undefined&&state.stateVersion!==requiredVersion)throw new RequestError('Эта комната использует другую версию Dominion. Её данные сохранены; продолжите кампанию в совместимой версии приложения.',426);
 }

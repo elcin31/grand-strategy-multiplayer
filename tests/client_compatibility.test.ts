@@ -48,3 +48,34 @@ test('an incompatible server response reports the upgrade reason and stops futil
     await new Promise(r=>setTimeout(r,1600));assert.equal(requests,1);assert.equal((await transport.savedSessions())[0]!.token,token);
   }finally{unsubscribe();globalThis.fetch=original;}
 });
+
+test('2.3 reconnects an existing room through its original protocol and retains pending command identity',async()=>{
+ const original=globalThis.fetch,values=new Map<string,string>(),store={get:async(k:string)=>values.get(k)??null,set:async(k:string,v:string)=>{values.set(k,v);},remove:async(k:string)=>{values.delete(k);}};
+ const state=createWorldState(id,'LEGACY','host','QA',91);state.stateVersion=25;state.phase='paused';state.speed=0;
+ const pending={command:{type:'SET_TAX_RATE',playerId:'host',taxRate:30},commandId:'existing-room-intent',expectedVersion:7};
+ values.set('dominion.sessions.v1',JSON.stringify([id]));values.set('dominion.session.'+id,JSON.stringify({gameId:id,playerId:'host',token,version:7,roomCode:'LEGACY',lastPlayed:0,pending}));
+ const calls:{url:string;body:Record<string,unknown>}[]=[];
+ try{
+  globalThis.fetch=async(url,init)=>{
+   const body=JSON.parse(String(init?.body));calls.push({url:String(url),body});
+   if(String(url).endsWith('-v23'))return Response.json({error:'Эта комната использует другую версию Dominion. Её данные сохранены; продолжите кампанию в совместимой версии приложения.'},{status:426});
+   assert.ok(String(url).endsWith('-v211'));assert.equal(body.clientStateVersion,25);
+   return body.command?Response.json({ok:true,duplicate:true,version:8}):Response.json({state,version:8,playerId:'host',checksum:stateChecksum(state)});
+  };
+  const transport=new HttpTransport('https://network.test',store,'-v23');assert.equal((await transport.reconnect(id)).state.stateVersion,25);
+  const sent=calls.find(c=>c.body.commandId==='existing-room-intent')!;assert.deepEqual(sent.body.command,pending.command);assert.equal(sent.body.expectedVersion,7);
+  assert.equal(calls.filter(c=>c.url.endsWith('-v23')).length,1);const stored=(await transport.savedSessions())[0]!;assert.equal(stored.protocolVersion,25);assert.equal(stored.pending,undefined);assert.equal(stored.token,token);
+  calls.length=0;await new HttpTransport('https://network.test',store,'-v23').reconnect(id);assert.ok(calls.every(c=>c.url.endsWith('-v211')));
+ }finally{globalThis.fetch=original;}
+});
+
+test('2.3 joins an old lobby only after an explicit schema response and never downgrades unrelated errors',async()=>{
+ const original=globalThis.fetch,values=new Map<string,string>(),store={get:async(k:string)=>values.get(k)??null,set:async(k:string,v:string)=>{values.set(k,v);},remove:async(k:string)=>{values.delete(k);}};
+ const state=createWorldState(id,'LEGACY','host','QA',91);state.stateVersion=25;let legacyCalls=0;
+ try{
+  globalThis.fetch=async(url,init)=>{const body=JSON.parse(String(init?.body));if(String(url).endsWith('-v23'))return Response.json({error:'Эта комната использует другую версию Dominion. Её данные сохранены.'},{status:426});legacyCalls++;assert.equal(body.clientStateVersion,25);return Response.json({state,version:0,playerId:'host',token,checksum:stateChecksum(state)});};
+  const transport=new HttpTransport('https://network.test',store,'-v23');await transport.joinRoom('LEGACY','QA');assert.equal(legacyCalls,1);assert.equal((await transport.savedSessions())[0]!.protocolVersion,25);
+  let requests=0;globalThis.fetch=async()=>{requests++;return Response.json({error:'Сервер ещё не поддерживает эту версию Dominion.'},{status:426});};
+  await assert.rejects(()=>new HttpTransport('https://network.test',store,'-v23').createRoom('QA'),{status:426});assert.equal(requests,1);
+ }finally{globalThis.fetch=original;}
+});

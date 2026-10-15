@@ -62,10 +62,10 @@ test('compiled command entrypoint persists a paid course once and reuses its imm
   let packed=await packRoomState(initial),version=7,commits=0,receipt:{payload_hash:string;version:number}|null=null;
   const tokenHash=await sha256(token);
   const db={from:(table:string)=>{
-    const filters:Record<string,unknown>={};let updating=false;
-    const query={update:(_value:unknown)=>{updating=true;return query;},select:(_fields:string)=>query,
+    const filters:Record<string,unknown>={};
+    const query={update:(_value:unknown)=>query,select:(_fields:string)=>query,
       eq:(key:string,value:unknown)=>{filters[key]=value;return query;},gt:(_key:string,_value:unknown)=>query,
-      maybeSingle:async()=>({data:table==='game_command_receipts'?receipt:table==='game_players'&&updating&&filters.id===playerId&&filters.room_id===gameId&&filters.token_hash===tokenHash?{id:playerId}:null,error:null}),
+      maybeSingle:async()=>({data:table==='game_command_receipts'?receipt:table==='game_players'&&filters.id===playerId&&filters.room_id===gameId&&filters.token_hash===tokenHash?{id:playerId}:null,error:null}),
       single:async()=>({data:table==='game_rooms'?{state:null,state_compressed:packed,version}:{rate_started:new Date(0).toISOString(),rate_count:0},error:null})};
     return query;
   },rpc:async(name:string,args:Record<string,unknown>)=>{
@@ -89,4 +89,23 @@ test('compiled command entrypoint persists a paid course once and reuses its imm
     assert.equal(changed.status,409);assert.equal(commits,1);
     const foreign=await post(handler,'game-command',{...body,token:'b'.repeat(43)});assert.equal(foreign.status,401);assert.equal(commits,1);
   });
+});
+
+test('both compiled endpoints reject an older room before presence, membership, receipts or campaign writes',async()=>{
+ const gameId='11111111-1111-4111-8111-111111111111',playerId='22222222-2222-4222-8222-222222222222',token='a'.repeat(43);
+ const state=createWorldState(gameId,'LEGACY',playerId,'QA',91);state.stateVersion=CURRENT_STATE_VERSION-1;
+ const packed=await packRoomState(state),before=JSON.stringify(state),room={id:gameId,state:null,state_compressed:packed,version:9,clock_at:new Date().toISOString()};let mutations=0,receiptReads=0;
+ const db={from:(table:string)=>{
+  const query={select:()=>{if(table==='game_command_receipts')receiptReads++;return query;},eq:()=>query,gt:()=>query,
+   update:()=>{mutations++;return query;},insert:()=>{mutations++;return query;},delete:()=>{mutations++;return query;},
+   single:async()=>({data:room,error:null}),maybeSingle:async()=>({data:table==='game_players'?{id:playerId}:room,error:null})};return query;
+ },rpc:async()=>{mutations++;throw Error('An incompatible room must never commit');}};
+ await withHandler('game-room',db,async handler=>{
+  for(const action of ['state','reconnect','heartbeat'])assert.equal((await post(handler,'game-room',{action,gameId,playerId,token,clientStateVersion:CURRENT_STATE_VERSION})).status,426);
+  assert.equal((await post(handler,'game-room',{action:'join',roomCode:'LEGACY',displayName:'New player',clientStateVersion:CURRENT_STATE_VERSION})).status,426);
+ });
+ await withHandler('game-command',db,async handler=>{
+  assert.equal((await post(handler,'game-command',{gameId,playerId,token,commandId:'legacy-protected',expectedVersion:9,command:{type:'SET_READY',playerId,ready:true},clientStateVersion:CURRENT_STATE_VERSION})).status,426);
+ });
+ assert.equal(mutations,0);assert.equal(receiptReads,0);assert.equal(JSON.stringify(state),before);
 });
