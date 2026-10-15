@@ -18,7 +18,7 @@ import {cloneGameState} from './cloneGameState.ts';
 import {recordMovement} from './movementHistory.ts';
 import { runStrategicAI } from './aiSystem.ts';
 import { monthlyStability, pacifyProvince, suppressRebellion } from './stabilitySystem.ts';
-import { monthlyWar, proposePeace, recordWarBattle, respondPeace } from './warSystem.ts';
+import { monthlyWar, proposePeace, recordWarBattle, respondPeace,approvePeacePlan } from './warSystem.ts';
 import { declareWar, diplomaticAction, monthlyDiplomacy, offerTreaty, respondTreaty, warBetween } from './diplomacySystem.ts';
 import {startRelationMission,cancelRelationMission,sendGift,sendInsult,offerDiplomacy,respondDiplomacy,terminateTreaty,monthlyDiplomacy2,canEnterTerritory,pruneAccessWithdrawals} from './diplomacy2System.ts';
 import {startEspionage,cancelEspionage,monthlyEspionage} from './espionageSystem.ts';
@@ -185,6 +185,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   if(['ORDER_ARMY','MOVE_ARMY','ROUTE_ARMY','CANCEL_ARMY_ORDER','RETREAT_ARMY'].includes(command.type)&&'armyId' in command){const p=getPlayer(next,command.playerId),a=next.armies.find(a=>a.id===command.armyId&&a.ownerId===p.countryId);if(a){if(a.militaryPlan){a.militaryPlan.autoCommand=false;a.militaryPlan.status='Holding';a.militaryPlan.reason='Ручной приказ игрока';}delete a.escortArmyId;for(const g of next.armyGroups??[])g.armyIds=g.armyIds.filter(id=>id!==a.id);}}
   switch (command.type) {
+    case 'APPROVE_PEACE_PLAN':{if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');approvePeacePlan(next,p.countryId,command.warId,command.accept);recalcCountryStats(next);return next;}
     case 'SELECT_SCENARIO':{const player=getPlayer(next,command.playerId);if(!player.isHost)throw Error('Сценарий выбирает хост');return selectScenario(next,command.scenarioId);}
     case 'RESOLVE_GAME_EVENT':{
       if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');

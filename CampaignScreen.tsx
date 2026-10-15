@@ -3,7 +3,7 @@ import {useCampaignAudio} from './src/audio/campaignAudio';
 import {audioHub} from './src/audio/hub';
 import {AudioPressable as Pressable} from './src/components/AudioPressable';
 import {WarProgressIndicator} from './src/components/WarProgressIndicator';
-import {PeaceNegotiations,EMPTY_PEACE_DRAFT,eligiblePeaceProvinces,draftClauses,type PeaceDraft} from './src/components/WarPanel';
+import {PeaceNegotiations,EMPTY_PEACE_DRAFT,eligiblePeaceProvinces,draftClauses,togglePeaceProvince,type PeaceDraft} from './src/components/WarPanel';
 import {makePeaceTerms,peaceCost} from './supabase/functions/_shared/warSystem';
 import {ArmyDock} from './src/components/ArmyDock';
 import {DraggableWindow} from './src/components/DraggableWindow';
@@ -166,7 +166,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
   const selectProvince = useCallback((province: Province) => {
     audioHub.play('province');
     if(!gameStarted){setPreviewCountryId(province.ownerId);return;}
-    if(peacePicking&&peaceWarId&&myCountryId){if(peaceDraft.provinceIds.includes(province.id)){changePeaceDraft({...peaceDraft,provinceIds:peaceDraft.provinceIds.filter(id=>id!==province.id)});}else if(peaceDraft.provinceIds.length<50&&eligiblePeaceProvinces(latestState.current!,peaceWarId,myCountryId,peaceDraft).includes(province.id)){changePeaceDraft({...peaceDraft,white:false,provinceIds:[...peaceDraft.provinceIds,province.id]});}return;}
+    if(peacePicking&&peaceWarId&&myCountryId){if(peaceDraft.provinceIds.includes(province.id)){changePeaceDraft(togglePeaceProvince(peaceDraft,province.id,myCountryId));}else if(peaceDraft.provinceIds.length<50&&eligiblePeaceProvinces(latestState.current!,peaceWarId,myCountryId,peaceDraft).includes(province.id)){changePeaceDraft(togglePeaceProvince(peaceDraft,province.id,myCountryId));}return;}
     const current=latestState.current,army=current?.armies.find(a=>a.id===selectedArmyId&&a.ownerId===myCountryId);
     const intent=mapTapIntent(army?.id??null,myCountryId,{provinceId:province.id,provinceOwnerId:province.ownerId});
     if(intent.type==='order'&&playerId&&current){void safeAction(async()=>{await transport.sendCommand(current.id,{type:'ORDER_ARMY',playerId,armyId:intent.armyId,provinceId:intent.provinceId});audioHub.play('march');});return;}

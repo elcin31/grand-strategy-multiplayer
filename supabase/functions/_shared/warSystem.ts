@@ -4,12 +4,12 @@ import { countryFor, type BattleEvent, type GameState } from './gameTypes.ts';
 import { diplomaticLink, warBetween, type War } from './diplomacySystem.ts';
 import { money } from './economySystem.ts';
 export type PeaceKind = 'WhitePeace'|'Territory'|'ReturnTerritory'|'Money'|'Vassalization'|'Guarantee'|'Disarmament'|'Reparations'|'ReleaseNation';
-export interface PeaceClause {kind:PeaceKind;provinceIds:string[];amount:number;targetId?:string}
+export interface PeaceClause {kind:PeaceKind;provinceIds:string[];amount:number;targetId?:string;recipientId?:string}
 /** Legacy fields remain for old offers; clauses are the canonical compound form. */
 export interface PeaceTerms {kind:PeaceKind;provinceIds:string[];amount:number;clauses?:PeaceClause[]}
 export function peaceClauses(t:PeaceTerms):PeaceClause[]{return t.clauses??[{kind:t.kind,provinceIds:t.provinceIds,amount:t.amount}];}
 export function makePeaceTerms(clauses:PeaceClause[]):PeaceTerms{const rows=clauses.length?clauses:[{kind:'WhitePeace' as const,provinceIds:[],amount:0}];return {kind:rows[0]!.kind,provinceIds:rows.flatMap(c=>c.provinceIds),amount:money(rows.reduce((n,c)=>n+c.amount,0)),clauses:rows};}
-export interface PeaceOffer { from:string; terms:PeaceTerms; expiresTick:number }
+export interface PeaceOffer { from:string; terms:PeaceTerms; expiresTick:number;approvals?:string[] }
 export interface WarSummary { id:string; endedTick:number; kind:PeaceKind; attackers:string[]; defenders:string[]; casualties:Record<string,number>;clauses?:PeaceClause[] }
 export function warSide(w:War,id:string):string[]{if(w.attackers.includes(id))return w.attackers;if(w.defenders.includes(id))return w.defenders;throw new Error('Страна не участвует в войне');}
 export function opponentSide(w:War,id:string):string[]{return w.attackers.includes(id)?w.defenders:w.attackers;}
@@ -28,7 +28,7 @@ export function initializeWars(state:GameState):void {
     w.casualties??={};w.occupiedProvinceIds??=[];w.warScore??=0;w.battleScore??=0;if(!Number.isFinite(w.battleScore)||Math.abs(w.battleScore)>10)throw Error('Invalid battle score');
     for(const [id,n] of Object.entries(w.casualties))if(![...w.attackers,...w.defenders].includes(id)||!Number.isSafeInteger(n)||n<0)throw new Error('Invalid war casualties');
     if(!Number.isFinite(w.warScore)||Math.abs(w.warScore)>100)throw new Error('Invalid war score');
-    if(w.peaceOffer){if(!isWarLeader(w,w.peaceOffer.from)||!Number.isSafeInteger(w.peaceOffer.expiresTick)||w.peaceOffer.expiresTick<0)throw new Error('Invalid peace proposal');assertPeaceTerms(w.peaceOffer.terms);}
+    if(w.peaceOffer){const offer=w.peaceOffer;offer.approvals??=[offer.from];if(!isWarLeader(w,offer.from)||!Number.isSafeInteger(offer.expiresTick)||offer.expiresTick<0||!Array.isArray(offer.approvals)||new Set(offer.approvals).size!==offer.approvals.length||!offer.approvals.includes(offer.from)||offer.approvals.some(id=>!warSide(w,offer.from).includes(id)))throw new Error('Invalid peace proposal');assertPeaceTerms(offer.terms);}
   }
   // Normalization validates a committed snapshot. Recomputing derived scores here
   // changes new wars and monthly exhaustion between save and restore. Simulation
@@ -79,7 +79,8 @@ export function recordWarBattle(state:GameState,event:BattleEvent):void {
 const PEACE_KINDS:PeaceKind[]=['WhitePeace','Territory','ReturnTerritory','Money','Vassalization','Guarantee','Disarmament','Reparations','ReleaseNation'];
 function assertClause(input:unknown):asserts input is PeaceClause{
  if(!input||typeof input!=='object'||Array.isArray(input))throw Error('Invalid peace clause');const t=input as Record<string,unknown>;
- if(Object.keys(t).some(k=>!['kind','provinceIds','amount','targetId'].includes(k))||!PEACE_KINDS.includes(t.kind as PeaceKind)||!Array.isArray(t.provinceIds)||t.provinceIds.length>50||new Set(t.provinceIds).size!==t.provinceIds.length||t.provinceIds.some(p=>typeof p!=='string'||!/^[A-Za-z0-9_+?-]{1,128}$/.test(p))||typeof t.amount!=='number'||!Number.isFinite(t.amount)||t.amount<0||t.amount>1000000||money(t.amount)!==t.amount)throw Error('Invalid peace terms');
+ if(Object.keys(t).some(k=>!['kind','provinceIds','amount','targetId','recipientId'].includes(k))||!PEACE_KINDS.includes(t.kind as PeaceKind)||!Array.isArray(t.provinceIds)||t.provinceIds.length>50||new Set(t.provinceIds).size!==t.provinceIds.length||t.provinceIds.some(p=>typeof p!=='string'||!/^[A-Za-z0-9_+?-]{1,128}$/.test(p))||typeof t.amount!=='number'||!Number.isFinite(t.amount)||t.amount<0||t.amount>1000000||money(t.amount)!==t.amount)throw Error('Invalid peace terms');
+ if(t.recipientId!==undefined&&(!['Territory','Money','Reparations'].includes(String(t.kind))||typeof t.recipientId!=='string'||!/^[a-z0-9_-]{1,64}$/.test(t.recipientId)))throw Error('Invalid peace recipient');
  const territory=['Territory','ReturnTerritory','ReleaseNation'].includes(t.kind as string),payment=t.kind==='Money'||t.kind==='Reparations';
  if(territory?t.provinceIds.length===0||t.amount!==0:t.provinceIds.length!==0)throw Error('Invalid territory demands');
  if(payment?t.amount<=0:t.amount!==0)throw Error('Invalid peace payment');
@@ -88,10 +89,10 @@ function assertClause(input:unknown):asserts input is PeaceClause{
 export function assertPeaceTerms(input:unknown):asserts input is PeaceTerms{
  if(!input||typeof input!=='object'||Array.isArray(input))throw Error('Invalid peace terms');const t=input as PeaceTerms;
  if(!t.clauses){if(Object.keys(t).length!==3)throw Error('Invalid peace terms');assertClause(t);return;}
- if(Object.keys(t).length!==4||!Array.isArray(t.clauses)||t.clauses.length<1||t.clauses.length>9)throw Error('Invalid compound treaty');
+ if(Object.keys(t).length!==4||!Array.isArray(t.clauses)||t.clauses.length<1||t.clauses.length>32)throw Error('Invalid compound treaty');
  t.clauses.forEach(assertClause);const canonical=makePeaceTerms(t.clauses);
  if(t.kind!==canonical.kind||t.amount!==canonical.amount||JSON.stringify(t.provinceIds)!==JSON.stringify(canonical.provinceIds)||t.provinceIds.length>50||new Set(t.provinceIds).size!==t.provinceIds.length)throw Error('Invalid compound treaty totals');
- if(new Set(t.clauses.map(c=>c.kind)).size!==t.clauses.length)throw Error('Повторяющиеся условия договора');
+ if(new Set(t.clauses.map(c=>c.kind+':'+(['Territory','Money'].includes(c.kind)?c.recipientId??'':''))).size!==t.clauses.length)throw Error('Повторяющиеся условия договора');
  if(t.clauses.some(c=>c.kind==='WhitePeace')&&t.clauses.length!==1)throw Error('Белый мир не сочетается с требованиями');
  if(t.clauses.some(c=>c.kind==='Vassalization')&&t.clauses.some(c=>c.kind==='Guarantee'||c.kind==='ReleaseNation'))throw Error('Вассализация несовместима с независимостью и гарантиями');
 }
@@ -112,12 +113,43 @@ function clauseCost(state:GameState,w:War,from:string,terms:PeaceClause,excluded
   return terms.provinceIds.reduce((n,id)=>{const p=state.provinces.find(p=>p.id===id)!;const claim=p.originalOwnerId===from||goal?.provinceIds.includes(id);return n+strategicWeight(state,p)/Math.max(1,total)*55*(terms.kind==='ReturnTerritory'?.75:claim?.85:1);},0);
 }
 export function provincePeaceCost(state:GameState,w:War,from:string,id:string,kind:'Territory'|'ReturnTerritory'='Territory'):number{return clauseCost(state,w,from,{kind,provinceIds:[id],amount:0});}
+/** Public contribution uses real casualties, controlled enemy territory and
+ * completed war objectives. No hidden reserves or synthetic armies are read. */
+export function peaceConference(state:GameState,w:War,from:string){
+ const side=warSide(w,from),enemies=new Set(opponentSide(w,from)),weights=new Map(side.map(id=>[id,1+Math.sqrt((w.casualties?.[id]??0)/1000)]));
+ const occupied=new Map<string,number>();
+ for(const p of state.provinces)if(enemies.has(p.ownerId)&&weights.has(p.controllerId??p.ownerId)){const id=p.controllerId!;weights.set(id,weights.get(id)!+strategicWeight(state,p)*2);occupied.set(id,(occupied.get(id)??0)+1);}
+ const byId=new Map(state.provinces.map(p=>[p.id,p]));
+ for(const id of side)for(const goal of w.goals?.[id]?.provinceIds??[])if(byId.get(goal)?.controllerId===id)weights.set(id,weights.get(id)!+3);
+ const total=[...weights.values()].reduce((n,v)=>n+v,0),budget=Math.max(0,scoreFor(w,from));
+ return side.map(countryId=>({countryId,casualties:w.casualties?.[countryId]??0,occupied:occupied.get(countryId)??0,contribution:weights.get(countryId)!,share:weights.get(countryId)!/total,budget:budget*weights.get(countryId)!/total}));
+}
+function clauseRecipient(from:string,clause:PeaceClause):string{return clause.recipientId??from;}
+export function peaceRecipientCost(state:GameState,w:War,from:string,terms:PeaceTerms,countryId:string):number{
+ assertPeaceTerms(terms);return peaceClauses(terms).filter(c=>clauseRecipient(from,c)===countryId).reduce((n,c)=>n+clauseCost(state,w,countryId,c,terms.provinceIds),0);
+}
 export function peaceCost(state:GameState,w:War,from:string,terms:PeaceTerms):number{
  assertPeaceTerms(terms);warSide(w,from);const rows=peaceClauses(terms);
  if(w.goals?.[from]?.type==='LimitedWar'&&terms.provinceIds.length>3)throw Error('Ограниченная война допускает до трёх провинций');
  const enemy=opponentSide(w,from)[0]!;
  if(rows.some(c=>c.kind==='Vassalization')&&state.provinces.filter(p=>p.ownerId===enemy).every(p=>terms.provinceIds.includes(p.id)))throw Error('Нельзя вассализировать полностью аннексированное государство');
- return rows.reduce((n,c)=>n+clauseCost(state,w,from,c,terms.provinceIds),0);
+ const side=warSide(w,from),spent=new Map<string,number>(),keys=new Set<string>();let total=0,payment=0;
+ for(const c of rows){const recipient=clauseRecipient(from,c);if(!side.includes(recipient))throw Error('Получатель не участвует в вашей коалиции');countryFor(state,recipient);
+  const key=c.kind+':'+recipient;if(keys.has(key))throw Error('Повторяющиеся условия договора');keys.add(key);
+  const price=clauseCost(state,w,recipient,c,terms.provinceIds);total+=price;spent.set(recipient,(spent.get(recipient)??0)+price);if(c.kind==='Money')payment+=c.amount;
+ }
+ const enemyCountry=countryFor(state,enemy);if((enemyCountry.intelligenceLevel===undefined||enemyCountry.intelligenceLevel==='Detailed')&&payment>enemyCountry.treasury)throw Error('Общие выплаты превышают казну противника');
+ if(side.length>1)for(const member of peaceConference(state,w,from))if((spent.get(member.countryId)??0)>member.budget+1e-6)throw Error('Превышен бюджет требований участника: '+countryFor(state,member.countryId).name);
+ return total;
+}
+export function peaceReadyForResponse(w:War):boolean{return !!w.peaceOffer&&warSide(w,w.peaceOffer.from).every(id=>(w.peaceOffer!.approvals??[w.peaceOffer!.from]).includes(id));}
+function humanCountry(s:GameState,id:string):boolean{return s.players.some(p=>p.countryId===id&&!p.aiControlled);}
+function alliedApprovalReason(s:GameState,w:War,id:string,from:string,terms:PeaceTerms):string|null{
+ for(const clause of peaceClauses(terms))for(const provinceId of clause.provinceIds){const p=s.provinces.find(p=>p.id===provinceId)!;
+  const recipient=clause.kind==='ReturnTerritory'?p.originalOwnerId:clause.kind==='ReleaseNation'?clause.targetId:clauseRecipient(from,clause);
+  if(p.controllerId===id&&recipient!==id&&p.originalOwnerId!==recipient)return countryFor(s,id).name+': союзник требует сохранить результат своей оккупации';
+ }
+ if(!warSide(w,from).includes(id))return 'Страна не участвует в вашей коалиции';return null;
 }
 export function peaceEvaluation(state:GameState,w:War,from:string,terms:PeaceTerms){
  let cost:number;try{cost=peaceCost(state,w,from,terms);}catch(error){return {accepts:false,cost:0,budget:Math.max(0,scoreFor(w,from)),reason:error instanceof Error?error.message:'Недопустимый договор'};}
@@ -132,31 +164,43 @@ export function proposePeace(state:GameState,actor:string,warId:string,terms:Pea
  const w=peaceContext(state,actor,warId);if(w.peaceOffer)throw Error('Сначала дождитесь ответа на предложение мира');
  const cost=peaceCost(state,w,actor,terms);if(cost>Math.max(0,scoreFor(w,actor))+1e-6)throw Error('Стоимость превышает доступный военный счёт');
  const enemy=opponentSide(w,actor)[0]!;
- if(!state.players.some(p=>p.countryId===enemy&&!p.aiControlled)){const evaluation=peaceEvaluation(state,w,actor,terms);if(!evaluation.accepts)throw Error(evaluation.reason);settlePeace(state,w,actor,terms);}
- else{w.peaceOffer={from:actor,terms:structuredClone(terms),expiresTick:state.tick+6};notify(state,enemy,'Diplomacy','Предложен мирный договор: '+countryFor(state,actor).name);}
+ const approvals=[actor];for(const ally of warSide(w,actor))if(ally!==actor&&!humanCountry(state,ally)){const reason=alliedApprovalReason(state,w,ally,actor,terms);if(reason)throw Error(reason);approvals.push(ally);}
+ if(!humanCountry(state,enemy)){const evaluation=peaceEvaluation(state,w,actor,terms);if(!evaluation.accepts)throw Error(evaluation.reason);if(warSide(w,actor).every(id=>approvals.includes(id))){settlePeace(state,w,actor,terms);return;}}
+ w.peaceOffer={from:actor,terms:structuredClone(terms),expiresTick:state.tick+6,approvals};
+ for(const ally of warSide(w,actor))if(!approvals.includes(ally))notify(state,ally,'Diplomacy','Согласуйте многосторонний мирный договор');
+ notify(state,enemy,'Diplomacy','Предложен мирный договор: '+countryFor(state,actor).name);
+}
+export function approvePeacePlan(state:GameState,actor:string,warId:string,accept:boolean):void{
+ const w=state.wars?.find(w=>w.id===warId),offer=w?.peaceOffer;
+ if(!w||!offer||offer.expiresTick<=state.tick||actor===offer.from||!warSide(w,offer.from).includes(actor)||offer.approvals?.includes(actor))throw Error('Согласование мира недоступно');
+ if(!accept){delete w.peaceOffer;notify(state,offer.from,'Diplomacy','Союзник отклонил условия мира: '+countryFor(state,actor).name);return;}
+ peaceCost(state,w,offer.from,offer.terms);offer.approvals??=[offer.from];offer.approvals.push(actor);
+ const enemy=opponentSide(w,offer.from)[0]!;
+ if(peaceReadyForResponse(w)&&!humanCountry(state,enemy)){const evaluation=peaceEvaluation(state,w,offer.from,offer.terms);if(!evaluation.accepts)throw Error(evaluation.reason);settlePeace(state,w,offer.from,offer.terms);}
 }
 export function respondPeace(state:GameState,actor:string,warId:string,accept:boolean):void {
   const w=peaceContext(state,actor,warId),offer=w.peaceOffer;
   if(!offer||offer.expiresTick<=state.tick||!opponentSide(w,offer.from).includes(actor)||offer.from===actor)throw new Error('Предложение мира недоступно');
-  if(accept){peaceCost(state,w,offer.from,offer.terms);settlePeace(state,w,offer.from,offer.terms);}else delete w.peaceOffer;
+  if(accept){if(!peaceReadyForResponse(w))throw Error('Сначала требуется согласие союзников');peaceCost(state,w,offer.from,offer.terms);settlePeace(state,w,offer.from,offer.terms);}else delete w.peaceOffer;
 }
 function settlePeace(state:GameState,w:War,from:string,terms:PeaceTerms):void {
-  const enemies=opponentSide(w,from),enemy=countryFor(state,enemies[0]!),winner=countryFor(state,from);
+  const enemies=opponentSide(w,from),enemy=countryFor(state,enemies[0]!);
   peaceCost(state,w,from,terms);
   for(const clause of peaceClauses(terms)){
-  if(clause.kind==='Money'){enemy.treasury=money(enemy.treasury-clause.amount);winner.treasury=money(winner.treasury+clause.amount);}
+  const recipient=clauseRecipient(from,clause),beneficiary=countryFor(state,recipient);
+  if(clause.kind==='Money'){enemy.treasury=money(enemy.treasury-clause.amount);beneficiary.treasury=money(beneficiary.treasury+clause.amount);}
   if(clause.kind==='Vassalization'){enemy.overlordId=from;enemy.vassalAutonomy=65;}
   if(clause.kind==='Guarantee'){const link=diplomaticLink(state,from,enemy.id);if(!link.guarantors.includes(enemy.id))link.guarantors.push(enemy.id);link.guaranteeUntil??={};link.guaranteeUntil[enemy.id]=state.tick+24;}
-  if(clause.kind==='Reparations')enemy.reparations={to:from,amount:clause.amount,untilTick:state.tick+24,lastTick:state.tick};
+  if(clause.kind==='Reparations')enemy.reparations={to:recipient,amount:clause.amount,untilTick:state.tick+24,lastTick:state.tick};
   if(clause.kind==='Disarmament'){const cap=Math.floor(enemy.army*.7);for(const a of state.armies.filter(a=>a.ownerId===enemy.id)){const released=takeArmyLosses(a,Math.floor(a.troops*.3));enemy.manpower+=released;}enemy.militaryCeiling={untilTick:state.tick+24,troops:cap};}
   for(const id of clause.provinceIds){
-    const p=state.provinces.find(p=>p.id===id)!;p.ownerId=clause.kind==='ReleaseNation'?clause.targetId!:clause.kind==='ReturnTerritory'?p.originalOwnerId!:from;p.countryId=p.ownerId;p.controllerId=p.ownerId;
+    const p=state.provinces.find(p=>p.id===id)!;p.ownerId=clause.kind==='ReleaseNation'?clause.targetId!:clause.kind==='ReturnTerritory'?p.originalOwnerId!:recipient;p.countryId=p.ownerId;p.controllerId=p.ownerId;
     for(const city of state.cities??[])if(city.provinceId===id)city.countryId=p.ownerId;
     state.constructions=state.constructions?.filter(c=>c.provinceId!==id);state.constructionQueue=state.constructionQueue?.filter(c=>c.provinceId!==id);p.productionQueue=[];
     if(clause.kind==='ReleaseNation')delete countryFor(state,p.ownerId).overlordId;
     for(const country of Object.values(state.countries))if(country.nationalProject?.provinceId===id)delete country.nationalProject;
   }
-  if(clause.kind==='Territory'||clause.kind==='Vassalization')winner.aggressiveExpansion=Math.min(100,winner.aggressiveExpansion!+(clause.kind==='Vassalization'?20:clause.provinceIds.length*2));
+  if(clause.kind==='Territory'||clause.kind==='Vassalization')beneficiary.aggressiveExpansion=Math.min(100,beneficiary.aggressiveExpansion!+(clause.kind==='Vassalization'?20:clause.provinceIds.length*2));
   }
   const participants=new Set([...w.attackers,...w.defenders]);
   for(const p of state.provinces)if(participants.has(p.ownerId)&&participants.has(p.controllerId??p.ownerId))p.controllerId=p.ownerId;
@@ -174,6 +218,11 @@ export function monthlyWar(state:GameState):void {
   const active=new Set(state.wars!.flatMap(w=>[...w.attackers,...w.defenders]));
   for(const c of Object.values(state.countries))c.warExhaustion=Math.max(0,Math.min(100,c.warExhaustion!+(active.has(c.id)?.35:-.75)));
   for(const w of state.wars!){if(w.peaceOffer&&w.peaceOffer.expiresTick<=state.tick)delete w.peaceOffer;}
+  for(const w of [...state.wars!])if(w.peaceOffer){const offer=w.peaceOffer;
+    for(const ally of warSide(w,offer.from))if(ally!==offer.from&&!humanCountry(state,ally)&&!offer.approvals?.includes(ally)){
+      try{const reason=alliedApprovalReason(state,w,ally,offer.from,offer.terms);if(reason){delete w.peaceOffer;break;}approvePeacePlan(state,ally,w.id,true);}catch{delete w.peaceOffer;break;}
+    }
+  }
   for(const c of Object.values(state.countries)){const r=c.reparations;if(r&&r.untilTick>state.tick&&r.lastTick!==state.tick){const paid=money(Math.min(c.treasury,r.amount));c.treasury=money(c.treasury-paid);countryFor(state,r.to).treasury=money(countryFor(state,r.to).treasury+paid);r.lastTick=state.tick;}if(r&&r.untilTick<=state.tick)delete c.reparations;}
   // Tribute is bounded by available cash, paid once per authoritative monthly tick.
   for(const c of Object.values(state.countries))if(c.overlordId){const lord=countryFor(state,c.overlordId),tribute=money(Math.min(c.treasury,Math.max(0,c.economy?.monthlyBalance??0)*.1));c.treasury=money(c.treasury-tribute);lord.treasury=money(lord.treasury+tribute);}

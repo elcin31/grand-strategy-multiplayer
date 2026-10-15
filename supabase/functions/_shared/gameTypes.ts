@@ -312,6 +312,7 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'APPROVE_PEACE_PLAN';playerId:string;warId:string;accept:boolean}
   | {type:'SELECT_SCENARIO';playerId:string;scenarioId:string}
   | {type:'RESOLVE_GAME_EVENT';playerId:string;eventId:string;choiceId:string}
   | {type:'SET_AI_DIFFICULTY';playerId:string;difficulty:NonNullable<GameState['aiDifficulty']>}

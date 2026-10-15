@@ -23,7 +23,7 @@ import {TECHNOLOGY_IDS,technologyNode,legacyTechnologyNode,namedResearchQuote,sc
 import { diplomaticAction, pairKey, offerTreaty, warBetween,type DiplomacyLink } from './diplomacySystem.ts';
 import {missionAvailability,diplomacyAcceptance,diplomacyQuote,respondDiplomacy,terminateTreaty,offerDiplomacy} from './diplomacy2System.ts';
 import {espionageQuote,startEspionage,type EspionageKind} from './espionageSystem.ts';
-import { isWarLeader, opponentSide, peaceCost,peaceEvaluation, proposePeace, respondPeace, scoreFor, type PeaceTerms } from './warSystem.ts';
+import { isWarLeader, opponentSide, peaceCost,peaceEvaluation,peaceReadyForResponse, proposePeace, respondPeace, scoreFor, type PeaceTerms } from './warSystem.ts';
 import { pacifyProvince } from './stabilitySystem.ts';
 import {FOCUS_IDS,FOCUS_NODES,focusBelongsTo} from './focusCatalogue.ts';
 import {focusAvailability,startFocus} from './focusSystem.ts';
@@ -115,7 +115,7 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
       const rating=diplomacyAcceptance(s,offer.from,id,offer.terms);
       try{respondDiplomacy(s,id,offer.id,rating.score>=rating.required);}catch{respondDiplomacy(s,id,offer.id,false);}
     }
-    if(w&&isWarLeader(w,id)&&w.peaceOffer&&w.peaceOffer.from!==id){
+    if(w&&isWarLeader(w,id)&&w.peaceOffer&&w.peaceOffer.from!==id&&peaceReadyForResponse(w)){
       const offer=w.peaceOffer;let accept=false;
       // A pending human offer can become unaffordable or lose its occupied provinces
       // before timeout hands control to AI. Reject it; never abort the world tick.
@@ -166,6 +166,7 @@ export function runStrategicAI(s:GameState,actions:Actions):void {
           let terms:PeaceTerms={kind:'WhitePeace',provinceIds:[],amount:0};
           if(score>=80&&!c.overlordId&&!s.countries[opponentSide(active,id)[0]!]!.overlordId&&!Object.values(s.countries).some(x=>x.overlordId===opponentSide(active,id)[0])&&style==='Expansionist')terms={kind:'Vassalization',provinceIds:[],amount:0};
           else if(score>0&&occupied.length){const candidate:PeaceTerms={kind:'Territory',provinceIds:occupied,amount:0};if(peaceCost(s,active,id,candidate)<=score)terms=candidate;}
+          try{peaceCost(s,active,id,terms);}catch{terms={kind:'WhitePeace',provinceIds:[],amount:0};}
           if(terms.kind!=='WhitePeace'||age>=12||s.countries[opponentSide(active,id)[0]!]!.warExhaustion!>=70)try{proposePeace(s,id,active.id,terms);}catch{/* A negotiated offer can be rejected; do not abort the monthly world. */}
         }
       }
