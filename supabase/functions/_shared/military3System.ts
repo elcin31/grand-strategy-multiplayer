@@ -42,9 +42,10 @@ export function siegeForecast(s:GameState,x:Siege){const p=provinceIndex(s).get(
  const rate=(s.countries[x.attackerId]?.militaryDoctrine==='Siege'?1.2:1)*Math.max(.2,(troops/Math.max(1000,x.garrison)*.65+siegeTroops/3000)*(supply/100+.15)*(1+generals/100)/(1+x.fortress*.4));
  return {supply,troops,siegeTroops,rate,days:Math.ceil((100-x.progress)/rate)};
 }
+const dirtyOccupationBudgets=new WeakSet<GameState>();
 export function occupy(s:GameState,a:Army,p:Province,controller=a.ownerId):void{
  const changed=(p.controllerId??p.ownerId)!==controller;p.controllerId=controller;a.provinceId=p.id;invalidateSupply(s);
- if(changed){cancelConstructionInProvince(s,p.id);p.productionQueue=[];refreshWars(s);recalcEconomy(s);}
+ if(changed){cancelConstructionInProvince(s,p.id);p.productionQueue=[];refreshWars(s);dirtyOccupationBudgets.add(s);}
 }
 export function beginSiege(s:GameState,a:Army,p:Province):void{
  const defender=p.controllerId??p.ownerId,existing=s.sieges?.find(x=>x.provinceId===p.id&&warBetween(s,a.ownerId,x.defenderId)&&!warBetween(s,a.ownerId,x.attackerId));a.provinceId=p.id;
@@ -110,7 +111,7 @@ export function dailyMilitary(s:GameState):void{
  for(const a of s.armies){s.countries[a.ownerId]!.army+=a.troops;upkeep.set(a.ownerId,(upkeep.get(a.ownerId)??0)+armyBaseUpkeep(a));}
  // Attrition updates only military costs. Battles also change exhaustion and
  // taxable occupied land, so their daily accounting needs the full budget.
- if(hadCombat)recalcEconomy(s);else for(const c of Object.values(s.countries)){c.militaryUpkeepBase=money(upkeep.get(c.id)??0);refreshArmyBudget(c);}
+ if(hadCombat||dirtyOccupationBudgets.has(s)){recalcEconomy(s);dirtyOccupationBudgets.delete(s);}else for(const c of Object.values(s.countries)){c.militaryUpkeepBase=money(upkeep.get(c.id)??0);refreshArmyBudget(c);}
  refreshSupplyLoads(s);
 }
 export function mergeArmies(s:GameState,owner:string,ids:string[]):void{
