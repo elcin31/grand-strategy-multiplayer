@@ -249,6 +249,7 @@ export interface Leader {
 }
 
 export interface GameState {
+  scenario?:import('./scenarioTypes.ts').CampaignScenario;
   events?:import('./eventTypes.ts').CampaignEvents;
   commanderTraining?:import('./militaryDevelopment.ts').CommanderTraining[];
   coalitions?:import('./geopoliticsSystem.ts').Coalition[];
@@ -311,6 +312,7 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'SELECT_SCENARIO';playerId:string;scenarioId:string}
   | {type:'RESOLVE_GAME_EVENT';playerId:string;eventId:string;choiceId:string}
   | {type:'SET_AI_DIFFICULTY';playerId:string;difficulty:NonNullable<GameState['aiDifficulty']>}
   | {type:'SET_MOBILIZATION';playerId:string;level:NonNullable<Country['mobilization']>}

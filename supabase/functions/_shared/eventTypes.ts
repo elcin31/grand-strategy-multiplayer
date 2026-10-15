@@ -35,6 +35,7 @@ export interface EventOption {
  aiPriority:number;
 }
 export interface EventDefinition {
+ scenarioId?:string;
  id:string;title:string;description:string;category:'Economy'|'Diplomacy'|'Reform'|'Recovery';
  illustration:'Economy'|'Diplomacy'|'Reform'|'Recovery';
  trigger?:EventCondition;counterpart?:'ClaimNeighbour'|'Ally';

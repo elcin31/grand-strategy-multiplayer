@@ -318,7 +318,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
             busy={launchBusy||lobbyOperation!==null} pending={lobbyOperation}
             state={presentation??state}
             playerId={playerId ?? ''}
-            onDifficulty={difficulty=>{if(playerId)sendCommand({type:'SET_AI_DIFFICULTY',playerId,difficulty});}}
+            onScenario={scenarioId=>sendCommand({type:'SELECT_SCENARIO',playerId:playerId??'',scenarioId})} onDifficulty={difficulty=>{if(playerId)sendCommand({type:'SET_AI_DIFFICULTY',playerId,difficulty});}}
             onReady={(ready) => {if(playerId)void lobbyAction('ready',{type:'SET_READY',playerId,ready});}}
             onStart={() => {if(playerId)void lobbyAction('start',{type:'START_GAME',playerId});}}
           />

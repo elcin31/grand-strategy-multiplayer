@@ -99,7 +99,7 @@ export function resolveGameEvent(s:GameState,countryId:string,instanceId:string,
  notify(s,c.id,definition.category==='Diplomacy'?'Diplomacy':'Focus',definition.title+': '+option.title);
 }
 function startEvent(s:GameState,definition:EventDefinition,context:Context):void{
- const c=s.countries[context.countryId]!;if(c.eventReceipts![definition.id]||s.events!.pending.some(e=>e.countryId===c.id))return;
+ const c=s.countries[context.countryId]!;if(s.year<definition.fromYear||s.year>definition.toYear||c.eventReceipts![definition.id]||s.events!.pending.some(e=>e.countryId===c.id))return;
  if(!Number.isSafeInteger(s.nextEntityId)||s.nextEntityId!<1||s.nextEntityId!>=Number.MAX_SAFE_INTEGER||!Number.isSafeInteger(s.tick+definition.deadlineMonths))throw Error('Event sequence overflow');
  c.eventReceipts![definition.id]={startedTick:s.tick};
  s.events!.pending.push({id:'ev-'+s.nextEntityId!++,eventId:definition.id,createdTick:s.tick,deadlineTick:s.tick+definition.deadlineMonths,...context});
@@ -121,11 +121,12 @@ export function monthlyGameEvents(s:GameState):void{
   if(s.countries[scheduled.countryId]?.provinceIds?.length)startEvent(s,definition,scheduled);
  }
  const claims=new Map<string,{counterpartId:string;provinceId:string}[]>();
+ const definitions=DOMINION_EVENTS.filter(d=>!d.scenarioId||d.scenarioId===s.scenario?.id).sort((a,b)=>Number(!!b.scenarioId)-Number(!!a.scenarioId));
  for(const p of s.provinces)if(p.originalOwnerId&&p.ownerId!==p.originalOwnerId){const rows=claims.get(p.originalOwnerId)??[];rows.push({counterpartId:p.ownerId,provinceId:p.id});claims.set(p.originalOwnerId,rows);}
  for(const c of Object.values(s.countries)){
   if(!c.provinceIds?.length||s.events.pending.some(e=>e.countryId===c.id)||s.events.scheduled.some(e=>e.countryId===c.id))continue;
-  for(const definition of DOMINION_EVENTS){
-   if(!definition.trigger||c.eventReceipts![definition.id]||s.year<definition.fromYear||s.year>definition.toYear)continue;
+  for(const definition of definitions){
+   if(!definition.trigger||definition.scenarioId&&definition.scenarioId!==s.scenario?.id||c.eventReceipts![definition.id]||s.year<definition.fromYear||s.year>definition.toYear)continue;
    let context:Context={countryId:c.id};
    if(definition.counterpart==='ClaimNeighbour'){
     const claim=claims.get(c.id)?.filter(x=>s.countries[x.counterpartId]?.provinceIds?.length).sort((a,b)=>a.provinceId.localeCompare(b.provinceId))[0];if(!claim)continue;context={...context,...claim};

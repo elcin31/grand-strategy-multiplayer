@@ -1,3 +1,4 @@
+import {data as scenarioContent} from './scenarioContent.ts';
 import {FOCUS_EXPANSION,NATIONAL_SPIRITS} from './focusExpansion.ts';
 import type {Country,BuildingType} from './gameTypes.ts';
 import type {TechnologyId} from './technologyTree.ts';
@@ -5,13 +6,14 @@ export const FOCUS_BRANCHES={Economic:'Экономическое развити
 export type FocusBranch=keyof typeof FOCUS_BRANCHES;
 export interface FocusBonuses {tax:number;production:number;trade:number;administration:number;armyUpkeep:number;research:number;construction:number;supply:number;combat:number;manpower:number;diplomacy:number}
 export interface FocusRewards {resources?:import('./stockpileSystem.ts').ResourceLedger;addSpirits?:import('./focusExpansion.ts').NationalSpiritId[];removeSpirits?:import('./focusExpansion.ts').NationalSpiritId[];treasury?:number;manpower?:number;stability?:number;unrest?:number;politicalPower?:number;reputation?:number;neighborRelations?:number;armyExperience?:number;bonuses?:Partial<FocusBonuses>}
-export interface FocusNode {eventUnlock?:boolean;description?:string;choiceEvent?:boolean;name:string;branch:FocusBranch;category:'Generic'|'Regional'|'Unique';duration:number;cost:number;pp:number;prerequisites:readonly string[];eitherPrerequisites?:readonly string[];technologies?:readonly TechnologyId[];exclusiveGroup?:string;region?:string;country?:string;rewards:FocusRewards;art:BuildingType}
+export interface FocusNode {scenarioId?:string;eventUnlock?:boolean;description?:string;choiceEvent?:boolean;name:string;branch:FocusBranch;category:'Generic'|'Regional'|'Unique';duration:number;cost:number;pp:number;prerequisites:readonly string[];eitherPrerequisites?:readonly string[];technologies?:readonly TechnologyId[];exclusiveGroup?:string;region?:string;country?:string;rewards:FocusRewards;art:BuildingType}
 function course(name:string,branch:FocusBranch,duration:number,prerequisites:readonly string[],rewards:FocusRewards,art:BuildingType,options:Partial<Omit<FocusNode,'name'|'branch'|'duration'|'prerequisites'|'rewards'|'art'>>={}):FocusNode{return {name,branch,duration,prerequisites,rewards,art,category:'Generic',cost:100+duration*20,pp:10+duration,...options};}
 /** All names, choices and graphs are original Dominion content. Permanent
  * capabilities are derived from unique completions, never copied into a second
  * mutable bonus ledger. No political ideology or reference-game focus tree. */
 const catalogue:Record<string,FocusNode>={
  ...FOCUS_EXPANSION,
+ ...Object.fromEntries(scenarioContent.focuses.map(node=>[node.id,node as unknown as FocusNode])),
  'eco-audit':course('Хозяйственная ревизия','Economic',6,[],{treasury:120,bonuses:{tax:.02}},'Administration'),
  'eco-corridors':course('Хозяйственные коридоры','Economic',8,['eco-audit'],{bonuses:{construction:.05,supply:.05}},'Infrastructure'),
  'eco-production':course('Национальный производственный заказ','Economic',10,['eco-corridors'],{bonuses:{production:.05}},'Factory',{exclusiveGroup:'economic-path'}),

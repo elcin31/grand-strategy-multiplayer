@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "id": "rhine-reconstruction-compact",
+  "version": 1,
+  "name": "Рейнский пакт восстановления",
+  "description": "Оригинальный альтернативный сценарий Dominion: три государства договариваются о восстановлении промышленности и совместных мастерских. География современного мира сохраняется.",
+  "geography": "modern-world-v2",
+  "startDate": {
+    "year": 2026,
+    "month": 1,
+    "day": 1
+  },
+  "countries": [
+    {
+      "id": "germany",
+      "treasury": 2400,
+      "governmentType": "Parliamentary Republic",
+      "resources": {
+        "steel": 120,
+        "cement": 180,
+        "food": 300
+      }
+    },
+    {
+      "id": "france",
+      "treasury": 2200,
+      "resources": {
+        "steel": 90,
+        "cement": 150
+      }
+    },
+    {
+      "id": "poland",
+      "treasury": 1600,
+      "resources": {
+        "timber": 150,
+        "coal": 120
+      }
+    }
+  ],
+  "provinceOwners": [
+    {
+      "provinceId": "deu-1572",
+      "ownerId": "germany",
+      "buildingDamage": 0.35
+    },
+    {
+      "provinceId": "fra-1442",
+      "ownerId": "france",
+      "buildingDamage": 0.25
+    },
+    {
+      "provinceId": "pol-3140",
+      "ownerId": "poland",
+      "buildingDamage": 0.2
+    }
+  ],
+  "armyMode": "inherit",
+  "armies": [],
+  "relations": [
+    {
+      "a": "germany",
+      "b": "france",
+      "relation": 45,
+      "trust": 65,
+      "treaties": [
+        "Alliance",
+        "TradeAgreement"
+      ]
+    },
+    {
+      "a": "germany",
+      "b": "poland",
+      "relation": 35,
+      "trust": 60,
+      "treaties": [
+        "NonAggression",
+        "TradeAgreement"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "alt-rhine-workshops",
+      "scenarioId": "rhine-reconstruction-compact",
+      "title": "Совместные мастерские пакта",
+      "description": "Союзные делегации предлагают оплатить координацию промышленных мастерских. Совместная программа потребует отдельного национального курса.",
+      "category": "Reform",
+      "illustration": "Reform",
+      "counterpart": "Ally",
+      "fromYear": 2026,
+      "toYear": 9999,
+      "deadlineMonths": 3,
+      "trigger": {
+        "kind": "all",
+        "conditions": [
+          {
+            "kind": "war",
+            "active": false
+          },
+          {
+            "kind": "metric",
+            "metric": "treasury",
+            "op": "gte",
+            "value": 300
+          }
+        ]
+      },
+      "fallbackChoiceId": "national",
+      "options": [
+        {
+          "id": "joint",
+          "title": "Принять совместную программу",
+          "description": "80 млн и 10 PP. Открывается курс общих мастерских; отношения с союзником +5.",
+          "cost": {
+            "treasury": 80,
+            "politicalPower": 10
+          },
+          "aiPriority": 100,
+          "effects": [
+            {
+              "kind": "unlockFocus",
+              "focusId": "alt-shared-workshops"
+            },
+            {
+              "kind": "relation",
+              "amount": 5
+            }
+          ]
+        },
+        {
+          "id": "national",
+          "title": "Сосредоточиться на национальных проектах",
+          "description": "Стабильность +1; новых финансовых обязательств нет.",
+          "aiPriority": 10,
+          "effects": [
+            {
+              "kind": "metric",
+              "metric": "stability",
+              "amount": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "focuses": [
+    {
+      "id": "alt-shared-workshops",
+      "scenarioId": "rhine-reconstruction-compact",
+      "eventUnlock": true,
+      "name": "Общие промышленные мастерские",
+      "description": "Оплаченная координация связывает промышленные округа с действующими торговыми договорами пакта.",
+      "branch": "Economic",
+      "category": "Generic",
+      "duration": 8,
+      "cost": 250,
+      "pp": 12,
+      "prerequisites": [
+        "eco-audit"
+      ],
+      "rewards": {
+        "bonuses": {
+          "trade": 0.03,
+          "construction": 0.02
+        },
+        "reputation": 2
+      },
+      "art": "Factory"
+    }
+  ]
+}

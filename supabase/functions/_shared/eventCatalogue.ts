@@ -1,7 +1,8 @@
 import type {EventDefinition} from './eventTypes.ts';
+import {data as scenarioContent} from './scenarioContent.ts';
 
 /** Original Dominion stories. Data only: every effect names a registered operation. */
-export const DOMINION_EVENTS:readonly EventDefinition[]=[
+const BASE_EVENTS:readonly EventDefinition[]=[
  {id:'debt-pressure',title:'Цена государственных обязательств',category:'Economy',illustration:'Economy',
   description:'Обслуживание долга вытесняет расходы на развитие. Казначейство предлагает выбрать путь восстановления доверия.',fromYear:1,toYear:9999,deadlineMonths:3,
   trigger:{kind:'all',conditions:[{kind:'metric',metric:'debt',op:'gte',value:1500},{kind:'metric',metric:'budgetBalance',op:'lt',value:0}]},
@@ -43,5 +44,6 @@ export const DOMINION_EVENTS:readonly EventDefinition[]=[
   {id:'more-work',title:'Продолжить восстановление',description:'Открыть послевоенный курс. Ремонт по-прежнему требует средств и материалов.',aiPriority:10,effects:[{kind:'unlockFocus',focusId:'event-postwar-renewal'}]}
  ]}
 ];
+export const DOMINION_EVENTS:readonly EventDefinition[]=[...BASE_EVENTS,...scenarioContent.events as unknown as EventDefinition[]];
 const catalogue=new Map(DOMINION_EVENTS.map(event=>[event.id,event]));
 export function eventDefinition(id:string):EventDefinition|undefined{return catalogue.get(id);}
