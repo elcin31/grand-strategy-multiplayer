@@ -1,3 +1,4 @@
+import {politicalResponse} from './internalPolitics23.ts';
 import {focusBonuses} from './focusCatalogue.ts';
 import {countryFor,type Country,type GameState} from './gameTypes.ts';
 import {money} from './economySystem.ts';
@@ -25,7 +26,7 @@ export function policyAvailability(s:GameState,id:string,policy:EconomicPolicy):
 }
 export function setEconomicPolicy(s:GameState,id:string,policy:EconomicPolicy):void {
   const reason=policyAvailability(s,id,policy);if(reason)throw Error(reason);if(!Number.isSafeInteger(s.tick+6))throw Error('Policy date overflow');
-  const c=countryFor(s,id);c.treasury=money(c.treasury-50);c.politicalPower!-=15;c.economicPolicy=policy;c.policyCooldownUntilTick=s.tick+6;
+  const c=countryFor(s,id);c.treasury=money(c.treasury-50);c.politicalPower!-=15;c.economicPolicy=policy;c.policyCooldownUntilTick=s.tick+6;politicalResponse(c,policy==='Austerity'?{Civic:-4,Industrialists:-2,Administration:3}:policy==='Mobilization'?{Military:4,Civic:-6,Industrialists:-3}:policy==='Investment'?{Industrialists:4,Administration:2}:policy==='OpenMarkets'?{Industrialists:3,Regional:-2}:{Civic:1},'Принята экономическая политика: '+ECONOMIC_POLICIES[policy].name);
 }
 export function fundingAvailability(s:GameState,id:string,domain:'Research'|'Military',level:FundingLevel):string|null {
   const c=countryFor(s,id);if(!s.dataset||!c.provinceIds?.length||!['running','paused'].includes(s.phase))return 'Нужна начатая кампания';

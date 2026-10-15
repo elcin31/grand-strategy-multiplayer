@@ -21,6 +21,7 @@ import { GOVERNMENT_TYPES } from './governmentSystem.ts';
 import type { BuildingType, GovernmentType } from './gameTypes.ts';
 /** Validate JSON at both command boundaries. No client state, prices or derived economic fields are accepted. */
 const fields: Record<string, readonly string[]> = {
+  SET_CONSTRUCTION_AUTOMATION:['type','playerId','enabled'],
   APPROVE_PEACE_PLAN:['type','playerId','warId','accept'],
   SELECT_SCENARIO:['type','playerId','scenarioId'],
   RESOLVE_GAME_EVENT:['type','playerId','eventId','choiceId'],
@@ -131,6 +132,7 @@ export function assertGameCommand(input: unknown, countryIds: readonly string[])
     const pattern = key === 'provinceId' ? /^[A-Za-z0-9_+?-]{1,128}$/ : /^[A-Za-z0-9_-]{1,128}$/;
     if (allowed.includes(key) && (typeof command[key] !== 'string' || !pattern.test(command[key] as string))) throw new Error('Invalid command identifier');
   }
+  if(type==='SET_CONSTRUCTION_AUTOMATION'&&typeof command.enabled!=='boolean')throw Error('Invalid construction automation');
   if(type==='SET_AI_DIFFICULTY'&&!['Easy','Normal','Hard','VeryHard'].includes(command.difficulty as string))throw Error('Invalid AI difficulty');
   if(type==='SET_MOBILIZATION'&&!['Peacetime','Partial','General'].includes(command.level as string))throw Error('Invalid mobilization');
   if(type==='SET_MILITARY_DOCTRINE'&&!['Offensive','Defensive','Mobile','Logistics','Siege'].includes(command.doctrine as string))throw Error('Invalid military doctrine');

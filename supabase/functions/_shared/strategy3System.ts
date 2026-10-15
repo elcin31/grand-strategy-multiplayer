@@ -1,3 +1,4 @@
+import {monthlyPoliticalGroups} from './internalPolitics23.ts';
 import {eventDefinition} from './eventCatalogue.ts';
 import type {Country,GameState} from './gameTypes.ts';
 import {declareWar,pairKey} from './diplomacySystem.ts';
@@ -34,7 +35,7 @@ export function vassalPolicy(s:GameState,c:Country,target:string,policy:'Raise'|
  c.politicalPower!-=20;v.vassalAutonomy=Math.max(0,Math.min(100,(v.vassalAutonomy??65)+(policy==='Raise'?15:-10)));v.unrest=Math.max(0,Math.min(100,(v.unrest??0)+(policy==='Raise'?-3:4)));relationChange(s,c.id,v.id,'autonomy:'+c.id,'Вассальная автономия',policy==='Raise'?5:-4);
 }
 export function monthlyInternalPolitics(s:GameState):void{
- for(const c of Object.values(s.countries)){
+ for(const c of Object.values(s.countries)){monthlyPoliticalGroups(s,c);
   const exhaustion=c.warExhaustion??0;if(exhaustion>20){c.stability=Math.max(0,c.stability-exhaustion/250);c.unrest=Math.min(100,(c.unrest??0)+exhaustion/300);}
   if(c.overlordId){c.vassalAutonomy??=65;const lord=s.countries[c.overlordId]!,relation=s.diplomacy?.[pairKey(c.id,lord.id)]?.relation??0;if(s.tick%6===0&&relation<-40)c.vassalAutonomy=Math.min(100,c.vassalAutonomy+2);if(c.vassalAutonomy>=90&&c.stability<35&&relation<-60&&!s.wars?.some(w=>[...w.attackers,...w.defenders].includes(c.id))){delete c.overlordId;c.vassalAutonomy=100;notify(s,lord.id,'Rebellion','Зависимое государство объявило независимость: '+c.name);notify(s,c.id,'Rebellion','Провозглашена независимость');}}
   const p=c.vassalIntegration;if(!p||p.lastTick===s.tick)continue;p.lastTick=s.tick;const v=s.countries[p.targetId]!;if(v.overlordId!==c.id){delete c.vassalIntegration;continue;}if(!p.accepted||(v.vassalAutonomy??100)>30||s.wars?.some(w=>[...w.attackers,...w.defenders].includes(c.id)))continue;p.work++;if(p.work<36)continue;
@@ -50,7 +51,7 @@ export function projectFogOfWar(s:GameState,viewer:string|null):GameState{
  if(!viewer||s.phase==='lobby')return s;const visible=visibleMilitaryProvinces(s,viewer),result:GameState={...s,countries:Object.fromEntries(Object.entries(s.countries).map(([id,c])=>[id,{...c}])),provinces:s.provinces.map(p=>({...p})),armies:s.armies.map(a=>({...a}))};result.fogViewerId=viewer;
  result.armies=result.armies.filter(a=>a.ownerId===viewer||intelligenceLevel(s,viewer,a.ownerId)==='Detailed'||visible.has(a.provinceId));
  for(const a of result.armies)if(a.ownerId!==viewer&&intelligenceLevel(s,viewer,a.ownerId)!=='Detailed'){a.intelligenceLevel='Estimate';a.troops=Math.max(1000,Math.round(a.troops/5000)*5000);delete a.composition;delete a.template;delete a.order;delete a.commanderId;delete a.escortArmyId;delete a.supply;delete a.militaryPlan;delete a.formationId;delete a.aiRole;delete a.organization;delete a.morale;}
- for(const c of Object.values(result.countries))if(c.id!==viewer){const level=intelligenceLevel(s,viewer,c.id);c.intelligenceLevel=level;delete c.aiStrategy;delete c.eventReceipts;delete c.eventUnlockedFocuses;if(level!=='Detailed'){c.army=Math.round(c.army/10000)*10000;c.manpower=0;c.treasury=0;delete c.stockpile;delete c.reserveManpower;delete c.armyTemplates;delete c.militaryDoctrine;delete c.nationalFocus;delete c.research;delete c.decisions;}}
+ for(const c of Object.values(result.countries))if(c.id!==viewer){const level=intelligenceLevel(s,viewer,c.id);c.intelligenceLevel=level;delete c.aiStrategy;delete c.eventReceipts;delete c.eventUnlockedFocuses;if(level!=='Detailed'){c.army=Math.round(c.army/10000)*10000;c.manpower=0;c.treasury=0;delete c.stockpile;delete c.reserveManpower;delete c.armyTemplates;delete c.militaryDoctrine;delete c.nationalFocus;delete c.research;delete c.decisions;delete c.politicalGroups;delete c.politicalGroupReason;}}
  if(result.events)result.events={...result.events,pending:result.events.pending.filter(e=>e.countryId===viewer),scheduled:result.events.scheduled.filter(e=>e.countryId===viewer),history:result.events.history.filter(e=>e.countryId===viewer)};
  result.diplomaticOffers=result.diplomaticOffers?.filter(o=>o.from===viewer||o.to===viewer||o.terms.kind==='Summit'&&o.terms.participants.includes(viewer));result.relationMissions=result.relationMissions?.filter(m=>m.from===viewer||m.to===viewer);
  result.armyFormations=result.armyFormations?.filter(q=>q.ownerId===viewer);result.commanderTraining=result.commanderTraining?.filter(q=>q.ownerId===viewer);

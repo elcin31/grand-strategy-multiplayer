@@ -10,6 +10,8 @@ export type GovernmentType = 'Parliamentary Republic' | 'Presidential Republic' 
 export type BuildingType = 'Farm' | 'Mine' | 'Factory' | 'Barracks' | 'Fort' | 'University' | 'Port' | 'Infrastructure' | 'Administration' | 'Hospital' | 'Ranch' | 'Fishery' | 'FoodProcessor' | 'IronMine' | 'CoalMine' | 'OilWell' | 'GasField' | 'Quarry' | 'RareMine' | 'Steelworks' | 'Refinery' | 'ChemicalPlant' | 'TextileMill' | 'Machinery' | 'ElectronicsPlant' | 'ArmsFactory' | 'AmmoFactory' | 'VehicleFactory' | 'MilitaryDepot' | 'RailHub' | 'TransportTerminal' | 'Warehouse' | 'PowerGrid' | 'CargoPort' | 'ResearchCenter' | 'Laboratory' | 'Embassy' | 'IntelligenceCenter' | 'CoastalFort' | 'MilitaryBase';
 
 export interface Country {
+  politicalGroups?:Record<import('./internalPolitics23.ts').PoliticalGroup,import('./internalPolitics23.ts').PoliticalGroupState>;
+  politicalGroupTick?:number;politicalGroupReason?:string;
   eventReceipts?:Record<string,import('./eventTypes.ts').EventReceipt>;
   eventUnlockedFocuses?:string[];
   intelligenceLevel?:'Detailed'|'Estimate'|'Unknown';
@@ -312,6 +314,7 @@ export interface GameState {
 }
 
 export type GameCommand =
+  | {type:'SET_CONSTRUCTION_AUTOMATION';playerId:string;enabled:boolean}
   | {type:'APPROVE_PEACE_PLAN';playerId:string;warId:string;accept:boolean}
   | {type:'SELECT_SCENARIO';playerId:string;scenarioId:string}
   | {type:'RESOLVE_GAME_EVENT';playerId:string;eventId:string;choiceId:string}

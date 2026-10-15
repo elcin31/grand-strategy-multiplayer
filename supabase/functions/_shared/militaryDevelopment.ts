@@ -1,3 +1,4 @@
+import {politicalResponse} from './internalPolitics23.ts';
 import type {GameState,Country} from './gameTypes.ts';
 import {generateLeader} from './leaderGeneration.ts';
 import {militaryEntity} from './military3System.ts';
@@ -16,7 +17,7 @@ export function setMobilization(s:GameState,c:Country,level:keyof typeof MOBILIZ
  c.politicalPower!-=15;c.treasury=money(c.treasury-75);const old=c.mobilization??'Peacetime',reserve=c.reserveManpower??0;
  if(level!=='Peacetime'){const count=level==='General'?reserve:old==='General'?0:Math.floor(reserve*.35);c.reserveManpower=reserve-count;c.manpower+=count;}
  else {const returned=Math.floor(c.manpower*.5);c.manpower-=returned;c.reserveManpower=reserve+returned;}
- c.mobilization=level;c.mobilizationCooldownUntilTick=s.tick+3;if(level==='General')c.stability=Math.max(0,c.stability-2);notify(s,c.id,'War','Объявлена '+MOBILIZATION[level].name.toLocaleLowerCase());
+ c.mobilization=level;politicalResponse(c,level==='Peacetime'?{Civic:5,Industrialists:3,Military:-2}:level==='General'?{Military:5,Civic:-8,Industrialists:-5}:{Military:3,Civic:-4,Industrialists:-2},'Изменение мобилизационной нагрузки');c.mobilizationCooldownUntilTick=s.tick+3;if(level==='General')c.stability=Math.max(0,c.stability-2);notify(s,c.id,'War','Объявлена '+MOBILIZATION[level].name.toLocaleLowerCase());
 }
 export function setDoctrine(s:GameState,c:Country,doctrine:MilitaryDoctrine):void{
  if(c.militaryDoctrine===doctrine)throw Error('Доктрина уже принята');if((c.technologies?.Military??0)<1||doctrine==='Mobile'&&(s.year<1800||(c.technologies?.Military??0)<2)||doctrine==='Logistics'&&s.year<1600||doctrine==='Siege'&&s.year<1200)throw Error('Доктрина требует военной технологии и подходящей эпохи');if(s.tick<(c.doctrineCooldownUntilTick??0))throw Error('Доктрина недавно изменена');if(c.treasury<200||(c.politicalPower??0)<30)throw Error('Нужно 200 млн и 30 политической власти');c.treasury=money(c.treasury-200);c.politicalPower!-=30;c.militaryDoctrine=doctrine;c.doctrineCooldownUntilTick=s.tick+6;

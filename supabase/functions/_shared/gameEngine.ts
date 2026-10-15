@@ -1,3 +1,5 @@
+import {politicalResponse} from './internalPolitics23.ts';
+import {monthlyConstructionAutomation} from './economicForecast.ts';
 import {setMobilization,setDoctrine,trainCommander,dailyCommanderTraining,manpowerGrowth,monthlyMobilization} from './militaryDevelopment.ts';
 import {selectScenario} from './scenarioSystem.ts';
 import {monthlyGameEvents,resolveGameEvent} from './eventSystem.ts';
@@ -185,6 +187,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
   if(!validatedLocalState){initializeGovernments(next); initializePopulation(next); initializeReligions(next); initializeResources(next); normalizeGameState(next); initializeEconomy(next);}
   if(['ORDER_ARMY','MOVE_ARMY','ROUTE_ARMY','CANCEL_ARMY_ORDER','RETREAT_ARMY'].includes(command.type)&&'armyId' in command){const p=getPlayer(next,command.playerId),a=next.armies.find(a=>a.id===command.armyId&&a.ownerId===p.countryId);if(a){if(a.militaryPlan){a.militaryPlan.autoCommand=false;a.militaryPlan.status='Holding';a.militaryPlan.reason='Ручной приказ игрока';}delete a.escortArmyId;for(const g of next.armyGroups??[])g.armyIds=g.armyIds.filter(id=>id!==a.id);}}
   switch (command.type) {
+    case 'SET_CONSTRUCTION_AUTOMATION':{if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');countryFor(next,p.countryId).stockpile!.autoBuild=command.enabled;return next;}
     case 'APPROVE_PEACE_PLAN':{if(!next.dataset||!['running','paused'].includes(next.phase))throw Error('Нужна начатая кампания');const p=getPlayer(next,command.playerId);if(!p.countryId)throw Error('Страна не выбрана');approvePeacePlan(next,p.countryId,command.warId,command.accept);recalcCountryStats(next);return next;}
     case 'SELECT_SCENARIO':{const player=getPlayer(next,command.playerId);if(!player.isHost)throw Error('Сценарий выбирает хост');return selectScenario(next,command.scenarioId);}
     case 'RESOLVE_GAME_EVENT':{
@@ -269,7 +272,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
       const nation = countryFor(next, player.countryId);
       if(command.type==='SET_ECONOMIC_POLICY'){setEconomicPolicy(next,player.countryId,command.policy);recalcEconomy(next);}
       else if(command.type==='SET_FUNDING'){setFunding(next,player.countryId,command.domain,command.level);recalcEconomy(next);}
-      else if (command.type === 'SET_TAX_RATE') { nation.taxRate = command.taxRate; recalcEconomy(next); }
+      else if (command.type === 'SET_TAX_RATE') { const delta=command.taxRate-(nation.taxRate??30);nation.taxRate = command.taxRate;politicalResponse(nation,{Civic:-delta*.3,Industrialists:-delta*.2},'Изменение налоговой нагрузки'); recalcEconomy(next); }
       else if (command.type === 'BORROW') borrow(next, nation, command.amount); else repay(next, nation, command.amount);
       return next;
     }
@@ -476,7 +479,7 @@ function applyCoreCommand(state: GameState, command: GameCommand, validatedLocal
           nation.unrest = Math.min(100, Math.max(0, nation.unrest! + (government.unrestPerYear + (buildings?.unrestPerYear ?? 0)) / 12));
         }
       }
-      monthlyReligionEffects(next);if(next.dataset){extractResources(next);monthlyNationalProjects(next);monthlyDecisions(next);processResourceTrade(next);monthlyProduction(next);domesticConsumption(next);updateResourceMarkets(next);} monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next);monthlyInternalPolitics(next);monthlyMobilization(next); monthlyStability(next); runAi(next);monthlyGameEvents(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
+      monthlyReligionEffects(next);if(next.dataset){extractResources(next);monthlyNationalProjects(next);monthlyDecisions(next);processResourceTrade(next);monthlyProduction(next);domesticConsumption(next);updateResourceMarkets(next);} monthlyEconomy(next); monthlyResearch(next);monthlyFocus(next);monthlyMilitaryLogistics(next);monthlyWar(next);monthlyInternalPolitics(next);monthlyMobilization(next); monthlyStability(next); runAi(next);monthlyGameEvents(next);monthlyConstructionAutomation(next); recalcCountryStats(next); recalcPopulationTotals(next); recalcReligiousUnity(next); checkWinner(next); return next;
     }
   }
 }

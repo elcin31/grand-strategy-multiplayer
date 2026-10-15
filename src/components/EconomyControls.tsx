@@ -1,10 +1,11 @@
+import {EconomicForecastPanel} from './EconomicForecastPanel';
 import {Text,View,ScrollView} from 'react-native';
 import {ECONOMIC_POLICIES,FUNDING_LEVELS,policyAvailability,fundingAvailability,type EconomicPolicy,type FundingLevel} from '../../supabase/functions/_shared/economy2System';
 import {DiplomacyButton} from './DiplomacyActions';
 import {styles,type StrategyProps} from './StrategyPanel';
 export function EconomyControls({state,playerId,onCommand}:StrategyProps){
   const id=state.players.find(p=>p.id===playerId)?.countryId;if(!id)return null;const c=state.countries[id]!;
-  return <View style={styles.wrap}>
+  return <View style={styles.wrap}><EconomicForecastPanel state={state} playerId={playerId} onCommand={onCommand}/>
     <Text style={styles.title}>Экономическая политика · {ECONOMIC_POLICIES[c.economicPolicy??'Balanced'].name}</Text>
     <Text style={styles.text}>Смена: 50 млн и 15 PP · cooldown 6 мес. Эффекты действуют в производстве, торговле, содержании, исследованиях и каждом игровом месяце.</Text>
     <ScrollView horizontal contentContainerStyle={styles.row}>{(Object.keys(ECONOMIC_POLICIES) as EconomicPolicy[]).filter(policy=>policy!==c.economicPolicy).map(policy=>{const rule=ECONOMIC_POLICIES[policy],reason=policyAvailability(state,id,policy);return <View key={policy} style={styles.option}><Text style={styles.title}>{rule.name}{c.economicPolicy===policy?' ✓':''}</Text><Text style={styles.text}>{rule.description}</Text>{reason&&<Text style={styles.text}>{reason}</Text>}<DiplomacyButton label={'Принять: '+rule.name} disabled={!!reason} onPress={()=>onCommand({type:'SET_ECONOMIC_POLICY',playerId,policy})}/></View>;})}</ScrollView>
