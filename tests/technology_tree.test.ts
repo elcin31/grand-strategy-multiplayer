@@ -1,9 +1,9 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {createWorldState} from '../supabase/functions/_shared/worldState';
+import {createWorldState} from './helpers/isolatedWorld';
 import {applyServerCommand} from '../supabase/functions/_shared/serverCommand';
 import {normalizeGameState,CURRENT_STATE_VERSION} from '../supabase/functions/_shared/stateMigrations';
-import {TECHNOLOGY_DIRECTIONS,TECHNOLOGY_IDS,hasTechnology,grantTechnology,namedResearchQuote,initializeTechnologyTree,scienceLevel,technologyNode,type TechnologyId} from '../supabase/functions/_shared/technologyTree';
+import {technologyAvailableYear,TECHNOLOGY_DIRECTIONS,TECHNOLOGY_IDS,hasTechnology,grantTechnology,namedResearchQuote,initializeTechnologyTree,scienceLevel,technologyNode,type TechnologyId} from '../supabase/functions/_shared/technologyTree';
 import {startResearch,monthlyResearch,TECHNOLOGY_BRANCHES} from '../supabase/functions/_shared/technologySystem';
 import {money,monthlyEconomy,recalcEconomy} from '../supabase/functions/_shared/economySystem';
 import {researchMonthlyCost} from '../supabase/functions/_shared/economy2System';
@@ -17,10 +17,10 @@ import {CampaignStore,type CampaignFiles} from '../src/persistence/campaignStore
 import {stateChecksum} from '../supabase/functions/_shared/sessionState';
 function world(){const s=createWorldState('tech-tree','TREE01','host','QA',101);s.phase='paused';s.speed=0;s.players[0]!.countryId='germany';s.players.push({id:'guest',displayName:'France',countryId:'france',isHost:false,ready:true,connected:true,aiControlled:false,lastSeen:0});s.countries.germany!.treasury=20000;return s;}
 function scientific(s:ReturnType<typeof world>,ids:TechnologyId[]=['science-method']){const c=s.countries.germany!;for(const b of TECHNOLOGY_BRANCHES)c.technologies![b]=5;for(const id of ids)grantTechnology(s,c,id);recalcEconomy(s);return c;}
-test('five original directions have thirty known, era-ordered nodes in an acyclic prerequisite graph',()=>{
-  assert.equal(Object.keys(TECHNOLOGY_DIRECTIONS).length,5);assert.equal(TECHNOLOGY_IDS.length,30);
-  const complete=new Set<string>(),visiting=new Set<string>();function visit(id:string){assert.ok(technologyNode(id));assert.ok(!visiting.has(id),'cycle');if(complete.has(id))return;visiting.add(id);const n=technologyNode(id)!;assert.ok(n.cost>0&&n.months>0&&n.effect&&n.art);for(const p of n.prerequisites){assert.ok(technologyNode(p)!.year<=n.year);visit(p);}visiting.delete(id);complete.add(id);}
-  for(const id of TECHNOLOGY_IDS)visit(id);assert.equal(complete.size,30);assert.equal(technologyNode('__proto__'),undefined);assert.equal(technologyNode('toString'),undefined);
+test('nine original directions have one hundred known, era-ordered nodes in an acyclic prerequisite graph',()=>{
+  assert.equal(Object.keys(TECHNOLOGY_DIRECTIONS).length,9);assert.equal(TECHNOLOGY_IDS.length,100);
+  const complete=new Set<string>(),visiting=new Set<string>();function visit(id:string){assert.ok(technologyNode(id));assert.ok(!visiting.has(id),'cycle');if(complete.has(id))return;visiting.add(id);const n=technologyNode(id)!;assert.ok(n.cost>0&&n.months>0&&n.effect&&n.art);for(const p of n.prerequisites){assert.ok(technologyAvailableYear(p)<=technologyAvailableYear(id));visit(p);}visiting.delete(id);complete.add(id);}
+  for(const id of TECHNOLOGY_IDS)visit(id);assert.equal(complete.size,100);assert.equal(technologyNode('__proto__'),undefined);assert.equal(technologyNode('toString'),undefined);
 });
 test('named research validates era, dependencies, active project, owner, phase and forged costs without mutating the source',()=>{
   const s=world(),copy=structuredClone(s),cmd={type:'START_TECHNOLOGY',playerId:'host',nodeId:'eco-ledger'} as const,n=applyServerCommand(s,cmd,'host');assert.deepEqual(s,copy);assert.equal(n.countries.germany!.treasury,19850);assert.equal(n.countries.germany!.research!.nodeId,'eco-ledger');
@@ -67,5 +67,5 @@ test('schema16 paid research, legacy levels and exact old bytes survive migratio
   const store=new CampaignStore(files),loaded=await store.load(old.id);assert.equal(loaded.stateVersion,CURRENT_STATE_VERSION);assert.equal(loaded.countries.germany!.research!.progress,2.75);assert.equal(loaded.countries.germany!.treasury,cash);assert.ok(hasTechnology(loaded.countries.france!,'mil-precision'));assert.deepEqual(loaded.countries.germany!.scientificDiscoveries,[]);await store.save(loaded);assert.equal(map.get(old.id+'.before-technology-v17.backup'),raw);
 });
 test('scheduled AI selects an affordable eligible scientific project after balancing inherited branches',()=>{
-  const s=world();s.phase='running';s.players=Object.keys(s.countries).filter(id=>id!=='germany').map((countryId,i)=>({id:'p'+i,countryId,displayName:'QA',ready:true,isHost:i===0}));s.tick=Object.keys(s.countries).sort().indexOf('germany')%6;const c=s.countries.germany!;for(const branch of TECHNOLOGY_BRANCHES)c.technologies![branch]=1;runStrategicAI(s,{recruit:()=>{},move:()=>{}});assert.equal(c.research?.nodeId,'science-method');assert.ok(c.treasury>=strategicContext(s,c.id,[]).treasuryReserve);normalizeGameState(s);
+  const s=world();s.phase='running';s.players=Object.keys(s.countries).filter(id=>id!=='germany').map((countryId,i)=>({id:'p'+i,countryId,displayName:'QA',ready:true,isHost:i===0}));s.tick=Object.keys(s.countries).sort().indexOf('germany')%6;const c=s.countries.germany!;delete c.aiStrategy;c.aiStrategy={goal:'Science',personality:'Reformer',sinceTick:0,reviewTick:s.tick+6,reason:'Science fixture'};for(const branch of TECHNOLOGY_BRANCHES)c.technologies![branch]=1;runStrategicAI(s,{recruit:()=>{},move:()=>{}});assert.equal(c.research?.nodeId,'science-method');assert.ok(c.treasury>=strategicContext(s,c.id,[]).treasuryReserve);normalizeGameState(s);
 });

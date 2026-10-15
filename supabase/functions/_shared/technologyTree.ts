@@ -45,11 +45,19 @@ export type TechnologyToken=TechnologyId|TechnologyBranch;
 export const TECHNOLOGY_NODES:Readonly<Record<TechnologyId,TechnologyNode>>=catalogue;
 export const TECHNOLOGY_IDS=Object.keys(catalogue) as TechnologyId[];
 export function technologyNode(id:string):TechnologyNode|undefined{return Object.hasOwn(TECHNOLOGY_NODES,id)?(TECHNOLOGY_NODES as Readonly<Record<string,TechnologyNode>>)[id]:undefined;}
+const availableYears=new Map<string,number>();
+/** Earlier inventions may depend on later institutional programmes. New starts
+ * use the latest prerequisite date; existing paid-project duration is preserved. */
+export function technologyAvailableYear(id:string,visiting=new Set<string>()):number{
+ const cached=availableYears.get(id);if(cached!==undefined)return cached;
+ const n=technologyNode(id);if(!n||visiting.has(id))throw Error('Invalid technology graph');visiting.add(id);
+ const year=Math.max(n.year,...n.prerequisites.map(parent=>technologyAvailableYear(parent,visiting)));visiting.delete(id);availableYears.set(id,year);return year;
+}
 export function legacyTechnologyNode(branch:TechnologyBranch,level:number):TechnologyId|undefined{return TECHNOLOGY_IDS.find(id=>catalogue[id]!.legacy===branch&&catalogue[id]!.level===level);}
 export function hasTechnology(c:Country,id:string):boolean {const n=technologyNode(id);return !!n&&(n.legacy?(c.technologies?.[n.legacy]??0)>=n.level:(c.scientificDiscoveries??[]).includes(id as TechnologyId));}
 export function scienceLevel(c:Country):number{return Math.min(5,(c.scientificDiscoveries??[]).filter(id=>technologyNode(id)?.direction==='Science').length);}
 export function technologyRequirements(s:GameState,c:Country,id:string):string|null {
- const n=technologyNode(id);if(!n)return 'Неизвестная технология';if(hasTechnology(c,id))return 'Технология уже открыта';if(s.year<n.year)return `Доступно с ${n.year} года`;
+ const n=technologyNode(id);if(!n)return 'Неизвестная технология';if(hasTechnology(c,id))return 'Технология уже открыта';const year=technologyAvailableYear(id);if(s.year<year)return `Доступно с ${year} года`;
  if(n.prerequisites.some(p=>!hasTechnology(c,p)))return 'Сначала откройте обязательные предшественники';if(n.legacy&&(c.technologies?.[n.legacy]??0)+1!==n.level)return 'Нужен следующий уровень направления';return null;
 }
 export function namedResearchQuote(s:GameState,c:Country,id:string){const n=technologyNode(id);let reason=technologyRequirements(s,c,id);if(!reason&&(!s.dataset||!['running','paused'].includes(s.phase)||!c.provinceIds?.length))reason='Нужна начатая кампания';if(!reason&&n?.institution&&!s.provinces.some(p=>p.ownerId===c.id&&(p.controllerId??p.ownerId)===c.id&&(p.buildings?.[n.institution!]??0)>0))reason='Нужно научное учреждение: '+n.institution; if(!reason&&c.research)reason='Исследование уже идёт';if(!reason&&s.tick<(c.bankruptcyUntilTick??0))reason='Исследования приостановлены после банкротства';if(!reason&&!Number.isSafeInteger(s.tick+n!.months))reason='Research date overflow';if(!reason&&c.treasury<n!.cost)reason='Недостаточно средств';return {cost:n?.cost??0,months:n?.months??0,reason};}
