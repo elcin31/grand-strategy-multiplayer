@@ -1,3 +1,4 @@
+import {CURRENT_STATE_VERSION} from '../supabase/functions/_shared/stateMigrations';
 import {mkdirSync,writeFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {join} from 'node:path';
@@ -20,7 +21,7 @@ for(const command of [
   {type:'START_GAME',playerId:'camera-host'},
   {type:'SET_SPEED',playerId:'camera-host',speed:0},
 ] satisfies GameCommand[])state=applyServerCommand(state,command,'camera-host');
-assert.equal(state.stateVersion,25);assert.equal(state.phase,'paused');
+assert.equal(state.stateVersion,CURRENT_STATE_VERSION);assert.equal(state.phase,'paused');
 const manifest:Record<string,unknown>={};
 function save(name:string){
   const saved=JSON.parse(encodeCampaign(state,1,'Camera 2.3 QA · '+name));saved.metadata.lastPlayed=0;

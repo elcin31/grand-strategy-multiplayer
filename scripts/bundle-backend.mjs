@@ -14,12 +14,13 @@ for(const name of ['game-room','game-command']){
   const outfile=resolve(root,name,'index.js');
   await mkdir(resolve(root,name),{recursive:true});
   await build({entryPoints:[`supabase/functions/${name}/index.ts`],outfile,bundle:true,
-    platform:'neutral',format:'esm',target:'es2022',external:['npm:*','jsr:*'],metafile:true});
+    platform:'neutral',format:'esm',target:'es2022',minify:true,charset:'utf8',external:['npm:*','jsr:*'],metafile:true});
   const bytes=await readFile(outfile);
   functions.push({name,entrypoint:'index.js',verifyJwt:false,bytes:bytes.length,
     sha256:createHash('sha256').update(bytes).digest('hex')});
 }
 const manifest={projectId:'dfjsnjxnyjspwugjguhq',sourceHead,workingTreeClean,
+  build:{minify:true,charset:'utf8',target:'es2022'},
   note:'Build only. Existing custom player-session authentication, CAS and receipts retained. No deployment performed.',functions};
 await writeFile(resolve(root,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
 console.log(JSON.stringify(manifest,null,2));

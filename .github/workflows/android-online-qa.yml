@@ -46,7 +46,18 @@ jobs:
           candidate_sha=$(python -c "import json;print(json.load(open('candidate-run.json'))['head_sha'])")
           [[ "$candidate_sha" =~ ^[0-9a-f]{40}$ ]]
           git diff --exit-code "$candidate_sha" HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json src supabase/functions plugins assets
-          python -c "import json;j=json.load(open('candidate-jobs.json'))['jobs'];assert all(next(x for x in j if x['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])"
+          python - <<'PY'
+          import json,os
+          jobs=json.load(open('candidate-jobs.json'))['jobs']
+          candidate=next((j for j in jobs if j['name']=='build-candidate'),None)
+          if candidate:
+              assert candidate['conclusion']=='success'
+              artifact='dominion23-performance-candidate';suffix='-v23'
+          else:
+              assert all(next(j for j in jobs if j['name']==n)['conclusion']=='success' for n in ['build-apk','long-simulation'])
+              artifact='dominion-camera-illustrated-release';suffix=''
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:out.write('artifact='+artifact+'\nsuffix='+suffix+'\n')
+          PY
           echo "run_id=$APK_RUN_ID" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-node@v4
         with:
@@ -61,7 +72,7 @@ jobs:
       - run: python -m unittest discover -s tests -p 'native_online_validation_test.py'
       - uses: actions/download-artifact@v4
         with:
-          name: dominion-camera-illustrated-release
+          name: ${{ steps.source.outputs.artifact }}
           run-id: ${{ steps.source.outputs.run_id }}
           github-token: ${{ github.token }}
           path: candidate-apk
@@ -80,6 +91,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Actual native online create, ownership and SecureStore return
+        env: {DOMINION_QA_ENDPOINT_SUFFIX: '${{ steps.source.outputs.suffix }}'}
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35

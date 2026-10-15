@@ -7,11 +7,12 @@ import json,math,sys
 from pathlib import Path
 from camera23_motion_scope import motion_presentation,POLICY
 
+ACCEPTED_CAMERA='7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764'
 BASELINE='a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb'
 SCENARIOS=['A-horizontal-pan','B-rapid-zoom-in','C-rapid-zoom-out','D-pinch-pan','E-lod-transitions','F-terrain','G-war-armies','H-active-simulation','I-extended-0','I-extended-11']
 
 def compare(before,after,root_before,root_after):
-    assert before['apkSha256']==BASELINE,'Wrong optimized baseline APK'
+    assert before['apkSha256'] in (BASELINE,ACCEPTED_CAMERA),'Wrong optimized baseline APK'
     assert before['fixtures']==after['fixtures'],'Different initial gameplay fixtures'
     for key in ['preset','adaptive','overlay','inputProtocol']:
         assert before[key]==after[key],key+' differs'

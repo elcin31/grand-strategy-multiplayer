@@ -2,7 +2,7 @@
   "expo": {
     "name": "Dominion",
     "slug": "grand-strategy-multiplayer",
-    "version": "2.3.0-dev.13",
+    "version": "2.3.0-playtest.1",
     "orientation": "landscape",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
@@ -12,7 +12,7 @@
         "foregroundImage": "./assets/icon/dominion-adaptive-foreground.png",
         "backgroundColor": "#0B2030"
       },
-      "versionCode": 28,
+      "versionCode": 29,
       "icon": "./assets/icon/dominion.png"
     },
     "plugins": [

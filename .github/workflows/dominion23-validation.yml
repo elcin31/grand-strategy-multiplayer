@@ -5,6 +5,10 @@ on:
     paths: [.github/workflows/dominion23-validation.yml]
   workflow_dispatch:
     inputs:
+      baseline_apk_run_id:
+        description: Accepted camera-only baseline build; empty uses the published hotfix
+        type: string
+        default: '38575813534'
       apk_run_id:
         description: Run containing the verified performance candidate APK
         required: true
@@ -46,17 +50,15 @@ jobs:
           run-id: '${{ inputs.apk_run_id }}'
           github-token: '${{ github.token }}'
       - run: npm ci --include=dev --no-audit --no-fund
-      - run: node --import tsx scripts/make-camera23-fixture.ts camera23-monthly-fixture --monthly
       - run: python -m pip install -r scripts/camera-profile-requirements.txt -r scripts/camera-trace-requirements.txt
       - name: Check the downloaded binary again; prepare original and new real-pointer drivers
-        env: {GH_TOKEN: '${{ github.token }}'}
+        env: {GH_TOKEN: '${{ github.token }}', BASELINE_RUN: '${{ inputs.baseline_apk_run_id }}'}
         run: |
           python scripts/verify-apk.py Dominion-2.3-performance-candidate.apk
           python scripts/verify-release.py Dominion-2.3-performance-candidate.apk > candidate-integrity.txt
           python scripts/verify-immutable-borders-apk.py Dominion-2.3-performance-candidate.apk >> candidate-integrity.txt
           python scripts/verify-ui-dispatch-apk.py Dominion-2.3-performance-candidate.apk >> candidate-integrity.txt
-          gh release download v2.2.1-performance-hotfix -R elcin31/grand-strategy-multiplayer -D baseline-apk -p Dominion-2.2.1-performance-hotfix.apk
-          echo 'a44c54b3fcbe31dd7c23d5fea13782244436a6e47a7fa3ddf50be1204e846cbb  baseline-apk/Dominion-2.2.1-performance-hotfix.apk' | sha256sum --check
+          bash scripts/prepare-camera23-baseline.sh "$BASELINE_RUN" camera23-monthly-fixture
           for driver in CameraGesture CameraGesture23; do
             mkdir -p "$driver-classes" "$driver-dex"
             javac -cp "$ANDROID_HOME/platforms/android-35/android.jar" -d "$driver-classes" "scripts/$driver.java"
