@@ -1,0 +1,14 @@
+{
+  "status": "failed; not a 10000-step acceptance",
+  "sourceSha": "7805ad0",
+  "failedStep": 1840,
+  "completedStrictSaveRestoreSteps": [
+    1000
+  ],
+  "error": "Invalid diplomatic event",
+  "cause": "monthlyGeopolitics can create an eight-member coalition; initializeDiplomacy2 still limited history participants to six.",
+  "resolution": "History supports up to the existing 300-country state bound. Each participant must exist; IDs remain unique, text and history stay bounded. A full eight-country coalition roundtrip is tested.",
+  "logSha256": "e46b4df7878f402ecaf58dfd3fcfe1a1f15efe5bd3131917d7267fbd7f131f03",
+  "checkpointSha256": "7ca6ff61404c20bd1eee7965ce1e21eead9ade391e250a19fee6bad942f0a957",
+  "requiresRepeat": true
+}

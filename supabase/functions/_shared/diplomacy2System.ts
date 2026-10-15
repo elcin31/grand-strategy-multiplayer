@@ -38,7 +38,9 @@ function pay(c:Country,amount:number,pp:number):void {
   c.treasury=money(c.treasury-amount);c.politicalPower!-=pp;
 }
 export function logDiplomacy(s:GameState,countries:string[],kind:string,message:string):void {
-  s.diplomaticHistory!.unshift({id:nextId(s,'diplomacy-event'),tick:s.tick,countries:[...new Set(countries)],kind,message});
+  const participants=[...new Set(countries)];
+  if(!participants.length||participants.length>300||participants.some(id=>!Object.hasOwn(s.countries,id)))throw Error('Invalid diplomatic event participants');
+  s.diplomaticHistory!.unshift({id:nextId(s,'diplomacy-event'),tick:s.tick,countries:participants,kind:kind.slice(0,40),message:message.slice(0,300)});
   s.diplomaticHistory!.length=Math.min(s.diplomaticHistory!.length,RULES.historyLimit);
 }
 export function relationChange(s:GameState,a:string,b:string,key:string,label:string,delta:number):void {
@@ -389,7 +391,7 @@ export function initializeDiplomacy2(s:GameState,migrate:boolean):void {
   for(const o of s.diplomaticOffers){id(o.id);nation(o.from);nation(o.to);assertDiplomaticTerms(o.terms,Object.keys(s.countries));const members=offerMembers(o.from,o.to,o.terms),key=o.from+'|'+o.to;if(o.from===o.to||pendingPairs.has(key)||o.terms.kind==='Summit'&&(!members.includes(o.from)||!members.includes(o.to))||!tick(o.startedTick)||o.startedTick>s.tick||!tick(o.expiresTick)||o.expiresTick<=o.startedTick||o.expiresTick-o.startedTick>RULES.proposalMonths||!Array.isArray(o.acceptedBy)||new Set(o.acceptedBy).size!==o.acceptedBy.length||!o.acceptedBy.includes(o.from)||o.acceptedBy.some(a=>!members.includes(a))||members.every(m=>o.acceptedBy.includes(m)))throw Error('Invalid diplomatic offer');pendingPairs.add(key);}
   const unionMembers=new Set<string>();
   for(const u of s.politicalUnions){id(u.id);if(!Array.isArray(u.members)||u.members.length<2||u.members.length>6||new Set(u.members).size!==u.members.length||!u.members.includes(u.leaderId)||!tick(u.startedTick)||u.startedTick>s.tick)throw Error('Invalid political union');for(const n of u.members){nation(n);if(unionMembers.has(n))throw Error('Conflicting political unions');unionMembers.add(n);}}
-  for(const e of s.diplomaticHistory){id(e.id);if(!tick(e.tick)||e.tick>s.tick||!Array.isArray(e.countries)||!e.countries.length||e.countries.length>6||new Set(e.countries).size!==e.countries.length||typeof e.kind!=='string'||e.kind.length>40||typeof e.message!=='string'||e.message.length>300)throw Error('Invalid diplomatic event');for(const n of e.countries)nation(n);}
+  for(const e of s.diplomaticHistory){id(e.id);if(!tick(e.tick)||e.tick>s.tick||!Array.isArray(e.countries)||!e.countries.length||e.countries.length>300||new Set(e.countries).size!==e.countries.length||typeof e.kind!=='string'||e.kind.length>40||typeof e.message!=='string'||e.message.length>300)throw Error('Invalid diplomatic event');for(const n of e.countries)nation(n);}
   for(const l of Object.values(s.diplomacy!)){
     if(migrate){l.baselineRelation??=l.relation;l.trust??=50;l.reasons??=[];l.cooldowns??={};l.guaranteeUntil??={};l.withdrawals??=[];
       l.terms??=[];for(const type of l.treaties)if(!l.terms.some(t=>t.type===type))l.terms.push({id:nextId(s,'legacy-treaty'),type,from:l.a,to:l.b,startedTick:s.tick,untilTick:futureTick(s,RULES.treatyMonths)});
