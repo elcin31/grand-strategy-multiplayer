@@ -1,0 +1,191 @@
+{
+  "diagnosticOnly": true,
+  "comparisonKind": "partial-identical-apk-control",
+  "runId": 38845941790,
+  "apkSha256": "7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764",
+  "presentationScope": "device-first-down-to-final-up-plus100ms-v1",
+  "completedPairs": 8,
+  "fullMatrixComplete": false,
+  "acceptanceGateEvaluated": false,
+  "incompleteCause": "Device offline during a read-only save pull after H; no I pair. Original failure preserved.",
+  "adverseTailsOver10Percent": [
+    {
+      "scenario": "B-rapid-zoom-in",
+      "metric": "p95Ms",
+      "ratio": 1.2980233469645324
+    },
+    {
+      "scenario": "B-rapid-zoom-in",
+      "metric": "p99Ms",
+      "ratio": 1.2030196794656622
+    },
+    {
+      "scenario": "D-pinch-pan",
+      "metric": "p95Ms",
+      "ratio": 1.191045460819121
+    }
+  ],
+  "results": [
+    {
+      "scenario": "A-horizontal-pan",
+      "before": {
+        "frames": 118,
+        "p50Ms": 98.404584,
+        "p95Ms": 179.339148,
+        "p99Ms": 184.087797
+      },
+      "after": {
+        "frames": 122,
+        "p50Ms": 95.179516,
+        "p95Ms": 167.64032,
+        "p99Ms": 186.370029
+      },
+      "ratios": {
+        "p50Ms": 0.9672264454672153,
+        "p95Ms": 0.9347670147289872,
+        "p99Ms": 1.0123975192119876
+      }
+    },
+    {
+      "scenario": "B-rapid-zoom-in",
+      "before": {
+        "frames": 32,
+        "p50Ms": 112.586238,
+        "p95Ms": 205.786495,
+        "p99Ms": 226.137644
+      },
+      "after": {
+        "frames": 32,
+        "p50Ms": 102.263965,
+        "p95Ms": 267.115675,
+        "p99Ms": 272.048036
+      },
+      "ratios": {
+        "p50Ms": 0.9083167429397544,
+        "p95Ms": 1.2980233469645324,
+        "p99Ms": 1.2030196794656622
+      }
+    },
+    {
+      "scenario": "C-rapid-zoom-out",
+      "before": {
+        "frames": 31,
+        "p50Ms": 113.908752,
+        "p95Ms": 226.93354,
+        "p99Ms": 233.044549
+      },
+      "after": {
+        "frames": 34,
+        "p50Ms": 101.280472,
+        "p95Ms": 181.290615,
+        "p99Ms": 215.267628
+      },
+      "ratios": {
+        "p50Ms": 0.8891368768573639,
+        "p95Ms": 0.7988709601938965,
+        "p99Ms": 0.9237187864883294
+      }
+    },
+    {
+      "scenario": "D-pinch-pan",
+      "before": {
+        "frames": 101,
+        "p50Ms": 112.908551,
+        "p95Ms": 163.627672,
+        "p99Ms": 208.802745
+      },
+      "after": {
+        "frames": 101,
+        "p50Ms": 113.978113,
+        "p95Ms": 194.887996,
+        "p99Ms": 228.357122
+      },
+      "ratios": {
+        "p50Ms": 1.009472816633702,
+        "p95Ms": 1.191045460819121,
+        "p99Ms": 1.0936499996683473
+      }
+    },
+    {
+      "scenario": "E-lod-transitions",
+      "before": {
+        "frames": 98,
+        "p50Ms": 112.639718,
+        "p95Ms": 183.890156,
+        "p99Ms": 424.032885
+      },
+      "after": {
+        "frames": 96,
+        "p50Ms": 116.488612,
+        "p95Ms": 182.641461,
+        "p99Ms": 288.013177
+      },
+      "ratios": {
+        "p50Ms": 1.034169954154182,
+        "p95Ms": 0.9932095603856033,
+        "p99Ms": 0.6792236809652157
+      }
+    },
+    {
+      "scenario": "F-terrain",
+      "before": {
+        "frames": 109,
+        "p50Ms": 101.199283,
+        "p95Ms": 198.531597,
+        "p99Ms": 223.596758
+      },
+      "after": {
+        "frames": 108,
+        "p50Ms": 103.946793,
+        "p95Ms": 167.675707,
+        "p99Ms": 198.228433
+      },
+      "ratios": {
+        "p50Ms": 1.027149500654071,
+        "p95Ms": 0.844579449990522,
+        "p99Ms": 0.8865443075878586
+      }
+    },
+    {
+      "scenario": "G-war-armies",
+      "before": {
+        "frames": 93,
+        "p50Ms": 117.461133,
+        "p95Ms": 193.408691,
+        "p99Ms": 541.585827
+      },
+      "after": {
+        "frames": 90,
+        "p50Ms": 121.894723,
+        "p95Ms": 211.040054,
+        "p99Ms": 570.571346
+      },
+      "ratios": {
+        "p50Ms": 1.037745166309608,
+        "p95Ms": 1.0911611722763792,
+        "p99Ms": 1.0535197147985926
+      }
+    },
+    {
+      "scenario": "H-active-simulation",
+      "before": {
+        "frames": 93,
+        "p50Ms": 125.071185,
+        "p95Ms": 210.605081,
+        "p99Ms": 277.919708
+      },
+      "after": {
+        "frames": 93,
+        "p50Ms": 126.027548,
+        "p95Ms": 190.977965,
+        "p99Ms": 250.608213
+      },
+      "ratios": {
+        "p50Ms": 1.0076465494430231,
+        "p95Ms": 0.9068060660891653,
+        "p99Ms": 0.9017288295366228
+      }
+    }
+  ],
+  "note": "These are actual completed presentations of identical APK bytes, not an acceptance test of a changed binary. A complete new control is running."
+}
