@@ -1,5 +1,5 @@
 {
-  "status": "source-and-daily10000-passed-final-gates-running",
+  "status": "source-and-both-long10000-and-live-http-passed-final-native-candidate-pending",
   "fullSource": {
     "sourceSha": "65a58fa51e5dfde6b9c6ba83c446fd4b478a6db2",
     "sourceWorkingTreeClean": true,
@@ -30,12 +30,12 @@
     "runId": 38846118396,
     "sourceSha": "7409ac86b2cd9347fe54c6287f208d89affc190e",
     "sourceRegressionArtifactId": 12023621068,
-    "status": "Standalone compilation and complete source/content gates passed; final native and monthly10000 checks are running."
+    "status": "Playtest2 standalone/source/content passed; playtest3 UI-only build is running."
   },
   "limitations": [
-    "Candidate2 daily10000 passed with ten exact restores; monthly10000 remains in progress.",
-    "Candidate1 failed native comparison is retained; candidate2 native regression and frozen APK checks are running.",
-    "Live version2 HTTP multiplayer QA is running; no physical Redmi benchmark."
+    "Playtest2 daily10000 and monthly10000 passed with ten exact restores each. Playtest3 repeats both on its exact source.",
+    "Playtest2 native comparison failed three tails; original full report retained. Playtest3 and a complete identical-APK control are running.",
+    "Three-client live HTTP QA passed on backend version2. Native online reconnect must still pass; no physical Redmi benchmark."
   ],
   "fullSourceNode22": {
     "sourceSha": "7409ac86b2cd9347fe54c6287f208d89affc190e",
@@ -49,5 +49,10 @@
     "logSha256": "78a9adca6d82a430da2467811e57334ec0d651cca5ecb833c10b0eaefd2c38b2",
     "typecheck": true,
     "contentValidation": true
-  }
+  },
+  "longSimulationReports": {
+    "daily": "DOMINION_23_PLAYTEST2_DAILY_10000.json",
+    "monthly": "DOMINION_23_PLAYTEST2_MONTHLY_10000.json"
+  },
+  "liveHttpProof": "DOMINION_23_LIVE_MULTIPLAYER_QA.json"
 }
