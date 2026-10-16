@@ -10,7 +10,7 @@ from android_fixture import root_test_device,label_test_fixture
 from android_campaign_pull import copy_campaign_saves
 from map_paint_check import assert_map_painted
 OUT=Path('android23-gameplay');OUT.mkdir(exist_ok=True);h.OUT=OUT
-fixture=Path(sys.argv[2]);manifest=json.loads((fixture/'manifest.json').read_text());campaign='gameplay23-qa';checks=[]
+fixture=Path(sys.argv[2]);manifest=json.loads((fixture/'manifest.json').read_text());campaign='gameplay23-qa';checks=[];last_generation=1
 def text_present(value,name):
     assert any(value in n.get('text','') or value in n.get('content-desc','') for n in h.root(name).iter('node')),name
 
@@ -32,14 +32,24 @@ def event_option(label):
         h.adb('shell','input','swipe',x,int(box[1]+height*.82),x,int(box[1]+height*.22),350);time.sleep(.5)
     raise AssertionError('Missing actual event option Pressable')
 
-def state(name):
-    h.control('Сохранить кампанию','save-'+name);time.sleep(2)
-    destination=OUT/('saved-'+name);copy_campaign_saves(h.adb,h.PACKAGE,destination,OUT/('copy-'+name+'.json'))
-    saves=[]
-    for f in destination.glob(campaign+'.*.json'):
-        match=re.fullmatch(re.escape(campaign)+r'\.(\d+)\.json',f.name)
-        if match:saves.append((int(match[1]),json.loads(f.read_text())['state']))
-    assert saves,'No actual saved candidate campaign';return max(saves,key=lambda item:item[0])[1]
+def state(name,expected):
+    global last_generation
+    h.control('Сохранить кампанию','save-'+name)
+    # A foreground save first flushes older deferred autosaves. Require a NEW
+    # durable generation containing the requested outcome, not whichever older
+    # generation happened to finish within an arbitrary2s delay.
+    destination=OUT/('saved-'+name);deadline=time.monotonic()+35;attempt=0
+    while time.monotonic()<deadline:
+        copy_campaign_saves(h.adb,h.PACKAGE,destination,OUT/('copy-'+name+'-'+str(attempt)+'.json'));attempt+=1
+        saves=[]
+        for f in destination.glob(campaign+'.*.json'):
+            match=re.fullmatch(re.escape(campaign)+r'\.(\d+)\.json',f.name)
+            if match:saves.append((int(match[1]),json.loads(f.read_text())['state']))
+        assert saves,'No actual saved candidate campaign'
+        generation,current=max(saves,key=lambda item:item[0])
+        if generation>last_generation and expected(current):last_generation=generation;return current
+        time.sleep(1)
+    raise AssertionError('New durable save did not contain the acknowledged outcome: '+name)
 try:
     root_test_device(h.adb,OUT/'device.txt');assert 'sdk' in h.adb('shell','getprop','ro.product.name')
     h.adb('install','-r',sys.argv[1]);h.adb('shell','pm','clear',h.PACKAGE)
@@ -53,7 +63,7 @@ try:
     h.navigation('Раздел Нац. курс','focus',direction='down');h.control('Игровые события','events');time.sleep(1)
     text_present('Совместные мастерские пакта','event-title');h.capture('event-options');event_option('Принять совместную программу');time.sleep(1)
     text_present('НЕДАВНИЕ РЕШЕНИЯ','resolved-event');h.capture('event-resolved');h.control('Закрыть окно','close-event')
-    event_state=state('event');country=event_state['countries']['germany']
+    event_state=state('event',lambda s:'alt-shared-workshops' in s['countries']['germany']['eventUnlockedFocuses']);country=event_state['countries']['germany']
     assert country['eventUnlockedFocuses'].count('alt-shared-workshops')==1
     assert round(manifest['initialTreasury']-country['treasury'],3)==80 and manifest['initialPoliticalPower']-country['politicalPower']==10
     assert sum(e['eventId']=='alt-rhine-workshops' and e['countryId']=='germany' for e in event_state['events']['history'])==1
@@ -65,18 +75,18 @@ try:
     h.control('Закрыть окно','close-chronicle-country');checks.append('event in filtered world chronicle opens the actual country window and focuses its capital')
     h.navigation('Раздел Экономика','economy');h.control('ПРОГНОЗ · 6 МЕСЯЦЕВ','forecast',scroll=True,tap_control=False);text_present('ПРОГНОЗ · 6 МЕСЯЦЕВ','forecast-visible');h.capture('forecast')
     h.control('Автоматическое строительство','enable-automation',True);time.sleep(1);h.control('Закрыть окно','close-economy')
-    enabled=state('automation-enabled');assert enabled['countries']['germany']['stockpile']['autoBuild'] is True
+    enabled=state('automation-enabled',lambda s:s['countries']['germany']['stockpile']['autoBuild'] is True);assert enabled['countries']['germany']['stockpile']['autoBuild'] is True
     h.navigation('Раздел Экономика','economy-disable');h.control('Автоматическое строительство','disable-automation',True);time.sleep(1);h.control('Закрыть окно','close-economy-disable');checks.append('actual conditional economic forecast and saved opt-in automation toggle')
     h.navigation('Раздел Нац. курс','politics',direction='down');h.control('Особенности и решения','political-groups',True)
     for label in ['Военные','Промышленники','Региональные элиты','Гражданские движения','Государственная администрация']:text_present(label,'group-'+label)
     h.capture('political-groups');h.control('Фокусы (125)','focus-tree',True)
     h.control('Курс: '+manifest['focusName'],'select-course',True);h.control('Взять курс: '+manifest['focusName'],'start-course',True);time.sleep(1)
     h.capture('paid-focus');h.adb('shell','input','keyevent','4');time.sleep(1)
-    before=state('before-restart');c=before['countries']['germany'];assert c['nationalFocus']['focusId']=='eco-audit' and c['nationalFocus']['progress']==0
+    before=state('before-restart',lambda s:s['countries']['germany'].get('nationalFocus',{}).get('focusId')=='eco-audit' and s['countries']['germany']['stockpile']['autoBuild'] is False);c=before['countries']['germany'];assert c['nationalFocus']['focusId']=='eco-audit' and c['nationalFocus']['progress']==0
     assert c['stockpile']['autoBuild'] is False;assert round(country['treasury']-c['treasury'],3)==220
     checks.append('five political groups, original focus tree, paid course and Android Back')
     h.launch();h.control('Продолжить','restart-continue');time.sleep(12)
-    after=state('after-restart');assert before==after,'Significant paused state changed across actual process restart'
+    after=state('after-restart',lambda s:s==before);assert before==after,'Significant paused state changed across actual process restart'
     h.control('Приблизить','camera-after-windows');h.capture('camera-after-windows');assert_map_painted(OUT/'camera-after-windows.png')
     logs=h.adb('logcat','-d');(OUT/'final-logcat.txt').write_text(logs);assert_no_game_fatal(logs,h.adb('shell','pidof',h.PACKAGE).strip())
     assert not re.search(r'TypeError:|ReferenceError:|JavascriptException|Dominion map preparation failed',logs)
