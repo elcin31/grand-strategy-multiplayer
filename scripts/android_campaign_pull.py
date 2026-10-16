@@ -42,6 +42,15 @@ def copy_campaign_saves(adb,package,destination,diagnostic):
             output=error.output.decode(errors='replace') if isinstance(error.output,bytes) else str(error.output or '')
             record.update(success=False,errorOutput=output,errorCommand=[str(x) for x in error.cmd]);persist()
             offline='device offline' in output
+            if not output and len(error.cmd)>1 and str(error.cmd[1])=='pull':
+                # Some SDK adb builds print the daemon's offline error outside
+                # the pull subprocess output. Require an explicit transport
+                # observation; an empty unknown error is never enough.
+                try:transport=adb('get-state',timeout=10).strip()
+                except subprocess.CalledProcessError as probe:
+                    transport=probe.output.decode(errors='replace') if isinstance(probe.output,bytes) else str(probe.output or '')
+                record['transportProbe']=transport;persist()
+                offline=transport=='offline' or 'device offline' in transport
             generation_rotated='No such file or directory' in output and 'remote' in output and '.json' in output
             if attempt==2 or not(offline or generation_rotated):raise
             if offline:adb('wait-for-device',timeout=30)

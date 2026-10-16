@@ -22,10 +22,11 @@ class CampaignCopyTest(unittest.TestCase):
             if args[0]=='pull':
                 pulls+=1
                 if fail and (pulls==1 or fail=='persistent'):
-                    text='device offline' if fail=='offline' else 'permission denied' if fail=='permission' else 'remote open failed: No such file or directory: camera23-war.1.json'
+                    text='' if fail.startswith('silent-') else 'device offline' if fail=='offline' else 'permission denied' if fail=='permission' else 'remote open failed: No such file or directory: camera23-war.1.json'
                     raise subprocess.CalledProcessError(1,['adb',*args],output=text)
                 Path(args[2]).write_text('{"state":{"simulationDay":5}}');return '1 file pulled'
             if args[0]=='wait-for-device':return ''
+            if args[0]=='get-state':return 'offline' if fail=='silent-offline' else 'device'
             raise AssertionError(args)
         return run
 
@@ -47,11 +48,21 @@ class CampaignCopyTest(unittest.TestCase):
                 self.assertEqual(len(attempts),2);self.assertFalse(attempts[0]['success']);self.assertTrue(attempts[1]['success'])
 
     def test_unrecognized_error_or_restarted_app_does_not_get_accepted(self):
-        for mode,pid,error in [('permission',None,subprocess.CalledProcessError),('offline','9000',AssertionError),('persistent',None,subprocess.CalledProcessError)]:
+        for mode,pid,error in [('permission',None,subprocess.CalledProcessError),('offline','9000',AssertionError),('persistent',None,subprocess.CalledProcessError),('silent-online',None,subprocess.CalledProcessError),('silent-offline','9000',AssertionError)]:
             with self.subTest(mode=mode),tempfile.TemporaryDirectory() as directory,patch('android_campaign_pull.time.sleep'):
                 root=Path(directory)
                 with self.assertRaises(error):copy_campaign_saves(self.adb([],mode,pid),PACKAGE,root/'saves',root/'proof.json')
                 attempts=json.loads((root/'proof.json').read_text())['attempts']
                 self.assertFalse(any(a.get('success') for a in attempts));self.assertLessEqual(len(attempts),3)
+
+    def test_empty_pull_error_retries_only_when_get_state_confirms_offline(self):
+        with tempfile.TemporaryDirectory() as directory,patch('android_campaign_pull.time.sleep'):
+            root=Path(directory);calls=[]
+            copy_campaign_saves(self.adb(calls,'silent-offline'),PACKAGE,root/'saves',root/'proof.json')
+            attempts=json.loads((root/'proof.json').read_text())['attempts']
+            self.assertEqual(attempts[0]['errorOutput'],'')
+            self.assertEqual(attempts[0]['transportProbe'],'offline')
+            self.assertTrue(attempts[1]['success'])
+            self.assertEqual(sum(c[0]=='wait-for-device' for c in calls),1)
 
 if __name__=='__main__':unittest.main()
