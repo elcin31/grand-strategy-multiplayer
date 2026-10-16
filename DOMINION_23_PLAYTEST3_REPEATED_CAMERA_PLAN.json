@@ -1,0 +1,17 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "specifiedAtUtc": "2026-10-16T09:00:43Z",
+  "compiledSourceSha": "39abbafb3126d519f85c1d84a8bd66d411205a6b",
+  "candidateApkSha256": "756c496e9f0f9a3759bc51014db148a3240d092002cf16e7256f89cf888a9de2",
+  "baselineApkSha256": "7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764",
+  "pairs": [
+    {"runId": 38873734496, "directory": "matrix-build"},
+    {"runId": 38876284394, "directory": "matrix-repeat1"},
+    {"runId": 38877512489, "directory": "matrix-repeat2"}
+  ],
+  "tailRatioLimit": 1.1,
+  "memoryLimitKiB": 32768,
+  "method": "Pool every valid input-scoped presentation interval from all three complete pairs, separately for each scenario and APK. No between-run interval, smoothing, outlier deletion, or best-run selection. Retain original per-pair comparisons. Each pair must also satisfy the existing memory bound.",
+  "reason": "Eight completed identical-APK pairs in38845941790 show P95 variation up to29.8%; that control stopped after H due to ADB loss. Prespecified repeated sampling addresses this measured software-emulator variability without changing tail or memory limits.",
+  "physicalRedmiTest": false
+}
