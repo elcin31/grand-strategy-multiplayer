@@ -30,6 +30,18 @@ class ReleaseZipTest(unittest.TestCase):
                     'package': 'com.elcin31.grandstrategymultiplayer',
                     'certificateSha256': 'fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c'},
         }
+        values = {
+            'cameraNativeRegression': {'metricGate': 'pass', 'regressionsOver10Percent': [], 'comparisonKind': 'candidate-vs-optimized-baseline', 'candidateApkSha256': manifest['apk']['sha256'], 'baselineApkSha256': '7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764', 'memoryRegressionOver32MiB': False},
+            'daily10000': {'mode': 'daily', 'steps': 10000, 'restores': 10, 'sourceClean': True, 'sourceSha': 'a' * 40},
+            'monthly10000': {'mode': 'monthly', 'steps': 10000, 'restores': 10, 'sourceClean': True, 'sourceSha': 'a' * 40},
+            'newGameplayOnAndroid': {'passed': True, 'apkSha256': manifest['apk']['sha256']},
+            'multiplayerNative': {'apkSha256': manifest['apk']['sha256'], 'members': 2, **{key: True for key in ['nativeCreate', 'menuReconnect', 'processReconnect', 'realHostMigration', 'nativeOwnerReturn', 'rebootReconnect', 'sameNativeUidAndSessionKeys', 'onceOnlyFocusPaymentRetained']}},
+            'multiplayerRealHttp': {'passed': True, 'projectId': 'dfjsnjxnyjspwugjguhq', 'realHttpClients': 3, 'qaCleanup': {'completed': True, 'remainingRooms': 0, 'remainingPlayers': 0, 'remainingReceipts': 0}},
+        }
+        for key, value in values.items():
+            path = payload / 'reports' / (key + '.json')
+            path.write_text(json.dumps(value))
+            manifest['proofs'][key] = {'path': 'reports/' + path.name, 'sha256': release.sha256(path)}
         (payload / 'MANIFEST.json').write_text(json.dumps(manifest))
         return payload, manifest
 
@@ -72,3 +84,16 @@ class ReleaseZipTest(unittest.TestCase):
                 with self.assertRaises(AssertionError):
                     release.package(payload, root / 'failed.zip')
                 self.assertFalse((root / 'failed.zip').exists())
+
+    def test_real_rejected_camera_cannot_be_overridden_by_a_green_summary(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            payload, manifest = self.fixture(root)
+            report = Path(__file__).parents[1] / 'DOMINION_23_PLAYTEST2_CAMERA_REJECTED.json'
+            destination = payload / manifest['proofs']['cameraNativeRegression']['path']
+            destination.write_bytes(report.read_bytes())
+            manifest['proofs']['cameraNativeRegression']['sha256'] = release.sha256(destination)
+            (payload / 'MANIFEST.json').write_text(json.dumps(manifest))
+            with self.assertRaises(AssertionError):
+                release.package(payload, root / 'failed.zip')
+            self.assertFalse((root / 'failed.zip').exists())

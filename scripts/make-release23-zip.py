@@ -57,6 +57,29 @@ def package(payload, destination):
         assert not path.is_absolute() and '..' not in path.parts
         assert str(path).startswith('reports/')
         assert sha256(payload / path) == proof['sha256'], 'Proof digest mismatch: ' + name
+    def result(name):
+        return json.loads((payload / proofs[name]['path']).read_text())
+    # A hand-written summary cannot override a rejected native matrix or a
+    # partial long simulation. Check those original proof contents as well.
+    camera = result('cameraNativeRegression')
+    assert camera['metricGate'] == 'pass' and camera['regressionsOver10Percent'] == []
+    assert camera['comparisonKind'] == 'candidate-vs-optimized-baseline'
+    assert camera['candidateApkSha256'] == apk['sha256']
+    assert camera['baselineApkSha256'] == '7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764'
+    assert camera['memoryRegressionOver32MiB'] is False
+    for name, mode in [('daily10000', 'daily'), ('monthly10000', 'monthly')]:
+        simulation = result(name)
+        assert simulation['mode'] == mode and simulation['steps'] >= 10000 and simulation['restores'] >= 10
+        assert simulation['sourceClean'] is True and simulation['sourceSha'] == manifest['compiledSourceSha']
+    gameplay = result('newGameplayOnAndroid')
+    assert gameplay['passed'] is True and gameplay['apkSha256'] == apk['sha256']
+    online = result('multiplayerNative')
+    assert online['apkSha256'] == apk['sha256'] and online['members'] >= 2
+    assert all(online[name] is True for name in ['nativeCreate', 'menuReconnect', 'processReconnect', 'realHostMigration', 'nativeOwnerReturn', 'rebootReconnect', 'sameNativeUidAndSessionKeys', 'onceOnlyFocusPaymentRetained'])
+    backend = result('multiplayerRealHttp')
+    assert backend['passed'] is True and backend['projectId'] == 'dfjsnjxnyjspwugjguhq' and backend['realHttpClients'] >= 3
+    cleanup = backend['qaCleanup']
+    assert cleanup['completed'] is True and all(cleanup[key] == 0 for key in ['remainingRooms', 'remainingPlayers', 'remainingReceipts'])
     assert (payload / 'README.txt').is_file()
     assert (payload / 'sources/Dominion-source.tar').is_file()
     files = sorted(p for p in payload.rglob('*') if p.is_file())
