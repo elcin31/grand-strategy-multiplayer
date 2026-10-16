@@ -23,7 +23,7 @@ Deno.serve(async req=>{
   const actor=state.players.find(p=>p.id===playerId);if(!actor)return json({error:'Игрок не найден'},401);
   // Reconnect returns exclusive control before applying the authenticated intent.
   actor.aiControlled=false;actor.connected=true;actor.lastSeen=Date.now();
-  const next=applyServerCommand(state,command,playerId);
+  const next=applyServerCommand(state,command,playerId,true);
   const {data:result,error:commitError}=await db.rpc('commit_game_command',{p_room:gameId,p_player:playerId,p_command:commandId,p_hash:hash,p_expected:expectedVersion,p_state:await packRoomState(next)});if(commitError)throw commitError;
   return json({...result,ok:result.status===200},result.status);
  }catch(error){return json({error:error instanceof Error?error.message:'Server error'},error instanceof RequestError?error.status:400);}

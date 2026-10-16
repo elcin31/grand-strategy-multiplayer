@@ -1,4 +1,5 @@
 import type { Leader } from './gameTypes.ts';
+export const AI_PERSONALITIES = ['Defensive','Diplomatic','Expansionist','Economic','Militarist'] as const;
 
 type NamePool = { given: readonly string[]; family: readonly string[] };
 const pools: Record<string, NamePool> = {
@@ -43,6 +44,7 @@ export function generateLeader(countryId: string, campaignSeed: number, region: 
     countryId,
     age: 35 + Math.floor(random() * 44),
     portraitSeed,
+    aiPersonality:AI_PERSONALITIES[portraitSeed%AI_PERSONALITIES.length]!,
     ideology: choose(ideologies),
     traits: [...selectedTraits],
     militarySkill: 20 + Math.floor(random() * 61),

@@ -1,0 +1,29 @@
+{
+  "node": "v24.19.0",
+  "scene": "195 countries,2924 provinces,legal war,six-day catchup from January28 across monthly accounting",
+  "equalResults": true,
+  "defensiveMs": [
+    385.8248759999997,
+    360.8500759999997,
+    349.15117100000043,
+    402.7826620000005,
+    402.0697480000008,
+    381.06229600000006,
+    347.9901380000001
+  ],
+  "normalizedMs": [
+    315.772465,
+    288.3884189999999,
+    263.22866500000055,
+    298.7647100000004,
+    252.49196699999993,
+    257.5657459999993,
+    268.9426659999999
+  ],
+  "medianMs": [
+    381.06229600000006,
+    268.9426659999999
+  ],
+  "improvement": 0.2942291357001642,
+  "note": "Local engine CPU benchmark. Persistence decoding remains mandatory once per authenticated server request; no Android FPS or deployed Edge CPU-limit claim."
+}

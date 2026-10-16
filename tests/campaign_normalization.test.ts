@@ -25,3 +25,15 @@ test('normalizing and saving an active war preserve the last committed simulatio
   normalizeGameState(state);normalizeGameState(state);
   assert.deepEqual(state,refreshed);
 });
+
+test('yearly successor generation is complete before an exact save, without normalization changing any leader',async()=>{
+ const {applyServerCommand}=await import('../supabase/functions/_shared/serverCommand');
+ const {AI_PERSONALITIES}=await import('../supabase/functions/_shared/aiSystem');
+ let state=createWorldState('successor-save','SAVE02','host','QA',91);const before=structuredClone(state);state.phase='running';state.speed=1;state.month=12;state.players[0]!.countryId='usa';
+ for(const leader of Object.values(state.leaders!))leader.age=85;
+ state=applyServerCommand(state,{type:'ADVANCE_TICK'},'host');
+ assert.ok(Object.values(state.countries).every(c=>c.rulerId!==before.countries[c.id]!.rulerId));
+ for(const leader of Object.values(state.leaders!))assert.equal(leader.aiPersonality,AI_PERSONALITIES[leader.portraitSeed%AI_PERSONALITIES.length]);
+ const expected=structuredClone(state);normalizeGameState(state);assert.deepEqual(state,expected);
+ assert.deepEqual(decodeCampaign(encodeCampaign(state,1)).state,expected);
+});

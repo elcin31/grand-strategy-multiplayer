@@ -1,3 +1,5 @@
+import {AI_PERSONALITIES} from './leaderGeneration.ts';
+export {AI_PERSONALITIES} from './leaderGeneration.ts';
 import {setMobilization,setDoctrine,trainCommander,commanderQuote,queuedManpower} from './militaryDevelopment.ts';
 import {createArmyFormation} from './armyFormationSystem.ts';
 import {offerResourceTrade,stock,tradeEfficiency} from './stockpileSystem.ts';
@@ -28,7 +30,6 @@ import { pacifyProvince } from './stabilitySystem.ts';
 import {FOCUS_IDS,FOCUS_NODES,focusBelongsTo} from './focusCatalogue.ts';
 import {focusAvailability,startFocus} from './focusSystem.ts';
 
-export const AI_PERSONALITIES = ['Defensive','Diplomatic','Expansionist','Economic','Militarist'] as const;
 export type AIPersonality = typeof AI_PERSONALITIES[number];
 export function initializeAI(s:GameState):void {
   if(!s.dataset)return;

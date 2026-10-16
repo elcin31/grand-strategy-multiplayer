@@ -12,13 +12,15 @@ export function applyPresence(state:GameState,members:Presence[],now:number):boo
  const host=state.players.find(p=>p.isHost);if(!host||host.aiControlled){const successor=state.players.filter(p=>p.connected).sort((a,b)=>a.id.localeCompare(b.id))[0];if(successor&&successor.id!==host?.id){for(const p of state.players)p.isHost=p.id===successor.id;changed=true;}}
  return changed;
 }
-/** Any authenticated member can drive the server clock. No caller can select tick count or speed. Long offline gaps are bounded. */
-export function pumpClock(state:GameState,clockAt:number,now:number):{state:GameState;clockAt:number;ticks:number} {
+/** normalizedState is internal only: unpackRoomState has already validated the
+ * persisted campaign. Reducers still clone every day and validate each command.
+ * Any authenticated member can drive the server clock. No caller can select tick count or speed. Long offline gaps are bounded. */
+export function pumpClock(state:GameState,clockAt:number,now:number,normalizedState=false):{state:GameState;clockAt:number;ticks:number} {
  const delay=dayDelay(state.speed);
  if(state.clockNeedsReset){state.clockNeedsReset=false;return{state,clockAt:now,ticks:0};}
  if(state.phase!=='running'||!state.speed||!state.players.some(p=>p.connected))return{state,clockAt:now,ticks:0};
  const count=Math.max(0,Math.min(6,Math.floor((now-clockAt)/delay)));let next=state;
- let advanced=0;for(let i=0;i<count&&next.phase==='running';i++){next=applyCommand(next,{type:'ADVANCE_DAY'});advanced++;}
+ let advanced=0;for(let i=0;i<count&&next.phase==='running';i++){next=applyCommand(next,{type:'ADVANCE_DAY'},normalizedState);advanced++;}
  return{state:next,clockAt:advanced?(now-clockAt>delay*6||next.phase!=='running'?now:clockAt+advanced*delay):clockAt,ticks:advanced};
 }
 export function stateChecksum(state:GameState):string {const text=JSON.stringify(state);let h=2166136261;for(let i=0;i<text.length;i++)h=Math.imul(h^text.charCodeAt(i),16777619);return(h>>>0).toString(16).padStart(8,'0');}
