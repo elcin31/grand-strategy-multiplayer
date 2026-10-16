@@ -1,0 +1,37 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "status": "built-final-validation-running",
+  "compiledSourceSha": "7409ac86b2cd9347fe54c6287f208d89affc190e",
+  "versionName": "2.3.0-playtest.2",
+  "versionCode": 30,
+  "buildRunId": 38846118396,
+  "buildJobId": 116796924247,
+  "artifactId": 12023348417,
+  "artifactSha256": "488d161d694c1f46689a598ad8a3ad53a75f42d2853ff8c2a7d770de2c867e8b",
+  "apk": {
+    "bytes": 174267038,
+    "sha256": "29be2c853208c3a68ea0a685f63bb72745cf1129c6388c71c4a18c8655074d12",
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "embeddedHermesBundleBytes": 11391736
+  },
+  "acceptedCameraBaseline": {
+    "sourceSha": "9c519a8ddf86fa106ec0ca3d6e080086c6c744d9",
+    "runId": 38575813534,
+    "apkSha256": "7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764"
+  },
+  "frozenApkChecks": {
+    "newGameplayRunId": 38847299451,
+    "interactionAndMonthlyRunId": 38847301121,
+    "stagedLodRunId": 38847301145,
+    "nativeOnlineRunId": 38847302877
+  },
+  "physicalRedmiTest": false,
+  "releaseAccepted": false
+}
