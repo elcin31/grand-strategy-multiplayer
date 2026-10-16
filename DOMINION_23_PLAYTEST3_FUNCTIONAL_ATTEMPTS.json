@@ -1,0 +1,33 @@
+{
+  "apkSha256": "756c496e9f0f9a3759bc51014db148a3240d092002cf16e7256f89cf888a9de2",
+  "compiledSourceSha": "39abbafb3126d519f85c1d84a8bd66d411205a6b",
+  "gameplayAttempt1": {
+    "runId": 38876265701,
+    "status": "failed",
+    "artifactId": 12035861170,
+    "passedBeforeFailure": [
+      "actual event and exact paid costs",
+      "filtered chronicle country/capital navigation",
+      "forecast visible"
+    ],
+    "failure": "Read an older durable autosave within the old2s sleep. UI checkbox was already checkedtrue; extracted generations3/4 predated the command.",
+    "fix": "Require a new durable generation containing the acknowledged outcome, bounded35s; exact state/cost assertions retained.",
+    "repeatRunId": 38877104186
+  },
+  "nativeOnlineAttempt1": {
+    "runId": 38876290190,
+    "status": "failed",
+    "artifactId": 12035527592,
+    "failure": "Ready TextView enabledtrue under its disabled parent Pressable while country selection was pending; harness tapped too early. Start correctly remained disabled.",
+    "fix": "Shared ancestor-aware find_enabled_control; no command submitted through disabled parents.",
+    "testRoomId": "3c8459db-4299-4ba7-b5c8-101e644067ee",
+    "scopedCleanupVerified": {
+      "rooms": 0,
+      "players": 0,
+      "receipts": 0
+    },
+    "repeatRunId": 38877338914
+  },
+  "repeatedCameraPlan": "DOMINION_23_PLAYTEST3_REPEATED_CAMERA_PLAN.json",
+  "releaseAccepted": false
+}

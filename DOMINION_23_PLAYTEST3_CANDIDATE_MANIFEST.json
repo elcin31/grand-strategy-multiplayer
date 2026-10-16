@@ -27,11 +27,17 @@
     "apkSha256": "7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764"
   },
   "frozenApkChecks": {
-    "newGameplayRunId": 38876265701,
+    "newGameplayRunId": 38877104186,
     "interactionAndMonthlyRunId": 38876273246,
     "stagedLodRunId": 38876278164,
     "repeatedMatrixRunId": 38876284394,
-    "nativeOnlineRunId": 38876290190
+    "nativeOnlineRunId": 38877338914,
+    "repeatedMatrixRunIds": [
+      38873734496,
+      38876284394,
+      38877512489
+    ],
+    "previousFailedAttempts": "DOMINION_23_PLAYTEST3_FUNCTIONAL_ATTEMPTS.json"
   },
   "engine": {
     "daily10000": true,
