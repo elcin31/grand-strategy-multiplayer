@@ -50,6 +50,7 @@ interface GamePanelProps {
   focusedCityId?:string|null;
   section?:Section;
   onFocusProvince?:(id:string)=>void;
+  onFocusCountry?:(id:string)=>void;
   state: GameState;
   playerId: string;
   selectedProvinceId: string | null;
@@ -59,7 +60,7 @@ interface GamePanelProps {
 const compact = (value: number) => value >= 1_000_000 ? `${(value / 1_000_000).toFixed(1)}M` : value >= 1_000 ? `${Math.round(value / 1_000)}K` : String(value);
 const currency = (value: number) => `${value < 0 ? '−' : ''}$${Math.abs(value) >= 1000 ? (Math.abs(value)/1000).toFixed(1)+'B' : Math.abs(value).toFixed(3).replace(/\.?0+$/, '')+'M'}`;
 
-export function GamePanel({ onCreateArmy,onOpenPeace,diplomacyCountryId,onSelectArmy,onDeselectArmy,focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince }: GamePanelProps) {
+export function GamePanel({ onCreateArmy,onOpenPeace,diplomacyCountryId,onSelectArmy,onDeselectArmy,focusedArmyId,focusedCityId,state, playerId, selectedProvinceId, onCommand, section='Country', onFocusProvince,onFocusCountry }: GamePanelProps) {
   const [page,setPage]=useState('Обзор');
   const tabs=section==='Government'?['Обзор','Законы','Реформы','Советники','Внутренняя политика']:section==='Economy'?['Обзор','Производство','Ресурсы и торговля']:section==='Diplomacy'?['Обзор','Войны и мир','Геополитика']:section==='Military'?['Обзор','Сражения и осады','Развитие']:section==='Religion'?['Обзор','Вероисповедание']:[];
   const tabbar=tabs.length?<PanelTabs tabs={tabs} value={page} onChange={setPage}/>:null;
@@ -109,7 +110,7 @@ export function GamePanel({ onCreateArmy,onOpenPeace,diplomacyCountryId,onSelect
   if(section==='Military'&&page==='Сражения и осады')return <>{tabbar}<BattleSiegePanel playerId={playerId} onCommand={onCommand} state={state} countryId={countryId}/></>;
   if(section==='Notifications')return <NotificationFeed state={state} playerId={playerId} onCommand={onCommand} onFocus={onFocusProvince??(()=>{})}/>;
   if(section==='Intelligence')return <><DiplomacyPanel initialOpen state={state} playerId={playerId} onCommand={onCommand} initialTargetId={diplomacyCountryId??undefined}/><EspionagePanel state={state} playerId={playerId} onCommand={onCommand} from={countryId} to={diplomacyCountryId??undefined}/></>;
-  if(section==='Statistics')return <WorldStatistics state={state}/>;
+  if(section==='Statistics')return <WorldStatistics state={state} onFocusCountry={onFocusCountry}/>;
   if(section==='Construction')return <ConstructionPanel state={state} playerId={playerId} onCommand={onCommand} provinceId={selectedProvinceId} onFocus={onFocusProvince??(()=>{})}/>;
   return (
     <View style={styles.wrap}>
@@ -152,7 +153,7 @@ export function GamePanel({ onCreateArmy,onOpenPeace,diplomacyCountryId,onSelect
         {state.provinces.some(p => p.resourceDeposit) && <>
           <Text style={styles.hint}>Ресурсы: {currency(budget.resourceIncome)} / мес.</Text>
           {resources.filter(r => r.units > 0).map(r => <Text key={r.type} style={styles.owner}>{RESOURCES[r.type].name}: {r.units.toFixed(1)} ед. · {currency(r.revenue)}/мес.</Text>)}
-          <Text style={styles.hint}>Игровые месторождения. Выпуск автоматически продаётся по фиксированным игровым ценам; это не реальные запасы или рыночные котировки.</Text>
+          <Text style={styles.hint}>Добыча поступает в государственные запасы. Продажи и торговые соглашения определяют доход; текущие запасы и потоки показаны в разделе «Ресурсы и торговля».</Text>
         </>}
         <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Содержание армии: {currency(budget.armyMaintenance)}</Text>
         <Text style={[styles.hint,{paddingVertical:7,borderBottomWidth:1,borderBottomColor:'#61563E50',fontVariant:['tabular-nums']}]}>Содержание зданий: {currency(budget.buildingMaintenance)}</Text>

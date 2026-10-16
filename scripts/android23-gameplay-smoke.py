@@ -58,6 +58,11 @@ try:
     assert round(manifest['initialTreasury']-country['treasury'],3)==80 and manifest['initialPoliticalPower']-country['politicalPower']==10
     assert sum(e['eventId']=='alt-rhine-workshops' and e['countryId']=='germany' for e in event_state['events']['history'])==1
     checks.append('visible paid event decision, exact cash/PP cost, one history entry and dynamic focus unlock')
+    h.navigation('Раздел Статистика','statistics',direction='down');h.control('Хроника мира','world-chronicle')
+    h.horizontal_control('Фильтр хроники: Государство','chronicle-filter');h.capture('filtered-chronicle')
+    h.control('К стране: '+country['name'],'chronicle-country',scroll=True);time.sleep(1)
+    text_present('ТВОЁ ГОСУДАРСТВО','chronicle-country-window');text_present(country['name'],'chronicle-country-name');h.capture('chronicle-country')
+    h.control('Закрыть окно','close-chronicle-country');checks.append('event in filtered world chronicle opens the actual country window and focuses its capital')
     h.navigation('Раздел Экономика','economy');h.control('ПРОГНОЗ · 6 МЕСЯЦЕВ','forecast',scroll=True,tap_control=False);text_present('ПРОГНОЗ · 6 МЕСЯЦЕВ','forecast-visible');h.capture('forecast')
     h.control('Автоматическое строительство','enable-automation',True);time.sleep(1);h.control('Закрыть окно','close-economy')
     enabled=state('automation-enabled');assert enabled['countries']['germany']['stockpile']['autoBuild'] is True
