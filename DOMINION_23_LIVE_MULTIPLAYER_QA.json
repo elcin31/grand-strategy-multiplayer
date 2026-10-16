@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "projectId": "dfjsnjxnyjspwugjguhq",
+  "schema": 28,
+  "realHttpClients": 3,
+  "roomIds": [
+    "8f57a790-26b2-4990-82fd-9b76947bee73",
+    "1e11fdfd-e30e-444e-aa4e-317f5deac672"
+  ],
+  "checks": [
+    "current protocol and custom session authentication",
+    "existing schema25 room remains unchanged after a schema28 connection attempt",
+    "three independent authenticated clients select countries, ready and launch the registered scenario",
+    "real daily clock, paid automation, owner-bound event choice, exactly-once costs and dynamic focus unlock",
+    "human diplomatic consent, paid national course and actual political response",
+    "joint war, mandatory human ally consent/refusal, atomic peace, negative-payment and replay/truce guards",
+    "event-unlocked scenario focus completes through actual server calendar exactly once",
+    "persisted authoritative snapshot, independent disconnect, real timeout and same-country reconnect"
+  ],
+  "physicalAndroidClients": false,
+  "clock": "actual elapsed server time; no direct advance command or state injection",
+  "backendSourceSha": "7409ac86b2cd9347fe54c6287f208d89affc190e",
+  "endpointVersions": {
+    "game-room-v23": 2,
+    "game-command-v23": 2
+  },
+  "qaCleanup": {
+    "completed": true,
+    "remainingRooms": 0,
+    "remainingPlayers": 0,
+    "remainingReceipts": 0,
+    "scope": "Only recorded generated UUID/code/date/member-name matches; no user-room scan or deletion."
+  }
+}

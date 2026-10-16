@@ -40,7 +40,7 @@
   "databaseMigration": false,
   "newProject": false,
   "qa": {
-    "status": "running-attempt3",
+    "status": "passed-attempt3",
     "previousAttempt": {
       "status": "failed-http546",
       "cause": "CPU Time exceeded confirmed in function logs",
@@ -48,7 +48,8 @@
       "remainingRooms": 0,
       "remainingPlayers": 0,
       "remainingReceipts": 0
-    }
+    },
+    "proof": "DOMINION_23_LIVE_MULTIPLAYER_QA.json"
   },
-  "note": "Version2 of the versioned handlers uses the existing Dominion project, tables, custom player tokens, schema-cohort guard, CAS and receipts. Authoritative unpacked states avoid repeated normalization during server catch-up and commands; public input validation remains defensive. Live QA of this fix is running; no release acceptance is implied."
+  "note": "Version2 passed the full real three-client HTTP test, including actual six/eight-month calendar observations, human peace consent, exactly-once paid events/focus completion and real disconnect/reconnect. Existing database/auth/CAS and legacy-room cohort remain unchanged."
 }

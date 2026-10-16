@@ -1,0 +1,15 @@
+{
+  "status": "failed",
+  "runId": 38847302877,
+  "jobId": 116800633476,
+  "artifactId": 12023324419,
+  "apkSha256": "29be2c853208c3a68ea0a685f63bb72745cf1129c6388c71c4a18c8655074d12",
+  "failedStage": "native pause acknowledgement after country selection/ready/start",
+  "observation": "No pause acknowledgement or visible rejection within35s. Last XML shows HUD Pause unselected; raw logs retained. Not a passed native reconnect test.",
+  "harnessChange": "Use the same100ms real press as the existing camera/upgrade harness instead of the shell zero-duration tap; rerun required.",
+  "testRoomId": "3b927e64-93f6-43bc-9db2-89c86758cb5a",
+  "scopedCleanupCompleted": true,
+  "remainingRooms": 0,
+  "remainingPlayers": 0,
+  "remainingReceipts": 0
+}

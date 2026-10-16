@@ -1,0 +1,27 @@
+{
+  "status": "functional-and-engine-passed-camera-failed-native-reconnect-incomplete",
+  "compiledSourceSha": "7409ac86b2cd9347fe54c6287f208d89affc190e",
+  "apkSha256": "29be2c853208c3a68ea0a685f63bb72745cf1129c6388c71c4a18c8655074d12",
+  "sourceTests": 409,
+  "daily10000": true,
+  "monthly10000": true,
+  "liveHttpThreeClients": true,
+  "newGameplayRun": 38847299451,
+  "interactionAndMonthlyRun": 38847301121,
+  "stagedLodRun": 38847301145,
+  "nativeOnlineFailureProof": "DOMINION_23_PLAYTEST2_NATIVE_ONLINE_ATTEMPT1.json",
+  "cameraFailureProof": "DOMINION_23_PLAYTEST2_CAMERA_REJECTED.json",
+  "nativeGate": "failed: A-pan P99+12.6%, terrain P99+32.5%, active-simulation P95+13.0%; other P95 values improved or stayed within10%",
+  "peakPssKiB": [
+    465415,
+    467070
+  ],
+  "identicalApkControl": {
+    "runId": 38845941790,
+    "status": "incomplete",
+    "cause": "ADB device offline during candidate-side read-only save pull; original exception output empty",
+    "fullMetricComparison": false
+  },
+  "physicalRedmiTest": false,
+  "releaseAccepted": false
+}
