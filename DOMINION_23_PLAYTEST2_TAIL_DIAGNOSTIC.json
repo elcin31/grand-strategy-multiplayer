@@ -1,0 +1,313 @@
+{
+  "diagnosticOnly": true,
+  "sourceApk": "29be2c853208c3a68ea0a685f63bb72745cf1129c6388c71c4a18c8655074d12",
+  "samples": [
+    {
+      "side": "profile-baseline",
+      "scenario": "A-horizontal-pan",
+      "cpuThreads": [
+        [
+          "main-ui",
+          {
+            "meanCpuPercent": 55.61,
+            "maxCpuPercent": 70.0
+          }
+        ],
+        [
+          "RenderThread",
+          {
+            "meanCpuPercent": 5.84,
+            "maxCpuPercent": 8.0
+          }
+        ],
+        [
+          "mqt_v_js",
+          {
+            "meanCpuPercent": 2.14,
+            "maxCpuPercent": 5.0
+          }
+        ],
+        [
+          "MediaCodec_loop",
+          {
+            "meanCpuPercent": 1.92,
+            "maxCpuPercent": 4.0
+          }
+        ],
+        [
+          "ExoPlayer:Playb",
+          {
+            "meanCpuPercent": 1.78,
+            "maxCpuPercent": 3.0
+          }
+        ]
+      ],
+      "motionCounterDeltas": {
+        "gestureEvents": 125,
+        "gestureCommits": 113,
+        "cullCommits": 8,
+        "mapRenders": 8,
+        "geographyRenders": 8,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "motionCountersAvailable": true
+    },
+    {
+      "side": "profile-baseline",
+      "scenario": "F-terrain",
+      "cpuThreads": [
+        [
+          "main-ui",
+          {
+            "meanCpuPercent": 68.64,
+            "maxCpuPercent": 87.0
+          }
+        ],
+        [
+          "mqt_v_js",
+          {
+            "meanCpuPercent": 8.0,
+            "maxCpuPercent": 13.0
+          }
+        ],
+        [
+          "RenderThread",
+          {
+            "meanCpuPercent": 5.57,
+            "maxCpuPercent": 8.0
+          }
+        ],
+        [
+          "hades",
+          {
+            "meanCpuPercent": 2.14,
+            "maxCpuPercent": 7.0
+          }
+        ],
+        [
+          "ExoPlayer:Playb",
+          {
+            "meanCpuPercent": 1.43,
+            "maxCpuPercent": 3.0
+          }
+        ]
+      ],
+      "motionCounterDeltas": {
+        "gestureEvents": 122,
+        "gestureCommits": 86,
+        "cullCommits": 34,
+        "mapRenders": 34,
+        "geographyRenders": 0,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "motionCountersAvailable": true
+    },
+    {
+      "side": "profile-baseline",
+      "scenario": "H-active-simulation",
+      "cpuThreads": [
+        [
+          "main-ui",
+          {
+            "meanCpuPercent": 68.71,
+            "maxCpuPercent": 85.0
+          }
+        ],
+        [
+          "mqt_v_js",
+          {
+            "meanCpuPercent": 50.14,
+            "maxCpuPercent": 94.0
+          }
+        ],
+        [
+          "RenderThread",
+          {
+            "meanCpuPercent": 4.93,
+            "maxCpuPercent": 8.0
+          }
+        ],
+        [
+          "hades",
+          {
+            "meanCpuPercent": 2.57,
+            "maxCpuPercent": 13.0
+          }
+        ],
+        [
+          "ExoPlayer:Playb",
+          {
+            "meanCpuPercent": 2.5,
+            "maxCpuPercent": 3.0
+          }
+        ]
+      ],
+      "motionCounterDeltas": {},
+      "motionCountersAvailable": false
+    },
+    {
+      "side": "profile-candidate",
+      "scenario": "A-horizontal-pan",
+      "cpuThreads": [
+        [
+          "main-ui",
+          {
+            "meanCpuPercent": 57.73,
+            "maxCpuPercent": 72.2
+          }
+        ],
+        [
+          "RenderThread",
+          {
+            "meanCpuPercent": 5.85,
+            "maxCpuPercent": 8.0
+          }
+        ],
+        [
+          "MediaCodec_loop",
+          {
+            "meanCpuPercent": 1.85,
+            "maxCpuPercent": 3.0
+          }
+        ],
+        [
+          "mqt_v_js",
+          {
+            "meanCpuPercent": 1.78,
+            "maxCpuPercent": 4.0
+          }
+        ],
+        [
+          "ExoPlayer:Playb",
+          {
+            "meanCpuPercent": 1.64,
+            "maxCpuPercent": 3.0
+          }
+        ]
+      ],
+      "motionCounterDeltas": {
+        "gestureEvents": 131,
+        "gestureCommits": 121,
+        "cullCommits": 6,
+        "mapRenders": 6,
+        "geographyRenders": 6,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "motionCountersAvailable": true
+    },
+    {
+      "side": "profile-candidate",
+      "scenario": "F-terrain",
+      "cpuThreads": [
+        [
+          "main-ui",
+          {
+            "meanCpuPercent": 68.07,
+            "maxCpuPercent": 87.0
+          }
+        ],
+        [
+          "mqt_v_js",
+          {
+            "meanCpuPercent": 7.64,
+            "maxCpuPercent": 12.0
+          }
+        ],
+        [
+          "RenderThread",
+          {
+            "meanCpuPercent": 5.5,
+            "maxCpuPercent": 9.0
+          }
+        ],
+        [
+          "MediaCodec_loop",
+          {
+            "meanCpuPercent": 1.79,
+            "maxCpuPercent": 3.0
+          }
+        ],
+        [
+          "ExoPlayer:Playb",
+          {
+            "meanCpuPercent": 1.43,
+            "maxCpuPercent": 2.0
+          }
+        ]
+      ],
+      "motionCounterDeltas": {
+        "gestureEvents": 112,
+        "gestureCommits": 82,
+        "cullCommits": 31,
+        "mapRenders": 29,
+        "geographyRenders": 0,
+        "pathBuilds": 0,
+        "pathBuildMs": 0.0,
+        "rasterBuilds": 0,
+        "rasterMs": 0.0,
+        "rasterPrewarmBuilds": 0,
+        "rasterPrewarmMs": 0.0
+      },
+      "motionCountersAvailable": true
+    },
+    {
+      "side": "profile-candidate",
+      "scenario": "H-active-simulation",
+      "cpuThreads": [
+        [
+          "main-ui",
+          {
+            "meanCpuPercent": 71.86,
+            "maxCpuPercent": 87.0
+          }
+        ],
+        [
+          "mqt_v_js",
+          {
+            "meanCpuPercent": 49.14,
+            "maxCpuPercent": 97.0
+          }
+        ],
+        [
+          "RenderThread",
+          {
+            "meanCpuPercent": 4.86,
+            "maxCpuPercent": 7.0
+          }
+        ],
+        [
+          "MediaCodec_loop",
+          {
+            "meanCpuPercent": 1.71,
+            "maxCpuPercent": 2.0
+          }
+        ],
+        [
+          "ExoPlayer:Playb",
+          {
+            "meanCpuPercent": 1.57,
+            "maxCpuPercent": 3.0
+          }
+        ]
+      ],
+      "motionCounterDeltas": {},
+      "motionCountersAvailable": false
+    }
+  ],
+  "note": "CPU percentages are emulator samples, not hardware GPU utilization. Auxiliary traces report incomplete attribution; no causal or performance acceptance claim."
+}
