@@ -1,6 +1,6 @@
 {
   "projectId": "dfjsnjxnyjspwugjguhq",
-  "sourceHead": "ed08589ab698355cd5e043c35bf638b545580b68",
+  "sourceHead": "7409ac86b2cd9347fe54c6287f208d89affc190e",
   "sourceWorkingTreeClean": true,
   "build": {
     "minify": true,
@@ -12,19 +12,21 @@
       "name": "game-room-v23",
       "id": "9b28c77b-9e28-4057-96d3-1c74827a0bc7",
       "status": "ACTIVE",
-      "version": 1,
+      "version": 2,
+      "updatedAt": 1792122072785,
       "verifyJwt": false,
-      "deployedBundleSha256": "f655e0ea32b16407a91759c897d573b9fcbc07804f6f59611cf7f163aa114e9a",
-      "sourceFileSha256": "0431669c12b4a1f41d162211607ce6d0b302777f17c121a96f5dfa6fba4a01ce"
+      "deployedBundleSha256": "42b24374195e0417315dcd963f41444e6672ba6ebf100032089e0917914b8727",
+      "sourceFileSha256": "992b57884d8d647f4a26e5267f0e66f6542c704847ede9ee67cb11d0da88bc95"
     },
     {
       "name": "game-command-v23",
       "id": "9a0c43e4-eb2f-440c-ab70-c34081413c4e",
       "status": "ACTIVE",
-      "version": 1,
+      "version": 2,
+      "updatedAt": 1792122081371,
       "verifyJwt": false,
-      "deployedBundleSha256": "79c12c4eb8ec1dd4ba9cd3379ae9f8881a2b59c132d3eb56788354d6e013229b",
-      "sourceFileSha256": "239301760b1d175c7c17bcd8f3122b7357c8d6b2b83df499325d643589ecc308"
+      "deployedBundleSha256": "7d8c015f80b281359e3468fd2b55b78fbe879857bb6b7efd65f4b50c28ab6049",
+      "sourceFileSha256": "617a03e52ff411823cb0317798c7b2e2288445c2f2d1227f56d904bca7e51670"
     }
   ],
   "existingFunctionsUnmodified": [
@@ -37,5 +39,16 @@
   ],
   "databaseMigration": false,
   "newProject": false,
-  "note": "Versioned handlers in the existing Dominion backend and existing room tables. Custom player token authentication, room schema isolation, CAS and receipts are retained. Live QA still pending."
+  "qa": {
+    "status": "running-attempt3",
+    "previousAttempt": {
+      "status": "failed-http546",
+      "cause": "CPU Time exceeded confirmed in function logs",
+      "testRoomsCleaned": true,
+      "remainingRooms": 0,
+      "remainingPlayers": 0,
+      "remainingReceipts": 0
+    }
+  },
+  "note": "Version2 of the versioned handlers uses the existing Dominion project, tables, custom player tokens, schema-cohort guard, CAS and receipts. Authoritative unpacked states avoid repeated normalization during server catch-up and commands; public input validation remains defensive. Live QA of this fix is running; no release acceptance is implied."
 }

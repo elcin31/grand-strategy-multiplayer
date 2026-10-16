@@ -2,7 +2,15 @@
 
 Only `elcin31/grand-strategy-multiplayer` is in scope. Existing Dominion backend project `dfjsnjxnyjspwugjguhq` is retained. No AssetMind changes, new database/project, auth/storage migration, production campaign deletion or old release deletion. Versioned2.3 handlers were deployed without replacing the existing handlers; only explicitly generated QA rooms are used and cleaned up.
 
-## Latest continuation — first complete gameplay candidate needs fixes (2026-10-16)
+## Latest continuation — second candidate and live revalidation (2026-10-16)
+
+- Compiled candidate `7409ac86b2cd9347fe54c6287f208d89affc190e`, version2.3.0-playtest.2/code30, is running the standalone build and both10000-step simulations in `38846118396`. It initializes successor AI personalities when leaders are created; a real year-boundary/save regression passes without relaxing exact equality.
+- Existing Dominion `game-room-v23` and `game-command-v23` now run version2 from the same clean7409ac8 source. Already validated authoritative snapshots avoid repeated normalization in catch-up/command handling; defensive public defaults, ownership, costs, CAS and receipts remain. The interleaved local clock benchmark improved median CPU29.42%, with exact output parity (`DOMINION_23_SERVER_CLOCK_BENCHMARK.json`). Actual Edge CPU acceptance still depends on live QA.
+- Live HTTP attempt3 is running against version2. Attempt2's exact two QA rooms were removed with UUID/code/date/member guards; room/player/receipt counts are all zero. No user room or old endpoint was changed.
+- Harness `09ac3ae` changes no compiled runtime: the new-gameplay smoke scrolls the existing budget panel to its forecast; accessibility retries only the exact external Quickstep ANR, retaining original XML/logs and requiring unchanged game PID/no game fatal. Unknown/Dominion ANRs still fail. Python129 checks:128 passed,1 skipped.
+- Accepted-dev13 identical-APK control `38845941790` measures emulator variation and cannot accept a new binary. Candidate1 failed comparisons remain preserved below. Final APK interaction/monthly/LOD/new-gameplay/native-online and complete camera gates must pass for the new binary before a completed release ZIP is issued.
+
+## Previous continuation — first complete gameplay candidate needs fixes (2026-10-16)
 
 - Candidate runtimeed08589,2.3.0-playtest.1/code29, built successfully in38787086166. APK SHA256 `ad9127076e7f9f179b5838d748b6dcca143cb1dc257d3f01ba5443dfa289b4d2`; original package/certificate, four ABI, embedded bundle/art and Java UI dispatch verified. Node22 full406-test gate passed.
 - **Daily10000 passed** with ten exact restores,91 observed wars,86 peaces and116 battles. Report: `DOMINION_23_PLAYTEST1_DAILY_10000.json`. Monthly run failed at3000: nine newly generated successor leaders lacked AI personality until normalization. Failure snapshot retained for a direct regression; do not weaken exact restore checks.
