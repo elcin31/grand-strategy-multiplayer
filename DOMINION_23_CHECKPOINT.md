@@ -1,8 +1,28 @@
-# Dominion 2.3 — Stage A checkpoint
+# Dominion 2.3 — implementation and validation checkpoint
 
-Only `elcin31/grand-strategy-multiplayer` is in scope. AssetMind, other repositories, production campaigns, multiplayer rooms, database/auth/storage and previous releases have not been modified. No backend rollout or new Supabase project.
+Only `elcin31/grand-strategy-multiplayer` is in scope. Existing Dominion backend project `dfjsnjxnyjspwugjguhq` is retained. No AssetMind changes, new database/project, auth/storage migration, production campaign deletion or old release deletion. Versioned2.3 handlers were deployed without replacing the existing handlers; only explicitly generated QA rooms are used and cleaned up.
 
-## Latest continuation status — dev13 camera gate passed; Stage B active
+## Latest continuation — first complete gameplay candidate needs fixes (2026-10-16)
+
+- Candidate runtimeed08589,2.3.0-playtest.1/code29, built successfully in38787086166. APK SHA256 `ad9127076e7f9f179b5838d748b6dcca143cb1dc257d3f01ba5443dfa289b4d2`; original package/certificate, four ABI, embedded bundle/art and Java UI dispatch verified. Node22 full406-test gate passed.
+- **Daily10000 passed** with ten exact restores,91 observed wars,86 peaces and116 battles. Report: `DOMINION_23_PLAYTEST1_DAILY_10000.json`. Monthly run failed at3000: nine newly generated successor leaders lacked AI personality until normalization. Failure snapshot retained for a direct regression; do not weaken exact restore checks.
+- **Final native regression failed** against accepted dev13: five tail violations in zoom-out, pinch-pan, terrain and military. PSS peak462473→470735KiB remained within the32MiB bound. Full unmodified report: `DOMINION_23_PLAYTEST1_CAMERA_REJECTED.json`. Do not label candidate1 accepted or publish it as a completed release.
+- Real HTTP attempt2 passed country selection/ready/start, exactly-once paid events, original-room isolation, diplomatic consent, allied peace approval/refusal and atomic settlement, then received an actual546 on the six-month clock observation. Investigate server CPU rather than hiding the response behind blind retries. Generated test room IDs remain scoped in `/tmp/dominion23-qa-rooms.json` for guarded cleanup.
+- Frozen candidate1 new-gameplay/interaction/full-matrix repeats are dispatched using598b49b (unchanged compiled runtime). Current work: successor initialization, repeated clock normalization and the failed native comparison. No release published.
+
+## Previous continuation — gameplay implemented; final gates running (2026-10-15)
+
+**The accepted camera improvement is retained. The complete2.3 release is not yet accepted or published.** Candidate runtime `ed08589ab698355cd5e043c35bf638b545580b68`, version2.3.0-playtest.1/code29, is building in run38787086166. Harness/deployment evidence commit598b49b changes no compiled runtime input.
+
+- Engine: fixed the strict tick1000 war-score save mismatch, indexed simultaneous war refresh, skipped idle military scheduling and the duplicate monthly world copy. Fixed daily occupation/queue invalidation and casualty/occupation budget ordering; destroyed units leave before budget validation.
+- Actual gameplay additions: persistent AI plan identity/priority/progress and urgent review; four typed original event chains; paid choices/receipts/fallbacks; event-unlocked courses; original validated JSON Rhine reconstruction scenario with custom event/focus; allied peace contribution budgets, recipients and mandatory human consent; real import/export ledgers, conditional forecasts, paid opt-in construction and five bounded political groups.
+- Schema28 migrations preserve existing progress and exact backups. New `game-room-v23`/`game-command-v23` version1 use the existing backend/tables/auth/CAS. Stored older rooms are rejected before writes and the upgraded transport retains their originalv211 contract and durable command IDs.
+- Frozen source65a58fa: **406/406 Node tests pass**, TypeScript and9-event/125-focus content validation pass. Python:126 passed,1 skipped out of127 after correcting a stale fixed-schema assertion. Reports: `DOMINION_23_SOURCE_GATE.json`, `DOMINION_23_BACKEND_DEPLOYMENT.json`.
+- Local daily progression reached7000 steps, monthly2000, with exact periodic save/restore and invariants. A workspace restart terminated these processes and the first live HTTP attempt. **Neither is labelled a completed10000-step result.** Independent Node22 daily/monthly CI replacements continue in38787086166. Details: `DOMINION_23_LONG_LOCAL_ATTEMPTS.json`.
+- New three-client HTTP run is in progress. Old schema25 QA room checksum/version preservation was verified on the live backend. First interrupted attempt's two exact QA room IDs were deleted with ID/code/time/member-name guards; zero remaining rooms, memberships and receipts verified. No user room was selected.
+- Still required before publication: finish both long runs, full live3-client campaign/peace/event/reconnect test, actual new-APK interaction/monthly/LOD/new-gameplay/native-online smoke, and A–I regression **against accepted dev13**, followed by integrity-bound source/APK/proof ZIP and release publication. No physical Redmi Note12 is available; emulator results cannot establish phone FPS.
+
+## Previous continuation status — dev13 camera gate passed; Stage B active
 
 **Stage A passed on the Android emulator. Stages B–G remain unfinished. No complete Dominion 2.3 release or merge into main.** This section supersedes earlier pending states; all failed attempts remain below.
 

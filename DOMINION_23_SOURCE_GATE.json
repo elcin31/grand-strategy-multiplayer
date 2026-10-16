@@ -1,0 +1,48 @@
+{
+  "status": "source-and-daily10000-passed-monthly-and-camera-failed",
+  "fullSource": {
+    "sourceSha": "65a58fa51e5dfde6b9c6ba83c446fd4b478a6db2",
+    "sourceWorkingTreeClean": true,
+    "node": "v24.19.0",
+    "typecheck": true,
+    "tests": 406,
+    "pass": 406,
+    "fail": 0,
+    "skipped": 0,
+    "logSha256": "6f0b3aa104ce645b41704de743be0e4fc1fb245bfbafcb38539b11f8f0038d2e"
+  },
+  "content": {
+    "events": 9,
+    "focuses": 125,
+    "originalScenarioPacks": 1,
+    "validated": true
+  },
+  "python": {
+    "tests": 127,
+    "skipped": 1,
+    "failures": 0,
+    "note": "One obsolete fixed schema assertion was updated to the checked current schema. Negative-fixture subprocess failures in this log are expected tests, not measured performance results.",
+    "logSha256": "55f774cda5758fed86ceaf3827ce269d0a113a5fda2638ed2c4897ecabe05a7a"
+  },
+  "buildRuntime": {
+    "node": 22,
+    "runId": 38787086166,
+    "sourceSha": "ed08589ab698355cd5e043c35bf638b545580b68",
+    "sourceRegressionArtifactId": 11997829469,
+    "status": "full source/content step passed; standalone compilation in progress"
+  },
+  "limitations": [
+    "Daily 10000 run passed; monthly run failed at3000 because generated successor leaders lacked AI personalities.",
+    "Playtest1 native comparison has five P95/P99 violations; retain the failed result and investigate/repeat before acceptance.",
+    "No physical Redmi benchmark."
+  ],
+  "fullSourceNode22": {
+    "sourceSha": "ed08589ab698355cd5e043c35bf638b545580b68",
+    "runId": 38787086166,
+    "jobId": 116601757289,
+    "tests": 406,
+    "pass": 406,
+    "fail": 0,
+    "artifactId": 11997829469
+  }
+}

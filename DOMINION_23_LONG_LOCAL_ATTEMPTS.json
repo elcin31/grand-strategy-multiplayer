@@ -1,0 +1,95 @@
+{
+  "runs": [
+    {
+      "directory": "final-monthly",
+      "sourceSha": "b9c486fb96333e004589e9279a0cc8e3c5127eae",
+      "sourceClean": false,
+      "mode": "monthly",
+      "steps": 10000,
+      "node": "v24.19.0",
+      "lastPassedSample": null,
+      "status": "interrupted-by-environment-restart",
+      "completed10000": false
+    },
+    {
+      "directory": "final-daily",
+      "sourceSha": "b9c486fb96333e004589e9279a0cc8e3c5127eae",
+      "sourceClean": false,
+      "mode": "daily",
+      "steps": 10000,
+      "node": "v24.19.0",
+      "lastPassedSample": null,
+      "status": "failed",
+      "failure": {
+        "step": 35,
+        "monthlyTick": 1,
+        "simulationDay": 34,
+        "sourceSha": "b9c486fb96333e004589e9279a0cc8e3c5127eae",
+        "mode": "daily",
+        "error": "Error: Invalid economic army",
+        "stack": "Error: Invalid economic army\n    at recalcEconomy (/workspace/dominion-evidence/final-engine-source/supabase/functions/_shared/economySystem.ts:59:111)\n    at occupy (/workspace/dominion-evidence/final-engine-source/supabase/functions/_shared/military3System.ts:47:87)\n    at finishBattle (/workspace/dominion-evidence/final-engine-source/supabase/functions/_shared/military3System.ts:65:115)\n    at dailyMilitary (/workspace/dominion-evidence/final-engine-source/supabase/functions/_shared/military3System.ts:96:148)\n    at applyCoreCommand (/workspace/dominion-evidence/final-engine-source/supabase/functions/_shared/gameEngine.ts:448:195)\n    at applyCommand (/workspace/dominion-evidence/final-engine-source/supabase/functions/_shared/gameEngine.ts:487:115)\n    at assert (/workspace/dominion-evidence/final-engine-source/scripts/long-simulation.ts:23:57)\n    at Object.<anonymous> (/workspace/dominion-evidence/final-engine-source/scripts/long-simulation.ts:31:636)\n    at Module._compile (node:internal/modules/cjs/loader:1872:14)\n    at Object.transformer (/workspace/grand-strategy-multiplayer/node_modules/tsx/dist/register-B1c7OH6V.cjs:22:2188)"
+      },
+      "completed10000": false
+    },
+    {
+      "directory": "engine-monthly2",
+      "sourceSha": "00d4948fa62d72dad666e4aa705a25f3b54cd280",
+      "sourceClean": true,
+      "mode": "monthly",
+      "steps": 10000,
+      "node": "v24.19.0",
+      "lastPassedSample": {
+        "step": 2000,
+        "monthlyTick": 2000,
+        "simulationDay": 0,
+        "bytes": 6091134,
+        "heapUsed": 65958144,
+        "rss": 871174144,
+        "armies": 187,
+        "wars": 9,
+        "peaceCount": 1550,
+        "bankruptCountries": 7,
+        "treasuryMax": 25457991.281,
+        "population": 19567998740,
+        "populationRatio": 2.5638562066232375,
+        "settlementCapacity": 25021536082,
+        "completedFocuses": 5998,
+        "scientificDiscoveries": 5508,
+        "elapsedSeconds": 705
+      },
+      "status": "interrupted-by-environment-restart",
+      "completed10000": false
+    },
+    {
+      "directory": "engine-daily2",
+      "sourceSha": "00d4948fa62d72dad666e4aa705a25f3b54cd280",
+      "sourceClean": true,
+      "mode": "daily",
+      "steps": 10000,
+      "node": "v24.19.0",
+      "lastPassedSample": {
+        "step": 7000,
+        "monthlyTick": 230,
+        "simulationDay": 7000,
+        "bytes": 5481407,
+        "heapUsed": 68397008,
+        "rss": 670875648,
+        "armies": 342,
+        "wars": 1,
+        "peaceCount": 67,
+        "bankruptCountries": 1,
+        "treasuryMax": 1449757.692,
+        "population": 8961262766,
+        "populationRatio": 1.1741307563979748,
+        "settlementCapacity": 23383718246,
+        "completedFocuses": 1077,
+        "scientificDiscoveries": 3304,
+        "elapsedSeconds": 711
+      },
+      "status": "interrupted-by-environment-restart",
+      "completed10000": false
+    }
+  ],
+  "activeReplacementCiRun": 38787086166,
+  "note": "Interrupted runs are evidence of intermediate checks only and do not satisfy the final 10000-step gate. Daily step35 failure is covered by 00d4948 and a dedicated regression."
+}
