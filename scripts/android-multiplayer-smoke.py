@@ -14,7 +14,7 @@ import time
 import threading
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from android_accessibility import dump_hierarchy, assert_no_game_fatal
+from android_accessibility import dump_hierarchy, assert_no_game_fatal, find_enabled_control
 from android_fixture import root_test_device
 from backend_http import request
 from map_paint_check import assert_map_painted
@@ -79,10 +79,11 @@ def tap_node(node):
 def find_control(label, scroll=False):
     for attempt in range(14):
         tree = hierarchy('find-'+str(attempt))
-        node = next((n for n in tree.iter('node') if (n.get('text') == label
-                     or n.get('content-desc') == label)
-                     and visible_control_bounds(n, 640 if scroll else 720) is not None), None)
-        if node is not None:
+        # A TextView remains enabled while its parent Pressable awaits the
+        # authoritative country response. Never tap through that disabled
+        # parent (the real native-ready failure retained in attempt1).
+        node = find_enabled_control(tree,label)
+        if node is not None and visible_control_bounds(node,640 if scroll else 720) is not None:
             return tree, node
         if scroll:
             if attempt == 0:
