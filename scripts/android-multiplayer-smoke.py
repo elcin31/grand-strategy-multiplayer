@@ -109,7 +109,13 @@ def pause_native_campaign():
         deadline = time.monotonic()+35
         while time.monotonic() < deadline:
             tree = hierarchy('pause-response-'+str(attempt))
-            if any(n.get('content-desc') == 'Пауза' and n.get('selected') == 'true'
+            # The country rail toggles its window. Pause must also acknowledge
+            # via the actual HUD's running->paused label when that window is
+            # closed. The subsequent independent HTTP snapshot still requires
+            # speed0, ownership and the same room; a label alone cannot pass QA.
+            if any((n.get('content-desc') == 'Пауза' and n.get('selected') == 'true'
+                    or n.get('content-desc') == 'Продолжить' and n.get('enabled') != 'false'
+                    and visible_control_bounds(n,720) is not None)
                    for n in tree.iter('node')):
                 return
             texts = {n.get('text', '') for n in tree.iter('node')}
