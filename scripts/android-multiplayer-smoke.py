@@ -70,7 +70,10 @@ def tap_node(node):
     assert node.get('enabled') != 'false', 'Native control is disabled'
     x1, y1, x2, y2 = node_bounds(node)
     assert 0 <= x1 < x2 <= 1280 and 0 <= y1 < y2 <= 720, 'Native control is clipped'
-    adb('shell', 'input', 'tap', (x1+x2)//2, (y1+y2)//2)
+    # Use the same bounded 100ms press as the camera/upgrade harness. A zero
+    # duration shell tap can miss the React press while the SDK is rendering.
+    x,y=(x1+x2)//2,(y1+y2)//2
+    adb('shell', 'input', 'swipe', x, y, x, y, 100)
 
 
 def find_control(label, scroll=False):
