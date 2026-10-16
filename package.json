@@ -1,6 +1,6 @@
 {
   "name": "grand-strategy-multiplayer",
-  "version": "2.3.0-playtest.1",
+  "version": "2.3.0-playtest.2",
   "private": true,
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
