@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "mode": "daily",
+  "stepsPerRun": 10000,
+  "seed": 91,
+  "comparedSources": [
+    "7409ac86b2cd9347fe54c6287f208d89affc190e",
+    "39abbafb3126d519f85c1d84a8bd66d411205a6b"
+  ],
+  "runs": [
+    38846118396,
+    38873734496
+  ],
+  "exactFullStateEqual": true,
+  "stateSha256": "d3f89725219454eb38cae0e86037431fca1316a7bb5669b161af44e4592bf13e",
+  "digestEncoding": "UTF8 JSON with sorted keys, ensure_ascii=False, separators comma/colon; campaign state only, excluding save-envelope metadata",
+  "exactRestoresPerRun": 10,
+  "battlesPerRun": 146,
+  "note": "Independent CI processes and host timings. Both source records are clean; simulation, multiplayer and persistence trees are unchanged between these two commits."
+}
