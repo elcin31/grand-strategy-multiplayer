@@ -11,6 +11,40 @@ spec.loader.exec_module(module)
 
 
 class AccessibilityTest(unittest.TestCase):
+    def quickstep_lookup(self, title="Quickstep isn't responding", pid='42', logs='', persistent=False):
+        calls=[]
+        attempts=0
+        dialog='<hierarchy><node package="android" resource-id="android:id/alertTitle" text="'+title+'" /><node package="android" resource-id="android:id/aerr_close" text="Close app" enabled="true" clickable="true" bounds="[266,282][1014,408]" /></hierarchy>'
+        def adb(*args, **kwargs):
+            nonlocal attempts
+            calls.append(args)
+            if args[:2] == ('shell','pidof'):return '42' if len(calls)==1 else pid
+            if args[:2] == ('shell','uiautomator'):
+                attempts+=1
+                return 'UI hierchary dumped to: /sdcard/camera.xml'
+            if args[:2] == ('shell','cat'):
+                return dialog if attempts==1 or persistent else '<hierarchy><node content-desc="Обзор мира" /></hierarchy>'
+            if args[0]=='logcat':return logs
+            return ''
+        with tempfile.TemporaryDirectory() as directory:
+            root=module.dump_hierarchy(adb,'app',Path(directory),'camera','/sdcard/camera.xml',pause=lambda _:None)
+            self.assertEqual(root[0].get('content-desc'),'Обзор мира')
+            self.assertEqual((Path(directory)/'camera-external-quickstep-anr-0.xml').read_text(),dialog)
+            self.assertEqual((Path(directory)/'camera-external-quickstep-anr-0.txt').read_text(),logs)
+        return calls
+
+    def test_exact_external_quickstep_anr_recovers_with_unchanged_game_and_raw_evidence(self):
+        calls=self.quickstep_lookup()
+        self.assertEqual(sum(c[:2]==('shell','uiautomator') for c in calls),2)
+        self.assertEqual([c for c in calls if c[:3]==('shell','input','tap')],[('shell','input','tap',640,345)])
+
+    def test_quickstep_recovery_cannot_hide_game_anr_restart_fatal_or_persistent_dialog(self):
+        for title in ["Dominion isn't responding", "Other app isn't responding"]:
+            with self.assertRaisesRegex(AssertionError,'Game/unknown ANR'):self.quickstep_lookup(title=title)
+        with self.assertRaisesRegex(AssertionError,'died/restarted'):self.quickstep_lookup(pid='43')
+        with self.assertRaisesRegex(AssertionError,'Fatal error'):self.quickstep_lookup(logs='FATAL EXCEPTION: main')
+        with self.assertRaisesRegex(AssertionError,'Persistent external Quickstep ANR'):self.quickstep_lookup(persistent=True)
+
     def test_disabled_pressable_cannot_be_tapped_through_its_enabled_text_child(self):
         root=ET.fromstring('<hierarchy><node content-desc="Продолжить" enabled="false"><node text="Продолжить" enabled="true" /></node></hierarchy>')
         self.assertIsNone(module.find_enabled_control(root,'Продолжить'))

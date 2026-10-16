@@ -58,7 +58,32 @@ def dump_hierarchy(adb, package, output, name, device_path, pause=time.sleep):
                 raise HierarchyNotWritten(result)
             xml = adb('shell', 'cat', device_path, timeout=10)
             (output / (name + '.xml')).write_text(xml)
-            return ET.fromstring(xml)
+            root = ET.fromstring(xml)
+            # The disposable SDK launcher can ANR during app restoration. This
+            # lookup runs outside timed gestures. Only its exact external
+            # dialog may be closed; a Dominion/unknown ANR remains a failure.
+            anr = [n for n in root.iter('node') if n.get('resource-id') == 'android:id/aerr_close']
+            if anr:
+                titles = [n for n in root.iter('node') if n.get('resource-id') == 'android:id/alertTitle']
+                assert len(titles) == 1 and titles[0].get('package') == 'android' and titles[0].get('text') == "Quickstep isn't responding", 'Game/unknown ANR during accessibility lookup: ' + name
+                button = anr[0]
+                assert len(anr) == 1 and button.get('package') == 'android' and button.get('text') == 'Close app' and button.get('clickable') == 'true' and button.get('enabled') == 'true', 'Unexpected external ANR close control'
+                bounds = re.fullmatch(r'\[(\d+),(\d+)\]\[(\d+),(\d+)\]', button.get('bounds', ''))
+                assert bounds, 'Invalid external ANR close bounds'
+                x1,y1,x2,y2 = map(int,bounds.groups())
+                assert x2 > x1 and y2 > y1, 'Empty external ANR close bounds'
+                (output / (name + '-external-quickstep-anr-' + str(attempt) + '.xml')).write_text(xml)
+                assert adb('shell', 'pidof', package).strip() == expected_pid, 'Game died/restarted during accessibility lookup: ' + name
+                logs = adb('logcat', '-d')
+                (output / (name + '-external-quickstep-anr-' + str(attempt) + '.txt')).write_text(logs)
+                assert_no_game_fatal(logs, expected_pid)
+                assert attempt < 2, 'Persistent external Quickstep ANR: ' + name
+                adb('shell', 'input', 'tap', (x1+x2)//2, (y1+y2)//2, timeout=10)
+                print('Closed verified external Quickstep ANR outside timed gestures:', name, flush=True)
+                pause(2)
+                assert adb('shell', 'pidof', package).strip() == expected_pid, 'Game died/restarted during accessibility lookup: ' + name
+                continue
+            return root
         except (subprocess.CalledProcessError, subprocess.TimeoutExpired, HierarchyNotWritten) as error:
             if isinstance(error, subprocess.CalledProcessError) and error.returncode != 137:
                 raise
