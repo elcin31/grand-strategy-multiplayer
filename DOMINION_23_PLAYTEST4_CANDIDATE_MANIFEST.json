@@ -51,7 +51,9 @@
       "inputs": {
         "apk_run_id": "39202657844"
       },
-      "createdAt": "2026-10-19T05:26:28Z"
+      "createdAt": "2026-10-19T05:26:28Z",
+      "status": "passed",
+      "proof": "DOMINION_23_PLAYTEST4_INTERACTION_PROOF.json"
     },
     "lod": {
       "runId": 39204580310,
@@ -88,6 +90,16 @@
       "status": "passed",
       "proof": "DOMINION_23_PLAYTEST4_NATIVE_ONLINE_PROOF.json",
       "qaRoomCleanupVerified": true
+    },
+    "heavyEntityStress": {
+      "runId": 39206232320,
+      "armies": 500,
+      "activeConstructions": 131,
+      "queuedConstructions": 109,
+      "activeFocuses": 60,
+      "cashSpent": 42000,
+      "fixtureChecksum": "6a83b00b",
+      "status": "running"
     }
   },
   "sourceTestsPassed": 409,
