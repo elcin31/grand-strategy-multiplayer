@@ -51,5 +51,24 @@
       "receipts": 0
     }
   },
-  "repeatedCameraResult": "DOMINION_23_PLAYTEST3_CAMERA_REJECTED.json"
+  "repeatedCameraResult": "DOMINION_23_PLAYTEST3_CAMERA_REJECTED.json",
+  "nativeOnlineAttempt3": {
+    "runId": 39202207850,
+    "status": "failed",
+    "artifactId": 12164770720,
+    "artifactSha256": "73d7e9c7592a0b2e1f8ef418e69f1a7b1d77fe50be5847cd3a8cc1b64793973d",
+    "confirmedNativeActions": [
+      "pause acknowledged by native HUD and authoritative snapshot",
+      "single paid focus reflected by actual native running-focus card and PP decrease"
+    ],
+    "failure": "The independent unallied France snapshot correctly redacts Germany nationalFocus and treasury; harness misclassified the redaction as a missing payment. Native failure screenshot shows the focus running.",
+    "fix": "Select the registered Rhine allied scenario through the actual native host control, then require Detailed peer intelligence before checking exact private costs/project. Replace obsolete menu exit and turn-label assumptions with actual Android Back and paused HUD acknowledgement.",
+    "testRoomId": "bebe8645-93c9-4e4f-93b2-e4ae8e6d1102",
+    "scopedCleanupVerified": {
+      "rooms": 0,
+      "players": 0,
+      "receipts": 0
+    },
+    "repeatBranch": "dominion-2.3-native31-qa"
+  }
 }

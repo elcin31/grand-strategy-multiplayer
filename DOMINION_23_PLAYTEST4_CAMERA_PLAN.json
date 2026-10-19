@@ -1,0 +1,21 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "specifiedAtUtc": "2026-10-19T05:08:24.493169Z",
+  "compiledSourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
+  "candidateVersionName": "2.3.0-playtest.4",
+  "candidateVersionCode": 32,
+  "candidateApkSha256": "PENDING_BUILD_ARTIFACT",
+  "baselineApkSha256": "7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764",
+  "prespecifiedPairCount": 3,
+  "pairs": [
+    {
+      "runId": 39202657844,
+      "directory": "matrix-build"
+    }
+  ],
+  "remainingPairRule": "Dispatch exactly two frozen-APK full-matrix repetitions after build-candidate succeeds. Record their run IDs and the binary digest before examining any candidate4 camera results. No replacement of valid adverse pairs.",
+  "tailRatioLimit": 1.1,
+  "memoryLimitKiB": 32768,
+  "method": "Pool every valid device-input-scoped actual presentation interval from all three complete pairs per scenario/APK. Preserve all individual gate results. No best-run selection, frame removal, quantile averaging, smoothing or changed threshold. Every pair must satisfy the existing memory limit.",
+  "physicalRedmiTest": false
+}
