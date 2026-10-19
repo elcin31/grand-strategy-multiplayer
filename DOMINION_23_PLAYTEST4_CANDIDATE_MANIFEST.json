@@ -1,0 +1,90 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "status": "built-native-validation-running",
+  "compiledSourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
+  "validationSourceSha": "7352cc869e52dc448cdf53ab2786338c468d5c45",
+  "versionName": "2.3.0-playtest.4",
+  "versionCode": 32,
+  "buildRunId": 39202657844,
+  "buildJobId": 117898740096,
+  "artifactId": 12165455852,
+  "artifactSha256": "bb0fda96ed661f94ca52d54c192b04c74077895ba2da1c869155b54ead8cbd84",
+  "apk": {
+    "sha256": "bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a",
+    "bytes": 174268850,
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "embeddedHermesBundleBytes": 11393548
+  },
+  "cameraPlan": "DOMINION_23_PLAYTEST4_CAMERA_PLAN.json",
+  "frozenApkChecks": {
+    "matrix-repeat1": {
+      "runId": 39204552255,
+      "headSha": "7352cc869e52dc448cdf53ab2786338c468d5c45",
+      "workflow": "dominion23-validation.yml",
+      "inputs": {
+        "apk_run_id": "39202657844",
+        "full_matrix_only": "true"
+      },
+      "createdAt": "2026-10-19T05:26:16Z"
+    },
+    "matrix-repeat2": {
+      "runId": 39204560760,
+      "headSha": "7352cc869e52dc448cdf53ab2786338c468d5c45",
+      "workflow": "dominion23-validation.yml",
+      "inputs": {
+        "apk_run_id": "39202657844",
+        "full_matrix_only": "true"
+      },
+      "createdAt": "2026-10-19T05:26:22Z"
+    },
+    "interaction-monthly": {
+      "runId": 39204568939,
+      "headSha": "7352cc869e52dc448cdf53ab2786338c468d5c45",
+      "workflow": "dominion23-validation.yml",
+      "inputs": {
+        "apk_run_id": "39202657844"
+      },
+      "createdAt": "2026-10-19T05:26:28Z"
+    },
+    "lod": {
+      "runId": 39204580310,
+      "headSha": "7352cc869e52dc448cdf53ab2786338c468d5c45",
+      "workflow": "dominion23-validation.yml",
+      "inputs": {
+        "apk_run_id": "39202657844",
+        "lod_only": "true"
+      },
+      "createdAt": "2026-10-19T05:26:36Z"
+    },
+    "gameplay": {
+      "runId": 39204591052,
+      "headSha": "7352cc869e52dc448cdf53ab2786338c468d5c45",
+      "workflow": "dominion23-validation.yml",
+      "inputs": {
+        "apk_run_id": "39202657844",
+        "gameplay_only": "true"
+      },
+      "createdAt": "2026-10-19T05:26:43Z"
+    },
+    "native-online": {
+      "runId": 39204599017,
+      "headSha": "7352cc869e52dc448cdf53ab2786338c468d5c45",
+      "workflow": "android-online-qa.yml",
+      "inputs": {
+        "apk_run_id": "39202657844"
+      },
+      "createdAt": "2026-10-19T05:26:49Z"
+    }
+  },
+  "sourceTestsPassed": 409,
+  "daily10000Passed": true,
+  "monthly10000Passed": false,
+  "releaseAccepted": false
+}

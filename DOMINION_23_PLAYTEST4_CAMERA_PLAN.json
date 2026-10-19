@@ -4,18 +4,28 @@
   "compiledSourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
   "candidateVersionName": "2.3.0-playtest.4",
   "candidateVersionCode": 32,
-  "candidateApkSha256": "PENDING_BUILD_ARTIFACT",
+  "candidateApkSha256": "bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a",
   "baselineApkSha256": "7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764",
   "prespecifiedPairCount": 3,
   "pairs": [
     {
       "runId": 39202657844,
       "directory": "matrix-build"
+    },
+    {
+      "runId": 39204552255,
+      "directory": "matrix-repeat1"
+    },
+    {
+      "runId": 39204560760,
+      "directory": "matrix-repeat2"
     }
   ],
-  "remainingPairRule": "Dispatch exactly two frozen-APK full-matrix repetitions after build-candidate succeeds. Record their run IDs and the binary digest before examining any candidate4 camera results. No replacement of valid adverse pairs.",
+  "remainingPairRule": "Both immutable repetitions dispatched and IDs recorded before observing candidate4 camera metrics; all three original pairs are mandatory.",
   "tailRatioLimit": 1.1,
   "memoryLimitKiB": 32768,
   "method": "Pool every valid device-input-scoped actual presentation interval from all three complete pairs per scenario/APK. Preserve all individual gate results. No best-run selection, frame removal, quantile averaging, smoothing or changed threshold. Every pair must satisfy the existing memory limit.",
-  "physicalRedmiTest": false
+  "physicalRedmiTest": false,
+  "validationSourceSha": "7352cc869e52dc448cdf53ab2786338c468d5c45",
+  "runIdsAndBinaryBoundAtUtc": "2026-10-19T05:30:23.903827Z"
 }
