@@ -58,6 +58,7 @@ class NativeOnlineValidationTest(unittest.TestCase):
         return {'version': 11, 'checksum': 'a1b2c3d4', 'state': {
             'id': 'native-room', 'stateVersion': CLIENT_STATE_VERSION, 'speed': 0, 'phase': 'paused', 'tick': 3,
             'countries': {**{str(i): {} for i in range(194)}, 'germany': {
+                'intelligenceLevel': 'Detailed',
                 'treasury': 1000, 'politicalPower': 44, 'completedFocuses': [],
                 'nationalFocus': {'focusId': 'eco-audit', 'progress': 0, 'startedTick': 3}}},
             'provinces': [{}]*2924, 'cities': [{}]*5411,
@@ -76,6 +77,7 @@ class NativeOnlineValidationTest(unittest.TestCase):
                        lambda x: x['state']['players'][0].update(countryId='france'),
                        lambda x: x['state']['players'][0].update(aiControlled=True),
                        lambda x: x['state']['players'][0].update(connected=False),
+                       lambda x: x['state']['countries']['germany'].update(intelligenceLevel='Estimate'),
                        lambda x: x['state']['players'].append({'id': 'duplicate'}),
                        lambda x: x['state'].update(speed=1),
                        lambda x: x['state'].update(phase='running'),

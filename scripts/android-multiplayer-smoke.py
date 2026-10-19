@@ -246,6 +246,19 @@ def guest_command(kind, **fields):
     return request('game-command', body)[0]
 
 
+# Use the registered allied scenario through the real native host control.
+# An unrelated country's snapshot correctly redacts the host's treasury and
+# focus. Its absence must never be mistaken for a lost native payment.
+scenario_id='rhine-reconstruction-compact'
+scenario_name=subprocess.check_output(['node','--import','tsx','-e',
+    "console.log(require('./supabase/functions/_shared/scenarioSystem.ts').SCENARIOS.find(s=>s.id==='rhine-reconstruction-compact').name)"],text=True).strip()
+click(scenario_name)
+for attempt in range(10):
+    observed=snapshot()['state']
+    if observed.get('scenario',{}).get('id')==scenario_id:break
+    time.sleep(2)
+else:raise AssertionError('Native host scenario selection was not acknowledged')
+assert 'Alliance' in observed['diplomacy']['france|germany']['treaties']
 guest_command('SELECT_COUNTRY', countryId='france')
 guest_command('SET_READY', ready=True)
 click('СТРАНЫ · 195')
@@ -296,7 +309,8 @@ def reconnect(name):
     launch(); click('Мультиплеер'); click('Вернуться · '+room_code, scroll=True)
     for attempt in range(20):
         tree = hierarchy(name+'-'+str(attempt))
-        if any(n.get('text', '').startswith('Ход ') for n in tree.iter('node')): break
+        if any(n.get('content-desc')=='Продолжить' and native_control_bounds(tree,n) is not None
+               for n in tree.iter('node')): break
         time.sleep(2)
     else: raise AssertionError('Original native multiplayer session did not reconnect')
     current = assert_online_campaign(snapshot(), room_id, native_id, 'germany')
@@ -307,7 +321,8 @@ def reconnect(name):
     return current
 
 
-click('ВЫЙТИ')
+click('Закрыть окно')
+adb('shell','input','keyevent','4')
 tap_node(exit_confirmation_button(hierarchy('native-exit-confirmation')))
 time.sleep(2)
 reconnect('03-menu-reconnect')
@@ -338,6 +353,7 @@ final = reconnect('06-reboot-reconnect')
 assert not guest_heartbeat_errors, 'Actual guest heartbeat failed during native flow'
 assert_no_game_fatal(logs(), ' '.join(game_pids))
 report = {'roomId': room_id, 'qaName': QA_NAME, 'stateVersion': final['stateVersion'],
+          'nativeScenario': scenario_id, 'peerIntelligence': 'Detailed via actual scenario Alliance',
           'apkSha256': hashlib.sha256(Path(sys.argv[1]).read_bytes()).hexdigest(),
           'nativeCreate': True, 'nativeCountrySelection': 'germany', 'serverPaused': True,
           'nativePaidFocus': 'eco-audit', 'menuReconnect': True, 'processReconnect': True,
