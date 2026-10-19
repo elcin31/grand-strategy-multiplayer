@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "apkSha256": "bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a",
+  "checks": [
+    "candidate cold launch and actual original scenario restore",
+    "visible paid event decision, exact cash/PP cost, one history entry and dynamic focus unlock",
+    "event in filtered world chronicle opens the actual country window and focuses its capital",
+    "actual conditional economic forecast and saved opt-in automation toggle",
+    "five political groups, original focus tree, paid course and Android Back",
+    "exact save/process restart/restore, camera interaction after closing windows, no fatal logs"
+  ],
+  "emulatorOnly": true,
+  "physicalRedmiTest": false,
+  "workflowRunId": 39204591052,
+  "workflowJobId": 117904562921,
+  "artifactId": 12164894478,
+  "artifactSha256": "54285189cdce06d4745d0f174b894ee57113c714dad1065d18b481e7e4e11932",
+  "originalReportSha256": "d68ca9b3ae2f8ed7e08af31fe7c5a92a890c12b02bd147ceb5a33eb2a391ce4a"
+}

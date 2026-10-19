@@ -1,0 +1,3537 @@
+{
+  "apkSha256": "bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a",
+  "workflowRunId": 39204580310,
+  "workflowJobId": 117904531026,
+  "artifactId": 12164984436,
+  "artifactSha256": "967deb1a24dff1ba4e7704f12a93d919290ae32d9209e4c312087f8787f54683",
+  "result": {
+    "stagedWorldRegionProvince": true,
+    "traceSha256": "64ca58876caea23f70dd42f7d854d3dc7df9a428ab3af8d9f73ea47dc64a8200",
+    "noFatalLogs": true,
+    "physicalRedmiTest": false
+  },
+  "frameTimeline": {
+    "lod-baseline": {
+      "traceSha256": "1ac3e9bd0bd22fe5899477f2ca65e11df34573924fcdf338405278c82bc8e485",
+      "scopedCompleteFrames": 244,
+      "p50Ms": 13.934243,
+      "p95Ms": 25.419191,
+      "p99Ms": 34.718429,
+      "latePresentedFrames": 236,
+      "jankTypes": [
+        "App Deadline Missed",
+        "App Deadline Missed, Buffer Stuffing",
+        "Buffer Stuffing, SurfaceFlinger Stuffing",
+        "Prediction Error",
+        "Prediction Error, App Deadline Missed",
+        "Prediction Error, App Deadline Missed, Buffer Stuffing",
+        "Prediction Error, Buffer Stuffing",
+        "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+        "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+        "SurfaceFlinger CPU Deadline Missed, Buffer Stuffing"
+      ],
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "rows": [
+        {
+          "token": 29704,
+          "ms": 12.901568,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29711,
+          "ms": 17.780356,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29726,
+          "ms": 14.097051,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29742,
+          "ms": 19.914297,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29756,
+          "ms": 15.303826,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29771,
+          "ms": 10.594018,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29779,
+          "ms": 15.321116,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29794,
+          "ms": 15.175293,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29824,
+          "ms": 11.801942,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29839,
+          "ms": 11.384145,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29854,
+          "ms": 15.059913,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29869,
+          "ms": 25.890307,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29877,
+          "ms": 15.29526,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29892,
+          "ms": 16.497931,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29907,
+          "ms": 18.364923,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29922,
+          "ms": 14.358851,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 29931,
+          "ms": 20.91217,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30051,
+          "ms": 15.877542,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30058,
+          "ms": 25.419191,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30066,
+          "ms": 13.213138,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30074,
+          "ms": 15.007306,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30082,
+          "ms": 18.41074,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30090,
+          "ms": 11.815222,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30098,
+          "ms": 29.080811,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30106,
+          "ms": 12.00015,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30114,
+          "ms": 13.023481,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 30333,
+          "ms": 10.30812,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30348,
+          "ms": 15.396992,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30362,
+          "ms": 15.056315,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30370,
+          "ms": 8.933128,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30379,
+          "ms": 14.390197,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30387,
+          "ms": 14.361015,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30394,
+          "ms": 12.004766,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30403,
+          "ms": 10.592519,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30411,
+          "ms": 11.308448,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30418,
+          "ms": 9.793142,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30427,
+          "ms": 14.356822,
+          "jank": "App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30434,
+          "ms": 16.181096,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30442,
+          "ms": 8.839539,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30451,
+          "ms": 11.318459,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30466,
+          "ms": 10.742528,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30474,
+          "ms": 14.729523,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30481,
+          "ms": 10.473994,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30489,
+          "ms": 13.417244,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30497,
+          "ms": 14.235871,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30505,
+          "ms": 17.353038,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30513,
+          "ms": 11.696372,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30522,
+          "ms": 11.071567,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30530,
+          "ms": 15.702122,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30537,
+          "ms": 18.065248,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 30658,
+          "ms": 13.934243,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30674,
+          "ms": 10.492605,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30681,
+          "ms": 21.852634,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30689,
+          "ms": 10.806771,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30698,
+          "ms": 10.841561,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30705,
+          "ms": 14.93941,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30713,
+          "ms": 17.758133,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30721,
+          "ms": 22.514924,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30729,
+          "ms": 7.779208,
+          "jank": "App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30746,
+          "ms": 11.61674,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30754,
+          "ms": 13.876734,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30761,
+          "ms": 17.058596,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30769,
+          "ms": 14.891881,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30777,
+          "ms": 21.508184,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 30919,
+          "ms": 8.873574,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 30948,
+          "ms": 8.210172,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30956,
+          "ms": 11.365038,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30963,
+          "ms": 19.965728,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30971,
+          "ms": 8.070556,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30979,
+          "ms": 21.319795,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30987,
+          "ms": 10.172244,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 30995,
+          "ms": 16.72319,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31004,
+          "ms": 15.191502,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31012,
+          "ms": 10.781385,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31019,
+          "ms": 22.082836,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31027,
+          "ms": 10.317727,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31035,
+          "ms": 17.799114,
+          "jank": "SurfaceFlinger CPU Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 31043,
+          "ms": 19.862352,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31058,
+          "ms": 22.008785,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31066,
+          "ms": 9.949874,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31075,
+          "ms": 16.772974,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31082,
+          "ms": 10.831825,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31091,
+          "ms": 14.502489,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31098,
+          "ms": 20.331094,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31106,
+          "ms": 12.340651,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31114,
+          "ms": 9.270173,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31123,
+          "ms": 13.411429,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31130,
+          "ms": 22.055841,
+          "jank": "SurfaceFlinger CPU Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 31146,
+          "ms": 9.62145,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 31189,
+          "ms": 8.960648,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 31197,
+          "ms": 20.864497,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31296,
+          "ms": 10.101916,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31303,
+          "ms": 14.093589,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31311,
+          "ms": 15.691206,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31319,
+          "ms": 9.880346,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31327,
+          "ms": 12.334072,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31335,
+          "ms": 11.009073,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31343,
+          "ms": 13.303893,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31352,
+          "ms": 11.37924,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31360,
+          "ms": 7.903867,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31368,
+          "ms": 12.051469,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31376,
+          "ms": 12.569209,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31383,
+          "ms": 16.048103,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 31631,
+          "ms": 8.843733,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31639,
+          "ms": 15.793801,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31646,
+          "ms": 9.463875,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31654,
+          "ms": 13.667611,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31662,
+          "ms": 11.428668,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31679,
+          "ms": 18.950659,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31686,
+          "ms": 8.712608,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31695,
+          "ms": 11.132628,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31702,
+          "ms": 9.591865,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31710,
+          "ms": 15.30365,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31734,
+          "ms": 9.907423,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31741,
+          "ms": 12.161385,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31757,
+          "ms": 18.93727,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31771,
+          "ms": 15.683019,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31779,
+          "ms": 12.962179,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31787,
+          "ms": 15.624508,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31802,
+          "ms": 14.930413,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31818,
+          "ms": 7.998126,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31826,
+          "ms": 7.029867,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31834,
+          "ms": 17.731532,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31954,
+          "ms": 11.172209,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31962,
+          "ms": 11.672487,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31970,
+          "ms": 8.948975,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31977,
+          "ms": 9.977441,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31985,
+          "ms": 12.312725,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 31994,
+          "ms": 10.00471,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32001,
+          "ms": 10.118071,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32010,
+          "ms": 21.569996,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32193,
+          "ms": 7.775241,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 32264,
+          "ms": 10.411976,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32271,
+          "ms": 14.19535,
+          "jank": "App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32286,
+          "ms": 16.412405,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32301,
+          "ms": 11.281683,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32309,
+          "ms": 12.181525,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32318,
+          "ms": 17.310569,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32332,
+          "ms": 11.763951,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32348,
+          "ms": 14.157773,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32362,
+          "ms": 13.614229,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32377,
+          "ms": 7.587516,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32393,
+          "ms": 11.328076,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32400,
+          "ms": 8.123585,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32416,
+          "ms": 11.470521,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32423,
+          "ms": 14.484531,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32431,
+          "ms": 15.523746,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32446,
+          "ms": 25.336678,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32454,
+          "ms": 9.907567,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32462,
+          "ms": 7.318478,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32471,
+          "ms": 19.274099,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 32899,
+          "ms": 8.53194,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 33152,
+          "ms": 13.884157,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33159,
+          "ms": 19.782176,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33167,
+          "ms": 24.30953,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33175,
+          "ms": 21.779962,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33183,
+          "ms": 18.886105,
+          "jank": "Buffer Stuffing, SurfaceFlinger Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 33199,
+          "ms": 18.579176,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33206,
+          "ms": 8.64737,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33214,
+          "ms": 24.033228,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33222,
+          "ms": 12.422317,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33237,
+          "ms": 23.849544,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 33245,
+          "ms": 15.748218,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33260,
+          "ms": 14.073683,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33275,
+          "ms": 13.574901,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33284,
+          "ms": 14.607625,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33291,
+          "ms": 15.108937,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33299,
+          "ms": 13.318385,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33307,
+          "ms": 12.716143,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33323,
+          "ms": 15.345664,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33330,
+          "ms": 26.85659,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33338,
+          "ms": 26.91971,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 33353,
+          "ms": 20.241833,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 33376,
+          "ms": 10.21148,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33383,
+          "ms": 11.746779,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 33490,
+          "ms": 17.290025,
+          "jank": "App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33497,
+          "ms": 89.477132,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33513,
+          "ms": 9.778266,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33520,
+          "ms": 27.348709,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33528,
+          "ms": 30.515597,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33536,
+          "ms": 20.384017,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33544,
+          "ms": 17.407923,
+          "jank": "SurfaceFlinger CPU Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 33552,
+          "ms": 22.28637,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33560,
+          "ms": 50.195367,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33576,
+          "ms": 19.602277,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33583,
+          "ms": 19.186027,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33591,
+          "ms": 26.069269,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33599,
+          "ms": 20.726905,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33607,
+          "ms": 15.49614,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33616,
+          "ms": 19.112975,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33623,
+          "ms": 16.878248,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33631,
+          "ms": 9.609436,
+          "jank": "App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33640,
+          "ms": 9.70904,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33648,
+          "ms": 15.123393,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33655,
+          "ms": 25.625414,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 33748,
+          "ms": 9.871859,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 33840,
+          "ms": 12.911915,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33847,
+          "ms": 19.676325,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33855,
+          "ms": 22.951557,
+          "jank": "App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33863,
+          "ms": 11.666106,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33872,
+          "ms": 11.72856,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33879,
+          "ms": 18.095655,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33887,
+          "ms": 23.618139,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33895,
+          "ms": 18.339251,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33903,
+          "ms": 10.142925,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33912,
+          "ms": 9.170132,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33920,
+          "ms": 12.945331,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33928,
+          "ms": 19.298116,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33935,
+          "ms": 11.458996,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33944,
+          "ms": 12.138606,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33958,
+          "ms": 18.623126,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33974,
+          "ms": 16.604148,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33981,
+          "ms": 13.881859,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33989,
+          "ms": 15.185023,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 33997,
+          "ms": 16.047184,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34005,
+          "ms": 13.76469,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34029,
+          "ms": 14.645879,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34044,
+          "ms": 12.595912,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34051,
+          "ms": 20.058005,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34059,
+          "ms": 32.580188,
+          "jank": "SurfaceFlinger CPU Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 34067,
+          "ms": 34.718429,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34482,
+          "ms": 9.911156,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 34771,
+          "ms": 15.246729,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34778,
+          "ms": 9.900754,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34787,
+          "ms": 10.707994,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34794,
+          "ms": 13.621112,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34802,
+          "ms": 12.534859,
+          "jank": "App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34818,
+          "ms": 13.084721,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34826,
+          "ms": 11.671138,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34833,
+          "ms": 8.284061,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34841,
+          "ms": 12.771578,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34856,
+          "ms": 15.226035,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34871,
+          "ms": 11.720616,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34879,
+          "ms": 17.542224,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34887,
+          "ms": 15.121919,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34902,
+          "ms": 12.846759,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34910,
+          "ms": 14.651211,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34919,
+          "ms": 14.290988,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34927,
+          "ms": 13.783009,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34934,
+          "ms": 13.243836,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34942,
+          "ms": 12.863229,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34951,
+          "ms": 10.62341,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 34959,
+          "ms": 23.488927,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 35177,
+          "ms": 7.364716,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        }
+      ],
+      "physicalRedmiTest": false,
+      "note": "Complete actual Android App FrameTimeline durations inside only the real staged input marker. Fixed .8s preparation pauses produce no synthetic stutters. These are not physical FPS, isolated hardware GPU times or the primary continuous-gesture benchmark."
+    },
+    "lod-candidate": {
+      "traceSha256": "64ca58876caea23f70dd42f7d854d3dc7df9a428ab3af8d9f73ea47dc64a8200",
+      "scopedCompleteFrames": 250,
+      "p50Ms": 13.108195,
+      "p95Ms": 23.478923,
+      "p99Ms": 30.816735,
+      "latePresentedFrames": 241,
+      "jankTypes": [
+        "App Deadline Missed",
+        "App Deadline Missed, Buffer Stuffing",
+        "Prediction Error",
+        "Prediction Error, App Deadline Missed",
+        "Prediction Error, App Deadline Missed, Buffer Stuffing",
+        "Prediction Error, Buffer Stuffing",
+        "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+        "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+        "SurfaceFlinger CPU Deadline Missed, Buffer Stuffing"
+      ],
+      "traceLossOrErrors": [
+        {
+          "name": "ftrace_setup_errors",
+          "index": null,
+          "value": 36,
+          "severity": "info"
+        }
+      ],
+      "rows": [
+        {
+          "token": 68516,
+          "ms": 16.150311,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68523,
+          "ms": 13.661673,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68538,
+          "ms": 9.786056,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68562,
+          "ms": 18.193879,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68569,
+          "ms": 10.298569,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68578,
+          "ms": 9.555003,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68585,
+          "ms": 10.674156,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68593,
+          "ms": 16.472755,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68608,
+          "ms": 19.64224,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68616,
+          "ms": 8.034578,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68625,
+          "ms": 9.39937,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68632,
+          "ms": 21.410571,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68640,
+          "ms": 12.088349,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68656,
+          "ms": 14.51003,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68663,
+          "ms": 13.724651,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68671,
+          "ms": 11.107461,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68686,
+          "ms": 22.07822,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68694,
+          "ms": 15.713463,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 68738,
+          "ms": 10.796911,
+          "jank": "App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68746,
+          "ms": 18.29677,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68803,
+          "ms": 13.981409,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68811,
+          "ms": 13.649636,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68818,
+          "ms": 15.946141,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68826,
+          "ms": 11.73719,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68834,
+          "ms": 9.586075,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68843,
+          "ms": 11.441393,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68850,
+          "ms": 14.22647,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68859,
+          "ms": 11.220561,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 68866,
+          "ms": 6.9345,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 69162,
+          "ms": 10.138613,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69185,
+          "ms": 14.863586,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69200,
+          "ms": 10.071957,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69214,
+          "ms": 14.0785,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69222,
+          "ms": 13.220451,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69230,
+          "ms": 11.47782,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69238,
+          "ms": 11.722438,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69247,
+          "ms": 14.337183,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69254,
+          "ms": 11.132251,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69263,
+          "ms": 20.140707,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69270,
+          "ms": 7.666339,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69278,
+          "ms": 18.767148,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 69301,
+          "ms": 11.524634,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69316,
+          "ms": 10.004765,
+          "jank": "App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69324,
+          "ms": 11.643685,
+          "jank": "App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69331,
+          "ms": 12.759001,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69339,
+          "ms": 9.478783,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69347,
+          "ms": 13.591182,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69355,
+          "ms": 9.298204,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69371,
+          "ms": 7.062816,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69379,
+          "ms": 9.786268,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69387,
+          "ms": 19.969736,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69514,
+          "ms": 11.408602,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69522,
+          "ms": 10.465184,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69530,
+          "ms": 12.778657,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69537,
+          "ms": 21.163736,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69545,
+          "ms": 15.87525,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69553,
+          "ms": 15.879637,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69561,
+          "ms": 16.588244,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69569,
+          "ms": 19.13223,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69577,
+          "ms": 18.349571,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69585,
+          "ms": 19.938424,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69593,
+          "ms": 20.727359,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69601,
+          "ms": 19.931495,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69609,
+          "ms": 27.738117,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69617,
+          "ms": 24.256459,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69625,
+          "ms": 25.365994,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69633,
+          "ms": 17.122341,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69642,
+          "ms": 8.435104,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69650,
+          "ms": 21.599825,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69784,
+          "ms": 10.351928,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69792,
+          "ms": 11.149579,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69799,
+          "ms": 7.773775,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69807,
+          "ms": 12.413726,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69824,
+          "ms": 12.992916,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69832,
+          "ms": 13.278487,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69839,
+          "ms": 15.223938,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69847,
+          "ms": 13.964971,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69864,
+          "ms": 8.659951,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69871,
+          "ms": 12.050059,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69879,
+          "ms": 24.028776,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69910,
+          "ms": 11.848505,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69917,
+          "ms": 8.866634,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69925,
+          "ms": 13.168969,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69940,
+          "ms": 14.547149,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69955,
+          "ms": 9.158585,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69963,
+          "ms": 11.305852,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69978,
+          "ms": 14.078552,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69986,
+          "ms": 13.121915,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 69994,
+          "ms": 9.009649,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70002,
+          "ms": 9.804316,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 70123,
+          "ms": 12.319308,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70130,
+          "ms": 11.824951,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70138,
+          "ms": 13.108195,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70146,
+          "ms": 15.442214,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70154,
+          "ms": 14.58505,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70162,
+          "ms": 23.208058,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70170,
+          "ms": 12.723144,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70178,
+          "ms": 11.89274,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70186,
+          "ms": 26.065231,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70194,
+          "ms": 9.723394,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70202,
+          "ms": 10.266584,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 70449,
+          "ms": 14.32204,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70456,
+          "ms": 10.11599,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70464,
+          "ms": 21.615607,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70472,
+          "ms": 16.810903,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70480,
+          "ms": 10.453672,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70489,
+          "ms": 10.951217,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70496,
+          "ms": 11.021027,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70504,
+          "ms": 8.286532,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70513,
+          "ms": 12.935638,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70520,
+          "ms": 14.936878,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70528,
+          "ms": 10.217287,
+          "jank": "App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70537,
+          "ms": 7.928414,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70545,
+          "ms": 8.686727,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70553,
+          "ms": 12.322557,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70569,
+          "ms": 14.394694,
+          "jank": "App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70576,
+          "ms": 12.836471,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70584,
+          "ms": 15.393512,
+          "jank": "App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70599,
+          "ms": 12.306838,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70607,
+          "ms": 9.539165,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70616,
+          "ms": 7.873927,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70624,
+          "ms": 17.828546,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70702,
+          "ms": 8.030615,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 70745,
+          "ms": 15.172364,
+          "jank": "App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70752,
+          "ms": 14.681129,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 70768,
+          "ms": 10.984164,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70784,
+          "ms": 11.313357,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70792,
+          "ms": 8.279172,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70799,
+          "ms": 8.653139,
+          "jank": "App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70808,
+          "ms": 22.131972,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 70900,
+          "ms": 12.514869,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 71104,
+          "ms": 11.035365,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71111,
+          "ms": 15.744333,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71119,
+          "ms": 15.870939,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71135,
+          "ms": 16.308273,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71142,
+          "ms": 15.651034,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71158,
+          "ms": 12.631887,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71172,
+          "ms": 9.93194,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71188,
+          "ms": 14.643431,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71202,
+          "ms": 13.910229,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71218,
+          "ms": 15.467678,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71232,
+          "ms": 11.793827,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71248,
+          "ms": 10.809184,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71256,
+          "ms": 7.856225,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71264,
+          "ms": 10.350211,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71272,
+          "ms": 14.935548,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71279,
+          "ms": 11.907974,
+          "jank": "App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71294,
+          "ms": 19.145809,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71309,
+          "ms": 13.741417,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71317,
+          "ms": 9.771368,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 71325,
+          "ms": 10.873253,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 71544,
+          "ms": 7.775318,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 71972,
+          "ms": 12.957681,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 71994,
+          "ms": 15.50541,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72002,
+          "ms": 8.37639,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72010,
+          "ms": 13.581913,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72026,
+          "ms": 20.338237,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72033,
+          "ms": 34.074354,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72049,
+          "ms": 18.603686,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72056,
+          "ms": 17.265575,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72064,
+          "ms": 15.375915,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72072,
+          "ms": 12.632321,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72087,
+          "ms": 17.23098,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72095,
+          "ms": 12.071958,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72104,
+          "ms": 30.816735,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72111,
+          "ms": 9.904089,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72119,
+          "ms": 9.06587,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72128,
+          "ms": 9.140407,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72135,
+          "ms": 9.598,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72144,
+          "ms": 14.249067,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72151,
+          "ms": 14.798273,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72166,
+          "ms": 13.451532,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72174,
+          "ms": 13.631091,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72182,
+          "ms": 17.358167,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72190,
+          "ms": 6.398077,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72199,
+          "ms": 14.205213,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 72242,
+          "ms": 6.267647,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 72250,
+          "ms": 18.833871,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72349,
+          "ms": 7.790434,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72356,
+          "ms": 22.926433,
+          "jank": "App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72364,
+          "ms": 23.831434,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72372,
+          "ms": 23.478923,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 72388,
+          "ms": 9.424517,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72395,
+          "ms": 15.892626,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72403,
+          "ms": 21.552792,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72411,
+          "ms": 16.855421,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72419,
+          "ms": 8.85738,
+          "jank": "App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72427,
+          "ms": 23.850607,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72435,
+          "ms": 12.203258,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72443,
+          "ms": 13.361762,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72452,
+          "ms": 8.682893,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72459,
+          "ms": 24.673196,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72467,
+          "ms": 19.15408,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72475,
+          "ms": 27.538441,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 72483,
+          "ms": 22.136725,
+          "jank": "SurfaceFlinger CPU Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 72499,
+          "ms": 11.780764,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72507,
+          "ms": 15.497636,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72522,
+          "ms": 8.514301,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72531,
+          "ms": 9.669496,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72538,
+          "ms": 11.978455,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72546,
+          "ms": 20.455004,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 72695,
+          "ms": 11.909996,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72703,
+          "ms": 10.283141,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72710,
+          "ms": 22.432543,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72718,
+          "ms": 7.838336,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72726,
+          "ms": 21.434711,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72734,
+          "ms": 15.426331,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72742,
+          "ms": 9.486818,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72750,
+          "ms": 20.766401,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72758,
+          "ms": 14.038397,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72766,
+          "ms": 14.657264,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72774,
+          "ms": 21.000719,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72782,
+          "ms": 9.499941,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72790,
+          "ms": 18.743593,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72798,
+          "ms": 16.231553,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72806,
+          "ms": 13.350117,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72814,
+          "ms": 14.408852,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72829,
+          "ms": 12.155611,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72845,
+          "ms": 16.477982,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72852,
+          "ms": 21.321032,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72869,
+          "ms": 19.358175,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72876,
+          "ms": 18.12461,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72891,
+          "ms": 17.097174,
+          "jank": "App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72899,
+          "ms": 16.519135,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72907,
+          "ms": 9.115044,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72915,
+          "ms": 11.736501,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 72923,
+          "ms": 8.897614,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 73072,
+          "ms": 7.833415,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 73500,
+          "ms": 10.366798,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        },
+        {
+          "token": 73662,
+          "ms": 11.289316,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73678,
+          "ms": 15.541272,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73685,
+          "ms": 17.008841,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73693,
+          "ms": 9.997084,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73701,
+          "ms": 15.146287,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73717,
+          "ms": 12.379814,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73725,
+          "ms": 12.763346,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73732,
+          "ms": 18.251608,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73740,
+          "ms": 35.874362,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73748,
+          "ms": 12.397754,
+          "jank": "SurfaceFlinger CPU Deadline Missed, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73764,
+          "ms": 10.620288,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73772,
+          "ms": 9.344137,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73779,
+          "ms": 16.308336,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73794,
+          "ms": 8.650876,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73803,
+          "ms": 16.722582,
+          "jank": "Prediction Error, App Deadline Missed",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73810,
+          "ms": 17.208456,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73832,
+          "ms": 17.395909,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73840,
+          "ms": 12.557867,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73848,
+          "ms": 10.038286,
+          "jank": "Prediction Error, App Deadline Missed, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 0
+        },
+        {
+          "token": 73856,
+          "ms": 8.890266,
+          "jank": "Prediction Error, Buffer Stuffing",
+          "present": "Late Present",
+          "onTime": 1
+        },
+        {
+          "token": 74285,
+          "ms": 9.751945,
+          "jank": "Prediction Error",
+          "present": "Early Present",
+          "onTime": 1
+        }
+      ],
+      "physicalRedmiTest": false,
+      "note": "Complete actual Android App FrameTimeline durations inside only the real staged input marker. Fixed .8s preparation pauses produce no synthetic stutters. These are not physical FPS, isolated hardware GPU times or the primary continuous-gesture benchmark."
+    }
+  },
+  "note": "Staged switching is an auxiliary functional/native-frame check; continuous A-I three-pair performance gate remains mandatory. Software emulator only."
+}

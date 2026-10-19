@@ -61,7 +61,9 @@
         "apk_run_id": "39202657844",
         "lod_only": "true"
       },
-      "createdAt": "2026-10-19T05:26:36Z"
+      "createdAt": "2026-10-19T05:26:36Z",
+      "status": "passed",
+      "proof": "DOMINION_23_PLAYTEST4_LOD_PROOF.json"
     },
     "gameplay": {
       "runId": 39204591052,
@@ -71,7 +73,9 @@
         "apk_run_id": "39202657844",
         "gameplay_only": "true"
       },
-      "createdAt": "2026-10-19T05:26:43Z"
+      "createdAt": "2026-10-19T05:26:43Z",
+      "status": "passed",
+      "proof": "DOMINION_23_PLAYTEST4_GAMEPLAY_PROOF.json"
     },
     "native-online": {
       "runId": 39204599017,
