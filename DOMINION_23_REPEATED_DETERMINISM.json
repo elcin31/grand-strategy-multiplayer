@@ -16,5 +16,14 @@
   "digestEncoding": "UTF8 JSON with sorted keys, ensure_ascii=False, separators comma/colon; campaign state only, excluding save-envelope metadata",
   "exactRestoresPerRun": 10,
   "battlesPerRun": 146,
-  "note": "Independent CI processes and host timings. Both source records are clean; simulation, multiplayer and persistence trees are unchanged between these two commits."
+  "note": "Independent CI processes and host timings. Both source records are clean; simulation, multiplayer and persistence trees are unchanged between these two commits.",
+  "additionalMonthlyComparison": {
+    "stepsPerRun": 10000,
+    "exactFullStateEqual": true,
+    "stateSha256": "bf11c2e432d12cb687dce9c6888fbd883f773484de24ae9a4d5be153aaaafdd8",
+    "warsPerRun": 10092,
+    "peacesPerRun": 10074,
+    "exactRestoresPerRun": 10,
+    "note": "The two independently generated final full campaign states also match after ten thousand monthly steps."
+  }
 }
