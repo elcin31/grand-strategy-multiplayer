@@ -1,11 +1,15 @@
 name: Dominion fixed20-pair native camera measurement cohort
 on:
+  push:
+    branches: [dominion-2.3-performance]
+    paths: [.github/workflows/dominion23-camera-cohort.yml]
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
   capture:
+    if: github.event_name == 'workflow_dispatch'
     name: paired-capture-${{ matrix.sample }}
     runs-on: ubuntu-latest
     timeout-minutes: 50
