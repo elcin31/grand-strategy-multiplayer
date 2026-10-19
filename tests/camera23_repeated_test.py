@@ -3,6 +3,7 @@ import math
 from pathlib import Path
 import sys
 import unittest
+import copy
 
 sys.path.insert(0,str(Path(__file__).parents[1]/'scripts'))
 spec=importlib.util.spec_from_file_location('repeated_camera23',Path(__file__).parents[1]/'scripts/compare-camera23-repeated.py')
@@ -10,6 +11,17 @@ repeated=importlib.util.module_from_spec(spec);spec.loader.exec_module(repeated)
 
 
 class RepeatedCameraTest(unittest.TestCase):
+    def test_extended_cohort_requires_all_original_pairs_and_exactly_twenty_distinct_samples(self):
+        original=[{'runId':i,'directory':'original-'+str(i)} for i in range(1,4)]
+        repeated.validate_pairs({'pairs':original})
+        plan={'pairs':original+[{'runId':99,'directory':'sample-'+str(i),'sampleNumber':i} for i in range(1,21)],
+              'expectedPairCount':23,'additionalCohortRunId':99,'additionalCohortSamples':20}
+        repeated.validate_pairs(plan)
+        for mutate in [lambda p:p['pairs'].pop(),lambda p:p['pairs'][-1].update(sampleNumber=1),
+                       lambda p:p['pairs'][0].update(runId=99),lambda p:p.update(expectedPairCount=22),
+                       lambda p:p['pairs'][-1].update(directory='original-1')]:
+            broken=copy.deepcopy(plan);mutate(broken)
+            with self.assertRaises(AssertionError):repeated.validate_pairs(broken)
     def test_pool_retains_tail_stalls_that_best_run_or_median_of_quantiles_would_hide(self):
         result=repeated.quantiles([[20]*96+[400]*4,[20]*100,[20]*100])
         self.assertEqual(result['intervals'],300)

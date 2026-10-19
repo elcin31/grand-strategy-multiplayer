@@ -1,0 +1,16 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "specifiedAtUtc": "2026-10-19T06:04:27.769851Z",
+  "compiledSourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
+  "candidateApkSha256": "bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a",
+  "baselineApkSha256": "7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764",
+  "originalPairCount": 3,
+  "additionalSamples": 20,
+  "finalPairCount": 23,
+  "originalGate": "failed E-P99+12.1% and I0-P99+16.3%; original data retained",
+  "reason": "Identical-APK controls already demonstrated tail variation larger than the10% limit. Fixed additional sampling measures the same unchanged runtime and preserves every original/adverse pair. No further renderer change is inferred from two noisy tails alone.",
+  "tailRatioLimit": 1.1,
+  "memoryLimitKiB": 32768,
+  "method": "Same input protocol, fixtures and SDK settings. Pool ALL actual in-window presentation intervals from ALL23 complete pairs. Every pair retains its own32MiB memory bound and original report. No selection of best runs or removal of stalls. Missing/incomplete samples fail verification.",
+  "physicalRedmiTest": false
+}

@@ -1,4 +1,4 @@
-"""Pool all measured intervals from three prespecified immutable APK pairs.
+"""Pool all measured intervals from prespecified immutable APK pairs.
 
 Every original single-pair result is retained. The motion window, compositor
 completeness checks, tail ratio and per-pair memory limit remain unchanged.
@@ -40,15 +40,35 @@ def intervals(root,row):
     return values,report
 
 
+def validate_pairs(plan):
+    pairs=plan['pairs'];expected=plan.get('expectedPairCount',3)
+    assert len(pairs)==expected
+    assert len({p['runId'] for p in pairs[:3]})==3
+    assert all('sampleNumber' not in p for p in pairs[:3])
+    if expected==3:
+        return pairs
+    assert expected==23 and plan['additionalCohortSamples']==20
+    cohort=plan['additionalCohortRunId']
+    assert cohort not in {p['runId'] for p in pairs[:3]}
+    assert all(p['runId']==cohort for p in pairs[3:])
+    assert [p['sampleNumber'] for p in pairs[3:]]==list(range(1,21))
+    assert len({p['directory'] for p in pairs})==23
+    return pairs
+
+
 def aggregate(plan,evidence):
     assert plan['repository']=='elcin31/grand-strategy-multiplayer'
-    pairs=plan['pairs'];assert len(pairs)==3 and len({p['runId'] for p in pairs})==3
+    pairs=validate_pairs(plan)
     assert plan['tailRatioLimit']==1.1 and plan['memoryLimitKiB']==32768
     all_before={name:[] for name in single.SCENARIOS};all_after={name:[] for name in single.SCENARIOS}
     reports=[];reference=None
     for pair in pairs:
         root=evidence/pair['directory'];run=json.loads((root/'run.json').read_text())
         assert run['id']==pair['runId'] and run['repository']['full_name']==plan['repository']
+        if 'sampleNumber' in pair:
+            sample=json.loads((root/'sample.json').read_text())
+            assert sample=={'runId':pair['runId'],'sampleNumber':pair['sampleNumber'],'sourceSha':run['head_sha'],
+                            'candidateApkSha256':plan['candidateApkSha256'],'baselineApkSha256':plan['baselineApkSha256']}
         subprocess.run(['git','diff','--exit-code',plan['compiledSourceSha'],run['head_sha'],'--',*RUNTIME],check=True)
         before_root,after_root=root/'profile-baseline',root/'profile-candidate'
         before,after=[json.loads((p/'profiles.json').read_text()) for p in [before_root,after_root]]
@@ -60,7 +80,7 @@ def aggregate(plan,evidence):
         for path in [before_root,after_root]:
             result=json.loads((path/'result.json').read_text());assert result['noFatalLogs'] is True
         report=single.compare(before,after,before_root,after_root)
-        reports.append({'runId':pair['runId'],'comparison':report})
+        reports.append({'runId':pair['runId'],**({'sampleNumber':pair['sampleNumber']} if 'sampleNumber' in pair else {}),'comparison':report})
         for x,y in zip(before['results'],after['results']):
             assert x['scenario']==y['scenario']
             a,_=intervals(before_root,x);b,_=intervals(after_root,y)
@@ -72,14 +92,14 @@ def aggregate(plan,evidence):
         for metric in ['p95Ms','p99Ms']:
             if ratios[metric]>1.1:regressions.append({'scenario':name,'metric':metric,'ratio':ratios[metric]})
     memory=any(r['comparison']['memoryRegressionOver32MiB'] for r in reports)
-    return {'comparisonKind':'candidate-vs-optimized-baseline','aggregation':'three-prespecified-complete-pairs; all input-scoped presentation intervals pooled',
+    return {'comparisonKind':'candidate-vs-optimized-baseline','aggregation':str(len(pairs))+'-prespecified-complete-pairs; all input-scoped presentation intervals pooled',
             'presentationScope':POLICY,'candidateApkSha256':plan['candidateApkSha256'],'baselineApkSha256':plan['baselineApkSha256'],
-            'specifiedAtUtc':plan['specifiedAtUtc'],'runIds':[p['runId'] for p in pairs],'allRunsAndInWindowStallsRetained':True,
+            'specifiedAtUtc':plan['specifiedAtUtc'],'runIds':list(dict.fromkeys(p['runId'] for p in pairs)),'pairCount':len(pairs),'allRunsAndInWindowStallsRetained':True,
             'metricGate':'fail' if regressions or memory else 'pass','regressionsOver10Percent':regressions,
             'memoryRegressionOver32MiB':memory,'peakPssKiB':[max(r['comparison']['peakPssKiB'][i] for r in reports) for i in range(2)],
             'results':rows,'originalPairComparisons':reports,'physicalRedmiTest':False,
             'limitations':['Software emulator and host scheduling variability; no physical Redmi FPS or isolated hardware GPU utilization claim.',
-                           'All three original per-pair results remain visible, including adverse tails. No run or frame is discarded.',
+                           'Every original per-pair result remains visible, including adverse tails. No run or frame is discarded.',
                            'Short repeated memory soaks do not prove indefinite memory stability. Separate functional checks remain mandatory.']}
 
 
