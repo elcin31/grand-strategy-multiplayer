@@ -2,7 +2,15 @@
 
 Only `elcin31/grand-strategy-multiplayer` is in scope. Existing Dominion backend project `dfjsnjxnyjspwugjguhq` is retained. No AssetMind changes, new database/project, auth/storage migration, production campaign deletion or old release deletion. Versioned2.3 handlers were deployed without replacing the existing handlers; only explicitly generated QA rooms are used and cleaned up.
 
-## Latest continuation — APK32 verified; reproducible release packaging (2026-10-19)
+## Final delivery — verified APK and ZIP published (2026-10-19)
+
+- [Complete ZIP](https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.3.0-playtest.4/Dominion-2.3.0-playtest.4.zip):198243081 bytes, SHA256 `83faa3411aa938838257257f9e9c21391b81f5bd590d38efebfe0eeb7cac890f`.
+- [Standalone APK](https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.3.0-playtest.4/Dominion-2.3.0-playtest.4.apk):174268850 bytes, SHA256 `bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a`; [SHA256SUMS](https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.3.0-playtest.4/SHA256SUMS.txt).
+- Publication39236494028 passed:2679 approved files and all23 native camera pairs reproduced; two CI ZIPs and the independently built local ZIP are byte-identical. GitHub asset digests match, direct downloads verified without authentication, tag resolves to compiled `3d5ad0016dc7c62acabc1376feec3a88f7f38450`. Source archive/evidence `8be568b2b7b4e603225565463885864cbc1e01aa`; no later game-code changes. Full proof: `DOMINION_23_RELEASE.json`.
+- All15 mandatory gates passed:409 source tests, TypeScript/content, Python138 pass/1 skip, daily10000/monthly10000 with ten exact restores each, actual APK upgrade/interaction/monthly/LOD/gameplay/save/restart,500-army stress, three live HTTP clients and signed native online/reboot/reconnect. Existing Dominion backend, user saves/rooms, package/signature, graphics2.2 and older releases preserved.
+- Physical Redmi Note12 performance remains unmeasured. This emulator-tested playtest makes no handset FPS or indefinite-memory guarantee. All original adverse camera results remain available.
+
+## Previous continuation — APK32 verified; reproducible release packaging (2026-10-19)
 
 - Final fixed cohort39208094053 passed on validation source `3e97dde60c93d5e6b9c83eca8f9a178800e55f64`: all23 complete pairs, including all three original adverse pairs, retained. Independent local recomputation and recomputation from the curated release polls both exactly reproduce the CI report. No P95/P99 ratio exceeds the unchanged1.10 limit; every pair satisfies the unchanged32MiB memory bound. Peak extended PSS483450→472521KiB. Full report: `DOMINION_23_PLAYTEST4_CAMERA_PROOF.json`.
 - This is regression acceptance against the accepted camera-only dev13 APK, not a claim of a further20% gain in every scene. Final pooled zoom-out P95−8.88%,P99−9.48%; the original StageA improvement over2.2.1 is separately retained. Software-emulator variation and all original single-pair failures remain visible. No physical Redmi Note12 test or fixed handset FPS claim.

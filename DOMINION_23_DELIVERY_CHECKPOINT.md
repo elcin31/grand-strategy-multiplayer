@@ -1,4 +1,16 @@
-# Dominion 2.3 — actual ZIP and unfinished checkpoint
+# Dominion 2.3 — verified Android release delivered
+
+## Final delivery — verified APK and ZIP published (2026-10-19)
+
+- [Complete ZIP](https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.3.0-playtest.4/Dominion-2.3.0-playtest.4.zip):198243081 bytes, SHA256 `83faa3411aa938838257257f9e9c21391b81f5bd590d38efebfe0eeb7cac890f`.
+- [Standalone APK](https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.3.0-playtest.4/Dominion-2.3.0-playtest.4.apk):174268850 bytes, SHA256 `bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a`; [SHA256SUMS](https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.3.0-playtest.4/SHA256SUMS.txt).
+- Publication39236494028 passed:2679 approved files and all23 native camera pairs reproduced; two CI ZIPs and the independently built local ZIP are byte-identical. GitHub asset digests match, direct downloads verified without authentication, tag resolves to compiled `3d5ad0016dc7c62acabc1376feec3a88f7f38450`. Source archive/evidence `8be568b2b7b4e603225565463885864cbc1e01aa`; no later game-code changes. Full proof: `DOMINION_23_RELEASE.json`.
+- All15 mandatory gates passed:409 source tests, TypeScript/content, Python138 pass/1 skip, daily10000/monthly10000 with ten exact restores each, actual APK upgrade/interaction/monthly/LOD/gameplay/save/restart,500-army stress, three live HTTP clients and signed native online/reboot/reconnect. Existing Dominion backend, user saves/rooms, package/signature, graphics2.2 and older releases preserved.
+- Physical Redmi Note12 performance remains unmeasured. This emulator-tested playtest makes no handset FPS or indefinite-memory guarantee. All original adverse camera results remain available.
+
+## Historical dev12 checkpoint — superseded, rejected diagnostic binary
+
+The record below describes only the earlier dev12 archive. Its failures and unfinished state are preserved as history; use the verified playtest4 release above.
 
 Repository: `elcin31/grand-strategy-multiplayer` only.
 

@@ -1,0 +1,73 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "status": "published-verified-playtest",
+  "dominion23Complete": true,
+  "releaseId": 417150835,
+  "releaseUrl": "https://github.com/elcin31/grand-strategy-multiplayer/releases/tag/v2.3.0-playtest.4",
+  "tag": "v2.3.0-playtest.4",
+  "publishedAt": "2026-10-19T10:19:42Z",
+  "compiledSourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
+  "sourceArchiveCommit": "8be568b2b7b4e603225565463885864cbc1e01aa",
+  "cameraValidationSourceSha": "3e97dde60c93d5e6b9c83eca8f9a178800e55f64",
+  "publicationSourceSha": "7431a8f2554f89d520e4e54a80e08fbc2c933b9e",
+  "publicationRunId": 39236494028,
+  "publicationJobId": 118006713762,
+  "versionName": "2.3.0-playtest.4",
+  "versionCode": 32,
+  "assets": [
+    {
+      "id": 655934661,
+      "name": "Dominion-2.3.0-playtest.4.apk",
+      "size": 174268850,
+      "digest": "sha256:bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a",
+      "browser_download_url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.3.0-playtest.4/Dominion-2.3.0-playtest.4.apk"
+    },
+    {
+      "id": 655934430,
+      "name": "Dominion-2.3.0-playtest.4.zip",
+      "size": 198243081,
+      "digest": "sha256:83faa3411aa938838257257f9e9c21391b81f5bd590d38efebfe0eeb7cac890f",
+      "browser_download_url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.3.0-playtest.4/Dominion-2.3.0-playtest.4.zip"
+    },
+    {
+      "id": 655934960,
+      "name": "SHA256SUMS.txt",
+      "size": 192,
+      "digest": "sha256:d7814cf779e036d69d5d03fe2153f3cf55cc7cd4faa336fec4897b6a247a5a35",
+      "browser_download_url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.3.0-playtest.4/SHA256SUMS.txt"
+    }
+  ],
+  "all15MandatoryChecksPassed": true,
+  "localRepeatedZipAndIndependentCiZipByteIdentical": true,
+  "all2679ApprovedPayloadFilesEqual": true,
+  "all23OriginalCameraPairsRecomputed": true,
+  "allInnerSHA256EntriesLocallyVerified": 2679,
+  "githubAssetDigestsVerified": true,
+  "directDownloads": {
+    "passed": true,
+    "assets": [
+      {
+        "filename": "Dominion-2.3.0-playtest.4.zip",
+        "httpStatus": 206,
+        "zipMagicVerified": true,
+        "url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.3.0-playtest.4/Dominion-2.3.0-playtest.4.zip"
+      },
+      {
+        "filename": "Dominion-2.3.0-playtest.4.apk",
+        "httpStatus": 206,
+        "zipMagicVerified": true,
+        "url": "https://github.com/elcin31/grand-strategy-multiplayer/releases/download/v2.3.0-playtest.4/Dominion-2.3.0-playtest.4.apk"
+      },
+      {
+        "filename": "SHA256SUMS.txt",
+        "exactLocalBytesEqual": true,
+        "sha256": "d7814cf779e036d69d5d03fe2153f3cf55cc7cd4faa336fec4897b6a247a5a35"
+      }
+    ]
+  },
+  "scope": "Only Dominion repository and existing backend. Only generated guarded QA rooms cleaned; user campaigns and all older releases preserved.",
+  "limitations": [
+    "No physical Redmi Note12 test or fixed handset FPS claim.",
+    "All original adverse camera measurements remain; bounded native soaks do not prove indefinite memory stability."
+  ]
+}
