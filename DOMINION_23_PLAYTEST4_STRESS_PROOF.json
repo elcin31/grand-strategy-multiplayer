@@ -1,0 +1,106 @@
+{
+  "passed": true,
+  "workflowRunId": 39206232320,
+  "workflowJobId": 117909559539,
+  "artifactId": 12166321311,
+  "artifactSha256": "e2733bec8c47742cab1ecde1f4b4bf52338b9ac2da862747a2d34c1c3aa50926",
+  "apkSha256": "bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a",
+  "data": {
+    "stress-baseline": {
+      "apkSha256": "7df9e78cdf9c5293cdb8a0bf72363c96de5e85586c9096b16393cddf25986764",
+      "fixture": {
+        "filename": "camera23-war.1.json",
+        "sha256": "e3c722b554cface447ac2194718a919e2744c6eb93143da90c8c40688510a4eb",
+        "checksum": "6a83b00b",
+        "stateVersion": 25,
+        "seed": 101,
+        "simulationDay": 25,
+        "armies": 500,
+        "wars": 1,
+        "battles": 1,
+        "sieges": 1,
+        "constructions": 131,
+        "queuedConstructions": 109,
+        "activeFocuses": 60,
+        "stress": {
+          "legalSplits": 310,
+          "totalTroopsConserved": 8542866,
+          "paidProjects": 240,
+          "paidFocuses": 60,
+          "cashSpent": 42000,
+          "noResourcesCreated": true
+        }
+      },
+      "presentation": {
+        "p50Ms": 136.429097,
+        "p95Ms": 262.230924,
+        "p99Ms": 389.954313,
+        "frames": 168
+      },
+      "pssKiB": 515693,
+      "result": {
+        "monthlyEconomyAndAI": true,
+        "startDay": 25,
+        "endDay": 43,
+        "endTick": 1,
+        "endMonth": 2,
+        "noFatalLogs": true,
+        "physicalRedmiTest": false
+      }
+    },
+    "stress-candidate": {
+      "apkSha256": "bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a",
+      "fixture": {
+        "filename": "camera23-war.1.json",
+        "sha256": "e3c722b554cface447ac2194718a919e2744c6eb93143da90c8c40688510a4eb",
+        "checksum": "6a83b00b",
+        "stateVersion": 25,
+        "seed": 101,
+        "simulationDay": 25,
+        "armies": 500,
+        "wars": 1,
+        "battles": 1,
+        "sieges": 1,
+        "constructions": 131,
+        "queuedConstructions": 109,
+        "activeFocuses": 60,
+        "stress": {
+          "legalSplits": 310,
+          "totalTroopsConserved": 8542866,
+          "paidProjects": 240,
+          "paidFocuses": 60,
+          "cashSpent": 42000,
+          "noResourcesCreated": true
+        }
+      },
+      "presentation": {
+        "p50Ms": 131.305672,
+        "p95Ms": 267.852524,
+        "p99Ms": 367.670568,
+        "frames": 171
+      },
+      "pssKiB": 523795,
+      "result": {
+        "monthlyEconomyAndAI": true,
+        "startDay": 25,
+        "endDay": 44,
+        "endTick": 1,
+        "endMonth": 2,
+        "noFatalLogs": true,
+        "physicalRedmiTest": false
+      }
+    }
+  },
+  "ratios": {
+    "p50Ms": 0.9624462441468771,
+    "p95Ms": 1.0214375936836495,
+    "p99Ms": 0.9428554980490753
+  },
+  "initialArmyCount": 500,
+  "initialPaidProjects": 240,
+  "initialActiveFocuses": 60,
+  "noTroopsOrResourcesCreated": true,
+  "treasuryActuallyDebited": 42000,
+  "physicalRedmiTest": false,
+  "note": "One paired heavy-entity native supplement, not a replacement for the three prespecified A-I pairs. Actual calendar differences and both original measurements retained."
+}

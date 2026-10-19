@@ -99,7 +99,8 @@
       "activeFocuses": 60,
       "cashSpent": 42000,
       "fixtureChecksum": "6a83b00b",
-      "status": "running"
+      "status": "passed",
+      "proof": "DOMINION_23_PLAYTEST4_STRESS_PROOF.json"
     }
   },
   "sourceTestsPassed": 409,
