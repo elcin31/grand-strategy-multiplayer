@@ -1,6 +1,38 @@
 """Accept actual native reconnect only against the same paused server campaign."""
 import json
 import re
+from backend_http import CLIENT_STATE_VERSION
+
+
+def native_control_bounds(tree, target):
+    """Intersect a real native control with its ancestors and landscape screen."""
+    def visit(node, clip):
+        if node.get('enabled') == 'false' or node.get('visible-to-user') == 'false':
+            return None
+        match = re.fullmatch(r'\[(-?\d+),(-?\d+)\]\[(-?\d+),(-?\d+)\]', node.get('bounds', ''))
+        if match:
+            x1,y1,x2,y2 = map(int,match.groups())
+            clip = (max(clip[0],x1),max(clip[1],y1),min(clip[2],x2),min(clip[3],y2))
+        if clip[2]-clip[0] < 12 or clip[3]-clip[1] < 12:
+            return None
+        if node is target:
+            return clip if match else None
+        for child in node:
+            result = visit(child,clip)
+            if result is not None:
+                return result
+        return None
+    return visit(tree,(0,0,1280,720))
+
+
+def scroll_context_bounds(tree):
+    """Scroll the visible window, never hardcoded coordinates on the map."""
+    boxes = [native_control_bounds(tree,n) for n in tree.iter('node')
+             if n.get('scrollable') == 'true']
+    boxes = [b for b in boxes if b is not None and b[3]-b[1] > 120
+             and b[2]-b[0] > 100 and b[2]-b[0] < 4*(b[3]-b[1])]
+    assert boxes, 'Missing actual visible vertical scroll container'
+    return max(boxes,key=lambda b:(b[2]-b[0])*(b[3]-b[1]))
 
 
 def visible_control_bounds(node, bottom=720):
@@ -27,7 +59,7 @@ def exit_confirmation_button(tree):
 def assert_online_campaign(response, room_id, player_id, country_id):
     state = response['state']
     assert state['id'] == room_id, 'Native flow switched rooms'
-    assert state['stateVersion'] == 18, 'Online campaign is not schema18'
+    assert state['stateVersion'] == CLIENT_STATE_VERSION, 'Online campaign schema differs from the compiled client'
     assert len(state['countries']) == 195 and len(state['provinces']) == 2924
     assert len(state['cities']) == 5411 and len(state['players']) == 2
     matches = [p for p in state['players'] if p['id'] == player_id]

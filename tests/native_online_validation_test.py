@@ -6,10 +6,27 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'scripts'))
 from native_online_validation import (assert_online_campaign, paid_course_fingerprint,
                                       assert_same_native_session, exit_confirmation_button,
-                                      visible_control_bounds)
+                                      visible_control_bounds, native_control_bounds,
+                                      scroll_context_bounds)
+from backend_http import CLIENT_STATE_VERSION
 
 
 class NativeOnlineValidationTest(unittest.TestCase):
+    def test_centered_window_scrolls_inside_actual_ancestor_bounds(self):
+        tree=ET.fromstring('<hierarchy><node bounds="[0,0][1280,720]">'
+            '<node scrollable="true" bounds="[0,80][44,680]"/>'
+            '<node bounds="[384,100][944,650]"><node scrollable="true" bounds="[384,140][944,620]">'
+            '<node bounds="[400,600][900,680]" text="Partially visible"/>'
+            '<node bounds="[400,700][900,750]" text="Offscreen"/>'
+            '</node></node></node></hierarchy>')
+        self.assertEqual(scroll_context_bounds(tree),(384,140,944,620))
+        partial=next(n for n in tree.iter('node') if n.get('text')=='Partially visible')
+        hidden=next(n for n in tree.iter('node') if n.get('text')=='Offscreen')
+        self.assertEqual(native_control_bounds(tree,partial),(400,600,900,620))
+        self.assertIsNone(native_control_bounds(tree,hidden))
+        partial.set('enabled','false');self.assertIsNone(native_control_bounds(tree,partial))
+        with self.assertRaises(AssertionError):scroll_context_bounds(ET.Element('hierarchy'))
+
     def test_offscreen_inverted_bounds_are_scrolled_until_a_real_enabled_control_is_visible(self):
         def node(bounds, enabled='true'):
             return ET.Element('node', {'bounds': bounds, 'enabled': enabled})
@@ -39,7 +56,7 @@ class NativeOnlineValidationTest(unittest.TestCase):
 
     def fixture(self):
         return {'version': 11, 'checksum': 'a1b2c3d4', 'state': {
-            'id': 'native-room', 'stateVersion': 18, 'speed': 0, 'phase': 'paused', 'tick': 3,
+            'id': 'native-room', 'stateVersion': CLIENT_STATE_VERSION, 'speed': 0, 'phase': 'paused', 'tick': 3,
             'countries': {**{str(i): {} for i in range(194)}, 'germany': {
                 'treasury': 1000, 'politicalPower': 44, 'completedFocuses': [],
                 'nationalFocus': {'focusId': 'eco-audit', 'progress': 0, 'startedTick': 3}}},
@@ -54,6 +71,8 @@ class NativeOnlineValidationTest(unittest.TestCase):
         assert_online_campaign(valid, 'native-room', 'native-owner', 'germany')
         corruptions = [lambda x: x['state'].update(id='new-room'),
                        lambda x: x['state'].update(stateVersion=12),
+                       lambda x: x['state'].update(stateVersion=18),
+                       lambda x: x['state'].update(stateVersion=CLIENT_STATE_VERSION+1),
                        lambda x: x['state']['players'][0].update(countryId='france'),
                        lambda x: x['state']['players'][0].update(aiControlled=True),
                        lambda x: x['state']['players'][0].update(connected=False),

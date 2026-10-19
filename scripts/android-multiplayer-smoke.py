@@ -20,7 +20,8 @@ from backend_http import request
 from map_paint_check import assert_map_painted
 from native_online_validation import (assert_online_campaign, paid_course_fingerprint,
                                       assert_same_native_session, exit_confirmation_button,
-                                      visible_control_bounds)
+                                      visible_control_bounds, native_control_bounds,
+                                      scroll_context_bounds)
 
 PACKAGE = 'com.elcin31.grandstrategymultiplayer'
 OUT = Path('android-online'); OUT.mkdir(exist_ok=True)
@@ -60,15 +61,31 @@ def screenshot(name):
     return path
 
 
+def final_diagnostics():
+    if (OUT/'NATIVE_ONLINE_QA.json').exists():
+        return
+    try:
+        screenshot('failure')
+        for service in ['input','display']:
+            (OUT/('failure-'+service+'.txt')).write_text(adb('shell','dumpsys',service))
+    except (OSError,subprocess.SubprocessError):
+        pass
+
+
+atexit.register(final_diagnostics)
+
+
 def node_bounds(node):
     bounds = visible_control_bounds(node)
     assert bounds is not None, 'Native control is disabled, clipped or outside the screen'
     return bounds
 
 
-def tap_node(node):
+def tap_node(node, tree=None):
     assert node.get('enabled') != 'false', 'Native control is disabled'
-    x1, y1, x2, y2 = node_bounds(node)
+    box = native_control_bounds(tree,node) if tree is not None else node_bounds(node)
+    assert box is not None, 'Native control is outside its visible enabled ancestors'
+    x1, y1, x2, y2 = box
     assert 0 <= x1 < x2 <= 1280 and 0 <= y1 < y2 <= 720, 'Native control is clipped'
     # Use the same bounded 100ms press as the camera/upgrade harness. A zero
     # duration shell tap can miss the React press while the SDK is rendering.
@@ -77,27 +94,30 @@ def tap_node(node):
 
 
 def find_control(label, scroll=False):
-    for attempt in range(14):
+    for attempt in range(20 if scroll else 14):
         tree = hierarchy('find-'+str(attempt))
         # A TextView remains enabled while its parent Pressable awaits the
         # authoritative country response. Never tap through that disabled
         # parent (the real native-ready failure retained in attempt1).
         node = find_enabled_control(tree,label)
-        if node is not None and visible_control_bounds(node,640 if scroll else 720) is not None:
+        if node is not None and native_control_bounds(tree,node) is not None:
             return tree, node
         if scroll:
+            box = scroll_context_bounds(tree)
+            x,height = (box[0]+box[2])//2,box[3]-box[1]
+            high,low = int(box[1]+height*.22),int(box[1]+height*.82)
             if attempt == 0:
                 for _ in range(4):
-                    adb('shell', 'input', 'swipe', '1080', '240', '1080', '550', '280')
+                    adb('shell','input','swipe',x,high,x,low,350)
             else:
-                adb('shell', 'input', 'swipe', '1080', '530', '1080', '300', '280')
+                adb('shell','input','swipe',x,low,x,high,350)
         time.sleep(1)
     raise AssertionError('Missing actual native control: '+label)
 
 
 def click(label, scroll=False):
-    _, node = find_control(label, scroll)
-    tap_node(node)  # Exactly one tap; never retry a submitted game command.
+    tree, node = find_control(label, scroll)
+    tap_node(node,tree)  # Exactly one tap; never retry a submitted game command.
     time.sleep(2)
 
 
@@ -106,7 +126,9 @@ def pause_native_campaign():
     # A visible CAS rejection is an explicit rejected intent, not a paid retry.
     # Wait for the actual native response and fresh sync before another user tap.
     for attempt in range(3):
-        click('Пауза', scroll=True)
+        screenshot('before-pause-'+str(attempt))
+        click('Пауза')
+        screenshot('after-pause-'+str(attempt))
         deadline = time.monotonic()+35
         while time.monotonic() < deadline:
             tree = hierarchy('pause-response-'+str(attempt))
@@ -163,7 +185,9 @@ def secure_keys():
 # The exact APK's embedded production endpoint and release configuration are
 # independently checked by the invoking workflow before enabling online QA.
 root_test_device(adb, OUT/'emulator-root.txt')
-adb('shell', 'wm', 'size', '1280x720'); adb('shell', 'wm', 'density', '160')
+adb('shell', 'wm', 'size', '720x1280'); adb('shell', 'wm', 'density', '160')
+adb('shell','settings','put','system','accelerometer_rotation','0')
+adb('shell','settings','put','system','user_rotation','1')
 adb('logcat', '-c')
 adb('install', '-r', str(Path(sys.argv[1]).resolve()), timeout=180)
 launch(); click('Мультиплеер')
@@ -236,14 +260,21 @@ for attempt in range(20):
     time.sleep(2)
 assert start is not None and start.get('enabled') == 'true'
 tap_node(start); time.sleep(8)
-click('Раздел Страна'); pause_native_campaign()
+# Pause the actual HUD before opening another window. The native acknowledgement
+# and independent server snapshot must both confirm the submitted host command.
+pause_native_campaign()
 paused = assert_online_campaign(snapshot(), room_id, native_id, 'germany')
 assert_map_painted(screenshot('01-online-paused'))
 
 # A real native focus payment must survive every reconnect without a new
 # room, replayed payment, progress while paused, or duplicate start/reward.
 before = paused['countries']['germany']
-click('Раздел Нац. курс'); click('Взять национальный курс', scroll=True)
+focus_name = subprocess.check_output(['node','--import','tsx','-e',
+    "console.log(require('./supabase/functions/_shared/focusCatalogue.ts').focusNode('eco-audit').name)"],text=True).strip()
+assert focus_name, 'Missing actual registered focus name'
+click('Раздел Нац. курс')
+click('Курс: '+focus_name, scroll=True)
+click('Взять курс: '+focus_name, scroll=True)
 for attempt in range(6):
     paid = assert_online_campaign(snapshot(), room_id, native_id, 'germany')
     if (paid['countries']['germany'].get('nationalFocus') or {}).get('focusId') == 'eco-audit':
