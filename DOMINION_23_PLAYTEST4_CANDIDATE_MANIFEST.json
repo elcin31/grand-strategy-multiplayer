@@ -84,7 +84,10 @@
       "inputs": {
         "apk_run_id": "39202657844"
       },
-      "createdAt": "2026-10-19T05:26:49Z"
+      "createdAt": "2026-10-19T05:26:49Z",
+      "status": "passed",
+      "proof": "DOMINION_23_PLAYTEST4_NATIVE_ONLINE_PROOF.json",
+      "qaRoomCleanupVerified": true
     }
   },
   "sourceTestsPassed": 409,

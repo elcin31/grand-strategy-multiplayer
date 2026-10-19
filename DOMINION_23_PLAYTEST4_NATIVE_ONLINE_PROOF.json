@@ -1,0 +1,33 @@
+{
+  "roomId": "79a2de97-480e-4911-b4b4-15c4989781f1",
+  "qaName": "NATIVE ONLINE QA",
+  "stateVersion": 28,
+  "nativeScenario": "rhine-reconstruction-compact",
+  "peerIntelligence": "Detailed via actual scenario Alliance",
+  "apkSha256": "bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a",
+  "nativeCreate": true,
+  "nativeCountrySelection": "germany",
+  "serverPaused": true,
+  "nativePaidFocus": "eco-audit",
+  "menuReconnect": true,
+  "processReconnect": true,
+  "realHostMigration": true,
+  "nativeOwnerReturn": true,
+  "rebootReconnect": true,
+  "sameNativeUidAndSessionKeys": true,
+  "onceOnlyFocusPaymentRetained": true,
+  "members": 2,
+  "cleanup": {
+    "completed": true,
+    "remainingRooms": 0,
+    "remainingPlayers": 0,
+    "remainingReceipts": 0,
+    "scope": "Only generated UUID79a2de97-480e-4911-b4b4-15c4989781f1 / ZU8PV5 / exact creation time / two exact QA names; guarded deletion and independent zero-count query."
+  },
+  "note": "Actual existing production HTTP and signed native controls; no tokens or snapshots in evidence.",
+  "workflowRunId": 39204599017,
+  "workflowJobId": 117904586526,
+  "artifactId": 12165676093,
+  "artifactSha256": "9e6ba41131f7653b6e93d8369ff8cc598bd04c28c72fb2db5a4972e38b247700",
+  "originalReportSha256": "44b2e4174c2c896e72a000736b93310d2878e45a5badc41f73ce7c27d069ed73"
+}
