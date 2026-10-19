@@ -88,7 +88,7 @@ jobs:
           retention-days: 30
   aggregate:
     needs: capture
-    if: always()
+    if: always() && github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
