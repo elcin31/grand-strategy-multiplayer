@@ -105,6 +105,11 @@
   },
   "sourceTestsPassed": 409,
   "daily10000Passed": true,
-  "monthly10000Passed": false,
-  "releaseAccepted": false
+  "monthly10000Passed": true,
+  "releaseAccepted": false,
+  "initialThreePairCameraGate": "failed; full original report retained in DOMINION_23_PLAYTEST4_CAMERA_REJECTED.json",
+  "cameraExtendedSamplingPlan": "DOMINION_23_PLAYTEST4_CAMERA_COHORT_PLAN.json",
+  "fixedAdditionalCameraCohortRunId": 39208094053,
+  "fixedFinalCameraPairCount": 23,
+  "cameraMetricGate": "pending23-pair-aggregate"
 }

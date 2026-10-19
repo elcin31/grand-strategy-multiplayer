@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "originalThreePairValuesUnchanged": true,
+  "tailRatioLimit": 1.1,
+  "memoryLimitKiB": 32768,
+  "originalMetricGate": "fail",
+  "changedFields": "Additional plan provenance/count only; quantiles and original adverse results unchanged.",
+  "analyzerSha256": "d4bbd41ceba00ec015d5ad37a07ca09eee23165ddc366074279d5d3a805e6722"
+}
