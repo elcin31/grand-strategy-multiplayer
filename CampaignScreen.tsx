@@ -262,6 +262,7 @@ function GameApp({intent,onExit,onError}:{intent:MenuIntent;onExit:()=>void;onEr
         {connectionStatus!==''&&<Text style={{color:"#ffcf85",padding:6}}>{connectionStatus}</Text>}
         <View style={styles.mapArea}><WorldMap
           state={state}
+          militaryPresentation={presentation}
           onCameraActivity={cameraActivity}
           settingsOpen={mapMenuOpen}
           onSettingsChange={setMapMenuOpen}

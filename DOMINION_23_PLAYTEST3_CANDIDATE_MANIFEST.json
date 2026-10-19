@@ -1,6 +1,6 @@
 {
   "repository": "elcin31/grand-strategy-multiplayer",
-  "status": "built-native-validation-running",
+  "status": "rejected-native-camera-regression",
   "compiledSourceSha": "39abbafb3126d519f85c1d84a8bd66d411205a6b",
   "versionName": "2.3.0-playtest.3",
   "versionCode": 31,
@@ -31,17 +31,20 @@
     "interactionAndMonthlyRunId": 38876273246,
     "stagedLodRunId": 38876278164,
     "repeatedMatrixRunId": 38876284394,
-    "nativeOnlineRunId": 38877338914,
+    "nativeOnlineRunId": 39202207850,
     "repeatedMatrixRunIds": [
       38873734496,
       38876284394,
       38877512489
     ],
-    "previousFailedAttempts": "DOMINION_23_PLAYTEST3_FUNCTIONAL_ATTEMPTS.json"
+    "previousFailedAttempts": "DOMINION_23_PLAYTEST3_FUNCTIONAL_ATTEMPTS.json",
+    "newGameplayPassed": true,
+    "interactionAndMonthlyPassed": true,
+    "stagedLodPassed": true
   },
   "engine": {
     "daily10000": true,
-    "monthly10000": "running",
+    "monthly10000": true,
     "independentDailyFinalStateIdentical": true
   },
   "liveHttp": {
@@ -51,5 +54,6 @@
     "proof": "DOMINION_23_LIVE_MULTIPLAYER_QA.json"
   },
   "physicalRedmiTest": false,
-  "releaseAccepted": false
+  "releaseAccepted": false,
+  "cameraRepeatedGate": "DOMINION_23_PLAYTEST3_CAMERA_REJECTED.json"
 }

@@ -52,6 +52,7 @@ interface WorldMapProps {
   onSelectArmy?:(armyId:string,provinceId:string)=>void;
   onSelectCity?:(cityId:string,provinceId:string)=>void;
   state: GameState;
+  militaryPresentation?:GameState|null;
   selectedCountryId: CountryId | null;
   selectedProvinceId: string | null;
   onSelectProvince: (province: Province) => void;
@@ -84,7 +85,7 @@ function measure(font:ReturnType<typeof matchFont>,name:string):number{
 const sceneCosts=new WeakMap<MapScene,number>();
 const defaults: Camera = { x: 800, y: 160, zoom: 3.5 };
 
-export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,selectedCityId,onSelectArmy,onSelectCity,onSelectCountry,onClearSelection,onCameraActivity,settingsOpen=false,onSettingsChange, state, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince, focusCountryId,focusProvince }: WorldMapProps) {
+export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,selectedCityId,onSelectArmy,onSelectCity,onSelectCountry,onClearSelection,onCameraActivity,settingsOpen=false,onSettingsChange, state,militaryPresentation, selectedCountryId, selectedProvinceId, onSelectProvince, onLongPressProvince, focusCountryId,focusProvince }: WorldMapProps) {
   const scene = useMemo(() => {const start=performance.now();const scene=mapSceneFor(state);if(!sceneCosts.has(scene))sceneCosts.set(scene,Math.max(getMetrics().sceneMs,performance.now()-start));recordMetrics({sceneMs:sceneCosts.get(scene)!});return scene;}, [state.dataset]);
   const { features, spatialIndex, provinceGeometry, cities: mapCities } = scene;
   const [viewport, setViewport] = useState({ width: 1, height: 1 });
@@ -192,7 +193,13 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
   const warBorders=useMemo(()=>state.wars?.length?warBorderPath(state,visibleIds,scene.edges):'',[controllers,warSides,visibleIds,scene]);
   const occupations=useMemo(()=>occupationFeatures(state,visible),[owners,controllers,visible]);
   const budgets=markerBudgets(snapshot.zoom,preset);
-  const militaryView=useMemo(()=>state.fogViewerId||!selectedCountryId?state:projectFogOfWar(state,selectedCountryId),[state,selectedCountryId]);
+  // CampaignScreen already projects this exact authoritative snapshot for the
+  // HUD panels. Reuse it for military markers instead of cloning the world and
+  // checking every country's intelligence a second time on each daily update.
+  const militaryView=useMemo(()=>militaryPresentation?.fogViewerId===selectedCountryId?militaryPresentation:state.fogViewerId||!selectedCountryId?state:projectFogOfWar(state,selectedCountryId),[state,selectedCountryId,militaryPresentation]);
+  const armiesById=useMemo(()=>new Map(militaryView.armies.map(army=>[army.id,army])),[militaryView.armies]);
+  const fightingArmyIds=useMemo(()=>new Set(militaryView.activeBattles?.flatMap(b=>[...b.attackerArmyIds,...b.defenderArmyIds])??[]),[militaryView.activeBattles]);
+  const besiegingArmyIds=useMemo(()=>new Set(militaryView.sieges?.flatMap(b=>b.armyIds)??[]),[militaryView.sieges]);
   const counters=useMemo(()=>budgetArmyMarkers(clusterArmies(armyCounters(militaryView,visibleIds,selectedArmyId).filter(c=>c.ids.includes(selectedArmyId??'')||mode==='Military'||((mode==='Political'||mode==='Diplomatic'||mode==='Relations')&&(c.ownerId===selectedCountryId||militaryView.wars?.some(w=>w.attackers.includes(c.ownerId)||w.defenders.includes(c.ownerId))))),provinceGeometry,snapshot.zoom,selectedArmyId),snapshot.zoom,budgets.armies,selectedArmyId,selectedCountryId),[militaryView.armies,militaryView.wars,visibleIds,provinceGeometry,snapshot.zoom,selectedArmyId,selectedCountryId,budgets.armies,mode]);
   const markerPositions=useRef(new Map<string,MarkerPosition>());
   const registerMarker=useCallback((key:string,position:MarkerPosition|null)=>{if(position)markerPositions.current.set(key,position);else markerPositions.current.delete(key);},[]);
@@ -312,7 +319,7 @@ export const WorldMap=memo(function WorldMap({ provinceSelection,selectedArmyId,
           {!selectedPath.isEmpty() && <Path path={selectedProvinceId?selectedPath:selectedCountryOutline} style="stroke" color="#f0db9e" strokeWidth={selectionScale} opacity={pulse} />}
           <MapConstructionLayer state={state} visible={visibleIds} geometry={provinceGeometry} zoom={snapshot.zoom}/>
           <MapMarkerLayer provinceName={selectedProvinceId?provinces.get(selectedProvinceId)?.name:undefined} zoom={snapshot.zoom} preset={preset} countryGlyphs={countryGlyphs} cities={cities} cityLabels={cityLabels} cityId={selectedCityId} provinceId={selectedProvinceId} geometry={provinceGeometry} visible={visibleIds} font={font} nationFont={nationFont} labelBudget={budgets.labels}/>
-          {[...counters].sort((a,b)=>Number(a.ids.includes(selectedArmyId??''))-Number(b.ids.includes(selectedArmyId??''))).map(c=><AnimatedArmyMarker key={c.ids.join('|')} counter={c} target={markerTargets.get(c.key)!} duration={Math.min(1200,dayDelay(state.speed))} paused={state.speed===0||state.phase!=='running'} zoom={snapshot.zoom} selected={c.ids.includes(selectedArmyId??'')} own={c.ownerId===selectedCountryId} color={state.countries[c.ownerId]?.color??'#778B93'} font={counterFont} onPosition={registerMarker} estimated={c.ids.some(id=>militaryView.armies.find(a=>a.id===id)?.intelligenceLevel==='Estimate')} status={militaryView.activeBattles?.some(b=>[...b.attackerArmyIds,...b.defenderArmyIds].some(id=>c.ids.includes(id)))?'Battle':militaryView.sieges?.some(b=>b.armyIds.some(id=>c.ids.includes(id)))?'Siege':c.moving?'March':'Hold'} supply={c.ids.reduce((n,id)=>n+(militaryView.armies.find(a=>a.id===id)?.supply??100),0)/Math.max(1,c.ids.length)}/>)}
+          {[...counters].sort((a,b)=>Number(a.ids.includes(selectedArmyId??''))-Number(b.ids.includes(selectedArmyId??''))).map(c=><AnimatedArmyMarker key={c.ids.join('|')} counter={c} target={markerTargets.get(c.key)!} duration={Math.min(1200,dayDelay(state.speed))} paused={state.speed===0||state.phase!=='running'} zoom={snapshot.zoom} selected={c.ids.includes(selectedArmyId??'')} own={c.ownerId===selectedCountryId} color={state.countries[c.ownerId]?.color??'#778B93'} font={counterFont} onPosition={registerMarker} estimated={c.ids.some(id=>armiesById.get(id)?.intelligenceLevel==='Estimate')} status={c.ids.some(id=>fightingArmyIds.has(id))?'Battle':c.ids.some(id=>besiegingArmyIds.has(id))?'Siege':c.moving?'March':'Hold'} supply={c.ids.reduce((n,id)=>n+(armiesById.get(id)?.supply??100),0)/Math.max(1,c.ids.length)}/>)}
 
         </Group>
       </Canvas>

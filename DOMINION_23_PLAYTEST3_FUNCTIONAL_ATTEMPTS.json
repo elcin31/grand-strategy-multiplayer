@@ -12,7 +12,8 @@
     ],
     "failure": "Read an older durable autosave within the old2s sleep. UI checkbox was already checkedtrue; extracted generations3/4 predated the command.",
     "fix": "Require a new durable generation containing the acknowledged outcome, bounded35s; exact state/cost assertions retained.",
-    "repeatRunId": 38877104186
+    "repeatRunId": 38877104186,
+    "repeatStatus": "passed"
   },
   "nativeOnlineAttempt1": {
     "runId": 38876290190,
@@ -29,5 +30,26 @@
     "repeatRunId": 38877338914
   },
   "repeatedCameraPlan": "DOMINION_23_PLAYTEST3_REPEATED_CAMERA_PLAN.json",
-  "releaseAccepted": false
+  "releaseAccepted": false,
+  "nativeOnlineAttempt2": {
+    "runId": 38877338914,
+    "status": "failed",
+    "artifactId": 12036062333,
+    "failure": "The native host pause did not acknowledge and no pause command receipt reached the server. Existing evidence lacked a screenshot. Harness also still assumed schema18 and scrolled x1080 outside the centered window.",
+    "repeatRunId": 39202207850,
+    "diagnosticChanges": [
+      "Use the same landscape rotation as passed native checks",
+      "Tap actual HUD pause before opening a panel",
+      "Capture before/after/failure screenshots",
+      "Scroll inside ancestor-clipped native window",
+      "Validate current schema and actual focus labels"
+    ],
+    "testRoomId": "38d3ecd1-d206-41ba-bcb2-0cb08ec8e52c",
+    "scopedCleanupVerified": {
+      "rooms": 0,
+      "players": 0,
+      "receipts": 0
+    }
+  },
+  "repeatedCameraResult": "DOMINION_23_PLAYTEST3_CAMERA_REJECTED.json"
 }

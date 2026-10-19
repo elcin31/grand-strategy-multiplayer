@@ -2,7 +2,15 @@
 
 Only `elcin31/grand-strategy-multiplayer` is in scope. Existing Dominion backend project `dfjsnjxnyjspwugjguhq` is retained. No AssetMind changes, new database/project, auth/storage migration, production campaign deletion or old release deletion. Versioned2.3 handlers were deployed without replacing the existing handlers; only explicitly generated QA rooms are used and cleaned up.
 
-## Latest continuation — engine/live QA passed; third APK building (2026-10-16)
+## Latest continuation — candidate3 camera gate rejected; incremental renderer work (2026-10-19)
+
+- Compiled39abbaf/code31 APK is verified at SHA256756c496e9f0f9a3759bc51014db148a3240d092002cf16e7256f89cf888a9de2. Source409 tests, exact daily10000/monthly10000, native interaction/upgrade/monthly, staged LOD and new gameplay/save/process restart passed. The independent10000-month result matches the candidate2 engine outcome (10092 wars,10074 peaces).
+- All three prespecified camera matrices completed and failed individually. Pooled actual input-scoped presentation intervals also **fail**: terrainP99+18.9%, militaryP99+19.7%, active-simulationP95+37.0%. Peak extended PSS478630→475561KiB. No runs/frames or adverse values discarded; see `DOMINION_23_PLAYTEST3_CAMERA_REJECTED.json`. Candidate3 is not a completed release.
+- Native online39202207850 uses the same immutable APK31. Harness now uses actual landscape coordinates/visible window bounds/current schema/focus labels, captures failure screenshots and pauses the HUD before opening a panel. Previous two failures are retained; exact failed QA room38d3ecd1-d206-41ba-bcb2-0cb08ec8e52c was guardedly deleted, zero rooms/members/receipts verified.
+- Candidate4 removes repeated minimap country-path reconciliation, duplicate military fog projection, marker array searches and border re-recording when the exact visible chunks are unchanged. No geography, draw order, native GL/queue, texture/cache budget, command, persistence or server rules change. **Unaccepted until the compiled native gate passes.** Next code32/version2.3.0-playtest.4 after checking existing published builds.
+- Final APK/ZIP publication remains blocked by the camera gate and completed native-online result. Physical Redmi performance remains unmeasured.
+
+## Previous continuation — engine/live QA passed; third APK building (2026-10-16)
 
 - Runtime `39abbafb3126d519f85c1d84a8bd66d411205a6b`, version2.3.0-playtest.3/code31, is building in `38873734496`. It adds actual country/capital navigation from filtered chronicle entries and corrects the old resource-sales explanation. No simulation, multiplayer, save or backend source differs from7409ac8.
 - Candidate2 completed **409 source tests, daily10000 and monthly10000**, with ten exact restores in each long run. Monthly10000 observed10092 wars/10074 peace settlements; daily10000 observed146 battles. Actual JSON reports are retained, not replaced with shorter runs.
