@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "apkSha256": "bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a",
+  "reviewedActualApkImages": [
+    {
+      "evidencePath": "gameplay/files/android23-gameplay/alternate-scenario-map.png",
+      "sha256": "e9a0b512d6d7ee0499261027315c3d648c02aef0fada191423701f9ca6eb0fae",
+      "releasePath": "reports/gameplay/alternate-scenario-map.png"
+    },
+    {
+      "evidencePath": "gameplay/files/android23-gameplay/camera-after-windows.png",
+      "sha256": "59a76869a51c01422d7cf8fb95c0f251795882229c4ef83747ef3e7ed19b876e",
+      "releasePath": "reports/gameplay/camera-after-windows.png"
+    },
+    {
+      "evidencePath": "interaction/files/android-hotfix/candidate-military.png",
+      "sha256": "13e1c86e667c81aa177f9e6a85f1e6380b5ae5ca32033a3f1486cfc8e54c7154",
+      "releasePath": "reports/interaction/android-hotfix/candidate-military.png"
+    },
+    {
+      "evidencePath": "interaction/files/android-hotfix/candidate-army-route.png",
+      "sha256": "3e8c60a28f94e067eb5970b1ea542002cdf1d973b2622f816ca38897139414a0",
+      "releasePath": "reports/interaction/android-hotfix/candidate-army-route.png"
+    },
+    {
+      "evidencePath": "native/files/android-online/04-process-reconnect.png",
+      "sha256": "2bcdc74c43019c4013b9ea2c5fc13a2078b19a18408d960fd521d6785ca097fd",
+      "releasePath": "reports/native/04-process-reconnect.png"
+    },
+    {
+      "evidencePath": "native/files/android-online/06-reboot-reconnect.png",
+      "sha256": "fff9acd572b088987db86085245ce7471db556037456d14d93d34329080c44a3",
+      "releasePath": "reports/native/06-reboot-reconnect.png"
+    },
+    {
+      "evidencePath": "matrix-build/profile-candidate/F-terrain.png",
+      "sha256": "df1b19dab9a1d02075701dab18b7ca0616afa50a25c982735e1428bd2988d816",
+      "releasePath": "reports/camera/evidence/matrix-build/profile-candidate/F-terrain.png"
+    },
+    {
+      "evidencePath": "matrix-build/profile-candidate/E-lod-transitions.png",
+      "sha256": "5107ace1f3283870c2d6c50f1cf04ea3b3edfadfa8f1b40dd580ec2a9278b431",
+      "releasePath": "reports/camera/evidence/matrix-build/profile-candidate/E-lod-transitions.png"
+    },
+    {
+      "evidencePath": "matrix-build/profile-candidate/I-extended-0.png",
+      "sha256": "f91df97818be08b23cc2364761c5703a5310004a154c6297f2608ce22303f32c",
+      "releasePath": "reports/camera/evidence/matrix-build/profile-candidate/I-extended-0.png"
+    }
+  ],
+  "checks": [
+    "retained2.2 terrain and political geography",
+    "country/province labels, HUD, minimap and army flags",
+    "selected army, real route/ETA and dock",
+    "camera after closing gameplay windows",
+    "process and reboot restoration without the prior cold edge white strip in these captures"
+  ],
+  "physicalRedmiTest": false,
+  "limitations": [
+    "Screenshot review cannot prove handset FPS or absence of all transient visual artifacts. The separate native23-pair frame gate is mandatory."
+  ]
+}

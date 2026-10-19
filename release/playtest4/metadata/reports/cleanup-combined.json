@@ -1,0 +1,19 @@
+{
+  "completed": true,
+  "backend": {
+    "completed": true,
+    "remainingRooms": 0,
+    "remainingPlayers": 0,
+    "remainingReceipts": 0,
+    "scope": "Only recorded generated UUID/code/date/member-name matches; no user-room scan or deletion."
+  },
+  "native": {
+    "completed": true,
+    "remainingRooms": 0,
+    "remainingPlayers": 0,
+    "remainingReceipts": 0,
+    "scope": "Only generated UUID79a2de97-480e-4911-b4b4-15c4989781f1 / ZU8PV5 / exact creation time / two exact QA names; guarded deletion and independent zero-count query."
+  },
+  "nativeRoomId": "79a2de97-480e-4911-b4b4-15c4989781f1",
+  "scope": "Only explicitly recorded generated QA UUID/code/date/member-name matches; existing user campaigns and rooms untouched."
+}

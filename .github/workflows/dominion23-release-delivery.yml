@@ -1,0 +1,38 @@
+name: Dominion 2.3 verified immutable APK and ZIP delivery
+on:
+  push:
+    branches: [dominion-2.3-performance]
+    paths: [.github/workflows/dominion23-release-delivery.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  deliver:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: '${{ github.token }}'
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Require unchanged compiled game and verified23-pair evidence
+        run: |
+          git diff --exit-code 3d5ad0016dc7c62acabc1376feec3a88f7f38450 HEAD -- App.tsx CampaignScreen.tsx app.json package.json package-lock.json metro.config.js babel.config.js src supabase/functions plugins assets
+          python -m unittest discover -s tests -p 'release23_zip_test.py'
+          python -m unittest discover -s tests -p 'camera23_repeated_test.py'
+      - name: Reproduce every approved file, both ZIPs and native gate; publish only the recorded new draft
+        run: python scripts/replay-release23-payload.py release/playtest4/recipe.json release-delivery --publish
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dominion23-verified-release-delivery
+          compression-level: 0
+          retention-days: 30
+          path: |
+            release-delivery/Dominion-2.3.0-playtest.4.zip
+            release-delivery/SHA256SUMS.txt
+            release-delivery/delivery.json

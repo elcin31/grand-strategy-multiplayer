@@ -1,0 +1,21 @@
+Android API35 x86_64, Pixel2 SDK profile, KVM, SwiftShader indirect,
+3072MiB emulator RAM, natural720x1280 pixels, density160, rotation1.
+Balanced graphics; adaptive quality disabled. Fixed schema25 seed101 scene
+inputs from accepted9c519a8; candidate loads them through normal schema28 migration.
+Accepted baseline APK7df9e78c...; immutable candidate APKbd575f01...
+
+The diagnostic overlay is enabled in the initial peace fixture. Restoring a
+new fixture restarts the app and resets this non-persistent overlay for G/H/I;
+both APKs follow the same sequence. Original metadata is preserved verbatim.
+All performance acceptance uses actual SurfaceFlinger presentation intervals,
+scoped by recorded device first-down through final-up plus100ms. Reanimated/UI
+callbacks and the screenshot's idle callback FPS are diagnostics, not map FPS.
+
+Additional500-army stress: same old-source fixture for both binaries,310 legal
+splits conserve8542866 existing soldiers;240 paid construction projects and60
+paid focuses debit42000M treasury. No troops, resources or money are generated.
+Actual calendar advances differ and are recorded explicitly.
+
+No physical Redmi Note12 test, fixed handset FPS guarantee, isolated hardware
+GPU utilization claim, or proof of indefinite leak absence. Complete original
+adverse measurements remain in the reports and the fixed pooled comparison.

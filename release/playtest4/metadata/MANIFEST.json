@@ -1,0 +1,117 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "status": "verified-playtest",
+  "dominion23Complete": true,
+  "compiledSourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
+  "validationSourceSha": "8be568b2b7b4e603225565463885864cbc1e01aa",
+  "sourceCommitEpoch": 1792386264,
+  "versionName": "2.3.0-playtest.4",
+  "versionCode": 32,
+  "buildRunId": 39202657844,
+  "cameraCohortRunId": 39208094053,
+  "mandatoryChecks": {
+    "standaloneApkIntegrity": true,
+    "compatibleSignatureAndUpgrade": true,
+    "sourceTypecheckAndTests": true,
+    "daily10000": true,
+    "monthly10000": true,
+    "cameraNativeRegression": true,
+    "cameraInteractionAndModes": true,
+    "monthlySimulationOnAndroid": true,
+    "stagedLod": true,
+    "newGameplayOnAndroid": true,
+    "saveAndProcessRestart": true,
+    "multiplayerRealHttp": true,
+    "multiplayerNative": true,
+    "testRoomsCleaned": true,
+    "visualReview": true
+  },
+  "proofs": {
+    "standaloneApkIntegrity": {
+      "path": "reports/apk-integrity.txt",
+      "sha256": "989e146b62f4d889e1ad1d408ff670617a1f0fce52959e983209070867817a11"
+    },
+    "compatibleSignatureAndUpgrade": {
+      "path": "reports/interaction/proof.json",
+      "sha256": "ec1eb3f9e1103360aaf3606b5cd8b4907c55c01d6956dbbc68001f220734ffe5"
+    },
+    "sourceTypecheckAndTests": {
+      "path": "reports/source/verified.json",
+      "sha256": "757929bd5dafccc3b3547347d5fac0252d95273363cf4516874d74b5d72fd70a"
+    },
+    "daily10000": {
+      "path": "reports/daily10000.json",
+      "sha256": "f978412d6962adab03a2451cf2aa7e832a307a3b53bfb549af24918d38075086"
+    },
+    "monthly10000": {
+      "path": "reports/monthly10000.json",
+      "sha256": "b71425a9bd07de74385fca59acd551ac5a1b29ac7f4ffca22d14a0637298a643"
+    },
+    "cameraNativeRegression": {
+      "path": "reports/camera/pooled.json",
+      "sha256": "17a93813a51a1b914533f5fa96e39d4396f278c227a57a035ab620e5882269c8"
+    },
+    "cameraInteractionAndModes": {
+      "path": "reports/interaction/proof.json",
+      "sha256": "ec1eb3f9e1103360aaf3606b5cd8b4907c55c01d6956dbbc68001f220734ffe5"
+    },
+    "monthlySimulationOnAndroid": {
+      "path": "reports/interaction/proof.json",
+      "sha256": "ec1eb3f9e1103360aaf3606b5cd8b4907c55c01d6956dbbc68001f220734ffe5"
+    },
+    "stagedLod": {
+      "path": "reports/lod/proof.json",
+      "sha256": "25f408a21026d72f2c10448673226c06d5557afab3cca7a0092ac8cd1dd82c51"
+    },
+    "newGameplayOnAndroid": {
+      "path": "reports/gameplay/result.json",
+      "sha256": "d68ca9b3ae2f8ed7e08af31fe7c5a92a890c12b02bd147ceb5a33eb2a391ce4a"
+    },
+    "saveAndProcessRestart": {
+      "path": "reports/gameplay/result.json",
+      "sha256": "d68ca9b3ae2f8ed7e08af31fe7c5a92a890c12b02bd147ceb5a33eb2a391ce4a"
+    },
+    "multiplayerRealHttp": {
+      "path": "reports/backend/DOMINION_23_LIVE_MULTIPLAYER_QA.json",
+      "sha256": "a11b19bf9dced1f65e7fee604645941b3a29bdf0b68eb4a8ccdabc35917b4767"
+    },
+    "multiplayerNative": {
+      "path": "reports/native/proof.json",
+      "sha256": "aa6360c2582b6753fd301304601b641ef77152b89d7af469322f652a8b4f6ebc"
+    },
+    "testRoomsCleaned": {
+      "path": "reports/cleanup-combined.json",
+      "sha256": "ae21879b299da577d6954016916149ae2cf67aa5baf90fdf90c6efc8b7e908ca"
+    },
+    "visualReview": {
+      "path": "reports/visual-review.json",
+      "sha256": "614d3909852bb7eb397d57deec62bf7889aaa243f02e38210733f22bbdab7737"
+    }
+  },
+  "apk": {
+    "filename": "Dominion-2.3.0-playtest.4.apk",
+    "sha256": "bd575f012f1ff94c976a7e5adabe19654315fc56b8e77c22514056bcb52eb20a",
+    "bytes": 174268850,
+    "package": "com.elcin31.grandstrategymultiplayer",
+    "certificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "embeddedHermesBundleBytes": 11393548
+  },
+  "additionalStressProof": {
+    "path": "reports/stress/proof.json",
+    "sha256": "dc38576cbea0780f9e317c6dfbf4c3b4e89c2cc14fde7cbc96ec504a846c4223"
+  },
+  "limitations": [
+    "No physical Redmi Note12 test or fixed handset FPS claim.",
+    "Software-emulator frame estimates include every fixed pair and every valid in-window presentation stall, including all original adverse measurements.",
+    "Short native memory soaks and10000-step simulations do not prove indefinite memory stability."
+  ],
+  "cameraValidationSourceSha": "3e97dde60c93d5e6b9c83eca8f9a178800e55f64",
+  "sourceArchiveCommit": "8be568b2b7b4e603225565463885864cbc1e01aa",
+  "sourceArchiveNote": "Includes final evidence/docs; runtime is identical to compiledSourceSha and cohort tooling is identical to cameraValidationSourceSha."
+}

@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "compiledSourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
+  "sourceClean": true,
+  "node22SourceTests": 409,
+  "typecheck": true,
+  "contentValidation": true,
+  "pythonTests": 139,
+  "pythonPassed": 138,
+  "pythonSkipped": 1,
+  "sourceLogSha256": "98392086461200ada20049f49b121d292d01e45e8df92407f5f3f7b707ca7cac",
+  "pythonLogSha256": "ad802a8134b80895e6794221d9742a64bb4cc27b87192718d2e9c0d312ac1f14",
+  "sourceArchiveCommit": "8be568b2b7b4e603225565463885864cbc1e01aa",
+  "sourceArchiveSha256": "9b1af2817bf97f2dae4a6052d094e5f4fb61dfd8b57f8633e595099f0aa1d375",
+  "runtimeDiffCompiledToArchive": [],
+  "backendPersistenceTransportDiffDeployedToCompiled": []
+}

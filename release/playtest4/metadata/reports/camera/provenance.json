@@ -1,0 +1,14 @@
+{
+  "repository": "elcin31/grand-strategy-multiplayer",
+  "workflowRunId": 39208094053,
+  "workflowSourceSha": "3e97dde60c93d5e6b9c83eca8f9a178800e55f64",
+  "compiledSourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
+  "artifactId": 12167208003,
+  "artifactZipSha256": "1fff9ff13f430b534ef1eaafdeeb4cdc9a6bc840e0af21fe70f601fb0e052ff6",
+  "artifactZipBytes": 286104194,
+  "independentLocalRecomputationExactlyMatches": true,
+  "curatedRawPollRecomputationExactlyMatches": true,
+  "all23PairsAndEveryInWindowPresentationRetained": true,
+  "omitted": "Repetitive screenshots, logcat, fixture copies and private native-save directories; all data needed to recompute the original frame and memory gate is retained.",
+  "physicalRedmiTest": false
+}

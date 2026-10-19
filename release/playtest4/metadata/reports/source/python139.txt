@@ -1,0 +1,109 @@
+.........................Retry transient accessibility lookup: camera 1 CalledProcessError
+..Retry transient accessibility lookup: camera 1 CalledProcessError
+.Closed verified external Quickstep ANR outside timed gestures: camera
+.Retry transient accessibility lookup: benchmark 1 HierarchyNotWritten
+Retry transient accessibility lookup: benchmark 2 HierarchyNotWritten
+..Retry transient accessibility lookup: camera 1 CalledProcessError
+Retry transient accessibility lookup: camera 2 CalledProcessError
+..Closed verified external Quickstep ANR outside timed gestures: camera
+Closed verified external Quickstep ANR outside timed gestures: camera
+.Retry transient accessibility lookup: camera 1 TimeoutExpired
+.Retry transient accessibility lookup: camera 1 CalledProcessError
+.Retry transient accessibility lookup: benchmark 1 HierarchyNotWritten
+........................01-idle {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+02-medium-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+03-pinch {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+04-world-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+05-local-labels-armies {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+06-terrain-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+07-military-overlay {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+08-panel-open {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+09-panel-closed {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+PASS: paired native camera evidence generated
+01-idle {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+02-medium-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+03-pinch {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+04-world-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+05-local-labels-armies {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+06-terrain-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+07-military-overlay {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+08-panel-open {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+09-panel-closed {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+PASS: paired native camera evidence generated
+.01-idle {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+02-medium-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+03-pinch {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+04-world-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+05-local-labels-armies {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+06-terrain-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+07-military-overlay {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+08-panel-open {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+09-panel-closed {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+Traceback (most recent call last):
+  File "/workspace/grand-strategy-multiplayer/scripts/compare-camera-native.py", line 29, in <module>
+    assert a['p99Ms']<=b['p99Ms']*allowance, row['scenario']+' compositor p99 regression'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 03-pinch compositor p99 regression
+01-idle {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+02-medium-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+03-pinch {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+04-world-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+05-local-labels-armies {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+06-terrain-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+07-military-overlay {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+08-panel-open {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+09-panel-closed {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+PASS: paired native camera evidence generated
+01-idle {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+02-medium-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+03-pinch {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+04-world-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+05-local-labels-armies {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+06-terrain-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+07-military-overlay {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+08-panel-open {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+09-panel-closed {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+PASS: paired native camera evidence generated
+01-idle {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+02-medium-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+03-pinch {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+04-world-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+05-local-labels-armies {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+06-terrain-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+07-military-overlay {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+08-panel-open {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+09-panel-closed {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+Traceback (most recent call last):
+  File "/workspace/grand-strategy-multiplayer/scripts/compare-camera-native.py", line 29, in <module>
+    assert a['p99Ms']<=b['p99Ms']*allowance, row['scenario']+' compositor p99 regression'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 03-pinch compositor p99 regression
+.01-idle {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+02-medium-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+03-pinch {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+04-world-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+05-local-labels-armies {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+06-terrain-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+07-military-overlay {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+08-panel-open {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+09-panel-closed {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+PASS: paired native camera evidence generated
+01-idle {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 121}
+02-medium-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+03-pinch {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+04-world-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+05-local-labels-armies {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+06-terrain-pan {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+07-military-overlay {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+08-panel-open {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+09-panel-closed {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100} -> {'p50Ms': 50, 'p95Ms': 100, 'jankPercent': 0, 'pssKiB': 100}
+Traceback (most recent call last):
+  File "/workspace/grand-strategy-multiplayer/scripts/compare-camera-native.py", line 20, in <module>
+    assert all(r['after']['pssKiB']<=r['before']['pssKiB']*1.2 for r in rows), 'Native memory regression'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Native memory regression
+............................................................................s
+----------------------------------------------------------------------
+Ran 139 tests in 6.223s
+
+OK (skipped=1)
