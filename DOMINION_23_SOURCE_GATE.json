@@ -18,26 +18,44 @@
     "validated": true
   },
   "python": {
-    "tests": 132,
-    "pass": 131,
+    "tests": 138,
+    "pass": 137,
     "skipped": 1,
     "failures": 0,
-    "logSha256": "556b6ced54ffc8684b230cd1cfdb70750dbf652cedd780a10e6304777052d57d",
-    "note": "Includes exact external-Quickstep isolation and reproducible ZIP/missing-gate/digest rejection checks."
+    "logSha256": "033a456e5a9ed36f780ab08bb48f4d8d1bc12d231275803ecbb227082950f9d3",
+    "note": "Includes ancestor-clipped native controls/current schema/peer-intelligence rejection, unchanged camera limits and reproducible ZIP checks."
   },
   "buildRuntime": {
     "node": 22,
-    "runId": 38846118396,
-    "sourceSha": "7409ac86b2cd9347fe54c6287f208d89affc190e",
-    "sourceRegressionArtifactId": 12023621068,
-    "status": "Playtest2 standalone/source/content passed; playtest3 UI-only build is running."
+    "runId": 39202657844,
+    "sourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
+    "sourceRegressionArtifactId": 12164551486,
+    "status": "Playtest4 source/content/typecheck passed; standalone compilation and exact-source long runs in progress."
   },
   "limitations": [
-    "Playtest2 daily10000 and monthly10000 passed with ten exact restores each. Playtest3 repeats both on its exact source.",
-    "Playtest2 native comparison failed three tails; original full report retained. Playtest3 and a complete identical-APK control are running.",
-    "Three-client live HTTP QA passed on backend version2. Native online reconnect must still pass; no physical Redmi benchmark."
+    "Playtest3 exact daily/monthly10000 and independent repeated full-state equality passed. Playtest4 repeats both on its compiled source.",
+    "Playtest3 all three prespecified camera pairs and the pooled comparison failed; complete adverse data retained. Playtest4 must pass a new prespecified three-pair comparison.",
+    "Three-client live HTTP QA passed on backend version2; backend/persistence/transport sources unchanged. Native signed-APK reconnect and final release remain pending; physical Redmi performance unmeasured."
   ],
   "fullSourceNode22": {
+    "sourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
+    "runId": 39202657844,
+    "tests": 409,
+    "pass": 409,
+    "fail": 0,
+    "skipped": 0,
+    "artifactId": 12164551486,
+    "artifactSha256": "9471a1b33f6d463513e22b7465b3358875b999adb50a775e613224ff379b66f1",
+    "logSha256": "98392086461200ada20049f49b121d292d01e45e8df92407f5f3f7b707ca7cac",
+    "typecheck": true,
+    "contentValidation": true
+  },
+  "longSimulationReports": {
+    "daily": "DOMINION_23_PLAYTEST3_DAILY_10000.json",
+    "monthly": "DOMINION_23_PLAYTEST3_MONTHLY_10000.json"
+  },
+  "liveHttpProof": "DOMINION_23_LIVE_MULTIPLAYER_QA.json",
+  "previousFullSourceNode22": {
     "sourceSha": "7409ac86b2cd9347fe54c6287f208d89affc190e",
     "runId": 38846118396,
     "jobId": 116796924247,
@@ -49,10 +67,5 @@
     "logSha256": "78a9adca6d82a430da2467811e57334ec0d651cca5ecb833c10b0eaefd2c38b2",
     "typecheck": true,
     "contentValidation": true
-  },
-  "longSimulationReports": {
-    "daily": "DOMINION_23_PLAYTEST2_DAILY_10000.json",
-    "monthly": "DOMINION_23_PLAYTEST2_MONTHLY_10000.json"
-  },
-  "liveHttpProof": "DOMINION_23_LIVE_MULTIPLAYER_QA.json"
+  }
 }
