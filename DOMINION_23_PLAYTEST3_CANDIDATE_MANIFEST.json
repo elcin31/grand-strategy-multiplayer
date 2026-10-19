@@ -31,7 +31,7 @@
     "interactionAndMonthlyRunId": 38876273246,
     "stagedLodRunId": 38876278164,
     "repeatedMatrixRunId": 38876284394,
-    "nativeOnlineRunId": 39202207850,
+    "nativeOnlineRunId": 39202863926,
     "repeatedMatrixRunIds": [
       38873734496,
       38876284394,
@@ -40,7 +40,9 @@
     "previousFailedAttempts": "DOMINION_23_PLAYTEST3_FUNCTIONAL_ATTEMPTS.json",
     "newGameplayPassed": true,
     "interactionAndMonthlyPassed": true,
-    "stagedLodPassed": true
+    "stagedLodPassed": true,
+    "nativeOnlinePassed": true,
+    "nativeOnlineProof": "DOMINION_23_PLAYTEST3_NATIVE_ONLINE_PROOF.json"
   },
   "engine": {
     "daily10000": true,
