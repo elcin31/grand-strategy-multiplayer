@@ -1,6 +1,6 @@
 {
   "repository": "elcin31/grand-strategy-multiplayer",
-  "status": "built-native-validation-running",
+  "status": "verified-playtest",
   "compiledSourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
   "validationSourceSha": "7352cc869e52dc448cdf53ab2786338c468d5c45",
   "versionName": "2.3.0-playtest.4",
@@ -106,10 +106,22 @@
   "sourceTestsPassed": 409,
   "daily10000Passed": true,
   "monthly10000Passed": true,
-  "releaseAccepted": false,
+  "releaseAccepted": true,
   "initialThreePairCameraGate": "failed; full original report retained in DOMINION_23_PLAYTEST4_CAMERA_REJECTED.json",
   "cameraExtendedSamplingPlan": "DOMINION_23_PLAYTEST4_CAMERA_COHORT_PLAN.json",
   "fixedAdditionalCameraCohortRunId": 39208094053,
   "fixedFinalCameraPairCount": 23,
-  "cameraMetricGate": "pending23-pair-aggregate"
+  "cameraMetricGate": "pass",
+  "cameraProof": "DOMINION_23_PLAYTEST4_CAMERA_PROOF.json",
+  "cameraValidationSourceSha": "3e97dde60c93d5e6b9c83eca8f9a178800e55f64",
+  "cameraAggregateArtifactId": 12167208003,
+  "cameraAggregateArtifactSha256": "1fff9ff13f430b534ef1eaafdeeb4cdc9a6bc840e0af21fe70f601fb0e052ff6",
+  "independentLocalCameraReportEqual": true,
+  "curatedCameraReportEqual": true,
+  "physicalRedmiTest": false,
+  "peakExtendedPssKiB": [
+    483450,
+    472521
+  ],
+  "releaseTag": "v2.3.0-playtest.4"
 }

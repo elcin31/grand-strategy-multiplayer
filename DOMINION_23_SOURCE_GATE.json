@@ -1,16 +1,5 @@
 {
-  "status": "source-and-both-long10000-and-live-http-passed-final-native-candidate-pending",
-  "fullSource": {
-    "sourceSha": "65a58fa51e5dfde6b9c6ba83c446fd4b478a6db2",
-    "sourceWorkingTreeClean": true,
-    "node": "v24.19.0",
-    "typecheck": true,
-    "tests": 406,
-    "pass": 406,
-    "fail": 0,
-    "skipped": 0,
-    "logSha256": "6f0b3aa104ce645b41704de743be0e4fc1fb245bfbafcb38539b11f8f0038d2e"
-  },
+  "status": "verified-playtest-all-source-long-native-camera-live-gates-passed",
   "content": {
     "events": 9,
     "focuses": 125,
@@ -18,24 +7,24 @@
     "validated": true
   },
   "python": {
-    "tests": 138,
-    "pass": 137,
+    "tests": 139,
+    "pass": 138,
     "skipped": 1,
     "failures": 0,
-    "logSha256": "033a456e5a9ed36f780ab08bb48f4d8d1bc12d231275803ecbb227082950f9d3",
-    "note": "Includes ancestor-clipped native controls/current schema/peer-intelligence rejection, unchanged camera limits and reproducible ZIP checks."
+    "logSha256": "ad802a8134b80895e6794221d9742a64bb4cc27b87192718d2e9c0d312ac1f14",
+    "note": "Includes unchanged camera limits, exact23-sample completeness/provenance and reproducible ZIP rejection tests."
   },
   "buildRuntime": {
     "node": 22,
     "runId": 39202657844,
     "sourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
     "sourceRegressionArtifactId": 12164551486,
-    "status": "Playtest4 source/content/typecheck passed; standalone compilation and exact-source long runs in progress."
+    "status": "Passed exact compiled-source standalone, source/typecheck/content, daily10000/monthly10000 and immutable native APK32 gates."
   },
   "limitations": [
-    "Playtest3 exact daily/monthly10000 and independent repeated full-state equality passed. Playtest4 repeats both on its compiled source.",
-    "Playtest3 all three prespecified camera pairs and the pooled comparison failed; complete adverse data retained. Playtest4 must pass a new prespecified three-pair comparison.",
-    "Three-client live HTTP QA passed on backend version2; backend/persistence/transport sources unchanged. Native signed-APK reconnect and final release remain pending; physical Redmi performance unmeasured."
+    "Android API35 software emulator; no physical Redmi Note12 test or fixed handset FPS claim.",
+    "All original adverse measurements and pairs retained; short native soaks do not prove indefinite memory stability.",
+    "One Python test is explicitly skipped;409 Node tests and138 Python checks passed."
   ],
   "fullSourceNode22": {
     "sourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
@@ -51,8 +40,8 @@
     "contentValidation": true
   },
   "longSimulationReports": {
-    "daily": "DOMINION_23_PLAYTEST3_DAILY_10000.json",
-    "monthly": "DOMINION_23_PLAYTEST3_MONTHLY_10000.json"
+    "daily": "DOMINION_23_PLAYTEST4_DAILY_10000.json",
+    "monthly": "DOMINION_23_PLAYTEST4_MONTHLY_10000.json"
   },
   "liveHttpProof": "DOMINION_23_LIVE_MULTIPLAYER_QA.json",
   "previousFullSourceNode22": {
@@ -67,5 +56,33 @@
     "logSha256": "78a9adca6d82a430da2467811e57334ec0d651cca5ecb833c10b0eaefd2c38b2",
     "typecheck": true,
     "contentValidation": true
-  }
+  },
+  "previousFullSourceLocal": {
+    "sourceSha": "65a58fa51e5dfde6b9c6ba83c446fd4b478a6db2",
+    "sourceWorkingTreeClean": true,
+    "node": "v24.19.0",
+    "typecheck": true,
+    "tests": 406,
+    "pass": 406,
+    "fail": 0,
+    "skipped": 0,
+    "logSha256": "6f0b3aa104ce645b41704de743be0e4fc1fb245bfbafcb38539b11f8f0038d2e"
+  },
+  "fullSource": {
+    "sourceSha": "3d5ad0016dc7c62acabc1376feec3a88f7f38450",
+    "runId": 39202657844,
+    "tests": 409,
+    "pass": 409,
+    "fail": 0,
+    "skipped": 0,
+    "artifactId": 12164551486,
+    "artifactSha256": "9471a1b33f6d463513e22b7465b3358875b999adb50a775e613224ff379b66f1",
+    "logSha256": "98392086461200ada20049f49b121d292d01e45e8df92407f5f3f7b707ca7cac",
+    "typecheck": true,
+    "contentValidation": true,
+    "node": "22",
+    "sourceWorkingTreeClean": true
+  },
+  "finalCandidateManifest": "DOMINION_23_PLAYTEST4_CANDIDATE_MANIFEST.json",
+  "cameraProof": "DOMINION_23_PLAYTEST4_CAMERA_PROOF.json"
 }
