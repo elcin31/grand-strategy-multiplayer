@@ -21,3 +21,7 @@ git worktree add --detach "$fixture_source" 9c519a8ddf86fa106ec0ca3d6e080086c6c7
 trap 'git worktree remove --force "$fixture_source"' EXIT
 ln -s "$root/node_modules" "$fixture_source/node_modules"
 node --import "$root/node_modules/tsx/dist/loader.mjs" "$fixture_source/scripts/make-camera23-fixture.ts" "${2:-camera23-fixture}" --monthly
+if [ "${3:-}" = stress ]; then
+  cp "$root/scripts/make-camera23-stress.ts" "$fixture_source/scripts/make-camera23-stress.ts"
+  node --import "$root/node_modules/tsx/dist/loader.mjs" "$fixture_source/scripts/make-camera23-stress.ts" "${2:-camera23-fixture}"
+fi

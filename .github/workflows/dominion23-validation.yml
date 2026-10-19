@@ -25,6 +25,10 @@ on:
         description: Repeat complete A-I using the immutable compiled APK without rebuilding
         type: boolean
         default: false
+      stress_only:
+        description: Paid projects and existing soldiers split into400+ armies, with real monthly simulation
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
@@ -57,13 +61,15 @@ jobs:
       - run: node --import tsx scripts/make-gameplay23-fixture.ts gameplay23-fixture
       - run: python -m pip install -r scripts/camera-profile-requirements.txt -r scripts/camera-trace-requirements.txt
       - name: Check the downloaded binary again; prepare original and new real-pointer drivers
-        env: {GH_TOKEN: '${{ github.token }}', BASELINE_RUN: '${{ inputs.baseline_apk_run_id }}'}
+        env: {GH_TOKEN: '${{ github.token }}', BASELINE_RUN: '${{ inputs.baseline_apk_run_id }}', STRESS_ONLY: '${{ inputs.stress_only }}'}
         run: |
           python scripts/verify-apk.py Dominion-2.3-performance-candidate.apk
           python scripts/verify-release.py Dominion-2.3-performance-candidate.apk > candidate-integrity.txt
           python scripts/verify-immutable-borders-apk.py Dominion-2.3-performance-candidate.apk >> candidate-integrity.txt
           python scripts/verify-ui-dispatch-apk.py Dominion-2.3-performance-candidate.apk >> candidate-integrity.txt
-          bash scripts/prepare-camera23-baseline.sh "$BASELINE_RUN" camera23-monthly-fixture
+          stress_arg=''
+          if [ "$STRESS_ONLY" = true ]; then stress_arg=stress; fi
+          bash scripts/prepare-camera23-baseline.sh "$BASELINE_RUN" camera23-monthly-fixture "$stress_arg"
           for driver in CameraGesture CameraGesture23; do
             mkdir -p "$driver-classes" "$driver-dex"
             javac -cp "$ANDROID_HOME/platforms/android-35/android.jar" -d "$driver-classes" "scripts/$driver.java"
@@ -76,7 +82,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - uses: reactivecircus/android-emulator-runner@v2
-        env: {GAMEPLAY_ONLY: '${{ inputs.gameplay_only }}', LOD_ONLY: '${{ inputs.lod_only }}', FULL_MATRIX_ONLY: '${{ inputs.full_matrix_only }}'}
+        env: {GAMEPLAY_ONLY: '${{ inputs.gameplay_only }}', LOD_ONLY: '${{ inputs.lod_only }}', FULL_MATRIX_ONLY: '${{ inputs.full_matrix_only }}', STRESS_ONLY: '${{ inputs.stress_only }}'}
         with:
           api-level: 35
           arch: x86_64
@@ -107,6 +113,8 @@ jobs:
             gameplay23-fixture/manifest.json
             monthly-baseline/
             monthly-candidate/
+            stress-baseline/
+            stress-candidate/
             lod-baseline/
             lod-candidate/
             profile-baseline/
