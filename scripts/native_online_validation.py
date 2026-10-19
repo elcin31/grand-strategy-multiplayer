@@ -65,6 +65,8 @@ def assert_online_campaign(response, room_id, player_id, country_id):
     matches = [p for p in state['players'] if p['id'] == player_id]
     assert len(matches) == 1 and matches[0]['countryId'] == country_id
     assert matches[0]['connected'] and not matches[0]['aiControlled'], 'Native owner did not return'
+    assert state['countries'][country_id].get('intelligenceLevel') == 'Detailed', \
+        'Independent peer lacks authorized detailed intelligence for the native payment check'
     assert state['speed'] == 0 and state['phase'] == 'paused', 'Server did not actually pause'
     assert response['version'] >= 0 and response.get('checksum'), 'No authoritative snapshot'
     return state
